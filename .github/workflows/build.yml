@@ -28,7 +28,9 @@ jobs:
           for file in ./csswg-drafts/**/Overview.html; do
             cp "$file" "$(dirname "$file")/index.html"
           done
-      - run: rm -rf ./csswg-drafts/.git
+      - name: Build index
+        run: python3 ./build-index.py > ./csswg-drafts/index.html
+      - run: rm -rf ./csswg-drafts/.git{,attributes,ignore}
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
