@@ -1,0 +1,30 @@
+on:
+  schedule:
+    # Once every three hours.
+    - cron: "0 */3 * * *"
+
+jobs:
+  update-csswg:
+    name: "Update CSSWG drafts"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Update and commit
+        run: |
+          set -e
+          cd csswg-drafts
+          OLD_SHA="$(git rev-parse HEAD)"
+          git fetch
+          git reset --hard origin/main
+          NEW_SHA="$(git rev-parse HEAD)"
+          cd ..
+          if [ "$OLD_SHA" != "$NEW_SHA" ]; then
+            git add csswg-drafts
+            git commit -m "Update to w3c/csswg-drafts@$NEW_SHA"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

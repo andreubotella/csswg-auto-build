@@ -1,0 +1,36 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install and update Bikeshed
+        run: pip3 install bikeshed && bikeshed update
+      - name: Compile
+        run: |
+          set -e
+          for file in ./csswg-drafts/**/*.bs; do
+            bikeshed spec -f "$file" "${file%.bs}.html"
+          done
+      - name: Fix directory defaults
+        # The default pages for directories are assumed to be Overview.html, but
+        # that doesn't work for Github Pages. So we copy them as index.html.
+        run: |
+          set -e
+          for file in ./csswg-drafts/**/Overview.html; do
+            cp "$file" "$(dirname "$file")/index.html"
+          done
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          exclude_assets: ".github,.git"
+          publish_dir: ./csswg-drafts
