@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 2e3c4c68b, updated Fri Jan 14 14:49:00 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-contain-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="ca0c1dd81025e3dfcd1e5ae6fba497812f46919c" name="document-revision">
+  <meta content="5be59b3cf2dedf9f562fdd33521c86a7b3e66642" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2449,38 +2449,28 @@ CSS transitions and animations on the element do not update:</p>
      </ul>
      <p>If script queries the style of a <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⓪">skipped</a> element
 (causing a <a data-link-type="dfn" href="https://drafts.csswg.org/css-transitions-1/#style-change-event" id="ref-for-style-change-event">style change event</a>)
-such that knowing the state of animations is required
+such that knowing the state of animations or transitions is required
 to return correct information,
-animations are "refreshed" at that moment
-according to the styles at the time of that <span id="ref-for-style-change-event①">style change event</span>:
-new animations are created if necessary;
-existing animations are advanced
-to the point on their timeline they would have been at
-were they never skipped at all;
-animations that have would have ended since the last "refresh"
-are ended.</p>
-     <p>If a transition or animation-related event would have been triggered
-as a result of changes occurring during the "refresh" interval,
-they are fired when the animations are "refreshed",
-in the same order they would have originally fired in
-had the element never been <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④①">skipped</a>.
-If multiple iterations of an animation would have completed during this period,
-only one <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/css-animations-1/#eventdef-animationevent-animationiteration" id="ref-for-eventdef-animationevent-animationiteration">animationiteration</a></code> event must be triggered,
-ordered as if it were triggered at the first completed iteration during the refresh interval.</p>
-     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④②">skipped</a>,
-animations are refreshed
+animation and transitions are sampled
+according to the styles at the time of that <span id="ref-for-style-change-event①">style change event</span>:</p>
+     <p><a href="https://drafts.csswg.org/css-animations-2/#events"><cite>CSS Animations 2</cite> § 4 Animation Events</a> and <span spec-section="#events"></span> defines what objects are created
+and what events are fired,
+with what data,
+when an animation or transition is updated,.</p>
+     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④①">skipped</a>,
+animations and transitions are sampled
 and then resume advancing on their timelines as normal from that point.</p>
      <p class="note" role="note"><span>Note:</span> Overall, this is similar to the behavior of transitions/animations
 when a background tab is brought back to the foreground,
 allowing user agents to skip as much unnecessary animation work as possible
 without overly disrupting the animations when they become relevant again.</p>
     <li data-md>
-     <p>While an element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④③">skipped</a>,
+     <p>While an element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④②">skipped</a>,
 it must not start any transitions,
 even if a <a data-link-type="dfn" href="https://drafts.csswg.org/css-transitions-1/#style-change-event" id="ref-for-style-change-event②">style change event</a> affects its computed styles.</p>
-     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④④">skipped</a>,
+     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④③">skipped</a>,
 it must not start any transitions
-as a result of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-transitions-1/#style-change-event" id="ref-for-style-change-event③">style change event</a> associated with it no longer being <span id="ref-for-skips-its-contents④⑤">skipped</span>.</p>
+as a result of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-transitions-1/#style-change-event" id="ref-for-style-change-event③">style change event</a> associated with it no longer being <span id="ref-for-skips-its-contents④④">skipped</span>.</p>
      <p class="note" role="note"><span>Note:</span> This is similar to an element switching from <span class="css">display:none</span> to a non-<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-display-3/#valdef-display-none" id="ref-for-valdef-display-none">none</a> value—<wbr>even tho the styles are <em>technically</em> changing in that case
 (from their initial values
 to their "proper" values from the cascade),
@@ -2491,11 +2481,11 @@ no transitions are started.</p>
 akin to the DOM tree but specialized for accessibility use-cases such as screen-readers
 (thus providing the positions/etc of elements relevant to accessibility APIs,
 such as focusable elements),
-then the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑥">skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑥">content-visibility: hidden</a> elements
+then the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑤">skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑥">content-visibility: hidden</a> elements
 must similarly be "skipped" (omitted) in the accessibility tree
 (similar to how <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-3/#propdef-display" id="ref-for-propdef-display⑧">display: none</a> elements
 are omitted in all views of the document).</p>
-   <p><a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑦">Skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑦">content-visibility: auto</a> elements
+   <p><a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑥">Skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑦">content-visibility: auto</a> elements
 must not expose the fact that a user is interacting with the page via the accessibility tree,
 rather than via rendering visually to the screen.
 In particular, if a user agent uses <span class="css" id="ref-for-propdef-content-visibility②⑧">content-visibility: auto</span> to avoid doing layout and painting work on off-screen content
@@ -2506,7 +2496,7 @@ If this is not possible
 (for example, if the user agent’s representation of a focusable element in the accessibility tree
 requires knowledge of its exact position,
 and thus requires a full layout to be done on it and surrounding contents),
-then the user agent <em>must</em> omit the <span id="ref-for-skips-its-contents④⑧">skipped contents</span> from the accessibility tree entirely.</p>
+then the user agent <em>must</em> omit the <span id="ref-for-skips-its-contents④⑦">skipped contents</span> from the accessibility tree entirely.</p>
    <p class="note" role="note"><span>Note:</span> This requirement is intended to protect users utilizing accessibility tooling
 from being identified and profiled as such
 via observation of timing channels;
@@ -2530,13 +2520,13 @@ by observing the timing of layout operations.</p>
 <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
 </pre>
     <p>The .sv element’s <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑨">content-visibility: auto</a> value
-	lets the user-agent manage whether the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑨">skipped</a>.
+	lets the user-agent manage whether the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑧">skipped</a>.
 	Specifically when this element is near the viewport,
 	the user-agent will begin painting the element.
 	When the element moves away from the viewport,
 	it will stop being painted.
 	In addition, the user-agent should skip as much of the rendering work as possible
-	when the element is <span id="ref-for-skips-its-contents⑤⓪">skipped</span>.</p>
+	when the element is <span id="ref-for-skips-its-contents④⑨">skipped</span>.</p>
    </div>
    <div class="example" id="example-52a4682e">
     <a class="self-link" href="#example-52a4682e"></a> 
@@ -2550,7 +2540,7 @@ by observing the timing of layout operations.</p>
   ... some content goes here ...
 <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
 </pre>
-    <p>In this case, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤①">skipped</a> regardless of viewport intersection.
+    <p>In this case, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤⓪">skipped</a> regardless of viewport intersection.
 	This means that the only way to have the <a data-link-type="dfn" href="#element-contents" id="ref-for-element-contents②">contents</a> painted
 	is via script updating the value to remove <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⓪">content-visibility</a> or change its value.
 	As before, the user-agent should skip as much of the rendering in the <span id="ref-for-element-contents③">contents</span> as possible.</p>
@@ -2593,7 +2583,7 @@ by observing the timing of layout operations.</p>
   <c- p>...</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
 </pre>
-    <p>Similarly to the last example, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤②">skipped</a>.
+    <p>Similarly to the last example, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤①">skipped</a>.
 	The user-agent should avoid as much rendering work as possible.
 	However, in this example, at some point script accesses a layout value in the element’s <a data-link-type="dfn" href="#element-contents" id="ref-for-element-contents⑥">contents</a>.
 	In this situation, the user-agent cannot avoid rendering work
@@ -2820,12 +2810,6 @@ Answers are provided below.</p>
    <li><a href="#style-containment">style containment</a><span>, in § 3.3</span>
    <li><a href="#valdef-content-visibility-visible">visible</a><span>, in § 4</span>
   </ul>
-  <aside class="dfn-panel" data-for="term-for-eventdef-animationevent-animationiteration">
-   <a href="https://drafts.csswg.org/css-animations-1/#eventdef-animationevent-animationiteration">https://drafts.csswg.org/css-animations-1/#eventdef-animationevent-animationiteration</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-eventdef-animationevent-animationiteration">4.3. Restrictions and Clarifications</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-background">
    <a href="https://drafts.csswg.org/css-backgrounds-3/#propdef-background">https://drafts.csswg.org/css-backgrounds-3/#propdef-background</a><b>Referenced in:</b>
    <ul>
@@ -3484,11 +3468,6 @@ Strong Containment: the contain property</a>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
-    <a data-link-type="biblio">[css-animations-1]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="term-for-eventdef-animationevent-animationiteration">animationiteration</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[css-backgrounds-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-background">background</span>
@@ -3683,8 +3662,6 @@ Strong Containment: the contain property</a>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
-   <dt id="biblio-css-animations-1">[CSS-ANIMATIONS-1]
-   <dd>Dean Jackson; et al. <a href="https://www.w3.org/TR/css-animations-1/"><cite>CSS Animations Level 1</cite></a>. 11 October 2018. WD. URL: <a href="https://www.w3.org/TR/css-animations-1/">https://www.w3.org/TR/css-animations-1/</a>
    <dt id="biblio-css-backgrounds-3">[CSS-BACKGROUNDS-3]
    <dd>Bert Bos; Elika Etemad; Brad Kemper. <a href="https://www.w3.org/TR/css-backgrounds-3/"><cite>CSS Backgrounds and Borders Module Level 3</cite></a>. 26 July 2021. CR. URL: <a href="https://www.w3.org/TR/css-backgrounds-3/">https://www.w3.org/TR/css-backgrounds-3/</a>
    <dt id="biblio-css-break-3">[CSS-BREAK-3]
@@ -4005,9 +3982,9 @@ Using content-visibility: auto</a>
 Using content-visibility: hidden</a> <a href="#ref-for-skips-its-contents⑨">(2)</a> <a href="#ref-for-skips-its-contents①⓪">(3)</a>
     <li><a href="#ref-for-skips-its-contents①①">4.2. 
 Using content-visibility: auto</a> <a href="#ref-for-skips-its-contents①②">(2)</a> <a href="#ref-for-skips-its-contents①③">(3)</a> <a href="#ref-for-skips-its-contents①④">(4)</a> <a href="#ref-for-skips-its-contents①⑤">(5)</a> <a href="#ref-for-skips-its-contents①⑥">(6)</a> <a href="#ref-for-skips-its-contents①⑦">(7)</a> <a href="#ref-for-skips-its-contents①⑧">(8)</a> <a href="#ref-for-skips-its-contents①⑨">(9)</a> <a href="#ref-for-skips-its-contents②⓪">(10)</a>
-    <li><a href="#ref-for-skips-its-contents②①">4.3. Restrictions and Clarifications</a> <a href="#ref-for-skips-its-contents②②">(2)</a> <a href="#ref-for-skips-its-contents②③">(3)</a> <a href="#ref-for-skips-its-contents②④">(4)</a> <a href="#ref-for-skips-its-contents②⑤">(5)</a> <a href="#ref-for-skips-its-contents②⑥">(6)</a> <a href="#ref-for-skips-its-contents②⑦">(7)</a> <a href="#ref-for-skips-its-contents②⑧">(8)</a> <a href="#ref-for-skips-its-contents②⑨">(9)</a> <a href="#ref-for-skips-its-contents③⓪">(10)</a> <a href="#ref-for-skips-its-contents③①">(11)</a> <a href="#ref-for-skips-its-contents③②">(12)</a> <a href="#ref-for-skips-its-contents③③">(13)</a> <a href="#ref-for-skips-its-contents③④">(14)</a> <a href="#ref-for-skips-its-contents③⑤">(15)</a> <a href="#ref-for-skips-its-contents③⑥">(16)</a> <a href="#ref-for-skips-its-contents③⑦">(17)</a> <a href="#ref-for-skips-its-contents③⑧">(18)</a> <a href="#ref-for-skips-its-contents③⑨">(19)</a> <a href="#ref-for-skips-its-contents④⓪">(20)</a> <a href="#ref-for-skips-its-contents④①">(21)</a> <a href="#ref-for-skips-its-contents④②">(22)</a> <a href="#ref-for-skips-its-contents④③">(23)</a> <a href="#ref-for-skips-its-contents④④">(24)</a> <a href="#ref-for-skips-its-contents④⑤">(25)</a>
-    <li><a href="#ref-for-skips-its-contents④⑥">4.4. Accessibility Implications</a> <a href="#ref-for-skips-its-contents④⑦">(2)</a> <a href="#ref-for-skips-its-contents④⑧">(3)</a>
-    <li><a href="#ref-for-skips-its-contents④⑨">4.5. Examples</a> <a href="#ref-for-skips-its-contents⑤⓪">(2)</a> <a href="#ref-for-skips-its-contents⑤①">(3)</a> <a href="#ref-for-skips-its-contents⑤②">(4)</a>
+    <li><a href="#ref-for-skips-its-contents②①">4.3. Restrictions and Clarifications</a> <a href="#ref-for-skips-its-contents②②">(2)</a> <a href="#ref-for-skips-its-contents②③">(3)</a> <a href="#ref-for-skips-its-contents②④">(4)</a> <a href="#ref-for-skips-its-contents②⑤">(5)</a> <a href="#ref-for-skips-its-contents②⑥">(6)</a> <a href="#ref-for-skips-its-contents②⑦">(7)</a> <a href="#ref-for-skips-its-contents②⑧">(8)</a> <a href="#ref-for-skips-its-contents②⑨">(9)</a> <a href="#ref-for-skips-its-contents③⓪">(10)</a> <a href="#ref-for-skips-its-contents③①">(11)</a> <a href="#ref-for-skips-its-contents③②">(12)</a> <a href="#ref-for-skips-its-contents③③">(13)</a> <a href="#ref-for-skips-its-contents③④">(14)</a> <a href="#ref-for-skips-its-contents③⑤">(15)</a> <a href="#ref-for-skips-its-contents③⑥">(16)</a> <a href="#ref-for-skips-its-contents③⑦">(17)</a> <a href="#ref-for-skips-its-contents③⑧">(18)</a> <a href="#ref-for-skips-its-contents③⑨">(19)</a> <a href="#ref-for-skips-its-contents④⓪">(20)</a> <a href="#ref-for-skips-its-contents④①">(21)</a> <a href="#ref-for-skips-its-contents④②">(22)</a> <a href="#ref-for-skips-its-contents④③">(23)</a> <a href="#ref-for-skips-its-contents④④">(24)</a>
+    <li><a href="#ref-for-skips-its-contents④⑤">4.4. Accessibility Implications</a> <a href="#ref-for-skips-its-contents④⑥">(2)</a> <a href="#ref-for-skips-its-contents④⑦">(3)</a>
+    <li><a href="#ref-for-skips-its-contents④⑧">4.5. Examples</a> <a href="#ref-for-skips-its-contents④⑨">(2)</a> <a href="#ref-for-skips-its-contents⑤⓪">(3)</a> <a href="#ref-for-skips-its-contents⑤①">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="element-contents">
