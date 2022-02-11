@@ -28,9 +28,10 @@ jobs:
           for file in ./csswg-drafts/**/Overview.html; do
             cp "$file" "$(dirname "$file")/index.html"
           done
+      - run: rm -rf ./csswg-drafts/.git
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_assets: ".github,.git"
+          exclude_assets: ".github"
           publish_dir: ./csswg-drafts
