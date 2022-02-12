@@ -903,27 +903,27 @@ on screen, on paper, etc.
 	This is, unfortunately, hard to do in vanilla CSS,
 	due to issues of scoping and specificity—<wbr>the element in question might be used in <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree">shadow trees</a>,
 	and thus is unreachable by any selector targeting it in the outermost document;
-	and selectors, even low-specificity ones like simple <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#type-selector" id="ref-for-type-selector">type selectors</a>,
+	and selectors, even low-specificity ones like simple <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#type-selector" id="ref-for-type-selector">type selectors</a>,
 	can accidentally override author-level styles meant to target the element.</p>
    <p>To aid in this, this section defines a way
 	to create a stylesheet of "default element styles" for a given element.
 	This stylesheet applies across the entire document,
 	in all <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree①">shadow trees</a>,
-	and the rules in it apply at the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua">user-agent origin</a>,
+	and the rules in it apply at the <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua">user-agent origin</a>,
 	so author-level rules automatically win.</p>
    <p><code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/window-object.html#window" id="ref-for-window">Window</a></code>s gain a private slot <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export id="dom-window-defaultelementstylesmap-slot"><code>[[defaultElementStylesMap]]</code></dfn> which is a map of <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element-local-name" id="ref-for-concept-element-local-name">local names</a> to <a data-link-type="dfn">stylesheets</a>.</p>
    <p>These stylesheets must apply to every document in the window.
 	They must be interpreted as user agent stylesheets.</p>
    <p class="note" role="note"><span>Note:</span> This implies, in particular,
 	that they apply to all <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree②">shadow trees</a> in every document,
-	and that the declarations in them are from the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①">user-agent origin</a>.</p>
-   <p>For the purpose of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-6/#cascade" id="ref-for-cascade">cascade</a>,
+	and that the declarations in them are from the <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①">user-agent origin</a>.</p>
+   <p>For the purpose of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-cascade-6/#cascade" id="ref-for-cascade">cascade</a>,
 	these stylesheets are ordered after the user agent’s own stylesheets;
 	their relative ordering doesn’t matter as it is not observable.</p>
-   <p>Within these stylesheets, <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#complex" id="ref-for-complex">complex selectors</a> must be treated as invalid.
-	Every <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#compound" id="ref-for-compound">compound selector</a> must be treated as containing an additional <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#type-selector" id="ref-for-type-selector①">type selector</a> that selects elements with the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element-local-name" id="ref-for-concept-element-local-name①">local name</a> that the stylesheet is keyed with.</p>
-   <p class="issue" id="issue-f4e1dc6b"><a class="self-link" href="#issue-f4e1dc6b"></a> Do we need to restrict the <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#at-rule" id="ref-for-at-rule">at-rules</a> that can be used in these sheets?
-	For example, do we allow an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule">@font-face</a>?
+   <p>Within these stylesheets, <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#complex" id="ref-for-complex">complex selectors</a> must be treated as invalid.
+	Every <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#compound" id="ref-for-compound">compound selector</a> must be treated as containing an additional <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#type-selector" id="ref-for-type-selector①">type selector</a> that selects elements with the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element-local-name" id="ref-for-concept-element-local-name①">local name</a> that the stylesheet is keyed with.</p>
+   <p class="issue" id="issue-f4e1dc6b"><a class="self-link" href="#issue-f4e1dc6b"></a> Do we need to restrict the <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-syntax-3/#at-rule" id="ref-for-at-rule">at-rules</a> that can be used in these sheets?
+	For example, do we allow an <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule">@font-face</a>?
 	I’m going to leave it as allowed unless/until I hear complaints.</p>
    <p>This specification does not define how to add to, remove from, or generally manipulate
 	the <code class="idl"><a data-link-type="idl" href="#dom-window-defaultelementstylesmap-slot" id="ref-for-dom-window-defaultelementstylesmap-slot">[[defaultElementStylesMap]]</a></code>.
@@ -947,7 +947,7 @@ on screen, on paper, etc.
 	The element hosting the <span id="ref-for-concept-shadow-tree⑤">shadow tree</span> is its <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-documentfragment-host" id="ref-for-concept-documentfragment-host">host</a>,
 	or <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host">shadow host</a>.</p>
    <p>The elements in a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree⑥">shadow tree</a> are not <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-descendant" id="ref-for-concept-tree-descendant">descendants</a> of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host①">shadow host</a> in general
-	(including for the purposes of Selectors like the <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#descendant-combinator" id="ref-for-descendant-combinator">descendant combinator</a>).
+	(including for the purposes of Selectors like the <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#descendant-combinator" id="ref-for-descendant-combinator">descendant combinator</a>).
 	However, the <span id="ref-for-concept-shadow-tree⑦">shadow tree</span>,
 	when it exists,
 	is used in the construction of the <a data-link-type="dfn" href="#flat-tree" id="ref-for-flat-tree">flattened element tree</a>,
@@ -976,7 +976,7 @@ on screen, on paper, etc.
    <p class="note" role="note"><span>Note:</span> Remember that the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-descendant" id="ref-for-concept-tree-descendant①">descendants</a> of an element
 	are based on the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-light-tree" id="ref-for-concept-light-tree②">light tree</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-child" id="ref-for-concept-tree-child">children</a> of the element,
 	which does not include the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree①③">shadow trees</a> of the element.</p>
-   <p>When a selector is <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#match-a-selector-against-a-tree" id="ref-for-match-a-selector-against-a-tree">matched against a tree</a>,
+   <p>When a selector is <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#match-a-selector-against-a-tree" id="ref-for-match-a-selector-against-a-tree">matched against a tree</a>,
 	its <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="tree-context">tree context</dfn> is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root">root</a> of the <var>root elements</var> passed to the algorithm.
 	If the <a data-link-type="dfn" href="#tree-context" id="ref-for-tree-context">tree context</a> is a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-root" id="ref-for-concept-shadow-root③">shadow root</a>,
 	that selector is being matched <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="in the context of a shadow tree|in the context of the shadow tree" id="in-the-context-of-a-shadow-tree">in the context of a shadow tree</dfn>.</p>
@@ -993,7 +993,7 @@ on screen, on paper, etc.
 	with the contents of the <span id="ref-for-concept-shadow-tree①⑧">shadow tree</span> treated as its children.
 	(In other words, the <span id="ref-for-element-shadow-host⑥">shadow host</span> is treated as replacing the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-root" id="ref-for-concept-shadow-root⑤">shadow root</a> node.)</p>
    <p>When considered within its own <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree①⑨">shadow trees</a>,
-	the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host⑦">shadow host</a> is <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#featureless" id="ref-for-featureless">featureless</a>.
+	the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host⑦">shadow host</a> is <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#featureless" id="ref-for-featureless">featureless</a>.
 	Only the <a class="css" data-link-type="maybe" href="#selectordef-host" id="ref-for-selectordef-host">:host</a>, <a class="css" data-link-type="maybe" href="#selectordef-host-function" id="ref-for-selectordef-host-function">:host()</a>, and <a class="css" data-link-type="maybe" href="#selectordef-host-context" id="ref-for-selectordef-host-context">:host-context()</a> pseudo-classes are allowed to match it.</p>
    <details class="note">
     <summary>Why is the shadow host so weird?</summary>
@@ -1009,7 +1009,7 @@ on screen, on paper, etc.
     <p>However, there are still some reasonable use-cases for letting a stylesheet in a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree②②">shadow tree</a> style its <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host①⓪">shadow host</a>.
 		(For example,
 		the component might want to be laid out as a flexbox,
-		requiring the <span id="ref-for-element-shadow-host①①">shadow host</span> to be set to <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-3/#propdef-display" id="ref-for-propdef-display">display: flex</a>.)
+		requiring the <span id="ref-for-element-shadow-host①①">shadow host</span> to be set to <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-drafts/css-display-3/#propdef-display" id="ref-for-propdef-display">display: flex</a>.)
 		So, to allow this situation but prevent accidental styling,
 		the <span id="ref-for-element-shadow-host①②">shadow host</span> appears but is completely featureless
 		and unselectable except through <a class="css" data-link-type="maybe" href="#selectordef-host" id="ref-for-selectordef-host①">:host</a> and its related functional forms,
@@ -1065,18 +1065,18 @@ on screen, on paper, etc.
 	it matches nothing.</p>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-host-function">:host()</dfn> function pseudo-class
 	has the syntax:</p>
-<pre>:host( <a class="production" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector">&lt;compound-selector></a> )</pre>
+<pre>:host( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector">&lt;compound-selector></a> )</pre>
    <p>When evaluated <a data-link-type="dfn" href="#in-the-context-of-a-shadow-tree" id="ref-for-in-the-context-of-a-shadow-tree③">in the context of a shadow tree</a>,
 	it matches the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree②④">shadow tree’s</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host①④">shadow host</a> if the <span id="ref-for-element-shadow-host①⑤">shadow host</span>,
 	in its normal context,
 	matches the selector argument.
 	In any other context,
 	it matches nothing.</p>
-   <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#specificity" id="ref-for-specificity">specificity</a> of <a class="css" data-link-type="maybe" href="#selectordef-host" id="ref-for-selectordef-host③">:host</a> is that of a pseudo-class.
+   <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#specificity" id="ref-for-specificity">specificity</a> of <a class="css" data-link-type="maybe" href="#selectordef-host" id="ref-for-selectordef-host③">:host</a> is that of a pseudo-class.
 	The <span id="ref-for-specificity①">specificity</span> of <a class="css" data-link-type="maybe" href="#selectordef-host-function" id="ref-for-selectordef-host-function②">:host()</a> is that of a pseudo-class,
 	plus the <span id="ref-for-specificity②">specificity</span> of its argument.</p>
    <p class="note" role="note"><span>Note:</span> This is different from the specificity of similar pseudo-classes,
-	like <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#matches-pseudo" id="ref-for-matches-pseudo">:is()</a> or <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#negation-pseudo" id="ref-for-negation-pseudo">:not()</a>,
+	like <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/selectors-4/#matches-pseudo" id="ref-for-matches-pseudo">:is()</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/selectors-4/#negation-pseudo" id="ref-for-negation-pseudo">:not()</a>,
 	which <em>only</em> take the specificity of their argument.
 	This is because <a class="css" data-link-type="maybe" href="#selectordef-host" id="ref-for-selectordef-host④">:host</a> is affirmatively selecting an element all by itself,
 	like a "normal" pseudo-class;
@@ -1118,13 +1118,13 @@ on screen, on paper, etc.
 	outside the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree②⑨">shadow tree</a>,
 	which matches a particular selector.
 	Its syntax is:</p>
-<pre class="prod">:host-context( <a class="production" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector①">&lt;compound-selector></a> )</pre>
+<pre class="prod">:host-context( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector①">&lt;compound-selector></a> )</pre>
    <p>When evaluated <a data-link-type="dfn" href="#in-the-context-of-a-shadow-tree" id="ref-for-in-the-context-of-a-shadow-tree④">in the context of a shadow tree</a>,
 	the <a class="css" data-link-type="maybe" href="#selectordef-host-context" id="ref-for-selectordef-host-context②">:host-context()</a> pseudo-class matches the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host①⑥">shadow host</a>,
-	if the <span id="ref-for-element-shadow-host①⑦">shadow host</span> or one of its <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-including-ancestor" id="ref-for-concept-shadow-including-ancestor">shadow-including ancestors</a> matches the provided <a class="production css" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector②">&lt;compound-selector></a>.
+	if the <span id="ref-for-element-shadow-host①⑦">shadow host</span> or one of its <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-including-ancestor" id="ref-for-concept-shadow-including-ancestor">shadow-including ancestors</a> matches the provided <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector②">&lt;compound-selector></a>.
 	In any other context,
 	it matches nothing.</p>
-   <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#specificity" id="ref-for-specificity③">specificity</a> of <a class="css" data-link-type="maybe" href="#selectordef-host-context" id="ref-for-selectordef-host-context③">:host-context()</a> is that of a pseudo-class,
+   <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#specificity" id="ref-for-specificity③">specificity</a> of <a class="css" data-link-type="maybe" href="#selectordef-host-context" id="ref-for-selectordef-host-context③">:host-context()</a> is that of a pseudo-class,
 	plus the <span id="ref-for-specificity④">specificity</span> of its argument.</p>
    <p class="note" role="note"><span>Note:</span> This means that the selector pierces through shadow boundaries on the way up,
 	looking for elements that match its argument,
@@ -1152,18 +1152,18 @@ on screen, on paper, etc.
    <p>The <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted①">::slotted()</a> pseudo-element is an <em>alias</em> for other elements in the tree,
 	and does not generate any boxes itself.</p>
    <p>The grammar of the <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted②">::slotted()</a> pseudo-element is:</p>
-<pre class="prod">::slotted( <a class="production" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector③">&lt;compound-selector></a> )</pre>
+<pre class="prod">::slotted( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector③">&lt;compound-selector></a> )</pre>
    <p>The <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted③">::slotted()</a> pseudo-element represents the elements that are:</p>
    <ul>
     <li data-md>
      <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#find-flattened-slotables" id="ref-for-find-flattened-slotables①">assigned, after flattening,</a> to the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-slot" id="ref-for-concept-slot⑨">slot</a> that is <span class="css">::slotted</span>’s originating element</p>
     <li data-md>
-     <p><a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#match-a-selector-against-an-element" id="ref-for-match-a-selector-against-an-element">matched</a> by its <a class="production css" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector④">&lt;compound-selector></a> argument</p>
+     <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#match-a-selector-against-an-element" id="ref-for-match-a-selector-against-an-element">matched</a> by its <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector" id="ref-for-typedef-compound-selector④">&lt;compound-selector></a> argument</p>
    </ul>
-   <p>The <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted④">::slotted()</a> pseudo-element can be followed by a <a data-link-type="dfn" href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding">tree-abiding pseudo-element</a>,
+   <p>The <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted④">::slotted()</a> pseudo-element can be followed by a <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding">tree-abiding pseudo-element</a>,
 	like <span class="css">::slotted()::before</span>,
 	representing the appropriate pseudo-element of the elements represented by the <span class="css" id="ref-for-selectordef-slotted⑤">::slotted()</span> pseudo-element.</p>
-   <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#specificity" id="ref-for-specificity⑤">specificity</a> of <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted⑥">::slotted()</a> is that of a pseudo-element,
+   <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/selectors-4/#specificity" id="ref-for-specificity⑤">specificity</a> of <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted⑥">::slotted()</a> is that of a pseudo-element,
 	plus the <span id="ref-for-specificity⑥">specificity</span> of its argument.</p>
    <div class="example" id="example-7cc70c2d">
     <a class="self-link" href="#example-7cc70c2d"></a> For example, say you had a component with both children and a shadow tree,
@@ -1192,7 +1192,7 @@ on screen, on paper, etc.
 		as it matches <span class="css">.foo</span>,
 		but <span class="css">#two</span> doesn’t.</p>
     <p class="note" role="note"><span>Note:</span> Note that a selector like <span class="css">::slotted(*)</span> is equivalent to <span class="css">*::slotted(*)</span>,
-		where the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-3/#x" id="ref-for-x">*</a> selects many more elements than just the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/scripting.html#the-slot-element" id="ref-for-the-slot-element②">slot</a></code> element.
+		where the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/selectors-3/#x" id="ref-for-x">*</a> selects many more elements than just the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/scripting.html#the-slot-element" id="ref-for-the-slot-element②">slot</a></code> element.
 		However, since only the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/scripting.html#the-slot-element" id="ref-for-the-slot-element③">slot</a></code> elements are <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-slot" id="ref-for-concept-slot①①">slots</a>,
 		they’re the only elements with a <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted⑦">::slotted()</a> pseudo-element as well.</p>
    </div>
@@ -1265,7 +1265,7 @@ whichever is the first that matches:</p>
 	so this can’t just be a <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted①⓪">::slotted()</a> variant.
 	Luckily, this is a long-standing request!</p>
    <h4 class="heading settled" data-level="3.4.1" id="slots-in-shadow-tree"><span class="secno">3.4.1. </span><span class="content"> Slots and Slotted Elements in a Shadow Tree</span><a class="self-link" href="#slots-in-shadow-tree"></a></h4>
-   <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-slot" id="ref-for-concept-slot①⑨">Slots</a> must act as if they were assigned <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-3/#propdef-display" id="ref-for-propdef-display①">display: contents</a> via a rule in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua②">UA origin</a>.
+   <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-slot" id="ref-for-concept-slot①⑨">Slots</a> must act as if they were assigned <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-drafts/css-display-3/#propdef-display" id="ref-for-propdef-display①">display: contents</a> via a rule in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua②">UA origin</a>.
 	This must be possible to override via <span class="property" id="ref-for-propdef-display②">display</span>,
 	so they <em>do</em> generate boxes if desired.</p>
    <p class="note" role="note"><span>Note:</span> A non-obvious result of assigning elements to <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-slot" id="ref-for-concept-slot②⓪">slots</a> is that they <a data-link-type="dfn">inherit</a> from the <span id="ref-for-concept-slot②①">slot</span> they’re assigned to.
@@ -1280,8 +1280,8 @@ whichever is the first that matches:</p>
 	which are generally meant to be unique within a document,
 	can be validly used multiple times
 	as long as each use is in a different <span id="ref-for-concept-shadow-tree③⑥">shadow tree</span>.</p>
-   <p>Similarly, several <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#at-rule" id="ref-for-at-rule①">at-rules</a> in CSS,
-	such as <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes">@keyframes</a> or <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule①">@font-face</a>,
+   <p>Similarly, several <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-syntax-3/#at-rule" id="ref-for-at-rule①">at-rules</a> in CSS,
+	such as <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes">@keyframes</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule①">@font-face</a>,
 	define a name that later at-rules or properties can refer to them by.
 	Like IDs, these names are globally exposed and unique within a document;
 	also like IDs,
@@ -1293,13 +1293,13 @@ whichever is the first that matches:</p>
 	in a way that respects encapsulation
 	and doesn’t give surprising results.</p>
    <p>If an at-rule or property defines a name that other CSS constructs can refer to it by,
-	such as a <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule②">@font-face</a> <a class="property css" data-link-type="descriptor" href="https://drafts.csswg.org/css-fonts-4/#descdef-font-face-font-family" id="ref-for-descdef-font-face-font-family">font-family</a> name
-	or an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes①">@keyframes</a> name,
+	such as a <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule②">@font-face</a> <a class="property css" data-link-type="descriptor" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#descdef-font-face-font-family" id="ref-for-descdef-font-face-font-family">font-family</a> name
+	or an <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes①">@keyframes</a> name,
 	it must be defined as a <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export id="css-tree-scoped-name">tree-scoped name</dfn>. <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name">Tree-scoped names</a> are "global" within a particular <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree">node tree</a>;
 	unless otherwise specified,
 	they’re associated with the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root②">root</a> of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element">element</a> hosting the stylesheet that the at-rule or property is defined in.</p>
    <p>Properties or descriptors that reference a "global" name,
-	such as the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family">font-family</a> or <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-animations-1/#propdef-animation-name" id="ref-for-propdef-animation-name">animation-name</a> properties,
+	such as the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family">font-family</a> or <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-animations-1/#propdef-animation-name" id="ref-for-propdef-animation-name">animation-name</a> properties,
 	must define their value as a <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export id="css-tree-scoped-reference">tree-scoped reference</dfn>. <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference">Tree-scoped references</a> implicitly capture
 	a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree①">node tree</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root③">root</a> along with their specified value:
 	unless otherwise specified,
@@ -1319,17 +1319,17 @@ whichever is the first that matches:</p>
 		to use these concepts. 
     <ul>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule③">@font-face</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family①">font-family</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule③">@font-face</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family①">font-family</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-feature-values" id="ref-for-at-ruledef-font-feature-values">@font-feature-values</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family②">font-family</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-feature-values" id="ref-for-at-ruledef-font-feature-values">@font-feature-values</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family②">font-family</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes②">@keyframes</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-animations-1/#propdef-animation-name" id="ref-for-propdef-animation-name①">animation-name</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes②">@keyframes</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-animations-1/#propdef-animation-name" id="ref-for-propdef-animation-name①">animation-name</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style" id="ref-for-at-ruledef-counter-style">@counter-style</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-list-style-type" id="ref-for-propdef-list-style-type">list-style-type</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-counter-styles-3/#at-ruledef-counter-style" id="ref-for-at-ruledef-counter-style">@counter-style</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-lists-3/#propdef-list-style-type" id="ref-for-propdef-list-style-type">list-style-type</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-5/#at-ruledef-profile" id="ref-for-at-ruledef-profile">@color-profile</a>, referenced by the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-5/#funcdef-color" id="ref-for-funcdef-color">color()</a> function</p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-color-5/#at-ruledef-profile" id="ref-for-at-ruledef-profile">@color-profile</a>, referenced by the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-color-5/#funcdef-color" id="ref-for-funcdef-color">color()</a> function</p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-palette-values" id="ref-for-at-ruledef-font-palette-values">@font-palette-values</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-palette" id="ref-for-propdef-font-palette">font-palette</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-palette-values" id="ref-for-at-ruledef-font-palette-values">@font-palette-values</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-palette" id="ref-for-propdef-font-palette">font-palette</a></p>
      <li data-md>
       <p>others?</p>
     </ul>
@@ -1367,12 +1367,12 @@ whichever is the first that matches:</p>
   <c- p>&lt;/</c-><c- f>::shadow</c-><c- p>></c->
 <c- p>&lt;/</c-><c- f>my-component</c-><c- p>></c->
 </pre>
-    <p>The <span class="css">.outer</span> element references the outer <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule④">@font-face</a>, using the "outer.woff" file.</p>
-    <p>The <span class="css">.inner-default</span> element inherits the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family③">font-family: foo</a> value from the outer document,
+    <p>The <span class="css">.outer</span> element references the outer <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule④">@font-face</a>, using the "outer.woff" file.</p>
+    <p>The <span class="css">.inner-default</span> element inherits the <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family③">font-family: foo</a> value from the outer document,
 		using the same <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference④">tree-scoped reference</a> as <span class="css">.outer</span>,
 		and thus also uses the "outer.woff" font file.</p>
     <p>The <span class="css">.inner-style</span> element, on the other hand,
-		receives a <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family④">font-family: foo</a> from the stylesheet inside the shadow,
+		receives a <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family④">font-family: foo</a> from the stylesheet inside the shadow,
 		and thus its <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑤">tree-scoped reference</a> refers to the shadow’s <span class="css">@font-family</span>,
 		and it uses the "inner.woff" file.</p>
     <p>The <span class="css">.part-styled</span> element also receives its style from the outer document,
@@ -1419,11 +1419,11 @@ whichever is the first that matches:</p>
   <c- p>&lt;/</c-><c- f>::shadow</c-><c- p>></c->
 <c- p>&lt;/</c-><c- f>child-component</c-><c- p>></c->
 </pre>
-    <p>Here, just as in the previous example, <span class="css">.inner-default</span> is inheriting the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑤">font-family: foo</a> declared in the outer document,
-		and so it ends up referencing the outer document’s <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑤">@font-face</a>,
+    <p>Here, just as in the previous example, <span class="css">.inner-default</span> is inheriting the <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑤">font-family: foo</a> declared in the outer document,
+		and so it ends up referencing the outer document’s <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑤">@font-face</a>,
 		and is rendered with the "outer.woff" file.</p>
     <p>On the other hand, <span class="css">.inner-search</span> recieves its style from a stylesheet in <code>&lt;grandchild-component></code>’s shadow tree,
-		so it attempts to find a <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑥">@font-face</a> defining a <span class="css">foo</span> font in that tree.
+		so it attempts to find a <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑥">@font-face</a> defining a <span class="css">foo</span> font in that tree.
 		There is no such <span class="css" id="ref-for-at-font-face-rule⑦">@font-face</span>,
 		so it starts walking up the shadow trees,
 		finding an appropriate <span class="css" id="ref-for-at-font-face-rule⑧">@font-face</span> in <code>&lt;child-component></code>,
@@ -1473,15 +1473,15 @@ whichever is the first that matches:</p>
   <c- p>&lt;/</c-><c- f>::shadow</c-><c- p>></c->
 <c- p>&lt;/</c-><c- f>my-component</c-><c- p>></c->
 </pre>
-    <p>The <code>.outer</code> element is styled with the outer document’s "foo" <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑨">@font-face</a>.
-		The <code>.inner-default</code> element inherits <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑥">font-family</a> from the outer document,
+    <p>The <code>.outer</code> element is styled with the outer document’s "foo" <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑨">@font-face</a>.
+		The <code>.inner-default</code> element inherits <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑥">font-family</a> from the outer document,
 		meaning it inherits a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑨">tree-scoped reference</a> referencing that outer document,
 		and so it’s in the same font as <code>.outer</code>.</p>
     <p>Meanwhile, <code>.inner-styled</code> is explicitly styled from inside the shadow root,
 		so it receives a fresh <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①⓪">tree-scoped reference</a> referencing its shadow tree,
-		and it is instead styled the shadow’s own "foo" <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule①⓪">@font-face</a>.</p>
+		and it is instead styled the shadow’s own "foo" <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule①⓪">@font-face</a>.</p>
     <p>Despite that, the script running inside the component
-		sees the two elements as having the same value for <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑦">font-family</a>,
+		sees the two elements as having the same value for <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑦">font-family</a>,
 		because the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①⓪">root</a>-reference part of a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①①">tree-scoped reference</a> is not preserved by serialization.
 		If it were to set <code class="highlight">innerDefault<c- p>.</c->style<c- p>.</c->fontFamily <c- o>=</c-> defaultFont<c- p>;</c-></code> (thus setting the <span class="property" id="ref-for-propdef-font-family⑧">font-family</span> property of the element’s attribute stylesheet,
 		which lives in the shadow tree),
@@ -1511,7 +1511,7 @@ to the next level of the draft.</p>
     <li data-md>
      <p>Define that tree-abiding pseudos are allowed after <a class="css" data-link-type="maybe" href="#selectordef-slotted" id="ref-for-selectordef-slotted①②">::slotted()</a>.</p>
     <li data-md>
-     <p>Allow <a class="production css" data-link-type="type" href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector-list" id="ref-for-typedef-compound-selector-list">&lt;compound-selector-list></a> in all the pseudos.</p>
+     <p>Allow <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector-list" id="ref-for-typedef-compound-selector-list">&lt;compound-selector-list></a> in all the pseudos.</p>
     <li data-md>
      <p>Define a way to create a stylesheet of default element styles for a given element.</p>
     <li data-md>
@@ -1634,21 +1634,21 @@ which protect them from the things defined in this specification).</p>
    <li><a href="#css-tree-scoped-reference">tree-scoped reference</a><span>, in § 3.5</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-at-ruledef-keyframes">
-   <a href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes">https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-animations-1/#at-ruledef-keyframes">https://andreubotella.com/csswg-drafts/css-animations-1/#at-ruledef-keyframes</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-ruledef-keyframes">3.5. 
 Name-Defining Constructs and Inheritance</a> <a href="#ref-for-at-ruledef-keyframes①">(2)</a> <a href="#ref-for-at-ruledef-keyframes②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-animation-name">
-   <a href="https://drafts.csswg.org/css-animations-1/#propdef-animation-name">https://drafts.csswg.org/css-animations-1/#propdef-animation-name</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-animations-1/#propdef-animation-name">https://andreubotella.com/csswg-drafts/css-animations-1/#propdef-animation-name</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-animation-name">3.5. 
 Name-Defining Constructs and Inheritance</a> <a href="#ref-for-propdef-animation-name①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-cascade-origin-ua">
-   <a href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua">https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-cascade-5/#cascade-origin-ua">https://andreubotella.com/csswg-drafts/css-cascade-5/#cascade-origin-ua</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-cascade-origin-ua">2. 
 Default Styles for Custom Elements</a> <a href="#ref-for-cascade-origin-ua①">(2)</a>
@@ -1657,7 +1657,7 @@ Slots and Slotted Elements in a Shadow Tree</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-cascade-origin-ua">
-   <a href="https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua">https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-cascade-5/#cascade-origin-ua">https://andreubotella.com/csswg-drafts/css-cascade-5/#cascade-origin-ua</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-cascade-origin-ua">2. 
 Default Styles for Custom Elements</a> <a href="#ref-for-cascade-origin-ua①">(2)</a>
@@ -1666,35 +1666,35 @@ Slots and Slotted Elements in a Shadow Tree</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-cascade">
-   <a href="https://drafts.csswg.org/css-cascade-6/#cascade">https://drafts.csswg.org/css-cascade-6/#cascade</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-cascade-6/#cascade">https://andreubotella.com/csswg-drafts/css-cascade-6/#cascade</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-cascade">2. 
 Default Styles for Custom Elements</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-at-ruledef-profile">
-   <a href="https://drafts.csswg.org/css-color-5/#at-ruledef-profile">https://drafts.csswg.org/css-color-5/#at-ruledef-profile</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-color-5/#at-ruledef-profile">https://andreubotella.com/csswg-drafts/css-color-5/#at-ruledef-profile</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-ruledef-profile">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-funcdef-color">
-   <a href="https://drafts.csswg.org/css-color-5/#funcdef-color">https://drafts.csswg.org/css-color-5/#funcdef-color</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-color-5/#funcdef-color">https://andreubotella.com/csswg-drafts/css-color-5/#funcdef-color</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-funcdef-color">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-at-ruledef-counter-style">
-   <a href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-counter-styles-3/#at-ruledef-counter-style">https://andreubotella.com/csswg-drafts/css-counter-styles-3/#at-ruledef-counter-style</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-ruledef-counter-style">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-display">
-   <a href="https://drafts.csswg.org/css-display-3/#propdef-display">https://drafts.csswg.org/css-display-3/#propdef-display</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-display-3/#propdef-display">https://andreubotella.com/csswg-drafts/css-display-3/#propdef-display</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-display">3.2.2. 
 Selecting Shadow Hosts from within a Shadow Tree</a>
@@ -1703,35 +1703,35 @@ Slots and Slotted Elements in a Shadow Tree</a> <a href="#ref-for-propdef-displa
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-at-ruledef-font-feature-values">
-   <a href="https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-feature-values">https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-feature-values</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-feature-values">https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-feature-values</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-ruledef-font-feature-values">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-at-ruledef-font-palette-values">
-   <a href="https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-palette-values">https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-palette-values</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-palette-values">https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-palette-values</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-ruledef-font-palette-values">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-descdef-font-face-font-family">
-   <a href="https://drafts.csswg.org/css-fonts-4/#descdef-font-face-font-family">https://drafts.csswg.org/css-fonts-4/#descdef-font-face-font-family</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-fonts-4/#descdef-font-face-font-family">https://andreubotella.com/csswg-drafts/css-fonts-4/#descdef-font-face-font-family</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-descdef-font-face-font-family">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-font-palette">
-   <a href="https://drafts.csswg.org/css-fonts-4/#propdef-font-palette">https://drafts.csswg.org/css-fonts-4/#propdef-font-palette</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-palette">https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-palette</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-font-palette">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-at-font-face-rule">
-   <a href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule">https://drafts.csswg.org/css-fonts-5/#at-font-face-rule</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule">https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-font-face-rule">2. 
 Default Styles for Custom Elements</a>
@@ -1742,21 +1742,21 @@ Serialized Tree-Scoped References</a> <a href="#ref-for-at-font-face-rule①⓪"
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-list-style-type">
-   <a href="https://drafts.csswg.org/css-lists-3/#propdef-list-style-type">https://drafts.csswg.org/css-lists-3/#propdef-list-style-type</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-lists-3/#propdef-list-style-type">https://andreubotella.com/csswg-drafts/css-lists-3/#propdef-list-style-type</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-list-style-type">3.5. 
 Name-Defining Constructs and Inheritance</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-tree-abiding">
-   <a href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding">https://drafts.csswg.org/css-pseudo-4/#tree-abiding</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-pseudo-4/#tree-abiding">https://andreubotella.com/csswg-drafts/css-pseudo-4/#tree-abiding</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-tree-abiding">3.2.4. 
 Selecting Slot-Assigned Content: the ::slotted() pseudo-element</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-at-rule">
-   <a href="https://drafts.csswg.org/css-syntax-3/#at-rule">https://drafts.csswg.org/css-syntax-3/#at-rule</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/css-syntax-3/#at-rule">https://andreubotella.com/csswg-drafts/css-syntax-3/#at-rule</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-at-rule">2. 
 Default Styles for Custom Elements</a>
@@ -1987,35 +1987,35 @@ Selecting Slot-Assigned Content: the ::slotted() pseudo-element</a> <a href="#re
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-x">
-   <a href="https://drafts.csswg.org/selectors-3/#x">https://drafts.csswg.org/selectors-3/#x</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-3/#x">https://andreubotella.com/csswg-drafts/selectors-3/#x</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-x">3.2.4. 
 Selecting Slot-Assigned Content: the ::slotted() pseudo-element</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-matches-pseudo">
-   <a href="https://drafts.csswg.org/selectors-4/#matches-pseudo">https://drafts.csswg.org/selectors-4/#matches-pseudo</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#matches-pseudo">https://andreubotella.com/csswg-drafts/selectors-4/#matches-pseudo</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-matches-pseudo">3.2.3. 
 Selecting Into the Light: the :host, :host(), and :host-context() pseudo-classes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-negation-pseudo">
-   <a href="https://drafts.csswg.org/selectors-4/#negation-pseudo">https://drafts.csswg.org/selectors-4/#negation-pseudo</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#negation-pseudo">https://andreubotella.com/csswg-drafts/selectors-4/#negation-pseudo</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-negation-pseudo">3.2.3. 
 Selecting Into the Light: the :host, :host(), and :host-context() pseudo-classes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-typedef-compound-selector-list">
-   <a href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector-list">https://drafts.csswg.org/selectors-4/#typedef-compound-selector-list</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector-list">https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector-list</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-typedef-compound-selector-list">4. 
 Changes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-typedef-compound-selector">
-   <a href="https://drafts.csswg.org/selectors-4/#typedef-compound-selector">https://drafts.csswg.org/selectors-4/#typedef-compound-selector</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector">https://andreubotella.com/csswg-drafts/selectors-4/#typedef-compound-selector</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-typedef-compound-selector">3.2.3. 
 Selecting Into the Light: the :host, :host(), and :host-context() pseudo-classes</a> <a href="#ref-for-typedef-compound-selector①">(2)</a> <a href="#ref-for-typedef-compound-selector②">(3)</a>
@@ -2024,49 +2024,49 @@ Selecting Slot-Assigned Content: the ::slotted() pseudo-element</a> <a href="#re
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-complex">
-   <a href="https://drafts.csswg.org/selectors-4/#complex">https://drafts.csswg.org/selectors-4/#complex</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#complex">https://andreubotella.com/csswg-drafts/selectors-4/#complex</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-complex">2. 
 Default Styles for Custom Elements</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-compound">
-   <a href="https://drafts.csswg.org/selectors-4/#compound">https://drafts.csswg.org/selectors-4/#compound</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#compound">https://andreubotella.com/csswg-drafts/selectors-4/#compound</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-compound">2. 
 Default Styles for Custom Elements</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-descendant-combinator">
-   <a href="https://drafts.csswg.org/selectors-4/#descendant-combinator">https://drafts.csswg.org/selectors-4/#descendant-combinator</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#descendant-combinator">https://andreubotella.com/csswg-drafts/selectors-4/#descendant-combinator</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-descendant-combinator">3.1. 
 Informative Explanation of Shadow DOM</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-featureless">
-   <a href="https://drafts.csswg.org/selectors-4/#featureless">https://drafts.csswg.org/selectors-4/#featureless</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#featureless">https://andreubotella.com/csswg-drafts/selectors-4/#featureless</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-featureless">3.2.2. 
 Selecting Shadow Hosts from within a Shadow Tree</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-match-a-selector-against-a-tree">
-   <a href="https://drafts.csswg.org/selectors-4/#match-a-selector-against-a-tree">https://drafts.csswg.org/selectors-4/#match-a-selector-against-a-tree</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#match-a-selector-against-a-tree">https://andreubotella.com/csswg-drafts/selectors-4/#match-a-selector-against-a-tree</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-match-a-selector-against-a-tree">3.2.1. 
 Matching Selectors Against Shadow Trees</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-match-a-selector-against-an-element">
-   <a href="https://drafts.csswg.org/selectors-4/#match-a-selector-against-an-element">https://drafts.csswg.org/selectors-4/#match-a-selector-against-an-element</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#match-a-selector-against-an-element">https://andreubotella.com/csswg-drafts/selectors-4/#match-a-selector-against-an-element</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-match-a-selector-against-an-element">3.2.4. 
 Selecting Slot-Assigned Content: the ::slotted() pseudo-element</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-specificity">
-   <a href="https://drafts.csswg.org/selectors-4/#specificity">https://drafts.csswg.org/selectors-4/#specificity</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#specificity">https://andreubotella.com/csswg-drafts/selectors-4/#specificity</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-specificity">3.2.3. 
 Selecting Into the Light: the :host, :host(), and :host-context() pseudo-classes</a> <a href="#ref-for-specificity①">(2)</a> <a href="#ref-for-specificity②">(3)</a> <a href="#ref-for-specificity③">(4)</a> <a href="#ref-for-specificity④">(5)</a>
@@ -2075,7 +2075,7 @@ Selecting Slot-Assigned Content: the ::slotted() pseudo-element</a> <a href="#re
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-type-selector">
-   <a href="https://drafts.csswg.org/selectors-4/#type-selector">https://drafts.csswg.org/selectors-4/#type-selector</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-drafts/selectors-4/#type-selector">https://andreubotella.com/csswg-drafts/selectors-4/#type-selector</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-type-selector">2. 
 Default Styles for Custom Elements</a> <a href="#ref-for-type-selector①">(2)</a>
@@ -2243,8 +2243,8 @@ Default Styles for Custom Elements</a> <a href="#ref-for-type-selector①">(2)</
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Do we need to restrict the <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#at-rule">at-rules</a> that can be used in these sheets?
-	For example, do we allow an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule">@font-face</a>?
+   <div class="issue"> Do we need to restrict the <a data-link-type="dfn" href="https://andreubotella.com/csswg-drafts/css-syntax-3/#at-rule">at-rules</a> that can be used in these sheets?
+	For example, do we allow an <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule">@font-face</a>?
 	I’m going to leave it as allowed unless/until I hear complaints. <a class="issue-return" href="#issue-f4e1dc6b" title="Jump to section">↵</a></div>
    <div class="issue"> Rewrite this against the newer call forms of the matching algorithms. <a class="issue-return" href="#issue-b8d42d77" title="Jump to section">↵</a></div>
    <div class="issue"> A non-obvious result of this
@@ -2266,17 +2266,17 @@ Default Styles for Custom Elements</a> <a href="#ref-for-type-selector①">(2)</
 		to use these concepts. 
     <ul>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule">@font-face</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family">font-family</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-5/#at-font-face-rule">@font-face</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family">font-family</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-feature-values">@font-feature-values</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family">font-family</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-feature-values">@font-feature-values</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-family">font-family</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes">@keyframes</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-animations-1/#propdef-animation-name">animation-name</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-animations-1/#at-ruledef-keyframes">@keyframes</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-animations-1/#propdef-animation-name">animation-name</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-list-style-type">list-style-type</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-counter-styles-3/#at-ruledef-counter-style">@counter-style</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-lists-3/#propdef-list-style-type">list-style-type</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-5/#at-ruledef-profile">@color-profile</a>, referenced by the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-5/#funcdef-color">color()</a> function</p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-color-5/#at-ruledef-profile">@color-profile</a>, referenced by the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-color-5/#funcdef-color">color()</a> function</p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-palette-values">@font-palette-values</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-palette">font-palette</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#at-ruledef-font-palette-values">@font-palette-values</a>, referenced by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-drafts/css-fonts-4/#propdef-font-palette">font-palette</a></p>
      <li data-md>
       <p>others?</p>
     </ul>
