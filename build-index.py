@@ -49,6 +49,16 @@ def title_from_html(file):
 
     return parser.title if parser.done else None
 
+
+CURRENT_WORK_EXCEPTIONS = {
+    "css-conditional": 5,
+    "css-grid": 2,
+    "css-snapshot": None,  # always choose the last spec
+    "css-values": 4,
+    "css-writing-modes": 4,
+    "web-animations": 2
+}
+
 # ------------------------------------------------------------------------------
 
 
@@ -112,11 +122,15 @@ for shortname, specgroup in specgroups.items():
     if len(specgroup) > 1:
         specgroup.sort(key=lambda spec: spec["level"])
 
-        # This is wrong in a few cases, but I'm not sure if there's a
-        # programmatic way of finding the current work.
+        # TODO: This algorithm for determining which spec is the current work
+        # is wrong in a number of cases. Try and come up with a better
+        # algorithm, rather than maintaining a list of exceptions.
         for spec in specgroup:
-            # css-snapshot gets an obviously wrong result
-            if spec["workStatus"] != "completed" and shortname != "css-snapshot":
+            if shortname in CURRENT_WORK_EXCEPTIONS:
+                if CURRENT_WORK_EXCEPTIONS[shortname] == spec["level"]:
+                    spec["currentWork"] = True
+                    break
+            elif spec["workStatus"] != "completed":
                 spec["currentWork"] = True
                 break
         else:
