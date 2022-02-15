@@ -4489,6 +4489,7 @@ Transparency: the 'opacity' property</h2>
 		composited-filters-under-opacity.html
 		filters-under-will-change-opacity.html
 		animation/color-composition.html
+		animation/opacity-interpolation.html
 	</wpt>
 
 	<dl>
@@ -5291,6 +5292,12 @@ Gamut Mapping
 	and the color difference formula used is <a href="#color-difference-OK">deltaEOK</a>.
 	The local-MINDE improvement is used.
 
+	For colors which are out of range on the Lightness axis,
+	white is returned in the destination color space
+	if the Lightness is greater than or equal to 1.0,
+	while black is returned in the destination color space
+	if the Lightness is less than or equal to 0.0.
+
 	For the binary search implementation,
 	at each step in the search,
 	the deltaEOK is computed between the current mapped color
@@ -5320,7 +5327,8 @@ Gamut Mapping
 		to be in gamut of a destination color space |destination|:
 
 		<ol>
-			<li>let |origin_OKLCH| be |origin| converted to the OKLCH color space</li>
+			<li>let |origin_OKLCH| be |origin| converted
+				from |origin color space| to the OKLCH color space</li>
 			<li>if the Lightness of |origin_OKLCH| is greater than or equal to 100%,
 				return { 1 1 1 origin.alpha } in |destination|</li>
 			<li>if the Lightness of |origin_OKLCH| is less than than or equal to 0%,

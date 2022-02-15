@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 2e3c4c68b, updated Fri Jan 14 14:49:00 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="59dc86c0ef52424e81415b9ee8f734a2324e2ac0" name="document-revision">
+  <meta content="d62ae0cc4529226383638ac729b19204b91f6446" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-4_dev/css-color-4"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -6807,6 +6807,7 @@ and if omitted it defaults to <span class="css">100%</span>.</p>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/composited-filters-under-opacity.html" title="css/css-color/composited-filters-under-opacity.html">composited-filters-under-opacity.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/composited-filters-under-opacity.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/composited-filters-under-opacity.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/filters-under-will-change-opacity.html" title="css/css-color/filters-under-will-change-opacity.html">filters-under-will-change-opacity.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/filters-under-will-change-opacity.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/filters-under-will-change-opacity.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/animation/color-composition.html" title="css/css-color/animation/color-composition.html">color-composition.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/animation/color-composition.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/animation/color-composition.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/animation/opacity-interpolation.html" title="css/css-color/animation/opacity-interpolation.html">opacity-interpolation.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/animation/opacity-interpolation.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/animation/opacity-interpolation.html"><small>(source)</small></a>
     </ul>
    </details>
    <dl>
@@ -7406,6 +7407,11 @@ else if <c- p>(</c-><c- m>-180</c-> &lt; θ₂ - θ₁ &lt; <c- m>0</c-><c- p>)<
    <p>CSS gamut mapping occurs in the <a href="#ok-lab">OKLCH color space</a>,
 	and the color difference formula used is <a href="#color-difference-OK">deltaEOK</a>.
 	The local-MINDE improvement is used.</p>
+   <p>For colors which are out of range on the Lightness axis,
+	white is returned in the destination color space
+	if the Lightness is greater than or equal to 1.0,
+	while black is returned in the destination color space
+	if the Lightness is less than or equal to 0.0.</p>
    <p>For the binary search implementation,
 	at each step in the search,
 	the deltaEOK is computed between the current mapped color
@@ -7427,7 +7433,8 @@ else if <c- p>(</c-><c- m>-180</c-> &lt; θ₂ - θ₁ &lt; <c- m>0</c-><c- p>)<
    <div class="algorithm" data-algorithm="to CSS gamut map a color">
      To <dfn data-dfn-type="dfn" data-export id="css-gamut-map">CSS gamut map<a class="self-link" href="#css-gamut-map"></a></dfn> a color <var>origin</var> in color space <var>origin color space</var> to be in gamut of a destination color space <var>destination</var>: 
     <ol>
-     <li>let <var>origin_OKLCH</var> be <var>origin</var> converted to the OKLCH color space
+     <li>let <var>origin_OKLCH</var> be <var>origin</var> converted
+				from <var>origin color space</var> to the OKLCH color space
      <li>if the Lightness of <var>origin_OKLCH</var> is greater than or equal to 100%,
 				return { 1 1 1 origin.alpha } in <var>destination</var>
      <li>if the Lightness of <var>origin_OKLCH</var> is less than than or equal to 0%,
