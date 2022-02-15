@@ -1,10 +1,131 @@
+import json
 import os
 import os.path
+import re
+import sys
+from collections import defaultdict
+
+from html.parser import HTMLParser
+
+from bikeshed import Spec, constants
+
+
+def html_file_for_spec(spec):
+    if spec == "css-fonts-3":
+        return "Fonts.html"
+    return "Overview.html"
+
+
+def title_from_html(file):
+    class HTMLTitleParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.in_title = False
+            self.title = ""
+            self.done = False
+
+        def handle_starttag(self, tag, attrs):
+            if tag == "title":
+                self.in_title = True
+
+        def handle_data(self, data):
+            if self.in_title:
+                self.title += data
+
+        def handle_endtag(self, tag):
+            if tag == "title" and self.in_title:
+                self.in_title = False
+                self.done = True
+                self.reset()
+
+    parser = HTMLTitleParser()
+    with open(file, encoding="UTF-8") as f:
+        for line in f:
+            parser.feed(line)
+            if parser.done:
+                break
+    if not parser.done:
+        parser.close()
+
+    return parser.title if parser.done else None
+
+# ------------------------------------------------------------------------------
+
+
+constants.setErrorLevel("nothing")
+constants.quiet = float("infinity")
+
+specgroups = defaultdict(list)
+
+for entry in os.scandir("./csswg-drafts"):
+    if entry.is_dir():
+        if entry in ["css-module-bikeshed", "css-module"]:
+            continue
+        bs_file = os.path.join(entry.path, "Overview.bs")
+        html_file = os.path.join(entry.path, html_file_for_spec(entry.name))
+        if os.path.exists(bs_file):
+            spec = Spec(bs_file)
+            spec.assembleDocument()
+
+            if spec.md.shortname == "css-animations-2":
+                shortname = "css-animations"
+            elif spec.md.shortname == "css-gcpm-4":
+                shortname = "css-gcpm"
+            elif spec.md.shortname == "css-transitions-2":
+                shortname = "css-transitions"
+            else:
+                shortname = spec.md.shortname
+
+            level = int(spec.md.level) if spec.md.level else 0
+            title = spec.md.title
+            workStatus = spec.md.workStatus
+        elif os.path.exists(html_file):
+            # We make the level group match up to 3 numbers because we don't
+            # want to match css-20XX snapshots.
+            match = re.match("^([a-z0-9-]+)-([0-9]+)$", entry.name)
+            if match and match.group(1) == "css":
+                # Don't use this match for CSS snapshots ("css-2022").
+                match = None
+            shortname = match.group(1) if match else entry.name
+            level = int(match.group(2)) if match else 0
+            title = title_from_html(html_file)
+            workStatus = "completed"  # It's a good heuristic
+        else:
+            # Not a spec
+            continue
+
+        # Fix CSS snapshots ("css-2022")
+        snapshot_match = re.match("^css-(20[0-9]{2})$", shortname)
+        if snapshot_match:
+            shortname = "css-snapshot"
+            level = int(snapshot_match.group(1))
+
+        specgroups[shortname].append({
+            "dir": entry.name,
+            "title": title,
+            "level": level,
+            "workStatus": workStatus,
+            "currentWork": False
+        })
+
+for shortname, specgroup in specgroups.items():
+    if len(specgroup) > 1:
+        specgroup.sort(key=lambda spec: spec["level"])
+
+        # This is wrong in a few cases, but I'm not sure if there's a
+        # programmatic way of finding the current work.
+        for spec in specgroup:
+            # css-snapshot gets an obviously wrong result
+            if spec["workStatus"] != "completed" and shortname != "css-snapshot":
+                spec["currentWork"] = True
+                break
+        else:
+            specgroup[-1]["currentWork"] = True
 
 print("""
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>CSS Working Group Specifications</title>
+<title>CSS Working Group Draft Specifications</title>
 <style>
     :root {
         color-scheme: light dark;
@@ -37,31 +158,34 @@ print("""
             --a-normal-underline: #555;
         }
     }
+
+    li {
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+    }
+    li p, li ul, li ul li {
+        margin-block-start: 0;
+        margin-block-end: 0;
+    }
 </style>
 
 <h1>CSS Working Group Specifications</h1>
 <ul>
 """)
 
-specs = []
-
-for entry in os.scandir("./csswg-drafts"):
-    if entry.is_dir():
-        index = os.path.join(entry.path, "index.html")
-        if os.path.exists(index):
-            name = entry.name.replace("-", " ").title()
-            name = name.replace("Css", "CSS")
-            name = name.replace("CSSom", "CSSOM")
-            name = name.replace("Tv", "TV")
-            name = name.replace("Hdr", "HDR")
-            name = name.replace("Ui", "UI")
-            name = name.replace("Gcpm", "GCPM")
-            name = name.replace("Mediaqueries", "Media Queries")
-            specs.append((entry.name, name))
-
-specs.sort(key=lambda a: a[0])
-
-for (spec_dir, spec_name) in specs:
-    print('  <li><a href="./{}">{}</a></li>'.format(spec_dir, spec_name))
+for shortname, specgroup in sorted(specgroups.items(), key=lambda x: x[0]):
+    if len(specgroup) == 1:
+        spec = specgroup[0]
+        print(f'  <li><a href="./{spec["dir"]}">{spec["title"]}</a></li>')
+    else:
+        print('  <li>')
+        print(f'    <p>{shortname}</p>')
+        print('    <ul>')
+        for spec in specgroup:
+            paren = " (current work)" if spec["currentWork"] else ""
+            print(
+                f'      <li><a href="./{spec["dir"]}">{spec["title"]}</a>{paren}</li>')
+        print('    </ul>')
+        print('  </li>')
 
 print("</ul>")
