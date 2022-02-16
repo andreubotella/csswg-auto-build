@@ -1,3 +1,9 @@
+"""Builds the CSSWG directory index.
+
+It also sets up redirects from shortnames to the current work spec, by building
+an index.html with a <meta refresh>.
+"""
+
 import json
 import os
 import os.path
@@ -97,6 +103,41 @@ def get_html_spec_metadata(folder_name, path):
     }
 
 
+def build_redirect(shortname, spec_folder):
+    """Builds redirects from the shortname to the current work for that spec.
+
+    Since Github Actions doesn't allow anything like mod_rewrite, we do this by
+    creating an empty index.html in the shortname folder that redirects to the
+    correct spec.
+    """
+
+    contents = """
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<meta http-equiv="refresh" content="0; URL=../{}/" />
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+</style>
+<p>Redirecting to <a href="../{}/">{}</a>...</p>
+"""
+    contents = contents[1:].replace("{}", spec_folder)
+
+    folder = os.path.join("./csswg-drafts", shortname)
+    try:
+        os.mkdir(folder)
+    except FileExistsError:
+        pass
+
+    try:
+        index = os.path.join(folder, "index.html")
+        with open(index, mode='x', encoding="UTF-8") as f:
+            f.write(contents)
+    except FileExistsError as err:
+        print(err, file=sys.stderr)
+
+
 CURRENT_WORK_EXCEPTIONS = {
     "css-conditional": 5,
     "css-grid": 2,
@@ -137,7 +178,10 @@ for entry in os.scandir("./csswg-drafts"):
 # Reorder the specs with common shortname based on their level (or year, for
 # CSS snapshots), and determine which spec is the current work.
 for shortname, specgroup in specgroups.items():
-    if len(specgroup) > 1:
+    if len(specgroup) == 1:
+        if shortname != specgroup[0]["dir"]:
+            build_redirect(shortname, specgroup[0]["dir"])
+    else:
         specgroup.sort(key=lambda spec: spec["level"])
 
         # TODO: This algorithm for determining which spec is the current work
@@ -147,12 +191,20 @@ for shortname, specgroup in specgroups.items():
             if shortname in CURRENT_WORK_EXCEPTIONS:
                 if CURRENT_WORK_EXCEPTIONS[shortname] == spec["level"]:
                     spec["currentWork"] = True
+                    currentWorkDir = spec["dir"]
                     break
             elif spec["workStatus"] != "completed":
                 spec["currentWork"] = True
+                currentWorkDir = spec["dir"]
                 break
         else:
             specgroup[-1]["currentWork"] = True
+            currentWorkDir = specgroup[-1]["dir"]
+
+        if shortname != currentWorkDir:
+            build_redirect(shortname, currentWorkDir)
+        if shortname == "css-snapshot":
+            build_redirect("css", currentWorkDir)
 
 print("""
 <!DOCTYPE html>
