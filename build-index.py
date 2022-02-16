@@ -50,6 +50,53 @@ def title_from_html(file):
     return parser.title if parser.done else None
 
 
+def get_bs_spec_metadata(folder_name, path):
+    spec = Spec(path)
+    spec.assembleDocument()
+
+    level = int(spec.md.level) if spec.md.level else 0
+
+    if spec.md.shortname == "css-animations-2":
+        shortname = "css-animations"
+    elif spec.md.shortname == "css-gcpm-4":
+        shortname = "css-gcpm"
+    elif spec.md.shortname == "css-transitions-2":
+        shortname = "css-transitions"
+    else:
+        # Fix CSS snapshots (e.g. "css-2022")
+        snapshot_match = re.match(
+            "^css-(20[0-9]{2})$", spec.md.shortname)
+        if snapshot_match:
+            shortname = "css-snapshot"
+            level = int(snapshot_match.group(1))
+        else:
+            shortname = spec.md.shortname
+
+    return {
+        "shortname": shortname,
+        "level": level,
+        "title": spec.md.title,
+        "workStatus": spec.md.workStatus
+    }
+
+
+def get_html_spec_metadata(folder_name, path):
+    match = re.match("^([a-z0-9-]+)-([0-9]+)$", entry.name)
+    if match and match.group(1) == "css":
+        shortname = "css-snapshot"
+        title = f"CSS Snapshot {match.group(2)}"
+    else:
+        shortname = match.group(1) if match else entry.name
+        title = title_from_html(html_file)
+
+    return {
+        "shortname": shortname,
+        "level": int(match.group(2)) if match else 0,
+        "title": title,
+        "workStatus": "completed"  # It's a good heuristic
+    }
+
+
 CURRENT_WORK_EXCEPTIONS = {
     "css-conditional": 5,
     "css-grid": 2,
@@ -69,55 +116,26 @@ specgroups = defaultdict(list)
 
 for entry in os.scandir("./csswg-drafts"):
     if entry.is_dir():
-        if entry in ["css-module-bikeshed", "css-module"]:
+        # Not actual specs, just examples.
+        if entry.name in ["css-module-bikeshed", "css-module"]:
             continue
+
         bs_file = os.path.join(entry.path, "Overview.bs")
         html_file = os.path.join(entry.path, html_file_for_spec(entry.name))
         if os.path.exists(bs_file):
-            spec = Spec(bs_file)
-            spec.assembleDocument()
-
-            if spec.md.shortname == "css-animations-2":
-                shortname = "css-animations"
-            elif spec.md.shortname == "css-gcpm-4":
-                shortname = "css-gcpm"
-            elif spec.md.shortname == "css-transitions-2":
-                shortname = "css-transitions"
-            else:
-                shortname = spec.md.shortname
-
-            level = int(spec.md.level) if spec.md.level else 0
-            title = spec.md.title
-            workStatus = spec.md.workStatus
+            metadata = get_bs_spec_metadata(entry.name, bs_file)
         elif os.path.exists(html_file):
-            # We make the level group match up to 3 numbers because we don't
-            # want to match css-20XX snapshots.
-            match = re.match("^([a-z0-9-]+)-([0-9]+)$", entry.name)
-            if match and match.group(1) == "css":
-                # Don't use this match for CSS snapshots ("css-2022").
-                match = None
-            shortname = match.group(1) if match else entry.name
-            level = int(match.group(2)) if match else 0
-            title = title_from_html(html_file)
-            workStatus = "completed"  # It's a good heuristic
+            metadata = get_html_spec_metadata(entry.name, html_file)
         else:
             # Not a spec
             continue
 
-        # Fix CSS snapshots ("css-2022")
-        snapshot_match = re.match("^css-(20[0-9]{2})$", shortname)
-        if snapshot_match:
-            shortname = "css-snapshot"
-            level = int(snapshot_match.group(1))
+        metadata["dir"] = entry.name
+        metadata["currentWork"] = False
+        specgroups[metadata["shortname"]].append(metadata)
 
-        specgroups[shortname].append({
-            "dir": entry.name,
-            "title": title,
-            "level": level,
-            "workStatus": workStatus,
-            "currentWork": False
-        })
-
+# Reorder the specs with common shortname based on their level (or year, for
+# CSS snapshots), and determine which spec is the current work.
 for shortname, specgroup in specgroups.items():
     if len(specgroup) > 1:
         specgroup.sort(key=lambda spec: spec["level"])
@@ -183,7 +201,7 @@ print("""
     }
 </style>
 
-<h1>CSS Working Group Specifications</h1>
+<h1>CSS Working Group Draft Specifications</h1>
 <ul>
 """)
 
