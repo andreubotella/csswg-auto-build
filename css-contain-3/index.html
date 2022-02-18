@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 2e3c4c68b, updated Fri Jan 14 14:49:00 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-contain-3/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="3be27dad9e8a376f9e5c66aed55199471300bc66" name="document-revision">
+  <meta content="79132ec6a24ff704f3c34f16c1acb9788d8fce6e" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -381,6 +381,10 @@ dfn > a.self-link::before      { content: "#"; }
 </style>
 <style>/* style-syntax-highlighting */
 
+            pre.idl.highlight {
+                background: var(--borderedblock-bg, var(--def-bg));
+            }
+            
 code.highlight { padding: .1em; border-radius: .3em; }
 pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
 
@@ -860,8 +864,13 @@ on screen, on paper, etc.
       <li><a href="#style-container"><span class="secno">5.2</span> <span class="content"> Style Container Features</span></a>
      </ol>
     <li><a href="#container-lengths"><span class="secno">6</span> <span class="content"> Container Relative Lengths: the <span class="css">cqw</span>, <span class="css">cqh</span>, <span class="css">cqi</span>, <span class="css">cqb</span>, <span class="css">cqmin</span>, <span class="css">cqmax</span> units</span></a>
-    <li><a href="#content-visibility"><span class="secno">7</span> <span class="content">Suppressing An Element’s Contents Entirely: the <span class="property">content-visibility</span> property</span></a>
-    <li><a href="#priv-sec"><span class="secno">8</span> <span class="content">Privacy and Security Considerations</span></a>
+    <li>
+     <a href="#apis"><span class="secno">7</span> <span class="content">APIs</span></a>
+     <ol class="toc">
+      <li><a href="#the-csscontainerrule-interface"><span class="secno">7.1</span> <span class="content"> The <code>CSSContainerRule</code> interface</span></a>
+     </ol>
+    <li><a href="#content-visibility"><span class="secno">8</span> <span class="content">Suppressing An Element’s Contents Entirely: the <span class="property">content-visibility</span> property</span></a>
+    <li><a href="#priv-sec"><span class="secno">9</span> <span class="content">Privacy and Security Considerations</span></a>
     <li>
      <a href="#changes"><span class="secno"></span> <span class="content">Appendix A. Changes</span></a>
      <ol class="toc">
@@ -898,6 +907,7 @@ on screen, on paper, etc.
      <ol class="toc">
       <li><a href="#container-descriptor-table"><span class="secno"></span> <span class="content"><span>@container</span> Descriptors</span></a>
      </ol>
+    <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
@@ -1443,9 +1453,10 @@ h2 <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>1.2</c-><c- k>em</c-><c- 
    <p class="note" role="note"><span>Note:</span> Nested <a data-link-type="dfn" href="#container-query" id="ref-for-container-query⑥">container queries</a> can evaluate in relation to different containers,
 	so it is not always possible to merge the individual <a class="production css" data-link-type="type" href="#typedef-container-condition" id="ref-for-typedef-container-condition④">&lt;container-condition></a>s
 	into a single query.</p>
+   <p>Global, name-defining <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#at-rule" id="ref-for-at-rule">at-rules</a> such as <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes">@keyframes</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule">@font-face</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#at-ruledef-layer" id="ref-for-at-ruledef-layer">@layer</a> that are defined inside <a data-link-type="dfn" href="#container-query" id="ref-for-container-query⑦">container queries</a> are not constrained by the <span id="ref-for-container-query⑧">container query</span> conditions.</p>
    <p class="issue" id="issue-7bf5bf1e"><a class="self-link" href="#issue-7bf5bf1e"></a> What happens to other @rules inside @container? <a href="https://github.com/w3c/csswg-drafts/issues/6827">[Issue #6827]</a></p>
    <h3 class="heading settled" data-level="4.5" id="animated-containers"><span class="secno">4.5. </span><span class="content"> Animated Containers</span><a class="self-link" href="#animated-containers"></a></h3>
-   <p>A change in the evaluation of a <a data-link-type="dfn" href="#container-query" id="ref-for-container-query⑦">container query</a> must be part of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event" id="ref-for-style-change-event">style change event</a>,
+   <p>A change in the evaluation of a <a data-link-type="dfn" href="#container-query" id="ref-for-container-query⑨">container query</a> must be part of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event" id="ref-for-style-change-event">style change event</a>,
 	even when the change occurred because of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#effect-value" id="ref-for-effect-value">animation effects</a>.</p>
    <div class="example" id="example-cfbdbffb">
     <a class="self-link" href="#example-cfbdbffb"></a> A transition on a sibling element can indirectly affect the size of a
@@ -1498,20 +1509,20 @@ h2 <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>1.2</c-><c- k>em</c-><c- 
    <h2 class="heading settled" data-level="5" id="container-features"><span class="secno">5. </span><span class="content"> Container Features</span><a class="self-link" href="#container-features"></a></h2>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="container-feature">container feature</dfn> queries a specific aspect of a <a data-link-type="dfn" href="#query-container" id="ref-for-query-container①④">query container</a>.</p>
    <h3 class="heading settled" data-level="5.1" id="size-container"><span class="secno">5.1. </span><span class="content"> Size Container Features</span><a class="self-link" href="#size-container"></a></h3>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="container-size-query">container size query</dfn> (syntactically represented as <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-contain-3/#typedef-size-query" id="ref-for-typedef-size-query">&lt;size-query></a>)
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="container-size-query">container size query</dfn> (syntactically represented as <a class="production css" data-link-type="type">&lt;size-query></a>)
 	allows querying
 	the size of the <a data-link-type="dfn" href="#query-container" id="ref-for-query-container①⑤">query container</a>’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box⑧">principal box</a>.
 	It is a boolean combination of
 	individual <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="size-features">size features</dfn> (<a class="production css" data-link-type="type" href="#typedef-size-feature" id="ref-for-typedef-size-feature①">&lt;size-feature></a>)
 	that each query a single, specific dimensional feature of the <span id="ref-for-query-container①⑥">query container</span>.
 	The syntax of a <dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-size-feature"><a class="production css" data-link-type="type" href="#typedef-size-feature" id="ref-for-typedef-size-feature②">&lt;size-feature></a></dfn> is the same as for a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/mediaqueries-5/#media-feature" id="ref-for-media-feature">media feature</a>:
-	a feature name, a comparator, and a value. <a data-link-type="biblio" href="#biblio-mediaqueries-5">[mediaqueries-5]</a> The boolean syntax and logic combining <a data-link-type="dfn" href="#size-features" id="ref-for-size-features">size features</a> into a <span class="production" id="ref-for-typedef-size-query①">&lt;size-query></span> is the same as for <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#css-feature-queries" id="ref-for-css-feature-queries">CSS feature queries</a>.
+	a feature name, a comparator, and a value. <a data-link-type="biblio" href="#biblio-mediaqueries-5">[mediaqueries-5]</a> The boolean syntax and logic combining <a data-link-type="dfn" href="#size-features" id="ref-for-size-features">size features</a> into a <span class="production">&lt;size-query></span> is the same as for <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#css-feature-queries" id="ref-for-css-feature-queries">CSS feature queries</a>.
 	(See <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#at-ruledef-supports" id="ref-for-at-ruledef-supports">@supports</a>. <a data-link-type="biblio" href="#biblio-css-conditional-3">[CSS-CONDITIONAL-3]</a>)</p>
    <p>If the <a data-link-type="dfn" href="#query-container" id="ref-for-query-container①⑦">query container</a> does not have a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box⑨">principal box</a>,
 	or the principal box is not a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-contain-2/#layout-containment-box" id="ref-for-layout-containment-box">layout containment box</a>,
 	or the <span id="ref-for-query-container①⑧">query container</span> does not support <a data-link-type="dfn" href="#container-size-query" id="ref-for-container-size-query③">container size queries</a> on the relevant axes,
 	then the result of evaluating the <a data-link-type="dfn" href="#size-features" id="ref-for-size-features①">size feature</a> is unknown.</p>
-   <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-values-4/#relative-length" id="ref-for-relative-length">Relative length</a> units in <a data-link-type="dfn" href="#container-query" id="ref-for-container-query⑧">container query</a> conditions
+   <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-values-4/#relative-length" id="ref-for-relative-length">Relative length</a> units in <a data-link-type="dfn" href="#container-query" id="ref-for-container-query①⓪">container query</a> conditions
 	are evaluated based on the the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#computed-value" id="ref-for-computed-value②">computed values</a> of the <a data-link-type="dfn" href="#query-container" id="ref-for-query-container①⑨">query container</a>.</p>
    <p class="note" role="note"><span>Note:</span> This is different from the handling of relative units in <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/mediaqueries-5/#media-query" id="ref-for-media-query②">media queries</a>.</p>
    <div class="example" id="example-031e4923">
@@ -1711,8 +1722,8 @@ the query condition will be true above <span class="css">960px</span>.</p>
 	they inherit the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#computed-value" id="ref-for-computed-value⑦">computed values</a>.</p>
    <div class="example" id="example-a4252068">
     <a class="self-link" href="#example-a4252068"></a> Authors can ensure that <a data-link-type="dfn" href="#container-query-length" id="ref-for-container-query-length④">container query length</a> units
-		have an appropriate <a data-link-type="dfn" href="#query-container" id="ref-for-query-container④②">query container</a> by applying them inside a <a data-link-type="dfn" href="#container-query" id="ref-for-container-query⑨">container query</a> that relies on the same <span class="css">container-type</span>.
-		Custom fallback values can be defined outside the <span id="ref-for-container-query①⓪">container query</span>: 
+		have an appropriate <a data-link-type="dfn" href="#query-container" id="ref-for-query-container④②">query container</a> by applying them inside a <a data-link-type="dfn" href="#container-query" id="ref-for-container-query①①">container query</a> that relies on the same <span class="css">container-type</span>.
+		Custom fallback values can be defined outside the <span id="ref-for-container-query①②">container query</span>: 
 <pre class="lang-css highlight"><c- c>/* The fallback value does not rely on containment */</c->
 h2 <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>1.2</c-><c- k>em</c-><c- p>;</c-> <c- p>}</c->
 
@@ -1722,7 +1733,32 @@ h2 <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>1.2</c-><c- k>em</c-><c- 
 <c- p>}</c->
 </pre>
    </div>
-   <h2 class="heading settled" data-level="7" id="content-visibility"><span class="secno">7. </span><span class="content">Suppressing An Element’s Contents Entirely: the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-contain-2/#propdef-content-visibility" id="ref-for-propdef-content-visibility">content-visibility</a> property</span><a class="self-link" href="#content-visibility"></a></h2>
+   <h2 class="heading settled" data-level="7" id="apis"><span class="secno">7. </span><span class="content">APIs</span><a class="self-link" href="#apis"></a></h2>
+   <h3 class="heading settled" data-level="7.1" id="the-csscontainerrule-interface"><span class="secno">7.1. </span><span class="content"> The <code>CSSContainerRule</code> interface</span><a class="self-link" href="#the-csscontainerrule-interface"></a></h3>
+   <p>The <code class="idl"><a data-link-type="idl" href="#csscontainerrule" id="ref-for-csscontainerrule">CSSContainerRule</a></code> interface represents a <a class="css" data-link-type="maybe" href="#at-ruledef-container" id="ref-for-at-ruledef-container①①">@container</a> rule.</p>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="csscontainerrule"><code><c- g>CSSContainerRule</c-></code></dfn> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#cssconditionrule" id="ref-for-cssconditionrule"><c- n>CSSConditionRule</c-></a> {
+};
+</pre>
+   <dl class="idl-attributes">
+    <dt><code>conditionText</code> of type <code>CSSOMString</code> (CSSContainerRule-specific definition for attribute on CSSConditionRule) 
+    <dd>The <code>conditionText</code> attribute (defined on the <code>CSSConditionRule</code> parent rule),
+			on getting, must return the condition that was specified,
+			without any logical simplifications,
+			so that the returned condition will evaluate to the same result
+			as the specified condition
+			in any conformant implementation of this specification
+			(including implementations that implement future extensions
+			allowed by the <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed①">&lt;general-enclosed></a> extensibility mechanism in this specification).
+			In other words,
+			token stream simplifications are allowed
+			(such as reducing whitespace to a single space
+			or omitting it in cases where it is known to be optional),
+			but logical simplifications (such as removal of unneeded parentheses,
+			or simplification based on evaluating results) are not allowed. 
+   </dl>
+   <p class="issue" id="issue-fe7a1c72①"><a class="self-link" href="#issue-fe7a1c72①"></a> Add CSSOM API for CSSContainerRule <a href="https://github.com/w3c/csswg-drafts/issues/7033">[Issue #7033]</a></p>
+   <h2 class="heading settled" data-level="8" id="content-visibility"><span class="secno">8. </span><span class="content">Suppressing An Element’s Contents Entirely: the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-contain-2/#propdef-content-visibility" id="ref-for-propdef-content-visibility">content-visibility</a> property</span><a class="self-link" href="#content-visibility"></a></h2>
    <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><span>MDN</span></button>
     <div class="feature">
@@ -1739,7 +1775,7 @@ h2 <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>1.2</c-><c- k>em</c-><c- 
     </div>
    </div>
    <p class="issue" id="issue-d41d8cd9②"><a class="self-link" href="#issue-d41d8cd9②"></a> <a href="https://andreubotella.com/csswg-auto-build/css-contain-2/#content-visibility"><cite>CSS Containment 2</cite> § 4 Suppressing An Element’s Contents Entirely: the content-visibility property</a></p>
-   <h2 class="heading settled" data-level="8" id="priv-sec"><span class="secno">8. </span><span class="content">Privacy and Security Considerations</span><a class="self-link" href="#priv-sec"></a></h2>
+   <h2 class="heading settled" data-level="9" id="priv-sec"><span class="secno">9. </span><span class="content">Privacy and Security Considerations</span><a class="self-link" href="#priv-sec"></a></h2>
    <p class="issue" id="issue-d41d8cd9③"><a class="self-link" href="#issue-d41d8cd9③"></a> <a href="https://andreubotella.com/csswg-auto-build/css-contain-2/#priv-sec"><cite>CSS Containment 2</cite> § 5 Privacy and Security Considerations</a></p>
    <h2 class="no-num non-normative heading settled" id="changes"><span class="content">Appendix A. Changes</span><a class="self-link" href="#changes"></a></h2>
    <p>This appendix is <em>informative</em>.</p>
@@ -1750,7 +1786,7 @@ h2 <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>1.2</c-><c- k>em</c-><c- 
      <p>Reverse the order of <a class="production css" data-link-type="type" href="#typedef-container-name" id="ref-for-typedef-container-name②">&lt;container-name></a> and <a class="production css" data-link-type="type">&lt;container-type></a> in the <a class="property css" data-link-type="property" href="#propdef-container" id="ref-for-propdef-container③">container</a> shorthand property, with both being optional.
 (<a href="https://github.com/w3c/csswg-drafts/issues/6393">Issue 6393</a>)</p>
     <li data-md>
-     <p>Allow <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed①">&lt;general-enclosed></a> syntax in <a class="production css" data-link-type="type" href="#typedef-container-condition" id="ref-for-typedef-container-condition⑤">&lt;container-condition></a>s,
+     <p>Allow <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed②">&lt;general-enclosed></a> syntax in <a class="production css" data-link-type="type" href="#typedef-container-condition" id="ref-for-typedef-container-condition⑤">&lt;container-condition></a>s,
 for the sake of forward compatability.
 (<a href="https://github.com/w3c/csswg-drafts/issues/6396">Issue 6396</a>)</p>
     <li data-md>
@@ -1774,7 +1810,7 @@ and removed the explicit type-selection syntax.
      <p>Introduces <a data-link-type="dfn" href="#inline-size-containment" id="ref-for-inline-size-containment⑤">inline-size containment</a>.</p>
     <li data-md>
      <p>Defines the terms, properties, units, and at-rule
-needed for <a data-link-type="dfn" href="#container-query" id="ref-for-container-query①①">Container Queries</a></p>
+needed for <a data-link-type="dfn" href="#container-query" id="ref-for-container-query①③">Container Queries</a></p>
    </ul>
    <p class="issue" id="issue-d41d8cd9④"><a class="self-link" href="#issue-d41d8cd9④"></a> <a href="https://andreubotella.com/csswg-auto-build/css-contain-2/#changes"><cite>CSS Containment 2</cite> §  Changes</a></p>
    <h2 class="no-num heading settled" id="acknowledgments"><span class="content">Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
@@ -1917,6 +1953,7 @@ needed for <a data-link-type="dfn" href="#container-query" id="ref-for-container
    <li><a href="#container-size-query">container size query</a><span>, in § 5.1</span>
    <li><a href="#container-style-query">container style query</a><span>, in § 5.2</span>
    <li><a href="#propdef-container-type">container-type</a><span>, in § 4.1</span>
+   <li><a href="#csscontainerrule">CSSContainerRule</a><span>, in § 7.1</span>
    <li><a href="#valdef-container-name-custom-ident">&lt;custom-ident></a><span>, in § 4.2</span>
    <li><a href="#descdef-container-height">height</a><span>, in § 5.1.2</span>
    <li>
@@ -1944,6 +1981,13 @@ needed for <a data-link-type="dfn" href="#container-query" id="ref-for-container
    <li><a href="#typedef-style-query">&lt;style-query></a><span>, in § 4.4</span>
    <li><a href="#descdef-container-width">width</a><span>, in § 5.1.1</span>
   </ul>
+  <aside class="dfn-panel" data-for="term-for-at-ruledef-keyframes">
+   <a href="https://andreubotella.com/csswg-auto-build/css-animations-1/#at-ruledef-keyframes">https://andreubotella.com/csswg-auto-build/css-animations-1/#at-ruledef-keyframes</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-at-ruledef-keyframes">4.4. 
+Container Queries: the @container rule</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-content-box">
    <a href="https://andreubotella.com/csswg-auto-build/css-box-4/#content-box">https://andreubotella.com/csswg-auto-build/css-box-4/#content-box</a><b>Referenced in:</b>
    <ul>
@@ -1962,6 +2006,13 @@ Block-size: the block-size feature</a>
    <ul>
     <li><a href="#ref-for-fragmentation">3.1. 
 Inline-Size Containment</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-at-ruledef-layer">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#at-ruledef-layer">https://andreubotella.com/csswg-auto-build/css-cascade-5/#at-ruledef-layer</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-at-ruledef-layer">4.4. 
+Container Queries: the @container rule</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-computed-value">
@@ -2013,6 +2064,13 @@ Size Container Features</a>
 Style Container Features</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-cssconditionrule">
+   <a href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#cssconditionrule">https://andreubotella.com/csswg-auto-build/css-conditional-3/#cssconditionrule</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-cssconditionrule">7.1. 
+The CSSContainerRule interface</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-conditional-group-rule">
    <a href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#conditional-group-rule">https://andreubotella.com/csswg-auto-build/css-conditional-3/#conditional-group-rule</a><b>Referenced in:</b>
    <ul>
@@ -2042,7 +2100,7 @@ Strong Containment: the contain property</a> <a href="#ref-for-propdef-contain�
   <aside class="dfn-panel" data-for="term-for-propdef-content-visibility">
    <a href="https://andreubotella.com/csswg-auto-build/css-contain-2/#propdef-content-visibility">https://andreubotella.com/csswg-auto-build/css-contain-2/#propdef-content-visibility</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-content-visibility">7. Suppressing An Element’s Contents Entirely: the content-visibility property</a>
+    <li><a href="#ref-for-propdef-content-visibility">8. Suppressing An Element’s Contents Entirely: the content-visibility property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-layout-containment">
@@ -2151,6 +2209,13 @@ Inline-Size Containment</a>
 Creating Query Containers: the container-type property</a> <a href="#ref-for-propdef-font-size①">(2)</a>
     <li><a href="#ref-for-propdef-font-size②">5.1. 
 Size Container Features</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-at-font-face-rule">
+   <a href="https://andreubotella.com/csswg-auto-build/css-fonts-5/#at-font-face-rule">https://andreubotella.com/csswg-auto-build/css-fonts-5/#at-font-face-rule</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-at-font-face-rule">4.4. 
+Container Queries: the @container rule</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-selectordef-after">
@@ -2276,6 +2341,13 @@ Inline-Size Containment</a>
    <ul>
     <li><a href="#ref-for-typedef-stylesheet">4.4. 
 Container Queries: the @container rule</a> <a href="#ref-for-typedef-stylesheet①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-at-rule">
+   <a href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#at-rule">https://andreubotella.com/csswg-auto-build/css-syntax-3/#at-rule</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-at-rule">4.4. 
+Container Queries: the @container rule</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-declaration">
@@ -2516,7 +2588,9 @@ Container Queries</a>
    <ul>
     <li><a href="#ref-for-typedef-general-enclosed">4.4. 
 Container Queries: the @container rule</a>
-    <li><a href="#ref-for-typedef-general-enclosed①"> Changes since the 21 December 2021 First Public Working Draft</a>
+    <li><a href="#ref-for-typedef-general-enclosed①">7.1. 
+The CSSContainerRule interface</a>
+    <li><a href="#ref-for-typedef-general-enclosed②"> Changes since the 21 December 2021 First Public Working Draft</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-media-feature">
@@ -2551,8 +2625,20 @@ Container Queries</a>
 Animated Containers</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-Exposed">
+   <a href="https://webidl.spec.whatwg.org/#Exposed">https://webidl.spec.whatwg.org/#Exposed</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-Exposed">7.1. 
+The CSSContainerRule interface</a>
+   </ul>
+  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
+   <li>
+    <a data-link-type="biblio">[css-animations-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-at-ruledef-keyframes">@keyframes</span>
+    </ul>
    <li>
     <a data-link-type="biblio">[css-box-4]</a> defines the following terms:
     <ul>
@@ -2566,6 +2652,7 @@ Animated Containers</a>
    <li>
     <a data-link-type="biblio">[css-cascade-5]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-at-ruledef-layer">@layer</span>
      <li><span class="dfn-paneled" id="term-for-computed-value">computed value</span>
      <li><span class="dfn-paneled" id="term-for-initial-value">initial value</span>
      <li><span class="dfn-paneled" id="term-for-shorthand-property">shorthand</span>
@@ -2575,6 +2662,7 @@ Animated Containers</a>
     <a data-link-type="biblio">[CSS-CONDITIONAL-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-at-ruledef-supports">@supports</span>
+     <li><span class="dfn-paneled" id="term-for-cssconditionrule">CSSConditionRule</span>
      <li><span class="dfn-paneled" id="term-for-conditional-group-rule">conditional group rule</span>
      <li><span class="dfn-paneled" id="term-for-css-feature-queries">css feature queries</span>
     </ul>
@@ -2605,6 +2693,11 @@ Animated Containers</a>
     <a data-link-type="biblio">[css-fonts-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-font-size">font-size</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[css-fonts-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-at-font-face-rule">@font-face</span>
     </ul>
    <li>
     <a data-link-type="biblio">[css-pseudo-4]</a> defines the following terms:
@@ -2646,6 +2739,7 @@ Animated Containers</a>
     <a data-link-type="biblio">[CSS-SYNTAX-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-typedef-stylesheet">&lt;stylesheet></span>
+     <li><span class="dfn-paneled" id="term-for-at-rule">at-rule</span>
      <li><span class="dfn-paneled" id="term-for-declaration">declaration</span>
      <li><span class="dfn-paneled" id="term-for-style-rule">style rule</span>
     </ul>
@@ -2715,10 +2809,17 @@ Animated Containers</a>
     <ul>
      <li><span class="dfn-paneled" id="term-for-effect-value">effect value</span>
     </ul>
+   <li>
+    <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-Exposed">Exposed</span>
+    </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-css-animations-1">[CSS-ANIMATIONS-1]
+   <dd>Dean Jackson; et al. <a href="https://www.w3.org/TR/css-animations-1/"><cite>CSS Animations Level 1</cite></a>. 11 October 2018. WD. URL: <a href="https://www.w3.org/TR/css-animations-1/">https://www.w3.org/TR/css-animations-1/</a>
    <dt id="biblio-css-box-4">[CSS-BOX-4]
    <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-box-4/"><cite>CSS Box Model Module Level 4</cite></a>. 21 April 2020. WD. URL: <a href="https://www.w3.org/TR/css-box-4/">https://www.w3.org/TR/css-box-4/</a>
    <dt id="biblio-css-break-3">[CSS-BREAK-3]
@@ -2733,6 +2834,8 @@ Animated Containers</a>
    <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://www.w3.org/TR/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. 16 December 2020. WD. URL: <a href="https://www.w3.org/TR/css-contain-2/">https://www.w3.org/TR/css-contain-2/</a>
    <dt id="biblio-css-display-3">[CSS-DISPLAY-3]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-display-3/"><cite>CSS Display Module Level 3</cite></a>. 3 September 2021. CR. URL: <a href="https://www.w3.org/TR/css-display-3/">https://www.w3.org/TR/css-display-3/</a>
+   <dt id="biblio-css-fonts-5">[CSS-FONTS-5]
+   <dd>Myles Maxfield; Chris Lilley. <a href="https://www.w3.org/TR/css-fonts-5/"><cite>CSS Fonts Module Level 5</cite></a>. 21 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-fonts-5/">https://www.w3.org/TR/css-fonts-5/</a>
    <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. 17 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-sizing-3/">https://www.w3.org/TR/css-sizing-3/</a>
    <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
@@ -2757,6 +2860,8 @@ Animated Containers</a>
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/selectors-4/"><cite>Selectors Level 4</cite></a>. 21 November 2018. WD. URL: <a href="https://www.w3.org/TR/selectors-4/">https://www.w3.org/TR/selectors-4/</a>
    <dt id="biblio-web-animations-1">[WEB-ANIMATIONS-1]
    <dd>Brian Birtles; et al. <a href="https://www.w3.org/TR/web-animations-1/"><cite>Web Animations</cite></a>. 18 May 2021. WD. URL: <a href="https://www.w3.org/TR/web-animations-1/">https://www.w3.org/TR/web-animations-1/</a>
+   <dt id="biblio-webidl">[WEBIDL]
+   <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -2820,7 +2925,7 @@ Animated Containers</a>
       <td>the keyword none or one or more of size, inline-size, block-size, style
    </table>
   </div>
-  <h3 class="no-num no-ref heading settled" id="container-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="#at-ruledef-container" id="ref-for-at-ruledef-container①①">@container</a> Descriptors</span><a class="self-link" href="#container-descriptor-table"></a></h3>
+  <h3 class="no-num no-ref heading settled" id="container-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="#at-ruledef-container" id="ref-for-at-ruledef-container①②">@container</a> Descriptors</span><a class="self-link" href="#container-descriptor-table"></a></h3>
   <div class="big-element-wrapper">
    <table class="index">
     <thead>
@@ -2862,6 +2967,12 @@ Animated Containers</a>
       <td>range
    </table>
   </div>
+  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>interface</c-> <a href="#csscontainerrule"><code><c- g>CSSContainerRule</c-></code></a> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#cssconditionrule"><c- n>CSSConditionRule</c-></a> {
+};
+
+</pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> This is a diff spec over <a href="https://www.w3.org/TR/css-contain-2/">CSS Containment Level 2</a>.
@@ -2889,6 +3000,7 @@ Animated Containers</a>
    <div class="issue"> Should all elements default to a style container-type? <a href="https://github.com/w3c/csswg-drafts/issues/7066">[Issue #7066]</a> <a class="issue-return" href="#issue-3b8cb739" title="Jump to section">↵</a></div>
    <div class="issue"> container-name string vs ident <a href="https://github.com/w3c/csswg-drafts/issues/6405">[Issue #6405]</a> <a class="issue-return" href="#issue-20653fbd" title="Jump to section">↵</a></div>
    <div class="issue"> What happens to other @rules inside @container? <a href="https://github.com/w3c/csswg-drafts/issues/6827">[Issue #6827]</a> <a class="issue-return" href="#issue-7bf5bf1e" title="Jump to section">↵</a></div>
+   <div class="issue"> Add CSSOM API for CSSContainerRule <a href="https://github.com/w3c/csswg-drafts/issues/7033">[Issue #7033]</a> <a class="issue-return" href="#issue-fe7a1c72①" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/css-contain-2/#content-visibility"><cite>CSS Containment 2</cite> § 4 Suppressing An Element’s Contents Entirely: the content-visibility property</a> <a class="issue-return" href="#issue-d41d8cd9②" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/css-contain-2/#priv-sec"><cite>CSS Containment 2</cite> § 5 Privacy and Security Considerations</a> <a class="issue-return" href="#issue-d41d8cd9③" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/css-contain-2/#changes"><cite>CSS Containment 2</cite> §  Changes</a> <a class="issue-return" href="#issue-d41d8cd9④" title="Jump to section">↵</a></div>
@@ -3018,6 +3130,8 @@ Block-size: the block-size feature</a>
 Aspect-ratio: the aspect-ratio feature</a>
     <li><a href="#ref-for-at-ruledef-container①⓪">5.1.6. 
 Orientation: the orientation feature</a>
+    <li><a href="#ref-for-at-ruledef-container①①">7.1. 
+The CSSContainerRule interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="container-query">
@@ -3028,14 +3142,14 @@ Container Queries</a>
     <li><a href="#ref-for-container-query①">4.1. 
 Creating Query Containers: the container-type property</a>
     <li><a href="#ref-for-container-query②">4.4. 
-Container Queries: the @container rule</a> <a href="#ref-for-container-query③">(2)</a> <a href="#ref-for-container-query④">(3)</a> <a href="#ref-for-container-query⑤">(4)</a> <a href="#ref-for-container-query⑥">(5)</a>
-    <li><a href="#ref-for-container-query⑦">4.5. 
+Container Queries: the @container rule</a> <a href="#ref-for-container-query③">(2)</a> <a href="#ref-for-container-query④">(3)</a> <a href="#ref-for-container-query⑤">(4)</a> <a href="#ref-for-container-query⑥">(5)</a> <a href="#ref-for-container-query⑦">(6)</a> <a href="#ref-for-container-query⑧">(7)</a>
+    <li><a href="#ref-for-container-query⑨">4.5. 
 Animated Containers</a>
-    <li><a href="#ref-for-container-query⑧">5.1. 
+    <li><a href="#ref-for-container-query①⓪">5.1. 
 Size Container Features</a>
-    <li><a href="#ref-for-container-query⑨">6. 
-Container Relative Lengths: the cqw, cqh, cqi, cqb, cqmin, cqmax units</a> <a href="#ref-for-container-query①⓪">(2)</a>
-    <li><a href="#ref-for-container-query①①"> Changes from CSS Containment Level 2 </a>
+    <li><a href="#ref-for-container-query①①">6. 
+Container Relative Lengths: the cqw, cqh, cqi, cqb, cqmin, cqmax units</a> <a href="#ref-for-container-query①②">(2)</a>
+    <li><a href="#ref-for-container-query①③"> Changes from CSS Containment Level 2 </a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-container-query">
@@ -3224,6 +3338,13 @@ Style Container Features</a> <a href="#ref-for-typedef-style-feature②">(2)</a>
 Animated Containers</a>
     <li><a href="#ref-for-container-query-length①">6. 
 Container Relative Lengths: the cqw, cqh, cqi, cqb, cqmin, cqmax units</a> <a href="#ref-for-container-query-length②">(2)</a> <a href="#ref-for-container-query-length③">(3)</a> <a href="#ref-for-container-query-length④">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="csscontainerrule">
+   <b><a href="#csscontainerrule">#csscontainerrule</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-csscontainerrule">7.1. 
+The CSSContainerRule interface</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
