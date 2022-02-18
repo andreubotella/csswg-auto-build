@@ -282,7 +282,7 @@ Container Queries</h2>
 
 		<pre class=lang-css>
 		main, aside {
-		  container: inline-size;
+		  container: my-layout / inline-size;
 		}
 
 		.media-object {
@@ -290,7 +290,7 @@ Container Queries</h2>
 		  grid-template: 'img' auto 'content' auto / 100%;
 		}
 
-		@container (inline-size > 45em) {
+		@container my-layout (inline-size > 45em) {
 		  .media-object {
 		    grid-template: 'img content' auto / auto 1fr;
 		  }
@@ -334,20 +334,20 @@ Container Queries</h2>
 		A ::before selector querying the size of the originating element:
 
 		<pre class=lang-html>
-			&lt;style>
-				#container {
-					width: 100px;
-					container-type: inline-size;
-				}
-				@container (inline-size < 150px) {
-					#inner::before {
-						content: "BEFORE";
-					}
-				}
-			&lt;/style>
-			&lt;div id=container>
-				&lt;span id=inner>&lt;/span>
-			&lt;/div>
+		&lt;style>
+		  #container {
+		    width: 100px;
+		    container-type: inline-size;
+		  }
+		  @container (inline-size < 150px) {
+		    #inner::before {
+		      content: "BEFORE";
+		    }
+		  }
+		&lt;/style>
+		&lt;div id=container>
+		  &lt;span id=inner>&lt;/span>
+		&lt;/div>
 		</pre>
 	</div>
 
@@ -356,27 +356,34 @@ Container Queries</h2>
 		container in the shadow tree:
 
 		<pre class=lang-html>
-			&lt;div id=host style="width:200px">
-				&lt;template shadowroot=open>
-					&lt;style>
-						#container {
-							width: 100px;
-							container-type: inline-size;
-						}
-						@container (inline-size < 150px) {
-							::slotted(span) {
-								color: green;
-							}
-						}
-					&lt;/style>
-					&lt;div id=container>
-						&lt;slot />
-					&lt;/div>
-				&lt;/template>
-				&lt;span id=slotted>Green&lt;/span>
-			&lt;/div>
+		&lt;div id=host style="width:200px">
+		  &lt;template shadowroot=open>
+		    &lt;style>
+		      #container {
+		        width: 100px;
+		        container-type: inline-size;
+		      }
+		      @container (inline-size < 150px) {
+		        ::slotted(span) {
+		          color: green;
+		        }
+		      }
+		    &lt;/style>
+		    &lt;div id=container>
+		      &lt;slot />
+		    &lt;/div>
+		  &lt;/template>
+		  &lt;span id=slotted>Green&lt;/span>
+		&lt;/div>
 		</pre>
 	</div>
+
+	Issue(6376): Bikeshed terms/property names to avoid confusion
+	with other usage of “contain” and “container”?
+
+	Issue(6205): Container Queries should have a matchContainer method
+
+	Issue(7033): Add CSSOM API for CSSContainerRule
 
 <h3 id="container-type">
 Creating Query Containers: the 'container-type' property</h3>
@@ -396,9 +403,6 @@ Creating Query Containers: the 'container-type' property</h3>
 	allowing [=style rules=] styling its descendants
 	to query various aspects of its sizing, layout, and style
 	and respond accordingly.
-
-	Issue(6376): Bikeshed terms/property names to avoid confusion
-	with other usage of “contain” and “container”?
 
 	Values have the following meanings:
 
@@ -465,6 +469,8 @@ Creating Query Containers: the 'container-type' property</h3>
 		</pre>
 	</div>
 
+	Issue(7066): Should all elements default to a style container-type?
+
 
 <h3 id="container-name">
 Naming Query Containers: the 'container-name' property</h3>
@@ -510,19 +516,19 @@ Naming Query Containers: the 'container-name' property</h3>
 		<pre class=lang-css>
 		main {
 		  container-type: size;
-		  container-name: page-layout;
+		  container-name: my-page-layout;
 		}
 
 		.my-component {
 		  container-type: inline-size;
-		  container-name: component-library;
+		  container-name: my-component-library;
 		}
 
-		@container page-layout (block-size > 12em) {
+		@container my-page-layout (block-size > 12em) {
 		  .card { margin-block: 2em; }
 		}
 
-		@container component-library (inline-size > 30em) {
+		@container my-component-library (inline-size > 30em) {
 		  .card { margin-inline: 2em; }
 		}
 		</pre>
@@ -542,18 +548,22 @@ Naming Query Containers: the 'container-name' property</h3>
 		to use the contents of the ''data-container'' attribute when provided.
 	</div>
 
+	Issue(6405): container-name string vs ident
+
 
 <h3 id="container-shorthand">
 Creating Named Containers: the 'container' shorthand</h3>
 
 	<pre class='propdef shorthand'>
 		Name: container
-		Value: <<'container-type'>> [ / <<'container-name'>> ]?
+		Value: <<'container-name'>>? [ / <<'container-type'>> ]?
 	</pre>
 
 	The 'container' [=shorthand property=] sets
 	both 'container-type' and 'container-name' in the same declaration.
 	If <<'container-name'>> is omitted,
+	it is reset to its [=initial value=].
+	If <<'container-type'>> is omitted,
 	it is reset to its [=initial value=].
 
 	<div class=example>
@@ -562,11 +572,11 @@ Creating Named Containers: the 'container' shorthand</h3>
 
 		<pre class=lang-css>
 		main {
-		  container: size / layout;
+		  container: my-layout / size;
 		}
 
 		.grid-item {
-		  container: inline-size / component;
+		  container: my-component / inline-size;
 		}
 		</pre>
 	</div>
@@ -596,13 +606,13 @@ Container Queries: the ''@container'' rule</h3>
 	where:
 
 	<pre class="prod def">
-	<dfn><<container-condition>></dfn> = not <<container-query>>
-	                      | <<container-query>> [ and <<container-query>> ]*
-	                      | <<container-query>> [ or <<container-query>> ]*
 	<dfn><<container-query>></dfn>     = ( <<container-condition>> )
 	                      | ( <<size-feature>> )
 	                      | style( <<style-query>> )
 	                      | <<general-enclosed>>
+	<dfn><<container-condition>></dfn> = not <<container-query>>
+	                      | <<container-query>> [ and <<container-query>> ]*
+	                      | <<container-query>> [ or <<container-query>> ]*
 
 	<dfn><<style-query>></dfn>     = <<style-feature>> | <<style-condition>>
 	<dfn><<style-condition>></dfn> = not ( <<style-query>> )
@@ -650,6 +660,8 @@ Container Queries: the ''@container'' rule</h3>
 	so it is not always possible to merge the individual <<container-condition>>s
 	into a single query.
 
+	Issue(6827): What happens to other @rules inside @container?
+
 <h3 id="animated-containers">
 Animated Containers</h3>
 
@@ -668,7 +680,7 @@ Animated Containers</h3>
 			}
 
 			#container {
-			  container: inline-size;
+			  container-type: inline-size;
 			  flex: 1;
 			}
 
@@ -892,8 +904,6 @@ Style Container Features</h3>
 	is the same as for [=CSS feature queries=].
 	(See ''@supports''. [[!CSS-CONDITIONAL-3]])
 
-	Issue(6396): Do we like this proposed syntax for style queries?
-
 
 <h2 id="container-lengths">
 Container Relative Lengths: the ''cqw'', ''cqh'', ''cqi'', ''cqb'', ''cqmin'', ''cqmax'' units</h2>
@@ -948,14 +958,15 @@ Container Relative Lengths: the ''cqw'', ''cqh'', ''cqi'', ''cqb'', ''cqmin'', '
 	<div class=example>
 		Authors can ensure that [=container query length=] units
 		have an appropriate [=query container=]
-		by applying them inside a [=container query=] with the required <<container-type>>.
+		by applying them inside a [=container query=]
+		that relies on the same ''container-type''.
 		Custom fallback values can be defined outside the [=container query=]:
 
 		<pre class=lang-css>
 		/* The fallback value does not rely on containment */
 		h2 { font-size: 1.2em; }
 
-		@container type(inline-size) {
+		@container (inline-size >= 0px) {
 		  /* only applies when an inline-size container is available */
 		  h2 { font-size: calc(1.2em + 1cqi); }
 		}
@@ -987,10 +998,34 @@ Privacy and Security Considerations {#priv-sec}
 
 This appendix is <em>informative</em>.
 
+<h3 id="changes-2021-12">
+Changes since the 21 December 2021 First Public Working Draft</h3>
+
+	Significant changes since the <a href="https://www.w3.org/TR/2021/WD-css-contain-3-20211221/">21 December 2021 First Public Working Draft</a> include:
+
+	* Reverse the order of <<container-name>> and <<container-type>>
+		in the 'container' shorthand property, with both being optional.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/6393">Issue 6393</a>)
+	* Allow <<general-enclosed>> syntax in <<container-condition>>s,
+		for the sake of forward compatability.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/6396">Issue 6396</a>)
+	* Remove the size function syntax from <<size-feature>> queries.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/6870">Issue 6870</a>)
+	* Update the [=query container=] selection process
+		to account for necessary container-types,
+		and removed the explicit type-selection syntax.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/6644">Issue 6644</a>)
+	* Remove state query features, which have been deferred.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/6402">Issue 6402</a>)
+	* Clarify container selection around pseudo-elements and the shadow-DOM.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/5984">Issue 5984</a>
+		and <a href="https://github.com/w3c/csswg-drafts/issues/6711">Issue 6711</a>)
+
 <h3 id="l3-changes">
 Changes from <a href="https://www.w3.org/TR/css-contain-2/">CSS Containment Level 2</a>
 </h3>
 
+	* Introduces [=inline-size containment=].
 	* Defines the terms, properties, units, and at-rule
 		needed for [=Container Queries=]
 
