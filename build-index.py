@@ -130,12 +130,9 @@ def build_redirect(shortname, spec_folder):
     except FileExistsError:
         pass
 
-    try:
-        index = os.path.join(folder, "index.html")
-        with open(index, mode='x', encoding="UTF-8") as f:
-            f.write(contents)
-    except FileExistsError as err:
-        print(err, file=sys.stderr)
+    index = os.path.join(folder, "index.html")
+    with open(index, mode='x', encoding="UTF-8") as f:
+        f.write(contents)
 
 
 CURRENT_WORK_EXCEPTIONS = {
@@ -151,7 +148,6 @@ CURRENT_WORK_EXCEPTIONS = {
 
 
 constants.setErrorLevel("nothing")
-constants.quiet = float("infinity")
 
 specgroups = defaultdict(list)
 
@@ -206,7 +202,8 @@ for shortname, specgroup in specgroups.items():
         if shortname == "css-snapshot":
             build_redirect("css", currentWorkDir)
 
-print("""
+with open("./csswg-drafts/index.html", mode='x', encoding="UTF-8") as f:
+    f.write("""
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>CSS Working Group Draft Specifications</title>
@@ -257,19 +254,19 @@ print("""
 <ul>
 """)
 
-for shortname, specgroup in sorted(specgroups.items(), key=lambda x: x[0]):
-    if len(specgroup) == 1:
-        spec = specgroup[0]
-        print(f'  <li><a href="./{spec["dir"]}">{spec["title"]}</a></li>')
-    else:
-        print('  <li>')
-        print(f'    <p>{shortname}</p>')
-        print('    <ul>')
-        for spec in specgroup:
-            paren = " (current work)" if spec["currentWork"] else ""
-            print(
-                f'      <li><a href="./{spec["dir"]}">{spec["title"]}</a>{paren}</li>')
-        print('    </ul>')
-        print('  </li>')
+    for shortname, specgroup in sorted(specgroups.items(), key=lambda x: x[0]):
+        if len(specgroup) == 1:
+            spec = specgroup[0]
+            f.write(
+                f'  <li><a href="./{spec["dir"]}">{spec["title"]}</a></li>\n'
+            )
+        else:
+            f.write(f'  <li>\n    <p>{shortname}</p>\n    <ul>\n')
+            for spec in specgroup:
+                paren = " (current work)" if spec["currentWork"] else ""
+                f.write(
+                    f'      <li><a href="./{spec["dir"]}">{spec["title"]}</a>{paren}</li>\n'
+                )
+            f.write('    </ul>\n  </li>\n')
 
-print("</ul>")
+    f.write("</ul>\n")
