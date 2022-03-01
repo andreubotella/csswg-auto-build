@@ -119,3 +119,7 @@ handled.
 It would be interesting to detect build warnings and errors, and automatically
 file an issue on the w3c/csswg-draft repo. How to deduplicate warnings and
 errors, though?
+
+Maybe only build the specs that have changed. But then, if we do detect build
+warnings and errors, that detection wouldn't work for old specs using outdated
+cross-references, or for warnings introduced by a newer Bikeshed version.
