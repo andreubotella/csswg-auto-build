@@ -1570,7 +1570,8 @@ Explicit Track Sizing: the 'grid-template-rows' and 'grid-template-columns' prop
 			If there is no [=parent grid=],
 			or if the [=grid container=] is otherwised forced
 			to establish an [=independent formatting context=]
-			(for example, due to [=layout containment=] [[CSS-CONTAIN-2]]),
+			(for example, due to [=layout containment=] [[CSS-CONTAIN-2]]
+			or [=absolute positioning=] [[CSS-POSITION-3]]),
 			the [=used value=] is
 			the initial value, ''grid-template-rows/none'',
 			and the [=grid container=] is not a [=subgrid=].
@@ -3902,6 +3903,12 @@ Subgrids</h2>
 			The 'overflow' property does apply to <a>subgrids</a>,
 			so that overflowing contents of the subgrid can be scrolled into view.
 			(Note: the act of scrolling does not affect layout.)
+
+		<li id="subgrid-relpos">
+			[=Relative positioning=] applies to <a>subgrids</a> as normal,
+			and shifts the box and its content together as usual.
+			(Note: Relative positioning takes place after alignment,
+			and does not affect track sizing.)
 	</ul>
 
 <!--
@@ -4033,6 +4040,11 @@ Alignment and Spacing</h2>
 	After a <a>grid container</a>’s <a>grid tracks</a> have been sized,
 	and the dimensions of all <a>grid items</a> are finalized,
 	<a>grid items</a> can be aligned within their <a>grid areas</a>.
+
+	Note: The [=grid items=] of [=subgrids=] participate in alignment,
+	including [=baseline alignment=],
+	together with their [=parent grid=]'s items;
+	see <a href="#subgrid-item-contribution">Subgrids (h)</a>.
 
 	The 'margin' properties can be used to align items in a manner similar to
 	what margins can do in block layout.
@@ -5005,16 +5017,18 @@ Resolve Intrinsic Track Sizes</h3>
 Distributing Extra Space Across Spanned Tracks</h4>
 
 	<div algorithm>
-		To <dfn noexport>distribute extra space</dfn>
-		to the [=base sizes=] or [=growth limits=] (the |affected size|s)
-		of a set of tracks (the |affected track|s)
-		to accommodate specific intrinsic size contributions (the |size contribution|s)
-		of a set of grid items spanning those tracks (the |item|s),
-		potentially preferring a subset of those tracks
-		(the optional |preferred track|s);
-		defaulting to all |affected tracks|
-		if there is no |track preference|--
-		as distinct from an empty list of |preferred track|s):
+		To <dfn noexport>distribute extra space</dfn>,
+		perform the following steps,
+		with these inputs:
+
+		* whether to affect [=base sizes=] or [=growth limits=] (the |affected size|s).
+		* which tracks to affect (the |affected track|s).
+		* what intrinsic size contributions are being accommodated (the |size contribution|s)
+			of which grid items spanning those tracks (the |item|s).
+		* optionally, a preferred subset of the |affected tracks| (the |preferred track|s),
+			indicating a |track preference| (even if the subset is empty);
+			if no |track preference|,
+			the |preferred track|s default to all |affected track|s.
 
 		<ol>
 			<li>
@@ -5387,6 +5401,18 @@ Changes</h2>
 Changes since the <a href="https://www.w3.org/TR/2020/CRD-css-grid-2-20201218/">18 December 2020 CR</a></h3>
 
 	<ul class="non-normative">
+		Clarified how [=relative positioning=] applies to [=subgrids=].
+		(<a href="https://github.com/w3c/csswg-drafts/issues/7123">Issue 7123</a>)
+		<blockquote>
+			<ul>
+				<li>
+					<ins>[=Relative positioning=] applies to <a>subgrids</a> as normal,
+					and shifts the box and its content together as usual.
+					(Note: Relative positioning takes place after alignment,
+					and does not affect track sizing.)</ins>
+			</ul>
+		</blockquote>
+
 		<li id="change-2020-flex-intrinsic-ratios">
 			Changed intrinsic track space distribution <a href="#algo-spanning-flex-items">across flexible tracks</a>
 			for flex sums between zero and one to interpolate
