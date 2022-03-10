@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/mediaqueries-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="6ee32fe72913fc58337eebd5b8c726d82f77986e" name="document-revision">
+  <meta content="b6dd5d9030d1645c64b3c9845760334f742dbdad" name="document-revision">
 <style>
 			#pointer-hover-table { margin: 1em auto; text-align: center; border-collapse: collapse; max-width: 40em; }
 			#pointer-hover-table td, #pointer-hover-table th { padding: .5em; }
@@ -1495,13 +1495,18 @@ matches the media type of the device where the user agent is running, and</p>
 		as their values are almost always greater than zero.
 		Others, like <a class="property" data-link-type="propdesc" href="#descdef-media-color" id="ref-for-descdef-media-color①">color</a>, have meaningful zero values: <span class="css">(color)</span> is identical to <span class="css">(color > 0)</span>,
 		indicating that the device is capable of displaying color at all. </div>
-   <div class="example" id="example-9591e2ed">
-    <a class="self-link" href="#example-9591e2ed"></a> Only some of the <a data-link-type="dfn" href="#media-feature" id="ref-for-media-feature②①">media features</a> that accept keywords are meaningful in a <a data-link-type="dfn" href="#boolean-context" id="ref-for-boolean-context②">boolean context</a>. 
+   <div class="example" id="example-ec07be25">
+    <a class="self-link" href="#example-ec07be25"></a> Only some of the <a data-link-type="dfn" href="#media-feature" id="ref-for-media-feature②①">media features</a> that accept keywords are meaningful in a <a data-link-type="dfn" href="#boolean-context" id="ref-for-boolean-context②">boolean context</a>. 
     <p>For example, <span class="css">(pointer)</span> is useful,
-		as <a class="property css" data-link-type="property">pointer</a> has a <a class="css" data-link-type="maybe" href="#valdef-media-pointer-none" id="ref-for-valdef-media-pointer-none">none</a> value to indicate there’s no pointing device at all on the device.
-		On the other hand, <span class="css">(scan)</span> is just always true or always false
+		as <a class="property css" data-link-type="property">pointer</a> has a <a class="css" data-link-type="maybe" href="#valdef-media-pointer-none" id="ref-for-valdef-media-pointer-none">none</a> value to indicate there’s no pointing device at all on the device.</p>
+    <p>Similarly, <span class="css">not (color-gamut)</span> can be useful to detect a very low-quality screen,
+		as such a device won’t match any of the <a class="property" data-link-type="propdesc" href="#descdef-media-color-gamut" id="ref-for-descdef-media-color-gamut">color-gamut</a> keywords;
+		even tho <span class="property" id="ref-for-descdef-media-color-gamut①">color-gamut</span> lacks a <span class="css">none</span> keyword,
+		it’ll still be false in a <a data-link-type="dfn" href="#boolean-context" id="ref-for-boolean-context③">boolean context</a> because none of its values match.</p>
+    <p>On the other hand, <span class="css">(scan)</span> is just always true or always false
 		(depending on whether it applies at all to the device),
-		as there’s no value that means “false”.</p>
+		as, if it applies at all,
+		the device is guaranteed to match at least one of its values.</p>
    </div>
    <h4 class="heading settled" data-level="2.4.3" id="mq-range-context"><span class="secno">2.4.3. </span><span class="content"> Evaluating Media Features in a Range Context</span><a class="self-link" href="#mq-range-context"></a></h4>
    <p><a data-link-type="dfn" href="#media-feature" id="ref-for-media-feature②②">Media features</a> with a “range” type can be alternately written in a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="range-context">range context</dfn> that takes advantage of the fact that their values are ordered,
@@ -1829,7 +1834,7 @@ matches the media type of the device where the user agent is running, and</p>
 		and so doesn’t accept the prefixes.
 		(Even though the <span class="property" id="ref-for-descdef-media-grid②">grid</span> <span id="ref-for-media-feature②⑦">media feature</span> appears to be numeric,
 		as it accepts the values <span class="css">0</span> and <span class="css">1</span>.) </div>
-   <p>Attempting to evaluate a min/max prefixed <a data-link-type="dfn" href="#media-feature" id="ref-for-media-feature②⑧">media feature</a> in a <a data-link-type="dfn" href="#boolean-context" id="ref-for-boolean-context③">boolean context</a> is invalid and a syntax error.</p>
+   <p>Attempting to evaluate a min/max prefixed <a data-link-type="dfn" href="#media-feature" id="ref-for-media-feature②⑧">media feature</a> in a <a data-link-type="dfn" href="#boolean-context" id="ref-for-boolean-context④">boolean context</a> is invalid and a syntax error.</p>
    <h3 class="heading settled" data-level="2.5" id="media-conditions"><span class="secno">2.5. </span><span class="content">Combining Media Features</span><a class="self-link" href="#media-conditions"></a></h3>
    <p>Multiple <a data-link-type="dfn" href="#media-feature" id="ref-for-media-feature②⑨">media features</a> can be combined together into a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="media-condition">media condition</dfn> using full boolean algebra
 	(not, and, or).</p>
@@ -2423,7 +2428,7 @@ it must instead be written as <span class="css">not ((color) or (hover))</span> 
 		the <a class="property" data-link-type="propdesc" href="#descdef-media-color" id="ref-for-descdef-media-color⑥">color</a> media feature will have a value of 2. </div>
    <p>In a device with indexed colors,
 	the minimum number of bits per color component in the lookup table is used.</p>
-   <p class="note" role="note"><span>Note:</span> The described functionality is only able to describe color capabilities at a superficial level. <a class="property" data-link-type="propdesc" href="#descdef-media-color-gamut" id="ref-for-descdef-media-color-gamut">color-gamut</a>, is generally more relevant to authors’ needs.
+   <p class="note" role="note"><span>Note:</span> The described functionality is only able to describe color capabilities at a superficial level. <a class="property" data-link-type="propdesc" href="#descdef-media-color-gamut" id="ref-for-descdef-media-color-gamut②">color-gamut</a>, is generally more relevant to authors’ needs.
 	If further functionality is required,
 	RFC2879 <a data-link-type="biblio" href="#biblio-rfc2879">[RFC2879]</a> provides more specific media features which may be supported at a later stage.</p>
    <h3 class="heading settled" data-level="6.2" id="color-index"><span class="secno">6.2. </span><span class="content"> Paletted Color Screens: the <a class="property css" data-link-type="property">color-index</a> feature</span><a class="self-link" href="#color-index"></a></h3>
@@ -3770,7 +3775,7 @@ Syntax</a>
       <td>
       <td>range
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-media-color-gamut" id="ref-for-descdef-media-color-gamut①">color-gamut</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-media-color-gamut" id="ref-for-descdef-media-color-gamut③">color-gamut</a>
       <td>srgb | p3 | rec2020
       <td>
       <td>discrete
@@ -4048,8 +4053,8 @@ Hover Capability: the hover feature</a>
     <li><a href="#ref-for-boolean-context">2.4. 
 Media Features</a>
     <li><a href="#ref-for-boolean-context①">2.4.2. 
-Evaluating Media Features in a Boolean Context</a> <a href="#ref-for-boolean-context②">(2)</a>
-    <li><a href="#ref-for-boolean-context③">2.4.4. 
+Evaluating Media Features in a Boolean Context</a> <a href="#ref-for-boolean-context②">(2)</a> <a href="#ref-for-boolean-context③">(3)</a>
+    <li><a href="#ref-for-boolean-context④">2.4.4. 
 Using “min-” and “max-” Prefixes On Range Features</a>
    </ul>
   </aside>
@@ -4452,7 +4457,9 @@ Monochrome Screens: the monochrome feature</a>
   <aside class="dfn-panel" data-for="descdef-media-color-gamut">
    <b><a href="#descdef-media-color-gamut">#descdef-media-color-gamut</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-descdef-media-color-gamut">6.1. 
+    <li><a href="#ref-for-descdef-media-color-gamut">2.4.2. 
+Evaluating Media Features in a Boolean Context</a> <a href="#ref-for-descdef-media-color-gamut①">(2)</a>
+    <li><a href="#ref-for-descdef-media-color-gamut②">6.1. 
 Color Depth: the color feature</a>
    </ul>
   </aside>

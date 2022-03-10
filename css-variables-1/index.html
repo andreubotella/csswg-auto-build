@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-variables-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="6ee32fe72913fc58337eebd5b8c726d82f77986e" name="document-revision">
+  <meta content="b6dd5d9030d1645c64b3c9845760334f742dbdad" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-variables-1_dev/css-variables-1"></script>
 <style>/* style-autolinks */
 
@@ -1030,8 +1030,8 @@ on screen, on paper, etc.
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-variables/css-vars-custom-property-case-sensitive-001.html" title="css/css-variables/css-vars-custom-property-case-sensitive-001.html">css-vars-custom-property-case-sensitive-001.html</a> <a class="wpt-live" href="http://wpt.live/css/css-variables/css-vars-custom-property-case-sensitive-001.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-variables/css-vars-custom-property-case-sensitive-001.html"><small>(source)</small></a>
     </ul>
    </details>
-   <div class="example" id="example-5c07814c">
-    <a class="self-link" href="#example-5c07814c"></a> While both <a class="property css" data-link-type="property">--foo</a> and <span class="property">--FOO</span> are valid,
+   <div class="example" id="example-a71a0c0c">
+    <a class="self-link" href="#example-a71a0c0c"></a> While both <a class="property css" data-link-type="property">--foo</a> and <span class="property">--FOO</span> are valid,
 		they are distinct properties —<wbr>using <span class="css">var(--foo)</span> will refer to the first one,
 		while using <span class="css">var(--FOO)</span> will refer to the second. 
     <p>Perhaps more surprisingly, <span class="css">--foó</span> and <span class="css">--foó</span> are distinct properties.
@@ -1040,8 +1040,37 @@ on screen, on paper, etc.
 		and the "<a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-is" id="ref-for-string-is①">identical to</a>" relation uses direct codepoint-by-codepoint comparison
 		to determine if two strings are equal,
 		to avoid the complexities and pitfalls of unicode normalization and locale-specific collation.</p>
-    <p>Different OSes or input methods can sometimes output visually-identical text with different codepoints,
-		so authors should be aware of this potential hazard.</p>
+   </div>
+   <p>Operating systems, keyboards, or input methods
+	sometimes encode visually-identical text
+	using different codepoint sequences.
+	Authors are advised to choose variable names
+	that avoid potential confusion
+	or to use escapes and other means
+	to ensure that similar appearing sequences are identical.
+	See Section 2.3 in <a data-link-type="biblio" href="#biblio-charmod-norm">[CHARMOD-NORM]</a> for examples.</p>
+   <div class="example" id="example-120efb12">
+    <a class="self-link" href="#example-120efb12"></a> Developers maintaining the following CSS
+		might be confused why the test patch is red: 
+<pre class="highlight"><c- k>--fijord</c-><c- p>:</c-> red<c- p>;</c->
+<c- k>--fĳord</c-><c- p>:</c-> green<c- p>;</c->
+<c- k>--ﬁjord</c-><c- p>:</c-> blue<c- p>;</c->
+
+.test <c- p>{</c->
+  <c- k>background-color</c-><c- p>:</c-> <c- nf>var</c-><c- p>(</c->--fijord<c- p>);</c->
+<c- p>}</c->
+</pre>
+    <p>The reason is that the first custom property
+		uses the character sequence
+		LATIN SMALL LETTER F + LATIN SMALL LETTER I + LATIN SMALL LETTER J;
+		the second, identical-looking one
+		uses the character sequence
+		LATIN SMALL LETTER F + LATIN SMALL LIGATURE IJ
+		while the third
+		uses the character sequence
+		LATIN SMALL LIGATURE FI + LATIN SMALL LETTER J.</p>
+    <p>So the CSS contains three distinct custom properties,
+		two of which are unused.</p>
    </div>
    <p>Custom properties are <strong>not</strong> reset by the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#propdef-all" id="ref-for-propdef-all">all</a> property. <span class="note">We may define a property in the future that resets all variables.</span></p>
    <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-values-4/#css-wide-keywords" id="ref-for-css-wide-keywords①">CSS-wide keywords</a> can be used in custom properties,
@@ -1154,13 +1183,13 @@ div <c- p>{</c-> <c- k>--color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
 &lt;/div>
 </pre>
    </div>
-   <div class="example" id="example-658ebee9">
-    <a class="self-link" href="#example-658ebee9"></a> A real-world example of <a data-link-type="dfn" href="#custom-property" id="ref-for-custom-property⑧">custom property</a> usage
+   <div class="example" id="example-8f013eba">
+    <a class="self-link" href="#example-8f013eba"></a> A real-world example of <a data-link-type="dfn" href="#custom-property" id="ref-for-custom-property⑧">custom property</a> usage
 		is easily separating out strings from where they’re used,
 		to aid in maintenance of internationalization: 
 <pre class="lang-css highlight">:root<c- p>,</c->
 :root<c- nf>:lang</c-><c- p>(</c->en<c- p>)</c-> <c- p>{</c-><c- k>--external-link</c-><c- p>:</c-> <c- s>"external link"</c-><c- p>;}</c->
-:root<c- nf>:lang</c-><c- p>(</c->de<c- p>)</c-> <c- p>{</c-><c- k>--external-link</c-><c- p>:</c-> <c- s>"externer Link"</c-><c- p>;}</c->
+:root<c- nf>:lang</c-><c- p>(</c->el<c- p>)</c-> <c- p>{</c-><c- k>--external-link</c-><c- p>:</c-> <c- s>"εξωτερικός σύνδεσμος"</c-><c- p>;}</c->
 
 a<c- p>[</c->href^=<c- s>"http"</c-><c- p>]</c->::after <c- p>{</c-><c- k>content</c-><c- p>:</c-> <c- s>" ("</c-> <c- nf>var</c-><c- p>(</c->--external-link<c- p>)</c-> <c- s>")"</c-><c- p>}</c->
 </pre>
@@ -1866,7 +1895,9 @@ p <c- p>{</c-> <c- k>background-color</c-><c- p>:</c-> <c- nf>var</c-><c- p>(</c
 	The sort of text transformation that automatic camel-casing performs is incompatible with this.
 	They can still be accessed by their proper name via <a class="idl-code" data-link-type="method" href="https://andreubotella.com/csswg-auto-build/cssom-1/#dom-cssstyledeclaration-getpropertyvalue" id="ref-for-dom-cssstyledeclaration-getpropertyvalue">getPropertyValue()</a>/etc.</p>
    <h3 class="heading settled" data-level="4.1" id="serializing-custom-props"><span class="secno">4.1. </span><span class="content"> Serializing Custom Properties</span><a class="self-link" href="#serializing-custom-props"></a></h3>
-   <p>Custom property names must be serialized with the casing as provided by the author.</p>
+   <p>Custom property names must be serialized
+	as the exact code point sequence provided by the author,
+	including not altering the case.</p>
    <p class="note" role="note"><span>Note:</span> For non-custom properties,
 	property names are restricted to the ASCII range and are <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive②">ASCII case-insensitive</a>,
 	so implementations typically serialize the name lowercased.</p>
@@ -2515,6 +2546,8 @@ Using Cascading Variables: the var() notation</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-charmod-norm">[CHARMOD-NORM]
+   <dd>Addison Phillips; et al. <a href="https://www.w3.org/TR/charmod-norm/"><cite>Character Model for the World Wide Web: String Matching</cite></a>. 11 August 2021. NOTE. URL: <a href="https://www.w3.org/TR/charmod-norm/">https://www.w3.org/TR/charmod-norm/</a>
    <dt id="biblio-css-backgrounds-3">[CSS-BACKGROUNDS-3]
    <dd>Bert Bos; Elika Etemad; Brad Kemper. <a href="https://www.w3.org/TR/css-backgrounds-3/"><cite>CSS Backgrounds and Borders Module Level 3</cite></a>. 26 July 2021. CR. URL: <a href="https://www.w3.org/TR/css-backgrounds-3/">https://www.w3.org/TR/css-backgrounds-3/</a>
    <dt id="biblio-css-box-4">[CSS-BOX-4]
