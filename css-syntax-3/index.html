@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-syntax-3/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="e680c3ed4999c65e19f6b1201b6ec4d9488002e0" name="document-revision">
+  <meta content="f1792dd1eb8762424bcbdbf4cc65cd11f486efdd" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-syntax-3_dev/css-syntax-3"></script>
 <style>
 			#serialization-tables th, #serialization-tables td {
@@ -2470,11 +2470,76 @@ and return the result.</p>
     <dd> A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-point" id="ref-for-code-point②⑧">code point</a> between U+0061 LATIN SMALL LETTER A (a) and U+007A LATIN SMALL LETTER Z (z) inclusive. 
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="letter">letter</dfn> 
     <dd> An <a data-link-type="dfn" href="#uppercase-letter" id="ref-for-uppercase-letter">uppercase letter</a> or a <a data-link-type="dfn" href="#lowercase-letter" id="ref-for-lowercase-letter">lowercase letter</a>. 
-    <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="non-ascii-code-point">non-ASCII code point</dfn> 
-    <dd> A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-point" id="ref-for-code-point②⑨">code point</a> with a value equal to or greater than U+0080 &lt;control>. 
+    <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="non-ascii-ident-code-point">non-ASCII ident code point</dfn> 
+    <dd>
+      A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-point" id="ref-for-code-point②⑨">code point</a> whose value is any of: 
+     <ul>
+      <li data-md>
+       <p>U+00B7</p>
+      <li data-md>
+       <p>between U+00C0 and U+00D6</p>
+      <li data-md>
+       <p>between U+00D8 and U+00F6</p>
+      <li data-md>
+       <p>between U+00F8 and U+037D</p>
+      <li data-md>
+       <p>between U+037F and U+1FFF</p>
+      <li data-md>
+       <p>U+200C</p>
+      <li data-md>
+       <p>U+200D</p>
+      <li data-md>
+       <p>U+203F</p>
+      <li data-md>
+       <p>U+2040</p>
+      <li data-md>
+       <p>between U+2070 and U+218F</p>
+      <li data-md>
+       <p>between U+2C00 and U+2FEF</p>
+      <li data-md>
+       <p>between U+3001 and U+D7FF</p>
+      <li data-md>
+       <p>between U+F900 and U+FDCF</p>
+      <li data-md>
+       <p>between U+FDF0 and U+FFFD</p>
+      <li data-md>
+       <p>greater than or equal to U+10000</p>
+     </ul>
+     <details class="note">
+      <summary>Why these character, specifically?</summary>
+      <p>This matches the list of non-ASCII codepoints
+				allowed to be used in HTML <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name" id="ref-for-valid-custom-element-name">valid custom element names</a>.
+				It excludes a number of characters that appear as whitespace,
+				or that can cause rendering or parsing issues in some tools,
+				such as the direction override codepoints.</p>
+      <p>Note that this is a weaker set of restrictions
+				than <a href="https://unicode.org/reports/tr31/#Figure_Code_Point_Categories_for_Identifier_Parsing">UAX 31</a> recommends for identifiers
+				(used by languages such as JavaScript to restrict their identifier syntax),
+				allowing things such as
+				starting an identifier with a combining character.
+				Consistency with HTML custom element names
+				(and thus, the ability to write selectors for all custom elements
+				without having to use escapes)
+				was considered valuable,
+				and the set of characters restricted by HTML
+				covers the "high value" restrictions well.</p>
+      <p>These restrictions do not avoid all possible confusing renderings;
+				mixing characters from LTR and RTL scripts
+				can still result in unexpected visual transposition
+				in most text editors,
+				for example.
+				Source text can contain the restricted characters in non-ident contexts, as well:
+				most of them are completely valid in strings, for example.
+				Even when used in a way that creates invalid CSS,
+				the parsing errors they cause might be limited to something unimportant,
+				while their effect on rendering the source text in code review tools
+				might be significant and/or malicious.
+				For more details on these sorts of "source text attacks",
+				see <a href="https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html">this Rust-lang blog post</a> <small><a href="https://web.archive.org/web/20220323175009/https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html">(archived)</a></small>.</p>
+     </details>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="ident-start code point | name-start code point" id="ident-start-code-point">ident-start code point<span id="name-start-code-point"></span><span id="identifier-start-code-point"></span></dfn> 
     <dd> A <a data-link-type="dfn" href="#letter" id="ref-for-letter">letter</a>,
-			a <a data-link-type="dfn" href="#non-ascii-code-point" id="ref-for-non-ascii-code-point">non-ASCII code point</a>,
+			a <a data-link-type="dfn" href="#non-ascii-ident-code-point" id="ref-for-non-ascii-ident-code-point">non-ASCII ident code point</a>,
 			or U+005F LOW LINE (_). 
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="ident-code-point">ident code point<span id="name-code-point"></span><span id="identifier-code-point"></span></dfn> 
     <dd> An <a data-link-type="dfn" href="#ident-start-code-point" id="ref-for-ident-start-code-point①">ident-start code point</a>,
@@ -5264,11 +5329,8 @@ The three call-sites of the algorithm were changed to use that form.</p>
     <li> Any U+0000 NULL <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-point" id="ref-for-code-point⑨⑤">code point</a> in the CSS source is replaced with U+FFFD REPLACEMENT CHARACTER. 
     <li> Any hexadecimal escape sequence such as <span class="css">\0</span> that evaluates to zero
 			produce U+FFFD REPLACEMENT CHARACTER rather than U+0000 NULL. 
-    <li> The definition of <a data-link-type="dfn" href="#non-ascii-code-point" id="ref-for-non-ascii-code-point①">non-ASCII code point</a> was changed
-			to be consistent with every definition of ASCII.
-			This affects <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#code-point" id="ref-for-code-point⑨⑥">code points</a> U+0080 to U+009F,
-			which are now <a data-link-type="dfn" href="#ident-code-point" id="ref-for-ident-code-point③">ident code points</a> rather than <a class="production css" data-link-type="type" href="#typedef-delim-token" id="ref-for-typedef-delim-token①⑧">&lt;delim-token></a>s,
-			like the rest of <span id="ref-for-non-ascii-code-point②">non-ASCII code points</span>. 
+    <li> The definition of <a data-link-type="dfn" href="#non-ascii-ident-code-point" id="ref-for-non-ascii-ident-code-point①">non-ASCII ident code point</a> was changed
+			to be consistent with HTML’s <a data-link-type="dfn">valid custom elements names</a>. 
     <li> Tokenization does not emit COMMENT or BAD_COMMENT tokens anymore.
 			BAD_COMMENT is now considered the same as a normal token (not an error). <a href="#serialization">Serialization</a> is responsible
 			for inserting comments as necessary between tokens that need to be separated,
@@ -5295,7 +5357,7 @@ The three call-sites of the algorithm were changed to use that form.</p>
     <li> The <a class="production css" data-link-type="type" href="#typedef-comma-token" id="ref-for-typedef-comma-token⑤">&lt;comma-token></a> has been added. 
     <li> <a class="production css" data-link-type="type" href="#typedef-number-token" id="ref-for-typedef-number-token①②">&lt;number-token></a>, <a class="production css" data-link-type="type" href="#typedef-percentage-token" id="ref-for-typedef-percentage-token④">&lt;percentage-token></a>, and <a class="production css" data-link-type="type" href="#typedef-dimension-token" id="ref-for-typedef-dimension-token①⑤">&lt;dimension-token></a> have been changed
 			to include the preceding +/- sign as part of their value
-			(rather than as a separate <a class="production css" data-link-type="type" href="#typedef-delim-token" id="ref-for-typedef-delim-token①⑨">&lt;delim-token></a> that needs to be manually handled every time the token is mentioned in other specs).
+			(rather than as a separate <a class="production css" data-link-type="type" href="#typedef-delim-token" id="ref-for-typedef-delim-token①⑧">&lt;delim-token></a> that needs to be manually handled every time the token is mentioned in other specs).
 			The only consequence of this is that comments can no longer be inserted between the sign and the number. 
     <li> Scientific notation is supported for numbers/percentages/dimensions to match SVG,
 			per WG resolution. 
@@ -5528,7 +5590,7 @@ The three call-sites of the algorithm were changed to use that form.</p>
    <li><a href="#newline">newline</a><span>, in § 4.2</span>
    <li><a href="#next-input-code-point">next input code point</a><span>, in § 4.2</span>
    <li><a href="#next-input-token">next input token</a><span>, in § 5.2</span>
-   <li><a href="#non-ascii-code-point">non-ASCII code point</a><span>, in § 4.2</span>
+   <li><a href="#non-ascii-ident-code-point">non-ASCII ident code point</a><span>, in § 4.2</span>
    <li><a href="#non-printable-code-point">non-printable code point</a><span>, in § 4.2</span>
    <li><a href="#normalize-into-a-token-stream">normalize</a><span>, in § 5.3</span>
    <li><a href="#normalize-into-a-token-stream">normalize into a token stream</a><span>, in § 5.3</span>
@@ -5918,6 +5980,13 @@ Description of CSS’s Syntax</a>
 Parse A Comma-Separated List According To A CSS Grammar</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-valid-custom-element-name">
+   <a href="https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name">https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valid-custom-element-name">4.2. 
+Definitions</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-ascii-case-insensitive">
    <a href="https://infra.spec.whatwg.org/#ascii-case-insensitive">https://infra.spec.whatwg.org/#ascii-case-insensitive</a><b>Referenced in:</b>
    <ul>
@@ -5987,7 +6056,7 @@ The &lt;urange> type</a> <a href="#ref-for-code-point⑦⑨">(2)</a> <a href="#r
     <li><a href="#ref-for-code-point⑨④">8. 
 Defining Grammars for Rules and Other Values</a>
     <li><a href="#ref-for-code-point⑨⑤">12.5. 
-Changes from CSS 2.1 and Selectors Level 3</a> <a href="#ref-for-code-point⑨⑥">(2)</a>
+Changes from CSS 2.1 and Selectors Level 3</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-list-extend">
@@ -6229,6 +6298,7 @@ Changes from the 16 August 2019 Candidate Recommendation</a>
      <li><span class="dfn-paneled" id="term-for-the-a-element">a</span>
      <li><span class="dfn-paneled" id="term-for-the-p-element">p</span>
      <li><span class="dfn-paneled" id="term-for-attr-img-sizes">sizes</span>
+     <li><span class="dfn-paneled" id="term-for-valid-custom-element-name">valid custom element name</span>
     </ul>
    <li>
     <a data-link-type="biblio">[INFRA]</a> defines the following terms:
@@ -6609,7 +6679,7 @@ Serialization</a> <a href="#ref-for-typedef-delim-token①⑥">(2)</a>
     <li><a href="#ref-for-typedef-delim-token①⑦">12.2. 
 Changes from the 20 February 2014 Candidate Recommendation</a>
     <li><a href="#ref-for-typedef-delim-token①⑧">12.5. 
-Changes from CSS 2.1 and Selectors Level 3</a> <a href="#ref-for-typedef-delim-token①⑨">(2)</a>
+Changes from CSS 2.1 and Selectors Level 3</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-number-token">
@@ -6981,13 +7051,13 @@ Definitions</a>
 Definitions</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="non-ascii-code-point">
-   <b><a href="#non-ascii-code-point">#non-ascii-code-point</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="non-ascii-ident-code-point">
+   <b><a href="#non-ascii-ident-code-point">#non-ascii-ident-code-point</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-non-ascii-code-point">4.2. 
+    <li><a href="#ref-for-non-ascii-ident-code-point">4.2. 
 Definitions</a>
-    <li><a href="#ref-for-non-ascii-code-point①">12.5. 
-Changes from CSS 2.1 and Selectors Level 3</a> <a href="#ref-for-non-ascii-code-point②">(2)</a>
+    <li><a href="#ref-for-non-ascii-ident-code-point①">12.5. 
+Changes from CSS 2.1 and Selectors Level 3</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="ident-start-code-point">
@@ -7012,8 +7082,6 @@ Description of CSS’s Syntax</a>
 Consume a token</a>
     <li><a href="#ref-for-ident-code-point②">4.3.11. 
 Consume an ident sequence</a>
-    <li><a href="#ref-for-ident-code-point③">12.5. 
-Changes from CSS 2.1 and Selectors Level 3</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="non-printable-code-point">
