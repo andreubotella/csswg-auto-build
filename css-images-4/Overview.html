@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-images-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fc4a63a81bdefd266dcc7f5c1da562b3d96d8d9c" name="document-revision">
+  <meta content="4cedeedb478f620b39f36ca85e13563ba8b71f21" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -876,7 +876,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Images Module Level 4</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-03-25">25 March 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-03-26">26 March 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2594,21 +2594,26 @@ similar to <a class="css" data-link-type="maybe" href="#valdef-object-view-box-n
 the element is now treated as having <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-size" id="ref-for-natural-size②">natural sizes</a> equal to the view box’s width and height.
 If the element had a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-aspect-ratio" id="ref-for-natural-aspect-ratio">natural aspect ratio</a>,
 it’s now treated as instead having the same ratio as the view box.
-(Notably, <a class="property css" data-link-type="property" href="#propdef-object-fit" id="ref-for-propdef-object-fit">object-fit</a>, <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-images-3/#propdef-object-position" id="ref-for-propdef-object-position">object-position</a>,
-and the resolution of the element’s own size in layout
-all use the view box’s size instead.)</p>
+Further adjustments to the size/position of the element’s contents,
+such as <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-images-3/#propdef-object-position" id="ref-for-propdef-object-position">object-position</a> or <a class="property css" data-link-type="property" href="#propdef-object-fit" id="ref-for-propdef-object-fit">object-fit</a>,
+are similarly performed on the view box instead.</p>
      <p>When the element is painted,
 its contents are scaled and translated
-such that the portion of the element originally covered by the view box
-(relative to its original <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-size" id="ref-for-natural-size③">natural sizes</a>)
-exactly fills the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size⑨">concrete object size</a> determined for it.</p>
+such that the element’s contents
+retain the same position and size,
+relative to the view box’s final size and position,
+that they had when the view box was determined (above).</p>
+     <p class="issue" id="issue-61524b01"><a class="self-link" href="#issue-61524b01"></a> Have not yet defined what happens if the view box is zero-area.
+It’s an error case,
+so precise behavior isn’t important;
+just need to see what impls want to do about it.</p>
    </dl>
    <p class="note" role="note"><span>Note:</span> Some replaced elements might have a built-in notion of a "view box",
 	such as the <code class="highlight"><a data-link-type="element" href="https://svgwg.org/svg2-draft/struct.html#elementdef-svg" id="ref-for-elementdef-svg">svg</a></code> element.
 	Unless otherwise specified,
 	this property does not interact with such notions;
 	the built-in notion has its effect as normal,
-	producing a replaced element with <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-size" id="ref-for-natural-size④">natural sizes</a>,
+	producing a replaced element with <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-size" id="ref-for-natural-size③">natural sizes</a>,
 	then this property applies on top of that.</p>
    <div class="example" id="example-f39e984a"><a class="self-link" href="#example-f39e984a"></a> Issue: example here. Need a basic one showing off zooming in, one showing off zooming out, and one showing off interaction with object-fit to display how the parts outside the viewbox can still be painted. </div>
    <h3 class="heading settled" data-level="5.2" id="the-object-fit"><span class="secno">5.2. </span><span class="content">Sizing Objects: the <a class="property css" data-link-type="property" href="#propdef-object-fit" id="ref-for-propdef-object-fit①">object-fit</a> property</span><a class="self-link" href="#the-object-fit"></a></h3>
@@ -2647,27 +2652,27 @@ exactly fills the <a data-link-type="dfn" href="https://andreubotella.com/csswg-
    <dl>
     <dt><dfn class="css" data-dfn-for="object-fit" data-dfn-type="value" data-export id="valdef-object-fit-fill">fill<a class="self-link" href="#valdef-object-fit-fill"></a></dfn> 
     <dd> The replaced content is sized to fill the element’s content box:
-			the object’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①⓪">concrete object size</a> is the element’s used width and height. 
+			the object’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size⑨">concrete object size</a> is the element’s used width and height. 
     <dt><dfn class="dfn-paneled css" data-dfn-for="object-fit" data-dfn-type="value" data-export id="valdef-object-fit-none">none</dfn> 
     <dd> The replaced content is not resized to fit inside the element’s content box:
-			determine the object’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①①">concrete object size</a> using the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#default-sizing-algorithm" id="ref-for-default-sizing-algorithm">default sizing algorithm</a> with no specified size,
+			determine the object’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①⓪">concrete object size</a> using the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#default-sizing-algorithm" id="ref-for-default-sizing-algorithm">default sizing algorithm</a> with no specified size,
 			and a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#default-object-size" id="ref-for-default-object-size①">default object size</a> equal to the replaced element’s used width and height. 
     <dt><dfn class="dfn-paneled css" data-dfn-for="object-fit" data-dfn-type="value" data-export id="valdef-object-fit-contain">contain</dfn> 
     <dd>
       The replaced content is sized to maintain its aspect ratio
 			while fitting within the element’s content box:
-			its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①②">concrete object size</a> is resolved as a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#contain-constraint" id="ref-for-contain-constraint">contain constraint</a> against the element’s used width and height. 
+			its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①①">concrete object size</a> is resolved as a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#contain-constraint" id="ref-for-contain-constraint">contain constraint</a> against the element’s used width and height. 
      <p>If the <a class="css" data-link-type="maybe" href="#valdef-object-fit-scale-down" id="ref-for-valdef-object-fit-scale-down">scale-down</a> flag is used, size the content as if <a class="css" data-link-type="maybe" href="#valdef-object-fit-none" id="ref-for-valdef-object-fit-none">none</a> or <a class="css" data-link-type="maybe" href="#valdef-object-fit-contain" id="ref-for-valdef-object-fit-contain">contain</a> were specified,
-			whichever would result in a smaller <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①③">concrete object size</a>.</p>
+			whichever would result in a smaller <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①②">concrete object size</a>.</p>
      <p class="note" role="note"><span>Note:</span> Both <a class="css" data-link-type="maybe" href="#valdef-object-fit-none" id="ref-for-valdef-object-fit-none①">none</a> and <a class="css" data-link-type="maybe" href="#valdef-object-fit-contain" id="ref-for-valdef-object-fit-contain①">contain</a> respect the content’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-aspect-ratio" id="ref-for-natural-aspect-ratio①">natural aspect ratio</a>,
 			so the concept of "smaller" is well-defined.</p>
     <dt><dfn class="dfn-paneled css" data-dfn-for="object-fit" data-dfn-type="value" data-export id="valdef-object-fit-cover">cover</dfn> 
     <dd>
       The replaced content is sized to maintain its aspect ratio
 			while filling the element’s entire content box:
-			its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①④">concrete object size</a> is resolved as a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#cover-constraint" id="ref-for-cover-constraint">cover constraint</a> against the element’s used width and height. 
+			its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①③">concrete object size</a> is resolved as a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#cover-constraint" id="ref-for-cover-constraint">cover constraint</a> against the element’s used width and height. 
      <p>If the <a class="css" data-link-type="maybe" href="#valdef-object-fit-scale-down" id="ref-for-valdef-object-fit-scale-down①">scale-down</a> flag is used, size the content as if <a class="css" data-link-type="maybe" href="#valdef-object-fit-none" id="ref-for-valdef-object-fit-none②">none</a> or <a class="css" data-link-type="maybe" href="#valdef-object-fit-cover" id="ref-for-valdef-object-fit-cover">cover</a> were specified,
-			whichever would result in a smaller <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①⑤">concrete object size</a>.</p>
+			whichever would result in a smaller <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①④">concrete object size</a>.</p>
      <p class="note" role="note"><span>Note:</span> Both <a class="css" data-link-type="maybe" href="#valdef-object-fit-none" id="ref-for-valdef-object-fit-none③">none</a> and <a class="css" data-link-type="maybe" href="#valdef-object-fit-cover" id="ref-for-valdef-object-fit-cover①">cover</a> respect the content’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-aspect-ratio" id="ref-for-natural-aspect-ratio②">natural aspect ratio</a>,
 			so the concept of "smaller" is well-defined.</p>
     <dt><dfn class="dfn-paneled css" data-dfn-for="object-fit" data-dfn-type="value" data-export id="valdef-object-fit-scale-down">scale-down</dfn> 
@@ -2690,7 +2695,7 @@ exactly fills the <a data-link-type="dfn" href="https://andreubotella.com/csswg-
 	the <code class="highlight">fit</code> attribute in <a data-link-type="biblio" href="#biblio-smil10">[SMIL10]</a> and the <a class="production css" data-link-type="type">&lt;meetOrSlice></a> parameter
 	on the <a href="https://www.w3.org/TR/SVG11/coords.html#PreserveAspectRatioAttribute"><code class="highlight">preserveAspectRatio</code> attribute</a> in <a data-link-type="biblio" href="#biblio-svg11">[SVG11]</a>.</p>
    <p class="note" role="note"><span>Note:</span> Per the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#object-size-negotiation" id="ref-for-object-size-negotiation①">object size negotiation</a> algorithm,
-	the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①⑥">concrete object size</a> (or, in this case, the size of the content)
+	the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-images-3/#concrete-object-size" id="ref-for-concrete-object-size①⑤">concrete object size</a> (or, in this case, the size of the content)
 	does not directly scale the object itself -
 	it is merely passed to the object as information about the size of the visible canvas.
 	How to then draw into that size is up to the image format.
@@ -3665,8 +3670,7 @@ conic-gradient() Syntax</a>
 Paint Sources</a> <a href="#ref-for-concrete-object-size③">(2)</a> <a href="#ref-for-concrete-object-size④">(3)</a> <a href="#ref-for-concrete-object-size⑤">(4)</a> <a href="#ref-for-concrete-object-size⑥">(5)</a> <a href="#ref-for-concrete-object-size⑦">(6)</a>
     <li><a href="#ref-for-concrete-object-size⑧">3. 
 Gradients</a>
-    <li><a href="#ref-for-concrete-object-size⑨">5.1. Setting The Viewbox: the object-view-box property</a>
-    <li><a href="#ref-for-concrete-object-size①⓪">5.2. Sizing Objects: the object-fit property</a> <a href="#ref-for-concrete-object-size①①">(2)</a> <a href="#ref-for-concrete-object-size①②">(3)</a> <a href="#ref-for-concrete-object-size①③">(4)</a> <a href="#ref-for-concrete-object-size①④">(5)</a> <a href="#ref-for-concrete-object-size①⑤">(6)</a> <a href="#ref-for-concrete-object-size①⑥">(7)</a>
+    <li><a href="#ref-for-concrete-object-size⑨">5.2. Sizing Objects: the object-fit property</a> <a href="#ref-for-concrete-object-size①⓪">(2)</a> <a href="#ref-for-concrete-object-size①①">(3)</a> <a href="#ref-for-concrete-object-size①②">(4)</a> <a href="#ref-for-concrete-object-size①③">(5)</a> <a href="#ref-for-concrete-object-size①④">(6)</a> <a href="#ref-for-concrete-object-size①⑤">(7)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-contain-constraint">
@@ -3731,7 +3735,7 @@ Gradients</a>
    <a href="https://andreubotella.com/csswg-auto-build/css-images-3/#natural-size">https://andreubotella.com/csswg-auto-build/css-images-3/#natural-size</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-natural-size">2.7. Using Elements as Images: the element() notation</a>
-    <li><a href="#ref-for-natural-size①">5.1. Setting The Viewbox: the object-view-box property</a> <a href="#ref-for-natural-size②">(2)</a> <a href="#ref-for-natural-size③">(3)</a> <a href="#ref-for-natural-size④">(4)</a>
+    <li><a href="#ref-for-natural-size①">5.1. Setting The Viewbox: the object-view-box property</a> <a href="#ref-for-natural-size②">(2)</a> <a href="#ref-for-natural-size③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-natural-width">
@@ -4223,6 +4227,10 @@ Using Out-Of-Document Sources: the ElementSources interface</a>
    <div class="issue"> <a href="https://github.com/w3c/csswg-drafts/issues/2532">Per WG resolution</a>,
 	define the <span class="css">stripes()</span> function
 	which creates a 1D image for use in borders/outlines. <a class="issue-return" href="#issue-34ec5a23" title="Jump to section">↵</a></div>
+   <div class="issue"> Have not yet defined what happens if the view box is zero-area.
+It’s an error case,
+so precise behavior isn’t important;
+just need to see what impls want to do about it. <a class="issue-return" href="#issue-61524b01" title="Jump to section">↵</a></div>
    <div class="issue"> The <a class="css" data-link-type="maybe" href="#funcdef-image-set">image-set()</a> notation can alter the <a data-link-type="dfn" href="#--natural-resolution">natural resolution</a> of an image,
 	which ideally would be automatically honored without having to set this property.
 	How should we best address this?
