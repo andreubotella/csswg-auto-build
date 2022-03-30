@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-cascade-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="8ae210fa70aa6eef96d699856cf40d00cf5a8a37" name="document-revision">
+  <meta content="da6ea99ffc4eef471e806c8059345249b51607d4" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -827,7 +827,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Cascading and Inheritance Level 5</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-03-29">29 March 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-03-30">30 March 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1653,7 +1653,7 @@ the type is treated as <code>text/css</code>.</p>
 	and outputs a single <a data-link-type="dfn" href="#cascaded-value" id="ref-for-cascaded-value⑧">cascaded value</a>.</p>
    <h3 class="heading settled" data-level="6.1" id="cascade-sort"><span class="secno">6.1. </span><span class="content"> Cascade Sorting Order</span><a class="self-link" href="#cascade-sort"></a></h3>
    <p>The cascade sorts declarations according to the following criteria,
-	in descending order of priority:</p>
+	in descending order of precedence:</p>
    <dl>
     <dt id="cascade-origin"><a class="self-link" href="#cascade-origin"></a>Origin and Importance 
     <dd>
@@ -1704,12 +1704,13 @@ the type is treated as <code>text/css</code>.</p>
 			For the purpose of this step,
 			any declaration not assigned to an explicit layer
 			is added to an implicit final layer. 
-     <p>Cascade layers (like declarations) are ordered by order of appearance.
+     <p>Cascade layers (like declarations) are sorted by order of appearance,
+			see <a href="#layer-ordering">§ 6.4.3 Layer Ordering</a>.
 			When comparing declarations that belong to different layers,
-			then for <a data-link-type="dfn" href="#normal" id="ref-for-normal⑥">normal</a> rules the declaration whose <a data-link-type="dfn" href="#cascade-layers" id="ref-for-cascade-layers④">cascade layer</a> is last wins,
-			and for <a data-link-type="dfn" href="#important" id="ref-for-important⑧">important</a> rules the declaration whose <span id="ref-for-cascade-layers⑤">cascade layer</span> is first wins.</p>
-     <p class="note" role="note"><span>Note:</span> This follows the same logic used for layering <a data-link-type="dfn" href="#normal" id="ref-for-normal⑦">normal</a> and <a data-link-type="dfn" href="#important" id="ref-for-important⑨">important</a> <a data-link-type="dfn" href="#origin" id="ref-for-origin⑦">origins</a>,
-			so that the <span class="css">!important</span> flag maintains the same “override” purpose in both settings.</p>
+			then for <a data-link-type="dfn" href="#normal" id="ref-for-normal⑥">normal</a> rules the declaration whose <a data-link-type="dfn" href="#cascade-layers" id="ref-for-cascade-layers④">cascade layer</a> is latest in the layer order wins,
+			and for <a data-link-type="dfn" href="#important" id="ref-for-important⑧">important</a> rules the declaration whose <span id="ref-for-cascade-layers⑤">cascade layer</span> is earliest wins.</p>
+     <p class="note" role="note"><span>Note:</span> This follows the same logic used for precedence of <a data-link-type="dfn" href="#normal" id="ref-for-normal⑦">normal</a> and <a data-link-type="dfn" href="#important" id="ref-for-important⑨">important</a> <a data-link-type="dfn" href="#origin" id="ref-for-origin⑦">origins</a>,
+			thus the <span class="css">!important</span> flag maintains the same “override” purpose in both settings.</p>
     <dt id="cascade-specificity"><a class="self-link" href="#cascade-specificity"></a>Specificity 
     <dd> The <a href="https://www.w3.org/TR/selectors/#specificity">Selectors module</a> <a data-link-type="biblio" href="#biblio-select">[SELECT]</a> describes how to compute the specificity of a selector.
 			Each declaration has the same specificity as the style rule it appears in.
@@ -1852,9 +1853,9 @@ p <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>24</c-><c- k>pt</c-> <c- p
 	overrides, and other styling concerns—<wbr>and are able to re-order the cascade of layers in an explicit way,
 	without altering selectors or specificity within each layer,
 	or relying on order of appearance to resolve conflicts across layers.</p>
-   <div class="example" id="example-fa3af36f">
-    <a class="self-link" href="#example-fa3af36f"></a> For example, the following generates an explicit <span class="css">reset</span> layer,
-		with lower cascade weight than any unlayered styles: 
+   <div class="example" id="example-1f8b89d6">
+    <a class="self-link" href="#example-1f8b89d6"></a> For example, the following generates an explicit <span class="css">reset</span> layer,
+		with lower cascade precedence than any unlayered styles: 
 <pre class="lang-css highlight">audio <c- p>{</c->
   <c- c>/* specificity of 0,0,1 - implicit (final) layer */</c->
   display: flex<c- p>;</c->
@@ -1868,14 +1869,14 @@ p <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>24</c-><c- k>pt</c-> <c- p
 <c- p>}</c->
 </pre>
     <p>The unlayered declarations on the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/media.html#audio" id="ref-for-audio">audio</a></code> element take precedence
-		over the explicitly layered declarations on <code>audio[controls]</code> —<wbr>even though the unlayered styles have a lower specificity,
+		over the explicitly layered declarations on <code>audio[controls]</code>—<wbr>even though the unlayered styles have a lower specificity,
 		and come first in the order of appearance.</p>
    </div>
    <p>Name-defining <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#at-rule" id="ref-for-at-rule">at-rules</a> such as <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes">@keyframes</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule">@font-face</a> that are defined inside <a data-link-type="dfn" href="#cascade-layers" id="ref-for-cascade-layers⑦">cascade layers</a> also use the layer order when resolving name collisions.</p>
-   <div class="example" id="example-3ebc99c8">
-    <a class="self-link" href="#example-3ebc99c8"></a> For example,
+   <div class="example" id="example-14540e6d">
+    <a class="self-link" href="#example-14540e6d"></a> For example,
 		authors could override the animation from a framework,
-		by providing keyframes with the same name in a higher-priority layer: 
+		by providing keyframes with the same name in a higher-precedence layer: 
 <pre class="lang-css highlight"><c- c>/* establish the layer order, so the "override" layer takes precedence */</c->
 <c- n>@layer</c-> framework<c- p>,</c-> override<c- p>;</c->
 
@@ -1896,7 +1897,7 @@ p <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>24</c-><c- k>pt</c-> <c- p
 .sidebar <c- p>{</c-> <c- k>animation</c-><c- p>:</c-> slide-left <c- m>300</c-><c- k>ms</c-><c- p>;</c-> <c- p>}</c->
 </pre>
     <p>In this case the <span class="css">override</span> layer
-		has a higher cascade priority than the <span class="css">framework</span> layer,
+		has a higher cascade precedence than the <span class="css">framework</span> layer,
 		so <code>slide-left</code> will animate
 		using the <code>translate</code> property rather than <code>margin-left</code>.</p>
    </div>
@@ -2083,10 +2084,11 @@ because they have distinct anonymous parent layers.</p>
    <h4 class="heading settled" data-level="6.4.3" id="layer-ordering"><span class="secno">6.4.3. </span><span class="content"> Layer Ordering</span><a class="self-link" href="#layer-ordering"></a></h4>
    <p>Cascade layers are sorted
 	by the order in which they first are declared,
-	with nested layers grouped within their parent layers
-	before any unlayered rules.</p>
-   <div class="example" id="example-ffb1a154">
-    <a class="self-link" href="#example-ffb1a154"></a> Given the following layer rules: 
+	with nested layers grouped within their parent layer.
+	Unlayered rules are sorted later than
+	any layered rules within the same parent layer (if any).</p>
+   <div class="example" id="example-deeaea42">
+    <a class="self-link" href="#example-deeaea42"></a> Given the following layer rules: 
 <pre class="lang-css highlight"><c- c>/* unlayered styles come last in the layer order */</c->
 h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkslateblue<c- p>;</c-> <c- p>}</c->
 
@@ -2109,7 +2111,7 @@ h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkslateblue<c- p>;</c-> <c- p>}</
     <p>The outer layers are sorted first,
 		with any unlayered style rules
 		added to an implicit outer layer which
-		has higher priority than (comes after) the explicit layers:</p>
+		has higher precedence than (comes after) the explicit layers:</p>
     <ol>
      <li data-md>
       <p><span class="css">reset</span></p>
@@ -2369,7 +2371,7 @@ h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkslateblue<c- p>;</c-> <c- p>}</
 	however,
 	it only reverts the <a href="#style-attr">element-attached styles</a> and the intervening <a data-link-type="dfn" href="#cascade-origin-animation" id="ref-for-cascade-origin-animation">animation origin</a>,
 	and not any of the intervening <a data-link-type="dfn" href="#cascade-origin-author" id="ref-for-cascade-origin-author①③">author-origin</a> <span id="ref-for-important②①">important</span> rules.</p>
-   <p class="note" role="note"><span>Note:</span> If there are no lower-priority declarations
+   <p class="note" role="note"><span>Note:</span> If there are no lower-precedence declarations
 	in the same <a data-link-type="dfn" href="#origin" id="ref-for-origin①⑤">cascade origin</a> as the <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer③">revert-layer</a> value,
 	the <a data-link-type="dfn" href="#cascaded-value" id="ref-for-cascaded-value①⑦">cascaded value</a> will roll back to the previous origin.</p>
    <p class="note" role="note"><span>Note:</span> The <a data-link-type="dfn" href="#cascade-origin-animation" id="ref-for-cascade-origin-animation①">animation origin</a> is not collapsed with the <a data-link-type="dfn" href="#cascade-origin-author" id="ref-for-cascade-origin-author①④">author origin</a> for this purpose
@@ -2484,7 +2486,7 @@ similar to specificity resolution.
    <ul>
     <li data-md>
      <p>Switched the ordering of unlayered styles
-from highest to lowest priority in the normal origins.
+from highest to lowest precedence in the normal origins.
 (<a href="https://github.com/w3c/csswg-drafts/issues/6284">Issue 6284</a>)</p>
    </ul>
    <h3 class="heading settled" data-level="9.6" id="changes-2021-01"><span class="secno">9.6. </span><span class="content"> Changes since the 19 January 2021 Working Draft</span><a class="self-link" href="#changes-2021-01"></a></h3>
