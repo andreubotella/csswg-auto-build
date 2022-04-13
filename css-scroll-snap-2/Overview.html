@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://drafts.csswg.org/css-scroll-snap-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="5414048571a8a44dcf95e84b7626e1fdb632a36a" name="document-revision">
+  <meta content="6c659d6e6b8675a80d4face3a904985605c643e0" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -714,7 +714,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Scroll Snap Module Level 2</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-04-01">1 April 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-04-13">13 April 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -778,7 +778,19 @@ CR period.</p>
     <li>
      <a href="#properties-on-the-scroll-container"><span class="secno">3</span> <span class="content">Setting Where Scroll Starts</span></a>
      <ol class="toc">
-      <li><a href="#scroll-start"><span class="secno">3.1</span> <span class="content">The <span class="property">scroll-start</span> property</span></a>
+      <li>
+       <a href="#scroll-start"><span class="secno">3.1</span> <span class="content">The <span class="property">scroll-start</span> property</span></a>
+       <ol class="toc">
+        <li><a href="#display-none-behavior"><span class="secno">3.1.1</span> <span class="content">Interaction with <span class="css">display: none</span> and initial creation</span></a>
+        <li><a href="#slow-page-load-behavior"><span class="secno">3.1.2</span> <span class="content">Slow page loading or document streaming behavior</span></a>
+        <li><a href="#fragment-navigation-behavior"><span class="secno">3.1.3</span> <span class="content">Interaction with <span class="css">fragment navigation</span></span></a>
+        <li><a href="#place-content-behavior"><span class="secno">3.1.4</span> <span class="content">Interaction with <span class="css">place-content</span></span></a>
+        <li><a href="#find-in-page-behavior"><span class="secno">3.1.5</span> <span class="content">Interaction with "find in page"</span></a>
+        <li><a href="#scroll-snap-container-behavior"><span class="secno">3.1.6</span> <span class="content">Interaction <span class="css">scroll-snap</span> containers</span></a>
+        <li><a href="#nested-scrollers"><span class="secno">3.1.7</span> <span class="content">Nested scrollers with <span class="css">scroll-start</span></span></a>
+        <li><a href="#toggling-display-none"><span class="secno">3.1.8</span> <span class="content">Interaction when <span class="css">display</span> is toggled</span></a>
+        <li><a href="#rtl"><span class="secno">3.1.9</span> <span class="content">Interaction with RTL and LTR</span></a>
+       </ol>
       <li><a href="#scroll-start-target"><span class="secno">3.2</span> <span class="content">The <span class="property">scroll-start-target</span> property</span></a>
      </ol>
     <li>
@@ -787,21 +799,9 @@ CR period.</p>
       <li><a href="#snapped"><span class="secno">4.1</span> <span class="content">The Snapped-element Pseudo-class: <span class="css">:snapped</span></span></a>
      </ol>
     <li>
-     <a href="#todo①"><span class="secno">5</span> <span class="content">Snap Events</span></a>
+     <a href="#snap-events"><span class="secno">5</span> <span class="content">Snap Events</span></a>
      <ol class="toc">
-      <li><a href="#todo②"><span class="secno">5.1</span> <span class="content"><code class="idl"><span>snapChanged</span></code> and <code class="idl"><span>snapChanging</span></code></span></a>
-     </ol>
-    <li>
-     <a href="#interactions-with"><span class="secno">6</span> <span class="content">Interactions with:</span></a>
-     <ol class="toc">
-      <li><a href="#scroll-padding-and-scroll-margin"><span class="secno">6.1</span> <span class="content"><span class="css">scroll-padding</span> and <span class="css">scroll-margin</span></span></a>
-      <li><a href="#fragment-navigation"><span class="secno">6.2</span> <span class="content"><span class="css">fragment navigation</span></span></a>
-      <li><a href="#scrollto-options"><span class="secno">6.3</span> <span class="content"><span class="css">scrollTo()</span> options</span></a>
-      <li><a href="#a-scroll-snap-container-with-only-1-snap-child"><span class="secno">6.4</span> <span class="content">a <span class="css">scroll-snap</span> container with only 1 snap child</span></a>
-      <li><a href="#nested-scrollers"><span class="secno">6.5</span> <span class="content">nested scrollers</span></a>
-      <li><a href="#display-is-toggled"><span class="secno">6.6</span> <span class="content"><span class="css">display</span> is toggled</span></a>
-      <li><a href="#rtl-ltr"><span class="secno">6.7</span> <span class="content">RTL/LTR</span></a>
-      <li><a href="#place-content"><span class="secno">6.8</span> <span class="content"><span class="css">place-content</span></span></a>
+      <li><a href="#snapchanged-and-snapchanging"><span class="secno">5.1</span> <span class="content"><code class="idl"><span>snapChanged</span></code> and <code class="idl"><span>snapChanging</span></code></span></a>
      </ol>
     <li>
      <a href="#longhands"><span class="secno"></span> <span class="content">Appendix A: Longhands</span></a>
@@ -898,7 +898,7 @@ main <c- p>{</c->
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-scroll-start">scroll-start</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one">|</a> start <span id="ref-for-comb-one①">|</span> end <span id="ref-for-comb-one②">|</span> center <span id="ref-for-comb-one③">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage></a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a> 
+      <td class="prod">[ auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one">|</a> start <span id="ref-for-comb-one①">|</span> end <span id="ref-for-comb-one②">|</span> center <span id="ref-for-comb-one③">|</span> left <span id="ref-for-comb-one④">|</span> right <span id="ref-for-comb-one⑤">|</span> top <span id="ref-for-comb-one⑥">|</span> bottom <span id="ref-for-comb-one⑦">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage></a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties 
@@ -940,6 +940,27 @@ main <c- p>{</c->
     <dt><dfn class="dfn-paneled css" data-dfn-for="scroll-start, scroll-start-x, scroll-start-y, scroll-start-block, scroll-start-inline" data-dfn-type="value" data-export id="valdef-scroll-start-end">end</dfn> 
     <dd> Equivalent to <span class="css">0%</span>, <span class="css">50%</span>, and <span class="css">100%</span>, respectively. 
    </dl>
+   <h4 class="heading settled" data-level="3.1.1" id="display-none-behavior"><span class="secno">3.1.1. </span><span class="content">Interaction with <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/css-display-3/#propdef-display" id="ref-for-propdef-display">display: none</a> and initial creation</span><a class="self-link" href="#display-none-behavior"></a></h4>
+    Same behavior that animations follow with <a href="#first-layout">first layout</a>. 
+   <h4 class="heading settled" data-level="3.1.2" id="slow-page-load-behavior"><span class="secno">3.1.2. </span><span class="content">Slow page loading or document streaming behavior</span><a class="self-link" href="#slow-page-load-behavior"></a></h4>
+    TODO 
+   <h4 class="heading settled" data-level="3.1.3" id="fragment-navigation-behavior"><span class="secno">3.1.3. </span><span class="content">Interaction with <span class="css">fragment navigation</span></span><a class="self-link" href="#fragment-navigation-behavior"></a></h4>
+    TODO
+  If the scrollport has a in-page <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/selectors-4/#target-pseudo" id="ref-for-target-pseudo">:target</a> via a URL fragment or a previous scroll position, then <span class="css">scroll-start</span> is unused. Existing target logic should go unchanged. This makes <span class="css">scroll-start</span> a soft request in the scroll position resolution routines. 
+   <h4 class="heading settled" data-level="3.1.4" id="place-content-behavior"><span class="secno">3.1.4. </span><span class="content">Interaction with <span class="css">place-content</span></span><a class="self-link" href="#place-content-behavior"></a></h4>
+    TODO  
+  Side note: While <span class="css">place-content</span> can make a scroller appear to start in the center
+  or end, no browser supports it and it appears complicated to resolve. 
+   <h4 class="heading settled" data-level="3.1.5" id="find-in-page-behavior"><span class="secno">3.1.5. </span><span class="content">Interaction with "find in page"</span><a class="self-link" href="#find-in-page-behavior"></a></h4>
+    TODO 
+   <h4 class="heading settled" data-level="3.1.6" id="scroll-snap-container-behavior"><span class="secno">3.1.6. </span><span class="content">Interaction <span class="css">scroll-snap</span> containers</span><a class="self-link" href="#scroll-snap-container-behavior"></a></h4>
+    This effectively will layout and start scroll at the snapped child, thus negating / cancelling <span class="css">scroll-start</span>. <span class="css">scroll-start</span> will only work if nothing else has effected the scroll position. 
+   <h4 class="heading settled" data-level="3.1.7" id="nested-scrollers"><span class="secno">3.1.7. </span><span class="content">Nested scrollers with <span class="css">scroll-start</span></span><a class="self-link" href="#nested-scrollers"></a></h4>
+    Should follow patterns that scroll snap has set. 
+   <h4 class="heading settled" data-level="3.1.8" id="toggling-display-none"><span class="secno">3.1.8. </span><span class="content">Interaction when <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-shapes-2/#valdef-shape-inside-display" id="ref-for-valdef-shape-inside-display">display</a> is toggled</span><a class="self-link" href="#toggling-display-none"></a></h4>
+    Same behavior that animations follow with <span class="css">first layout</span>. 
+   <h4 class="heading settled" data-level="3.1.9" id="rtl"><span class="secno">3.1.9. </span><span class="content">Interaction with RTL and LTR</span><a class="self-link" href="#rtl"></a></h4>
+    Logical properties are offered for length offsets that should be flow relative. Furthermore, the <a class="css" data-link-type="maybe" href="#valdef-scroll-start-end" id="ref-for-valdef-scroll-start-end">end</a> and <a class="css" data-link-type="maybe" href="#valdef-scroll-start-start" id="ref-for-valdef-scroll-start-start①">start</a> keywords are always logical. 
    <h3 class="heading settled" data-level="3.2" id="scroll-start-target"><span class="secno">3.2. </span><span class="content">The <a class="property css" data-link-type="property" href="#propdef-scroll-start-target" id="ref-for-propdef-scroll-start-target">scroll-start-target</a> property</span><a class="self-link" href="#scroll-start-target"></a></h3>
    <table class="def propdef" data-link-for-hint="scroll-start-target">
     <tbody>
@@ -948,7 +969,7 @@ main <c- p>{</c->
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-scroll-start-target">scroll-start-target</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ none <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> auto ] 
+      <td class="prod">[ none <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> auto ] 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties 
@@ -981,7 +1002,8 @@ main <c- p>{</c->
     <dd>Element is not a <span class="css">scroll-start-target</span>. 
     <dt><dfn class="css" data-dfn-for="scroll-start-target, scroll-start-target-x, scroll-start-target-y, scroll-start-target-block, scroll-start-target-inline" data-dfn-type="value" data-export id="valdef-scroll-start-target-auto">auto<a class="self-link" href="#valdef-scroll-start-target-auto"></a></dfn> 
     <dd>Element is used to calculate the <span class="css">scroll-start</span> position, 
-    taking into account <span class="css">scroll-padding</span> as if the element was a <span class="css">scroll-snap</span> target. 
+    taking into account <span class="css">scroll-padding</span> or <span class="css">scroll-margin</span> ,
+    same as a <span class="css">scroll-snap</span> target. 
    </dl>
    <h2 class="heading settled" data-level="4" id="todo"><span class="secno">4. </span><span class="content">Styling Snapped Items</span><a class="self-link" href="#todo"></a></h2>
    <h3 class="heading settled" data-level="4.1" id="snapped"><span class="secno">4.1. </span><span class="content">The Snapped-element Pseudo-class: <a class="css" data-link-type="maybe" href="#selectordef-snapped" id="ref-for-selectordef-snapped">:snapped</a></span><a class="self-link" href="#snapped"></a></h3>
@@ -1002,8 +1024,8 @@ as they can target an individual axis.</p>
     <dd> Matches the child snapped on the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#block" id="ref-for-block">block</a> axis. 
    </dl>
    <p class="note" role="note"><span>Note:</span> <a href="https://github.com/w3c/csswg-drafts/issues/6985#issuecomment-1049036401">Issue #6985</a><br> Need to figure out resolution of the initial frame.</p>
-   <h2 class="heading settled" data-level="5" id="todo①"><span class="secno">5. </span><span class="content">Snap Events</span><a class="self-link" href="#todo①"></a></h2>
-   <h3 class="heading settled" data-level="5.1" id="todo②"><span class="secno">5.1. </span><span class="content"><code class="idl"><a data-link-type="idl">snapChanged</a></code> and <code class="idl"><a data-link-type="idl">snapChanging</a></code></span><a class="self-link" href="#todo②"></a></h3>
+   <h2 class="heading settled" data-level="5" id="snap-events"><span class="secno">5. </span><span class="content">Snap Events</span><a class="self-link" href="#snap-events"></a></h2>
+   <h3 class="heading settled" data-level="5.1" id="snapchanged-and-snapchanging"><span class="secno">5.1. </span><span class="content"><code class="idl"><a data-link-type="idl">snapChanged</a></code> and <code class="idl"><a data-link-type="idl">snapChanging</a></code></span><a class="self-link" href="#snapchanged-and-snapchanging"></a></h3>
    <p>CSS scroll snap points are often used as a mechanism to
 	create scroll interactive "selection" components,
 	where selection is determined with javascript intersection observers
@@ -1023,24 +1045,6 @@ as they can target an individual axis.</p>
       <th><dfn class="idl-code" data-dfn-type="event">snapChanging</dfn> 
       <td><code class="idl"><a class="idl-code" data-link-type="event" href="https://andreubotella.com/csswg-auto-build/cssom-view-1/#eventdef-document-scroll" id="ref-for-eventdef-document-scroll①">scroll</a></code> 
    </table>
-   <h2 class="heading settled" data-level="6" id="interactions-with"><span class="secno">6. </span><span class="content">Interactions with:</span><a class="self-link" href="#interactions-with"></a></h2>
-   <p>The next sections outline interactions with other specs and scroll position effecting scenarios.</p>
-   <h3 class="heading settled" data-level="6.1" id="scroll-padding-and-scroll-margin"><span class="secno">6.1. </span><span class="content"><span class="css">scroll-padding</span> and <span class="css">scroll-margin</span></span><a class="self-link" href="#scroll-padding-and-scroll-margin"></a></h3>
-   <p>If the scrollport has a in-page <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/selectors-4/#target-pseudo" id="ref-for-target-pseudo">:target</a> via a URL fragment or a previous scroll position, then <span class="css">scroll-start</span> is unused. Existing target logic should go unchanged. This makes <span class="css">scroll-start</span> a soft request in the scroll position resolution routines.</p>
-   <h3 class="heading settled" data-level="6.2" id="fragment-navigation"><span class="secno">6.2. </span><span class="content"><span class="css">fragment navigation</span></span><a class="self-link" href="#fragment-navigation"></a></h3>
-   <p>If the scrollport has a in-page <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/selectors-4/#target-pseudo" id="ref-for-target-pseudo①">:target</a> via a URL fragment or a previous scroll position, then <span class="css">scroll-start</span> is unused. Existing target logic should go unchanged. This makes <span class="css">scroll-start</span> a soft request in the scroll position resolution routines.</p>
-   <h3 class="heading settled" data-level="6.3" id="scrollto-options"><span class="secno">6.3. </span><span class="content"><span class="css">scrollTo()</span> options</span><a class="self-link" href="#scrollto-options"></a></h3>
-   <p>TODO</p>
-   <h3 class="heading settled" data-level="6.4" id="a-scroll-snap-container-with-only-1-snap-child"><span class="secno">6.4. </span><span class="content">a <span class="css">scroll-snap</span> container with only 1 snap child</span><a class="self-link" href="#a-scroll-snap-container-with-only-1-snap-child"></a></h3>
-   <p>This effectively will layout and start scroll at the snapped child, thus negating / cancelling <span class="css">scroll-start</span>. <span class="css">scroll-start</span> will only work if nothing else has effected the scroll position.</p>
-   <h3 class="heading settled" data-level="6.5" id="nested-scrollers"><span class="secno">6.5. </span><span class="content">nested scrollers</span><a class="self-link" href="#nested-scrollers"></a></h3>
-   <p>Should follow patterns that scroll snap has set.</p>
-   <h3 class="heading settled" data-level="6.6" id="display-is-toggled"><span class="secno">6.6. </span><span class="content"><a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-shapes-2/#valdef-shape-inside-display" id="ref-for-valdef-shape-inside-display">display</a> is toggled</span><a class="self-link" href="#display-is-toggled"></a></h3>
-   <p>Same behavior that animations follow with <span class="css">first layout</span>.</p>
-   <h3 class="heading settled" data-level="6.7" id="rtl-ltr"><span class="secno">6.7. </span><span class="content">RTL/LTR</span><a class="self-link" href="#rtl-ltr"></a></h3>
-   <p>Logical properties are offered for length offsets that should be flow relative. Furthermore, the <a class="css" data-link-type="maybe" href="#valdef-scroll-start-end" id="ref-for-valdef-scroll-start-end">end</a> and <a class="css" data-link-type="maybe" href="#valdef-scroll-start-start" id="ref-for-valdef-scroll-start-start①">start</a> keywords are always logical.</p>
-   <h3 class="heading settled" data-level="6.8" id="place-content"><span class="secno">6.8. </span><span class="content"><span class="css">place-content</span></span><a class="self-link" href="#place-content"></a></h3>
-   <p>TODO</p>
    <h2 class="heading settled" id="longhands"><span class="content">Appendix A: Longhands</span><a class="self-link" href="#longhands"></a></h2>
    <p>The physical and logical longhands (and their shorthands)
 interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[CSS-LOGICAL-1]</a>.</p>
@@ -1052,7 +1056,7 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
       <td><dfn class="css" data-dfn-type="property" data-export id="propdef-scroll-start-x">scroll-start-x<a class="self-link" href="#propdef-scroll-start-x"></a></dfn>, <dfn class="css" data-dfn-type="property" data-export id="propdef-scroll-start-y">scroll-start-y<a class="self-link" href="#propdef-scroll-start-y"></a></dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> start <span id="ref-for-comb-one⑥">|</span> end <span id="ref-for-comb-one⑦">|</span> center <span id="ref-for-comb-one⑧">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage②">&lt;length-percentage></a> 
+      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> start <span id="ref-for-comb-one①⓪">|</span> end <span id="ref-for-comb-one①①">|</span> center <span id="ref-for-comb-one①②">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage②">&lt;length-percentage></a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto 
@@ -1084,7 +1088,7 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
       <td><dfn class="css" data-dfn-type="property" data-export id="propdef-scroll-start-inline">scroll-start-inline<a class="self-link" href="#propdef-scroll-start-inline"></a></dfn>, <dfn class="css" data-dfn-type="property" data-export id="propdef-scroll-start-block">scroll-start-block<a class="self-link" href="#propdef-scroll-start-block"></a></dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> start <span id="ref-for-comb-one①⓪">|</span> end <span id="ref-for-comb-one①①">|</span> center <span id="ref-for-comb-one①②">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage④">&lt;length-percentage></a> 
+      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> start <span id="ref-for-comb-one①④">|</span> end <span id="ref-for-comb-one①⑤">|</span> center <span id="ref-for-comb-one①⑥">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage④">&lt;length-percentage></a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto 
@@ -1232,6 +1236,12 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
     <li><a href="#ref-for-block">4.1. The Snapped-element Pseudo-class: :snapped</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-display">
+   <a href="https://andreubotella.com/csswg-auto-build/css-display-3/#propdef-display">https://andreubotella.com/csswg-auto-build/css-display-3/#propdef-display</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-display">3.1.1. Interaction with display: none and initial creation</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-inline">
    <a href="https://andreubotella.com/csswg-auto-build/css-display-3/#inline">https://andreubotella.com/csswg-auto-build/css-display-3/#inline</a><b>Referenced in:</b>
    <ul>
@@ -1248,7 +1258,7 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
   <aside class="dfn-panel" data-for="term-for-valdef-shape-inside-display">
    <a href="https://andreubotella.com/csswg-auto-build/css-shapes-2/#valdef-shape-inside-display">https://andreubotella.com/csswg-auto-build/css-shapes-2/#valdef-shape-inside-display</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-shape-inside-display">6.6. display is toggled</a>
+    <li><a href="#ref-for-valdef-shape-inside-display">3.1.8. Interaction when display is toggled</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-typedef-length-percentage">
@@ -1268,10 +1278,10 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
   <aside class="dfn-panel" data-for="term-for-comb-one">
    <a href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one">https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-comb-one">3.1. The scroll-start property</a> <a href="#ref-for-comb-one①">(2)</a> <a href="#ref-for-comb-one②">(3)</a> <a href="#ref-for-comb-one③">(4)</a>
-    <li><a href="#ref-for-comb-one④">3.2. The scroll-start-target property</a>
-    <li><a href="#ref-for-comb-one⑤">Physical Longhands for scroll-start</a> <a href="#ref-for-comb-one⑥">(2)</a> <a href="#ref-for-comb-one⑦">(3)</a> <a href="#ref-for-comb-one⑧">(4)</a>
-    <li><a href="#ref-for-comb-one⑨">Flow-relative Longhands for scroll-start</a> <a href="#ref-for-comb-one①⓪">(2)</a> <a href="#ref-for-comb-one①①">(3)</a> <a href="#ref-for-comb-one①②">(4)</a>
+    <li><a href="#ref-for-comb-one">3.1. The scroll-start property</a> <a href="#ref-for-comb-one①">(2)</a> <a href="#ref-for-comb-one②">(3)</a> <a href="#ref-for-comb-one③">(4)</a> <a href="#ref-for-comb-one④">(5)</a> <a href="#ref-for-comb-one⑤">(6)</a> <a href="#ref-for-comb-one⑥">(7)</a> <a href="#ref-for-comb-one⑦">(8)</a>
+    <li><a href="#ref-for-comb-one⑧">3.2. The scroll-start-target property</a>
+    <li><a href="#ref-for-comb-one⑨">Physical Longhands for scroll-start</a> <a href="#ref-for-comb-one①⓪">(2)</a> <a href="#ref-for-comb-one①①">(3)</a> <a href="#ref-for-comb-one①②">(4)</a>
+    <li><a href="#ref-for-comb-one①③">Flow-relative Longhands for scroll-start</a> <a href="#ref-for-comb-one①④">(2)</a> <a href="#ref-for-comb-one①⑤">(3)</a> <a href="#ref-for-comb-one①⑥">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-eventdef-document-scroll">
@@ -1283,8 +1293,7 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
   <aside class="dfn-panel" data-for="term-for-target-pseudo">
    <a href="https://andreubotella.com/csswg-auto-build/selectors-4/#target-pseudo">https://andreubotella.com/csswg-auto-build/selectors-4/#target-pseudo</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-target-pseudo">6.1. scroll-padding and scroll-margin</a>
-    <li><a href="#ref-for-target-pseudo①">6.2. fragment navigation</a>
+    <li><a href="#ref-for-target-pseudo">3.1.3. Interaction with fragment navigation</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1293,6 +1302,7 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
     <a data-link-type="biblio">[css-display-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-block">block</span>
+     <li><span class="dfn-paneled" id="term-for-propdef-display">display</span>
      <li><span class="dfn-paneled" id="term-for-inline">inline</span>
     </ul>
    <li>
@@ -1360,7 +1370,7 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
     <tbody>
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-scroll-start" id="ref-for-propdef-scroll-start③">scroll-start</a>
-      <td>[ auto | start | end | center | &lt;length-percentage> ]{1,2}
+      <td>[ auto | start | end | center | left | right | top | bottom | &lt;length-percentage> ]{1,2}
       <td>see individual properties
       <td>see individual properties
       <td>see individual properties
@@ -1439,13 +1449,13 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1">[
    <b><a href="#valdef-scroll-start-start">#valdef-scroll-start-start</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-valdef-scroll-start-start">3.1. The scroll-start property</a>
-    <li><a href="#ref-for-valdef-scroll-start-start①">6.7. RTL/LTR</a>
+    <li><a href="#ref-for-valdef-scroll-start-start①">3.1.9. Interaction with RTL and LTR</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-scroll-start-end">
    <b><a href="#valdef-scroll-start-end">#valdef-scroll-start-end</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-scroll-start-end">6.7. RTL/LTR</a>
+    <li><a href="#ref-for-valdef-scroll-start-end">3.1.9. Interaction with RTL and LTR</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-scroll-start-target">
