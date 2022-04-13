@@ -33,9 +33,7 @@ Since Github Pages can't be configured to serve a directory default other than
 `index.html`, in order to make links like
 https://andreubotella.com/csswg-auto-build/css-text-3 work, we copy every
 `Overview.html` file – generated or not – into an `index.html` that Github Pages
-will serve as the default. As a special case, for `css-fonts-3`,
-[`Fonts.html` is used rather than `Overview.html`
-](https://github.com/w3c/csswg-drafts/blob/main/css-fonts-3/README).
+will serve as the default.
 
 We build an index of specs with `build-index.py`. We do this by getting some
 pieces of metadata from the spec, which we do by parsing the spec with Bikeshed,
