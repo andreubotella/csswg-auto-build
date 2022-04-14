@@ -955,8 +955,13 @@ Resolving <<color>> Values</h3>
 	''transparent'',
 	and ''currentcolor''.
 
-	Each <<system-color>> keyword computes to itself.
-	Its used value is the corresponding color in its color space.
+	Each <<system-color>> keyword computes
+	to the corresponding color in its color space.
+	However, implementations which also implement
+	'forced colors mode'
+	must maintain an internal flag for such colors,
+	to preserve the fact that they were specified as system colors
+	and must not be forced.
 
 	The computed and used value of ''transparent'' is [=transparent black=].
 
@@ -1096,6 +1101,10 @@ as the string "none".
 	* ''hsl()'' and ''hsla()'' values
 	* ''hwb()'' values
 	* [=named colors=]
+	* [=system colors=]
+	* <a href="#deprecated-system-colors">deprecated-colors</a>
+
+	<!-- are all system colors assumed to be sRGB? -->
 
 	is derived from the [=computed value=] and thus,
 	uses either the ''rgb()'' or ''rgba()'' form
@@ -1442,26 +1451,13 @@ as the string "none".
 
 <h4 id="serializing-other-colors">Serializing other colors</h4>
 
-	This applies to [=system colors=],
-	<a href="#deprecated-system-colors">deprecated-colors</a>,
-	''transparent'', and
+	This applies to
+	''transparent'' and
 	''currentcolor''.
 
 	The serialized form of these values
 	is derived from the [=computed value=]
 	and uses lowercase letters for the color name.
-
-	<div class="example" id="ex-system-serial">
-		<p>The serialized form of the color</p>
-		<pre class="lang-css"><span class="swatch" style="--color: VisitedText"></span> VisitedText</pre>
-		<p>is the string "visitedtext"</p>
-	</div>
-
-	<div class="example" id="ex-deprecated-serial">
-		<p>The serialized form of the color</p>
-		<pre class="lang-css"><span class="swatch" style="--color: ButtonFace"></span> ThreeDFace</pre>
-		<p>is the string "threedface"</p>
-	</div>
 
 	The serialized form of ''transparent'' is the string "rgba(0, 0, 0, 0)".
 
@@ -2082,7 +2078,7 @@ System Colors</h3>
 	expose these user-chosen colors
 	so that the rest of the page can integrate with this restricted palette.
 
-	When the 'forced-colors' [=media feature=] is ''forced-colors/active'',
+	When the <a href="https://drafts.csswg.org/mediaqueries-5/#descdef-media-forced-colors">forced-colors</a> [=media feature=] is ''forced-colors/active'',
 	authors <em>should</em> use the <<system-color>> keywords as color values
 	in properties other than those listed in [[css-color-adjust-1#forced-colors-properties]],
 	to ensure legibility and consistency across the page
@@ -5891,6 +5887,9 @@ Changes</h2>
 </h3>
 
 <ul>
+	<!-- to 14 Apr 2022 -->
+	<li>Made system colors fully resolve, but keep internal flag to help with forced colors mode</li>
+	<li>Removed forgiveness for incorrect number of parameters in color() function</li>
 	<!-- to 27 Feb 2022 -->
 	<li>Changed serialization of CIE Lightness and OK Lightness to number rather than percentage.</li>
 	<li>Marked deprecated system color equivalences as at-risk</li>

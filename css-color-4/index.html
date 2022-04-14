@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="aad71de5818af71782cab11b346748e1073aa9a1" name="document-revision">
+  <meta content="a2f827b846f5e93ac1b1c300df70e7d4adc8066d" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-4_dev/css-color-4"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -812,7 +812,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Color Module Level 4</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-04-13">13 April 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-04-14">14 April 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1703,8 +1703,13 @@ and is treated as being all lowercase.</p>
    <h4 class="heading settled" data-level="4.7.5" id="resolving-other-colors"><span class="secno">4.7.5. </span><span class="content">Resolving other colors</span><a class="self-link" href="#resolving-other-colors"></a></h4>
    <p>This applies to <a data-link-type="dfn" href="#css-system-colors" id="ref-for-css-system-colors">system colors</a> (including the <a class="production css" data-link-type="type" href="#typedef-deprecated-color" id="ref-for-typedef-deprecated-color">&lt;deprecated-color></a>s), <a class="css" data-link-type="maybe" href="#valdef-color-transparent" id="ref-for-valdef-color-transparent">transparent</a>,
 	and <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor②">currentcolor</a>.</p>
-   <p>Each <a class="production css" data-link-type="type" href="#typedef-system-color" id="ref-for-typedef-system-color①" title="Expands to: activetext | buttonborder | buttonface | buttontext | canvas | canvastext | field | fieldtext | graytext | highlight | highlighttext | linktext | mark | marktext | selecteditem | selecteditemtext | visitedtext">&lt;system-color></a> keyword computes to itself.
-	Its used value is the corresponding color in its color space.</p>
+   <p>Each <a class="production css" data-link-type="type" href="#typedef-system-color" id="ref-for-typedef-system-color①" title="Expands to: activetext | buttonborder | buttonface | buttontext | canvas | canvastext | field | fieldtext | graytext | highlight | highlighttext | linktext | mark | marktext | selecteditem | selecteditemtext | visitedtext">&lt;system-color></a> keyword computes
+	to the corresponding color in its color space.
+	However, implementations which also implement
+	'forced colors mode'
+	must maintain an internal flag for such colors,
+	to preserve the fact that they were specified as system colors
+	and must not be forced.</p>
    <p>The computed and used value of <a class="css" data-link-type="maybe" href="#valdef-color-transparent" id="ref-for-valdef-color-transparent①">transparent</a> is <a data-link-type="dfn" href="#transparent-black" id="ref-for-transparent-black">transparent black</a>.</p>
    <p>The <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor③">currentcolor</a> keyword computes to itself.</p>
    <p>In the <a class="property css" data-link-type="property" href="#propdef-color" id="ref-for-propdef-color①">color</a> property,
@@ -1804,6 +1809,10 @@ as the string "none".</p>
      <p><a class="css" data-link-type="maybe" href="#funcdef-hwb" id="ref-for-funcdef-hwb④">hwb()</a> values</p>
     <li data-md>
      <p><a data-link-type="dfn" href="#named-color" id="ref-for-named-color②">named colors</a></p>
+    <li data-md>
+     <p><a data-link-type="dfn" href="#css-system-colors" id="ref-for-css-system-colors①">system colors</a></p>
+    <li data-md>
+     <p><a href="#deprecated-system-colors">deprecated-colors</a></p>
    </ul>
    <p>is derived from the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#computed-value" id="ref-for-computed-value①">computed value</a> and thus,
 	uses either the <a class="css" data-link-type="maybe" href="#funcdef-rgb" id="ref-for-funcdef-rgb⑤">rgb()</a> or <a class="css" data-link-type="maybe" href="#funcdef-rgba" id="ref-for-funcdef-rgba④">rgba()</a> form
@@ -2075,21 +2084,9 @@ as the string "none".</p>
 		if three decimal places are retained. </p>
    </div>
    <h4 class="heading settled" data-level="4.8.6" id="serializing-other-colors"><span class="secno">4.8.6. </span><span class="content">Serializing other colors</span><a class="self-link" href="#serializing-other-colors"></a></h4>
-   <p>This applies to <a data-link-type="dfn" href="#css-system-colors" id="ref-for-css-system-colors①">system colors</a>, <a href="#deprecated-system-colors">deprecated-colors</a>, <a class="css" data-link-type="maybe" href="#valdef-color-transparent" id="ref-for-valdef-color-transparent②">transparent</a>, and <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor⑥">currentcolor</a>.</p>
+   <p>This applies to <a class="css" data-link-type="maybe" href="#valdef-color-transparent" id="ref-for-valdef-color-transparent②">transparent</a> and <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor⑥">currentcolor</a>.</p>
    <p>The serialized form of these values
 	is derived from the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#computed-value" id="ref-for-computed-value⑤">computed value</a> and uses lowercase letters for the color name.</p>
-   <div class="example" id="ex-system-serial">
-    <a class="self-link" href="#ex-system-serial"></a> 
-    <p>The serialized form of the color</p>
-<pre class="lang-css highlight"><span class="swatch" style="--color: VisitedText"></span> VisitedText</pre>
-    <p>is the string "visitedtext"</p>
-   </div>
-   <div class="example" id="ex-deprecated-serial">
-    <a class="self-link" href="#ex-deprecated-serial"></a> 
-    <p>The serialized form of the color</p>
-<pre class="lang-css highlight"><span class="swatch" style="--color: ButtonFace"></span> ThreeDFace</pre>
-    <p>is the string "threedface"</p>
-   </div>
    <p>The serialized form of <a class="css" data-link-type="maybe" href="#valdef-color-transparent" id="ref-for-valdef-color-transparent③">transparent</a> is the string "rgba(0, 0, 0, 0)".</p>
    <p>The serialized form of <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor⑦">currentColor</a> is the string "currentcolor".</p>
    <h2 class="heading settled" data-level="5" id="numeric-srgb"><span class="secno">5. </span><span class="content"> sRGB Colors</span><a class="self-link" href="#numeric-srgb"></a></h2>
@@ -3204,7 +3201,7 @@ as the string "none".</p>
 	The <dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-system-color">&lt;system-color></dfn> keywords
 	expose these user-chosen colors
 	so that the rest of the page can integrate with this restricted palette.</p>
-   <p>When the <a class="property css" data-link-type="property">forced-colors</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/mediaqueries-5/#media-feature" id="ref-for-media-feature">media feature</a> is <span class="css">active</span>,
+   <p>When the <a href="https://drafts.csswg.org/mediaqueries-5/#descdef-media-forced-colors">forced-colors</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/mediaqueries-5/#media-feature" id="ref-for-media-feature">media feature</a> is <span class="css">active</span>,
 	authors <em>should</em> use the <a class="production css" data-link-type="type" href="#typedef-system-color" id="ref-for-typedef-system-color④" title="Expands to: activetext | buttonborder | buttonface | buttontext | canvas | canvastext | field | fieldtext | graytext | highlight | highlighttext | linktext | mark | marktext | selecteditem | selecteditemtext | visitedtext">&lt;system-color></a> keywords as color values
 	in properties other than those listed in <a href="https://www.w3.org/TR/css-color-adjust-1/#forced-colors-properties"><cite>CSS Color Adjust</cite> § 3.1 Properties Affected by Forced Colors Mode</a>,
 	to ensure legibility and consistency across the page
@@ -8396,6 +8393,8 @@ Emilio Cobos Álvarez, Chris Bai, Amelia Bellamy-Royds, Lars Borg, Mike Bremford
     <h2 class="no-num heading settled" id="changes"><span class="content"> Changes</span><a class="self-link" href="#changes"></a></h2>
     <h3 class="heading settled" id="changes-from-20211215"><span class="content">Changes since the <a href="https://www.w3.org/TR/2021/WD-css-color-4-20211215/">Working Draft of 15 December 2021</a> </span><a class="self-link" href="#changes-from-20211215"></a></h3>
     <ul>
+     <li>Made system colors fully resolve, but keep internal flag to help with forced colors mode
+     <li>Removed forgiveness for incorrect number of parameters in color() function
      <li>Changed serialization of CIE Lightness and OK Lightness to number rather than percentage.
      <li>Marked deprecated system color equivalences as at-risk
      <li>Added reference ranges to percentage values for CIE and OK L,a,b,C
@@ -10126,7 +10125,7 @@ HSL Colors: hsl() and hsla() functions</a>
    <b><a href="#css-system-colors">#css-system-colors</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-css-system-colors">4.7.5. Resolving other colors</a>
-    <li><a href="#ref-for-css-system-colors①">4.8.6. Serializing other colors</a>
+    <li><a href="#ref-for-css-system-colors①">4.8.2. Serializing sRGB values</a>
     <li><a href="#ref-for-css-system-colors">6.2. 
 System Colors</a>
     <li><a href="#ref-for-css-system-colors②"> Appendix A: Deprecated CSS System Colors</a> <a href="#ref-for-css-system-colors③">(2)</a>
