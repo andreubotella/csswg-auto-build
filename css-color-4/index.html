@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="c73c002ab5b9d0429cf1dc294ab5e8ef3f140081" name="document-revision">
+  <meta content="e3d22e566112eb0f3d8da8a1d08f6ca4dc04ed35" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-4_dev/css-color-4"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -1705,11 +1705,8 @@ and is treated as being all lowercase.</p>
 	and <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor②">currentcolor</a>.</p>
    <p>Each <a class="production css" data-link-type="type" href="#typedef-system-color" id="ref-for-typedef-system-color①" title="Expands to: activetext | buttonborder | buttonface | buttontext | canvas | canvastext | field | fieldtext | graytext | highlight | highlighttext | linktext | mark | marktext | selecteditem | selecteditemtext | visitedtext">&lt;system-color></a> keyword computes
 	to the corresponding color in its color space.
-	However, implementations which also implement
-	'forced colors mode'
-	must maintain an internal flag for such colors,
-	to preserve the fact that they were specified as system colors
-	and must not be forced.</p>
+	However, such colors must not be altered by
+	'forced colors mode'.</p>
    <p>The computed and used value of <a class="css" data-link-type="maybe" href="#valdef-color-transparent" id="ref-for-valdef-color-transparent①">transparent</a> is <a data-link-type="dfn" href="#transparent-black" id="ref-for-transparent-black">transparent black</a>.</p>
    <p>The <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor③">currentcolor</a> keyword computes to itself.</p>
    <p>In the <a class="property css" data-link-type="property" href="#propdef-color" id="ref-for-propdef-color①">color</a> property,
@@ -1750,7 +1747,7 @@ and is treated as being all lowercase.</p>
    <p>The string "." shall be used as a decimal separator,
 regardless of locale,
 and there shall be no thousands separator.</p>
-   <p>For syntactic forms which support <a data-link-type="dfn">missing values</a>,
+   <p>For syntactic forms which support <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑤">missing color components</a>,
 the value <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none④">none</a> (equivalently NONE, nOnE, etc),
 shall be serialized in all-lower case
 as the string "none".</p>
@@ -1819,7 +1816,7 @@ as the string "none".</p>
 	(depending on whether the alpha is exactly 1, or not),
 	with lowercase letters for the function name.</p>
    <p>During serialization,
-	any <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑤">missing</a> values
+	any <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑥">missing</a> values
 	are converted to 0.</p>
    <p>For compatibility, the sRGB component values
 	are serialized in <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#number-value" id="ref-for-number-value⑤">&lt;number></a> form, not <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value" id="ref-for-percentage-value④">&lt;percentage></a>).
@@ -3206,6 +3203,12 @@ as the string "none".</p>
 	in properties other than those listed in <a href="https://www.w3.org/TR/css-color-adjust-1/#forced-colors-properties"><cite>CSS Color Adjust</cite> § 3.1 Properties Affected by Forced Colors Mode</a>,
 	to ensure legibility and consistency across the page
 	and avoid an uncoordinated mishmash of user-forced and page-chosen colors.</p>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/system-color-consistency.html" title="css/css-color/system-color-consistency.html">system-color-consistency.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/system-color-consistency.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/system-color-consistency.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <p>When the values of <a class="production css" data-link-type="type" href="#typedef-system-color" id="ref-for-typedef-system-color⑤" title="Expands to: activetext | buttonborder | buttonface | buttontext | canvas | canvastext | field | fieldtext | graytext | highlight | highlighttext | linktext | mark | marktext | selecteditem | selecteditemtext | visitedtext">&lt;system-color></a> keywords come from the browser,
 	(as opposed to being OS defaults or user choices) the browser should
 	ensure that <a href="#system-color-pairs">matching
@@ -6051,7 +6054,7 @@ although the visual color does not change from being on the neutral axis,
 small changes to the values can result in the reported hue angle swinging about wildly
 and being essentially random.
 In CSS, this means the hue is <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①⑦">powerless</a>,
-and treated as <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑥">missing</a> when converted into LCH or OKLCH;
+and treated as <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑦">missing</a> when converted into LCH or OKLCH;
 in non-CSS contexts this might be reflected as a missing value, such as NaN.</p>
    <h3 class="heading settled" data-level="9.6" id="lch-to-lab"><span class="secno">9.6. </span><span class="content"> Converting LCH or OKLCH colors to Lab or OKLab colors</span><a class="self-link" href="#lch-to-lab"></a></h3>
    <p>Conversion to the rectangular form is trivial:</p>
@@ -6099,7 +6102,7 @@ in non-CSS contexts this might be reflected as a missing value, such as NaN.</p>
 	It is said to be <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="out-of-gamut">out of gamut</dfn> for that color space.</p>
    <p>An out of gamut color has component values
 	less than 0 or 0%, or greater than 1 or 100%.
-	These are not invalid; instead, for display, they are <a data-link-type="dfn">css-gamut-mapped</a> using a relative colorimetric intent
+	These are not invalid; instead, for display, they are <a data-link-type="dfn" href="#css-gamut-mapped" id="ref-for-css-gamut-mapped">css gamut mapped</a> using a relative colorimetric intent
 	which brings the values within the range 0/0% to 1/100%
 	at computed-value time.</p>
    <p>Each <a data-link-type="dfn" href="#valid-color" id="ref-for-valid-color②">valid color</a> is either in-gamut for the output device (screen, or printer),
@@ -6143,7 +6146,7 @@ and if omitted it defaults to <span class="css">100%</span>.</p>
 	then this is the used value of the <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⓪">color()</a> function.</p>
    <p>If the specified color
 	is a <a data-link-type="dfn" href="#valid-color" id="ref-for-valid-color③">valid color</a> but <a data-link-type="dfn" href="#cant-be-displayed" id="ref-for-cant-be-displayed">can’t be displayed</a>],
-	the used value is derived from the specified color, <a data-link-type="dfn">gamut-mapped</a> for display.</p>
+	the used value is derived from the specified color, <a data-link-type="dfn" href="#css-gamut-mapped" id="ref-for-css-gamut-mapped①">css gamut mapped</a> for display.</p>
    <p>If the color is an <a data-link-type="dfn" href="#invalid-color" id="ref-for-invalid-color④">invalid color</a>,
 	the used value is <a data-link-type="dfn" href="#opaque-black" id="ref-for-opaque-black">opaque black</a>.</p>
    <div class="example" id="ex-2020-oog-p3">
@@ -6878,6 +6881,7 @@ and if omitted it defaults to <span class="css">100%</span>.</p>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/filters-under-will-change-opacity.html" title="css/css-color/filters-under-will-change-opacity.html">filters-under-will-change-opacity.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/filters-under-will-change-opacity.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/filters-under-will-change-opacity.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/animation/color-composition.html" title="css/css-color/animation/color-composition.html">color-composition.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/animation/color-composition.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/animation/color-composition.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/animation/opacity-interpolation.html" title="css/css-color/animation/opacity-interpolation.html">opacity-interpolation.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/animation/opacity-interpolation.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/animation/opacity-interpolation.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/canvas-change-opacity.html" title="css/css-color/canvas-change-opacity.html">canvas-change-opacity.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/canvas-change-opacity.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/canvas-change-opacity.html"><small>(source)</small></a>
     </ul>
    </details>
    <dl>
@@ -7031,10 +7035,10 @@ even though it produces poorer results (overly dark or greyish mixes).</p>
 	they will contain out of range values.</p>
    <p>These are not clipped, but the values are interpolated as-is.</p>
    <h3 class="heading settled" data-level="12.2" id="interpolation-missing"><span class="secno">12.2. </span><span class="content"> Interpolating with missing components </span><a class="self-link" href="#interpolation-missing"></a></h3>
-   <p>If a color with a <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑦">missing component</a> is interpolated
+   <p>If a color with a <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑧">missing component</a> is interpolated
 	with another color
 	which is not missing that component,
-	the <span id="ref-for-missing-color-component⑧">missing component</span> is treated as having
+	the <span id="ref-for-missing-color-component⑨">missing component</span> is treated as having
 	the other color’s component value.</p>
    <div class="example" id="ex-">
     <a class="self-link" href="#ex-"></a> For example, if these two colors are interpolated,
@@ -7051,9 +7055,9 @@ even though it produces poorer results (overly dark or greyish mixes).</p>
 <span class="swatch" style="--color: rgb(48.4% 0% 22.8%)"></span><c- nf>oklch</c-><c- p>(</c-><c- m>39.2</c-><c- k>%</c-> <c- m>0.4</c-> <c- m>0</c-><c- p>)</c->
 </pre>
    </div>
-   <p>If both colors are <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑨">missing</a> a given component,
+   <p>If both colors are <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①⓪">missing</a> a given component,
 	the interpolated color
-	will also be <span id="ref-for-missing-color-component①⓪">missing</span> that component.</p>
+	will also be <span id="ref-for-missing-color-component①①">missing</span> that component.</p>
    <details class="wpt-tests-block" dir="ltr" lang="en" open>
     <summary>Tests</summary>
     <ul class="wpt-tests-list">
@@ -7194,7 +7198,7 @@ is divided by the interpolated alpha value.</p>
    </details>
    <p class="note" role="note"><span>Note:</span> As a reminder,
 	if the interpolating colors were not already in the specified interpolation syntax,
-	then converting them will turn any <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①⑧">powerless components</a> into <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①①">missing components</a>.</p>
+	then converting them will turn any <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①⑧">powerless components</a> into <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①②">missing components</a>.</p>
    <h4 class="heading settled" data-level="12.4.1" id="hue-shorter"><span class="secno">12.4.1. </span><span class="content"><dfn data-dfn-type="dfn" data-export id="shorter">shorter<a class="self-link" href="#shorter"></a></dfn></span><a class="self-link" href="#hue-shorter"></a></h4>
    <p>Angles are adjusted so that <var>θ₂ - θ₁</var> ∈ [-180, 180]. In pseudo-Javascript:</p>
 <pre class="highlight">if <c- p>(</c->θ₂ - θ₁ > <c- m>180</c-><c- p>)</c-> <c- p>{</c->
@@ -7455,7 +7459,7 @@ else if <c- p>(</c-><c- m>-180</c-> &lt; θ₂ - θ₁ &lt; <c- m>0</c-><c- p>)<
 	Standard Dynamic Range (SDR) CSS colors
 	which are out of gamut
 	of an RGB display
-	and thus require gamut mapping.
+	and thus require to be <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="css-gamut-mapped">css gamut mapped</dfn>.
 	It implements a relative colorimetric intent,
 	and colors inside the destination gamut are unchanged.</p>
    <p class="note" role="note"><span>Note:</span> other situations,
@@ -8835,6 +8839,7 @@ which is a fingerprinting risk.</p>
    <li><a href="#valdef-color-cornsilk">cornsilk</a><span>, in § 6.1</span>
    <li><a href="#valdef-color-crimson">crimson</a><span>, in § 6.1</span>
    <li><a href="#css-gamut-map">CSS gamut map</a><span>, in § 13.2.1</span>
+   <li><a href="#css-gamut-mapped">css gamut mapped</a><span>, in § 13.2</span>
    <li><a href="#css-gamut-mapping-algorithm">CSS gamut mapping algorithm</a><span>, in § 13.2</span>
    <li><a href="#valdef-color-currentcolor">currentcolor</a><span>, in § 6.4</span>
    <li><a href="#valdef-color-cyan">cyan</a><span>, in § 6.1</span>
@@ -9882,12 +9887,14 @@ Specifying Lab and LCH: the lab() and lch() functional notations</a> <a href="#r
 "Missing"/none Color Components</a> <a href="#ref-for-missing-color-component①">(2)</a> <a href="#ref-for-missing-color-component②">(3)</a> <a href="#ref-for-missing-color-component③">(4)</a>
     <li><a href="#ref-for-missing-color-component④">4.3.1. 
 "Powerless" Color Components</a>
-    <li><a href="#ref-for-missing-color-component⑤">4.8.2. Serializing sRGB values</a>
-    <li><a href="#ref-for-missing-color-component⑥">9.5. 
+    <li><a href="#ref-for-missing-color-component⑤">4.8. 
+	Serializing &lt;color> Values</a>
+    <li><a href="#ref-for-missing-color-component⑥">4.8.2. Serializing sRGB values</a>
+    <li><a href="#ref-for-missing-color-component⑦">9.5. 
 Converting Lab or OKLab colors to LCH or OKLCH colors</a>
-    <li><a href="#ref-for-missing-color-component⑦">12.2. 
-Interpolating with missing components </a> <a href="#ref-for-missing-color-component⑧">(2)</a> <a href="#ref-for-missing-color-component⑨">(3)</a> <a href="#ref-for-missing-color-component①⓪">(4)</a>
-    <li><a href="#ref-for-missing-color-component①①">12.4. 
+    <li><a href="#ref-for-missing-color-component⑧">12.2. 
+Interpolating with missing components </a> <a href="#ref-for-missing-color-component⑨">(2)</a> <a href="#ref-for-missing-color-component①⓪">(3)</a> <a href="#ref-for-missing-color-component①①">(4)</a>
+    <li><a href="#ref-for-missing-color-component①②">12.4. 
 Hue interpolation</a>
    </ul>
   </aside>
@@ -10684,6 +10691,12 @@ Hue interpolation</a>
 Color space for interpolation</a>
     <li><a href="#ref-for-color-interpolation-method①">12.4. 
 Hue interpolation</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="css-gamut-mapped">
+   <b><a href="#css-gamut-mapped">#css-gamut-mapped</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-css-gamut-mapped">10.1. Specifying predefined colors: the color() function</a> <a href="#ref-for-css-gamut-mapped①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-deprecated-color">
