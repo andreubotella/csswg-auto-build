@@ -16,12 +16,6 @@ from html.parser import HTMLParser
 from bikeshed import Spec, constants
 
 
-def html_file_for_spec(spec):
-    if spec == "css-fonts-3":
-        return "Fonts.html"
-    return "Overview.html"
-
-
 def title_from_html(file):
     class HTMLTitleParser(HTMLParser):
         def __init__(self):
@@ -158,7 +152,7 @@ for entry in os.scandir("./csswg-drafts"):
             continue
 
         bs_file = os.path.join(entry.path, "Overview.bs")
-        html_file = os.path.join(entry.path, html_file_for_spec(entry.name))
+        html_file = os.path.join(entry.path, "Overview.html")
         if os.path.exists(bs_file):
             metadata = get_bs_spec_metadata(entry.name, bs_file)
         elif os.path.exists(html_file):
