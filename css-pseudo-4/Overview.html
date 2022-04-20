@@ -9,7 +9,7 @@
   <meta content="Bikeshed version fb1e763a4, updated Tue Mar 1 13:13:50 2022 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-pseudo-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="e3d1a4101e4f3ab6ebc475d5125eb8975ddf0276" name="document-revision">
+  <meta content="d5164d2075f2975f812b1f817772970f632f9c87" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-pseudo-4_dev/css-pseudo-4"></script>
 <style>/* style-autolinks */
 
@@ -824,7 +824,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Pseudo-Elements Module Level 4</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-04-19">19 April 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-04-20">20 April 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -943,6 +943,7 @@ on screen, on paper, etc.
      <ol class="toc">
       <li><a href="#CSSPseudoElement-interface"><span class="secno">6.1</span> <span class="content"> <code class="idl"><span>CSSPseudoElement</span></code> Interface</span></a>
       <li><a href="#window-interface"><span class="secno">6.2</span> <span class="content"> <code class="idl"><span>pseudo()</span></code> method of the <code class="idl"><span>Element</span></code> interface</span></a>
+      <li><a href="#getComputedStyle"><span class="secno">6.3</span> <span class="content"> <code class="idl"><span>getComputedStyle()</span></code></span></a>
      </ol>
     <li><a href="#css2-compat"><span class="secno">7</span> <span class="content"> Compatibility Syntax</span></a>
     <li><a href="#changes"><span class="secno"></span> <span class="content"> Changes</span></a>
@@ -1783,8 +1784,9 @@ as ordinary lines in the paragraph.<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
   the winning style is determined by the cascade.
   When any supported property is not given a value by the cascade,
   its value is determined by inheritance from
-  the corresponding <span id="ref-for-highlight-pseudo-element⑥">highlight pseudo-element</span> of its <span id="ref-for-originating-element⑧">originating element</span>’s parent element
-  (regardless of whether that property is an <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#inherited-property" id="ref-for-inherited-property①">inherited property</a>).</p>
+  the corresponding <span id="ref-for-highlight-pseudo-element⑥">highlight pseudo-element</span> of its <span id="ref-for-originating-element⑧">originating element</span>’s parent element.
+  This occurs regardless of whether that property is an <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#inherited-property" id="ref-for-inherited-property①">inherited property</a>,
+  including <a data-link-type="dfn" href="https://drafts.css-houdini.org/css-properties-values-api-1/#registered-custom-property" id="ref-for-registered-custom-property">registered custom properties</a> where the <a data-link-type="dfn">inherits descriptor</a> is false.</p>
    <details class="wpt-tests-block" dir="ltr" lang="en">
     <summary>Tests</summary>
     <ul class="wpt-tests-list">
@@ -1901,7 +1903,7 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
   won’t be obscured by any highlight overlay backgrounds
   that are drawn for the associated text.</p>
    <p>For this purpose, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor">currentColor</a> on a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⓪">highlight pseudo-element</a>’s <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑦">color</a> property represents
-  the <span class="property" id="ref-for-propdef-color⑧">color</span> of the next <span id="ref-for-highlight-pseudo-element①①">highlight pseudo-element</span> layer below,
+  the <span class="property" id="ref-for-propdef-color⑧">color</span> of the next <em>active</em> <span id="ref-for-highlight-pseudo-element①①">highlight pseudo-element</span> layer below,
   falling back finally to the colors that would otherwise have been used
   (those applied by the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#originating-element" id="ref-for-originating-element⑨">originating element</a> or
   an intervening <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#pseudo-element" id="ref-for-pseudo-element⑧">pseudo-element</a> such as <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line①⑧">::first-line</a> or <a class="css" data-link-type="maybe" href="#selectordef-first-letter" id="ref-for-selectordef-first-letter②⑥">::first-letter</a>).</p>
@@ -2258,18 +2260,18 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
    <p>A new method is added to the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element⑤">Element</a></code> interface to retrieve
   pseudo-elements created by a given element for a given type:</p>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#element" id="ref-for-element⑥"><c- g>Element</c-></a> {
-  <a data-link-type="idl-name" href="#csspseudoelement" id="ref-for-csspseudoelement⑥"><c- n>CSSPseudoElement</c-></a>? <a class="idl-code" data-link-type="method" href="#dom-element-pseudo" id="ref-for-dom-element-pseudo①"><c- g>pseudo</c-></a>(<a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring②"><c- n>CSSOMString</c-></a> <dfn class="idl-code" data-dfn-for="Element/pseudo(type)" data-dfn-type="argument" data-export id="dom-element-pseudo-type-type"><code class="highlight"><c- g>type</c-></code><a class="self-link" href="#dom-element-pseudo-type-type"></a></dfn>);
+  <a data-link-type="idl-name" href="#csspseudoelement" id="ref-for-csspseudoelement⑥"><c- n>CSSPseudoElement</c-></a>? <a class="idl-code" data-link-type="method" href="#dom-element-pseudo" id="ref-for-dom-element-pseudo①"><c- g>pseudo</c-></a>(<a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring②"><c- n>CSSOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Element/pseudo(type)" data-dfn-type="argument" data-export id="dom-element-pseudo-type-type"><code class="highlight"><c- g>type</c-></code></dfn>);
 };
 </pre>
    <div class="algorithm" data-algorithm="pseudo(CSSOMString type)" data-algorithm-for="Element">
      The <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="pseudo(type)" id="dom-element-pseudo" title="pseudo(type)"><code class="highlight"><c- nf>pseudo</c-><c- p>(</c->CSSOMString type<c- p>)</c-></code></dfn> method
     is used to retrieve the <code class="idl"><a data-link-type="idl" href="#csspseudoelement" id="ref-for-csspseudoelement⑦">CSSPseudoElement</a></code> instance
-    of the type matching <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-csspseudoelement-pseudo-type-type" id="ref-for-dom-csspseudoelement-pseudo-type-type">type</a></code> associated with the element.
+    of the type matching <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-element-pseudo-type-type" id="ref-for-dom-element-pseudo-type-type">type</a></code> associated with the element.
     When it is called,
     execute the following steps: 
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#css-parse-something-according-to-a-css-grammar" id="ref-for-css-parse-something-according-to-a-css-grammar">Parse</a> the <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-csspseudoelement-pseudo-type-type" id="ref-for-dom-csspseudoelement-pseudo-type-type①">type</a></code> argument as a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/selectors-4/#typedef-pseudo-element-selector" id="ref-for-typedef-pseudo-element-selector">&lt;pseudo-element-selector></a>,
+      <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#css-parse-something-according-to-a-css-grammar" id="ref-for-css-parse-something-according-to-a-css-grammar">Parse</a> the <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-csspseudoelement-pseudo-type-type" id="ref-for-dom-csspseudoelement-pseudo-type-type">type</a></code> argument as a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/selectors-4/#typedef-pseudo-element-selector" id="ref-for-typedef-pseudo-element-selector">&lt;pseudo-element-selector></a>,
 and let <var>type</var> be the result.</p>
      <li data-md>
       <p>If <var>type</var> is failure,
@@ -2288,6 +2290,13 @@ that would match the selector <var>type</var> with <a data-link-type="dfn" href=
   (and potential error cases)
   of the <code class="idl"><a data-link-type="idl" href="#dom-csspseudoelement-pseudo" id="ref-for-dom-csspseudoelement-pseudo①">pseudo()</a></code> method is still under discussion.
   See <a href="https://github.com/w3c/csswg-drafts/issues/3607">Issue 3607</a> and <a href="https://github.com/w3c/csswg-drafts/issues/3603">Issue 3603</a>.</p>
+   <h3 class="heading settled" data-level="6.3" id="getComputedStyle"><span class="secno">6.3. </span><span class="content"> <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle">getComputedStyle()</a></code></span><a class="self-link" href="#getComputedStyle"></a></h3>
+   <p>When the second parameter <var>pseudoElt</var> refers to a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①③">highlight pseudo-element</a>, <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle①">getComputedStyle()</a></code> returns styles
+as if that highlight is active
+and all other highlights are inactive.
+This avoids the potential
+ambiguity and privacy risks of returning a result
+that depends on the actual highlight state.</p>
    <h2 class="heading settled" data-level="7" id="css2-compat"><span class="secno">7. </span><span class="content"> Compatibility Syntax</span><a class="self-link" href="#css2-compat"></a></h2>
    <p>For compatibility with existing style sheets written against CSS Level 2 <a data-link-type="biblio" href="#biblio-css2">[CSS2]</a>,
   user agents must also accept the previous one-colon notation
@@ -2309,7 +2318,7 @@ that would match the selector <var>type</var> with <a data-link-type="dfn" href=
     <li>Defined interaction of <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-line-height" id="ref-for-propdef-line-height①">line-height</a> and <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line②⑤">::first-line</a>. 
     <li>Defined box structure interaction of <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line②⑥">::first-line</a> and <a class="css" data-link-type="maybe" href="#selectordef-first-letter" id="ref-for-selectordef-first-letter③④">::first-letter</a>. 
     <li>Clarified painting order of highlight text decorations. 
-    <li>Removed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-caret-color" id="ref-for-propdef-caret-color">caret-color</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-cursor" id="ref-for-propdef-cursor">cursor</a> from applying to <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①③">highlight pseudo-elements</a>.
+    <li>Removed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-caret-color" id="ref-for-propdef-caret-color">caret-color</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-cursor" id="ref-for-propdef-cursor">cursor</a> from applying to <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①④">highlight pseudo-elements</a>.
       (<a href="https://github.com/w3c/csswg-drafts/issues/4100">Issue 4100</a>) 
     <li>Extended the <code class="idl"><a data-link-type="idl" href="#csspseudoelement" id="ref-for-csspseudoelement①⓪">CSSPseudoElement</a></code> interface
       with a <code class="idl"><a data-link-type="idl" href="#dom-csspseudoelement-parent" id="ref-for-dom-csspseudoelement-parent③">parent</a></code> attribute
@@ -2344,10 +2353,10 @@ that would match the selector <var>type</var> with <a data-link-type="dfn" href=
     (Issues <a href="https://github.com/w3c/csswg-drafts/issues/3603">3603</a> and <a href="https://github.com/w3c/csswg-drafts/issues/3607">3607</a>) 
     <li>Allowed highlight overlay of inline-level boxes to extend to the line box edges.
     (Issues <a href="https://github.com/w3c/csswg-drafts/issues/5395">5395</a> and <a href="https://github.com/w3c/csswg-drafts/issues/4624">4624</a>) 
-    <li>Clarified that <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor②">currentColor</a> on a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①④">highlight pseudo-element</a> uses the color that would be used if the text were not “highlighted”,
+    <li>Clarified that <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor②">currentColor</a> on a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑤">highlight pseudo-element</a> uses the color that would be used if the text were not “highlighted”,
     even if that color was provided by a pseudo-element like <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line②⑨">::first-line</a>.
     (<a href="https://github.com/w3c/csswg-drafts/issues/4625">Issue 4625</a>) 
-    <li>Defined how <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#propdef-text-shadow" id="ref-for-propdef-text-shadow③">text-shadow</a> interacts with <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑤">highlight pseudo-elements</a>.
+    <li>Defined how <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#propdef-text-shadow" id="ref-for-propdef-text-shadow③">text-shadow</a> interacts with <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑥">highlight pseudo-elements</a>.
     (<a href="https://github.com/w3c/csswg-drafts/issues/3932">Issue 3932</a>) 
     <li>Improved the <a href="#highlight-ua-styles">default UA style sheet</a> rules applying to highlight pseudo-elements. 
    </ul>
@@ -2794,6 +2803,13 @@ List Markers: the ::marker pseudo-element</a> <a href="#ref-for-marker③">(2)</
 Finding the First Formatted Line</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-registered-custom-property">
+   <a href="https://drafts.css-houdini.org/css-properties-values-api-1/#registered-custom-property">https://drafts.css-houdini.org/css-properties-values-api-1/#registered-custom-property</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-registered-custom-property">3.5. 
+Cascading and Per-Element Highlight Styles</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-ruby-position">
    <a href="https://andreubotella.com/csswg-auto-build/css-ruby-1/#propdef-ruby-position">https://andreubotella.com/csswg-auto-build/css-ruby-1/#propdef-ruby-position</a><b>Referenced in:</b>
    <ul>
@@ -2996,6 +3012,13 @@ pseudo() method of the Element interface</a>
    <ul>
     <li><a href="#ref-for-cssstyledeclaration">6.1. 
 CSSPseudoElement Interface</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-window-getcomputedstyle">
+   <a href="https://andreubotella.com/csswg-auto-build/cssom-1/#dom-window-getcomputedstyle">https://andreubotella.com/csswg-auto-build/cssom-1/#dom-window-getcomputedstyle</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-window-getcomputedstyle">6.3. 
+getComputedStyle()</a> <a href="#ref-for-dom-window-getcomputedstyle①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-element">
@@ -3235,6 +3258,11 @@ pseudo() method of the Element interface</a>
      <li><span class="dfn-paneled" id="term-for-multi-column-container">multi-column container</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[css-properties-values-api-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-registered-custom-property">registered custom property</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-RUBY-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-ruby-position">ruby-position</span>
@@ -3310,6 +3338,7 @@ pseudo() method of the Element interface</a>
     <ul>
      <li><span class="dfn-paneled" id="term-for-cssomstring">CSSOMString</span>
      <li><span class="dfn-paneled" id="term-for-cssstyledeclaration">CSSStyleDeclaration</span>
+     <li><span class="dfn-paneled" id="term-for-dom-window-getcomputedstyle">getComputedStyle(elt)</span>
     </ul>
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
@@ -3374,6 +3403,8 @@ pseudo() method of the Element interface</a>
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-lists-3/"><cite>CSS Lists and Counters Module Level 3</cite></a>. 17 November 2020. WD. URL: <a href="https://www.w3.org/TR/css-lists-3/">https://www.w3.org/TR/css-lists-3/</a>
    <dt id="biblio-css-multicol-1">[CSS-MULTICOL-1]
    <dd>Florian Rivoal; Rachel Andrew. <a href="https://www.w3.org/TR/css-multicol-1/"><cite>CSS Multi-column Layout Module Level 1</cite></a>. 12 October 2021. CR. URL: <a href="https://www.w3.org/TR/css-multicol-1/">https://www.w3.org/TR/css-multicol-1/</a>
+   <dt id="biblio-css-properties-values-api-1">[CSS-PROPERTIES-VALUES-API-1]
+   <dd>Tab Atkins Jr.; et al. <a href="https://www.w3.org/TR/css-properties-values-api-1/"><cite>CSS Properties and Values API Level 1</cite></a>. 13 October 2020. WD. URL: <a href="https://www.w3.org/TR/css-properties-values-api-1/">https://www.w3.org/TR/css-properties-values-api-1/</a>
    <dt id="biblio-css-ruby-1">[CSS-RUBY-1]
    <dd>Elika Etemad; et al. <a href="https://www.w3.org/TR/css-ruby-1/"><cite>CSS Ruby Annotation Layout Module Level 1</cite></a>. 2 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-ruby-1/">https://www.w3.org/TR/css-ruby-1/</a>
    <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
@@ -3619,7 +3650,9 @@ Backgrounds</a>
 Shadows</a>
     <li><a href="#ref-for-highlight-pseudo-element⑨">3.6.3. 
 Text and Text Decorations</a> <a href="#ref-for-highlight-pseudo-element①⓪">(2)</a> <a href="#ref-for-highlight-pseudo-element①①">(3)</a> <a href="#ref-for-highlight-pseudo-element①②">(4)</a>
-    <li><a href="#ref-for-highlight-pseudo-element①③"> Changes</a> <a href="#ref-for-highlight-pseudo-element①④">(2)</a> <a href="#ref-for-highlight-pseudo-element①⑤">(3)</a>
+    <li><a href="#ref-for-highlight-pseudo-element①③">6.3. 
+getComputedStyle()</a>
+    <li><a href="#ref-for-highlight-pseudo-element①④"> Changes</a> <a href="#ref-for-highlight-pseudo-element①⑤">(2)</a> <a href="#ref-for-highlight-pseudo-element①⑥">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selectordef-selection">
@@ -3766,7 +3799,7 @@ pseudo() method of the Element interface</a> <a href="#ref-for-dom-csspseudoelem
    <b><a href="#dom-csspseudoelement-pseudo-type-type">#dom-csspseudoelement-pseudo-type-type</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-csspseudoelement-pseudo-type-type">6.2. 
-pseudo() method of the Element interface</a> <a href="#ref-for-dom-csspseudoelement-pseudo-type-type①">(2)</a>
+pseudo() method of the Element interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-csspseudoelement-type">
@@ -3791,6 +3824,13 @@ CSSPseudoElement Interface</a> <a href="#ref-for-dom-csspseudoelement-element①
     <li><a href="#ref-for-dom-csspseudoelement-parent">6.1. 
 CSSPseudoElement Interface</a> <a href="#ref-for-dom-csspseudoelement-parent①">(2)</a> <a href="#ref-for-dom-csspseudoelement-parent②">(3)</a>
     <li><a href="#ref-for-dom-csspseudoelement-parent③"> Changes</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-element-pseudo-type-type">
+   <b><a href="#dom-element-pseudo-type-type">#dom-element-pseudo-type-type</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-element-pseudo-type-type">6.2. 
+pseudo() method of the Element interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-element-pseudo">
