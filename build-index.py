@@ -131,6 +131,7 @@ def build_redirect(shortname, spec_folder):
 
 CURRENT_WORK_EXCEPTIONS = {
     "css-conditional": 5,
+    "css-easing": 2,
     "css-grid": 2,
     "css-snapshot": None,  # always choose the last spec
     "css-values": 4,
@@ -148,7 +149,7 @@ specgroups = defaultdict(list)
 for entry in os.scandir("./csswg-drafts"):
     if entry.is_dir():
         # Not actual specs, just examples.
-        if entry.name in ["css-module-bikeshed", "css-module"]:
+        if entry.name in ["css-module"]:
             continue
 
         bs_file = os.path.join(entry.path, "Overview.bs")
