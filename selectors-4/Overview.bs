@@ -1031,6 +1031,13 @@ Invalid Selectors and Error Handling</h3>
 
 	An <a>invalid selector</a> represents, and therefore matches, nothing.
 
+<h3 id="legacy-aliasing">
+	Legacy Aliases</h3>
+
+	Some selectors have a <dfn>legacy selector alias</dfn>.
+	This is a name which, at parse time, is converted to the standard name
+	(and thus does not appear anywhere in any object model representing the selector).
+
 <h2 id="logical-combination">
 Logical Combinations</h2>
 
@@ -1135,7 +1142,7 @@ The Matches-Any Pseudo-class: '':is()''</h3>
 	As previous drafts of this specification
 	used the name <dfn>:matches()</dfn> for this pseudo-class,
 	UAs may additionally implement this obsolete name
-	as an alias for '':is()''
+	as a [=legacy selector alias=] for '':is()''
 	if needed for backwards-compatibility.
 
 <h3 id="negation">
@@ -2834,7 +2841,7 @@ Child-indexed Pseudo-classes</h3>
 	are among <var>An+B</var>th elements
 	from the list composed of
 	their <a>inclusive siblings</a> that match the <a>selector list</a> <var>S</var>,
-	which is [=parsed as a forgiving selector list=].
+	which is a <<compound-selector-list>> [=parsed as a forgiving selector list=].
 	If <var>S</var> is omitted,
 	it defaults to ''*|*''.
 
@@ -2922,6 +2929,9 @@ Child-indexed Pseudo-classes</h3>
 		</pre>
 	</div>
 
+	Note: We intend to extend '':nth-child()'' to accept <<complex-selector-list>>
+	in Level 5.
+
 <h4 id="the-nth-last-child-pseudo">
 '':nth-last-child()'' pseudo-class</h4>
 
@@ -2931,7 +2941,7 @@ Child-indexed Pseudo-classes</h3>
 	from the list composed of
 	their <a>inclusive siblings</a> that match the <a>selector list</a> <var>S</var>,
 	counting backwards from the end.
-	<var>S</var> is [=parsed as a forgiving selector list=].
+	<var>S</var> is <<compound-selector-list>> [=parsed as a forgiving selector list=].
 	If <var>S</var> is omitted,
 	it defaults to ''*|*''.
 
@@ -2953,6 +2963,9 @@ Child-indexed Pseudo-classes</h3>
 		                              counting from the last one */
 		</pre>
 	</div>
+
+	Note: We intend to extend '':nth-last-child()'' to accept <<complex-selector-list>>
+	in Level 5.
 
 <h4 id="the-first-child-pseudo">
 '':first-child'' pseudo-class</h4>
@@ -4038,6 +4051,8 @@ Changes since the 21 November 2018 Working Draft</h3>
 		<li>Defined '':is()'', '':where()'', '':has()'', '':nth-child()'', and '':nth-last-child()''
 			to not be themselves invalidated when containing an invalid selector.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/3264">Issue 3264</a>)
+		<li>Limited selectors in '':nth-child()'' and '':nth-last-child()'' to [=compound selectors=] for now.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/3760">Issue 3760</a>)
 		<li>Clarified case-sensitive string matching by referencing string identity as defined in [[INFRA]].
 		<li>Clarified that UA-provided placeholder text still triggers '':placeholder-shown''.
 		<li>Rewrote '':focus-visible'' definition for clarity.
