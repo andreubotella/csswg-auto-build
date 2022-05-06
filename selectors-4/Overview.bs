@@ -29,13 +29,14 @@ Ignored Terms: function token, Document, DocumentFragment, math, h1, shadow tree
 Ignored Vars: identifier, extended filtering, i
 </pre>
 <pre class=link-defaults>
-spec:css-syntax-3; type:dfn; text:identifier
+spec:css-values-4; type:dfn; text:identifier
 spec:css-display-3; type:property; text:display
 spec:css-pseudo-4; type:selector;
 	text: ::before
 	text: ::after
 	text: ::first-line
 	text: ::first-letter
+spec:html; type:element-attr; for:a; text:href
 </pre>
 
 <style>
@@ -896,7 +897,7 @@ Sub-pseudo-elements</h4>
 	which are defined as the <dfn export lt="sub-pseudo-element">sub-pseudo-elements</dfn>
 	of this <dfn export>originating pseudo-element</dfn>.
 	For example,
-	when ''::before'' is given a ''list-item'' [=display type=],
+	when ''::before'' is given a ''display/list-item'' [=display type=],
 	it becomes the [=originating pseudo-element=]
 	of its ''::before::marker'' [=sub-pseudo-element=].
 
@@ -1611,7 +1612,8 @@ Case-sensitivity</h3>
 
 	Alternately, the attribute selector may include the identifier <code>s</code>
 	before the closing bracket (<code>]</code>);
-	in this case the UA must match the value with "[=identical to=]" semantics
+	in this case the UA must match the value case-sensitively,
+	with “[=identical to=]” semantics [[INFRA]],
 	regardless of document language rules.
 
 	Like the rest of Selectors syntax,
@@ -1645,8 +1647,8 @@ Case-sensitivity</h3>
 			 a later level -->
 
 	Note: Some document models normalize case-insensitive attribute values at parse time
-	such that checking if a string is [=identical to=] another is impossible.
-	Correct matching via <code>s</code> flags is only possible
+	such that checking if a string is case-sensitive matching is impossible.
+	Case-sensitive matching via <code>s</code> flags is only possible
 	in systems that preserve the original case.
 
 <h3 id="attrnmsp">
@@ -1818,7 +1820,8 @@ Class selectors</h3>
 
 	When matching against a document which is in <a>quirks mode</a>,
 	class names must be matched [=ASCII case-insensitively=];
-	class selectors otherwise only match class names they are [=identical to=].
+	class selectors are otherwise case-sensitive,
+	only matching class names they are [=identical to=]. [[INFRA]]
 
 <h3 id="id-selectors">
 ID selectors</h3>
@@ -1875,7 +1878,8 @@ ID selectors</h3>
 
 	When matching against a document which is in <a>quirks mode</a>,
 	IDs must be matched [=ASCII case-insensitively=];
-	ID selectors otherwise only match IDs they are [=identical to=].
+	ID selectors are otherwise case-sensitive,
+	only matching IDs they are [=identical to=]. [[INFRA]]
 
 <h2 id="linguistic-pseudos">
 Linguistic Pseudo-classes</h2>
@@ -2023,7 +2027,7 @@ The Hyperlink Pseudo-class: '':any-link''</h3>
 	The <dfn id='any-link-pseudo'>:any-link</dfn> pseudo-class represents an element
 	that acts as the source anchor of a hyperlink.
 	For example, in [[HTML5]],
-	any <{a}> or <{area}> elements are hyperlinks,
+	any <{a}> or <{area}> elements with an <{a/href}> attribute are hyperlinks,
 	and thus match <code>:any-link</code>.
 	It matches an element if the element would match either '':link'' or '':visited'',
 	and is equivalent to '':is(:link, :visited)''.
@@ -2139,10 +2143,10 @@ The Target Pseudo-class: '':target''</h3>
 The Target Container Pseudo-class: '':target-within''</h3>
 
 	The <dfn id='target-within-pseudo'>:target-within</dfn> pseudo-class
-	applies to elements for which the '':target'' pseudo class applies
-	as well as to an element whose descendant in the <a>flat tree</a>
+	applies to any element to which the '':target'' pseudo class applies
+	as well as to any element whose descendant in the <a>flat tree</a>
 	(including non-element nodes, such as text nodes)
-	matches the conditions for matching '':target-within''.
+	matches the conditions for matching '':target''.
 
 <h3 id="the-scope-pseudo">
 The Reference Element Pseudo-class: '':scope''</h3>
@@ -2479,13 +2483,22 @@ Sound State: the '':muted'' and '':volume-locked'' pseudo-classes</h3>
 
 	The <dfn>:muted</dfn> pseudo-class represents
 	an element capable of making sound
-	when that element is “muted“.
+	when that element is “muted“ (forced silent).
 	(For the <{audio}> and <{video}> elements of HTML, see [=muted=]. [[HTML]])
 
 	The <dfn>:volume-locked</dfn> pseudo-class represents
 	an element capable of making sound
 	when programmatically changing the element’s volume
 	does not change the element's [=HTMLMediaElement/effective media volume=].
+
+<h3 id="modal-state">
+Modal (Exclusive Interaction) State: the '':modal'' pseudo-class</h3>
+
+	The <dfn>:modal</dfn> pseudo-class represents
+	an element which is in a state that excludes all interaction
+	with elements outside it until it has been dismissed.
+	Multiple elements can be '':modal'' simultaneously,
+	with only one of them active (able to receive input).
 
 <h2 id='input-pseudos'>
 The Input Pseudo-classes</h2>
@@ -2548,6 +2561,13 @@ The Placeholder-shown Pseudo-class: '':placeholder-shown''</h4>
 		The '':placeholder-shown'' class thus applies
 		whenever such placeholder text is shown.
 	</div>
+
+<h4 id="autofill">
+The Automatic Input Pseudo-class: '':autofill''</h4>
+
+	The <dfn>:autofill</dfn> pseudo-class represents input elements
+	that have been automatically filled by the user agent,
+	and have not been subsequently altered by the user.
 
 <h4 id="the-default-pseudo">
 The Default-option Pseudo-class: '':default''</h4>
@@ -2813,7 +2833,8 @@ Child-indexed Pseudo-classes</h3>
 	pseudo-class notation represents elements that
 	are among <var>An+B</var>th elements
 	from the list composed of
-	their <a>inclusive siblings</a> that match the <a>selector list</a> <var>S</var>.
+	their <a>inclusive siblings</a> that match the <a>selector list</a> <var>S</var>,
+	which is [=parsed as a forgiving selector list=].
 	If <var>S</var> is omitted,
 	it defaults to ''*|*''.
 
@@ -2910,6 +2931,7 @@ Child-indexed Pseudo-classes</h3>
 	from the list composed of
 	their <a>inclusive siblings</a> that match the <a>selector list</a> <var>S</var>,
 	counting backwards from the end.
+	<var>S</var> is [=parsed as a forgiving selector list=].
 	If <var>S</var> is omitted,
 	it defaults to ''*|*''.
 
@@ -3999,9 +4021,30 @@ Changes since the 21 November 2018 Working Draft</h3>
 
 	<ul>
 		<li>Removed the Selector profiles, marked '':has()'' as optional and at-risk instead.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/3925">Issue 3925</a>)
+			(<a href="https://github.com/w3c/csswg-drafts/issues/3925">Issue 3925</a>)
 		<li>Added [[#sub-pseudo-elements]] to define [=sub-pseudo-elements=] and related terminology.
 		<li>Added '':defined''.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/2258">Issue 2258</a>)
+		<li>Added '':modal''.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/6965">Issue 6965</a>)
+		<li>Added '':seeking'', '':buffering'', and ':stalled'' media playback state pseudo-classes.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/3821">Issue 3821</a>)
+		<li>Added '':muted'' and '':volume-locked'' sound state pseudo-classes.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/3821">Issue 3821</a> and <a href="https://github.com/w3c/csswg-drafts/issues/3933">Issue 3933</a>)
+		<li>Added '':autofill''.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/5775">Issue 5775</a>)
+		<li>Added '':user-valid''.
+			(<a href="https://lists.w3.org/Archives/Public/www-style/2015Sep/0111.html">Discussion</a>)
+		<li>Defined '':is()'', '':where()'', '':has()'', '':nth-child()'', and '':nth-last-child()''
+			to not be themselves invalidated when containing an invalid selector.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/3264">Issue 3264</a>)
+		<li>Clarified case-sensitive string matching by referencing string identity as defined in [[INFRA]].
+		<li>Clarified that UA-provided placeholder text still triggers '':placeholder-shown''.
+		<li>Rewrote '':focus-visible'' definition for clarity.
+		<li>Switched reminder note in the grammar section to normative text
+			describing the requirement of whitespace between <<compound-selector>>s
+			when a <<combinator>> token is missing.
+		<li>
 	</ul>
 
 <h3 id="changes-2018-02">
@@ -4154,5 +4197,13 @@ Acknowledgements</h2>
 Privacy and Security Considerations {#priv-sec}
 ==============================================
 
-This specification introduces no new privacy or security considerations,
-as selectors do not provide any ability not already possible by walking the DOM manually.
+This specification introduces the following privacy and security considerations:
+<ul>
+	<li>
+		The '':visited'' pseudo-class can expose information about which sites a user has previously visited,
+		if the UA is not careful to screen from scripting any information that would reveal
+		which elements match it.
+	<li>
+		The '':autofill'' pseudo-class can expose whether a user has interacted with this form before;
+		however the same information can be derived by observing how quickly the form is filled out.
+</ul>
