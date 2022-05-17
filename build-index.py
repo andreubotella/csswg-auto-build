@@ -62,6 +62,8 @@ def get_bs_spec_metadata(folder_name, path):
         shortname = "css-gcpm"
     elif spec.md.shortname == "css-transitions-2":
         shortname = "css-transitions"
+    elif spec.md.shortname == "scroll-animations-1":
+        shortname = "scroll-animations"
     else:
         # Fix CSS snapshots (e.g. "css-2022")
         snapshot_match = re.match(
