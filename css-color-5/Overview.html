@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="f6b54ba1a4677c703a7369d56ccaf1bd9aa1f92a" name="document-revision">
+  <meta content="ae086a2a23aa3a49f3ccc34ab1ce7689e33432c3" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-5_dev/css-color-5"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -781,7 +781,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Color Module Level 5</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-05-30">30 May 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-05-31">31 May 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -884,7 +884,8 @@ on screen, on paper, etc.
      <a href="#resolving-color-values"><span class="secno">7</span> <span class="content"> Resolving <span class="production">&lt;color></span> Values</span></a>
      <ol class="toc">
       <li><a href="#resolving-contrast"><span class="secno">7.1</span> <span class="content">Resolving <span class="css">color-contrast()</span> values</span></a>
-      <li><a href="#resolving-device-cmyk-values"><span class="secno">7.2</span> <span class="content">Resolving <span class="css">device-cmyk</span> values</span></a>
+      <li><a href="#resolving-mix"><span class="secno">7.2</span> <span class="content">Resolving <span class="css">color-mix()</span> values</span></a>
+      <li><a href="#resolving-device-cmyk-values"><span class="secno">7.3</span> <span class="content">Resolving <span class="css">device-cmyk</span> values</span></a>
      </ol>
     <li>
      <a href="#serial"><span class="secno">8</span> <span class="content">Serialization</span></a>
@@ -2613,22 +2614,35 @@ color: <span class="swatch" style="--color: rgb(70.690% 26.851% 19.724%)"></span
    <p>The computed value is the specified <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast③">color-contrast()</a> function
 		with each <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①④">&lt;color></a> parameter resolved according to <a href="https://www.w3.org/TR/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> § 4.7 Resolving &lt;color> Values</a>,
 		and the keywords <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aa" id="ref-for-valdef-color-contrast-aa">AA</a>, <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aa-large" id="ref-for-valdef-color-contrast-aa-large">AA-large</a>, <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aaa" id="ref-for-valdef-color-contrast-aaa">AAA</a>, <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aaa-large" id="ref-for-valdef-color-contrast-aaa-large">AAA-large</a> replaced with their corresponding numeric value.</p>
-   <p>The used value is the winning color
-		resolved according to <a href="https://www.w3.org/TR/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> § 4.7 Resolving &lt;color> Values</a>.</p>
-   <div class="example" id="example-2127f85d">
-    <a class="self-link" href="#example-2127f85d"></a> 
+   <p>If all <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑤">&lt;color></a> parameters resolve
+		to the corresponding colors in their respective color spaces,
+		the used value is the winning color
+		resolved according to <a href="https://www.w3.org/TR/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> § 4.7 Resolving &lt;color> Values</a>.
+		Otherwise (if <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor">currentColor</a> was used in the function),
+		the used value is the same as the computed value
+		thus preserving inheritance into child elements.</p>
+   <div class="example" id="example-0fbe0016">
+    <a class="self-link" href="#example-0fbe0016"></a> 
     <p>For example, given a current color value of <span class="swatch" style="--color: rgb(179 213 230)"></span> rgb(179 213 230),
 			the value</p>
 <pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->currentColor vs <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>83</c-><c- k>%</c-> <c- m>23</c-><c- k>%</c-><c- p>),</c-> purple to AA<c- p>)</c->
 </pre>
-    <p>has the computed value</p>
+    <p>has the computed and used value</p>
 <pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->currentColor vs <c- nf>rgb</c-><c- p>(</c-><c- m>10</c-> <c- m>75</c-> <c- m>107</c-><c- p>),</c-> <c- nf>rgb</c-><c- p>(</c-><c- m>128</c-> <c- m>0</c-> <c- m>128</c-><c- p>)</c-> to <c- m>4.5</c-><c- p>)</c->
 </pre>
-    <p>and the used value</p>
-<pre class="lang-css highlight"><c- nf>rgb</c-><c- p>(</c-><c- m>128</c-> <c- m>0</c-> <c- m>128</c-><c- p>)</c->
-</pre>
    </div>
-   <h3 class="heading settled" data-level="7.2" id="resolving-device-cmyk-values"><span class="secno">7.2. </span><span class="content">Resolving <span class="css">device-cmyk</span> values</span><a class="self-link" href="#resolving-device-cmyk-values"></a></h3>
+   <h3 class="heading settled" data-level="7.2" id="resolving-mix"><span class="secno">7.2. </span><span class="content">Resolving <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix③">color-mix()</a> values</span><a class="self-link" href="#resolving-mix"></a></h3>
+   <p>The computed value is the specified <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix④">color-mix()</a> function
+		with each <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑥">&lt;color></a> parameter resolved according to <a href="https://www.w3.org/TR/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> § 4.7 Resolving &lt;color> Values</a>.</p>
+   <p>If all <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑦">&lt;color></a> parameters resolve
+		to the corresponding colors in their respective color spaces,
+		the used value is the mixed color,
+		in the specified mixing color space,
+		resolved according to <a href="https://www.w3.org/TR/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> § 4.7 Resolving &lt;color> Values</a>.
+		Otherwise (if <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor①">currentColor</a> was used in the function),
+		the used value is the same as the computed value
+		thus preserving inheritance into child elements.</p>
+   <h3 class="heading settled" data-level="7.3" id="resolving-device-cmyk-values"><span class="secno">7.3. </span><span class="content">Resolving <span class="css">device-cmyk</span> values</span><a class="self-link" href="#resolving-device-cmyk-values"></a></h3>
    <p>The computed and used value
 		is the specified device-specific CMYK color,
 		(with components as <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#number-value" id="ref-for-number-value⑤⓪">&lt;number></a>, not <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value" id="ref-for-percentage-value④⑦">&lt;percentage></a>)
@@ -2658,7 +2672,7 @@ color: <span class="swatch" style="--color: rgb(70.690% 26.851% 19.724%)"></span
    </div>
    <h2 class="heading settled" data-level="8" id="serial"><span class="secno">8. </span><span class="content">Serialization</span><a class="self-link" href="#serial"></a></h2>
    <p>This section extends <a href="https://www.w3.org/TR/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> § 4.8 Serializing &lt;color> Values</a> to add serialization of the
-results of the <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix③">color-mix()</a>, <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast④">color-contrast()</a>, and
+results of the <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix⑤">color-mix()</a>, <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast④">color-contrast()</a>, and
 relative color functions.</p>
    <p>In this section, the strings used in the specification and the corresponding characters are as follows.</p>
    <table class="data">
@@ -2690,8 +2704,8 @@ if the alpha of the result is exactly 1,
 it is omitted from the serialization;
 an implicit value of 1 (fully opaque) is the default.</p>
    <h3 class="heading settled" data-level="8.1" id="serial-color-mix"><span class="secno">8.1. </span><span class="content">Serializing color-mix()</span><a class="self-link" href="#serial-color-mix"></a></h3>
-   <p>The serialization of the result of a <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix④">color-mix()</a> function
-is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑤">&lt;color></a>,
+   <p>The serialization of the result of a <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix⑥">color-mix()</a> function
+is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑧">&lt;color></a>,
 as defined in <a href="https://www.w3.org/TR/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> § 4.8 Serializing &lt;color> Values</a>.
 The form used
 depends on the color space specified with "in".</p>
@@ -2756,7 +2770,7 @@ is the same as that specified in <a href="https://www.w3.org/TR/css-color-4/#ser
    </div>
    <h3 class="heading settled" data-level="8.2" id="serial-color-contrast"><span class="secno">8.2. </span><span class="content">Serializing color-contrast()</span><a class="self-link" href="#serial-color-contrast"></a></h3>
    <p>The serialization of the result of a <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast⑤">color-contrast()</a> function
-is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑥">&lt;color></a>,
+is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑨">&lt;color></a>,
 as defined in <a href="https://www.w3.org/TR/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> § 4.8 Serializing &lt;color> Values</a>.
 The form used
 is the same as that used to specify
@@ -2781,7 +2795,7 @@ is the same as that specified in <a href="https://www.w3.org/TR/css-color-4/#ser
    </div>
    <h3 class="heading settled" data-level="8.3" id="serial-relative-color"><span class="secno">8.3. </span><span class="content">Serializing relative color functions</span><a class="self-link" href="#serial-relative-color"></a></h3>
    <p>The serialization of the result of a relative color function
-is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color①⑦">&lt;color></a>,
+is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-color-4/#typedef-color" id="ref-for-typedef-color②⓪">&lt;color></a>,
 as defined in <a href="https://www.w3.org/TR/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> § 4.8 Serializing &lt;color> Values</a>.
 The form used
 is the same as that used to specify
@@ -2976,7 +2990,7 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
     <li>The <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⓪">color()</a> function is extended by the <a class="css" data-link-type="maybe" href="#at-ruledef-profile" id="ref-for-at-ruledef-profile①③">@color-profile</a> at-rule, for profiled device-dependent color, including calibrated CMYK. 
     <li><a class="css" data-link-type="maybe" href="#funcdef-device-cmyk" id="ref-for-funcdef-device-cmyk⑧">device-cmyk()</a> function, for specifying uncalibrated colors in an output-device-specific CMYK color space. 
    </ol>
-   <p>In addition the new <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix⑤">color-mix()</a> function allows two colors to be mixed,
+   <p>In addition the new <a class="css" data-link-type="maybe" href="#funcdef-color-mix" id="ref-for-funcdef-color-mix⑦">color-mix()</a> function allows two colors to be mixed,
 		in a specified colorspace, to yeild a new color.</p>
    <p>The new <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast⑥">color-contrast()</a> function allows one of a list of colors to be chosen,
 		based on the WCAG 2.1 contrast with a specified color.</p>
@@ -3192,7 +3206,7 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
   <aside class="dfn-panel" data-for="term-for-actual-value">
    <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#actual-value">https://andreubotella.com/csswg-auto-build/css-cascade-5/#actual-value</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-actual-value">7.2. Resolving device-cmyk values</a>
+    <li><a href="#ref-for-actual-value">7.3. Resolving device-cmyk values</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-computed-value">
@@ -3232,10 +3246,11 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
     <li><a href="#ref-for-typedef-color①②">5. Specifying custom color spaces: the color() function</a>
     <li><a href="#ref-for-typedef-color①③">7. 
 	Resolving &lt;color> Values</a>
-    <li><a href="#ref-for-typedef-color①④">7.1. Resolving color-contrast() values</a>
-    <li><a href="#ref-for-typedef-color①⑤">8.1. Serializing color-mix()</a>
-    <li><a href="#ref-for-typedef-color①⑥">8.2. Serializing color-contrast()</a>
-    <li><a href="#ref-for-typedef-color①⑦">8.3. Serializing relative color functions</a>
+    <li><a href="#ref-for-typedef-color①④">7.1. Resolving color-contrast() values</a> <a href="#ref-for-typedef-color①⑤">(2)</a>
+    <li><a href="#ref-for-typedef-color①⑥">7.2. Resolving color-mix() values</a> <a href="#ref-for-typedef-color①⑦">(2)</a>
+    <li><a href="#ref-for-typedef-color①⑧">8.1. Serializing color-mix()</a>
+    <li><a href="#ref-for-typedef-color①⑨">8.2. Serializing color-contrast()</a>
+    <li><a href="#ref-for-typedef-color②⓪">8.3. Serializing relative color functions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-typedef-colorspace-params">
@@ -3304,6 +3319,13 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
    <a href="https://andreubotella.com/csswg-auto-build/css-color-4/#color-space">https://andreubotella.com/csswg-auto-build/css-color-4/#color-space</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-color-space">5. Specifying custom color spaces: the color() function</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-color-currentcolor">
+   <a href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor">https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-color-currentcolor">7.1. Resolving color-contrast() values</a>
+    <li><a href="#ref-for-valdef-color-currentcolor①">7.2. Resolving color-mix() values</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-d65-whitepoint">
@@ -3482,7 +3504,7 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
     <li><a href="#ref-for-number-value④⓪">5.1. Relative color-function colors</a> <a href="#ref-for-number-value④①">(2)</a> <a href="#ref-for-number-value④②">(3)</a> <a href="#ref-for-number-value④③">(4)</a> <a href="#ref-for-number-value④④">(5)</a> <a href="#ref-for-number-value④⑤">(6)</a> <a href="#ref-for-number-value④⑥">(7)</a> <a href="#ref-for-number-value④⑦">(8)</a> <a href="#ref-for-number-value④⑧">(9)</a>
     <li><a href="#ref-for-number-value④⑨">6. 
 	Uncalibrated CMYK Colors: the device-cmyk() function</a>
-    <li><a href="#ref-for-number-value⑤⓪">7.2. Resolving device-cmyk values</a> <a href="#ref-for-number-value⑤①">(2)</a>
+    <li><a href="#ref-for-number-value⑤⓪">7.3. Resolving device-cmyk values</a> <a href="#ref-for-number-value⑤①">(2)</a>
     <li><a href="#ref-for-number-value⑤②">8.5. Serializing device-cmyk values</a>
    </ul>
   </aside>
@@ -3501,7 +3523,7 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
     <li><a href="#ref-for-percentage-value③⑨">5.1. Relative color-function colors</a> <a href="#ref-for-percentage-value④⓪">(2)</a> <a href="#ref-for-percentage-value④①">(3)</a> <a href="#ref-for-percentage-value④②">(4)</a> <a href="#ref-for-percentage-value④③">(5)</a> <a href="#ref-for-percentage-value④④">(6)</a> <a href="#ref-for-percentage-value④⑤">(7)</a>
     <li><a href="#ref-for-percentage-value④⑥">6. 
 	Uncalibrated CMYK Colors: the device-cmyk() function</a>
-    <li><a href="#ref-for-percentage-value④⑦">7.2. Resolving device-cmyk values</a> <a href="#ref-for-percentage-value④⑧">(2)</a>
+    <li><a href="#ref-for-percentage-value④⑦">7.3. Resolving device-cmyk values</a> <a href="#ref-for-percentage-value④⑧">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-url-value">
@@ -3620,6 +3642,7 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
      <li><span class="dfn-paneled" id="term-for-valdef-color-blue">blue</span>
      <li><span class="dfn-paneled" id="term-for-color">color</span>
      <li><span class="dfn-paneled" id="term-for-color-space">color space</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-color-currentcolor">currentcolor</span>
      <li><span class="dfn-paneled" id="term-for-d65-whitepoint">d65 whitepoint</span>
      <li><span class="dfn-paneled" id="term-for-valdef-color-darkolivegreen">darkolivegreen</span>
      <li><span class="dfn-paneled" id="term-for-valdef-color-display-p3">display-p3</span>
@@ -3726,9 +3749,10 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
     <li><a href="#ref-for-funcdef-color-mix①">2. Mixing colors: the color-mix() function</a>
     <li><a href="#ref-for-funcdef-color-mix②">2.4. 
 	Effect of non-unity alpha on color-mix </a>
-    <li><a href="#ref-for-funcdef-color-mix③">8. Serialization</a>
-    <li><a href="#ref-for-funcdef-color-mix④">8.1. Serializing color-mix()</a>
-    <li><a href="#ref-for-funcdef-color-mix⑤">13.5. 
+    <li><a href="#ref-for-funcdef-color-mix③">7.2. Resolving color-mix() values</a> <a href="#ref-for-funcdef-color-mix④">(2)</a>
+    <li><a href="#ref-for-funcdef-color-mix⑤">8. Serialization</a>
+    <li><a href="#ref-for-funcdef-color-mix⑥">8.1. Serializing color-mix()</a>
+    <li><a href="#ref-for-funcdef-color-mix⑦">13.5. 
 	Changes from Colors 4</a>
    </ul>
   </aside>
