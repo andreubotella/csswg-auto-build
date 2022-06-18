@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-multicol-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="819fdbdb8126c6b9921641995a12df7eb0e7579a" name="document-revision">
+  <meta content="09e30bd7ed666b2c208e30403d4a31b5eda7ef02" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-multicol-1_dev/css-multicol-1"></script>
 <style type="text/css">
 .cols { width: 500px; height: 200px; background: #fff; position: relative; border: solid 5px blue; margin: 0.5em 2em 1em 0; font: bold 14px/19px Arial, sans-serif }
@@ -901,6 +901,7 @@ on screen, on paper, etc.
     <li>
      <a href="#changes"><span class="secno"></span> <span class="content">Appendix B. Changes</span></a>
      <ol class="toc">
+      <li><a href="#changes-from-20211012"><span class="secno"></span> <span class="content">Changes from the <span>Candidate Recommendation (CR) of 12 October 2021</span></span></a>
       <li><a href="#changes-from-20210212"><span class="secno"></span> <span class="content">Changes from the <span>Working Draft (WD) of 12 February 2021</span></span></a>
       <li><a href="#changes-from-20191015"><span class="secno"></span> <span class="content">Changes from the <span>Working Draft (WD) of 15 October 2019</span></span></a>
       <li><a href="#changes-from-20180528"><span class="secno"></span> <span class="content">Changes from the <span>Working Draft (WD) of 28 May 2018</span></span></a>
@@ -2220,11 +2221,36 @@ p <c- p>{</c->
 		it also interrupts any <a data-link-type="dfn" href="#column-rule" id="ref-for-column-rule⑥">column rules</a> (which are only drawn between <a data-link-type="dfn" href="#column-box" id="ref-for-column-box⑥">columns</a> in a <span id="ref-for-multi-column-line⑦">multi-column line</span>).</p>
    </div>
    <p>A spanning element may be lower than the first level of descendants
-	as long as they are part of the same <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#formatting-context" id="ref-for-formatting-context①">formatting context</a>.
-	If the fragment before the spanner is empty, nothing special happens;
+	as long as they are part of the same <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#formatting-context" id="ref-for-formatting-context①">formatting context</a>,
+	and there is nothing between the spanning element and <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⓪">multicol container</a> that establishes a containing block for fixed position descendants.</p>
+   <div class="example" id="example-c35d3254">
+    <a class="self-link" href="#example-c35d3254"></a> In this example, the element with <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span⑤">column-span: all</a> is inside an element with <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform">transform: rotate(90deg)</a>. 
+		The transform establishes a containing block for fixed position descendents, 
+		therefore a spanner will not be created. 
+<pre class="highlight"><c- p>&lt;</c-><c- f>article</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>section</c-><c- p>></c->
+    <c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"spanner"</c-><c- p>></c->Attempted spanner<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+  <c- p>&lt;/</c-><c- f>section</c-><c- p>></c->
+<c- p>&lt;/</c-><c- f>article</c-><c- p>></c->
+</pre>
+<pre class="highlight">article <c- p>{</c->
+  <c- k>columns</c-><c- p>:</c-> <c- m>2</c-><c- p>;</c->
+<c- p>}</c->
+
+section <c- p>{</c->
+  <c- k>transform</c-><c- p>:</c-> <c- nf>rotate</c-><c- p>(</c-><c- m>90</c-><c- k>deg</c-><c- p>);</c->
+<c- p>}</c->
+
+.spanner <c- p>{</c->
+  <c- k>column-span</c-><c- p>:</c-> all<c- p>;</c->
+  <c- k>background</c-><c- p>:</c-> silver<c- p>;</c->
+<c- p>}</c->
+</pre>
+   </div>
+   <p>If the fragment before the spanner is empty, nothing special happens;
 	the top margin/border/padding is above the spanning element, as an empty <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-break-4/#fragment" id="ref-for-fragment①">fragment</a>.</p>
    <div class="example" id="example-fa0001d6">
-    <a class="self-link" href="#example-fa0001d6"></a> In this example the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⓪">multicol container</a> is the <code>article</code> element.
+    <a class="self-link" href="#example-fa0001d6"></a> In this example the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②①">multicol container</a> is the <code>article</code> element.
 		Inside this parent is a paragraph and then a section element.
 		The section contains an <code>h2</code> heading set to <a class="css" data-link-type="maybe" href="#valdef-column-span-all" id="ref-for-valdef-column-span-all②">all</a> this spans all three columns while the containing section remains inside the column boxes. 
     <p>The <code>h2</code> is the first child of the section.
@@ -2252,7 +2278,7 @@ h2 <c- p>{</c->
 </pre>
     <figure>
       <img alt="An element spans all three columns, the red border around the section breaks before the spanner." src="images/nested-spanner.svg"> 
-     <figcaption>The <code>h2</code> element is set to <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span⑤">column-span: all</a>,
+     <figcaption>The <code>h2</code> element is set to <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span⑥">column-span: all</a>,
 		the section has a red border and top padding and margin</figcaption>
     </figure>
    </div>
@@ -2264,7 +2290,7 @@ h2 <c- p>{</c->
 		and the height of the multicol container is constrained.
 		Therefore, the <code>h2</code> element appears in the overflow
 		and there is not room to make the element spanning.
-		As a result, the element appears as if <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span⑥">column-span: none</a> was specified. 
+		As a result, the element appears as if <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span⑦">column-span: none</a> was specified. 
     <figure>
       <img alt="The h2 element is in an overflow column" src="images/h2-in-the-overflow-no-span.svg" style="max-height: 107px;"> 
      <figcaption>The h2 element is in an overflow column and appears as if column-span none is specified</figcaption>
@@ -2615,6 +2641,10 @@ p <c- p>{</c->
    </div>
    <h2 class="no-num heading settled" id="changes"><span class="content">Appendix B. Changes</span><a class="self-link" href="#changes"></a></h2>
    <p>This appendix is <em>informative</em>.</p>
+   <h3 class="heading settled" id="changes-from-20211012"><span class="content">Changes from the <a href="https://www.w3.org/TR/2021/CR-css-multicol-1-20211012/">Candidate Recommendation (CR) of 12 October 2021</a></span><a class="self-link" href="#changes-from-20211012"></a></h3>
+   <ul>
+    <li>Added the text "and there is nothing between the spanning element and <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②②">multicol container</a> that establishes a containing block for fixed position descendants." <a href="https://github.com/w3c/csswg-drafts/issues/6805#issuecomment-1063159219">Resolved 9 Mar 2022</a>
+   </ul>
    <h3 class="heading settled" id="changes-from-20210212"><span class="content">Changes from the <a href="https://www.w3.org/TR/2021/WD-css-multicol-1-20210212/">Working Draft (WD) of 12 February 2021</a></span><a class="self-link" href="#changes-from-20210212"></a></h3>
    <ul>
     <li>Added the text "Out-of-flow descendants of a multi-column container do affect column balancing,
@@ -2678,7 +2708,7 @@ p <c- p>{</c->
     <li>Clarification that <a class="property css" data-link-type="property" href="#propdef-column-rule-width" id="ref-for-propdef-column-rule-width④">column-rule-width</a> does not alter the size or placement of columns. <a href="https://lists.w3.org/Archives/Public/www-style/2013Sep/0550.html">Ref: Sep 2013</a>. 
     <li>Added that each column spanning element establishes a separate BFC margins between them collapse. <a href="https://lists.w3.org/Archives/Public/www-style/2011Dec/0262.html">Ref: Dec 2011</a>. 
     <li>Column rules are painted in the inline content layer, but below all inline content inside the multicol. <a href="https://lists.w3.org/Archives/Public/www-style/2013Feb/0363.html">Ref: Feb 2013</a>. 
-    <li>Clarify that <a class="property css" data-link-type="property" href="#propdef-column-span" id="ref-for-propdef-column-span⑦">column-span</a> causes the element to establish a formatting context even if it is not in a multicol. 
+    <li>Clarify that <a class="property css" data-link-type="property" href="#propdef-column-span" id="ref-for-propdef-column-span⑧">column-span</a> causes the element to establish a formatting context even if it is not in a multicol. 
     <li>Column spanners do not always establish a <em>block</em> formatting context. 
     <li>Allow <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap⑥">column-gap</a> to accept <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage></a> instead of just <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#length-value" id="ref-for-length-value②" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a> 
     <li><a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①④">column-width</a> and <a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count①③">column-count</a> applies to <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#block-container" id="ref-for-block-container③">block containers</a> except <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-tables-3/#table-wrapper-box" id="ref-for-table-wrapper-box②">table wrapper boxes</a>. 
@@ -3393,6 +3423,12 @@ The Multi-Column Model</a> <a href="#ref-for-propdef-position①">(2)</a> <a hre
 Candidate Recommendation (CR) of 12 April 2011.</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-transform">
+   <a href="https://andreubotella.com/csswg-auto-build/css-transforms-1/#propdef-transform">https://andreubotella.com/csswg-auto-build/css-transforms-1/#propdef-transform</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-transform">6.1. Spanning An Element Across Columns: the column-span property</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-integer-value">
    <a href="https://andreubotella.com/csswg-auto-build/css-values-4/#integer-value">https://andreubotella.com/csswg-auto-build/css-values-4/#integer-value</a><b>Referenced in:</b>
    <ul>
@@ -3591,6 +3627,11 @@ Pagination and Overflow Outside Multicol Containers</a>
      <li><span class="dfn-paneled" id="term-for-table-wrapper-box">table wrapper box</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[css-transforms-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-transform">transform</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[css-values-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-integer-value">&lt;integer></span>
@@ -3677,6 +3718,8 @@ Pagination and Overflow Outside Multicol Containers</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-css-transforms-1">[CSS-TRANSFORMS-1]
+   <dd>Simon Fraser; et al. <a href="https://www.w3.org/TR/css-transforms-1/"><cite>CSS Transforms Module Level 1</cite></a>. 14 February 2019. CR. URL: <a href="https://www.w3.org/TR/css-transforms-1/">https://www.w3.org/TR/css-transforms-1/</a>
    <dt id="biblio-css3box">[CSS3BOX]
    <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-box-3/"><cite>CSS Box Model Module Level 3</cite></a>. 22 December 2020. CR. URL: <a href="https://www.w3.org/TR/css-box-3/">https://www.w3.org/TR/css-box-3/</a>
   </dl>
@@ -3763,7 +3806,7 @@ Pagination and Overflow Outside Multicol Containers</a>
       <td>per grammar
       <td>absolute length; 0 if the column rule style is none or hidden
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-span" id="ref-for-propdef-column-span⑧">column-span</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-span" id="ref-for-propdef-column-span⑨">column-span</a>
       <td>none | all
       <td>none
       <td>in-flow block-level elements
@@ -3813,7 +3856,8 @@ Introduction</a> <a href="#ref-for-multi-column-container①">(2)</a>
 The Multi-Column Model</a> <a href="#ref-for-multi-column-container③">(2)</a> <a href="#ref-for-multi-column-container④">(3)</a> <a href="#ref-for-multi-column-container⑤">(4)</a> <a href="#ref-for-multi-column-container⑥">(5)</a> <a href="#ref-for-multi-column-container⑦">(6)</a> <a href="#ref-for-multi-column-container⑧">(7)</a> <a href="#ref-for-multi-column-container⑨">(8)</a>
     <li><a href="#ref-for-multi-column-container①⓪">3.2. The Number of Columns: the column-count property</a>
     <li><a href="#ref-for-multi-column-container①①">4. Column Gaps and Rules</a> <a href="#ref-for-multi-column-container①②">(2)</a> <a href="#ref-for-multi-column-container①③">(3)</a> <a href="#ref-for-multi-column-container①④">(4)</a> <a href="#ref-for-multi-column-container①⑤">(5)</a> <a href="#ref-for-multi-column-container①⑥">(6)</a>
-    <li><a href="#ref-for-multi-column-container①⑦">6.1. Spanning An Element Across Columns: the column-span property</a> <a href="#ref-for-multi-column-container①⑧">(2)</a> <a href="#ref-for-multi-column-container①⑨">(3)</a> <a href="#ref-for-multi-column-container②⓪">(4)</a>
+    <li><a href="#ref-for-multi-column-container①⑦">6.1. Spanning An Element Across Columns: the column-span property</a> <a href="#ref-for-multi-column-container①⑧">(2)</a> <a href="#ref-for-multi-column-container①⑨">(3)</a> <a href="#ref-for-multi-column-container②⓪">(4)</a> <a href="#ref-for-multi-column-container②①">(5)</a>
+    <li><a href="#ref-for-multi-column-container②②">Changes from the Candidate Recommendation (CR) of 12 October 2021</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="column-box">
@@ -3952,8 +3996,8 @@ Introduction</a> <a href="#ref-for-propdef-column-rule①">(2)</a> <a href="#ref
 Introduction</a>
     <li><a href="#ref-for-propdef-column-span①">6. 
 Spanning Columns</a>
-    <li><a href="#ref-for-propdef-column-span②">6.1. Spanning An Element Across Columns: the column-span property</a> <a href="#ref-for-propdef-column-span③">(2)</a> <a href="#ref-for-propdef-column-span④">(3)</a> <a href="#ref-for-propdef-column-span⑤">(4)</a> <a href="#ref-for-propdef-column-span⑥">(5)</a>
-    <li><a href="#ref-for-propdef-column-span⑦">Changes from the
+    <li><a href="#ref-for-propdef-column-span②">6.1. Spanning An Element Across Columns: the column-span property</a> <a href="#ref-for-propdef-column-span③">(2)</a> <a href="#ref-for-propdef-column-span④">(3)</a> <a href="#ref-for-propdef-column-span⑤">(4)</a> <a href="#ref-for-propdef-column-span⑥">(5)</a> <a href="#ref-for-propdef-column-span⑦">(6)</a>
+    <li><a href="#ref-for-propdef-column-span⑧">Changes from the
 Candidate Recommendation (CR) of 12 April 2011.</a>
    </ul>
   </aside>
