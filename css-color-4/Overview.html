@@ -6,7 +6,7 @@
   <meta content="WD" name="w3c-status">
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
-  <meta content="9a4d7e71405f68dafc0109772a71e98f985d1145" name="document-revision">
+  <meta content="7d2da3a7b16468b4b073726ccb4d66288453f713" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-4_dev/css-color-4"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -7171,6 +7171,7 @@ else if <c- p>(</c-><c- m>-180</c-> &lt; θ₂ - θ₁ &lt;= <c- m>0</c-><c- p>)
    <div class="algorithm" data-algorithm="to CSS gamut map a color">
      To <dfn data-dfn-type="dfn" data-export id="css-gamut-map">CSS gamut map<a class="self-link" href="#css-gamut-map"></a></dfn> a color <var>origin</var> in color space <var>origin color space</var> to be in gamut of a destination color space <var>destination</var>: 
     <ol>
+     <li>if <var>destination</var> has no gamut limits (XYZ-D65, XYZ-D50, Lab, LCH, OKLab, OKLCH) return <var>origin</var> 
      <li>let <var>origin_OKLCH</var> be <var>origin</var> converted
 				from <var>origin color space</var> to the OKLCH color space
      <li>if the Lightness of <var>origin_OKLCH</var> is greater than or equal to 100%,
@@ -7178,7 +7179,8 @@ else if <c- p>(</c-><c- m>-180</c-> &lt; θ₂ - θ₁ &lt;= <c- m>0</c-><c- p>)
      <li>if the Lightness of <var>origin_OKLCH</var> is less than than or equal to 0%,
 					return { 0 0 0 origin.alpha } in <var>destination</var>
      <li>let inGamut(<var>color</var>) be a function which returns true if, when passed a color,
-				that color is inside the gamut of <var>destination</var> 
+				that color is inside the gamut of <var>destination</var>.
+				For HSL and HWB, it returns true if the color is inside the gamut of sRGB. 
      <li>if inGamut(<var>origin_OKLCH</var>) is true, convert <var>origin_OKLCH</var> to <var>destination</var> and return it as the gamut mapped color
      <li>otherwise, let delta(<var>one</var>, <var>two</var>) be a function which returns the deltaEOK of color <var>one</var> compared to color <var>two</var>
      <li>let <var>JND</var> be 0.02
