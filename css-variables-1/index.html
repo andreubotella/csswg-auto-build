@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-variables-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="b1e59adb96e947217af26aaa241f0c6ac0c11512" name="document-revision">
+  <meta content="310f48a96f44d01d2e759c7c2c2332af20385f27" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-variables-1_dev/css-variables-1"></script>
 <style>/* style-autolinks */
 
@@ -771,7 +771,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Custom Properties for Cascading Variables Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-06-27">27 June 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-06-28">28 June 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1673,6 +1673,20 @@ a<c- p>[</c->href^=<c- s>"http"</c-><c- p>]</c->::after <c- p>{</c-><c- k>conten
   <c- k>margin-top</c-><c- p>:</c-> <c- nf>calc</c-><c- p>(</c-><c- nf>var</c-><c- p>(</c->--gap<c- p>)</c-> * <c- m>1</c-><c- k>px</c-><c- p>);</c->
 <c- p>}</c->
 </pre>
+    <p>This also implies that the post-substitution value
+		might not be directly serializable as-is.
+		Here’s a similar example to the preceding:</p>
+<pre class="highlight">.foo <c- p>{</c->
+  <c- k>--gap</c-><c- p>:</c-> <c- m>20</c-><c- p>;</c->
+  <c- k>--not-px-length</c-><c- p>:</c-> <c- nf>var</c-><c- p>(</c->--gap<c- p>)</c->px<c- p>;</c->
+<c- p>}</c->
+</pre>
+    <p>The serialization of the computed (post-subsitution)
+		value of <span class="css">--not-px-length</span> is <strong>not</strong> <span class="css">20px</span>,
+		because that would parse back as the single combined dimension;
+		instead, it will serialize with a comment between the two tokens,
+		like <span class="css">px</span>,
+		to enforce that they are separate tokens even when re-parsing.</p>
    </div>
    <details class="wpt-tests-block" dir="ltr" lang="en">
     <summary>Tests</summary>
