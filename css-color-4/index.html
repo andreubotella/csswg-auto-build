@@ -6,7 +6,7 @@
   <meta content="CR" name="w3c-status">
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
-  <meta content="d452a10a921391dc6b6a96e7be97218692c1de53" name="document-revision">
+  <meta content="e30aec4ca7c827356a3091008117c662bd7e0fe2" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-4_dev/css-color-4"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -7188,24 +7188,36 @@ else if <c- p>(</c-><c- m>-180</c-> &lt; θ₂ - θ₁ &lt;= <c- m>0</c-><c- p>)
      <li>if inGamut(<var>origin_OKLCH</var>) is true, convert <var>origin_OKLCH</var> to <var>destination</var> and return it as the gamut mapped color
      <li>otherwise, let delta(<var>one</var>, <var>two</var>) be a function which returns the deltaEOK of color <var>one</var> compared to color <var>two</var>
      <li>let <var>JND</var> be 0.02
+     <li>let <var>epsilon</var> be 0.0001
      <li>let clip(<var>color</var>)| be a function which converts <var>color</var> to <var>destination</var>,
 				converts all negative components to zero,
 				converts all components greater that one to one,
 				and returns the result 
      <li>set <var>min</var> to zero
      <li>set <var>max</var> to the OKLCH chroma of <var>origin_OKLCH</var>
+     <li> let <var>min_inGamut</var> be a boolean that represents when <var>min</var> is still in gamut, and set it to true 
      <li>
-      repeat the following steps 
+      while (<var>max</var> - <var>min</var> is greater than <var>epsilon</var>) repeat the following steps 
       <ol>
        <li>set <var>chroma</var> to (<var>min</var> + <var>max</var>) /2
        <li>set <var>current</var> to <var>origin_OKLCH</var> and then set the chroma component to <var>chroma</var>
-       <li>if inGamut(<var>current</var>) is true, set <var>min</var> to <var>chroma</var> and continue to repeat these steps
+       <li>if <var>min_inGamut</var> is true and also if inGamut(<var>current</var>) is true, set <var>min</var> to <var>chroma</var> and continue to repeat these steps
        <li>
         otherwise, if inGamut(<var>current</var>) is false carry out these steps: 
         <ol>
          <li>set <var>clipped</var> to clip(<var>current</var>)
          <li>set <var>E</var> to delta(<var>clipped</var>, <var>current</var>)
-         <li>if <var>E</var> &lt; <var>JND</var> return <var>clipped</var> as the gamut mapped color
+         <li>
+          if <var>E</var> &lt; <var>JND</var> 
+          <ol>
+           <li>if (<var>E</var> - <var>JND</var> &lt; <var>epsilon</var>) return <var>clipped</var> as the gamut mapped color
+           <li>
+            otherwise, 
+            <ol>
+             <li>set <var>min_inGamut</var> to false
+             <li>set <var>min</var> to <var>chroma</var>
+            </ol>
+          </ol>
          <li>otherwise, set <var>max</var> to <var>chroma</var> and continue to repeat these steps
         </ol>
       </ol>
