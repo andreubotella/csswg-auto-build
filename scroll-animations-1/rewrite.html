@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://drafts.csswg.org/scroll-animations-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="e30aec4ca7c827356a3091008117c662bd7e0fe2" name="document-revision">
+  <meta content="75fb94007ccf3171cfceb5b58c15fb076fb10c82" name="document-revision">
   <link href="web-animations.css" rel="stylesheet" type="text/css">
 <style>/* style-autolinks */
 
@@ -719,7 +719,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Scroll-linked Animations</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-04">4 July 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-05">5 July 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -820,6 +820,7 @@ on screen, on paper, etc.
        </ol>
      </ol>
     <li><a href="#timeline-scope"><span class="secno">4</span> <span class="content">Named Timeline Scoping</span></a>
+    <li><a href="#avoiding-cycles"><span class="secno">5</span> <span class="content">Avoiding cycles with layout</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
      <ol class="toc">
@@ -940,26 +941,26 @@ on screen, on paper, etc.
     <dd> Specifies to use the nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑧">scroll container</a> that has the specified <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-contain-3/#propdef-container-name" id="ref-for-propdef-container-name">container-name</a>. <a data-link-type="biblio" href="#biblio-css-contain-3">[CSS-CONTAIN-3]</a> If none exist, the document viewport is used. 
    </dl>
    <h4 class="heading settled" data-level="2.1.2" id="scrolltimeline-interface"><span class="secno">2.1.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline①">ScrollTimeline</a></code> Interface</span><a class="self-link" href="#scrolltimeline-interface"></a></h4>
-<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scrolldirection"><code><c- g>ScrollDirection</c-></code></dfn> {
-  <dfn class="idl-code" data-dfn-for="ScrollDirection" data-dfn-type="enum-value" data-export id="dom-scrolldirection-block"><code><c- s>"block"</c-></code><a class="self-link" href="#dom-scrolldirection-block"></a></dfn>,
-  <dfn class="idl-code" data-dfn-for="ScrollDirection" data-dfn-type="enum-value" data-export id="dom-scrolldirection-inline"><code><c- s>"inline"</c-></code><a class="self-link" href="#dom-scrolldirection-inline"></a></dfn>,
-  <dfn class="idl-code" data-dfn-for="ScrollDirection" data-dfn-type="enum-value" data-export id="dom-scrolldirection-horizontal"><code><c- s>"horizontal"</c-></code><a class="self-link" href="#dom-scrolldirection-horizontal"></a></dfn>,
-  <dfn class="idl-code" data-dfn-for="ScrollDirection" data-dfn-type="enum-value" data-export id="dom-scrolldirection-vertical"><code><c- s>"vertical"</c-></code><a class="self-link" href="#dom-scrolldirection-vertical"></a></dfn>
+<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scrollaxis"><code><c- g>ScrollAxis</c-></code></dfn> {
+  <dfn class="idl-code" data-dfn-for="ScrollAxis" data-dfn-type="enum-value" data-export id="dom-scrollaxis-block"><code><c- s>"block"</c-></code><a class="self-link" href="#dom-scrollaxis-block"></a></dfn>,
+  <dfn class="idl-code" data-dfn-for="ScrollAxis" data-dfn-type="enum-value" data-export id="dom-scrollaxis-inline"><code><c- s>"inline"</c-></code><a class="self-link" href="#dom-scrollaxis-inline"></a></dfn>,
+  <dfn class="idl-code" data-dfn-for="ScrollAxis" data-dfn-type="enum-value" data-export id="dom-scrollaxis-horizontal"><code><c- s>"horizontal"</c-></code><a class="self-link" href="#dom-scrollaxis-horizontal"></a></dfn>,
+  <dfn class="idl-code" data-dfn-for="ScrollAxis" data-dfn-type="enum-value" data-export id="dom-scrollaxis-vertical"><code><c- s>"vertical"</c-></code><a class="self-link" href="#dom-scrollaxis-vertical"></a></dfn>
 };
 
 <c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-scrolltimelineoptions"><code><c- g>ScrollTimelineOptions</c-></code></dfn> {
   <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element"><c- n>Element</c-></a>? <dfn class="idl-code" data-dfn-for="ScrollTimelineOptions" data-dfn-type="dict-member" data-export data-type="Element? " id="dom-scrolltimelineoptions-source"><code><c- g>source</c-></code><a class="self-link" href="#dom-scrolltimelineoptions-source"></a></dfn>;
-  <a data-link-type="idl-name" href="#enumdef-scrolldirection" id="ref-for-enumdef-scrolldirection"><c- n>ScrollDirection</c-></a> <dfn class="idl-code" data-default="&quot;block&quot;" data-dfn-for="ScrollTimelineOptions" data-dfn-type="dict-member" data-export data-type="ScrollDirection " id="dom-scrolltimelineoptions-axis"><code><c- g>axis</c-></code><a class="self-link" href="#dom-scrolltimelineoptions-axis"></a></dfn> = "block";
+  <a data-link-type="idl-name" href="#enumdef-scrollaxis" id="ref-for-enumdef-scrollaxis"><c- n>ScrollAxis</c-></a> <dfn class="idl-code" data-default="&quot;block&quot;" data-dfn-for="ScrollTimelineOptions" data-dfn-type="dict-member" data-export data-type="ScrollAxis " id="dom-scrolltimelineoptions-axis"><code><c- g>axis</c-></code><a class="self-link" href="#dom-scrolltimelineoptions-axis"></a></dfn> = "block";
 };
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="scrolltimeline"><code><c- g>ScrollTimeline</c-></code></dfn> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline"><c- n>AnimationTimeline</c-></a> {
   <a class="idl-code" data-link-type="constructor" href="#dom-scrolltimeline-scrolltimeline" id="ref-for-dom-scrolltimeline-scrolltimeline"><c- g>constructor</c-></a>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-scrolltimelineoptions" id="ref-for-dictdef-scrolltimelineoptions"><c- n>ScrollTimelineOptions</c-></a> <dfn class="idl-code" data-dfn-for="ScrollTimeline/ScrollTimeline(options), ScrollTimeline/constructor(options), ScrollTimeline/ScrollTimeline(), ScrollTimeline/constructor()" data-dfn-type="argument" data-export id="dom-scrolltimeline-scrolltimeline-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-scrolltimeline-scrolltimeline-options-options"></a></dfn> = {});
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①"><c- n>Element</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element?" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source"><c- g>source</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scrolldirection" id="ref-for-enumdef-scrolldirection①"><c- n>ScrollDirection</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="ScrollDirection" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis"><c- g>axis</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scrollaxis" id="ref-for-enumdef-scrollaxis①"><c- n>ScrollAxis</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="ScrollAxis" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis"><c- g>axis</c-></a>;
 };
 </pre>
-   <p>A <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline②">ScrollTimeline</a></code> is an <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline①">AnimationTimeline</a></code> that specifies a <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines④">scroll progress timeline</a>.
+   <p>A <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline②">ScrollTimeline</a></code> is an <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline①">AnimationTimeline</a></code> that represents a <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines④">scroll progress timeline</a>.
 	It can be passed to
 	the <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation" id="ref-for-animation">Animation</a></code> constructor or the <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animatable-animate" id="ref-for-dom-animatable-animate">animate()</a></code> method
 	to link the animation to a <span id="ref-for-scroll-progress-timelines⑤">scroll progress timeline</span>.</p>
@@ -968,12 +969,26 @@ on screen, on paper, etc.
     <dd data-md>
      <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑨">scroll container</a> element
 whose scroll position drives the progress of the timeline.</p>
-    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ScrollTimeline" data-dfn-type="attribute" data-export id="dom-scrolltimeline-axis"><code>axis</code></dfn>, <span> of type <a data-link-type="idl-name" href="#enumdef-scrolldirection" id="ref-for-enumdef-scrolldirection②">ScrollDirection</a>, readonly</span>
+    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ScrollTimeline" data-dfn-type="attribute" data-export id="dom-scrolltimeline-axis"><code>axis</code></dfn>, <span> of type <a data-link-type="idl-name" href="#enumdef-scrollaxis" id="ref-for-enumdef-scrollaxis②">ScrollAxis</a>, readonly</span>
     <dd data-md>
-     <p>Specifies the axis of scrolling
+     <p>The axis of scrolling
 that drives the progress of the timeline.
-See <a class="production css" data-link-type="type" href="#typedef-axis" id="ref-for-typedef-axis②">&lt;axis></a>, above.</p>
+See value definitions for <a class="production css" data-link-type="type" href="#typedef-axis" id="ref-for-typedef-axis②">&lt;axis></a>, above.</p>
    </dl>
+   <p>Inherited attributes:</p>
+   <dl>
+    <dt data-md><code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime">currentTime</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline②">AnimationTimeline</a></code>)
+    <dd data-md>
+     <p>Represents the scroll progress of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⓪">scroll container</a> as a percentage CSSUnitValue,
+with 0% representing its startmost scroll position
+(in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#writing-mode" id="ref-for-writing-mode">writing mode</a> of the <span id="ref-for-scroll-container①①">scroll container</span>).
+Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
+   </dl>
+   <p class="issue" id="issue-73faeaf7"><a class="self-link" href="#issue-73faeaf7"></a> While 0% will usually represent the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①②">scroll container</a>’s initial scroll position,
+	it might not depending on its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-align-3/#content-distribute" id="ref-for-content-distribute">content distribution</a>.
+	See <a href="https://www.w3.org/TR/css-align-3/#overflow-scroll-position"><cite>CSS Box Alignment 3</cite> § 5.3 Overflow and Scroll Positions</a>.
+	Is this what we want?</p>
+   <p class="issue" id="issue-00572649"><a class="self-link" href="#issue-00572649"></a> Add a note about whether <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime①">currentTime</a></code> can be negative or > 100%.</p>
    <dl class="constructors">
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ScrollTimeline" data-dfn-type="constructor" data-export data-lt="ScrollTimeline(options)|constructor(options)|ScrollTimeline()|constructor()" id="dom-scrolltimeline-scrolltimeline"><code>ScrollTimeline(options)</code></dfn>
     <dd data-md>
@@ -995,24 +1010,11 @@ See <a class="production css" data-link-type="type" href="#typedef-axis" id="ref
        <p>Set the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis①">axis</a></code> property of <var>timeline</var> to the corresponding value from <var>options</var>.</p>
      </ol>
    </dl>
-   <p>Inherited attributes:</p>
-   <dl>
-    <dt data-md><code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime">currentTime</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline②">AnimationTimeline</a></code>
-    <dd data-md>
-     <p>Represents the scroll progress of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⓪">scroll container</a> as a percentage CSSUnitValue,
-with 0% representing its startmost scroll position
-(using the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#writing-mode" id="ref-for-writing-mode">writing mode</a> of the <span id="ref-for-scroll-container①①">scroll container</span>.
-Null when the timeline is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase" id="ref-for-timeline-timeline-inactive-phase">inactive</a>.</p>
-   </dl>
-   <p class="issue" id="issue-73faeaf7"><a class="self-link" href="#issue-73faeaf7"></a> While 0% will usually represent the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①②">scroll container</a>’s initial scroll position,
-	it might not depending on its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-align-3/#content-distribute" id="ref-for-content-distribute">content distribution</a>.
-	See <a href="https://www.w3.org/TR/css-align-3/#overflow-scroll-position"><cite>CSS Box Alignment 3</cite> § 5.3 Overflow and Scroll Positions</a>.
-	Is this what we want?</p>
    <p>If the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source②">source</a></code> of a <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑤">ScrollTimeline</a></code> is an element whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box">principal box</a> does not exist
 	or is not a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①③">scroll container</a>,
-	then its <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-phase" id="ref-for-dom-animationtimeline-phase">phase</a></code> is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase" id="ref-for-timeline-timeline-inactive-phase①">timeline inactive phase</a>.
-	It is otherwise in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-active-phase" id="ref-for-timeline-timeline-active-phase">active</a> phase.</p>
-   <p>A <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑥">ScrollTimeline</a></code>’s <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-2/#dom-effecttiming-duration" id="ref-for-dom-effecttiming-duration">duration</a></code> is 100%.</p>
+	then the <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑥">ScrollTimeline</a></code> is <a data-link-type="dfn">inactive</a>.
+	It is otherwise in the <span>active</span> <span>timeline state</span>.</p>
+   <p>A <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑦">ScrollTimeline</a></code>’s <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-2/#dom-effecttiming-duration" id="ref-for-dom-effecttiming-duration">duration</a></code> is 100%.</p>
    <h3 class="heading settled" data-level="2.2" id="scroll-timelines-named"><span class="secno">2.2. </span><span class="content">Named Scroll Progress Timelines</span><a class="self-link" href="#scroll-timelines-named"></a></h3>
    <p>Scroll timelines can also be defined on the scroll container itself,
 	and then referenced by name.
@@ -1134,11 +1136,11 @@ Null when the timeline is <a data-link-type="dfn" href="https://andreubotella.co
    <h4 class="heading settled" data-level="3.1.1" id="viewtimeline-interface"><span class="secno">3.1.1. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#viewtimeline" id="ref-for-viewtimeline①">ViewTimeline</a></code> Interface</span><a class="self-link" href="#viewtimeline-interface"></a></h4>
 <pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-viewtimelineoptions"><code><c- g>ViewTimelineOptions</c-></code></dfn> {
   <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element③"><c- n>Element</c-></a> <dfn class="idl-code" data-dfn-for="ViewTimelineOptions" data-dfn-type="dict-member" data-export data-type="Element " id="dom-viewtimelineoptions-subject"><code><c- g>subject</c-></code><a class="self-link" href="#dom-viewtimelineoptions-subject"></a></dfn>;
-  <a data-link-type="idl-name" href="#enumdef-scrolldirection" id="ref-for-enumdef-scrolldirection③"><c- n>ScrollDirection</c-></a> <dfn class="idl-code" data-default="&quot;block&quot;" data-dfn-for="ViewTimelineOptions" data-dfn-type="dict-member" data-export data-type="ScrollDirection " id="dom-viewtimelineoptions-axis"><code><c- g>axis</c-></code><a class="self-link" href="#dom-viewtimelineoptions-axis"></a></dfn> = "block";
+  <a data-link-type="idl-name" href="#enumdef-scrollaxis" id="ref-for-enumdef-scrollaxis③"><c- n>ScrollAxis</c-></a> <dfn class="idl-code" data-default="&quot;block&quot;" data-dfn-for="ViewTimelineOptions" data-dfn-type="dict-member" data-export data-type="ScrollAxis " id="dom-viewtimelineoptions-axis"><code><c- g>axis</c-></code><a class="self-link" href="#dom-viewtimelineoptions-axis"></a></dfn> = "block";
 };
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="viewtimeline"><code><c- g>ViewTimeline</c-></code></dfn> : <a data-link-type="idl-name" href="#scrolltimeline" id="ref-for-scrolltimeline⑦"><c- n>ScrollTimeline</c-></a> {
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="viewtimeline"><code><c- g>ViewTimeline</c-></code></dfn> : <a data-link-type="idl-name" href="#scrolltimeline" id="ref-for-scrolltimeline⑧"><c- n>ScrollTimeline</c-></a> {
   <a class="idl-code" data-link-type="constructor" href="#dom-viewtimeline-viewtimeline" id="ref-for-dom-viewtimeline-viewtimeline"><c- g>constructor</c-></a>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-viewtimelineoptions" id="ref-for-dictdef-viewtimelineoptions"><c- n>ViewTimelineOptions</c-></a> <dfn class="idl-code" data-dfn-for="ViewTimeline/ViewTimeline(options), ViewTimeline/constructor(options), ViewTimeline/ViewTimeline(), ViewTimeline/constructor()" data-dfn-type="argument" data-export id="dom-viewtimeline-viewtimeline-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-viewtimeline-viewtimeline-options-options"></a></dfn> = {});
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element④"><c- n>Element</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject"><c- g>subject</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish" id="ref-for-typedefdef-cssnumberish"><c- n>CSSNumberish</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumberish" href="#dom-viewtimeline-starttime" id="ref-for-dom-viewtimeline-starttime"><c- g>startTime</c-></a>;
@@ -1157,17 +1159,34 @@ Null when the timeline is <a data-link-type="dfn" href="https://andreubotella.co
     <dd data-md>
      <p>Represents the starting (0% progress) scroll position
 of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines④">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑨">scroll container</a>’s scroll progress at that position.
-Null when the timeline is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase" id="ref-for-timeline-timeline-inactive-phase②">inactive</a>.</p>
+Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ViewTimeline" data-dfn-type="attribute" data-export id="dom-viewtimeline-endtime"><code>endTime</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish" id="ref-for-typedefdef-cssnumberish③">CSSNumberish</a>, readonly</span>
     <dd data-md>
      <p>Represents the ending (100%) scroll position
 of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑤">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue①">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②⓪">scroll container</a>’s scroll progress at that position.
-Null when the timeline is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase" id="ref-for-timeline-timeline-inactive-phase③">inactive</a>.</p>
+Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
    </dl>
    <p class="note" role="note"><span>Note:</span> The <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-starttime" id="ref-for-dom-viewtimeline-starttime①">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-endtime" id="ref-for-dom-viewtimeline-endtime①">endTime</a></code> attributes
 	have odd names for being specific to ScrollTimeline;
-	this is to keep them consistent with <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime①">currentTime</a></code>,
+	this is to keep them consistent with <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime②">currentTime</a></code>,
 	which represents the currently-active position on the same scale.</p>
+   <p>Inherited attributes:</p>
+   <dl>
+    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source③">source</a></code> (inherited <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑨">ScrollTimeline</a></code>
+    <dd data-md>
+     <p>The nearest ancestor of the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject①">subject</a></code> whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box③">principal box</a> establishes a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②①">scroll container</a>,
+whose scroll position drives the progress of the timeline.</p>
+    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis②">axis</a></code> (inherited <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline①⓪">ScrollTimeline</a></code>
+    <dd data-md>
+     <p>Specifies the axis of scrolling
+that drives the progress of the timeline.
+See <a class="production css" data-link-type="type" href="#typedef-axis" id="ref-for-typedef-axis③">&lt;axis></a>, above.</p>
+    <dt data-md><code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime③">currentTime</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline④">AnimationTimeline</a></code>
+    <dd data-md>
+     <p>Represents the current progress
+of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑥">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue②">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②②">scroll container</a>’s scroll progress at that position.
+Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
+   </dl>
    <dl class="constructors">
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ViewTimeline" data-dfn-type="constructor" data-export data-lt="ViewTimeline(options)|constructor(options)|ViewTimeline()|constructor()" id="dom-viewtimeline-viewtimeline"><code>ViewTimeline(options)</code></dfn>
     <dd data-md>
@@ -1176,40 +1195,15 @@ Null when the timeline is <a data-link-type="dfn" href="https://andreubotella.co
       <li data-md>
        <p>Let <var>timeline</var> be the new <code class="idl"><a data-link-type="idl" href="#viewtimeline" id="ref-for-viewtimeline④">ViewTimeline</a></code> object.</p>
       <li data-md>
-       <p>Set the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject①">subject</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis②">axis</a></code> properties of <var>timeline</var> to the corresponding values from <var>options</var>.</p>
+       <p>Set the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject②">subject</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis③">axis</a></code> properties of <var>timeline</var> to the corresponding values from <var>options</var>.</p>
       <li data-md>
-       <p>Set the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source③">source</a></code> of <var>timeline</var> to the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject②">subject</a></code>’s
-nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②①">scroll container</a> element.</p>
+       <p>Set the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source④">source</a></code> of <var>timeline</var> to the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject③">subject</a></code>’s
+nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②③">scroll container</a> element.</p>
      </ol>
    </dl>
-   <p>Inherited attributes:</p>
-   <dl>
-    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source④">source</a></code> (inherited <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑧">ScrollTimeline</a></code>
-    <dd data-md>
-     <p>The nearest ancestor of the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject③">subject</a></code> whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box③">principal box</a> establishes a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②②">scroll container</a>,
-whose scroll position drives the progress of the timeline.</p>
-    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis③">axis</a></code> (inherited <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑨">ScrollTimeline</a></code>
-    <dd data-md>
-     <p>Specifies the axis of scrolling
-that drives the progress of the timeline.
-See <a class="production css" data-link-type="type" href="#typedef-axis" id="ref-for-typedef-axis③">&lt;axis></a>, above.</p>
-    <dt data-md><code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime②">currentTime</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline④">AnimationTimeline</a></code>
-    <dd data-md>
-     <p>Represents the current progress
-of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑥">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue②">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②③">scroll container</a>’s scroll progress at that position.
-Null when the timeline is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase" id="ref-for-timeline-timeline-inactive-phase④">inactive</a>.</p>
-   </dl>
    <p>If the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source⑤">source</a></code> or <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject④">subject</a></code> of a <code class="idl"><a data-link-type="idl" href="#viewtimeline" id="ref-for-viewtimeline⑤">ViewTimeline</a></code> is an element whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box④">principal box</a> does not exist,
-	then its <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-phase" id="ref-for-dom-animationtimeline-phase①">phase</a></code> is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase" id="ref-for-timeline-timeline-inactive-phase⑤">timeline inactive phase</a>.
-	The timeline is otherwise</p>
-   <ul>
-    <li data-md>
-     <p>in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-before-phase" id="ref-for-timeline-timeline-before-phase">before</a> phase when <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime③">currentTime</a></code> &lt; <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-starttime" id="ref-for-dom-viewtimeline-starttime②">startTime</a></code></p>
-    <li data-md>
-     <p>in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-active-phase" id="ref-for-timeline-timeline-active-phase①">active</a> phase when <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-starttime" id="ref-for-dom-viewtimeline-starttime③">startTime</a></code> ≤ <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime④">currentTime</a></code> ≤ <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-endtime" id="ref-for-dom-viewtimeline-endtime②">endTime</a></code></p>
-    <li data-md>
-     <p>in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-after-phase" id="ref-for-timeline-timeline-after-phase">after</a> phase when <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-endtime" id="ref-for-dom-viewtimeline-endtime③">endTime</a></code> &lt; <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime⑤">currentTime</a></code></p>
-   </ul>
+	then the <code class="idl"><a data-link-type="idl" href="#viewtimeline" id="ref-for-viewtimeline⑥">ViewTimeline</a></code> is <a data-link-type="dfn">inactive</a>.
+	It is otherwise in the <span>active</span> <span>timeline state</span>.</p>
    <p class="issue" id="issue-d2753247"><a class="self-link" href="#issue-d2753247"></a> Figure out how to incorporate fit/inset abilities.</p>
    <h3 class="heading settled" data-level="3.2" id="view-timelines-named"><span class="secno">3.2. </span><span class="content">Named View Progress Timelines</span><a class="self-link" href="#view-timelines-named"></a></h3>
    <p>View timelines can also be defined declaratively
@@ -1446,6 +1440,45 @@ and 75% to the point when it is just about to be cropped.
 	which considers siblings closer than parents.
 	In case of a name conflict on the same element, <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines①①">scroll progress timelines</a> take precedence over <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines①②">view progress timelines</a>.</p>
    <p class="issue" id="issue-330d057d"><a class="self-link" href="#issue-330d057d"></a> Do we want to expand this scope to preceding siblings and/or distant cousins?</p>
+   <h2 class="heading settled" data-level="5" id="avoiding-cycles"><span class="secno">5. </span><span class="content">Avoiding cycles with layout</span><a class="self-link" href="#avoiding-cycles"></a></h2>
+   <p>The ability for scrolling to drive the progress of an animation,
+	gives rise to the possibility of <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="layout-cycles">layout cycles</dfn>,
+	where a change to a scroll offset causes an animation’s effect to update,
+	which in turn causes a new change to the scroll offset.</p>
+   <p>To avoid such <a data-link-type="dfn" href="#layout-cycles" id="ref-for-layout-cycles">layout cycles</a>,
+	animations with a <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines①②">scroll progress timeline</a> are sampled once per frame,
+	after scrolling in response to input events has taken place,
+	but before <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe" id="ref-for-dom-animationframeprovider-requestanimationframe">requestAnimationFrame()</a></code> callbacks are run.
+	If the sampling of such an animation causes a change to a scroll offset,
+	the animation will not be re-sampled to reflect the new offset
+	until the next frame.</p>
+   <p>The implication of this is that in some situations, in a given frame,
+	the rendered scroll offset of a scroll container might not be consistent
+	with the state of an animation driven by scrolling that scroll container.
+	However, this will only occur in situations where the animation’s effect
+	changes the scroll offset of that same scroll container
+	(in other words, in situations where the animation’s author is asking for trouble).
+	In normal situations, including—importantly—<wbr>when scrolling happens in response to input events,
+	the rendered scroll offset and the state of scroll-driven animations
+	will be consistent in each frame.</p>
+   <p>User agents that composite frames asynchronously
+	with respect to layout and/or script
+	may, at their discretion, sample scroll-driven animations
+	once per <em>composited</em> frame,
+	rather than (or in addition to) once per full layout cycle.
+	Again, if sampling such an animation causes a change to a scroll offset,
+	the animation will not be re-sampled to reflect the new offset
+	until the next frame.</p>
+   <p>Nothing in this section is intended to require
+	that scrolling block on layout or script.
+	If a user agent normally composites frames where scrolling has occurred
+	but the consequences of scrolling have not been fully propagated in layout or script
+	(for example, <code>scroll</code> event listeners have not yet run),
+	the user agent may likewise choose not to sample scroll-driven animations
+	for that composited frame.
+	In such cases, the rendered scroll offset
+	and the state of a scroll-driven animation
+	may be inconsistent in the composited frame.</p>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content"> Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
   <h3 class="no-ref heading settled" id="w3c-conventions"><span class="content"> Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
@@ -1550,7 +1583,7 @@ and 75% to the point when it is just about to be cropped.
      <li><a href="#dom-scrolltimelineoptions-axis">dict-member for ScrollTimelineOptions</a><span>, in § 2.1.2</span>
      <li><a href="#dom-viewtimelineoptions-axis">dict-member for ViewTimelineOptions</a><span>, in § 3.1.1</span>
     </ul>
-   <li><a href="#dom-scrolldirection-block">"block"</a><span>, in § 2.1.2</span>
+   <li><a href="#dom-scrollaxis-block">"block"</a><span>, in § 2.1.2</span>
    <li><a href="#valdef-scroll-block">block</a><span>, in § 2.1.1</span>
    <li>
     constructor()
@@ -1568,10 +1601,11 @@ and 75% to the point when it is just about to be cropped.
    <li><a href="#valdef-view-timeline-fit-cover">cover</a><span>, in § 3.2.4</span>
    <li><a href="#valdef-scroll-custom-ident">&lt;custom-ident></a><span>, in § 2.1.1</span>
    <li><a href="#dom-viewtimeline-endtime">endTime</a><span>, in § 3.1.1</span>
-   <li><a href="#dom-scrolldirection-horizontal">"horizontal"</a><span>, in § 2.1.2</span>
+   <li><a href="#dom-scrollaxis-horizontal">"horizontal"</a><span>, in § 2.1.2</span>
    <li><a href="#valdef-scroll-horizontal">horizontal</a><span>, in § 2.1.1</span>
-   <li><a href="#dom-scrolldirection-inline">"inline"</a><span>, in § 2.1.2</span>
+   <li><a href="#dom-scrollaxis-inline">"inline"</a><span>, in § 2.1.2</span>
    <li><a href="#valdef-scroll-inline">inline</a><span>, in § 2.1.1</span>
+   <li><a href="#layout-cycles">layout cycles</a><span>, in § 5</span>
    <li>
     &lt;length-percentage>
     <ul>
@@ -1581,7 +1615,7 @@ and 75% to the point when it is just about to be cropped.
    <li><a href="#valdef-scroll-nearest">nearest</a><span>, in § 2.1.1</span>
    <li><a href="#valdef-scroll-root">root</a><span>, in § 2.1.1</span>
    <li><a href="#funcdef-scroll">scroll()</a><span>, in § 2.1.1</span>
-   <li><a href="#enumdef-scrolldirection">ScrollDirection</a><span>, in § 2.1.2</span>
+   <li><a href="#enumdef-scrollaxis">ScrollAxis</a><span>, in § 2.1.2</span>
    <li><a href="#scroll-driven-animations">scroll-driven animations</a><span>, in § 1</span>
    <li><a href="#typedef-scroller">&lt;scroller></a><span>, in § 2.1.1</span>
    <li><a href="#scroll-progress-timelines">Scroll progress timelines</a><span>, in § 2</span>
@@ -1605,7 +1639,7 @@ and 75% to the point when it is just about to be cropped.
      <li><a href="#dom-viewtimeline-subject">attribute for ViewTimeline</a><span>, in § 3.1.1</span>
      <li><a href="#dom-viewtimelineoptions-subject">dict-member for ViewTimelineOptions</a><span>, in § 3.1.1</span>
     </ul>
-   <li><a href="#dom-scrolldirection-vertical">"vertical"</a><span>, in § 2.1.2</span>
+   <li><a href="#dom-scrollaxis-vertical">"vertical"</a><span>, in § 2.1.2</span>
    <li><a href="#valdef-scroll-vertical">vertical</a><span>, in § 2.1.1</span>
    <li><a href="#view-progress-rectangle">view progress rectangle</a><span>, in § 3.2.3</span>
    <li><a href="#view-progress-subject">view progress subject</a><span>, in § 3</span>
@@ -1844,6 +1878,12 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-concept-document-windowconcept-document-window">2.1.2. The ScrollTimeline Interface</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-dom-animationframeprovider-requestanimationframe">
+   <a href="https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe">https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#dom-animationframeprovider-requestanimationframe</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-animationframeprovider-requestanimationframe">5. Avoiding cycles with layout</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-animation">
    <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation">https://andreubotella.com/csswg-auto-build/web-animations-1/#animation</a><b>Referenced in:</b>
    <ul>
@@ -1874,47 +1914,14 @@ and 75% to the point when it is just about to be cropped.
   <aside class="dfn-panel" data-for="term-for-dom-animationtimeline-currenttime">
    <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime">https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-animationtimeline-currenttime">2.1.2. The ScrollTimeline Interface</a>
-    <li><a href="#ref-for-dom-animationtimeline-currenttime①">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-animationtimeline-currenttime②">(2)</a> <a href="#ref-for-dom-animationtimeline-currenttime③">(3)</a> <a href="#ref-for-dom-animationtimeline-currenttime④">(4)</a> <a href="#ref-for-dom-animationtimeline-currenttime⑤">(5)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-dom-animationtimeline-phase">
-   <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-phase">https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-phase</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-animationtimeline-phase">2.1.2. The ScrollTimeline Interface</a>
-    <li><a href="#ref-for-dom-animationtimeline-phase①">3.1.1. The ViewTimeline Interface</a>
+    <li><a href="#ref-for-dom-animationtimeline-currenttime">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-dom-animationtimeline-currenttime①">(2)</a>
+    <li><a href="#ref-for-dom-animationtimeline-currenttime②">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-animationtimeline-currenttime③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-timeline">
    <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline">https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-timeline">1.1. Relationship to other specifications</a> <a href="#ref-for-timeline①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-timeline-timeline-active-phase">
-   <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-active-phase">https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-active-phase</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-timeline-timeline-active-phase">2.1.2. The ScrollTimeline Interface</a>
-    <li><a href="#ref-for-timeline-timeline-active-phase①">3.1.1. The ViewTimeline Interface</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-timeline-timeline-after-phase">
-   <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-after-phase">https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-after-phase</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-timeline-timeline-after-phase">3.1.1. The ViewTimeline Interface</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-timeline-timeline-before-phase">
-   <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-before-phase">https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-before-phase</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-timeline-timeline-before-phase">3.1.1. The ViewTimeline Interface</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-timeline-timeline-inactive-phase">
-   <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase">https://andreubotella.com/csswg-auto-build/web-animations-1/#timeline-timeline-inactive-phase</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-timeline-timeline-inactive-phase">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-timeline-timeline-inactive-phase①">(2)</a>
-    <li><a href="#ref-for-timeline-timeline-inactive-phase②">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-timeline-timeline-inactive-phase③">(2)</a> <a href="#ref-for-timeline-timeline-inactive-phase④">(3)</a> <a href="#ref-for-timeline-timeline-inactive-phase⑤">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-effecttiming-duration">
@@ -2019,6 +2026,7 @@ and 75% to the point when it is just about to be cropped.
      <li><span class="dfn-paneled" id="term-for-window">Window</span>
      <li><span class="dfn-paneled" id="term-for-current-global-object">current global object</span>
      <li><span class="dfn-paneled" id="term-for-concept-document-windowconcept-document-window">document associated with a window</span>
+     <li><span class="dfn-paneled" id="term-for-dom-animationframeprovider-requestanimationframe">requestAnimationFrame(callback)</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEB-ANIMATIONS-1]</a> defines the following terms:
@@ -2028,12 +2036,7 @@ and 75% to the point when it is just about to be cropped.
      <li><span class="dfn-paneled" id="term-for-dom-animatable-animate">animate(keyframes)</span>
      <li><span class="dfn-paneled" id="term-for-concept-animation">animation</span>
      <li><span class="dfn-paneled" id="term-for-dom-animationtimeline-currenttime">currentTime</span>
-     <li><span class="dfn-paneled" id="term-for-dom-animationtimeline-phase">phase</span>
      <li><span class="dfn-paneled" id="term-for-timeline">timeline</span>
-     <li><span class="dfn-paneled" id="term-for-timeline-timeline-active-phase">timeline active phase</span>
-     <li><span class="dfn-paneled" id="term-for-timeline-timeline-after-phase">timeline after phase</span>
-     <li><span class="dfn-paneled" id="term-for-timeline-timeline-before-phase">timeline before phase</span>
-     <li><span class="dfn-paneled" id="term-for-timeline-timeline-inactive-phase">timeline inactive phase</span>
     </ul>
    <li>
     <a data-link-type="biblio">[web-animations-2]</a> defines the following terms:
@@ -2193,28 +2196,28 @@ and 75% to the point when it is just about to be cropped.
    </table>
   </div>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl highlight def"><c- b>enum</c-> <a href="#enumdef-scrolldirection"><code><c- g>ScrollDirection</c-></code></a> {
-  <a href="#dom-scrolldirection-block"><code><c- s>"block"</c-></code></a>,
-  <a href="#dom-scrolldirection-inline"><code><c- s>"inline"</c-></code></a>,
-  <a href="#dom-scrolldirection-horizontal"><code><c- s>"horizontal"</c-></code></a>,
-  <a href="#dom-scrolldirection-vertical"><code><c- s>"vertical"</c-></code></a>
+<pre class="idl highlight def"><c- b>enum</c-> <a href="#enumdef-scrollaxis"><code><c- g>ScrollAxis</c-></code></a> {
+  <a href="#dom-scrollaxis-block"><code><c- s>"block"</c-></code></a>,
+  <a href="#dom-scrollaxis-inline"><code><c- s>"inline"</c-></code></a>,
+  <a href="#dom-scrollaxis-horizontal"><code><c- s>"horizontal"</c-></code></a>,
+  <a href="#dom-scrollaxis-vertical"><code><c- s>"vertical"</c-></code></a>
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-scrolltimelineoptions"><code><c- g>ScrollTimelineOptions</c-></code></a> {
   <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element"><c- n>Element</c-></a>? <a data-type="Element? " href="#dom-scrolltimelineoptions-source"><code><c- g>source</c-></code></a>;
-  <a data-link-type="idl-name" href="#enumdef-scrolldirection"><c- n>ScrollDirection</c-></a> <a data-default="&quot;block&quot;" data-type="ScrollDirection " href="#dom-scrolltimelineoptions-axis"><code><c- g>axis</c-></code></a> = "block";
+  <a data-link-type="idl-name" href="#enumdef-scrollaxis"><c- n>ScrollAxis</c-></a> <a data-default="&quot;block&quot;" data-type="ScrollAxis " href="#dom-scrolltimelineoptions-axis"><code><c- g>axis</c-></code></a> = "block";
 };
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#scrolltimeline"><code><c- g>ScrollTimeline</c-></code></a> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline"><c- n>AnimationTimeline</c-></a> {
   <a class="idl-code" data-link-type="constructor" href="#dom-scrolltimeline-scrolltimeline"><c- g>constructor</c-></a>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-scrolltimelineoptions"><c- n>ScrollTimelineOptions</c-></a> <a href="#dom-scrolltimeline-scrolltimeline-options-options"><code><c- g>options</c-></code></a> = {});
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element"><c- n>Element</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element?" href="#dom-scrolltimeline-source"><c- g>source</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scrolldirection"><c- n>ScrollDirection</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="ScrollDirection" href="#dom-scrolltimeline-axis"><c- g>axis</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-scrollaxis"><c- n>ScrollAxis</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="ScrollAxis" href="#dom-scrolltimeline-axis"><c- g>axis</c-></a>;
 };
 
 <c- b>dictionary</c-> <a href="#dictdef-viewtimelineoptions"><code><c- g>ViewTimelineOptions</c-></code></a> {
   <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element"><c- n>Element</c-></a> <a data-type="Element " href="#dom-viewtimelineoptions-subject"><code><c- g>subject</c-></code></a>;
-  <a data-link-type="idl-name" href="#enumdef-scrolldirection"><c- n>ScrollDirection</c-></a> <a data-default="&quot;block&quot;" data-type="ScrollDirection " href="#dom-viewtimelineoptions-axis"><code><c- g>axis</c-></code></a> = "block";
+  <a data-link-type="idl-name" href="#enumdef-scrollaxis"><c- n>ScrollAxis</c-></a> <a data-default="&quot;block&quot;" data-type="ScrollAxis " href="#dom-viewtimelineoptions-axis"><code><c- g>axis</c-></code></a> = "block";
 };
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
@@ -2232,6 +2235,7 @@ and 75% to the point when it is just about to be cropped.
 	it might not depending on its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-align-3/#content-distribute">content distribution</a>.
 	See <a href="https://www.w3.org/TR/css-align-3/#overflow-scroll-position"><cite>CSS Box Alignment 3</cite> § 5.3 Overflow and Scroll Positions</a>.
 	Is this what we want? <a class="issue-return" href="#issue-73faeaf7" title="Jump to section">↵</a></div>
+   <div class="issue"> Add a note about whether <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime">currentTime</a></code> can be negative or > 100%. <a class="issue-return" href="#issue-00572649" title="Jump to section">↵</a></div>
    <div class="issue"> Figure out how to incorporate fit/inset abilities. <a class="issue-return" href="#issue-d2753247" title="Jump to section">↵</a></div>
    <div class="issue"> Should the initial value be zero or auto? <a class="issue-return" href="#issue-a5c37356" title="Jump to section">↵</a></div>
    <div class="issue"> Do we need all the longhands? Seems like overkill... <a class="issue-return" href="#issue-7dcd77ff" title="Jump to section">↵</a></div>
@@ -2268,6 +2272,7 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-scroll-progress-timelines⑦">2.2.2. Axis of a Scroll Progress Timeline: the scroll-timeline-axis property</a>
     <li><a href="#ref-for-scroll-progress-timelines⑧">3. View Progress Timelines</a> <a href="#ref-for-scroll-progress-timelines⑨">(2)</a>
     <li><a href="#ref-for-scroll-progress-timelines①⓪">4. Named Timeline Scoping</a> <a href="#ref-for-scroll-progress-timelines①①">(2)</a>
+    <li><a href="#ref-for-scroll-progress-timelines①②">5. Avoiding cycles with layout</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="funcdef-scroll">
@@ -2292,11 +2297,11 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-typedef-scroller">2.1.1. The scroll() notation</a> <a href="#ref-for-typedef-scroller①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="enumdef-scrolldirection">
-   <b><a href="#enumdef-scrolldirection">#enumdef-scrolldirection</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="enumdef-scrollaxis">
+   <b><a href="#enumdef-scrollaxis">#enumdef-scrollaxis</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-enumdef-scrolldirection">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-enumdef-scrolldirection①">(2)</a> <a href="#ref-for-enumdef-scrolldirection②">(3)</a>
-    <li><a href="#ref-for-enumdef-scrolldirection③">3.1.1. The ViewTimeline Interface</a>
+    <li><a href="#ref-for-enumdef-scrollaxis">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-enumdef-scrollaxis①">(2)</a> <a href="#ref-for-enumdef-scrollaxis②">(3)</a>
+    <li><a href="#ref-for-enumdef-scrollaxis③">3.1.1. The ViewTimeline Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dictdef-scrolltimelineoptions">
@@ -2309,8 +2314,8 @@ and 75% to the point when it is just about to be cropped.
    <b><a href="#scrolltimeline">#scrolltimeline</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-scrolltimeline">2. Scroll Progress Timelines</a>
-    <li><a href="#ref-for-scrolltimeline①">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-scrolltimeline②">(2)</a> <a href="#ref-for-scrolltimeline③">(3)</a> <a href="#ref-for-scrolltimeline④">(4)</a> <a href="#ref-for-scrolltimeline⑤">(5)</a> <a href="#ref-for-scrolltimeline⑥">(6)</a>
-    <li><a href="#ref-for-scrolltimeline⑦">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-scrolltimeline⑧">(2)</a> <a href="#ref-for-scrolltimeline⑨">(3)</a>
+    <li><a href="#ref-for-scrolltimeline①">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-scrolltimeline②">(2)</a> <a href="#ref-for-scrolltimeline③">(3)</a> <a href="#ref-for-scrolltimeline④">(4)</a> <a href="#ref-for-scrolltimeline⑤">(5)</a> <a href="#ref-for-scrolltimeline⑥">(6)</a> <a href="#ref-for-scrolltimeline⑦">(7)</a>
+    <li><a href="#ref-for-scrolltimeline⑧">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-scrolltimeline⑨">(2)</a> <a href="#ref-for-scrolltimeline①⓪">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-scrolltimeline-source">
@@ -2378,7 +2383,7 @@ and 75% to the point when it is just about to be cropped.
    <b><a href="#viewtimeline">#viewtimeline</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-viewtimeline">3. View Progress Timelines</a>
-    <li><a href="#ref-for-viewtimeline①">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-viewtimeline②">(2)</a> <a href="#ref-for-viewtimeline③">(3)</a> <a href="#ref-for-viewtimeline④">(4)</a> <a href="#ref-for-viewtimeline⑤">(5)</a>
+    <li><a href="#ref-for-viewtimeline①">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-viewtimeline②">(2)</a> <a href="#ref-for-viewtimeline③">(3)</a> <a href="#ref-for-viewtimeline④">(4)</a> <a href="#ref-for-viewtimeline⑤">(5)</a> <a href="#ref-for-viewtimeline⑥">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-viewtimeline-subject">
@@ -2390,13 +2395,13 @@ and 75% to the point when it is just about to be cropped.
   <aside class="dfn-panel" data-for="dom-viewtimeline-starttime">
    <b><a href="#dom-viewtimeline-starttime">#dom-viewtimeline-starttime</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-viewtimeline-starttime">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-starttime①">(2)</a> <a href="#ref-for-dom-viewtimeline-starttime②">(3)</a> <a href="#ref-for-dom-viewtimeline-starttime③">(4)</a>
+    <li><a href="#ref-for-dom-viewtimeline-starttime">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-starttime①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-viewtimeline-endtime">
    <b><a href="#dom-viewtimeline-endtime">#dom-viewtimeline-endtime</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-viewtimeline-endtime">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-endtime①">(2)</a> <a href="#ref-for-dom-viewtimeline-endtime②">(3)</a> <a href="#ref-for-dom-viewtimeline-endtime③">(4)</a>
+    <li><a href="#ref-for-dom-viewtimeline-endtime">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-endtime①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-viewtimeline-viewtimeline">
@@ -2460,6 +2465,12 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-propdef-view-timeline">3. View Progress Timelines</a>
     <li><a href="#ref-for-propdef-view-timeline①">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
     <li><a href="#ref-for-propdef-view-timeline②">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="layout-cycles">
+   <b><a href="#layout-cycles">#layout-cycles</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-layout-cycles">5. Avoiding cycles with layout</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
