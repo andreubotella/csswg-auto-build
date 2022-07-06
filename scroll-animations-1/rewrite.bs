@@ -113,6 +113,9 @@ spec: cssom-view-1; type: dfn;
 	along a particular axis.
 	The startmost scroll position represents 0% progress
 	and the endmost scroll position represents 100% progress.
+	If the 0% position and 100% position coincide
+	(i.e. the [=scroll container=] has no overflow to scroll),
+	the timeline is [=timeline inactive state/inactive=].
 
 	[=Scroll progress timelines=] can be referenced in 'animation-timeline'
 	anonymously using the ''scroll()'' [=functional notation=]
@@ -357,8 +360,8 @@ spec: cssom-view-1; type: dfn;
 		interface ViewTimeline : ScrollTimeline {
 		  constructor(optional ViewTimelineOptions options = {});
 		  readonly attribute Element subject;
-		  readonly attribute CSSNumberish startTime;
-		  readonly attribute CSSNumberish endTime;
+		  readonly attribute CSSNumericValue startOffset;
+		  readonly attribute CSSNumericValue endOffset;
 		};
 	</pre>
 
@@ -373,40 +376,40 @@ spec: cssom-view-1; type: dfn;
 		::  The element whose [=principal box=]’s visibility in the [=scrollport=]
 			defines the progress of the timeline.
 
-		:   <dfn>startTime</dfn>
+		:   <dfn>startOffset</dfn>
 		::  Represents the starting (0% progress) scroll position
 			of the [=view progress timeline=]
-			as a percentage {{CSSUnitValue}}
-			representing its [=scroll container=]’s scroll progress at that position.
+			as a length offset (in ''px'') from the scroll origin.
 			Null when the timeline is [=timeline inactive state|inactive=].
 
-		:   <dfn>endTime</dfn>
-		::  Represents the ending (100%) scroll position
+		:   <dfn>endOffset</dfn>
+		::  Represents the ending (100% progress) scroll position
 			of the [=view progress timeline=]
-			as a percentage {{CSSUnitValue}}
-			representing its [=scroll container=]’s scroll progress at that position.
+			as a length offset (in ''px'') from the scroll origin.
 			Null when the timeline is [=timeline inactive state|inactive=].
 	</dl>
 
-	Note: The {{ViewTimeline/startTime}} and {{ViewTimeline/endTime}} attributes
-	have odd names for being specific to ScrollTimeline;
-	this is to keep them consistent with {{AnimationTimeline/currentTime}},
-	which represents the currently-active position on the same scale.
+	Note: The value of {{ViewTimeline/startOffset}} can be greater than {{ViewTimeline/endOffset}},
+	for example in the [=horizontal axis=] in a right-to-left (''rtl'') [=writing mode=].
+
+	ISSUE: This makes the offsets compatible with the way scrollLeft and scrollTop work,
+	which go negative from zero in RTL scroll containers,
+	is this how we want it to work here?
 
 	Inherited attributes:
 
 	<dl>
-		:   {{ScrollTimeline/source}} (inherited {{ScrollTimeline}}
+		:   {{ScrollTimeline/source}} (inherited from {{ScrollTimeline}})
 		::  The nearest ancestor of the {{ViewTimeline/subject}}
 			whose [=principal box=] establishes a [=scroll container=],
 			whose scroll position drives the progress of the timeline.
 
-		:   {{ScrollTimeline/axis}} (inherited {{ScrollTimeline}}
+		:   {{ScrollTimeline/axis}} (inherited from {{ScrollTimeline}})
 		::  Specifies the axis of scrolling
 			that drives the progress of the timeline.
 			See <<axis>>, above.
 
-		:   {{AnimationTimeline/currentTime}} (inherited from {{AnimationTimeline}}
+		:   {{AnimationTimeline/currentTime}} (inherited from {{AnimationTimeline}})
 		::  Represents the current progress
 			of the [=view progress timeline=]
 			as a percentage {{CSSUnitValue}}
@@ -516,72 +519,16 @@ spec: cssom-view-1; type: dfn;
 
 	ISSUE: Do we need all the longhands? Seems like overkill...
 
-### Fit of a View Progress Timeline: the 'view-timeline-fit' property ### {#view-timeline-fit}
-
-	<pre class='propdef'>
-	Name: view-timeline-fit
-	Value: [ cover | contain | <<percentage>> ]#
-	Initial: cover
-	Applies to: all elements
-	Inherited: no
-	Percentages: corresponding dimension of the box
-	Computed value: a list of the specified keyword or <<percentage>> values
-	Animation type: by computed value type
-	</pre>
-
-	Specifies whether the in-view timeline is measured from the moment
-	any part of the box comes into view until all parts leave it
-	(''view-timeline-fit/cover'' or ''0%'')
-	or whether it is measured from the moment
-	all parts of the box come into view until any part leaves it
-	(''view-timeline-fit/contain'' or ''100%'').
-
-	<dl dfn-for=view-timeline-fit dfn-type=value>
-		<dt><dfn>cover</dfn>
-		<dd>
-			Computes to 0%.
-
-		<dt><dfn>contain</dfn>
-		<dd>
-			Computes to 100%.
-
-		<dt><dfn><<length-percentage>></dfn>
-			Like 'scroll-padding',
-			defines an inward offset from the corresponding edge of the scrollport.
-	</dl>
-
-	<div class=issue>
-		Some animations want to run
-		while the element is entering or exiting the scrollport,
-		rather than during the time of its visibility.
-		We should add some way to reference these intervals.
-
-		Possible ideas:
-
-		* Automatically generate entrance and exit timeline names
-			for each named view timeline,
-			e.g. ''view-timeline: foo'' also creates ''foo-enter'' and ''foo-exit'' timelines.
-		* Create an automagic value for 'view-timeline-fit'
-			that pins 25% to the point when 100% of the box has just become visible
-			and 75% to the point when it is just about to be cropped.
-			(Such a timeline would not be linearly related to the scroll progress.)
-	</div>
-
-	If 'view-timeline-name' has more names than 'view-timeline-fit' has values,
-	the excess timelines use the last 'view-timeline-fit' value.
-	If 'view-timeline-name' has fewer names than 'view-timeline-axis' has specified axes,
-	the used 'view-timeline-fit' list is truncated.
-
 ### View Timeline Shorthand: the 'view-timeline' shorthand ### {#view-timeline-shorthand}
 
 	<pre class='propdef shorthand'>
 	Name: view-timeline
-	Value: [ <<'view-timeline-fit'>> || <<'view-timeline-axis'>> || <<'view-timeline-name'>> ]#
+	Value: [ <<'view-timeline-name'>> || <<'view-timeline-axis'>> ]#
 	Applies to: all elements
 	</pre>
 
 	This property is a [=shorthand=] for setting
-	'view-timeline-name', 'view-timeline-axis', and 'view-timeline-fit'
+	'view-timeline-name' and 'view-timeline-axis'
 	in a single declaration.
 	It does not set 'view-timeline-inset'.
 

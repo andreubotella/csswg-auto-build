@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://drafts.csswg.org/scroll-animations-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="c55700b2bd1d6929500be5430782e51c3e31706c" name="document-revision">
+  <meta content="92cf90b47b4aec6f6c5ddacc6a4a2f5a133cd9d4" name="document-revision">
   <link href="web-animations.css" rel="stylesheet" type="text/css">
 <style>/* style-autolinks */
 
@@ -719,7 +719,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Scroll-linked Animations</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-05">5 July 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-06">6 July 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -815,8 +815,7 @@ on screen, on paper, etc.
         <li><a href="#view-timeline-name"><span class="secno">3.2.1</span> <span class="content">Naming a View Progress Timeline: the <span class="property">view-timeline-name</span> property</span></a>
         <li><a href="#view-timeline-axis"><span class="secno">3.2.2</span> <span class="content">Axis of a View Progress Timeline: the <span class="property">view-timeline-axis</span> property</span></a>
         <li><a href="#view-timeline-inset"><span class="secno">3.2.3</span> <span class="content">Inset of a View Progress Timeline: the <span class="property">view-timeline-inset</span> property</span></a>
-        <li><a href="#view-timeline-fit"><span class="secno">3.2.4</span> <span class="content">Fit of a View Progress Timeline: the <span class="property">view-timeline-fit</span> property</span></a>
-        <li><a href="#view-timeline-shorthand"><span class="secno">3.2.5</span> <span class="content">View Timeline Shorthand: the <span class="property">view-timeline</span> shorthand</span></a>
+        <li><a href="#view-timeline-shorthand"><span class="secno">3.2.4</span> <span class="content">View Timeline Shorthand: the <span class="property">view-timeline</span> shorthand</span></a>
        </ol>
      </ol>
     <li><a href="#timeline-scope"><span class="secno">4</span> <span class="content">Named Timeline Scoping</span></a>
@@ -906,7 +905,10 @@ on screen, on paper, etc.
    <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="scroll-progress-timelines">Scroll progress timelines</dfn> are timelines linked to progress
 	in the scroll position of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container">scroll container</a> along a particular axis.
 	The startmost scroll position represents 0% progress
-	and the endmost scroll position represents 100% progress.</p>
+	and the endmost scroll position represents 100% progress.
+	If the 0% position and 100% position coincide
+	(i.e. the <span id="ref-for-scroll-container①">scroll container</span> has no overflow to scroll),
+	the timeline is <a data-link-type="dfn">inactive</a>.</p>
    <p><a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines②">Scroll progress timelines</a> can be referenced in <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-animations-2/#propdef-animation-timeline" id="ref-for-propdef-animation-timeline①">animation-timeline</a> anonymously using the <a class="css" data-link-type="maybe" href="#funcdef-scroll" id="ref-for-funcdef-scroll">scroll()</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-values-4/#functional-notation" id="ref-for-functional-notation">functional notation</a> or by name (see <a href="#timeline-scope">§ 4 Named Timeline Scoping</a>)
 	after declaring them using the <a class="property css" data-link-type="property" href="#propdef-scroll-timeline" id="ref-for-propdef-scroll-timeline">scroll-timeline</a> properties.
 	In the Web Animations API,
@@ -920,25 +922,25 @@ on screen, on paper, etc.
 <dfn class="dfn-paneled" data-dfn-type="type" data-noexport id="typedef-axis"><a class="production" data-link-type="type" href="#typedef-axis" id="ref-for-typedef-axis①">&lt;axis></a></dfn> = block <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one">|</a> inline <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> vertical <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> horizontal
 <dfn class="dfn-paneled" data-dfn-type="type" data-noexport id="typedef-scroller"><a class="production" data-link-type="type" href="#typedef-scroller" id="ref-for-typedef-scroller①">&lt;scroller></a></dfn> = root <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> nearest <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a>
 </pre>
-   <p>By default, <a class="css" data-link-type="maybe" href="#funcdef-scroll" id="ref-for-funcdef-scroll③">scroll()</a> references the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#block-axis" id="ref-for-block-axis">block axis</a> of the nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①">scroll container</a>.
+   <p>By default, <a class="css" data-link-type="maybe" href="#funcdef-scroll" id="ref-for-funcdef-scroll③">scroll()</a> references the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#block-axis" id="ref-for-block-axis">block axis</a> of the nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②">scroll container</a>.
 	Its arguments modify this lookup as follows:</p>
    <dl>
     <dt><dfn class="css" data-dfn-for="scroll(),scroll-timeline-axis,view-timeline-axis" data-dfn-type="value" data-export id="valdef-scroll-block">block<a class="self-link" href="#valdef-scroll-block"></a></dfn> 
-    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#block-axis" id="ref-for-block-axis①">block axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②">scroll container</a>.
+    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#block-axis" id="ref-for-block-axis①">block axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container③">scroll container</a>.
 			(Default.) 
     <dt><dfn class="css" data-dfn-for="scroll(),scroll-timeline-axis,view-timeline-axis" data-dfn-type="value" data-export id="valdef-scroll-inline">inline<a class="self-link" href="#valdef-scroll-inline"></a></dfn> 
-    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis">inline axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container③">scroll container</a>. 
+    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis">inline axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container④">scroll container</a>. 
     <dt><dfn class="css" data-dfn-for="scroll(),scroll-timeline-axis,view-timeline-axis" data-dfn-type="value" data-export id="valdef-scroll-vertical">vertical<a class="self-link" href="#valdef-scroll-vertical"></a></dfn> 
-    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#y-axis" id="ref-for-y-axis">vertical axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container④">scroll container</a>. 
+    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#y-axis" id="ref-for-y-axis">vertical axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑤">scroll container</a>. 
     <dt><dfn class="css" data-dfn-for="scroll(),scroll-timeline-axis,view-timeline-axis" data-dfn-type="value" data-export id="valdef-scroll-horizontal">horizontal<a class="self-link" href="#valdef-scroll-horizontal"></a></dfn> 
-    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#x-axis" id="ref-for-x-axis">horizontal axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑤">scroll container</a>. 
+    <dd> Specifies to use the measure of progress along the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#x-axis" id="ref-for-x-axis">horizontal axis</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑥">scroll container</a>. 
     <dt><dfn class="css" data-dfn-for="scroll(),scroll-timeline-axis,view-timeline-axis" data-dfn-type="value" data-export id="valdef-scroll-nearest">nearest<a class="self-link" href="#valdef-scroll-nearest"></a></dfn> 
-    <dd> Specifies to use the nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑥">scroll container</a>.
+    <dd> Specifies to use the nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑦">scroll container</a>.
 			(Default.) 
     <dt><dfn class="css" data-dfn-for="scroll(),scroll-timeline-axis,view-timeline-axis" data-dfn-type="value" data-export id="valdef-scroll-root">root<a class="self-link" href="#valdef-scroll-root"></a></dfn> 
-    <dd> Specifies to use the document viewport as the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑦">scroll container</a>. 
+    <dd> Specifies to use the document viewport as the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑧">scroll container</a>. 
     <dt><dfn class="css" data-dfn-for="scroll(),scroll-timeline-axis,view-timeline-axis" data-dfn-type="value" data-export id="valdef-scroll-custom-ident"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#identifier-value" id="ref-for-identifier-value①">&lt;custom-ident></a><a class="self-link" href="#valdef-scroll-custom-ident"></a></dfn> 
-    <dd> Specifies to use the nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑧">scroll container</a> that has the specified <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-contain-3/#propdef-container-name" id="ref-for-propdef-container-name">container-name</a>. <a data-link-type="biblio" href="#biblio-css-contain-3">[CSS-CONTAIN-3]</a> If none exist, the document viewport is used. 
+    <dd> Specifies to use the nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑨">scroll container</a> that has the specified <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-contain-3/#propdef-container-name" id="ref-for-propdef-container-name">container-name</a>. <a data-link-type="biblio" href="#biblio-css-contain-3">[CSS-CONTAIN-3]</a> If none exist, the document viewport is used. 
    </dl>
    <h4 class="heading settled" data-level="2.1.2" id="scrolltimeline-interface"><span class="secno">2.1.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline①">ScrollTimeline</a></code> Interface</span><a class="self-link" href="#scrolltimeline-interface"></a></h4>
 <pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scrollaxis"><code><c- g>ScrollAxis</c-></code></dfn> {
@@ -967,7 +969,7 @@ on screen, on paper, etc.
    <dl class="attributes">
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ScrollTimeline" data-dfn-type="attribute" data-export id="dom-scrolltimeline-source"><code>source</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element②">Element</a>, readonly, nullable</span>
     <dd data-md>
-     <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑨">scroll container</a> element
+     <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⓪">scroll container</a> element
 whose scroll position drives the progress of the timeline.</p>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ScrollTimeline" data-dfn-type="attribute" data-export id="dom-scrolltimeline-axis"><code>axis</code></dfn>, <span> of type <a data-link-type="idl-name" href="#enumdef-scrollaxis" id="ref-for-enumdef-scrollaxis②">ScrollAxis</a>, readonly</span>
     <dd data-md>
@@ -979,12 +981,12 @@ See value definitions for <a class="production css" data-link-type="type" href="
    <dl>
     <dt data-md><code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime">currentTime</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline②">AnimationTimeline</a></code>)
     <dd data-md>
-     <p>Represents the scroll progress of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⓪">scroll container</a> as a percentage CSSUnitValue,
+     <p>Represents the scroll progress of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①①">scroll container</a> as a percentage CSSUnitValue,
 with 0% representing its startmost scroll position
-(in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#writing-mode" id="ref-for-writing-mode">writing mode</a> of the <span id="ref-for-scroll-container①①">scroll container</span>).
+(in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#writing-mode" id="ref-for-writing-mode">writing mode</a> of the <span id="ref-for-scroll-container①②">scroll container</span>).
 Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
    </dl>
-   <p class="issue" id="issue-73faeaf7"><a class="self-link" href="#issue-73faeaf7"></a> While 0% will usually represent the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①②">scroll container</a>’s initial scroll position,
+   <p class="issue" id="issue-73faeaf7"><a class="self-link" href="#issue-73faeaf7"></a> While 0% will usually represent the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①③">scroll container</a>’s initial scroll position,
 	it might not depending on its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-align-3/#content-distribute" id="ref-for-content-distribute">content distribution</a>.
 	See <a href="https://www.w3.org/TR/css-align-3/#overflow-scroll-position"><cite>CSS Box Alignment 3</cite> § 5.3 Overflow and Scroll Positions</a>.
 	Is this what we want?</p>
@@ -1011,7 +1013,7 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
      </ol>
    </dl>
    <p>If the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source②">source</a></code> of a <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑤">ScrollTimeline</a></code> is an element whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box">principal box</a> does not exist
-	or is not a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①③">scroll container</a>,
+	or is not a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①④">scroll container</a>,
 	then the <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑥">ScrollTimeline</a></code> is <a data-link-type="dfn">inactive</a>.
 	It is otherwise in the <span>active</span> <span>timeline state</span>.</p>
    <p>A <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑦">ScrollTimeline</a></code>’s <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-2/#dom-effecttiming-duration" id="ref-for-dom-effecttiming-duration">duration</a></code> is 100%.</p>
@@ -1033,7 +1035,7 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
       <td>none 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①④">scroll containers</a> 
+      <td><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑤">scroll containers</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no 
@@ -1050,7 +1052,7 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>not animatable 
    </table>
-   <p>Specifies a name for the <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines⑥">scroll progress timeline</a> associated with this <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑤">scroll container</a>.
+   <p>Specifies a name for the <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines⑥">scroll progress timeline</a> associated with this <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑥">scroll container</a>.
 	The axis for this timeline is given by <a class="property css" data-link-type="property" href="#propdef-scroll-timeline-axis" id="ref-for-propdef-scroll-timeline-axis">scroll-timeline-axis</a>.</p>
    <h4 class="heading settled" data-level="2.2.2" id="scroll-timeline-axis"><span class="secno">2.2.2. </span><span class="content">Axis of a Scroll Progress Timeline: the <a class="property css" data-link-type="property" href="#propdef-scroll-timeline-axis" id="ref-for-propdef-scroll-timeline-axis①">scroll-timeline-axis</a> property</span><a class="self-link" href="#scroll-timeline-axis"></a></h4>
    <table class="def propdef" data-link-for-hint="scroll-timeline-axis">
@@ -1066,7 +1068,7 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
       <td>block 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑥">scroll containers</a> 
+      <td><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑦">scroll containers</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no 
@@ -1083,7 +1085,7 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>not animatable 
    </table>
-   <p>Specifies an axis for the <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines⑦">scroll progress timeline</a> associated with this <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑦">scroll container</a>.
+   <p>Specifies an axis for the <a data-link-type="dfn" href="#scroll-progress-timelines" id="ref-for-scroll-progress-timelines⑦">scroll progress timeline</a> associated with this <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑧">scroll container</a>.
 	The name for this timeline is given by <a class="property css" data-link-type="property" href="#propdef-scroll-timeline-name" id="ref-for-propdef-scroll-timeline-name①">scroll-timeline-name</a>.</p>
    <p>Values are as defined for <a class="css" data-link-type="maybe" href="#funcdef-scroll" id="ref-for-funcdef-scroll④">scroll()</a>.</p>
    <h4 class="heading settled" data-level="2.2.3" id="scroll-timeline-shorthand"><span class="secno">2.2.3. </span><span class="content">Scroll Timeline Shorthand: the <a class="property css" data-link-type="property" href="#propdef-scroll-timeline" id="ref-for-propdef-scroll-timeline①">scroll-timeline</a> shorthand</span><a class="self-link" href="#scroll-timeline-shorthand"></a></h4>
@@ -1100,7 +1102,7 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
       <td>see individual properties 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑧">scroll containers</a> 
+      <td><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑨">scroll containers</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no 
@@ -1143,8 +1145,8 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="viewtimeline"><code><c- g>ViewTimeline</c-></code></dfn> : <a data-link-type="idl-name" href="#scrolltimeline" id="ref-for-scrolltimeline⑧"><c- n>ScrollTimeline</c-></a> {
   <a class="idl-code" data-link-type="constructor" href="#dom-viewtimeline-viewtimeline" id="ref-for-dom-viewtimeline-viewtimeline"><c- g>constructor</c-></a>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-viewtimelineoptions" id="ref-for-dictdef-viewtimelineoptions"><c- n>ViewTimelineOptions</c-></a> <dfn class="idl-code" data-dfn-for="ViewTimeline/ViewTimeline(options), ViewTimeline/constructor(options), ViewTimeline/ViewTimeline(), ViewTimeline/constructor()" data-dfn-type="argument" data-export id="dom-viewtimeline-viewtimeline-options-options"><code><c- g>options</c-></code><a class="self-link" href="#dom-viewtimeline-viewtimeline-options-options"></a></dfn> = {});
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element④"><c- n>Element</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject"><c- g>subject</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish" id="ref-for-typedefdef-cssnumberish"><c- n>CSSNumberish</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumberish" href="#dom-viewtimeline-starttime" id="ref-for-dom-viewtimeline-starttime"><c- g>startTime</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish" id="ref-for-typedefdef-cssnumberish①"><c- n>CSSNumberish</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumberish" href="#dom-viewtimeline-endtime" id="ref-for-dom-viewtimeline-endtime"><c- g>endTime</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue" id="ref-for-cssnumericvalue"><c- n>CSSNumericValue</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumericValue" href="#dom-viewtimeline-startoffset" id="ref-for-dom-viewtimeline-startoffset"><c- g>startOffset</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue" id="ref-for-cssnumericvalue①"><c- n>CSSNumericValue</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumericValue" href="#dom-viewtimeline-endoffset" id="ref-for-dom-viewtimeline-endoffset"><c- g>endOffset</c-></a>;
 };
 </pre>
    <p>A <code class="idl"><a data-link-type="idl" href="#viewtimeline" id="ref-for-viewtimeline②">ViewTimeline</a></code> is an <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline③">AnimationTimeline</a></code> that specifies a <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines②">view progress timeline</a>.
@@ -1155,36 +1157,37 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ViewTimeline" data-dfn-type="attribute" data-export id="dom-viewtimeline-subject"><code>subject</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element⑤">Element</a>, readonly</span>
     <dd data-md>
      <p>The element whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box②">principal box</a>’s visibility in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scrollport" id="ref-for-scrollport②">scrollport</a> defines the progress of the timeline.</p>
-    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ViewTimeline" data-dfn-type="attribute" data-export id="dom-viewtimeline-starttime"><code>startTime</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish" id="ref-for-typedefdef-cssnumberish②">CSSNumberish</a>, readonly</span>
+    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ViewTimeline" data-dfn-type="attribute" data-export id="dom-viewtimeline-startoffset"><code>startOffset</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue" id="ref-for-cssnumericvalue②">CSSNumericValue</a>, readonly</span>
     <dd data-md>
      <p>Represents the starting (0% progress) scroll position
-of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines④">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container①⑨">scroll container</a>’s scroll progress at that position.
+of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines④">view progress timeline</a> as a length offset (in <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-values-4/#px" id="ref-for-px">px</a>) from the scroll origin.
 Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
-    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ViewTimeline" data-dfn-type="attribute" data-export id="dom-viewtimeline-endtime"><code>endTime</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish" id="ref-for-typedefdef-cssnumberish③">CSSNumberish</a>, readonly</span>
+    <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ViewTimeline" data-dfn-type="attribute" data-export id="dom-viewtimeline-endoffset"><code>endOffset</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue" id="ref-for-cssnumericvalue③">CSSNumericValue</a>, readonly</span>
     <dd data-md>
-     <p>Represents the ending (100%) scroll position
-of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑤">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue①">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②⓪">scroll container</a>’s scroll progress at that position.
+     <p>Represents the ending (100% progress) scroll position
+of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑤">view progress timeline</a> as a length offset (in <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-values-4/#px" id="ref-for-px①">px</a>) from the scroll origin.
 Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
    </dl>
-   <p class="note" role="note"><span>Note:</span> The <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-starttime" id="ref-for-dom-viewtimeline-starttime①">startTime</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-endtime" id="ref-for-dom-viewtimeline-endtime①">endTime</a></code> attributes
-	have odd names for being specific to ScrollTimeline;
-	this is to keep them consistent with <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime②">currentTime</a></code>,
-	which represents the currently-active position on the same scale.</p>
+   <p class="note" role="note"><span>Note:</span> The value of <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-startoffset" id="ref-for-dom-viewtimeline-startoffset①">startOffset</a></code> can be greater than <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-endoffset" id="ref-for-dom-viewtimeline-endoffset①">endOffset</a></code>,
+	for example in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#x-axis" id="ref-for-x-axis①">horizontal axis</a> in a right-to-left (<a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#valdef-direction-rtl" id="ref-for-valdef-direction-rtl">rtl</a>) <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#writing-mode" id="ref-for-writing-mode①">writing mode</a>.</p>
+   <p class="issue" id="issue-f300c2e9"><a class="self-link" href="#issue-f300c2e9"></a> This makes the offsets compatible with the way scrollLeft and scrollTop work,
+	which go negative from zero in RTL scroll containers,
+	is this how we want it to work here?</p>
    <p>Inherited attributes:</p>
    <dl>
-    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source③">source</a></code> (inherited <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑨">ScrollTimeline</a></code>
+    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source③">source</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline⑨">ScrollTimeline</a></code>)
     <dd data-md>
-     <p>The nearest ancestor of the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject①">subject</a></code> whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box③">principal box</a> establishes a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②①">scroll container</a>,
+     <p>The nearest ancestor of the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject①">subject</a></code> whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box③">principal box</a> establishes a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②⓪">scroll container</a>,
 whose scroll position drives the progress of the timeline.</p>
-    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis②">axis</a></code> (inherited <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline①⓪">ScrollTimeline</a></code>
+    <dt data-md><code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis②">axis</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="#scrolltimeline" id="ref-for-scrolltimeline①⓪">ScrollTimeline</a></code>)
     <dd data-md>
      <p>Specifies the axis of scrolling
 that drives the progress of the timeline.
 See <a class="production css" data-link-type="type" href="#typedef-axis" id="ref-for-typedef-axis③">&lt;axis></a>, above.</p>
-    <dt data-md><code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime③">currentTime</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline④">AnimationTimeline</a></code>
+    <dt data-md><code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime" id="ref-for-dom-animationtimeline-currenttime②">currentTime</a></code> (inherited from <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animationtimeline" id="ref-for-animationtimeline④">AnimationTimeline</a></code>)
     <dd data-md>
      <p>Represents the current progress
-of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑥">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue②">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②②">scroll container</a>’s scroll progress at that position.
+of the <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑥">view progress timeline</a> as a percentage <code class="idl"><a data-link-type="idl" href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue" id="ref-for-cssunitvalue">CSSUnitValue</a></code> representing its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②①">scroll container</a>’s scroll progress at that position.
 Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
    </dl>
    <dl class="constructors">
@@ -1198,7 +1201,7 @@ Null when the timeline is <a data-link-type="dfn">inactive</a>.</p>
        <p>Set the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject②">subject</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-axis" id="ref-for-dom-scrolltimeline-axis③">axis</a></code> properties of <var>timeline</var> to the corresponding values from <var>options</var>.</p>
       <li data-md>
        <p>Set the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source④">source</a></code> of <var>timeline</var> to the <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject③">subject</a></code>’s
-nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②③">scroll container</a> element.</p>
+nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②②">scroll container</a> element.</p>
      </ol>
    </dl>
    <p>If the <code class="idl"><a data-link-type="idl" href="#dom-scrolltimeline-source" id="ref-for-dom-scrolltimeline-source⑤">source</a></code> or <code class="idl"><a data-link-type="idl" href="#dom-viewtimeline-subject" id="ref-for-dom-viewtimeline-subject④">subject</a></code> of a <code class="idl"><a data-link-type="idl" href="#viewtimeline" id="ref-for-viewtimeline⑤">ViewTimeline</a></code> is an element whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#principal-box" id="ref-for-principal-box④">principal box</a> does not exist,
@@ -1274,7 +1277,7 @@ nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-a
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>not animatable 
    </table>
-   <p>Specifies an axis for each named <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑨">view progress timeline</a> associated with this <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②④">scroll container</a>.</p>
+   <p>Specifies an axis for each named <a data-link-type="dfn" href="#view-progress-timelines" id="ref-for-view-progress-timelines⑨">view progress timeline</a> associated with this <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container" id="ref-for-scroll-container②③">scroll container</a>.</p>
    <p>If <a class="property css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name①">view-timeline-name</a> has more names than <a class="property css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis①">view-timeline-axis</a> has specified axes,
 	the excess timelines use the last <span class="property" id="ref-for-propdef-view-timeline-axis②">view-timeline-axis</span> value.
 	If <span class="property" id="ref-for-propdef-view-timeline-name②">view-timeline-name</span> has fewer names than <span class="property" id="ref-for-propdef-view-timeline-axis③">view-timeline-axis</span> has specified axes,
@@ -1324,73 +1327,7 @@ nearest ancestor <a data-link-type="dfn" href="https://andreubotella.com/csswg-a
 	exactly as the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-box-4/#propdef-margin" id="ref-for-propdef-margin">margin</a> property does.</p>
    <p class="issue" id="issue-a5c37356"><a class="self-link" href="#issue-a5c37356"></a> Should the initial value be zero or auto?</p>
    <p class="issue" id="issue-7dcd77ff"><a class="self-link" href="#issue-7dcd77ff"></a> Do we need all the longhands? Seems like overkill...</p>
-   <h4 class="heading settled" data-level="3.2.4" id="view-timeline-fit"><span class="secno">3.2.4. </span><span class="content">Fit of a View Progress Timeline: the <a class="property css" data-link-type="property" href="#propdef-view-timeline-fit" id="ref-for-propdef-view-timeline-fit">view-timeline-fit</a> property</span><a class="self-link" href="#view-timeline-fit"></a></h4>
-   <table class="def propdef" data-link-for-hint="view-timeline-fit">
-    <tbody>
-     <tr>
-      <th>Name:
-      <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-view-timeline-fit">view-timeline-fit</dfn>
-     <tr class="value">
-      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ cover <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①④">|</a> contain <span id="ref-for-comb-one①⑤">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value" id="ref-for-percentage-value">&lt;percentage></a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma②">#</a> 
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>cover 
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td><a href="https://www.w3.org/TR/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a> 
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
-      <td>no 
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>corresponding dimension of the box 
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>a list of the specified keyword or <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value" id="ref-for-percentage-value①">&lt;percentage></a> values 
-     <tr>
-      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
-      <td>per grammar 
-     <tr>
-      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
-      <td>by computed value type 
-   </table>
-   <p>Specifies whether the in-view timeline is measured from the moment
-	any part of the box comes into view until all parts leave it
-	(<a class="css" data-link-type="maybe" href="#valdef-view-timeline-fit-cover" id="ref-for-valdef-view-timeline-fit-cover">cover</a> or <span class="css">0%</span>)
-	or whether it is measured from the moment
-	all parts of the box come into view until any part leaves it
-	(<a class="css" data-link-type="maybe" href="#valdef-view-timeline-fit-contain" id="ref-for-valdef-view-timeline-fit-contain">contain</a> or <span class="css">100%</span>).</p>
-   <dl>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="view-timeline-fit" data-dfn-type="value" data-export id="valdef-view-timeline-fit-cover">cover</dfn> 
-    <dd> Computes to 0%. 
-    <dt><dfn class="dfn-paneled css" data-dfn-for="view-timeline-fit" data-dfn-type="value" data-export id="valdef-view-timeline-fit-contain">contain</dfn> 
-    <dd> Computes to 100%. 
-    <dt><dfn class="css" data-dfn-for="view-timeline-fit" data-dfn-type="value" data-export id="valdef-view-timeline-fit-length-percentage"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage③">&lt;length-percentage></a><a class="self-link" href="#valdef-view-timeline-fit-length-percentage"></a></dfn> Like <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-scroll-snap-1/#propdef-scroll-padding" id="ref-for-propdef-scroll-padding②">scroll-padding</a>,
-			defines an inward offset from the corresponding edge of the scrollport. 
-   </dl>
-   <div class="issue" id="issue-41c76683">
-    <a class="self-link" href="#issue-41c76683"></a> Some animations want to run
-		while the element is entering or exiting the scrollport,
-		rather than during the time of its visibility.
-		We should add some way to reference these intervals. 
-    <p>Possible ideas:</p>
-    <ul>
-     <li data-md>
-      <p>Automatically generate entrance and exit timeline names
-for each named view timeline,
-e.g. <a class="css" data-link-type="propdesc" href="#propdef-view-timeline" id="ref-for-propdef-view-timeline①">view-timeline: foo</a> also creates <span class="css">foo-enter</span> and <span class="css">foo-exit</span> timelines.</p>
-     <li data-md>
-      <p>Create an automagic value for <a class="property css" data-link-type="property" href="#propdef-view-timeline-fit" id="ref-for-propdef-view-timeline-fit①">view-timeline-fit</a> that pins 25% to the point when 100% of the box has just become visible
-and 75% to the point when it is just about to be cropped.
-(Such a timeline would not be linearly related to the scroll progress.)</p>
-    </ul>
-   </div>
-   <p>If <a class="property css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name③">view-timeline-name</a> has more names than <a class="property css" data-link-type="property" href="#propdef-view-timeline-fit" id="ref-for-propdef-view-timeline-fit②">view-timeline-fit</a> has values,
-	the excess timelines use the last <span class="property" id="ref-for-propdef-view-timeline-fit③">view-timeline-fit</span> value.
-	If <span class="property" id="ref-for-propdef-view-timeline-name④">view-timeline-name</span> has fewer names than <a class="property css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis⑤">view-timeline-axis</a> has specified axes,
-	the used <span class="property" id="ref-for-propdef-view-timeline-fit④">view-timeline-fit</span> list is truncated.</p>
-   <h4 class="heading settled" data-level="3.2.5" id="view-timeline-shorthand"><span class="secno">3.2.5. </span><span class="content">View Timeline Shorthand: the <a class="property css" data-link-type="property" href="#propdef-view-timeline" id="ref-for-propdef-view-timeline②">view-timeline</a> shorthand</span><a class="self-link" href="#view-timeline-shorthand"></a></h4>
+   <h4 class="heading settled" data-level="3.2.4" id="view-timeline-shorthand"><span class="secno">3.2.4. </span><span class="content">View Timeline Shorthand: the <a class="property css" data-link-type="property" href="#propdef-view-timeline" id="ref-for-propdef-view-timeline①">view-timeline</a> shorthand</span><a class="self-link" href="#view-timeline-shorthand"></a></h4>
    <table class="def propdef" data-link-for-hint="view-timeline">
     <tbody>
      <tr>
@@ -1398,7 +1335,7 @@ and 75% to the point when it is just about to be cropped.
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-view-timeline">view-timeline</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ <a class="production css" data-link-type="property" href="#propdef-view-timeline-fit" id="ref-for-propdef-view-timeline-fit⑤">&lt;'view-timeline-fit'></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> <a class="production css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis⑥">&lt;'view-timeline-axis'></a> <span id="ref-for-comb-any②">||</span> <a class="production css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name⑤">&lt;'view-timeline-name'></a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma③">#</a> 
+      <td class="prod">[ <a class="production css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name③">&lt;'view-timeline-name'></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> <a class="production css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis⑤">&lt;'view-timeline-axis'></a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma②">#</a> 
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties 
@@ -1421,7 +1358,7 @@ and 75% to the point when it is just about to be cropped.
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar 
    </table>
-   <p>This property is a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#shorthand-property" id="ref-for-shorthand-property①">shorthand</a> for setting <a class="property css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name⑥">view-timeline-name</a>, <a class="property css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis⑦">view-timeline-axis</a>, and <a class="property css" data-link-type="property" href="#propdef-view-timeline-fit" id="ref-for-propdef-view-timeline-fit⑥">view-timeline-fit</a> in a single declaration.
+   <p>This property is a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#shorthand-property" id="ref-for-shorthand-property①">shorthand</a> for setting <a class="property css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name④">view-timeline-name</a> and <a class="property css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis⑥">view-timeline-axis</a> in a single declaration.
 	It does not set <a class="property css" data-link-type="property" href="#propdef-view-timeline-inset" id="ref-for-propdef-view-timeline-inset②">view-timeline-inset</a>.</p>
    <p class="issue" id="issue-6b6d7174"><a class="self-link" href="#issue-6b6d7174"></a> Should it reset <a class="property css" data-link-type="property" href="#propdef-view-timeline-inset" id="ref-for-propdef-view-timeline-inset③">view-timeline-inset</a> also?</p>
    <h2 class="heading settled" data-level="4" id="timeline-scope"><span class="secno">4. </span><span class="content">Named Timeline Scoping</span><a class="self-link" href="#timeline-scope"></a></h2>
@@ -1597,21 +1534,14 @@ and 75% to the point when it is just about to be cropped.
      <li><a href="#dom-scrolltimeline-scrolltimeline">constructor for ScrollTimeline</a><span>, in § 2.1.2</span>
      <li><a href="#dom-viewtimeline-viewtimeline">constructor for ViewTimeline</a><span>, in § 3.1.1</span>
     </ul>
-   <li><a href="#valdef-view-timeline-fit-contain">contain</a><span>, in § 3.2.4</span>
-   <li><a href="#valdef-view-timeline-fit-cover">cover</a><span>, in § 3.2.4</span>
    <li><a href="#valdef-scroll-custom-ident">&lt;custom-ident></a><span>, in § 2.1.1</span>
-   <li><a href="#dom-viewtimeline-endtime">endTime</a><span>, in § 3.1.1</span>
+   <li><a href="#dom-viewtimeline-endoffset">endOffset</a><span>, in § 3.1.1</span>
    <li><a href="#dom-scrollaxis-horizontal">"horizontal"</a><span>, in § 2.1.2</span>
    <li><a href="#valdef-scroll-horizontal">horizontal</a><span>, in § 2.1.1</span>
    <li><a href="#dom-scrollaxis-inline">"inline"</a><span>, in § 2.1.2</span>
    <li><a href="#valdef-scroll-inline">inline</a><span>, in § 2.1.1</span>
    <li><a href="#layout-cycles">layout cycles</a><span>, in § 5</span>
-   <li>
-    &lt;length-percentage>
-    <ul>
-     <li><a href="#valdef-view-timeline-fit-length-percentage">value for view-timeline-fit</a><span>, in § 3.2.4</span>
-     <li><a href="#valdef-view-timeline-inset-length-percentage">value for view-timeline-inset</a><span>, in § 3.2.3</span>
-    </ul>
+   <li><a href="#valdef-view-timeline-inset-length-percentage">&lt;length-percentage></a><span>, in § 3.2.3</span>
    <li><a href="#valdef-scroll-nearest">nearest</a><span>, in § 2.1.1</span>
    <li><a href="#valdef-scroll-root">root</a><span>, in § 2.1.1</span>
    <li><a href="#funcdef-scroll">scroll()</a><span>, in § 2.1.1</span>
@@ -1632,7 +1562,7 @@ and 75% to the point when it is just about to be cropped.
      <li><a href="#dom-scrolltimeline-source">attribute for ScrollTimeline</a><span>, in § 2.1.2</span>
      <li><a href="#dom-scrolltimelineoptions-source">dict-member for ScrollTimelineOptions</a><span>, in § 2.1.2</span>
     </ul>
-   <li><a href="#dom-viewtimeline-starttime">startTime</a><span>, in § 3.1.1</span>
+   <li><a href="#dom-viewtimeline-startoffset">startOffset</a><span>, in § 3.1.1</span>
    <li>
     subject
     <ul>
@@ -1644,11 +1574,10 @@ and 75% to the point when it is just about to be cropped.
    <li><a href="#view-progress-rectangle">view progress rectangle</a><span>, in § 3.2.3</span>
    <li><a href="#view-progress-subject">view progress subject</a><span>, in § 3</span>
    <li><a href="#view-progress-timelines">View progress timelines</a><span>, in § 3</span>
-   <li><a href="#propdef-view-timeline">view-timeline</a><span>, in § 3.2.5</span>
+   <li><a href="#propdef-view-timeline">view-timeline</a><span>, in § 3.2.4</span>
    <li><a href="#viewtimeline">ViewTimeline</a><span>, in § 3.1.1</span>
    <li><a href="#dom-viewtimeline-viewtimeline">ViewTimeline()</a><span>, in § 3.1.1</span>
    <li><a href="#propdef-view-timeline-axis">view-timeline-axis</a><span>, in § 3.2.2</span>
-   <li><a href="#propdef-view-timeline-fit">view-timeline-fit</a><span>, in § 3.2.4</span>
    <li><a href="#propdef-view-timeline-inset">view-timeline-inset</a><span>, in § 3.2.3</span>
    <li><a href="#propdef-view-timeline-name">view-timeline-name</a><span>, in § 3.2.1</span>
    <li><a href="#dom-viewtimeline-viewtimeline">ViewTimeline(options)</a><span>, in § 3.1.1</span>
@@ -1680,7 +1609,7 @@ and 75% to the point when it is just about to be cropped.
    <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#shorthand-property">https://andreubotella.com/csswg-auto-build/css-cascade-5/#shorthand-property</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-shorthand-property">2.2.3. Scroll Timeline Shorthand: the scroll-timeline shorthand</a>
-    <li><a href="#ref-for-shorthand-property①">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a>
+    <li><a href="#ref-for-shorthand-property①">3.2.4. View Timeline Shorthand: the view-timeline shorthand</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-container-name">
@@ -1701,14 +1630,14 @@ and 75% to the point when it is just about to be cropped.
   <aside class="dfn-panel" data-for="term-for-scroll-container">
    <a href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container">https://andreubotella.com/csswg-auto-build/css-overflow-3/#scroll-container</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-scroll-container">2. Scroll Progress Timelines</a>
-    <li><a href="#ref-for-scroll-container①">2.1.1. The scroll() notation</a> <a href="#ref-for-scroll-container②">(2)</a> <a href="#ref-for-scroll-container③">(3)</a> <a href="#ref-for-scroll-container④">(4)</a> <a href="#ref-for-scroll-container⑤">(5)</a> <a href="#ref-for-scroll-container⑥">(6)</a> <a href="#ref-for-scroll-container⑦">(7)</a> <a href="#ref-for-scroll-container⑧">(8)</a>
-    <li><a href="#ref-for-scroll-container⑨">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-scroll-container①⓪">(2)</a> <a href="#ref-for-scroll-container①①">(3)</a> <a href="#ref-for-scroll-container①②">(4)</a> <a href="#ref-for-scroll-container①③">(5)</a>
-    <li><a href="#ref-for-scroll-container①④">2.2.1. Naming a Scroll Progress Timeline: the scroll-timeline-name property</a> <a href="#ref-for-scroll-container①⑤">(2)</a>
-    <li><a href="#ref-for-scroll-container①⑥">2.2.2. Axis of a Scroll Progress Timeline: the scroll-timeline-axis property</a> <a href="#ref-for-scroll-container①⑦">(2)</a>
-    <li><a href="#ref-for-scroll-container①⑧">2.2.3. Scroll Timeline Shorthand: the scroll-timeline shorthand</a>
-    <li><a href="#ref-for-scroll-container①⑨">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-scroll-container②⓪">(2)</a> <a href="#ref-for-scroll-container②①">(3)</a> <a href="#ref-for-scroll-container②②">(4)</a> <a href="#ref-for-scroll-container②③">(5)</a>
-    <li><a href="#ref-for-scroll-container②④">3.2.2. Axis of a View Progress Timeline: the view-timeline-axis property</a>
+    <li><a href="#ref-for-scroll-container">2. Scroll Progress Timelines</a> <a href="#ref-for-scroll-container①">(2)</a>
+    <li><a href="#ref-for-scroll-container②">2.1.1. The scroll() notation</a> <a href="#ref-for-scroll-container③">(2)</a> <a href="#ref-for-scroll-container④">(3)</a> <a href="#ref-for-scroll-container⑤">(4)</a> <a href="#ref-for-scroll-container⑥">(5)</a> <a href="#ref-for-scroll-container⑦">(6)</a> <a href="#ref-for-scroll-container⑧">(7)</a> <a href="#ref-for-scroll-container⑨">(8)</a>
+    <li><a href="#ref-for-scroll-container①⓪">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-scroll-container①①">(2)</a> <a href="#ref-for-scroll-container①②">(3)</a> <a href="#ref-for-scroll-container①③">(4)</a> <a href="#ref-for-scroll-container①④">(5)</a>
+    <li><a href="#ref-for-scroll-container①⑤">2.2.1. Naming a Scroll Progress Timeline: the scroll-timeline-name property</a> <a href="#ref-for-scroll-container①⑥">(2)</a>
+    <li><a href="#ref-for-scroll-container①⑦">2.2.2. Axis of a Scroll Progress Timeline: the scroll-timeline-axis property</a> <a href="#ref-for-scroll-container①⑧">(2)</a>
+    <li><a href="#ref-for-scroll-container①⑨">2.2.3. Scroll Timeline Shorthand: the scroll-timeline shorthand</a>
+    <li><a href="#ref-for-scroll-container②⓪">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-scroll-container②①">(2)</a> <a href="#ref-for-scroll-container②②">(3)</a>
+    <li><a href="#ref-for-scroll-container②③">3.2.2. Axis of a View Progress Timeline: the view-timeline-axis property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-scrollport">
@@ -1723,19 +1652,18 @@ and 75% to the point when it is just about to be cropped.
    <a href="https://andreubotella.com/csswg-auto-build/css-scroll-snap-1/#propdef-scroll-padding">https://andreubotella.com/csswg-auto-build/css-scroll-snap-1/#propdef-scroll-padding</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-scroll-padding">3.2.3. Inset of a View Progress Timeline: the view-timeline-inset property</a> <a href="#ref-for-propdef-scroll-padding①">(2)</a>
-    <li><a href="#ref-for-propdef-scroll-padding②">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-typedefdef-cssnumberish">
-   <a href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish">https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-cssnumericvalue">
+   <a href="https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue">https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-typedefdef-cssnumberish">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-typedefdef-cssnumberish①">(2)</a> <a href="#ref-for-typedefdef-cssnumberish②">(3)</a> <a href="#ref-for-typedefdef-cssnumberish③">(4)</a>
+    <li><a href="#ref-for-cssnumericvalue">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-cssnumericvalue①">(2)</a> <a href="#ref-for-cssnumericvalue②">(3)</a> <a href="#ref-for-cssnumericvalue③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-cssunitvalue">
    <a href="https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue">https://drafts.css-houdini.org/css-typed-om-1/#cssunitvalue</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-cssunitvalue">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-cssunitvalue①">(2)</a> <a href="#ref-for-cssunitvalue②">(3)</a>
+    <li><a href="#ref-for-cssunitvalue">3.1.1. The ViewTimeline Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-mult-comma">
@@ -1743,8 +1671,7 @@ and 75% to the point when it is just about to be cropped.
    <ul>
     <li><a href="#ref-for-mult-comma">3.2.1. Naming a View Progress Timeline: the view-timeline-name property</a>
     <li><a href="#ref-for-mult-comma①">3.2.2. Axis of a View Progress Timeline: the view-timeline-axis property</a>
-    <li><a href="#ref-for-mult-comma②">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
-    <li><a href="#ref-for-mult-comma③">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a>
+    <li><a href="#ref-for-mult-comma②">3.2.4. View Timeline Shorthand: the view-timeline shorthand</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-identifier-value">
@@ -1759,13 +1686,6 @@ and 75% to the point when it is just about to be cropped.
    <a href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage">https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-typedef-length-percentage">3.2.3. Inset of a View Progress Timeline: the view-timeline-inset property</a> <a href="#ref-for-typedef-length-percentage①">(2)</a> <a href="#ref-for-typedef-length-percentage②">(3)</a>
-    <li><a href="#ref-for-typedef-length-percentage③">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-percentage-value">
-   <a href="https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value">https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-percentage-value">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a> <a href="#ref-for-percentage-value①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-mult-opt">
@@ -1786,6 +1706,12 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-functional-notation">2. Scroll Progress Timelines</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-px">
+   <a href="https://andreubotella.com/csswg-auto-build/css-values-4/#px">https://andreubotella.com/csswg-auto-build/css-values-4/#px</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-px">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-px①">(2)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-mult-num-range">
    <a href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-num-range">https://andreubotella.com/csswg-auto-build/css-values-4/#mult-num-range</a><b>Referenced in:</b>
    <ul>
@@ -1801,14 +1727,13 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-comb-one⑨">3.2.1. Naming a View Progress Timeline: the view-timeline-name property</a>
     <li><a href="#ref-for-comb-one①⓪">3.2.2. Axis of a View Progress Timeline: the view-timeline-axis property</a> <a href="#ref-for-comb-one①①">(2)</a> <a href="#ref-for-comb-one①②">(3)</a>
     <li><a href="#ref-for-comb-one①③">3.2.3. Inset of a View Progress Timeline: the view-timeline-inset property</a>
-    <li><a href="#ref-for-comb-one①④">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a> <a href="#ref-for-comb-one①⑤">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-comb-any">
    <a href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-any">https://andreubotella.com/csswg-auto-build/css-values-4/#comb-any</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-comb-any">2.2.3. Scroll Timeline Shorthand: the scroll-timeline shorthand</a>
-    <li><a href="#ref-for-comb-any①">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-comb-any②">(2)</a>
+    <li><a href="#ref-for-comb-any①">3.2.4. View Timeline Shorthand: the view-timeline shorthand</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-block-axis">
@@ -1821,12 +1746,19 @@ and 75% to the point when it is just about to be cropped.
    <a href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#x-axis">https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#x-axis</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-x-axis">2.1.1. The scroll() notation</a>
+    <li><a href="#ref-for-x-axis①">3.1.1. The ViewTimeline Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-inline-axis">
    <a href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#inline-axis">https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#inline-axis</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-inline-axis">2.1.1. The scroll() notation</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-direction-rtl">
+   <a href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#valdef-direction-rtl">https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#valdef-direction-rtl</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-direction-rtl">3.1.1. The ViewTimeline Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-y-axis">
@@ -1839,6 +1771,7 @@ and 75% to the point when it is just about to be cropped.
    <a href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#writing-mode">https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#writing-mode</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-writing-mode">2.1.2. The ScrollTimeline Interface</a>
+    <li><a href="#ref-for-writing-mode①">3.1.1. The ViewTimeline Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-document-scrollingelement">
@@ -1915,7 +1848,7 @@ and 75% to the point when it is just about to be cropped.
    <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime">https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-animationtimeline-currenttime">2.1.2. The ScrollTimeline Interface</a> <a href="#ref-for-dom-animationtimeline-currenttime①">(2)</a>
-    <li><a href="#ref-for-dom-animationtimeline-currenttime②">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-animationtimeline-currenttime③">(2)</a>
+    <li><a href="#ref-for-dom-animationtimeline-currenttime②">3.1.1. The ViewTimeline Interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-timeline">
@@ -1983,7 +1916,7 @@ and 75% to the point when it is just about to be cropped.
    <li>
     <a data-link-type="biblio">[css-typed-om-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-typedefdef-cssnumberish">CSSNumberish</span>
+     <li><span class="dfn-paneled" id="term-for-cssnumericvalue">CSSNumericValue</span>
      <li><span class="dfn-paneled" id="term-for-cssunitvalue">CSSUnitValue</span>
     </ul>
    <li>
@@ -1992,10 +1925,10 @@ and 75% to the point when it is just about to be cropped.
      <li><span class="dfn-paneled" id="term-for-mult-comma">#</span>
      <li><span class="dfn-paneled" id="term-for-identifier-value">&lt;custom-ident></span>
      <li><span class="dfn-paneled" id="term-for-typedef-length-percentage">&lt;length-percentage></span>
-     <li><span class="dfn-paneled" id="term-for-percentage-value">&lt;percentage></span>
      <li><span class="dfn-paneled" id="term-for-mult-opt">?</span>
      <li><span class="dfn-paneled" id="term-for-css-wide-keywords">css-wide keywords</span>
      <li><span class="dfn-paneled" id="term-for-functional-notation">functional notation</span>
+     <li><span class="dfn-paneled" id="term-for-px">px</span>
      <li><span class="dfn-paneled" id="term-for-mult-num-range">{a,b}</span>
      <li><span class="dfn-paneled" id="term-for-comb-one">|</span>
      <li><span class="dfn-paneled" id="term-for-comb-any">||</span>
@@ -2006,6 +1939,7 @@ and 75% to the point when it is just about to be cropped.
      <li><span class="dfn-paneled" id="term-for-block-axis">block axis</span>
      <li><span class="dfn-paneled" id="term-for-x-axis">horizontal axis</span>
      <li><span class="dfn-paneled" id="term-for-inline-axis">inline axis</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-direction-rtl">rtl</span>
      <li><span class="dfn-paneled" id="term-for-y-axis">vertical axis</span>
      <li><span class="dfn-paneled" id="term-for-writing-mode">writing mode</span>
     </ul>
@@ -2144,8 +2078,8 @@ and 75% to the point when it is just about to be cropped.
       <td>per grammar
       <td>the specified keyword
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline" id="ref-for-propdef-view-timeline③">view-timeline</a>
-      <td>[ &lt;'view-timeline-fit'> || &lt;'view-timeline-axis'> || &lt;'view-timeline-name'> ]#
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline" id="ref-for-propdef-view-timeline②">view-timeline</a>
+      <td>[ &lt;'view-timeline-name'> || &lt;'view-timeline-axis'> ]#
       <td>see individual properties
       <td>all elements
       <td>see individual properties
@@ -2154,7 +2088,7 @@ and 75% to the point when it is just about to be cropped.
       <td>per grammar
       <td>see individual properties
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis⑧">view-timeline-axis</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline-axis" id="ref-for-propdef-view-timeline-axis⑦">view-timeline-axis</a>
       <td>[ block | inline | vertical | horizontal ]#
       <td>block
       <td>all elements
@@ -2163,16 +2097,6 @@ and 75% to the point when it is just about to be cropped.
       <td>not animatable
       <td>per grammar
       <td>a list of the keywords specified
-     <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline-fit" id="ref-for-propdef-view-timeline-fit⑦">view-timeline-fit</a>
-      <td>[ cover | contain | &lt;percentage> ]#
-      <td>cover
-      <td>all elements
-      <td>no
-      <td>corresponding dimension of the box
-      <td>by computed value type
-      <td>per grammar
-      <td>a list of the specified keyword or &lt;percentage> values
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline-inset" id="ref-for-propdef-view-timeline-inset④">view-timeline-inset</a>
       <td>[ auto | &lt;length-percentage> ]{1,4}
@@ -2184,7 +2108,7 @@ and 75% to the point when it is just about to be cropped.
       <td>per grammar
       <td>per side, the keyword auto or a computed &lt;length-percentage> value
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name⑦">view-timeline-name</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-view-timeline-name" id="ref-for-propdef-view-timeline-name⑤">view-timeline-name</a>
       <td>none | &lt;custom-ident>#
       <td>none
       <td>all elements
@@ -2224,8 +2148,8 @@ and 75% to the point when it is just about to be cropped.
 <c- b>interface</c-> <a href="#viewtimeline"><code><c- g>ViewTimeline</c-></code></a> : <a data-link-type="idl-name" href="#scrolltimeline"><c- n>ScrollTimeline</c-></a> {
   <a class="idl-code" data-link-type="constructor" href="#dom-viewtimeline-viewtimeline"><c- g>constructor</c-></a>(<c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-viewtimelineoptions"><c- n>ViewTimelineOptions</c-></a> <a href="#dom-viewtimeline-viewtimeline-options-options"><code><c- g>options</c-></code></a> = {});
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element"><c- n>Element</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element" href="#dom-viewtimeline-subject"><c- g>subject</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish"><c- n>CSSNumberish</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumberish" href="#dom-viewtimeline-starttime"><c- g>startTime</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#typedefdef-cssnumberish"><c- n>CSSNumberish</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumberish" href="#dom-viewtimeline-endtime"><c- g>endTime</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue"><c- n>CSSNumericValue</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumericValue" href="#dom-viewtimeline-startoffset"><c- g>startOffset</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://drafts.css-houdini.org/css-typed-om-1/#cssnumericvalue"><c- n>CSSNumericValue</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSNumericValue" href="#dom-viewtimeline-endoffset"><c- g>endOffset</c-></a>;
 };
 
 </pre>
@@ -2236,27 +2160,12 @@ and 75% to the point when it is just about to be cropped.
 	See <a href="https://www.w3.org/TR/css-align-3/#overflow-scroll-position"><cite>CSS Box Alignment 3</cite> § 5.3 Overflow and Scroll Positions</a>.
 	Is this what we want? <a class="issue-return" href="#issue-73faeaf7" title="Jump to section">↵</a></div>
    <div class="issue"> Add a note about whether <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#dom-animationtimeline-currenttime">currentTime</a></code> can be negative or > 100%. <a class="issue-return" href="#issue-00572649" title="Jump to section">↵</a></div>
+   <div class="issue"> This makes the offsets compatible with the way scrollLeft and scrollTop work,
+	which go negative from zero in RTL scroll containers,
+	is this how we want it to work here? <a class="issue-return" href="#issue-f300c2e9" title="Jump to section">↵</a></div>
    <div class="issue"> Figure out how to incorporate fit/inset abilities. <a class="issue-return" href="#issue-d2753247" title="Jump to section">↵</a></div>
    <div class="issue"> Should the initial value be zero or auto? <a class="issue-return" href="#issue-a5c37356" title="Jump to section">↵</a></div>
    <div class="issue"> Do we need all the longhands? Seems like overkill... <a class="issue-return" href="#issue-7dcd77ff" title="Jump to section">↵</a></div>
-   <div class="issue">
-     Some animations want to run
-		while the element is entering or exiting the scrollport,
-		rather than during the time of its visibility.
-		We should add some way to reference these intervals. 
-    <p>Possible ideas:</p>
-    <ul>
-     <li data-md>
-      <p>Automatically generate entrance and exit timeline names
-for each named view timeline,
-e.g. <a class="css" data-link-type="propdesc" href="#propdef-view-timeline">view-timeline: foo</a> also creates <span class="css">foo-enter</span> and <span class="css">foo-exit</span> timelines.</p>
-     <li data-md>
-      <p>Create an automagic value for <a class="property css" data-link-type="property" href="#propdef-view-timeline-fit">view-timeline-fit</a> that pins 25% to the point when 100% of the box has just become visible
-and 75% to the point when it is just about to be cropped.
-(Such a timeline would not be linearly related to the scroll progress.)</p>
-    </ul>
-     <a class="issue-return" href="#issue-41c76683" title="Jump to section">↵</a>
-   </div>
    <div class="issue"> Should it reset <a class="property css" data-link-type="property" href="#propdef-view-timeline-inset">view-timeline-inset</a> also? <a class="issue-return" href="#issue-6b6d7174" title="Jump to section">↵</a></div>
    <div class="issue"> Do we want to expand this scope to preceding siblings and/or distant cousins? <a class="issue-return" href="#issue-330d057d" title="Jump to section">↵</a></div>
   </div>
@@ -2392,16 +2301,16 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-dom-viewtimeline-subject">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-subject①">(2)</a> <a href="#ref-for-dom-viewtimeline-subject②">(3)</a> <a href="#ref-for-dom-viewtimeline-subject③">(4)</a> <a href="#ref-for-dom-viewtimeline-subject④">(5)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-viewtimeline-starttime">
-   <b><a href="#dom-viewtimeline-starttime">#dom-viewtimeline-starttime</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="dom-viewtimeline-startoffset">
+   <b><a href="#dom-viewtimeline-startoffset">#dom-viewtimeline-startoffset</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-viewtimeline-starttime">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-starttime①">(2)</a>
+    <li><a href="#ref-for-dom-viewtimeline-startoffset">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-startoffset①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-viewtimeline-endtime">
-   <b><a href="#dom-viewtimeline-endtime">#dom-viewtimeline-endtime</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="dom-viewtimeline-endoffset">
+   <b><a href="#dom-viewtimeline-endoffset">#dom-viewtimeline-endoffset</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-viewtimeline-endtime">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-endtime①">(2)</a>
+    <li><a href="#ref-for-dom-viewtimeline-endoffset">3.1.1. The ViewTimeline Interface</a> <a href="#ref-for-dom-viewtimeline-endoffset①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-viewtimeline-viewtimeline">
@@ -2415,23 +2324,21 @@ and 75% to the point when it is just about to be cropped.
    <ul>
     <li><a href="#ref-for-propdef-view-timeline-name">3.2.1. Naming a View Progress Timeline: the view-timeline-name property</a>
     <li><a href="#ref-for-propdef-view-timeline-name①">3.2.2. Axis of a View Progress Timeline: the view-timeline-axis property</a> <a href="#ref-for-propdef-view-timeline-name②">(2)</a>
-    <li><a href="#ref-for-propdef-view-timeline-name③">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a> <a href="#ref-for-propdef-view-timeline-name④">(2)</a>
-    <li><a href="#ref-for-propdef-view-timeline-name⑤">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-propdef-view-timeline-name⑥">(2)</a>
+    <li><a href="#ref-for-propdef-view-timeline-name③">3.2.4. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-propdef-view-timeline-name④">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-view-timeline-axis">
    <b><a href="#propdef-view-timeline-axis">#propdef-view-timeline-axis</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-view-timeline-axis">3.2.2. Axis of a View Progress Timeline: the view-timeline-axis property</a> <a href="#ref-for-propdef-view-timeline-axis①">(2)</a> <a href="#ref-for-propdef-view-timeline-axis②">(3)</a> <a href="#ref-for-propdef-view-timeline-axis③">(4)</a> <a href="#ref-for-propdef-view-timeline-axis④">(5)</a>
-    <li><a href="#ref-for-propdef-view-timeline-axis⑤">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
-    <li><a href="#ref-for-propdef-view-timeline-axis⑥">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-propdef-view-timeline-axis⑦">(2)</a>
+    <li><a href="#ref-for-propdef-view-timeline-axis⑤">3.2.4. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-propdef-view-timeline-axis⑥">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-view-timeline-inset">
    <b><a href="#propdef-view-timeline-inset">#propdef-view-timeline-inset</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-view-timeline-inset">3.2.3. Inset of a View Progress Timeline: the view-timeline-inset property</a> <a href="#ref-for-propdef-view-timeline-inset①">(2)</a>
-    <li><a href="#ref-for-propdef-view-timeline-inset②">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-propdef-view-timeline-inset③">(2)</a>
+    <li><a href="#ref-for-propdef-view-timeline-inset②">3.2.4. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-propdef-view-timeline-inset③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-view-timeline-inset-auto">
@@ -2440,31 +2347,11 @@ and 75% to the point when it is just about to be cropped.
     <li><a href="#ref-for-valdef-view-timeline-inset-auto">3.2.3. Inset of a View Progress Timeline: the view-timeline-inset property</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="propdef-view-timeline-fit">
-   <b><a href="#propdef-view-timeline-fit">#propdef-view-timeline-fit</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-propdef-view-timeline-fit">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a> <a href="#ref-for-propdef-view-timeline-fit①">(2)</a> <a href="#ref-for-propdef-view-timeline-fit②">(3)</a> <a href="#ref-for-propdef-view-timeline-fit③">(4)</a> <a href="#ref-for-propdef-view-timeline-fit④">(5)</a>
-    <li><a href="#ref-for-propdef-view-timeline-fit⑤">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a> <a href="#ref-for-propdef-view-timeline-fit⑥">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="valdef-view-timeline-fit-cover">
-   <b><a href="#valdef-view-timeline-fit-cover">#valdef-view-timeline-fit-cover</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-view-timeline-fit-cover">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="valdef-view-timeline-fit-contain">
-   <b><a href="#valdef-view-timeline-fit-contain">#valdef-view-timeline-fit-contain</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-view-timeline-fit-contain">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="propdef-view-timeline">
    <b><a href="#propdef-view-timeline">#propdef-view-timeline</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-propdef-view-timeline">3. View Progress Timelines</a>
-    <li><a href="#ref-for-propdef-view-timeline①">3.2.4. Fit of a View Progress Timeline: the view-timeline-fit property</a>
-    <li><a href="#ref-for-propdef-view-timeline②">3.2.5. View Timeline Shorthand: the view-timeline shorthand</a>
+    <li><a href="#ref-for-propdef-view-timeline①">3.2.4. View Timeline Shorthand: the view-timeline shorthand</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="layout-cycles">
