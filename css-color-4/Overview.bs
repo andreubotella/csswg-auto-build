@@ -5,7 +5,7 @@ Deadline: 2022-10-05
 Work Status: Testing
 ED: https://drafts.csswg.org/css-color/
 TR: https://www.w3.org/TR/css-color-4/
-Previous Version: https://www.w3.org/TR/2022/WD-css-color-4-20220628/
+Previous Version: https://www.w3.org/TR/2022/CR-css-color-4-20220705/
 Shortname: css-color
 Group: csswg
 Level: 4
@@ -422,6 +422,41 @@ Value Definitions</h3>
 	</table>
 
 <!--
+   ███    ████████  ████████  ██       ██    ██ ████ ██    ██  ██████
+  ██ ██   ██     ██ ██     ██ ██        ██  ██   ██  ███   ██ ██    ██
+ ██   ██  ██     ██ ██     ██ ██         ████    ██  ████  ██ ██
+██     ██ ████████  ████████  ██          ██     ██  ██ ██ ██ ██   ████
+█████████ ██        ██        ██          ██     ██  ██  ████ ██    ██
+██     ██ ██        ██        ██          ██     ██  ██   ███ ██    ██
+██     ██ ██        ██        ████████    ██    ████ ██    ██  ██████
+-->
+
+<h2 id="applying-color">Applying Color in CSS</h2>
+
+<!--
+   ███       ██      ██   ██    ██
+  ██ ██    ████    ████    ██  ██
+ ██   ██     ██      ██     ████
+██     ██    ██      ██      ██
+█████████    ██      ██      ██
+██     ██    ██      ██      ██
+██     ██  ██████  ██████    ██
+-->
+<h3 id="accessibility">
+Accessibility and Conveying Information By Color</h3>
+
+	Although colors can add significant information to documents
+	and make them more readable,
+	color by itself should not be the sole means to convey important information.
+	Authors should consider the W3C Web Content Accessibility Guidelines [[WCAG21]]
+	when using color in their documents.
+
+	> <a href="https://www.w3.org/TR/WCAG21/#use-of-color"><em>1.4.1 Use of Color:</em>
+	> Color is not used as the only visual means of conveying information,
+	> indicating an action, prompting a response, or distinguishing a visual element</a>
+
+
+<!--
  ██████   ███████  ██        ███████  ████████        ████████  ████████   ███████  ████████
 ██    ██ ██     ██ ██       ██     ██ ██     ██       ██     ██ ██     ██ ██     ██ ██     ██
 ██       ██     ██ ██       ██     ██ ██     ██       ██     ██ ██     ██ ██     ██ ██     ██
@@ -431,8 +466,8 @@ Value Definitions</h3>
  ██████   ███████  ████████  ███████  ██     ██       ██        ██     ██  ███████  ██
 -->
 
-<h2 id="the-color-property">
-Foreground Color: the 'color' property</h2>
+<h3 id="the-color-property">
+Foreground Color: the 'color' property</h3>
 
 	<pre class=propdef>
 	Name: color
@@ -499,8 +534,8 @@ Foreground Color: the 'color' property</h2>
  ███████  ██        ██     ██  ██████  ████    ██       ██
 -->
 
-<h2 id="transparency">
-Transparency: the 'opacity' property</h2>
+<h3 id="transparency">
+Transparency: the 'opacity' property</h3>
 
 	Opacity can be thought of as a postprocessing operation.
 	Conceptually, after the element (including its descendants) is rendered into an RGBA offscreen image,
@@ -602,6 +637,89 @@ Transparency: the 'opacity' property</h2>
 
 
 <!--
+████████    ███     ██████    ██████   ████████ ████████
+   ██      ██ ██   ██    ██  ██    ██  ██       ██     ██
+   ██     ██   ██  ██        ██        ██       ██     ██
+   ██    ██     ██ ██   ████ ██   ████ ██████   ██     ██
+   ██    █████████ ██    ██  ██    ██  ██       ██     ██
+   ██    ██     ██ ██    ██  ██    ██  ██       ██     ██
+   ██    ██     ██  ██████    ██████   ████████ ████████
+-->
+
+<h3 id="tagged-images">Color Space of Tagged Images</h3>
+
+	An <dfn export>tagged image</dfn> is an image
+	that is explicitly assigned a color profile,
+	as defined by the image format.
+	This is usually done by including an
+	International Color Consortium (ICC) profile [[!ICC]].
+
+	For example JPEG [[JPEG]], PNG [[PNG]] and TIFF [[TIFF]]
+	all specify a means to embed an ICC profile.
+
+	Image formats may also use other, equivalent methods, often for brevity.
+
+	For example, PNG specifies a means (the
+	<a href="https://www.w3.org/TR/PNG/#11sRGB">sRGB chunk</a>)
+	to explicitly tag an image as being in the sRGB color space,
+	without including the sRGB ICC profile.
+
+	Tagged RGB images,
+	and tagged images using a transformation of RGB such as YCbCr,
+	if the color profile or other identifying information is valid,
+	must be treated as being in the specified color space.
+
+	<wpt>
+		tagged-images-001.html
+		tagged-images-002.html
+		tagged-images-003.html
+		tagged-images-004.html
+	</wpt>
+
+	If the color profile or other identifying information is invalid, the image is treated as [=untagged images=]
+
+	For example, when a browser running on a system with a Display P3 monitor
+	displays an JPEG image
+	tagged as being in the ITU Rec BT.2020 [[!Rec.2020]]
+	color space, it must convert the colors
+	from ITU Rec BT.2020 to Display P3
+	so that they display correctly.
+	It must not treat the ITU Rec BT.2020 values
+	as if they were Display P3 values, which would produce incorrect colors.
+
+<!--
+██     ██ ██    ██ ████████    ███     ██████    ██████   ████████ ████████
+██     ██ ███   ██    ██      ██ ██   ██    ██  ██    ██  ██       ██     ██
+██     ██ ████  ██    ██     ██   ██  ██        ██        ██       ██     ██
+██     ██ ██ ██ ██    ██    ██     ██ ██   ████ ██   ████ ██████   ██     ██
+██     ██ ██  ████    ██    █████████ ██    ██  ██    ██  ██       ██     ██
+██     ██ ██   ███    ██    ██     ██ ██    ██  ██    ██  ██       ██     ██
+ ███████  ██    ██    ██    ██     ██  ██████    ██████   ████████ ████████
+-->
+
+<h3 id='untagged'>
+Color Spaces of Untagged Colors</h3>
+
+	Colors specified in HTML,
+	and [=untagged images=] must be treated
+	as being in the sRGB color space ([[!SRGB]])
+	unless otherwise specified.
+
+	<wpt>
+		untagged-images-001.html
+	</wpt>
+
+	An <dfn export>untagged image</dfn> is an image that is not explicitly assigned a color profile, as defined by the image format.
+
+	Note that this rule does not apply to untagged videos, since
+	<dfn export>untagged video</dfn> should be presumed to be in an ITU-defined color space.
+	* At below 720p, it is Recommendation ITU-R BT.601 [[!ITU-R-BT.601]]
+	* At 720p, it is SMPTE ST 296 (same colorimetry as 709) [[!SMPTE296]]
+	* At 1080p, it is Recommendation ITU-R BT.709 [[!ITU-R-BT.709]]
+	* At 4k (UHDTV) and above, it is ITU-R BT.2020 [[!Rec.2020]] for SDR video
+
+
+<!--
  ██████   ███████  ██        ███████  ████████        ████████ ██    ██ ████████  ████████
 ██    ██ ██     ██ ██       ██     ██ ██     ██          ██     ██  ██  ██     ██ ██
 ██       ██     ██ ██       ██     ██ ██     ██          ██      ████   ██     ██ ██
@@ -614,16 +732,8 @@ Transparency: the 'opacity' property</h2>
 <h2 id='color-type'>
 Representing Colors: the <<color>> type</h2>
 
-	CSS has several syntaxes for specifying color values.
-	Some directly specify an sRGB color by its channels,
-	such as the [=hex color notation=] or ''rgb()'' function.
-	Others are more human-friendly to write and understand,
-	such as the ''hsl()'' and ''lch()'' functions,
-	or the long list of [=named colors=].
 
-<h3 id="color-syntax">The <<color>> syntax</h3>
-
-	Colors are represented as a list of components,
+	Colors in CSS are represented as a list of color components,
 	also sometimes called “channels”,
 	representing axises in the color space.
 	Each channel has a minimum and maximum value,
@@ -631,38 +741,77 @@ Representing Colors: the <<color>> type</h2>
 	Additionally, every color is accompanied by
 	an <dfn lt="alpha channel | alpha component" export>alpha component</dfn>,
 	indicating how transparent it is,
-	and thus how much of the backdrop one can see behind the color.
+	and thus how much of the backdrop one can see through the color.
 
-	Colors in CSS are represented by the <dfn export><<color>></dfn> type:
+	CSS has several syntaxes for specifying color values:
+	* the sRGB [=hex color notation=]
+		which represents the RGB and alpha channels in hexadecimal notation
+	* the various [=color functions=]
+		which can represent colors using a variety of color spaces and coordinate systems
+	* the constant [=named color=] keywords
+	* the variable <<system-color>> keywords and ''currentColor'' keyword.
 
-	<pre class='prod'>
-	&lt;color> = <<absolute-color-base>> | currentcolor | <<system-color>> | <<device-cmyk()>>
+	The <dfn>color functions</dfn>
+	use CSS [=functional notation=]
+	to represent colors in a variety of [=color spaces=]
+	by specifying their channel coordinates.
+	Some of these use a <dfn export>cylindrical polar color</dfn> model,
+	specifying color by a <<hue>> angle,
+	a central axis representing lightness
+	(black-to-white),
+	and a radius representing saturation or chroma
+	(how far the color is from a neutral grey).
+	The others use a <dfn export>rectangular orthogonal color</dfn> model,
+	specifying color using three
+	(or more, in the case of CMYK or CMYKOGV)
+	orthogonal component axes.
 
-	<dfn>&lt;absolute-color-base></dfn> = <<hex-color>> | <<named-color>> | transparent |
-	    <<rgb()>> | <<rgba()>> | <<hsl()>> | <<hsla()>> | <<hwb()>> |
-	    <<lab()>> | <<lch()>> |
-	    <<oklab()>> | <<oklch()>> |
-	    <<color()>>
-	</pre>
-
-	The <dfn export>color-functions</dfn> are <<rgb()>>, <<rgba()>>,
-		<<hsl()>>, <<hsla()>>, <<hwb()>>,
-		<<lab()>>, <<lch()>>,
-		<<oklab()>>, <<oklch()>>, and
-		<<color()>>.
-
-	Of those, <<hsl()>>, <<hsla()>>, <<hwb()>>, <<lch()>>, and <<oklch()>>
-		are <dfn export>cylindrical polar color</dfn> representations,
-		which specify color using a <<hue>> angle,
-		a central axis representing lightness
-		(black-to-white),
-		and a radius representing saturation or chroma
-		(how far the color is from a neutral grey).
-	The other color spaces are
-		<dfn export>rectangular orthogonal color</dfn> representations,
-		which specify color using three
-		(or more, in the case of CMYK or CMYKOGV)
-		orthogonal component axes.
+	The [=color functions=] available in Level 4 are
+	* ''rgb()'' and its ''rgba()'' alias,
+		which (like the [=hex color notation=]) specify sRGB colors directly
+		by their red/green/blue/alpha chanels.
+	* ''hsl()'' and its ''hsla()'' alias,
+		which specify sRGB colors
+		by hue, saturation, and lightness
+		using the [[#the-hsl-notation|HSL]] cylindrical coordinate model.
+	* ''hwb()'',
+		which specifies an sRGB color
+		by hue, whiteness, and blackness
+		using the [[#the-hwb-notation|HWB]] cylindrical coordinate model.
+	* ''lab()'',
+		which specifies a CIELAB color
+		by CIE Lightness and its a- and b-axis hue coordinates
+		(red/green-ness, and yellow/blue-ness)
+		using the [[#cie-lab|CIE LAB rectangular coordinate model]].
+	* ''lch()'' ,
+		which specifies a CIELAB color
+		by CIE Lightness, Chroma, and hue
+		using the [[#cie-lab|CIE LCH cylindrical coordinate model]]
+	* ''oklab()'',
+		which specifies an OKLAB color
+		by OKLAB Lightness and its a- and b-axis hue coordinates
+		(red/green-ness, and yellow/blue-ness)
+		using the [[#ok-lab|OKLAB]] rectangular coordinate model.
+	* ''oklch()'' ,
+		which specifies an OKLAB color
+		by OKLAB Lightness, Chroma, and hue
+		using the [[#ok-lab|OKLCH]] cylindrical coordinate model.
+<!--
+	* ''device-cmyk()'',
+		which specifies a device-specific CMYK color
+		by its cyan, magenta, yellow, and black components.
+-->
+	* ''color()'',
+		which allows specifying colors in a variety of color spaces
+		including
+		[[#predefined-sRGB|sRGB]],
+		[[#predefined-sRGB-linear|Linear-light sRGB]],
+		[[#predefined-display-p3|Display P3]],
+		[[#predefined-a98-rgb|A98 RGB]],
+		[[#predefined-prophoto-rgb|ProPhoto RGB]],
+		[[#predefined-rec2020|ITU-R BT.2020-2]],
+		and
+		[[#predefined-xyz|CIE XYZ]].
 
 	For easy reference in other specifications,
 	<dfn export>opaque black</dfn> is defined as the color <nobr>''rgb(0 0 0 / 100%)''</nobr>;
@@ -670,7 +819,25 @@ Representing Colors: the <<color>> type</h2>
 	but fully transparent--
 	i.e. <nobr>''rgb(0 0 0 / 0%)''</nobr>.
 
-	All of the <<color>> syntactic forms
+<h3 id="color-syntax">The <<color>> syntax</h3>
+
+	Colors in CSS are represented by the <dfn export><<color>></dfn> type:
+
+	<pre class='prod'>
+	&lt;color> = <<absolute-color-base>> | currentcolor | <<system-color>> <!-- | <<device-cmyk()>> -->
+
+	<dfn>&lt;absolute-color-base></dfn> = <<hex-color>> | <<absolute-color-function>> | <<named-color>> | transparent
+	<dfn>&lt;absolute-color-function></dfn> = <<rgb()>> | <<rgba()>> |
+	                            <<hsl()>> | <<hsla()>> | <<hwb()>> |
+	                            <<lab()>> | <<lch()>> | <<oklab()>> | <<oklch()>> |
+	                            <<color()>>
+	</pre>
+
+	The <<hsl()>>, <<hsla()>>, <<hwb()>>, <<lch()>>, and <<oklch()>> [=color functions=]
+	are [=cylindrical polar color=] representations using a <<hue>> angle;
+	the other [=color functions=] use [=rectangular orthogonal color=] representations.
+
+	All of the <<absolute-color-function>> syntactic forms
 	defined in this specification
 	use space, not comma,
 	to separate the color components.
@@ -678,25 +845,64 @@ Representing Colors: the <<color>> type</h2>
 	to separate an optional alpha term
 	from the color components.
 
+	<div class=example id="example-generic-syntax">
+		<p>The following represents a saturated sRGB red that is 50% opaque:
+		<pre>rgb(100% 0% 0% / 50%)</pre>
+	</div>
+
+<h4 id="color-syntax-legacy">
+Legacy Comma-separated Color Function Syntax</h4>
+
 	For Web compatibility,
-	<<color>> syntactic forms
-	defined in earlier levels of this specification
-	also support
+	the syntactic forms
+	of ''rgb()'', ''rgba()'', ''hsl()'', and ''hsla()'',
+	<!-- of ''rgb()'', ''rgba()'', ''hsl()'', ''hsla()'', and ''device-cmyk()'' -->
+	(those defined in earlier specifications)
+	also support a
 	<dfn export>legacy color syntax</dfn>
 	which has the following differences:
 
-	* color components are separated by comma-whitespace
+	* color components are separated by commas
+		(optionally preceded and/or followed by whitespace)
 	* non-opaque forms use a separate notation
-	    (for example ''hsla()'' rather than ''hsl()'')
+		(for example ''hsla()'' rather than ''hsl()'')
 	* minimum required precision is lower, 8 bits per component
 
-	For the syntactic forms introduced
+	<div class=example id="example-rgba-legacy"p>
+		<p>The following represents a saturated sRGB red that is 50% opaque:
+		<pre>rgba(100%, 0%, 0%, 0.5)</pre>
+	</div>
+
+	For the [=color functions=] introduced
 	in this or subsequent levels,
 	where there is no Web compatibility issue,
-	<a>legacy color syntax</a> is not supported,
-	and attempting to use it is an error.
+	the <a>legacy color syntax</a> is invalid.
 
-<h3 id="hue-syntax">The <<hue>> syntax</h3>
+<h3 id="alpha-syntax">
+Representing Transparency: the <<alpha-value>> syntax</h3>
+
+	<pre class="prod">
+	<dfn>&lt;alpha-value></dfn> = <<number>> | <<percentage>>
+	</pre>
+
+	Opacity in CSS is typically represented using the <<alpha-value>> syntax,
+	for example in the 'opacity' property
+	or as the [=alpha component=] in a [=color function=].
+	Represented as a <<number>>, the useful range of the value is ''0''
+	(representing full transparency)
+	to ''1''
+	(representing full opacity).
+	It can also be written as a <<percentage>>,
+	which [=computed value|computes to=]
+	the equivalent <<number>>
+	(''0%'' to ''0'', ''100%'' to ''1'').
+	Unless otherwise specified,
+	an <<alpha-value>> component defaults to ''100%'' when omitted.
+	Values outside the range [0,1] are not invalid,
+	but are clamped to that range when [=computed value|computed=].
+
+<h3 id="hue-syntax">
+Representing Cylindrical-coordinate Hues: the <<hue>> syntax</h3>
 
 Hue is represented as an angle of the color circle
 (the rainbow, twisted around into a circle, and with purple added between violet and red).
@@ -716,7 +922,7 @@ Certain operations,
 such as hue interpolation,
 may normalize the hue angle during calculations.
 
-The angles and spacing
+Note: The angles and spacing
 corresponding to particular hues
 depend on the color space.
 For example, in HSL and HWB, which use the sRGB color space,
@@ -834,748 +1040,7 @@ any achromatic color will have a [=powerless=] hue component.
 	It is intentionally unspecified exactly what "sufficiently close" means for this purpose.
 
 
-<h3 id="notes">
-Accessibility and Conveying Information By Color</h3>
 
-	Although colors can add significant information to documents
-	and make them more readable,
-	color by itself should not be the sole means to convey important information.
-	Authors should consider the W3C Web Content Accessibility Guidelines [[WCAG21]]
-	when using color in their documents.
-
-	> <a href="https://www.w3.org/TR/WCAG21/#use-of-color"><em>1.4.1 Use of Color:</em>
-	> Color is not used as the only visual means of conveying information,
-	> indicating an action, prompting a response, or distinguishing a visual element</a>
-
-<!--
-████████    ███     ██████    ██████   ████████ ████████
-   ██      ██ ██   ██    ██  ██    ██  ██       ██     ██
-   ██     ██   ██  ██        ██        ██       ██     ██
-   ██    ██     ██ ██   ████ ██   ████ ██████   ██     ██
-   ██    █████████ ██    ██  ██    ██  ██       ██     ██
-   ██    ██     ██ ██    ██  ██    ██  ██       ██     ██
-   ██    ██     ██  ██████    ██████   ████████ ████████
--->
-
-<h3 id="tagged-images">Color Space of Tagged Images</h3>
-
-	An <dfn export>tagged image</dfn> is an image
-	that is explicitly assigned a color profile,
-	as defined by the image format.
-	This is usually done by including an
-	International Color Consortium (ICC) profile [[!ICC]].
-
-	For example JPEG [[JPEG]], PNG [[PNG]] and TIFF [[TIFF]]
-	all specify a means to embed an ICC profile.
-
-	Image formats may also use other, equivalent methods, often for brevity.
-
-	For example, PNG specifies a means (the
-	<a href="https://www.w3.org/TR/PNG/#11sRGB">sRGB chunk</a>)
-	to explicitly tag an image as being in the sRGB color space,
-	without including the sRGB ICC profile.
-
-	Tagged RGB images,
-	and tagged images using a transformation of RGB such as YCbCr,
-	if the color profile or other identifying information is valid,
-	must be treated as being in the specified color space.
-
-	<wpt>
-		tagged-images-001.html
-		tagged-images-002.html
-		tagged-images-003.html
-		tagged-images-004.html
-	</wpt>
-
-	If the color profile or other identifying information is invalid, the image is treated as [=untagged images=]
-
-	For example, when a browser running on a system with a Display P3 monitor
-	displays an JPEG image
-	tagged as being in the ITU Rec BT.2020 [[!Rec.2020]]
-	color space, it must convert the colors
-	from ITU Rec BT.2020 to Display P3
-	so that they display correctly.
-	It must not treat the ITU Rec BT.2020 values
-	as if they were Display P3 values, which would produce incorrect colors.
-
-<!--
-██     ██ ██    ██ ████████    ███     ██████    ██████   ████████ ████████
-██     ██ ███   ██    ██      ██ ██   ██    ██  ██    ██  ██       ██     ██
-██     ██ ████  ██    ██     ██   ██  ██        ██        ██       ██     ██
-██     ██ ██ ██ ██    ██    ██     ██ ██   ████ ██   ████ ██████   ██     ██
-██     ██ ██  ████    ██    █████████ ██    ██  ██    ██  ██       ██     ██
-██     ██ ██   ███    ██    ██     ██ ██    ██  ██    ██  ██       ██     ██
- ███████  ██    ██    ██    ██     ██  ██████    ██████   ████████ ████████
--->
-
-<h3 id='untagged'>
-Color Spaces of Untagged Colors</h3>
-
-	Colors specified in HTML,
-	and [=untagged images=] must be treated
-	as being in the sRGB color space ([[!SRGB]])
-	unless otherwise specified.
-
-	<wpt>
-		untagged-images-001.html
-	</wpt>
-
-	An <dfn export>untagged image</dfn> is an image that is not explicitly assigned a color profile, as defined by the image format.
-
-	Note that this rule does not apply to untagged videos, since
-	<dfn export>untagged video</dfn> should be presumed to be in an ITU-defined color space.
-	* At below 720p, it is Recommendation ITU-R BT.601 [[!ITU-R-BT.601]]
-	* At 720p, it is SMPTE ST 296 (same colorimetry as 709) [[!SMPTE296]]
-	* At 1080p, it is Recommendation ITU-R BT.709 [[!ITU-R-BT.709]]
-	* At 4k (UHDTV) and above, it is ITU-R BT.2020 [[!Rec.2020]] for SDR video
-
-<!--
-████████  ████████  ██████   ███████  ██       ██     ██ ████████
-██     ██ ██       ██    ██ ██     ██ ██       ██     ██ ██
-██     ██ ██       ██       ██     ██ ██       ██     ██ ██
-████████  ██████    ██████  ██     ██ ██       ██     ██ ██████
-██   ██   ██             ██ ██     ██ ██        ██   ██  ██
-██    ██  ██       ██    ██ ██     ██ ██         ██ ██   ██
-██     ██ ████████  ██████   ███████  ████████    ███    ████████
--->
-
-<h3 id='resolving-color-values'>
-Resolving <<color>> Values</h3>
-
-	Unless otherwise specified for a particular property,
-	[=specified value|specified=] colors are resolved to
-	<dfn export lt="computed color">[=computed value|computed=] colors</dfn>
-	and then further to <dfn export lt="used color">[=used value|used=] colors</dfn> as described below.
-
-	The [=resolved value=] of a <<color>> is its [=used value=].
-
-	<wpt>
-		color-resolving-hsl.html
-		color-resolving-hwb.html
-		color-resolving-keywords.html
-		color-resolving.html
-		system-color-compute.html
-	</wpt>
-
-<h4 id="resolving-sRGB-values">Resolving sRGB values</h4>
-
-	This applies to:
-
-	* [=hex colors=]
-	* ''rgb()'' and ''rgba()'' values
-	* ''hsl()'' and ''hsla()'' values
-	* ''hwb()'' values
-	* [=named colors=]
-
-		While the function names and named colors
-		are <a href="https://infra.spec.whatwg.org/#ascii-case-insensitive">ASCII case-insensitive</a>,
-		the [=specified value=]
-		does not preserve any mixed casing
-		and is treated as being all lowercase.
-
-	<wpt>
-		color-resolving-hsl.html
-		color-resolving-keywords.html
-		color-resolving.html
-	</wpt>
-
-		<div class="example" id="ex-hsl-case">
-			<p>For example, the first form below is treated as identical to the second:</p>
-			<pre class="lang-css"><span class="swatch" style="--color: hsl(39 100% 50%)"></span> HsL(39 100% 50%)
-
-			<span class="swatch" style="--color: hsl(39 100% 50%)"></span> hsl(39 100% 50%)</pre>
-			<p>Similarly the first form below is treated as identical to the second:</p>
-			<pre class="lang-css"><span class="swatch" style="--color: purple"></span> pUrPlE
-
-			<span class="swatch" style="--color: purple"></span> purple</pre>
-		</div>
-
-		The computed and used value
-		is the corresponding sRGB color,
-		paired with the specified alpha channel
-		and defaulting to opaque if unspecified).
-
-
-		<div class="example" id="ex-hsl-computed">
-			<p>For example, the computed value of</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(255, 165, 0)"></span> hsl(38.824 100% 50%)</pre>
-			<p>is</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(255, 165, 0)"></span> rgb(255, 165, 0)</pre>
-		</div>
-
-
-	<h4 id="resolving-lab-lch-values">Resolving Lab and LCH values</h4>
-
-	This applies to ''lab()'' and ''lch()'' values.
-
-		The computed and used value
-		is the corresponding CIE Lab or LCH color
-		paired with the specified alpha channel
-		(as a <<number>>, not a <<percentage>>;
-		and defaulting to opaque if unspecified).
-
-		<div class="example" id="ex-lch-computed">
-			<p>For example, the computed value of</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(77.61% 36.34% 2.45%)"></span> lch(52.2345% 72.2 56.2 / 1)</pre>
-			<p>is</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(77.61% 36.34% 2.45%)"></span> lch(52.2345% 72.2 56.2)</pre>
-		</div>
-
-	<h4 id="resolving-oklab-oklch-values">Resolving OKLab and OKLCH values</h4>
-
-	This applies to ''oklab()'' and ''oklch()'' values.
-
-		The computed and used value
-		is the corresponding OKLab or OKLCH color
-		paired with the specified alpha channel
-		(as a <<number>>, not a <<percentage>>;
-		and defaulting to opaque if unspecified).
-
-		<div class="example" id="ex-oklch-computed">
-			<p>For example, the computed value of</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(50.2% 0.7% 49.9%)"></span> oklch(42.1% 0.192 328.6 / 1)</pre>
-			<p>is</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(50.2% 0.7% 49.9%)"></span> oklch(42.1% 0.192 328.6)</pre>
-		</div>
-
-	<h4 id="resolving-color-function-values">Resolving values of the ''color()'' function</h4>
-
-		The computed and used value
-		is the color in the specified [=color space=],
-		paired with the specified alpha channel
-		(as a <<number>>, not a <<percentage>>;
-		and defaulting to opaque if unspecified).
-
-		<div class="example" id="ex-p3-computed">
-			<p>For example,  the computed value of</p>
-			<pre class="lang-css"><span class="swatch" style="--color: goldenrod"></span> color(display-p3 0.823 0.6554 0.2537 /1)</pre>
-			<p>is</p>
-			<pre class="lang-css"><span class="swatch" style="--color: goldenrod"></span> color(display-p3 0.823 0.6554 0.2537)</pre>
-		</div>
-
-		For colors specified in the ''xyz'' [=color space=],
-		which is an alias of the ''xyz-d65'' [=color space=],
-		the computed and used value
-		is in the ''xyz-d65'' [=color space=].
-
-		<div class="example" id="wx-xyz-computed">
-			<p>For example, the computed value of</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(95.1% 53.3% 33%)"></span> color(xyz 0.472 0.372 0.131)</pre>
-			<p>is</p>
-			<pre class="lang-css"><span class="swatch" style="--color: rgb(95.1% 53.3% 33%)"></span> color(xyz-d65 0.472 0.372 0.131)</pre>
-		</div>
-
-<h4 id="resolving-other-colors">Resolving other colors</h4>
-
-	This applies to [=system colors=]
-	(including the <<deprecated-color>>s),
-	''transparent'',
-	and ''currentcolor''.
-
-	Each <<system-color>> keyword computes
-	to the corresponding color in its color space.
-	However, such colors must not be altered by
-	'forced colors mode'.
-
-	The computed and used value of ''transparent'' is [=transparent black=].
-
-	The ''currentcolor'' keyword computes to itself.
-
-	In the 'color' property,
-	the used value of ''currentcolor'' is the [=inherited value=].
-	In any other property,
-	its used value is the used value of the 'color' property on the same element.
-
-	Note: This means that if the ''<color>/currentcolor'' value is inherited,
-	it’s inherited as a keyword,
-	not as the value of the 'color' property,
-	so descendants will use their own 'color' property to resolve it.
-
-<!--
- ██████  ████████ ████████  ████    ███    ██
-██    ██ ██       ██     ██  ██    ██ ██   ██
-██       ██       ██     ██  ██   ██   ██  ██
- ██████  ██████   ████████   ██  ██     ██ ██
-      ██ ██       ██   ██    ██  █████████ ██
-██    ██ ██       ██    ██   ██  ██     ██ ██
- ██████  ████████ ██     ██ ████ ██     ██ ████████
--->
-
-<h3 id='serializing-color-values'>
-	Serializing <<color>> Values</h3>
-
-This section updates and replaces that part of CSS Object Model, section
-<a href="https://drafts.csswg.org/cssom-1/#serializing-css-values"> Serializing CSS Values</a>, which relates to serializing <<color>> values.
-
-In this section, the strings used in the specification and the corresponding characters are as follows.
-
-<table class="data">
-	<tr>
-		<th>String</th>
-		<th>Character(s)</th>
-	</tr>
-	<tr>
-		<td>" "</td>
-		<td>U+0020 SPACE</td>
-	</tr>
-	<tr>
-		<td>","</td>
-		<td>U+002C COMMA</td>
-	</tr>
-	<tr>
-		<td>"-"</td>
-		<td>U+002D HYPHEN-MINUS</td>
-	</tr>
-	<tr>
-		<td>"."</td>
-		<td>U+002E FULL STOP</td>
-	</tr>
-	<tr>
-		<td>"/"</td>
-		<td>U+002F SOLIDUS</td>
-	</tr>
-	<tr>
-		<td>"none"</td>
-		<td>U+006E LATIN SMALL LETTER N<br>
-			U+006F LATIN SMALL LETTER O<br>
-			U+006E LATIN SMALL LETTER N<br>
-			U+0065 LATIN SMALL LETTER E
-		</td>
-	</tr>
-
-</table>
-
-The string "." shall be used as a decimal separator,
-regardless of locale,
-and there shall be no thousands separator.
-
-For syntactic forms which support [=missing color components=],
-the value ''none'' (equivalently NONE, nOnE, etc),
-shall be serialized in all-lower case
-as the string "none".
-
-
-<h4 id="serializing-alpha-values">Serializing alpha values</h4>
-
-	This applies to any <<color>> value which can take an optional alpha value.
-
-	If the alpha is exactly 1,
-	it is omitted from the serialization;
-	an implicit value of 1 (fully opaque) is the default.
-
-	If the alpha is any other value than 1,
-	it is explicitly included in the serialization,
-	as a <<number>>, not a <<percentage>>.
-	The value is expressed in base ten,
-	with the "." character as decimal separator.
-	The leading zero must not be omitted.
-	Trailing zeroes must be omitted.
-
-	<div class="example" id="ex-alpha-trimzero">
-		<p>For example, an alpha value of 70%
-			will be serialized as the string
-			"0.7"
-			which has a leading zero before the decimal separator,
-			"." as decimal separator
-			(even if the current locale would use some other character,
-			such as ","),
-			and all digits after the "7" would be "0" and are omitted.
-		</p>
-	</div>
-
-	The precision with which alpha values are retained,
-	and thus the number of decimal places in the serialized value,
-	is not defined in this specification,
-	but must at least be sufficient
-	to round-trip integer percentage values.
-	Thus, the serialized value must contain
-	at least two decimal places
-	(unless trailing zeroes have been removed).
-	Values must be
-	<a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
-
-	<div class="example" id="ex-alpha-round">
-		<p>For example, an alpha value of 12.3456789%
-			could be serialized as the strings
-			"0.12" or "0.123" or "0.1234" or "0.12346"
-			(rounding the value of 5
-			towards +∞
-			because the following digit is 6)
-			or any longer, rounded serialization of the same form.
-		</p>
-	</div>
-
-
-<h4 id="serializing-sRGB-values">Serializing sRGB values</h4>
-
-	The serialized form of the following sRGB values:
-
-	* [=hex colors=]
-	* ''rgb()'' and ''rgba()'' values
-	* ''hsl()'' and ''hsla()'' values
-	* ''hwb()'' values
-	* [=named colors=]
-	* [=system colors=]
-	* <a href="#deprecated-system-colors">deprecated-colors</a>
-
-	<!-- are all system colors assumed to be sRGB? -->
-
-	is derived from the [=computed value=] and thus,
-	uses either the ''rgb()'' or ''rgba()'' form
-	(depending on whether the alpha is exactly 1, or not),
-	with lowercase letters for the function name.
-
-	During serialization,
-	any [=missing=] values
-	are converted to 0.
-
-	For compatibility, the sRGB component values
-	are serialized in <<number>> form, not <<percentage>>).
-	Also for compatibility,
-	the component values are serialized in base 10,
-	with a range of [0-255], regardless of
-	the bit depth with which they are stored.
-
-
-	<a href="#serializing-alpha-values">As noted earlier</a>,
-	unitary alpha values are not explicitly serialized.
-	Also, for compatibility, if the alpha is exactly 1,
-	the ''rgb()'' form is used,
-	with an implicit alpha;
-	otherwise, the ''rgba()'' form is used,
-	with an explicit alpha value.
-
-
-	For compatibility,
-	the legacy form with comma separators is used;
-	exactly one ASCII space follows each comma.
-	This includes the comma (not slash) used
-	to separate the blue component of ''rgba()''
-	from the alpha value.
-
-
-
-	<div class="example" id="ex-rgb-ser-int-rgba">
-		<p>For example, the serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgba(29, 164, 192, 0.95)"></span> rgb(29 164 192 / 95%)</pre>
-		<p>is the string "rgba(29, 164, 192, 0.95)"</p>
-	</div>
-
-	Note: contrary to CSS Color 3,
-	the parameters of the ''rgb()'' function
-	are of type <<number>> not <<integer>>.
-	Thus, any higher precision than eight bits
-	is indicated with a fractional part.
-
-	Trailing fractional zeroes in any component values must be omitted;
-	if the fractional part consists of all zeroes,
-	the decimal point must also be omitted.
-	This means that sRGB colors specified with integer component values
-	will serialize with backwards-compatible integer values.
-
-	<p id="sRGB-precision">
-	The precision with which sRGB component values are retained,
-	and thus the number of significant figures in the serialized value,
-	is not defined in this specification,
-	but must at least be sufficient
-	to round-trip eight bit values.
-	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
-	</p>
-
-	Note: authors of scripts which expect
-	color values returned from
-	<span style="font-family:monospace">getComputedStyle</span>
-	to have <<integer>> component values,
-	are advised to update them to cope with
-	<<number>>.
-
-<div class="example" id="ex-rgb-number">
-	<p>
-	For example,</p>
-	<pre class="lang-css"><span class="swatch" style="--color: rgb(57.28% 42.14% 51.46%)"></span> rgb(146.064 107.457 131.223)</pre>
-	<p>is now valid, and equal to</p>
-	<pre class="lang-css"><span class="swatch" style="--color: rgb(57.28% 42.14% 51.46%)"></span> rgb(57.28% 42.14% 51.46%)</pre>
-	<p>A conformant serialized form for both,
-	is the string "rgb(146.06, 107.46, 131.2)".</p>
-</div>
-
-<div class="example" id="ex-rgb-notrail">
-	<p>The serialized value of </p>
-	<pre class="lang-css"><span class="swatch" style="--color: goldenrod"></span> ''goldenrod''</pre>
-	<p>is the string "rgb(218, 165, 32)"
-	and not the string "rgb(218.000, 165.000, 32.000)"</p>
-</div>
-
-<h4 id="serializing-lab-lch">Serializing Lab and LCH values</h4>
-
-	The serialized form of ''lch()'' and ''lab()'' values
-	is derived from the [=computed value=]
-	and uses the ''lab()'' or ''lch()'' forms,
-	with lowercase letters for the function name.
-
-	The component values are serialized in base 10;
-	the Lightness, a and b component values
-	are serialized as <<number>>
-	with 0% Lightness mapping to 0
-	and 100% Lightness mapping to 100.
-	A single ASCII space character " "
-	must be used as the separator
-	between the component values.
-
-	Trailing fractional zeroes in any component values must be omitted;
-	if the fractional part consists of all zeroes,
-	the decimal point must also be omitted.
-
-	<wpt>
-		parsing/color-computed.html
-	</wpt>
-
-	<div class="example" id="ex-lab-zero-a">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgb(60.7% 52.23% 0%)"></span> lab(56.200% 0.000 83.600)</pre>
-		<p>is the string "lab(56.2 0 83.6)"</p>
-	</div>
-
-	<div class="example" id="ex-lch-serial">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgb(41.66% 15.34% 90.66%)"></span> lch(37% 105.0 305.00)</pre>
-		<p>is the string "lch(37 105 305)",
-			not "lch(37 105.0 305.00)".
-	</div>
-
-	The precision with which ''lab()'' component values are retained,
-	and thus the number of significant figures in the serialized value,
-	is not defined in this specification,
-	but due to the wide gamut must be sufficient
-	to round-trip L values between 0 and 100,
-	and a and b values between ±127,
-	with at least sixteen bit precision;
-	this will result in at least three decimal places
-	unless trailing zeroes have been omitted.
-	(half float or float, is recommended for internal storage).
-	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
-
-	Note: a and b values outside ±127 are possible
-	with ultrawide gamut spaces. For example, <em>all</em>
-	of the ''prophoto-rgb'' primaries and secondaries
-	exceed this range, but are within ±200.
-
-	<a href="#serializing-alpha-values">As noted earlier</a>,
-	unitary alpha values are not explicitly serialized.
-	Non-unitary alpha values must be explicitly serialized,
-	and the string " / "
-	(an ASCII space, then forward slash, then another space)
-	must be used to separate the b component value from the alpha value.
-
-	<div class="example" id="ex-lch-alpha">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgba(99.56%, 6.09%, 57.02%, 0.93)"></span> lch(56.2% 83.6 357.4 /93%)</pre>
-		<p>is the string "lch(56.2 83.6 357.4 / 0.93)"
-			not "lch(56.2% 83.6 357.4 / 0.93)"
-		</p>
-	</div>
-
-	<h4 id="serializing-oklab-oklch">Serializing OKLab and OKLCH values</h4>
-
-	The serialized form of ''oklch()'' and ''oklab()'' values
-	is derived from the [=computed value=]
-	and uses the ''oklab()'' or ''oklch()'' forms,
-	with lowercase letters for the function name.
-
-	The component values are serialized in base 10;
-	the Lightness, a and b component values
-	are serialized as <<number>>
-	with 0% Lightness mapping to 0
-	and 100% Lightness mapping to 1.
-	A single ASCII space character " "
-	must be used as the separator
-	between the component values.
-
-	Trailing fractional zeroes in any component values must be omitted;
-	if the fractional part consists of all zeroes,
-	the decimal point must also be omitted.
-
-	<wpt>
-		parsing/color-computed.html
-	</wpt>
-
-	<div class="example" id="ex-oklab-trailzero">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgb(0% 50.52% 49.07%)">
-		</span> oklab(54.0% -0.10 -0.02)</pre>
-		<p>is the string "oklab(0.54 -0.1 -0.02)"
-			not "oklab(54 -0.1 -0.02)" or
-			"oklab(54% -0.1 -0.02)"
-		</p>
-	</div>
-
-	<div class="example" id="ex-oklch-serial">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgb(42.07% 49.6% 25.23%)"></span> oklch(56.43% 0.0900 123.40)</pre>
-		<p>is the string "oklch(0.5643 0.09 123.4)",
-			not "oklch(0.5643 0.0900 123.40)".
-	</div>
-
-	The precision with which ''oklab()'' component values are retained,
-	and thus the number of significant figures in the serialized value,
-	is not defined in this specification,
-	but due to the wide gamut must be sufficient
-	to round-trip L values between 0 and 1 (0% and 100%),
-	<!--
-		ensure rec2020 round trips
-		color(rec2020 1 0 0) = oklch(68.7 0.365 24.19)
-		color(rec2020 0 1 0) = oklch(83 0.468 152.6)
-		color(rec2020 0 0 1) = oklch(42.3 0.383 245.1)
-	-->
-	and a and b values between ±0.5,
-	with at least sixteen bit precision;
-	this will result in at least five decimal places
-	unless trailing zeroes have been omitted.
-	(half float or float, is recommended for internal storage).
-	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
-
-	<!--
-	color(prophoto-rgb 1 0 0) = oklch(70.2 0.432 19.58)
-	color(prophoto-rgb 0 1 0) = oklch(84 0.526 152.8)
-	color(prophoto-rgb 0 0 1) = oklch(21.7 1.413 197.6)
-	-->
-	Note: a and b values outside ±0.5 are possible
-	with ultrawide gamut spaces. For example,
-	the ''prophoto-rgb'' green and blue primaries
-	exceed this range,
-	with chroma of 0.526 and 1.413 respectively.
-
-	<a href="#serializing-alpha-values">As noted earlier</a>,
-	unitary alpha values are not explicitly serialized.
-	Non-unitary alpha values must be explicitly serialized,
-	and the string " / "
-	(an ASCII space, then forward slash, then another space)
-	must be used to separate the b component value from the alpha value.
-
-	<div class="example" id="ex-oklch-alpha">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgba(60%, 26.67%, 66.67%, 0.7)"></span> oklch(53.85% 0.1725 320.67 / 70%)</pre>
-		<p>is the string "oklch(53.85% 0.1725 320.67 / 0.7)"</p>
-	</div>
-
-	<h4 id="serializing-color-function-values">Serializing values of the ''color()'' function</h4>
-
-	The serialized form of ''color()'' values
-	is derived from the [=computed value=]
-	and uses the ''color()'' form,
-	with lowercase letters for the function name
-	and the color space name.
-
-	The component values are serialized in base 10,
-	as <<number>>.
-	A single ASCII space character " "
-	must be used as the separator
-	between the component values,
-	and also between the color space name and the first color component.
-
-	Trailing fractional zeroes in any component values must be omitted;
-	if the fractional part consists of all zeroes,
-	the decimal point must also be omitted.
-
-	<wpt>
-		parsing/color-computed.html
-	</wpt>
-
-	<div class="example" id="ex-color-serial">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgba(99.56%, 6.09%, 57.02%, 0.93)"></span> color(dIsPlAy-P3  0.964  0.763  0.787)</pre>
-		<p>is the string "color(display-p3 0.96 0.76 0.79)",
-		if two decimal places are retained.
-		Notice that 0.787 has rounded up to 0.79,
-		rather than being truncated to 0.78.
-		</p>
-	</div>
-
-
-	<!--
-		the name in the @color-profile is also lowercased, right?
-		the serialization is not sufficient because the name and the link to the profile are also needed.
-	-->
-
-	If the color space is sRGB, the color space is still explicitly required in the serialized result.
-
-	For the predefined color spaces,
-	the <em>minimum</em> precision for round-tripping is as follows:
-
-	<table class="data" id="predefined-precision-table">
-		<tr><th>color space</th><th>Minimum bits</th></tr>
-		<tr>
-			<td>''srgb''</td>
-			<td>10</td>
-		</tr>
-		<tr>
-			<td>''srgb-linear''</td>
-			<td>12</td>
-			<!-- see workings/srgb-lin-precision.js -->
-		</tr>
-		<tr>
-			<td>''display-p3''</td>
-			<td>10</td>
-		</tr>
-		<tr>
-			<td>''a98-rgb''</td>
-			<td>10</td>
-		</tr>
-		<tr>
-			<td>''prophoto-rgb''</td>
-			<td>12</td>
-		</tr>
-		<tr>
-			<td>''rec2020''</td>
-			<td>12</td>
-		</tr>
-		<tr>
-			<td>''xyz'', ''xyz-d50'', ''xyz-d65''</td>
-			<td>16</td>
-		</tr>
-	</table>
-
-	(16bit, half-float, or float <em>per component</em>
-	is recommended for internal storage).
-	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
-
-	Note: compared to the legacy forms
-	such as ''rgb()'', ''hsl()'' and so on,
-	''color(srgb)'' has a higher minimum precision requirement.
-	Stylesheet authors who prefer higher precision
-	are thus encouraged to use the ''color(srgb)'' form.
-
-	<a href="#serializing-alpha-values">As noted earlier</a>,
-	unitary alpha values are not explicitly serialized.
-	Non-unitary alpha values must be explicitly serialized,
-	and the string " / "
-	(an ASCII space, then forward slash, then another space)
-	must be used to separate
-	the final color component value
-	from the alpha value.
-
-	<div class="example" id="ex-color-prophoto-alpha-serial">
-		<p>The serialized value of</p>
-		<pre class="lang-css"><span class="swatch" style="--color: rgba(0.003%, 50.196%, 50.196%, 0.85)"></span> color(prophoto-rgb 0.2804 0.40283 0.42259/85%)</pre>
-		<p>is the string "color(prophoto-rgb 0.28 0.403 0.423 / 0.85)",
-		if three decimal places are retained.
-		</p>
-	</div>
-
-
-<h4 id="serializing-other-colors">Serializing other colors</h4>
-
-	This applies to
-	''transparent'' and
-	''currentcolor''.
-
-	The serialized form of these values
-	is derived from the [=computed value=]
-	and uses lowercase letters for the color name.
-
-	The serialized form of ''transparent'' is the string "rgba(0, 0, 0, 0)".
-
-	The serialized form of ''currentColor'' is the string "currentcolor".
 
 <!--
  ██████  ████████   ██████   ████████
@@ -1604,9 +1069,9 @@ sRGB Colors</h2>
 
 	CSS provides several methods of directly specifying an sRGB color:
 	[=hex colors=],
-	''rgb()''/''rgba()'' [=color-functions=],
-	''hsl()''/''hsla()'' [=color-functions=],
-	''hwb()'' [=color-functions|color-function=],
+	''rgb()''/''rgba()'' [=color functions=],
+	''hsl()''/''hsla()'' [=color functions=],
+	''hwb()'' [=color function=],
 	[=named colors=],
 	and the ''transparent'' keyword.
 
@@ -1620,7 +1085,6 @@ The RGB functions: ''rgb()'' and ''rgba()''</h3>
 	<pre class='prod'>
 	<dfn>rgb()</dfn> = rgb( [<<percentage>> | none]{3} [ / [<<alpha-value>> | none] ]? ) |
 	  rgb( [<<number>> | none]{3} [ / [<<alpha-value>> | none] ]? )
-	<dfn>&lt;alpha-value></dfn> = <<number>> | <<percentage>>
 	</pre>
 
 	<wpt>
@@ -1649,12 +1113,6 @@ The RGB functions: ''rgb()'' and ''rgba()''</h3>
 	If this is not possible, the channel should be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>.
 
 	The final argument, the <<alpha-value>>, specifies the alpha of the color.
-	If given as a <<number>>, the useful range of the value is ''0''
-	(representing a fully transparent color)
-	to ''1''
-	(representing a fully opaque color).
-	If given as a <<percentage>>, ''0%'' represents a fully transparent color,
-	while ''100%'' represents a fully opaque color.
 	If omitted, it defaults to ''100%''.
 
 	<wpt>
@@ -3589,9 +3047,9 @@ Specifying Lab and LCH: the ''lab()'' and ''lch()'' functional notations</h3>
 	and theoretically unbounded
 	(but in practice do not exceed ±160).
 
-	There is an optional fourth alpha value,
+	There is an optional fourth <<alpha-value>> component,
 	separated by a slash,
-	and interpreted identically to the <<alpha-value>> in ''rgb()''.
+	representing the [=alpha component=].
 
 	If the lightness of a Lab color is ''0%'',
 	both the a and b components are [=powerless=].
@@ -3665,9 +3123,9 @@ Specifying Lab and LCH: the ''lab()'' and ''lch()'' functional notations</h3>
 	''180deg'' points along the negative "a" axis (toward greenish cyan),
 	and ''270deg'' points along the negative "b" axis (toward sky blue).
 
-	There is an optional fourth alpha value,
+	There is an optional fourth <<alpha-value>> component,
 	separated by a slash,
-	and interpreted identically to the <<alpha-value>> in ''rgb()''.
+	representing the [=alpha component=].
 
 	If the chroma of an LCH color is ''0%'',
 	the hue component is [=powerless=].
@@ -3753,9 +3211,9 @@ Specifying Lab and LCH: the ''lab()'' and ''lch()'' functional notations</h3>
 	and theoretically unbounded
 	(but in practice do not exceed ±0.5).
 
-	There is an optional fourth alpha value,
+	There is an optional fourth <<alpha-value>> component,
 	separated by a slash,
-	and interpreted identically to the <<alpha-value>> in ''rgb()''.
+	representing the [=alpha component=].
 
 	If the lightness of an OKLab color is ''0%'',
 	both the a and b components are [=powerless=].
@@ -3826,9 +3284,9 @@ Specifying Lab and LCH: the ''lab()'' and ''lch()'' functional notations</h3>
 		''180deg'' points along the negative "a" axis (toward greenish cyan),
 		and ''270deg'' points along the negative "b" axis (toward sky blue).
 
-		There is an optional fourth alpha value,
+		There is an optional fourth <<alpha-value>> component,
 		separated by a slash,
-		and interpreted identically to the <<alpha-value>> in ''rgb()''.
+		representing the [=alpha component=].
 
 		If the chroma of an OKLCH color is ''0%'',
 		the hue component is [=powerless=].
@@ -4007,8 +3465,6 @@ Specifying Predefined Colors: the ''color()'' function</h3>
 
 
 	* An optional slash-separated <<alpha-value>>.
-		This is interpreted the same way as the <<alpha-value>> in ''rgb()'',
-		and if omitted it defaults to ''100%''.
 
 	<wpt>
 		parsing/color-valid.html
@@ -5139,7 +4595,8 @@ Hue Interpolation</h3>
 	if the interpolating colors were not already in the specified interpolation syntax,
 	then converting them will turn any [=powerless components=] into [=missing components=].
 
-	<h4 id="hue-shorter"><dfn export>shorter</dfn></h4>
+<h4 id="hue-shorter">
+<dfn export>shorter</dfn></h4>
 
 	Angles are adjusted so that |θ₂ - θ₁| ∈ [-180, 180]. In pseudo-Javascript:
 		<pre>
@@ -5151,7 +4608,8 @@ Hue Interpolation</h3>
 		}
 		</pre>
 
-	<h4 id="hue-longer"><dfn export>longer</dfn></h4>
+<h4 id="hue-longer">
+<dfn export>longer</dfn></h4>
 
 	Angles are adjusted so that |θ₂ - θ₁| ∈ {0, [180, 360)}. In pseudo-Javascript:
 		<pre>
@@ -5163,7 +4621,8 @@ Hue Interpolation</h3>
 		}
 		</pre>
 
-	<h4 id="hue-increasing"><dfn export>increasing</dfn></h4>
+<h4 id="hue-increasing">
+<dfn export>increasing</dfn></h4>
 
 	Angles are adjusted so that |θ₂ - θ₁| ∈ [0, 360). In pseudo-Javascript:
 		<pre>
@@ -5172,7 +4631,8 @@ Hue Interpolation</h3>
 		}
 		</pre>
 
-	<h4 id="hue-decreasing"><dfn export>decreasing</dfn></h4>
+<h4 id="hue-decreasing">
+<dfn export>decreasing</dfn></h4>
 
 	Angles are adjusted so that |θ₂ - θ₁| ∈ (-360, 0]. In pseudo-Javascript:
 		<pre>
@@ -5181,16 +4641,27 @@ Hue Interpolation</h3>
 		}
 		</pre>
 
-	<h4 id="hue-specified"><dfn export>specified</dfn></h4>
+<h4 id="hue-specified">
+<dfn export>specified</dfn></h4>
 
 	No fixup is performed. Angles are interpolated in the same way as every other component.
 
+<!--
+ ██████   ██     ██    ███
+██    ██  ███   ███   ██ ██
+██        ████ ████  ██   ██
+██   ████ ██ ███ ██ ██     ██
+██    ██  ██     ██ █████████
+██    ██  ██     ██ ██     ██
+ ██████   ██     ██ ██     ██
+-->
 
 <h2 id="gamut-mapping">
 Gamut Mapping
 </h2>
 
-<h3 id="gamut-mapping-intro">An Introduction to Gamut Mapping</h3>
+<h3 id="gamut-mapping-intro">
+An Introduction to Gamut Mapping</h3>
 
 <p><i>This section is non-normative</i></p>
 
@@ -5596,6 +5067,665 @@ Sample Pseudocode for the Binary Search Gamut Mapping Algorithm with Local MINDE
 	mapped
 	color(oklch 0.9651 0.20983 109.359)
  -->
+
+
+<!--
+████████  ████████  ██████   ███████  ██       ██     ██ ████████
+██     ██ ██       ██    ██ ██     ██ ██       ██     ██ ██
+██     ██ ██       ██       ██     ██ ██       ██     ██ ██
+████████  ██████    ██████  ██     ██ ██       ██     ██ ██████
+██   ██   ██             ██ ██     ██ ██        ██   ██  ██
+██    ██  ██       ██    ██ ██     ██ ██         ██ ██   ██
+██     ██ ████████  ██████   ███████  ████████    ███    ████████
+-->
+
+<h2 id='resolving-color-values'>
+Resolving <<color>> Values</h2>
+
+	Unless otherwise specified for a particular property,
+	[=specified value|specified=] colors are resolved to
+	<dfn export lt="computed color">[=computed value|computed=] colors</dfn>
+	and then further to <dfn export lt="used color">[=used value|used=] colors</dfn> as described below.
+
+	The [=resolved value=] of a <<color>> is its [=used value=].
+
+	<wpt>
+		color-resolving-hsl.html
+		color-resolving-hwb.html
+		color-resolving-keywords.html
+		color-resolving.html
+		system-color-compute.html
+	</wpt>
+
+<h3 id="resolving-sRGB-values">
+Resolving sRGB values</h3>
+
+	This applies to:
+
+	* [=hex colors=]
+	* ''rgb()'' and ''rgba()'' values
+	* ''hsl()'' and ''hsla()'' values
+	* ''hwb()'' values
+	* [=named colors=]
+
+		While the function names and named colors
+		are <a href="https://infra.spec.whatwg.org/#ascii-case-insensitive">ASCII case-insensitive</a>,
+		the [=specified value=]
+		does not preserve any mixed casing
+		and is treated as being all lowercase.
+
+	<wpt>
+		color-resolving-hsl.html
+		color-resolving-keywords.html
+		color-resolving.html
+	</wpt>
+
+		<div class="example" id="ex-hsl-case">
+			<p>For example, the first form below is treated as identical to the second:</p>
+			<pre class="lang-css"><span class="swatch" style="--color: hsl(39 100% 50%)"></span> HsL(39 100% 50%)
+
+			<span class="swatch" style="--color: hsl(39 100% 50%)"></span> hsl(39 100% 50%)</pre>
+			<p>Similarly the first form below is treated as identical to the second:</p>
+			<pre class="lang-css"><span class="swatch" style="--color: purple"></span> pUrPlE
+
+			<span class="swatch" style="--color: purple"></span> purple</pre>
+		</div>
+
+		The computed and used value
+		is the corresponding sRGB color,
+		paired with the specified alpha channel
+		and defaulting to opaque if unspecified).
+
+
+		<div class="example" id="ex-hsl-computed">
+			<p>For example, the computed value of</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(255, 165, 0)"></span> hsl(38.824 100% 50%)</pre>
+			<p>is</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(255, 165, 0)"></span> rgb(255, 165, 0)</pre>
+		</div>
+
+
+<h3 id="resolving-lab-lch-values">
+Resolving Lab and LCH values</h3>
+
+	This applies to ''lab()'' and ''lch()'' values.
+
+		The computed and used value
+		is the corresponding CIE Lab or LCH color
+		paired with the specified alpha channel
+		(as a <<number>>, not a <<percentage>>;
+		and defaulting to opaque if unspecified).
+
+		<div class="example" id="ex-lch-computed">
+			<p>For example, the computed value of</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(77.61% 36.34% 2.45%)"></span> lch(52.2345% 72.2 56.2 / 1)</pre>
+			<p>is</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(77.61% 36.34% 2.45%)"></span> lch(52.2345% 72.2 56.2)</pre>
+		</div>
+
+<h3 id="resolving-oklab-oklch-values">
+Resolving OKLab and OKLCH values</h3>
+
+	This applies to ''oklab()'' and ''oklch()'' values.
+
+		The computed and used value
+		is the corresponding OKLab or OKLCH color
+		paired with the specified alpha channel
+		(as a <<number>>, not a <<percentage>>;
+		and defaulting to opaque if unspecified).
+
+		<div class="example" id="ex-oklch-computed">
+			<p>For example, the computed value of</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(50.2% 0.7% 49.9%)"></span> oklch(42.1% 0.192 328.6 / 1)</pre>
+			<p>is</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(50.2% 0.7% 49.9%)"></span> oklch(42.1% 0.192 328.6)</pre>
+		</div>
+
+<h3 id="resolving-color-function-values">
+Resolving values of the ''color()'' function</h3>
+
+		The computed and used value
+		is the color in the specified [=color space=],
+		paired with the specified alpha channel
+		(as a <<number>>, not a <<percentage>>;
+		and defaulting to opaque if unspecified).
+
+		<div class="example" id="ex-p3-computed">
+			<p>For example,  the computed value of</p>
+			<pre class="lang-css"><span class="swatch" style="--color: goldenrod"></span> color(display-p3 0.823 0.6554 0.2537 /1)</pre>
+			<p>is</p>
+			<pre class="lang-css"><span class="swatch" style="--color: goldenrod"></span> color(display-p3 0.823 0.6554 0.2537)</pre>
+		</div>
+
+		For colors specified in the ''xyz'' [=color space=],
+		which is an alias of the ''xyz-d65'' [=color space=],
+		the computed and used value
+		is in the ''xyz-d65'' [=color space=].
+
+		<div class="example" id="wx-xyz-computed">
+			<p>For example, the computed value of</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(95.1% 53.3% 33%)"></span> color(xyz 0.472 0.372 0.131)</pre>
+			<p>is</p>
+			<pre class="lang-css"><span class="swatch" style="--color: rgb(95.1% 53.3% 33%)"></span> color(xyz-d65 0.472 0.372 0.131)</pre>
+		</div>
+
+<h3 id="resolving-other-colors">Resolving other colors</h3>
+
+	This applies to [=system colors=]
+	(including the <<deprecated-color>>s),
+	''transparent'',
+	and ''currentcolor''.
+
+	Each <<system-color>> keyword computes
+	to the corresponding color in its color space.
+	However, such colors must not be altered by
+	'forced colors mode'.
+
+	The computed and used value of ''transparent'' is [=transparent black=].
+
+	The ''currentcolor'' keyword computes to itself.
+
+	In the 'color' property,
+	the used value of ''currentcolor'' is the [=inherited value=].
+	In any other property,
+	its used value is the used value of the 'color' property on the same element.
+
+	Note: This means that if the ''<color>/currentcolor'' value is inherited,
+	it’s inherited as a keyword,
+	not as the value of the 'color' property,
+	so descendants will use their own 'color' property to resolve it.
+
+<!--
+ ██████  ████████ ████████  ████    ███    ██
+██    ██ ██       ██     ██  ██    ██ ██   ██
+██       ██       ██     ██  ██   ██   ██  ██
+ ██████  ██████   ████████   ██  ██     ██ ██
+      ██ ██       ██   ██    ██  █████████ ██
+██    ██ ██       ██    ██   ██  ██     ██ ██
+ ██████  ████████ ██     ██ ████ ██     ██ ████████
+-->
+
+<h2 id='serializing-color-values'>
+Serializing <<color>> Values</h2>
+
+This section updates and replaces that part of CSS Object Model, section
+<a href="https://drafts.csswg.org/cssom-1/#serializing-css-values"> Serializing CSS Values</a>, which relates to serializing <<color>> values.
+
+In this section, the strings used in the specification and the corresponding characters are as follows.
+
+<table class="data">
+	<tr>
+		<th>String</th>
+		<th>Character(s)</th>
+	</tr>
+	<tr>
+		<td>" "</td>
+		<td>U+0020 SPACE</td>
+	</tr>
+	<tr>
+		<td>","</td>
+		<td>U+002C COMMA</td>
+	</tr>
+	<tr>
+		<td>"-"</td>
+		<td>U+002D HYPHEN-MINUS</td>
+	</tr>
+	<tr>
+		<td>"."</td>
+		<td>U+002E FULL STOP</td>
+	</tr>
+	<tr>
+		<td>"/"</td>
+		<td>U+002F SOLIDUS</td>
+	</tr>
+	<tr>
+		<td>"none"</td>
+		<td>U+006E LATIN SMALL LETTER N<br>
+			U+006F LATIN SMALL LETTER O<br>
+			U+006E LATIN SMALL LETTER N<br>
+			U+0065 LATIN SMALL LETTER E
+		</td>
+	</tr>
+
+</table>
+
+The string "." shall be used as a decimal separator,
+regardless of locale,
+and there shall be no thousands separator.
+
+For syntactic forms which support [=missing color components=],
+the value ''none'' (equivalently NONE, nOnE, etc),
+shall be serialized in all-lower case
+as the string "none".
+
+
+<h3 id="serializing-alpha-values">
+Serializing alpha values</h3>
+
+	This applies to any <<color>> value which can take an optional alpha value.
+
+	If the alpha is exactly 1,
+	it is omitted from the serialization;
+	an implicit value of 1 (fully opaque) is the default.
+
+	If the alpha is any other value than 1,
+	it is explicitly included in the serialization,
+	as a <<number>>, not a <<percentage>>.
+	The value is expressed in base ten,
+	with the "." character as decimal separator.
+	The leading zero must not be omitted.
+	Trailing zeroes must be omitted.
+
+	<div class="example" id="ex-alpha-trimzero">
+		<p>For example, an alpha value of 70%
+			will be serialized as the string
+			"0.7"
+			which has a leading zero before the decimal separator,
+			"." as decimal separator
+			(even if the current locale would use some other character,
+			such as ","),
+			and all digits after the "7" would be "0" and are omitted.
+		</p>
+	</div>
+
+	The precision with which alpha values are retained,
+	and thus the number of decimal places in the serialized value,
+	is not defined in this specification,
+	but must at least be sufficient
+	to round-trip integer percentage values.
+	Thus, the serialized value must contain
+	at least two decimal places
+	(unless trailing zeroes have been removed).
+	Values must be
+	<a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
+
+	<div class="example" id="ex-alpha-round">
+		<p>For example, an alpha value of 12.3456789%
+			could be serialized as the strings
+			"0.12" or "0.123" or "0.1234" or "0.12346"
+			(rounding the value of 5
+			towards +∞
+			because the following digit is 6)
+			or any longer, rounded serialization of the same form.
+		</p>
+	</div>
+
+
+<h3 id="serializing-sRGB-values">
+Serializing sRGB values</h3>
+
+	The serialized form of the following sRGB values:
+
+	* [=hex colors=]
+	* ''rgb()'' and ''rgba()'' values
+	* ''hsl()'' and ''hsla()'' values
+	* ''hwb()'' values
+	* [=named colors=]
+	* [=system colors=]
+	* <a href="#deprecated-system-colors">deprecated-colors</a>
+
+	<!-- are all system colors assumed to be sRGB? -->
+
+	is derived from the [=computed value=] and thus,
+	uses either the ''rgb()'' or ''rgba()'' form
+	(depending on whether the alpha is exactly 1, or not),
+	with lowercase letters for the function name.
+
+	During serialization,
+	any [=missing=] values
+	are converted to 0.
+
+	For compatibility, the sRGB component values
+	are serialized in <<number>> form, not <<percentage>>).
+	Also for compatibility,
+	the component values are serialized in base 10,
+	with a range of [0-255], regardless of
+	the bit depth with which they are stored.
+
+
+	<a href="#serializing-alpha-values">As noted earlier</a>,
+	unitary alpha values are not explicitly serialized.
+	Also, for compatibility, if the alpha is exactly 1,
+	the ''rgb()'' form is used,
+	with an implicit alpha;
+	otherwise, the ''rgba()'' form is used,
+	with an explicit alpha value.
+
+
+	For compatibility,
+	the legacy form with comma separators is used;
+	exactly one ASCII space follows each comma.
+	This includes the comma (not slash) used
+	to separate the blue component of ''rgba()''
+	from the alpha value.
+
+
+
+	<div class="example" id="ex-rgb-ser-int-rgba">
+		<p>For example, the serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgba(29, 164, 192, 0.95)"></span> rgb(29 164 192 / 95%)</pre>
+		<p>is the string "rgba(29, 164, 192, 0.95)"</p>
+	</div>
+
+	Note: contrary to CSS Color 3,
+	the parameters of the ''rgb()'' function
+	are of type <<number>> not <<integer>>.
+	Thus, any higher precision than eight bits
+	is indicated with a fractional part.
+
+	Trailing fractional zeroes in any component values must be omitted;
+	if the fractional part consists of all zeroes,
+	the decimal point must also be omitted.
+	This means that sRGB colors specified with integer component values
+	will serialize with backwards-compatible integer values.
+
+	<p id="sRGB-precision">
+	The precision with which sRGB component values are retained,
+	and thus the number of significant figures in the serialized value,
+	is not defined in this specification,
+	but must at least be sufficient
+	to round-trip eight bit values.
+	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
+	</p>
+
+	Note: authors of scripts which expect
+	color values returned from
+	<span style="font-family:monospace">getComputedStyle</span>
+	to have <<integer>> component values,
+	are advised to update them to cope with
+	<<number>>.
+
+<div class="example" id="ex-rgb-number">
+	<p>
+	For example,</p>
+	<pre class="lang-css"><span class="swatch" style="--color: rgb(57.28% 42.14% 51.46%)"></span> rgb(146.064 107.457 131.223)</pre>
+	<p>is now valid, and equal to</p>
+	<pre class="lang-css"><span class="swatch" style="--color: rgb(57.28% 42.14% 51.46%)"></span> rgb(57.28% 42.14% 51.46%)</pre>
+	<p>A conformant serialized form for both,
+	is the string "rgb(146.06, 107.46, 131.2)".</p>
+</div>
+
+<div class="example" id="ex-rgb-notrail">
+	<p>The serialized value of </p>
+	<pre class="lang-css"><span class="swatch" style="--color: goldenrod"></span> ''goldenrod''</pre>
+	<p>is the string "rgb(218, 165, 32)"
+	and not the string "rgb(218.000, 165.000, 32.000)"</p>
+</div>
+
+<h3 id="serializing-lab-lch">
+Serializing Lab and LCH values</h3>
+
+	The serialized form of ''lch()'' and ''lab()'' values
+	is derived from the [=computed value=]
+	and uses the ''lab()'' or ''lch()'' forms,
+	with lowercase letters for the function name.
+
+	The component values are serialized in base 10;
+	the Lightness, a and b component values
+	are serialized as <<number>>
+	with 0% Lightness mapping to 0
+	and 100% Lightness mapping to 100.
+	A single ASCII space character " "
+	must be used as the separator
+	between the component values.
+
+	Trailing fractional zeroes in any component values must be omitted;
+	if the fractional part consists of all zeroes,
+	the decimal point must also be omitted.
+
+	<wpt>
+		parsing/color-computed.html
+	</wpt>
+
+	<div class="example" id="ex-lab-zero-a">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgb(60.7% 52.23% 0%)"></span> lab(56.200% 0.000 83.600)</pre>
+		<p>is the string "lab(56.2 0 83.6)"</p>
+	</div>
+
+	<div class="example" id="ex-lch-serial">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgb(41.66% 15.34% 90.66%)"></span> lch(37% 105.0 305.00)</pre>
+		<p>is the string "lch(37 105 305)",
+			not "lch(37 105.0 305.00)".
+	</div>
+
+	The precision with which ''lab()'' component values are retained,
+	and thus the number of significant figures in the serialized value,
+	is not defined in this specification,
+	but due to the wide gamut must be sufficient
+	to round-trip L values between 0 and 100,
+	and a and b values between ±127,
+	with at least sixteen bit precision;
+	this will result in at least three decimal places
+	unless trailing zeroes have been omitted.
+	(half float or float, is recommended for internal storage).
+	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
+
+	Note: a and b values outside ±127 are possible
+	with ultrawide gamut spaces. For example, <em>all</em>
+	of the ''prophoto-rgb'' primaries and secondaries
+	exceed this range, but are within ±200.
+
+	<a href="#serializing-alpha-values">As noted earlier</a>,
+	unitary alpha values are not explicitly serialized.
+	Non-unitary alpha values must be explicitly serialized,
+	and the string " / "
+	(an ASCII space, then forward slash, then another space)
+	must be used to separate the b component value from the alpha value.
+
+	<div class="example" id="ex-lch-alpha">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgba(99.56%, 6.09%, 57.02%, 0.93)"></span> lch(56.2% 83.6 357.4 /93%)</pre>
+		<p>is the string "lch(56.2 83.6 357.4 / 0.93)"
+			not "lch(56.2% 83.6 357.4 / 0.93)"
+		</p>
+	</div>
+
+<h3 id="serializing-oklab-oklch">
+Serializing OKLab and OKLCH values</h3>
+
+	The serialized form of ''oklch()'' and ''oklab()'' values
+	is derived from the [=computed value=]
+	and uses the ''oklab()'' or ''oklch()'' forms,
+	with lowercase letters for the function name.
+
+	The component values are serialized in base 10;
+	the Lightness, a and b component values
+	are serialized as <<number>>
+	with 0% Lightness mapping to 0
+	and 100% Lightness mapping to 1.
+	A single ASCII space character " "
+	must be used as the separator
+	between the component values.
+
+	Trailing fractional zeroes in any component values must be omitted;
+	if the fractional part consists of all zeroes,
+	the decimal point must also be omitted.
+
+	<wpt>
+		parsing/color-computed.html
+	</wpt>
+
+	<div class="example" id="ex-oklab-trailzero">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgb(0% 50.52% 49.07%)">
+		</span> oklab(54.0% -0.10 -0.02)</pre>
+		<p>is the string "oklab(0.54 -0.1 -0.02)"
+			not "oklab(54 -0.1 -0.02)" or
+			"oklab(54% -0.1 -0.02)"
+		</p>
+	</div>
+
+	<div class="example" id="ex-oklch-serial">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgb(42.07% 49.6% 25.23%)"></span> oklch(56.43% 0.0900 123.40)</pre>
+		<p>is the string "oklch(0.5643 0.09 123.4)",
+			not "oklch(0.5643 0.0900 123.40)".
+	</div>
+
+	The precision with which ''oklab()'' component values are retained,
+	and thus the number of significant figures in the serialized value,
+	is not defined in this specification,
+	but due to the wide gamut must be sufficient
+	to round-trip L values between 0 and 1 (0% and 100%),
+	<!--
+		ensure rec2020 round trips
+		color(rec2020 1 0 0) = oklch(68.7 0.365 24.19)
+		color(rec2020 0 1 0) = oklch(83 0.468 152.6)
+		color(rec2020 0 0 1) = oklch(42.3 0.383 245.1)
+	-->
+	and a and b values between ±0.5,
+	with at least sixteen bit precision;
+	this will result in at least five decimal places
+	unless trailing zeroes have been omitted.
+	(half float or float, is recommended for internal storage).
+	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
+
+	<!--
+	color(prophoto-rgb 1 0 0) = oklch(70.2 0.432 19.58)
+	color(prophoto-rgb 0 1 0) = oklch(84 0.526 152.8)
+	color(prophoto-rgb 0 0 1) = oklch(21.7 1.413 197.6)
+	-->
+	Note: a and b values outside ±0.5 are possible
+	with ultrawide gamut spaces. For example,
+	the ''prophoto-rgb'' green and blue primaries
+	exceed this range,
+	with chroma of 0.526 and 1.413 respectively.
+
+	<a href="#serializing-alpha-values">As noted earlier</a>,
+	unitary alpha values are not explicitly serialized.
+	Non-unitary alpha values must be explicitly serialized,
+	and the string " / "
+	(an ASCII space, then forward slash, then another space)
+	must be used to separate the b component value from the alpha value.
+
+	<div class="example" id="ex-oklch-alpha">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgba(60%, 26.67%, 66.67%, 0.7)"></span> oklch(53.85% 0.1725 320.67 / 70%)</pre>
+		<p>is the string "oklch(53.85% 0.1725 320.67 / 0.7)"</p>
+	</div>
+
+<h3 id="serializing-color-function-values">
+Serializing values of the ''color()'' function</h3>
+
+	The serialized form of ''color()'' values
+	is derived from the [=computed value=]
+	and uses the ''color()'' form,
+	with lowercase letters for the function name
+	and the color space name.
+
+	The component values are serialized in base 10,
+	as <<number>>.
+	A single ASCII space character " "
+	must be used as the separator
+	between the component values,
+	and also between the color space name and the first color component.
+
+	Trailing fractional zeroes in any component values must be omitted;
+	if the fractional part consists of all zeroes,
+	the decimal point must also be omitted.
+
+	<wpt>
+		parsing/color-computed.html
+	</wpt>
+
+	<div class="example" id="ex-color-serial">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgba(99.56%, 6.09%, 57.02%, 0.93)"></span> color(dIsPlAy-P3  0.964  0.763  0.787)</pre>
+		<p>is the string "color(display-p3 0.96 0.76 0.79)",
+		if two decimal places are retained.
+		Notice that 0.787 has rounded up to 0.79,
+		rather than being truncated to 0.78.
+		</p>
+	</div>
+
+
+	<!--
+		the name in the @color-profile is also lowercased, right?
+		the serialization is not sufficient because the name and the link to the profile are also needed.
+	-->
+
+	If the color space is sRGB, the color space is still explicitly required in the serialized result.
+
+	For the predefined color spaces,
+	the <em>minimum</em> precision for round-tripping is as follows:
+
+	<table class="data" id="predefined-precision-table">
+		<tr><th>color space</th><th>Minimum bits</th></tr>
+		<tr>
+			<td>''srgb''</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>''srgb-linear''</td>
+			<td>12</td>
+			<!-- see workings/srgb-lin-precision.js -->
+		</tr>
+		<tr>
+			<td>''display-p3''</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>''a98-rgb''</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>''prophoto-rgb''</td>
+			<td>12</td>
+		</tr>
+		<tr>
+			<td>''rec2020''</td>
+			<td>12</td>
+		</tr>
+		<tr>
+			<td>''xyz'', ''xyz-d50'', ''xyz-d65''</td>
+			<td>16</td>
+		</tr>
+	</table>
+
+	(16bit, half-float, or float <em>per component</em>
+	is recommended for internal storage).
+	Values must be <a href="https://drafts.csswg.org/css-values-4/#combine-integers">rounded towards +∞</a>, not truncated.
+
+	Note: compared to the legacy forms
+	such as ''rgb()'', ''hsl()'' and so on,
+	''color(srgb)'' has a higher minimum precision requirement.
+	Stylesheet authors who prefer higher precision
+	are thus encouraged to use the ''color(srgb)'' form.
+
+	<a href="#serializing-alpha-values">As noted earlier</a>,
+	unitary alpha values are not explicitly serialized.
+	Non-unitary alpha values must be explicitly serialized,
+	and the string " / "
+	(an ASCII space, then forward slash, then another space)
+	must be used to separate
+	the final color component value
+	from the alpha value.
+
+	<div class="example" id="ex-color-prophoto-alpha-serial">
+		<p>The serialized value of</p>
+		<pre class="lang-css"><span class="swatch" style="--color: rgba(0.003%, 50.196%, 50.196%, 0.85)"></span> color(prophoto-rgb 0.2804 0.40283 0.42259/85%)</pre>
+		<p>is the string "color(prophoto-rgb 0.28 0.403 0.423 / 0.85)",
+		if three decimal places are retained.
+		</p>
+	</div>
+
+
+<h3 id="serializing-other-colors">
+Serializing other colors</h3>
+
+	This applies to
+	''transparent'' and
+	''currentcolor''.
+
+	The serialized form of these values
+	is derived from the [=computed value=]
+	and uses lowercase letters for the color name.
+
+	The serialized form of ''transparent'' is the string "rgba(0, 0, 0, 0)".
+
+	The serialized form of ''currentColor'' is the string "currentcolor".
 
 <!--
  ██████  ████████ ██    ██ ██       ████████       ████████  ██     ██ ██       ████████  ██████
@@ -6043,6 +6173,15 @@ parsing/relative-color-valid.html
 <h2 id='changes' class='no-num'>
 Changes</h2>
 
+<h3 id="changes-from-20220705">Changes since the
+	<a href="https://www.w3.org/TR/2022/CR-css-color-4-20220705/">Candidate Recommendation of 5 July 2022</a>
+</h3>
+
+<ul>
+	<li>Editorial refactoring.</li>
+	<li>Updated pseudocode for gamut mapping algorithm, remove un-needed deltaE calls</li>
+</ul>
+
 <h3 id="changes-from-20220628">Changes since the
 	<a href="https://www.w3.org/TR/2022/WD-css-color-4-20220628/">Working Draft of 28 June 2022</a>
 </h3>
@@ -6438,7 +6577,7 @@ which is a fingerprinting risk.
 Accessibility Considerations {#a11y-sec}
 ========================================
 
-This specification <a href="#notes">encourages authors to not use
+This specification <a href="#accessibility">encourages authors to not use
 	color alone</a> as a distinguishing feature.
 
 This specification <a href="#css-system-colors">encourages browsers to ensure
