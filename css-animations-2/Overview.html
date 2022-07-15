@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://drafts.csswg.org/css-animations-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="4f811cec7d1efbb675d1736209927fe4cc3cd624" name="document-revision">
+  <meta content="36f8e22fab047d9f50903ed97055a76c9913a153" name="document-revision">
 <style type="text/css">
   table.event-state-transitions {
     width: 100%;
@@ -791,7 +791,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Animations Level 2</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-14">14 July 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-15">15 July 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1350,6 +1350,11 @@ select keyframes and timeline if necessary.</p>
    <p class="note" role="note"><span>Note,</span> this is a more general description of event dispatch than that of CSS
 Animations Level 1 <a data-link-type="biblio" href="#biblio-css3-animations">[CSS3-ANIMATIONS]</a> since it must account for the
 possibility of animations being seeked or reversed using the Web Animations API <a data-link-type="biblio" href="#biblio-web-animations">[WEB-ANIMATIONS]</a>.</p>
+   <p>The <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-target" id="ref-for-event-target">target</a> for a CSS animation event is
+the animation’s <a data-link-type="dfn" href="#owning-element" id="ref-for-owning-element①④">owning element</a>.
+If there is no <span id="ref-for-owning-element①⑤">owning element</span>, no CSS animation events are dispatched
+(although the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-playback-events" id="ref-for-animation-playback-events">animation playback events</a> defined in Web Animations are still
+dispatched at the corresponding <code class="idl"><a data-link-type="idl" href="#cssanimation" id="ref-for-cssanimation①⓪">CSSAnimation</a></code> object).</p>
    <p>For the purpose of determining which events to dispatch, the <a href="https://www.w3.org/TR/web-animations-1/#animation-effect-phases-and-states">phases</a> defined in
 the Web Animations model are used. These definitions apply to an <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-effect" id="ref-for-animation-effect⑤">animation
 effect</a>, however, for the purpose of dispatching events, we consider a
@@ -1495,11 +1500,11 @@ any such pending changes to computed values.</p>
    <div class="note" role="note">
      As an example, in the following code fragment, when the specified style of <code>elem</code> is initially updated, a user agent may defer recalculating
 the computed value of the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-animations-1/#propdef-animation" id="ref-for-propdef-animation②">animation</a> property. 
-    <p>However, the <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-2/#dom-animatable-getanimations" id="ref-for-dom-animatable-getanimations">getAnimations()</a></code> method called on <code>elem</code> is specified by Web Animations and can return <code class="idl"><a data-link-type="idl" href="#cssanimation" id="ref-for-cssanimation①⓪">CSSAnimation</a></code> objects as
+    <p>However, the <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-2/#dom-animatable-getanimations" id="ref-for-dom-animatable-getanimations">getAnimations()</a></code> method called on <code>elem</code> is specified by Web Animations and can return <code class="idl"><a data-link-type="idl" href="#cssanimation" id="ref-for-cssanimation①①">CSSAnimation</a></code> objects as
 defined in this specification.
 Hence, as result of the requirements in this section, the user agent must
 calculate the updated value of <code>elem</code>’s <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-animations-1/#propdef-animation" id="ref-for-propdef-animation③">animation</a> property and
-create the requested <code class="idl"><a data-link-type="idl" href="#cssanimation" id="ref-for-cssanimation①①">CSSAnimation</a></code> object before returning its result.</p>
+create the requested <code class="idl"><a data-link-type="idl" href="#cssanimation" id="ref-for-cssanimation①②">CSSAnimation</a></code> object before returning its result.</p>
     <div>
 <pre class="example lang-javascript highlight" id="example-7f1c6b4e"><a class="self-link" href="#example-7f1c6b4e"></a>elem<c- p>.</c->style<c- p>.</c->animation <c- o>=</c-> <c- t>'fadeOut 1s'</c-><c- p>;</c->
 elem<c- p>.</c->getAnimations<c- p>()[</c-><c- mf>0</c-><c- p>].</c->pause<c- p>();</c->
@@ -1873,6 +1878,12 @@ console<c- p>.</c->log<c- p>(</c->anim<c- p>.</c->playState<c- p>);</c-> <c- c1>
     <li><a href="#ref-for-resolved-value">3. Keyframes</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-event-target">
+   <a href="https://dom.spec.whatwg.org/#event-target">https://dom.spec.whatwg.org/#event-target</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-event-target">4.1. Event dispatch</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-concept-tree-order">
    <a href="https://dom.spec.whatwg.org/#concept-tree-order">https://dom.spec.whatwg.org/#concept-tree-order</a><b>Referenced in:</b>
    <ul>
@@ -1955,6 +1966,12 @@ console<c- p>.</c->log<c- p>(</c->anim<c- p>.</c->playState<c- p>);</c-> <c- c1>
    <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-frame">https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-frame</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-animation-frame">4.1. Event dispatch</a> <a href="#ref-for-animation-frame①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-animation-playback-events">
+   <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-playback-events">https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-playback-events</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-animation-playback-events">4.1. Event dispatch</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-animation-associated-effect">
@@ -2256,6 +2273,7 @@ console<c- p>.</c->log<c- p>(</c->anim<c- p>.</c->playState<c- p>);</c-> <c- c1>
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-event-target">event target</span>
      <li><span class="dfn-paneled" id="term-for-concept-tree-order">tree order</span>
     </ul>
    <li>
@@ -2273,6 +2291,7 @@ console<c- p>.</c->log<c- p>(</c->anim<c- p>.</c->playState<c- p>);</c-> <c- c1>
      <li><span class="dfn-paneled" id="term-for-animation-class">animation class</span>
      <li><span class="dfn-paneled" id="term-for-animation-effect">animation effect</span>
      <li><span class="dfn-paneled" id="term-for-animation-frame">animation frame</span>
+     <li><span class="dfn-paneled" id="term-for-animation-playback-events">animation playback events</span>
      <li><span class="dfn-paneled" id="term-for-animation-associated-effect">associated effect</span>
      <li><span class="dfn-paneled" id="term-for-associated-effect-end">associated effect end</span>
      <li><span class="dfn-paneled" id="term-for-animation-effect-before-phase">before phase</span>
@@ -2433,6 +2452,7 @@ select keyframes and timeline if necessary. <a class="issue-return" href="#issue
    <ul>
     <li><a href="#ref-for-owning-element">2.1. Owning element</a> <a href="#ref-for-owning-element①">(2)</a> <a href="#ref-for-owning-element②">(3)</a> <a href="#ref-for-owning-element③">(4)</a> <a href="#ref-for-owning-element④">(5)</a>
     <li><a href="#ref-for-owning-element⑤">2.2. Animation composite order</a> <a href="#ref-for-owning-element⑥">(2)</a> <a href="#ref-for-owning-element⑦">(3)</a> <a href="#ref-for-owning-element⑧">(4)</a> <a href="#ref-for-owning-element⑨">(5)</a> <a href="#ref-for-owning-element①⓪">(6)</a> <a href="#ref-for-owning-element①①">(7)</a> <a href="#ref-for-owning-element①②">(8)</a> <a href="#ref-for-owning-element①③">(9)</a>
+    <li><a href="#ref-for-owning-element①④">4.1. Event dispatch</a> <a href="#ref-for-owning-element①⑤">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-animation-composition">
@@ -2501,7 +2521,8 @@ select keyframes and timeline if necessary. <a class="issue-return" href="#issue
    <b><a href="#cssanimation">#cssanimation</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-cssanimation">2. Animations</a> <a href="#ref-for-cssanimation①">(2)</a> <a href="#ref-for-cssanimation②">(3)</a> <a href="#ref-for-cssanimation③">(4)</a> <a href="#ref-for-cssanimation④">(5)</a> <a href="#ref-for-cssanimation⑤">(6)</a> <a href="#ref-for-cssanimation⑥">(7)</a> <a href="#ref-for-cssanimation⑦">(8)</a> <a href="#ref-for-cssanimation⑧">(9)</a> <a href="#ref-for-cssanimation⑨">(10)</a>
-    <li><a href="#ref-for-cssanimation①⓪">5.2. Requirements on pending style changes</a> <a href="#ref-for-cssanimation①①">(2)</a>
+    <li><a href="#ref-for-cssanimation①⓪">4.1. Event dispatch</a>
+    <li><a href="#ref-for-cssanimation①①">5.2. Requirements on pending style changes</a> <a href="#ref-for-cssanimation①②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-cssanimation-animationname">

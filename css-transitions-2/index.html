@@ -9,7 +9,7 @@
   <meta content="Bikeshed version 37b7e7e68, updated Fri May 27 15:08:11 2022 -0700" name="generator">
   <link href="https://drafts.csswg.org/css-transitions-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="4f811cec7d1efbb675d1736209927fe4cc3cd624" name="document-revision">
+  <meta content="36f8e22fab047d9f50903ed97055a76c9913a153" name="document-revision">
 <style type="text/css">
   table.event-state-transitions {
     width: 100%;
@@ -791,7 +791,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Transitions Level 2</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-14">14 July 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-15">15 July 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1023,6 +1023,11 @@ to substitute the transition effect with an entirely different effect with
 properties not normally used with transitions (e.g. an effect that repeats
 multiple times) and hence this section provides a generic definition that
 accounts for the full complexity of the Web Animations model.</p>
+   <p>The <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-target" id="ref-for-event-target">target</a> for a transition event is
+the transition’s <a data-link-type="dfn" href="#owning-element" id="ref-for-owning-element①⑤">owning element</a>.
+If there is no <span id="ref-for-owning-element①⑥">owning element</span>, no transition events are dispatched
+(although the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-playback-events" id="ref-for-animation-playback-events">animation playback events</a> defined in Web Animations are still
+dispatched at the corresponding <code class="idl"><a data-link-type="idl" href="#csstransition" id="ref-for-csstransition①">CSSTransition</a></code> object).</p>
    <p>To avoid firing redundant events, the set of events to dispatch is based
 on comparing the <a data-link-type="dfn" href="#transition-phase" id="ref-for-transition-phase">phase</a> of the transition in the
 previous <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-frame" id="ref-for-animation-frame">animation frame</a> to its current state.</p>
@@ -1214,9 +1219,9 @@ recalculating the computed value of the <span class="property" id="ref-for-propd
 subsequently accessing the <code>opacity</code> property of the result will
 cause the user agent to recompute the value of opacity.</p>
     <p>After the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-opacity" id="ref-for-propdef-opacity②">opacity</a> property is updated a second time, the <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/web-animations-2/#dom-animatable-getanimations" id="ref-for-dom-animatable-getanimations">getAnimations()</a></code> method is called on <code>elem</code>.
-This method is specified by Web Animations and can return <code class="idl"><a data-link-type="idl" href="#csstransition" id="ref-for-csstransition①">CSSTransition</a></code> objects as defined in this specification.
+This method is specified by Web Animations and can return <code class="idl"><a data-link-type="idl" href="#csstransition" id="ref-for-csstransition②">CSSTransition</a></code> objects as defined in this specification.
 Hence, as result of the requirements in this section, the user agent must apply
-any pending style changes thus generating a new <code class="idl"><a data-link-type="idl" href="#csstransition" id="ref-for-csstransition②">CSSTransition</a></code> for the <span class="property" id="ref-for-propdef-opacity③">opacity</span> property before returning its result.</p>
+any pending style changes thus generating a new <code class="idl"><a data-link-type="idl" href="#csstransition" id="ref-for-csstransition③">CSSTransition</a></code> for the <span class="property" id="ref-for-propdef-opacity③">opacity</span> property before returning its result.</p>
     <div>
 <pre class="example lang-javascript highlight" id="example-9fcbce42"><a class="self-link" href="#example-9fcbce42"></a>elem<c- p>.</c->style<c- p>.</c->transition <c- o>=</c-> <c- t>'opacity 100s'</c-><c- p>;</c->
 elem<c- p>.</c->style<c- p>.</c->opacity <c- o>=</c-> <c- t>'0'</c-><c- p>;</c->
@@ -1509,6 +1514,12 @@ elem<c- p>.</c->getAnimations<c- p>()[</c-><c- mf>0</c-><c- p>].</c->transitionP
     <li><a href="#ref-for-connected">3. Starting of transitions</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-event-target">
+   <a href="https://dom.spec.whatwg.org/#event-target">https://dom.spec.whatwg.org/#event-target</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-event-target">5.1. Event dispatch</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-concept-tree-order">
    <a href="https://dom.spec.whatwg.org/#concept-tree-order">https://dom.spec.whatwg.org/#concept-tree-order</a><b>Referenced in:</b>
    <ul>
@@ -1565,6 +1576,12 @@ elem<c- p>.</c->getAnimations<c- p>()[</c-><c- mf>0</c-><c- p>].</c->transitionP
    <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-frame">https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-frame</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-animation-frame">5.1. Event dispatch</a> <a href="#ref-for-animation-frame①">(2)</a> <a href="#ref-for-animation-frame②">(3)</a> <a href="#ref-for-animation-frame③">(4)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-animation-playback-events">
+   <a href="https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-playback-events">https://andreubotella.com/csswg-auto-build/web-animations-1/#animation-playback-events</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-animation-playback-events">5.1. Event dispatch</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-animation-associated-effect">
@@ -1730,6 +1747,7 @@ elem<c- p>.</c->getAnimations<c- p>()[</c-><c- mf>0</c-><c- p>].</c->transitionP
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-connected">connected</span>
+     <li><span class="dfn-paneled" id="term-for-event-target">event target</span>
      <li><span class="dfn-paneled" id="term-for-concept-tree-order">tree order</span>
     </ul>
    <li>
@@ -1747,6 +1765,7 @@ elem<c- p>.</c->getAnimations<c- p>()[</c-><c- mf>0</c-><c- p>].</c->transitionP
      <li><span class="dfn-paneled" id="term-for-animation-class">animation class</span>
      <li><span class="dfn-paneled" id="term-for-animation-effect">animation effect</span>
      <li><span class="dfn-paneled" id="term-for-animation-frame">animation frame</span>
+     <li><span class="dfn-paneled" id="term-for-animation-playback-events">animation playback events</span>
      <li><span class="dfn-paneled" id="term-for-animation-associated-effect">associated effect</span>
      <li><span class="dfn-paneled" id="term-for-associated-effect-end">associated effect end</span>
      <li><span class="dfn-paneled" id="term-for-cancel-an-animation">cancel an animation</span>
@@ -1856,6 +1875,7 @@ elem<c- p>.</c->getAnimations<c- p>()[</c-><c- mf>0</c-><c- p>].</c->transitionP
     <li><a href="#ref-for-owning-element">3. Starting of transitions</a> <a href="#ref-for-owning-element①">(2)</a> <a href="#ref-for-owning-element②">(3)</a> <a href="#ref-for-owning-element③">(4)</a> <a href="#ref-for-owning-element④">(5)</a>
     <li><a href="#ref-for-owning-element⑤">4.1. Animation composite order</a> <a href="#ref-for-owning-element⑥">(2)</a> <a href="#ref-for-owning-element⑦">(3)</a> <a href="#ref-for-owning-element⑧">(4)</a> <a href="#ref-for-owning-element⑨">(5)</a> <a href="#ref-for-owning-element①⓪">(6)</a> <a href="#ref-for-owning-element①①">(7)</a> <a href="#ref-for-owning-element①②">(8)</a>
     <li><a href="#ref-for-owning-element①③">4.2. Animation cascade level</a> <a href="#ref-for-owning-element①④">(2)</a>
+    <li><a href="#ref-for-owning-element①⑤">5.1. Event dispatch</a> <a href="#ref-for-owning-element①⑥">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="current-transition-generation">
@@ -1898,7 +1918,8 @@ elem<c- p>.</c->getAnimations<c- p>()[</c-><c- mf>0</c-><c- p>].</c->transitionP
    <b><a href="#csstransition">#csstransition</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-csstransition">3. Starting of transitions</a>
-    <li><a href="#ref-for-csstransition①">6.2. Requirements on pending style changes</a> <a href="#ref-for-csstransition②">(2)</a>
+    <li><a href="#ref-for-csstransition①">5.1. Event dispatch</a>
+    <li><a href="#ref-for-csstransition②">6.2. Requirements on pending style changes</a> <a href="#ref-for-csstransition③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-csstransition-transitionproperty">
