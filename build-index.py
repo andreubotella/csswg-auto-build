@@ -83,13 +83,13 @@ def get_bs_spec_metadata(folder_name, path):
 
 
 def get_html_spec_metadata(folder_name, path):
-    match = re.match("^([a-z0-9-]+)-([0-9]+)$", entry.name)
+    match = re.match("^([a-z0-9-]+)-([0-9]+)$", folder_name)
     if match and match.group(1) == "css":
         shortname = "css-snapshot"
         title = f"CSS Snapshot {match.group(2)}"
     else:
-        shortname = match.group(1) if match else entry.name
-        title = title_from_html(html_file)
+        shortname = match.group(1) if match else folder_name
+        title = title_from_html(path)
 
     return {
         "shortname": shortname,
