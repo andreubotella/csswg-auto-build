@@ -15,6 +15,15 @@ from html.parser import HTMLParser
 
 from bikeshed import Spec, constants
 
+import jinja2
+
+jinja_env = jinja2.Environment(
+    loader=jinja2.PackageLoader("build-index", "templates"),
+    autoescape=jinja2.select_autoescape(),
+    trim_blocks=True,
+    lstrip_blocks=True
+)
+
 
 def title_from_html(file):
     class HTMLTitleParser(HTMLParser):
@@ -107,18 +116,8 @@ def build_redirect(shortname, spec_folder):
     correct spec.
     """
 
-    contents = """
-<!DOCTYPE html>
-<meta charset="UTF-8" />
-<meta http-equiv="refresh" content="0; URL=../{}/" />
-<style>
-  :root {
-    color-scheme: light dark;
-  }
-</style>
-<p>Redirecting to <a href="../{}/">{}</a>...</p>
-"""
-    contents = contents[1:].replace("{}", spec_folder)
+    template = jinja_env.get_template("redirect.html.j2")
+    contents = template.render(spec_folder=spec_folder)
 
     folder = os.path.join("./csswg-drafts", shortname)
     try:
@@ -127,7 +126,7 @@ def build_redirect(shortname, spec_folder):
         pass
 
     index = os.path.join(folder, "index.html")
-    with open(index, mode='x', encoding="UTF-8") as f:
+    with open(index, mode='w', encoding="UTF-8") as f:
         f.write(contents)
 
 
@@ -199,71 +198,6 @@ for shortname, specgroup in specgroups.items():
         if shortname == "css-snapshot":
             build_redirect("css", currentWorkDir)
 
-with open("./csswg-drafts/index.html", mode='x', encoding="UTF-8") as f:
-    f.write("""
-<!DOCTYPE html>
-<meta charset="utf-8">
-<title>CSS Working Group Draft Specifications</title>
-<style>
-    :root {
-        color-scheme: light dark;
-        --text: black;
-        --bg: #f7f8f9;
-        --a-normal-text: #034575;
-        --a-normal-underline: #707070;
-
-        background-color: var(--bg);
-        color: var(--text);
-    }
-    h1 {
-        text-align: center;
-    }
-    a[href] {
-        color: var(--a-normal-text);
-        text-decoration-color: var(--a-normal-underline);
-        text-decoration-skip-ink: none;
-    }
-    a[href]:focus, a[href]:hover {
-        text-decoration-thickness: 2px;
-        text-decoration-skip-ink: none;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --text: #ddd;
-            --bg: #080808;
-            --a-normal-text: #6af;
-            --a-normal-underline: #555;
-        }
-    }
-
-    li {
-        margin-block-start: 1em;
-        margin-block-end: 1em;
-    }
-    li p, li ul, li ul li {
-        margin-block-start: 0;
-        margin-block-end: 0;
-    }
-</style>
-
-<h1>CSS Working Group Draft Specifications</h1>
-<ul>
-""")
-
-    for shortname, specgroup in sorted(specgroups.items(), key=lambda x: x[0]):
-        if len(specgroup) == 1:
-            spec = specgroup[0]
-            f.write(
-                f'  <li><a href="./{spec["dir"]}">{spec["title"]}</a></li>\n'
-            )
-        else:
-            f.write(f'  <li>\n    <p>{shortname}</p>\n    <ul>\n')
-            for spec in specgroup:
-                paren = " (current work)" if spec["currentWork"] else ""
-                f.write(
-                    f'      <li><a href="./{spec["dir"]}">{spec["title"]}</a>{paren}</li>\n'
-                )
-            f.write('    </ul>\n  </li>\n')
-
-    f.write("</ul>\n")
+with open("./csswg-drafts/index.html", mode='w', encoding="UTF-8") as f:
+    template = jinja_env.get_template("index.html.j2")
+    f.write(template.render(specgroups=specgroups))
