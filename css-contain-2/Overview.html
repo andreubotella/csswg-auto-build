@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-contain-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fc6766d95aeb0768ec8a09253d73114090369614" name="document-revision">
+  <meta content="763d618ce35179cd1afc73eeb3cdc9c0d4c29534" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -381,6 +381,10 @@ dfn > a.self-link::before      { content: "#"; }
 </style>
 <style>/* style-syntax-highlighting */
 
+            pre.idl.highlight {
+                background: var(--borderedblock-bg, var(--def-bg));
+            }
+            
 code.highlight { padding: .1em; border-radius: .3em; }
 pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
 
@@ -770,7 +774,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Containment Module Level 2</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-07-29">29 July 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-02">2 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -848,9 +852,10 @@ on screen, on paper, etc.
      <ol class="toc">
       <li><a href="#using-cv-hidden"><span class="secno">4.1</span> <span class="content"> Using <span class="css">content-visibility: hidden</span></span></a>
       <li><a href="#using-cv-auto"><span class="secno">4.2</span> <span class="content"> Using <span class="css">content-visibility: auto</span></span></a>
-      <li><a href="#cv-notes"><span class="secno">4.3</span> <span class="content">Restrictions and Clarifications</span></a>
-      <li><a href="#cv-a11y"><span class="secno">4.4</span> <span class="content">Accessibility Implications</span></a>
-      <li><a href="#cv-examples"><span class="secno">4.5</span> <span class="content">Examples</span></a>
+      <li><a href="#content-visibility-auto-state-changed"><span class="secno">4.3</span> <span class="content">Detecting <span class="css">content-visibility: auto</span> state changes: the <span class="property">ContentVisibilityAutoStateChanged</span> event</span></a>
+      <li><a href="#cv-notes"><span class="secno">4.4</span> <span class="content">Restrictions and Clarifications</span></a>
+      <li><a href="#cv-a11y"><span class="secno">4.5</span> <span class="content">Accessibility Implications</span></a>
+      <li><a href="#cv-examples"><span class="secno">4.6</span> <span class="content">Examples</span></a>
      </ol>
     <li><a href="#priv-sec"><span class="secno">5</span> <span class="content">Privacy and Security Considerations</span></a>
     <li>
@@ -886,6 +891,7 @@ on screen, on paper, etc.
       <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
     <li><a href="#property-index"><span class="secno"></span> <span class="content">Property Index</span></a>
+    <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
    </ol>
   </nav>
   <main>
@@ -2150,7 +2156,7 @@ and must be focusable and selectable as normal.</p>
 		(as if they had <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-pointer-events" id="ref-for-propdef-pointer-events">pointer-events: none</a>),
 		and to a large extent do not update their styles at all
 		unless explicitly requested by script
-		(see <a href="#cv-notes">§ 4.3 Restrictions and Clarifications</a> for details). 
+		(see <a href="#cv-notes">§ 4.4 Restrictions and Clarifications</a> for details). 
     <details class="wpt-tests-block" dir="ltr" lang="en">
      <summary>Tests</summary>
      <ul class="wpt-tests-list">
@@ -2364,23 +2370,59 @@ to be used before it’s rendered and can have its size snapshotted)</p>
 		while you are scrolling further down)
 		will be forced to rely on the <span class="css">200px</span> height estimate.</p>
    </div>
-   <h3 class="heading settled" data-level="4.3" id="cv-notes"><span class="secno">4.3. </span><span class="content">Restrictions and Clarifications</span><a class="self-link" href="#cv-notes"></a></h3>
+   <h3 class="heading settled" data-level="4.3" id="content-visibility-auto-state-changed"><span class="secno">4.3. </span><span class="content">Detecting <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②①">content-visibility: auto</a> state changes: the <a class="property css" data-link-type="property">ContentVisibilityAutoStateChanged</a> event</span><a class="self-link" href="#content-visibility-auto-state-changed"></a></h3>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>interface</c-> <dfn class="idl-code" data-dfn-type="interface" data-export id="contentvisibilityautostatechangedevent"><code><c- g>ContentVisibilityAutoStateChangedEvent</c-></code><a class="self-link" href="#contentvisibilityautostatechangedevent"></a></dfn> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event" id="ref-for-event"><c- n>Event</c-></a> {
+  <dfn class="idl-code" data-dfn-for="ContentVisibilityAutoStateChangedEvent" data-dfn-type="constructor" data-export data-lt="ContentVisibilityAutoStateChangedEvent(type, eventInitDict)|constructor(type, eventInitDict)|ContentVisibilityAutoStateChangedEvent(type)|constructor(type)" id="dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent"><code><c- g>constructor</c-></code><a class="self-link" href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent"></a></dfn>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="idl-code" data-dfn-for="ContentVisibilityAutoStateChangedEvent/ContentVisibilityAutoStateChangedEvent(type, eventInitDict), ContentVisibilityAutoStateChangedEvent/constructor(type, eventInitDict), ContentVisibilityAutoStateChangedEvent/ContentVisibilityAutoStateChangedEvent(type), ContentVisibilityAutoStateChangedEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent-type-eventinitdict-type"><code><c- g>type</c-></code><a class="self-link" href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent-type-eventinitdict-type"></a></dfn>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-contentvisibilityautostatechangedeventinit" id="ref-for-dictdef-contentvisibilityautostatechangedeventinit"><c- n>ContentVisibilityAutoStateChangedEventInit</c-></a> <dfn class="idl-code" data-dfn-for="ContentVisibilityAutoStateChangedEvent/ContentVisibilityAutoStateChangedEvent(type, eventInitDict), ContentVisibilityAutoStateChangedEvent/constructor(type, eventInitDict), ContentVisibilityAutoStateChangedEvent/ContentVisibilityAutoStateChangedEvent(type), ContentVisibilityAutoStateChangedEvent/constructor(type)" data-dfn-type="argument" data-export id="dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code><a class="self-link" href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent-type-eventinitdict-eventinitdict"></a></dfn> = {});
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-contentvisibilityautostatechangedevent-skipped" id="ref-for-dom-contentvisibilityautostatechangedevent-skipped"><c- g>skipped</c-></a>;
+};
+<c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-contentvisibilityautostatechangedeventinit"><code><c- g>ContentVisibilityAutoStateChangedEventInit</c-></code></dfn> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit" id="ref-for-dictdef-eventinit"><c- n>EventInit</c-></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <a class="idl-code" data-default="false" data-link-type="dict-member" data-type="boolean " href="#dom-contentvisibilityautostatechangedeventinit-skipped" id="ref-for-dom-contentvisibilityautostatechangedeventinit-skipped"><c- g>skipped</c-></a> = <c- b>false</c->;
+};
+</pre>
+   <div class="attributes">
+    <p>Description of ContentVisibilityAutoStateChangedEvent attributes:</p>
+    <dl>
+     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ContentVisibilityAutoStateChangedEvent" data-dfn-type="attribute" data-export id="dom-contentvisibilityautostatechangedevent-skipped"><code>skipped</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②">boolean</a>, readonly</span>
+     <dd data-md>
+      <p>Set to true if target changed state to <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②①">skip its contents</a>, and false otherwise.</p>
+    </dl>
+   </div>
+   <div class="members">
+    <p>Description of ContentVisibilityAutoStateChangedEventInit members:</p>
+    <dl>
+     <dt data-md><dfn class="dfn-paneled idl-code" data-dfn-for="ContentVisibilityAutoStateChangedEventInit" data-dfn-type="dict-member" data-export id="dom-contentvisibilityautostatechangedeventinit-skipped"><code>skipped</code></dfn>, <span> of type <a data-link-type="idl-name" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean③">boolean</a>, defaulting to <code>false</code></span>
+     <dd data-md>
+      <p>See the description of the <code class="idl"><a data-link-type="idl" href="#dom-contentvisibilityautostatechangedevent-skipped" id="ref-for-dom-contentvisibilityautostatechangedevent-skipped①">skipped</a></code> attribute.</p>
+    </dl>
+   </div>
+   <p>This event is fired on an element with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②②">content-visibility: auto</a> style when
+the rendering state changes and the element either becomes or stops being <a data-link-type="dfn" href="#relevant-to-the-user" id="ref-for-relevant-to-the-user③">relevant to the user</a>.</p>
+   <p>This event is dispatched by posting a task at the time when the state change occurs.</p>
+   <p>Note that elements in <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②③">content-visibility: auto</a> subtrees remain semantically
+relevant even for elements that <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②②">skip its contents</a>. This means that it is
+inappropriate to use this signal to indefinitely skip DOM updates in the
+subtree that is skipped. Instead, it should be used to deprioritize updates,
+but ensure that the content remains semantically relevant and reasonably
+up-to-date. This is particularly important for assistive technologies which
+consume this content even when the ancestor is set to <span id="ref-for-skips-its-contents②③">skip its contents</span>.</p>
+   <h3 class="heading settled" data-level="4.4" id="cv-notes"><span class="secno">4.4. </span><span class="content">Restrictions and Clarifications</span><a class="self-link" href="#cv-notes"></a></h3>
    <ol>
     <li data-md>
      <p>From the perspective of an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver">IntersectionObserver</a></code>,
-the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②①">skipped contents</a> of an element
+the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②④">skipped contents</a> of an element
 are never intersecting the <a data-link-type="dfn" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver-intersection-root" id="ref-for-intersectionobserver-intersection-root">intersection root</a>.
 This is true even if both the root and the target elements
-are in the <span id="ref-for-skips-its-contents②②">skipped contents</span>.</p>
+are in the <span id="ref-for-skips-its-contents②⑤">skipped contents</span>.</p>
     <li data-md>
      <p>From the perspective of a <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/resize-observer-1/#resizeobserver" id="ref-for-resizeobserver">ResizeObserver</a></code>,
-the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②③">skipped contents</a> of an element
+the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②⑥">skipped contents</a> of an element
 never change their size.
 If these elements become non-skipped later,
 the resize observation will be delivered
 if the new size differs from the last size used to notify the resize observer.</p>
     <li data-md>
-     <p>If an element starts or stops <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②④">skipping its contents</a>,
+     <p>If an element starts or stops <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②⑦">skipping its contents</a>,
 this change happens
 after the requestAnimationFrame callbacks
 of the frame that renders the effects of the change
@@ -2393,58 +2435,58 @@ of <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-re
 	can be done with an internal version of an IntersectionObserver.
 	However, since the observations from this are dispatched at
 	step 13 of Update the Rendering,
-	any changes to the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②⑤">skipped</a> (and thus painted) state
+	any changes to the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②⑧">skipped</a> (and thus painted) state
 	will not be visible to the user until the next frame’s processing.
-	For this reason, updating the <span id="ref-for-skips-its-contents②⑥">skipped</span> state,
+	For this reason, updating the <span id="ref-for-skips-its-contents②⑨">skipped</span> state,
 	including containment adjustments,
 	is deferred to that frame as well.
 	This ensures that script accessing,
 	for example,
 	the containment value of the element between these two events
-	(internal intersection observation and <span id="ref-for-skips-its-contents②⑦">skipped</span> state update)
+	(internal intersection observation and <span id="ref-for-skips-its-contents③⓪">skipped</span> state update)
 	will retrieve values consistent with current painted state
 	and not cause any forced layouts. </div>
     <li data-md>
-     <p>The initial determination of visibility for <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②①">content-visibility: auto</a> must
-happen in the same frame that determined an existence of a new <span class="css" id="ref-for-propdef-content-visibility②②">content-visibility: auto</span> element.</p>
-     <div class="note" role="note"> When an element first gains <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②③">content-visibility: auto</a>, it may or may not
+     <p>The initial determination of visibility for <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②④">content-visibility: auto</a> must
+happen in the same frame that determined an existence of a new <span class="css" id="ref-for-propdef-content-visibility②⑤">content-visibility: auto</span> element.</p>
+     <div class="note" role="note"> When an element first gains <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑥">content-visibility: auto</a>, it may or may not
 	be positioned on screen. The determination of this state and thus
-	determination of whether this element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②⑧">skipped</a> must happen in the
+	determination of whether this element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③①">skipped</a> must happen in the
 	same frame. If it does not, then there is a possibility of producing blank
-	content in the element’s place since visibility check and <span id="ref-for-skips-its-contents②⑨">skipped</span> state
+	content in the element’s place since visibility check and <span id="ref-for-skips-its-contents③②">skipped</span> state
 	update would be deferred to the next frame. </div>
     <li data-md>
      <p>For the purposes of scrolling operations,
 such as <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/cssom-view-1/#dom-element-scrollintoview" id="ref-for-dom-element-scrollintoview">scrollIntoView()</a></code>,
-an element with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②④">content-visibility: auto</a> that is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⓪">skipping its contents</a> has its size and location determined <em>with</em> <a data-link-type="dfn" href="#size-containment" id="ref-for-size-containment①⓪">size containment</a> still active.</p>
+an element with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑦">content-visibility: auto</a> that is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③③">skipping its contents</a> has its size and location determined <em>with</em> <a data-link-type="dfn" href="#size-containment" id="ref-for-size-containment①⓪">size containment</a> still active.</p>
      <p class="note" role="note"><span>Note:</span> Once it’s scrolled into view,
-the element will no longer <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③①">skip its contents</a>,
+the element will no longer <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③④">skip its contents</a>,
 and so might not have <a data-link-type="dfn" href="#size-containment" id="ref-for-size-containment①①">size containment</a>;
 if this changes the element’s size,
 it might not align in the viewport exactly as requested.</p>
      <p>If an element is not available to user-agent features
-(for example, if it is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③②">skipped</a> due to a <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑤">content-visibility: hidden</a> ancestor),
+(for example, if it is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⑤">skipped</a> due to a <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑧">content-visibility: hidden</a> ancestor),
 then scrolling operations
 must not scroll to it at all,
 as if it did not have a layout box.</p>
     <li data-md>
-     <p>If an element with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑥">content-visibility: auto</a> that is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③③">skipping its contents</a> is focused
+     <p>If an element with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑨">content-visibility: auto</a> that is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⑥">skipping its contents</a> is focused
 (or its contents are),
-it becomes <a data-link-type="dfn" href="#relevant-to-the-user" id="ref-for-relevant-to-the-user③">relevant to the user</a> (and thus stops <span id="ref-for-skips-its-contents③④">skipping its contents</span>) <em>before</em> it is scrolled into view due to the focusing.</p>
+it becomes <a data-link-type="dfn" href="#relevant-to-the-user" id="ref-for-relevant-to-the-user④">relevant to the user</a> (and thus stops <span id="ref-for-skips-its-contents③⑦">skipping its contents</span>) <em>before</em> it is scrolled into view due to the focusing.</p>
      <p class="note" role="note"><span>Note:</span> Thus, unlike the previous point,
 the element <em>will</em> be correctly sized and aligned in the viewport.
 This is consistent with the order of the steps for the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-window-focus" id="ref-for-dom-window-focus">focus()</a></code> method.</p>
     <li data-md>
-     <p>If an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code> <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⑤">skips its contents</a> or is part of an element’s <span id="ref-for-skips-its-contents③⑥">skipped contents</span>,
+     <p>If an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element">iframe</a></code> <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⑧">skips its contents</a> or is part of an element’s <span id="ref-for-skips-its-contents③⑨">skipped contents</span>,
 the user agent should entirely skip the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering" id="ref-for-update-the-rendering">Update The Rendering</a> step in the iframe’s event loop,
 if possible.</p>
-     <p class="note" role="note"><span>Note:</span> At the moment the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> starts being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⑦">skipped</a>,
+     <p class="note" role="note"><span>Note:</span> At the moment the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code> starts being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⓪">skipped</a>,
 it needs to run that step at least once
 to remove the painted output.</p>
     <li data-md>
-     <p><a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⑧">Skipped contents</a> do not contribute to the result of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dom.html#dom-innertext" id="ref-for-dom-innertext">innerText</a></code>.</p>
+     <p><a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④①">Skipped contents</a> do not contribute to the result of <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dom.html#dom-innertext" id="ref-for-dom-innertext">innerText</a></code>.</p>
     <li data-md>
-     <p>While an element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents③⑨">skipped</a>,
+     <p>While an element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④②">skipped</a>,
 CSS transitions and animations on the element do not update:</p>
      <ul>
       <li data-md>
@@ -2454,7 +2496,7 @@ CSS transitions and animations on the element do not update:</p>
       <li data-md>
        <p>Running animations on the element do not end.</p>
      </ul>
-     <p>If script queries the style of a <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⓪">skipped</a> element
+     <p>If script queries the style of a <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④③">skipped</a> element
 (causing a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event" id="ref-for-style-change-event">style change event</a>)
 such that knowing the state of animations or transitions is required
 to return correct information,
@@ -2464,7 +2506,7 @@ according to the styles at the time of that <span id="ref-for-style-change-event
 and what events are fired,
 with what data,
 when an animation or transition is updated,.</p>
-     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④①">skipped</a>,
+     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④④">skipped</a>,
 animations and transitions are sampled
 and then resume advancing on their timelines as normal from that point.</p>
      <p class="note" role="note"><span>Note:</span> Overall, this is similar to the behavior of transitions/animations
@@ -2472,39 +2514,39 @@ when a background tab is brought back to the foreground,
 allowing user agents to skip as much unnecessary animation work as possible
 without overly disrupting the animations when they become relevant again.</p>
     <li data-md>
-     <p>While an element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④②">skipped</a>,
+     <p>While an element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑤">skipped</a>,
 it must not start any transitions,
 even if a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event" id="ref-for-style-change-event②">style change event</a> affects its computed styles.</p>
-     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④③">skipped</a>,
+     <p>When an element stops being <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑥">skipped</a>,
 it must not start any transitions
-as a result of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event" id="ref-for-style-change-event③">style change event</a> associated with it no longer being <span id="ref-for-skips-its-contents④④">skipped</span>.</p>
+as a result of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event" id="ref-for-style-change-event③">style change event</a> associated with it no longer being <span id="ref-for-skips-its-contents④⑦">skipped</span>.</p>
      <p class="note" role="note"><span>Note:</span> This is similar to an element switching from <span class="css">display:none</span> to a non-<a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-display-3/#valdef-display-none" id="ref-for-valdef-display-none">none</a> value—<wbr>even though the styles are <em>technically</em> changing in that case
 (from their initial values
 to their "proper" values from the cascade),
 no transitions are started.</p>
     <li data-md>
-     <p>If an element has an ancestor with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑦">content-visibility: hidden</a>,
+     <p>If an element has an ancestor with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⓪">content-visibility: hidden</a>,
 and it is placed in the <a data-link-type="dfn" href="https://fullscreen.spec.whatwg.org/#top-layer" id="ref-for-top-layer①">top layer</a>,
 it does not generate any boxes,
 as if it were <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/css-display-3/#propdef-display" id="ref-for-propdef-display⑧">display: none</a>.</p>
-     <p class="note" role="note"><span>Note:</span> An element <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑤">skipped</a> for other reasons,
-such as having a <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑧">content-visibility: auto</a> ancestor,
+     <p class="note" role="note"><span>Note:</span> An element <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑧">skipped</a> for other reasons,
+such as having a <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③①">content-visibility: auto</a> ancestor,
 will still generate boxes as normal,
-and might thus become un-<span id="ref-for-skips-its-contents④⑥">skipped</span>.</p>
+and might thus become un-<span id="ref-for-skips-its-contents④⑨">skipped</span>.</p>
    </ol>
-   <h3 class="heading settled" data-level="4.4" id="cv-a11y"><span class="secno">4.4. </span><span class="content">Accessibility Implications</span><a class="self-link" href="#cv-a11y"></a></h3>
+   <h3 class="heading settled" data-level="4.5" id="cv-a11y"><span class="secno">4.5. </span><span class="content">Accessibility Implications</span><a class="self-link" href="#cv-a11y"></a></h3>
    <p>If a user agent exposes some form of "accessibility tree",
 akin to the DOM tree but specialized for accessibility use-cases such as screen-readers
 (thus providing the positions/etc of elements relevant to accessibility APIs,
 such as focusable elements),
-then the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑦">skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility②⑨">content-visibility: hidden</a> elements
+then the <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤⓪">skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③②">content-visibility: hidden</a> elements
 must similarly be "skipped" (omitted) in the accessibility tree
 (similar to how <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/css-display-3/#propdef-display" id="ref-for-propdef-display⑨">display: none</a> elements
 are omitted in all views of the document).</p>
-   <p><a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents④⑧">Skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⓪">content-visibility: auto</a> elements
+   <p><a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤①">Skipped contents</a> of <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③③">content-visibility: auto</a> elements
 must not expose the fact that a user is interacting with the page via the accessibility tree,
 rather than via rendering visually to the screen.
-In particular, if a user agent uses <span class="css" id="ref-for-propdef-content-visibility③①">content-visibility: auto</span> to avoid doing layout and painting work on off-screen content
+In particular, if a user agent uses <span class="css" id="ref-for-propdef-content-visibility③④">content-visibility: auto</span> to avoid doing layout and painting work on off-screen content
 for displaying to the screen,
 it must similarly avoid doing that work on off-screen content
 for representing in the accessibility tree.
@@ -2512,7 +2554,7 @@ If this is not possible
 (for example, if the user agent’s representation of a focusable element in the accessibility tree
 requires knowledge of its exact position,
 and thus requires a full layout to be done on it and surrounding contents),
-then the user agent <em>must</em> omit the <span id="ref-for-skips-its-contents④⑨">skipped contents</span> from the accessibility tree entirely.</p>
+then the user agent <em>must</em> omit the <span id="ref-for-skips-its-contents⑤②">skipped contents</span> from the accessibility tree entirely.</p>
    <p class="note" role="note"><span>Note:</span> This requirement is intended to protect users utilizing accessibility tooling
 from being identified and profiled as such
 via observation of timing channels;
@@ -2521,7 +2563,7 @@ when rendering visually,
 but has to do all of the work when rendering to an accessibility tree,
 then an author can tell how a user is interacting with the page
 by observing the timing of layout operations.</p>
-   <h3 class="heading settled" data-level="4.5" id="cv-examples"><span class="secno">4.5. </span><span class="content">Examples</span><a class="self-link" href="#cv-examples"></a></h3>
+   <h3 class="heading settled" data-level="4.6" id="cv-examples"><span class="secno">4.6. </span><span class="content">Examples</span><a class="self-link" href="#cv-examples"></a></h3>
    <div class="example" id="example-1f50d3e3">
     <a class="self-link" href="#example-1f50d3e3"></a> 
 <pre class="highlight"><c- p>&lt;</c-><c- f>style</c-><c- p>></c->
@@ -2535,14 +2577,14 @@ by observing the timing of layout operations.</p>
   ... some content goes here ...
 <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
 </pre>
-    <p>The .sv element’s <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③②">content-visibility: auto</a> value
-	lets the user-agent manage whether the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤⓪">skipped</a>.
+    <p>The .sv element’s <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑤">content-visibility: auto</a> value
+	lets the user-agent manage whether the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤③">skipped</a>.
 	Specifically when this element is near the viewport,
 	the user-agent will begin painting the element.
 	When the element moves away from the viewport,
 	it will stop being painted.
 	In addition, the user-agent should skip as much of the rendering work as possible
-	when the element is <span id="ref-for-skips-its-contents⑤①">skipped</span>.</p>
+	when the element is <span id="ref-for-skips-its-contents⑤④">skipped</span>.</p>
    </div>
    <div class="example" id="example-52a4682e">
     <a class="self-link" href="#example-52a4682e"></a> 
@@ -2556,13 +2598,13 @@ by observing the timing of layout operations.</p>
   ... some content goes here ...
 <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
 </pre>
-    <p>In this case, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤②">skipped</a> regardless of viewport intersection.
+    <p>In this case, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤⑤">skipped</a> regardless of viewport intersection.
 	This means that the only way to have the <a data-link-type="dfn" href="#element-contents" id="ref-for-element-contents③">contents</a> painted
-	is via script updating the value to remove <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③③">content-visibility</a> or change its value.
+	is via script updating the value to remove <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑥">content-visibility</a> or change its value.
 	As before, the user-agent should skip as much of the rendering in the <span id="ref-for-element-contents④">contents</span> as possible.</p>
     <p>An additional effect of skipping rendering
 	is that the layout state of the <a data-link-type="dfn" href="#element-contents" id="ref-for-element-contents⑤">contents</a> can be preserved by the user-agent,
-	so that removing the <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③④">content-visibility</a> property in the future
+	so that removing the <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑦">content-visibility</a> property in the future
 	will cause the <span id="ref-for-element-contents⑥">contents</span> to be rendered quicker
 	than if they were hidden with <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/css-display-3/#propdef-display" id="ref-for-propdef-display①⓪">display: none</a> or similar.</p>
    </div>
@@ -2599,7 +2641,7 @@ by observing the timing of layout operations.</p>
   <c- p>...</c->
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
 </pre>
-    <p>Similarly to the last example, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤③">skipped</a>.
+    <p>Similarly to the last example, the element is <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑤⑥">skipped</a>.
 	The user-agent should avoid as much rendering work as possible.
 	However, in this example, at some point script accesses a layout value in the element’s <a data-link-type="dfn" href="#element-contents" id="ref-for-element-contents⑦">contents</a>.
 	In this situation, the user-agent cannot avoid rendering work
@@ -2663,7 +2705,7 @@ Answers are provided below.</p>
     <li data-md>
      <p>Included <a data-link-type="dfn" href="#style-containment" id="ref-for-style-containment⑨">style containment</a> in the <a class="css" data-link-type="maybe" href="#valdef-contain-strict" id="ref-for-valdef-contain-strict">strict</a> and <a class="css" data-link-type="maybe" href="#valdef-contain-content" id="ref-for-valdef-contain-content">content</a> keywords.</p>
     <li data-md>
-     <p>Use the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#overflow-clip-edge" id="ref-for-overflow-clip-edge②">overflow clip edge</a> rather than the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-box-4/#border-edge" id="ref-for-border-edge">border edge</a> when deciding if the element is “on screen”, as part of determining if it is <a data-link-type="dfn" href="#relevant-to-the-user" id="ref-for-relevant-to-the-user④">relevant to the user</a></p>
+     <p>Use the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#overflow-clip-edge" id="ref-for-overflow-clip-edge②">overflow clip edge</a> rather than the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-box-4/#border-edge" id="ref-for-border-edge">border edge</a> when deciding if the element is “on screen”, as part of determining if it is <a data-link-type="dfn" href="#relevant-to-the-user" id="ref-for-relevant-to-the-user⑤">relevant to the user</a></p>
     <li data-md>
      <p>Define how animations and transitions act on skipped elements</p>
     <li data-md>
@@ -2675,7 +2717,7 @@ Answers are provided below.</p>
     <li data-md>
      <p>Clarify that scrollIntoView() doesn’t scroll to children of a <span class="css">content-visibility:hidden</span> element</p>
     <li data-md>
-     <p>Defined that elements having an ancestor with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑤">content-visibility: hidden</a> don’t generate boxes in the top layer</p>
+     <p>Defined that elements having an ancestor with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑧">content-visibility: hidden</a> don’t generate boxes in the top layer</p>
     <li data-md>
      <p>Defined that being in the top-layer makes an element relevant to the user</p>
    </ul>
@@ -2694,14 +2736,14 @@ Answers are provided below.</p>
     <li data-md>
      <p>Change the animation type of content-visibility from discrete to not animatable</p>
     <li data-md>
-     <p>Add constraint on the timing of the initial determination of visibility for <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑥">content-visibility: auto</a> in <a href="#cv-notes">§ 4.3 Restrictions and Clarifications</a></p>
+     <p>Add constraint on the timing of the initial determination of visibility for <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑨">content-visibility: auto</a> in <a href="#cv-notes">§ 4.4 Restrictions and Clarifications</a></p>
    </ul>
    <h3 class="heading settled" id="changes-since-2019-11-11"><span class="content"> Changes from <a href="https://www.w3.org/TR/2019/WD-css-contain-2-20191111/">2019-11-11 Working Draft</a> </span><a class="self-link" href="#changes-since-2019-11-11"></a></h3>
    <ul>
     <li data-md>
      <p>Define the interaction between <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑧">paint containment</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin①">overflow-clip-margin</a></p>
     <li data-md>
-     <p>Add the <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑦">content-visibility</a> property</p>
+     <p>Add the <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility④⓪">content-visibility</a> property</p>
    </ul>
    <h3 class="heading settled" id="l1-changes"><span class="content"> Changes from <a href="https://www.w3.org/TR/css-contain-1/">CSS Containment Level 1</a> </span><a class="self-link" href="#l1-changes"></a></h3>
    <ul>
@@ -2804,11 +2846,17 @@ Answers are provided below.</p>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#valdef-content-visibility-auto">auto</a><span>, in § 4</span>
+   <li><a href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent">constructor(type)</a><span>, in § 4.3</span>
+   <li><a href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent">constructor(type, eventInitDict)</a><span>, in § 4.3</span>
    <li><a href="#propdef-contain">contain</a><span>, in § 2</span>
    <li><a href="#containment">containment</a><span>, in § 3</span>
    <li><a href="#valdef-contain-content">content</a><span>, in § 2</span>
    <li><a href="#element-contents">contents</a><span>, in § 4</span>
    <li><a href="#propdef-content-visibility">content-visibility</a><span>, in § 4</span>
+   <li><a href="#contentvisibilityautostatechangedevent">ContentVisibilityAutoStateChangedEvent</a><span>, in § 4.3</span>
+   <li><a href="#dictdef-contentvisibilityautostatechangedeventinit">ContentVisibilityAutoStateChangedEventInit</a><span>, in § 4.3</span>
+   <li><a href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent">ContentVisibilityAutoStateChangedEvent(type)</a><span>, in § 4.3</span>
+   <li><a href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent">ContentVisibilityAutoStateChangedEvent(type, eventInitDict)</a><span>, in § 4.3</span>
    <li><a href="#valdef-content-visibility-hidden">hidden</a><span>, in § 4</span>
    <li><a href="#laying-out-in-place">Laying out in-place</a><span>, in § 3.1</span>
    <li><a href="#valdef-contain-layout">layout</a><span>, in § 2</span>
@@ -2834,6 +2882,12 @@ Answers are provided below.</p>
    <li><a href="#sizing-as-if-empty">Sizing as if empty</a><span>, in § 3.1</span>
    <li><a href="#skips-its-contents">skip</a><span>, in § 4</span>
    <li><a href="#skips-its-contents">skip its contents</a><span>, in § 4</span>
+   <li>
+    skipped
+    <ul>
+     <li><a href="#dom-contentvisibilityautostatechangedevent-skipped">attribute for ContentVisibilityAutoStateChangedEvent</a><span>, in § 4.3</span>
+     <li><a href="#dom-contentvisibilityautostatechangedeventinit-skipped">dict-member for ContentVisibilityAutoStateChangedEventInit</a><span>, in § 4.3</span>
+    </ul>
    <li><a href="#skips-its-contents">skipped contents</a><span>, in § 4</span>
    <li><a href="#skips-its-contents">skipping its contents</a><span>, in § 4</span>
    <li><a href="#skips-its-contents">skips its contents</a><span>, in § 4</span>
@@ -2963,9 +3017,9 @@ Paint Containment</a> <a href="#ref-for-propdef-display⑤">(2)</a>
     <li><a href="#ref-for-propdef-display⑥">4. Suppressing An Element’s Contents Entirely: the content-visibility property</a>
     <li><a href="#ref-for-propdef-display⑦">4.2. 
 Using content-visibility: auto</a>
-    <li><a href="#ref-for-propdef-display⑧">4.3. Restrictions and Clarifications</a>
-    <li><a href="#ref-for-propdef-display⑨">4.4. Accessibility Implications</a>
-    <li><a href="#ref-for-propdef-display①⓪">4.5. Examples</a>
+    <li><a href="#ref-for-propdef-display⑧">4.4. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-propdef-display⑨">4.5. Accessibility Implications</a>
+    <li><a href="#ref-for-propdef-display①⓪">4.6. Examples</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-establish-an-independent-formatting-context">
@@ -3027,7 +3081,7 @@ Paint Containment</a>
   <aside class="dfn-panel" data-for="term-for-valdef-display-none">
    <a href="https://andreubotella.com/csswg-auto-build/css-display-3/#valdef-display-none">https://andreubotella.com/csswg-auto-build/css-display-3/#valdef-display-none</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-display-none">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-valdef-display-none">4.4. Restrictions and Clarifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-principal-box">
@@ -3328,7 +3382,7 @@ Size Containment</a>
   <aside class="dfn-panel" data-for="term-for-style-change-event">
    <a href="https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event">https://andreubotella.com/csswg-auto-build/css-transitions-1/#style-change-event</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-style-change-event">4.3. Restrictions and Clarifications</a> <a href="#ref-for-style-change-event①">(2)</a> <a href="#ref-for-style-change-event②">(3)</a> <a href="#ref-for-style-change-event③">(4)</a>
+    <li><a href="#ref-for-style-change-event">4.4. Restrictions and Clarifications</a> <a href="#ref-for-style-change-event①">(2)</a> <a href="#ref-for-style-change-event②">(3)</a> <a href="#ref-for-style-change-event③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-text-overflow">
@@ -3426,20 +3480,32 @@ Paint Containment</a>
    <ul>
     <li><a href="#ref-for-dom-element-getboundingclientrect">4.1. 
 Using content-visibility: hidden</a>
-    <li><a href="#ref-for-dom-element-getboundingclientrect①">4.5. Examples</a>
+    <li><a href="#ref-for-dom-element-getboundingclientrect①">4.6. Examples</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-element-scrollintoview">
    <a href="https://andreubotella.com/csswg-auto-build/cssom-view-1/#dom-element-scrollintoview">https://andreubotella.com/csswg-auto-build/cssom-view-1/#dom-element-scrollintoview</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-element-scrollintoview">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-dom-element-scrollintoview">4.4. Restrictions and Clarifications</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-event">
+   <a href="https://dom.spec.whatwg.org/#event">https://dom.spec.whatwg.org/#event</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-event">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-dictdef-eventinit">
+   <a href="https://dom.spec.whatwg.org/#dictdef-eventinit">https://dom.spec.whatwg.org/#dictdef-eventinit</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dictdef-eventinit">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-top-layer">
    <a href="https://fullscreen.spec.whatwg.org/#top-layer">https://fullscreen.spec.whatwg.org/#top-layer</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-top-layer">4. Suppressing An Element’s Contents Entirely: the content-visibility property</a>
-    <li><a href="#ref-for-top-layer①">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-top-layer①">4.4. Restrictions and Clarifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-the-body-element">
@@ -3452,7 +3518,7 @@ Strong Containment: the contain property</a> <a href="#ref-for-the-body-element�
   <aside class="dfn-panel" data-for="term-for-dom-window-focus">
    <a href="https://html.spec.whatwg.org/multipage/interaction.html#dom-window-focus">https://html.spec.whatwg.org/multipage/interaction.html#dom-window-focus</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-window-focus">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-dom-window-focus">4.4. Restrictions and Clarifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-the-html-element">
@@ -3465,37 +3531,37 @@ Strong Containment: the contain property</a> <a href="#ref-for-the-html-element�
   <aside class="dfn-panel" data-for="term-for-the-iframe-element">
    <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-the-iframe-element">4.3. Restrictions and Clarifications</a> <a href="#ref-for-the-iframe-element①">(2)</a>
+    <li><a href="#ref-for-the-iframe-element">4.4. Restrictions and Clarifications</a> <a href="#ref-for-the-iframe-element①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-dom-innertext">
    <a href="https://html.spec.whatwg.org/multipage/dom.html#dom-innertext">https://html.spec.whatwg.org/multipage/dom.html#dom-innertext</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-innertext">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-dom-innertext">4.4. Restrictions and Clarifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-update-the-rendering">
    <a href="https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering">https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#termref-for-update-the-rendering">4.3. Restrictions and Clarifications</a> <a href="#ref-for-update-the-rendering">(2)</a>
+    <li><a href="#termref-for-update-the-rendering">4.4. Restrictions and Clarifications</a> <a href="#ref-for-update-the-rendering">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-intersectionobserver">
    <a href="https://w3c.github.io/IntersectionObserver/#intersectionobserver">https://w3c.github.io/IntersectionObserver/#intersectionobserver</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-intersectionobserver">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-intersectionobserver">4.4. Restrictions and Clarifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-intersectionobserver-intersection-root">
    <a href="https://w3c.github.io/IntersectionObserver/#intersectionobserver-intersection-root">https://w3c.github.io/IntersectionObserver/#intersectionobserver-intersection-root</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-intersectionobserver-intersection-root">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-intersectionobserver-intersection-root">4.4. Restrictions and Clarifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-resizeobserver">
    <a href="https://andreubotella.com/csswg-auto-build/resize-observer-1/#resizeobserver">https://andreubotella.com/csswg-auto-build/resize-observer-1/#resizeobserver</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-resizeobserver">4.3. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-resizeobserver">4.4. Restrictions and Clarifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-elementdef-svg">
@@ -3503,6 +3569,24 @@ Strong Containment: the contain property</a> <a href="#ref-for-the-html-element�
    <ul>
     <li><a href="#ref-for-elementdef-svg">2. 
 Strong Containment: the contain property</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-DOMString">
+   <a href="https://webidl.spec.whatwg.org/#idl-DOMString">https://webidl.spec.whatwg.org/#idl-DOMString</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-DOMString">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-Exposed">
+   <a href="https://webidl.spec.whatwg.org/#Exposed">https://webidl.spec.whatwg.org/#Exposed</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-Exposed">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-idl-boolean">
+   <a href="https://webidl.spec.whatwg.org/#idl-boolean">https://webidl.spec.whatwg.org/#idl-boolean</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-idl-boolean">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a> <a href="#ref-for-idl-boolean①">(2)</a> <a href="#ref-for-idl-boolean②">(3)</a> <a href="#ref-for-idl-boolean③">(4)</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -3685,6 +3769,12 @@ Strong Containment: the contain property</a>
      <li><span class="dfn-paneled" id="term-for-dom-element-scrollintoview">scrollIntoView()</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[DOM]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-event">Event</span>
+     <li><span class="dfn-paneled" id="term-for-dictdef-eventinit">EventInit</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[FULLSCREEN]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-top-layer">top layer</span>
@@ -3714,6 +3804,13 @@ Strong Containment: the contain property</a>
     <a data-link-type="biblio">[SVG2]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-elementdef-svg">svg</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-idl-DOMString">DOMString</span>
+     <li><span class="dfn-paneled" id="term-for-Exposed">Exposed</span>
+     <li><span class="dfn-paneled" id="term-for-idl-boolean">boolean</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -3771,6 +3868,8 @@ Strong Containment: the contain property</a>
    <dd>Bert Bos; et al. <a href="https://andreubotella.com/csswg-auto-build/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css2/">https://andreubotella.com/csswg-auto-build/css2/</a>
    <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
    <dd>Simon Pieters. <a href="https://andreubotella.com/csswg-auto-build/cssom-view/"><cite>CSSOM View Module</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/cssom-view/">https://andreubotella.com/csswg-auto-build/cssom-view/</a>
+   <dt id="biblio-dom">[DOM]
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-fullscreen">[FULLSCREEN]
    <dd>Philip Jägenstedt. <a href="https://fullscreen.spec.whatwg.org/"><cite>Fullscreen API Standard</cite></a>. Living Standard. URL: <a href="https://fullscreen.spec.whatwg.org/">https://fullscreen.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
@@ -3783,6 +3882,8 @@ Strong Containment: the contain property</a>
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-svg2">[SVG2]
    <dd>Amelia Bellamy-Royds; et al. <a href="https://svgwg.org/svg2-draft/"><cite>Scalable Vector Graphics (SVG) 2</cite></a>. URL: <a href="https://svgwg.org/svg2-draft/">https://svgwg.org/svg2-draft/</a>
+   <dt id="biblio-webidl">[WEBIDL]
+   <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -3825,7 +3926,7 @@ Strong Containment: the contain property</a>
       <td>per grammar
       <td>the keyword none or one or more of size, layout, paint
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑧">content-visibility</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility④①">content-visibility</a>
       <td>visible | auto | hidden
       <td>visible
       <td>elements for which layout containment can apply
@@ -3836,6 +3937,17 @@ Strong Containment: the contain property</a>
       <td>as specified
    </table>
   </div>
+  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>interface</c-> <a href="#contentvisibilityautostatechangedevent"><code><c- g>ContentVisibilityAutoStateChangedEvent</c-></code></a> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#event"><c- n>Event</c-></a> {
+  <a href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent"><code><c- g>constructor</c-></code></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a> <a href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent-type-eventinitdict-type"><code><c- g>type</c-></code></a>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-contentvisibilityautostatechangedeventinit"><c- n>ContentVisibilityAutoStateChangedEventInit</c-></a> <a href="#dom-contentvisibilityautostatechangedevent-contentvisibilityautostatechangedevent-type-eventinitdict-eventinitdict"><code><c- g>eventInitDict</c-></code></a> = {});
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-contentvisibilityautostatechangedevent-skipped"><c- g>skipped</c-></a>;
+};
+<c- b>dictionary</c-> <a href="#dictdef-contentvisibilityautostatechangedeventinit"><code><c- g>ContentVisibilityAutoStateChangedEventInit</c-></code></a> : <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit"><c- n>EventInit</c-></a> {
+  <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-default="false" data-link-type="dict-member" data-type="boolean " href="#dom-contentvisibilityautostatechangedeventinit-skipped"><c- g>skipped</c-></a> = <c- b>false</c->;
+};
+
+</pre>
   <aside class="dfn-panel" data-for="propdef-contain">
    <b><a href="#propdef-contain">#propdef-contain</a></b><b>Referenced in:</b>
    <ul>
@@ -3915,7 +4027,7 @@ Possible Layout-Containment Optimizations</a>
     <li><a href="#ref-for-size-containment⑦">4. Suppressing An Element’s Contents Entirely: the content-visibility property</a> <a href="#ref-for-size-containment⑧">(2)</a>
     <li><a href="#ref-for-size-containment⑨">4.2. 
 Using content-visibility: auto</a>
-    <li><a href="#ref-for-size-containment①⓪">4.3. Restrictions and Clarifications</a> <a href="#ref-for-size-containment①①">(2)</a>
+    <li><a href="#ref-for-size-containment①⓪">4.4. Restrictions and Clarifications</a> <a href="#ref-for-size-containment①①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="size-containment-box">
@@ -4028,12 +4140,13 @@ Strong Containment: the contain property</a>
 Using content-visibility: hidden</a> <a href="#ref-for-propdef-content-visibility⑧">(2)</a> <a href="#ref-for-propdef-content-visibility⑨">(3)</a> <a href="#ref-for-propdef-content-visibility①⓪">(4)</a> <a href="#ref-for-propdef-content-visibility①①">(5)</a> <a href="#ref-for-propdef-content-visibility①②">(6)</a>
     <li><a href="#ref-for-propdef-content-visibility①③">4.2. 
 Using content-visibility: auto</a> <a href="#ref-for-propdef-content-visibility①④">(2)</a> <a href="#ref-for-propdef-content-visibility①⑤">(3)</a> <a href="#ref-for-propdef-content-visibility①⑥">(4)</a> <a href="#ref-for-propdef-content-visibility①⑦">(5)</a> <a href="#ref-for-propdef-content-visibility①⑧">(6)</a> <a href="#ref-for-propdef-content-visibility①⑨">(7)</a> <a href="#ref-for-propdef-content-visibility②⓪">(8)</a>
-    <li><a href="#ref-for-propdef-content-visibility②①">4.3. Restrictions and Clarifications</a> <a href="#ref-for-propdef-content-visibility②②">(2)</a> <a href="#ref-for-propdef-content-visibility②③">(3)</a> <a href="#ref-for-propdef-content-visibility②④">(4)</a> <a href="#ref-for-propdef-content-visibility②⑤">(5)</a> <a href="#ref-for-propdef-content-visibility②⑥">(6)</a> <a href="#ref-for-propdef-content-visibility②⑦">(7)</a> <a href="#ref-for-propdef-content-visibility②⑧">(8)</a>
-    <li><a href="#ref-for-propdef-content-visibility②⑨">4.4. Accessibility Implications</a> <a href="#ref-for-propdef-content-visibility③⓪">(2)</a> <a href="#ref-for-propdef-content-visibility③①">(3)</a>
-    <li><a href="#ref-for-propdef-content-visibility③②">4.5. Examples</a> <a href="#ref-for-propdef-content-visibility③③">(2)</a> <a href="#ref-for-propdef-content-visibility③④">(3)</a>
-    <li><a href="#ref-for-propdef-content-visibility③⑤"> Changes from 2020-12-16 Working Draft </a>
-    <li><a href="#ref-for-propdef-content-visibility③⑥"> Changes from 2020-06-03 Working Draft </a>
-    <li><a href="#ref-for-propdef-content-visibility③⑦"> Changes from 2019-11-11 Working Draft </a>
+    <li><a href="#ref-for-propdef-content-visibility②①">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a> <a href="#ref-for-propdef-content-visibility②②">(2)</a> <a href="#ref-for-propdef-content-visibility②③">(3)</a>
+    <li><a href="#ref-for-propdef-content-visibility②④">4.4. Restrictions and Clarifications</a> <a href="#ref-for-propdef-content-visibility②⑤">(2)</a> <a href="#ref-for-propdef-content-visibility②⑥">(3)</a> <a href="#ref-for-propdef-content-visibility②⑦">(4)</a> <a href="#ref-for-propdef-content-visibility②⑧">(5)</a> <a href="#ref-for-propdef-content-visibility②⑨">(6)</a> <a href="#ref-for-propdef-content-visibility③⓪">(7)</a> <a href="#ref-for-propdef-content-visibility③①">(8)</a>
+    <li><a href="#ref-for-propdef-content-visibility③②">4.5. Accessibility Implications</a> <a href="#ref-for-propdef-content-visibility③③">(2)</a> <a href="#ref-for-propdef-content-visibility③④">(3)</a>
+    <li><a href="#ref-for-propdef-content-visibility③⑤">4.6. Examples</a> <a href="#ref-for-propdef-content-visibility③⑥">(2)</a> <a href="#ref-for-propdef-content-visibility③⑦">(3)</a>
+    <li><a href="#ref-for-propdef-content-visibility③⑧"> Changes from 2020-12-16 Working Draft </a>
+    <li><a href="#ref-for-propdef-content-visibility③⑨"> Changes from 2020-06-03 Working Draft </a>
+    <li><a href="#ref-for-propdef-content-visibility④⓪"> Changes from 2019-11-11 Working Draft </a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-content-visibility-hidden">
@@ -4052,16 +4165,17 @@ Using content-visibility: auto</a>
 Using content-visibility: hidden</a> <a href="#ref-for-skips-its-contents⑨">(2)</a> <a href="#ref-for-skips-its-contents①⓪">(3)</a>
     <li><a href="#ref-for-skips-its-contents①①">4.2. 
 Using content-visibility: auto</a> <a href="#ref-for-skips-its-contents①②">(2)</a> <a href="#ref-for-skips-its-contents①③">(3)</a> <a href="#ref-for-skips-its-contents①④">(4)</a> <a href="#ref-for-skips-its-contents①⑤">(5)</a> <a href="#ref-for-skips-its-contents①⑥">(6)</a> <a href="#ref-for-skips-its-contents①⑦">(7)</a> <a href="#ref-for-skips-its-contents①⑧">(8)</a> <a href="#ref-for-skips-its-contents①⑨">(9)</a> <a href="#ref-for-skips-its-contents②⓪">(10)</a>
-    <li><a href="#ref-for-skips-its-contents②①">4.3. Restrictions and Clarifications</a> <a href="#ref-for-skips-its-contents②②">(2)</a> <a href="#ref-for-skips-its-contents②③">(3)</a> <a href="#ref-for-skips-its-contents②④">(4)</a> <a href="#ref-for-skips-its-contents②⑤">(5)</a> <a href="#ref-for-skips-its-contents②⑥">(6)</a> <a href="#ref-for-skips-its-contents②⑦">(7)</a> <a href="#ref-for-skips-its-contents②⑧">(8)</a> <a href="#ref-for-skips-its-contents②⑨">(9)</a> <a href="#ref-for-skips-its-contents③⓪">(10)</a> <a href="#ref-for-skips-its-contents③①">(11)</a> <a href="#ref-for-skips-its-contents③②">(12)</a> <a href="#ref-for-skips-its-contents③③">(13)</a> <a href="#ref-for-skips-its-contents③④">(14)</a> <a href="#ref-for-skips-its-contents③⑤">(15)</a> <a href="#ref-for-skips-its-contents③⑥">(16)</a> <a href="#ref-for-skips-its-contents③⑦">(17)</a> <a href="#ref-for-skips-its-contents③⑧">(18)</a> <a href="#ref-for-skips-its-contents③⑨">(19)</a> <a href="#ref-for-skips-its-contents④⓪">(20)</a> <a href="#ref-for-skips-its-contents④①">(21)</a> <a href="#ref-for-skips-its-contents④②">(22)</a> <a href="#ref-for-skips-its-contents④③">(23)</a> <a href="#ref-for-skips-its-contents④④">(24)</a> <a href="#ref-for-skips-its-contents④⑤">(25)</a> <a href="#ref-for-skips-its-contents④⑥">(26)</a>
-    <li><a href="#ref-for-skips-its-contents④⑦">4.4. Accessibility Implications</a> <a href="#ref-for-skips-its-contents④⑧">(2)</a> <a href="#ref-for-skips-its-contents④⑨">(3)</a>
-    <li><a href="#ref-for-skips-its-contents⑤⓪">4.5. Examples</a> <a href="#ref-for-skips-its-contents⑤①">(2)</a> <a href="#ref-for-skips-its-contents⑤②">(3)</a> <a href="#ref-for-skips-its-contents⑤③">(4)</a>
+    <li><a href="#ref-for-skips-its-contents②①">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a> <a href="#ref-for-skips-its-contents②②">(2)</a> <a href="#ref-for-skips-its-contents②③">(3)</a>
+    <li><a href="#ref-for-skips-its-contents②④">4.4. Restrictions and Clarifications</a> <a href="#ref-for-skips-its-contents②⑤">(2)</a> <a href="#ref-for-skips-its-contents②⑥">(3)</a> <a href="#ref-for-skips-its-contents②⑦">(4)</a> <a href="#ref-for-skips-its-contents②⑧">(5)</a> <a href="#ref-for-skips-its-contents②⑨">(6)</a> <a href="#ref-for-skips-its-contents③⓪">(7)</a> <a href="#ref-for-skips-its-contents③①">(8)</a> <a href="#ref-for-skips-its-contents③②">(9)</a> <a href="#ref-for-skips-its-contents③③">(10)</a> <a href="#ref-for-skips-its-contents③④">(11)</a> <a href="#ref-for-skips-its-contents③⑤">(12)</a> <a href="#ref-for-skips-its-contents③⑥">(13)</a> <a href="#ref-for-skips-its-contents③⑦">(14)</a> <a href="#ref-for-skips-its-contents③⑧">(15)</a> <a href="#ref-for-skips-its-contents③⑨">(16)</a> <a href="#ref-for-skips-its-contents④⓪">(17)</a> <a href="#ref-for-skips-its-contents④①">(18)</a> <a href="#ref-for-skips-its-contents④②">(19)</a> <a href="#ref-for-skips-its-contents④③">(20)</a> <a href="#ref-for-skips-its-contents④④">(21)</a> <a href="#ref-for-skips-its-contents④⑤">(22)</a> <a href="#ref-for-skips-its-contents④⑥">(23)</a> <a href="#ref-for-skips-its-contents④⑦">(24)</a> <a href="#ref-for-skips-its-contents④⑧">(25)</a> <a href="#ref-for-skips-its-contents④⑨">(26)</a>
+    <li><a href="#ref-for-skips-its-contents⑤⓪">4.5. Accessibility Implications</a> <a href="#ref-for-skips-its-contents⑤①">(2)</a> <a href="#ref-for-skips-its-contents⑤②">(3)</a>
+    <li><a href="#ref-for-skips-its-contents⑤③">4.6. Examples</a> <a href="#ref-for-skips-its-contents⑤④">(2)</a> <a href="#ref-for-skips-its-contents⑤⑤">(3)</a> <a href="#ref-for-skips-its-contents⑤⑥">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="element-contents">
    <b><a href="#element-contents">#element-contents</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-element-contents">4. Suppressing An Element’s Contents Entirely: the content-visibility property</a> <a href="#ref-for-element-contents①">(2)</a> <a href="#ref-for-element-contents②">(3)</a>
-    <li><a href="#ref-for-element-contents③">4.5. Examples</a> <a href="#ref-for-element-contents④">(2)</a> <a href="#ref-for-element-contents⑤">(3)</a> <a href="#ref-for-element-contents⑥">(4)</a> <a href="#ref-for-element-contents⑦">(5)</a>
+    <li><a href="#ref-for-element-contents③">4.6. Examples</a> <a href="#ref-for-element-contents④">(2)</a> <a href="#ref-for-element-contents⑤">(3)</a> <a href="#ref-for-element-contents⑥">(4)</a> <a href="#ref-for-element-contents⑦">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="relevant-to-the-user">
@@ -4070,8 +4184,27 @@ Using content-visibility: auto</a> <a href="#ref-for-skips-its-contents①②">(
     <li><a href="#ref-for-relevant-to-the-user">4. Suppressing An Element’s Contents Entirely: the content-visibility property</a>
     <li><a href="#ref-for-relevant-to-the-user①">4.2. 
 Using content-visibility: auto</a> <a href="#ref-for-relevant-to-the-user②">(2)</a>
-    <li><a href="#ref-for-relevant-to-the-user③">4.3. Restrictions and Clarifications</a>
-    <li><a href="#ref-for-relevant-to-the-user④"> Changes from 2020-12-16 Working Draft </a>
+    <li><a href="#ref-for-relevant-to-the-user③">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
+    <li><a href="#ref-for-relevant-to-the-user④">4.4. Restrictions and Clarifications</a>
+    <li><a href="#ref-for-relevant-to-the-user⑤"> Changes from 2020-12-16 Working Draft </a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dictdef-contentvisibilityautostatechangedeventinit">
+   <b><a href="#dictdef-contentvisibilityautostatechangedeventinit">#dictdef-contentvisibilityautostatechangedeventinit</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dictdef-contentvisibilityautostatechangedeventinit">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-contentvisibilityautostatechangedevent-skipped">
+   <b><a href="#dom-contentvisibilityautostatechangedevent-skipped">#dom-contentvisibilityautostatechangedevent-skipped</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-contentvisibilityautostatechangedevent-skipped">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a> <a href="#ref-for-dom-contentvisibilityautostatechangedevent-skipped①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-contentvisibilityautostatechangedeventinit-skipped">
+   <b><a href="#dom-contentvisibilityautostatechangedeventinit-skipped">#dom-contentvisibilityautostatechangedeventinit-skipped</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-contentvisibilityautostatechangedeventinit-skipped">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
