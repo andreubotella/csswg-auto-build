@@ -722,10 +722,9 @@ When asked to <dfn export>evaluate media queries and report changes</dfn> for a 
   <ol>
 
    <li>If <var>target</var>'s <a>matches state</a> has changed since the last time these steps were run,
-   <a>fire an event</a> at <var>target</var>
-   using the {{MediaQueryListEvent}} constructor,
-   with its {{Event/type}} attribute initialized to <a event>change</a>,
-   its {{Event/isTrusted}} attribute initialized to true,
+   <a>fire an event</a> named <a event>change</a> at <var>target</var>
+   using {{MediaQueryListEvent}},
+   with its {{Event/isTrusted}} attribute initialized to true,
    its {{MediaQueryList/media}} attribute initialized to <var>target</var>'s <a>media</a>,
    and its {{MediaQueryListEvent/matches}} attribute initialized to <var>target</var>'s <a>matches state</a>. <!--fingerprint-->
 
@@ -839,7 +838,7 @@ The <dfn attribute for=MediaQueryListEvent>matches</dfn> attribute must return t
  <tbody>
   <tr>
    <td><dfn event for=MediaQueryList>change</dfn>
-   <td>{{Event}}
+   <td>{{MediaQueryListEvent}}
    <td>{{MediaQueryList}}
    <td>Fired at the {{MediaQueryList}} when the <a>matches state</a> changes.
 </table>
@@ -1790,8 +1789,8 @@ When asked to <dfn export for=Document>run the scroll steps</dfn> for a {{Docume
 1. For each item <var>target</var> in <var>doc</var>'s <a>pending scroll event targets</a>,
     in the order they were added to the list, run these substeps:
 
-    1. If <var>target</var> is a {{Document}}, <a>fire an event</a> named <a event>scroll</a> that bubbles at <var>target</var> and fire an event
-        named <a event>scroll</a> at the {{VisualViewport}} that is associated with with <var>target</var>.
+    1. If <var>target</var> is a {{Document}}, <a>fire an event</a> named <a event>scroll</a> that bubbles at <var>target</var> and <a>fire an event</a>
+        named <a event>scroll</a> at the {{VisualViewport}} that is associated with <var>target</var>.
     1. Otherwise, <a>fire an event</a> named <a event>scroll</a> at <var>target</var>.
 1. Empty <var>doc</var>'s <a>pending scroll event targets</a>.
 
@@ -1820,13 +1819,13 @@ Whenever scrolling is <a lt="scroll completed">completed</a>, the user agent mus
    <th>Description
  <tbody>
   <tr>
-   <td><dfn event for=Window>resize</dfn>
+   <td><dfn event for="Window, VisualViewport">resize</dfn>
    <td>{{Event}}
    <td>{{Window}}, {{VisualViewport}}
    <td>Fired at the {{Window}} when the <a>viewport</a> is resized. Fired at {{VisualViewport}} when the <a>visual viewport</a> is resized
        or the <a>layout viewport</a> is scaled.
   <tr>
-   <td><dfn event for="Document, Element">scroll</dfn>
+   <td><dfn event for="Document, Element, VisualViewport">scroll</dfn>
    <td>{{Event}}
    <td>{{Document}}, elements, {{VisualViewport}}
    <td>Fired at the {{Document}} or element when the <a>viewport</a> or element is scrolled, respectively. Fired at the {{VisualViewport}}
