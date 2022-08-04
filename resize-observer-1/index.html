@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/resize-observer/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="5eb1ca83315d1c91fd1000b992c986b76a823fe8" name="document-revision">
+  <meta content="75abd06983e6ba4b88e1c95ce99e7445228e656c" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -774,7 +774,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Resize Observer</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-03">3 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-04">4 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1408,8 +1408,8 @@ It represents all Elements being observed.</p>
     <li data-md>
      <p>observations will not be triggered by CSS transforms.</p>
    </ul>
-   <p>Web content can also contain SVG elements. SVG Elements define <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/coords.html#BoundingBoxes" id="ref-for-BoundingBoxes">bounding box</a> instead of a content box.
-Content rect for <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/types.html#InterfaceSVGGraphicsElement" id="ref-for-InterfaceSVGGraphicsElement">SVGGraphicsElement</a>s is a rect whose:</p>
+   <p>Web content can also contain SVG elements. SVG elements that do not have associated CSS layout boxes define <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/coords.html#BoundingBoxes" id="ref-for-BoundingBoxes">bounding box</a> instead of a content box.
+Content rect for the <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/types.html#InterfaceSVGGraphicsElement" id="ref-for-InterfaceSVGGraphicsElement">SVGGraphicsElement</a>s without CSS layout boxes is a rect whose:</p>
    <ul>
     <li data-md>
      <p>width is <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/coords.html#BoundingBoxes" id="ref-for-BoundingBoxes①">bounding box</a> width</p>
@@ -1486,7 +1486,7 @@ run these steps:
     <li data-md>
      <p>Set <var>this</var>.<code class="idl"><a data-link-type="idl" href="#dom-resizeobserverentry-contentrect" id="ref-for-dom-resizeobserverentry-contentrect①">contentRect</a></code> to logical <var>this</var>.<code class="idl"><a data-link-type="idl" href="#dom-resizeobserverentry-contentboxsize" id="ref-for-dom-resizeobserverentry-contentboxsize②">contentBoxSize</a></code> given <var>target</var> and observedBox of "content-box".</p>
     <li data-md>
-     <p>If <var>target</var> is not an SVG element do these steps:</p>
+     <p>If <var>target</var> is not an SVG element or <var>target</var> is an SVG element with an associated CSS layout box do these steps:</p>
      <ol>
       <li data-md>
        <p>Set <var>this</var>.<var>contentRect</var>.top to <var>target</var>.<a data-link-type="dfn" href="https://drafts.csswg.org/css-box-3/#padding-physical" id="ref-for-padding-physical②">padding top</a>.</p>
@@ -1494,7 +1494,7 @@ run these steps:
        <p>Set <var>this</var>.<var>contentRect</var>.left to <var>target</var>.<a data-link-type="dfn" href="https://drafts.csswg.org/css-box-3/#padding-physical" id="ref-for-padding-physical③">padding left</a>.</p>
      </ol>
     <li data-md>
-     <p>If <var>target</var> is an SVG element do these steps:</p>
+     <p>If <var>target</var> is an SVG element without an associated CSS layout box do these steps:</p>
      <ol>
       <li data-md>
        <p>Set <var>this</var>.<var>contentRect</var>.top and <var>this</var>.contentRect.left to 0.</p>
@@ -1566,12 +1566,12 @@ run these steps:</p>
    <h4 class="heading settled" data-level="3.4.8" id="calculate-box-size-h"><span class="secno">3.4.8. </span><span class="content">Calculate box size, given target and observed box</span><a class="self-link" href="#calculate-box-size-h"></a></h4>
    <p>This algorithm computes <var>target</var> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element②①">Element</a></code>'s observed box size. Type of box is
 described by <code class="idl"><a data-link-type="idl" href="#enumdef-resizeobserverboxoptions" id="ref-for-enumdef-resizeobserverboxoptions③">ResizeObserverBoxOptions</a></code>.
-SVG Elements are an exception. SVG size is always its bounding box size, because SVG
-elements do not use standard CSS box model.</p>
+The SVG elements which don’t have associated CSS layout boxes are an exception. The sizes of these elements are always their bounding box sizes, because
+these elements do not use standard CSS box model.</p>
    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="calculate-box-size">calculate box size</dfn>, given <var>target</var> and <var>observedBox</var>, run these steps:</p>
    <ol>
     <li data-md>
-     <p>If <var>target</var> is an <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#InterfaceSVGGraphicsElement" id="ref-for-InterfaceSVGGraphicsElement①">SVGGraphicsElement</a></code></p>
+     <p>If <var>target</var> is an <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#InterfaceSVGGraphicsElement" id="ref-for-InterfaceSVGGraphicsElement①">SVGGraphicsElement</a></code> that does not have an associated CSS layout box</p>
      <ol>
       <li data-md>
        <p>If <var>observedBox</var> is "border-box" or "content-box"</p>
@@ -1592,7 +1592,7 @@ elements do not use standard CSS box model.</p>
        </ol>
      </ol>
     <li data-md>
-     <p>If <var>target</var> is not an <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#InterfaceSVGGraphicsElement" id="ref-for-InterfaceSVGGraphicsElement②">SVGGraphicsElement</a></code></p>
+     <p>If <var>target</var> is not an <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#InterfaceSVGGraphicsElement" id="ref-for-InterfaceSVGGraphicsElement②">SVGGraphicsElement</a></code> or <var>target</var> is an <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#InterfaceSVGGraphicsElement" id="ref-for-InterfaceSVGGraphicsElement③">SVGGraphicsElement</a></code> that has an associated CSS layout box</p>
      <ol>
       <li data-md>
        <p>If <var>observedBox</var> is "border-box"</p>
@@ -1894,7 +1894,7 @@ will be considered for delivery in the next loop.</p>
   <aside class="dfn-panel" data-for="term-for-InterfaceSVGGraphicsElement">
    <a href="https://svgwg.org/svg2-draft/types.html#InterfaceSVGGraphicsElement">https://svgwg.org/svg2-draft/types.html#InterfaceSVGGraphicsElement</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-InterfaceSVGGraphicsElement①">3.4.8. Calculate box size, given target and observed box</a> <a href="#ref-for-InterfaceSVGGraphicsElement②">(2)</a>
+    <li><a href="#ref-for-InterfaceSVGGraphicsElement①">3.4.8. Calculate box size, given target and observed box</a> <a href="#ref-for-InterfaceSVGGraphicsElement②">(2)</a> <a href="#ref-for-InterfaceSVGGraphicsElement③">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-Exposed">
