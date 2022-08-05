@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-contain-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="cfead37c7633d8ce2fba4741ec0e9414c4254c56" name="document-revision">
+  <meta content="b1b45207014a3a776ce86db312544dc5336cbbcd" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -774,7 +774,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Containment Module Level 2</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-04">4 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-05">5 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1963,8 +1963,13 @@ an <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-
    <ol>
     <li data-md>
      <p>If the <a data-link-type="dfn" href="#paint-containment-box" id="ref-for-paint-containment-box⑤">containment box</a> is off-screen or obscured,
-the UA can directly skip trying to paint its contents,
+the UA can usually skip trying to paint its contents,
 as they’re guaranteed to be off-screen/obscured as well.</p>
+     <p class="note" role="note"><span>Note:</span> Some paint effects such as the <a class="css" data-link-type="maybe" href="https://drafts.fxtf.org/filter-effects-1/#funcdef-filter-blur" id="ref-for-funcdef-filter-blur">blur()</a> filter from <a data-link-type="biblio" href="#biblio-filter-effects-1">[FILTER-EFFECTS-1]</a> have non local effects.
+The user agent needs to keep track of these,
+as it may need to repaint parts of an element with such a filter
+when its descendents change,
+even if they have <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment④">paint containment</a> and could otherwise be skipped.</p>
     <li data-md>
      <p>Unless the clipped content is made accessible via a separate mechanism
 such as the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#propdef-overflow" id="ref-for-propdef-overflow③">overflow</a>, <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-resize" id="ref-for-propdef-resize①">resize</a>, or <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-3/#propdef-text-overflow" id="ref-for-propdef-text-overflow①">text-overflow</a> properties,
@@ -2134,7 +2139,7 @@ nor be selectable or focusable.</p>
     <dt data-md><dfn class="css" data-dfn-for="content-visibility" data-dfn-type="value" data-export id="valdef-content-visibility-auto">auto<a class="self-link" href="#valdef-content-visibility-auto"></a></dfn>
     <dd data-md>
      <p>Turns on <a data-link-type="dfn" href="#layout-containment" id="ref-for-layout-containment①①">layout containment</a>, <a data-link-type="dfn" href="#style-containment" id="ref-for-style-containment⑤">style containment</a>,
-and <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment④">paint containment</a> for the element.</p>
+and <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑤">paint containment</a> for the element.</p>
      <p>If the element is not <a data-link-type="dfn" href="#relevant-to-the-user" id="ref-for-relevant-to-the-user">relevant to the user</a>,
 it also <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents②">skips its contents</a>.</p>
      <p>Unlike <a class="css" data-link-type="maybe" href="#valdef-content-visibility-hidden" id="ref-for-valdef-content-visibility-hidden">hidden</a>,
@@ -2145,7 +2150,7 @@ and must be focusable and selectable as normal.</p>
    <div class="algorithm" data-algorithm="skips its contents">
      When an element <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="skip" data-lt="skips its contents|skipping its contents|skip its contents|skipped contents" id="skips-its-contents">skips its contents</dfn>,
 		the user agent must change the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#used-value" id="ref-for-used-value①">used value</a> of the <a class="property css" data-link-type="property" href="#propdef-contain" id="ref-for-propdef-contain①④">contain</a> property
-		so as to turn on <a data-link-type="dfn" href="#layout-containment" id="ref-for-layout-containment①②">layout containment</a>, <a data-link-type="dfn" href="#style-containment" id="ref-for-style-containment⑥">style containment</a>, <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑤">paint containment</a>,
+		so as to turn on <a data-link-type="dfn" href="#layout-containment" id="ref-for-layout-containment①②">layout containment</a>, <a data-link-type="dfn" href="#style-containment" id="ref-for-style-containment⑥">style containment</a>, <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑥">paint containment</a>,
 		and <a data-link-type="dfn" href="#size-containment" id="ref-for-size-containment⑦">size containment</a>.
 		Further, its <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="element-contents">contents</dfn> (the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-scoping-1/#flat-tree" id="ref-for-flat-tree">flat tree</a> descendants of the element,
 		including both text and elements,
@@ -2189,7 +2194,7 @@ since the results of such layouts will not affect elements outside of the contai
 counters do not have to be processed in skipped subtrees,
 since they do not affect counters outside of the container element.</p>
       <li data-md>
-       <p><a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑥">paint containment</a> ensures that
+       <p><a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑦">paint containment</a> ensures that
 ink overflow of painted contents is clipped;
 this, in turn, means that user-agent can reliably determine
 when the visible portion of the element approaches the viewport
@@ -2200,7 +2205,7 @@ the user-agent is able to omit layout in skipped subtrees,
 since the results of such layouts
 will not affect the container element’s size.</p>
      </ul>
-     <p>Note that in the <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility⑥">content-visibility: auto</a> case, <a data-link-type="dfn" href="#layout-containment" id="ref-for-layout-containment①④">layout containment</a>, <a data-link-type="dfn" href="#style-containment" id="ref-for-style-containment⑧">style containment</a>, and <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑦">paint containment</a> persist even if the element is not <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑥">skipped</a>.
+     <p>Note that in the <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility⑥">content-visibility: auto</a> case, <a data-link-type="dfn" href="#layout-containment" id="ref-for-layout-containment①④">layout containment</a>, <a data-link-type="dfn" href="#style-containment" id="ref-for-style-containment⑧">style containment</a>, and <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑧">paint containment</a> persist even if the element is not <a data-link-type="dfn" href="#skips-its-contents" id="ref-for-skips-its-contents⑥">skipped</a>.
 			This is done to prevent layout changes that would be incurred by <a data-link-type="dfn" href="#containment" id="ref-for-containment⑦">containment</a> changes
 			as a result of an element entering and exiting the <span id="ref-for-skips-its-contents⑦">skipped</span> state.</p>
     </div>
@@ -2720,6 +2725,8 @@ Answers are provided below.</p>
      <p>Defined that elements having an ancestor with <a class="css" data-link-type="propdesc" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility③⑧">content-visibility: hidden</a> don’t generate boxes in the top layer</p>
     <li data-md>
      <p>Defined that being in the top-layer makes an element relevant to the user</p>
+    <li data-md>
+     <p>Noted that paint effects with non-local effects can limit certain optimization opportunities.</p>
    </ul>
    <h3 class="heading settled" id="changes-since-2020-06-03"><span class="content"> Changes from <a href="https://www.w3.org/TR/2020/WD-css-contain-2-20200603/">2020-06-03 Working Draft</a> </span><a class="self-link" href="#changes-since-2020-06-03"></a></h3>
    <ul>
@@ -2741,7 +2748,7 @@ Answers are provided below.</p>
    <h3 class="heading settled" id="changes-since-2019-11-11"><span class="content"> Changes from <a href="https://www.w3.org/TR/2019/WD-css-contain-2-20191111/">2019-11-11 Working Draft</a> </span><a class="self-link" href="#changes-since-2019-11-11"></a></h3>
    <ul>
     <li data-md>
-     <p>Define the interaction between <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑧">paint containment</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin①">overflow-clip-margin</a></p>
+     <p>Define the interaction between <a data-link-type="dfn" href="#paint-containment" id="ref-for-paint-containment⑨">paint containment</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-overflow-3/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin①">overflow-clip-margin</a></p>
     <li data-md>
      <p>Add the <a class="property css" data-link-type="property" href="#propdef-content-visibility" id="ref-for-propdef-content-visibility④⓪">content-visibility</a> property</p>
    </ul>
@@ -3501,6 +3508,13 @@ Using content-visibility: hidden</a>
     <li><a href="#ref-for-dictdef-eventinit">4.3. Detecting content-visibility: auto state changes: the ContentVisibilityAutoStateChanged event</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-funcdef-filter-blur">
+   <a href="https://drafts.fxtf.org/filter-effects-1/#funcdef-filter-blur">https://drafts.fxtf.org/filter-effects-1/#funcdef-filter-blur</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-funcdef-filter-blur">3.4.1. 
+Possible Paint-Containment Optimizations</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-top-layer">
    <a href="https://fullscreen.spec.whatwg.org/#top-layer">https://fullscreen.spec.whatwg.org/#top-layer</a><b>Referenced in:</b>
    <ul>
@@ -3775,6 +3789,11 @@ Strong Containment: the contain property</a>
      <li><span class="dfn-paneled" id="term-for-dictdef-eventinit">EventInit</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[FILTER-EFFECTS-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-funcdef-filter-blur">blur()</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[FULLSCREEN]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-top-layer">top layer</span>
@@ -3899,6 +3918,8 @@ Strong Containment: the contain property</a>
    <dd>Rossen Atanassov; Alan Stearns. <a href="https://andreubotella.com/csswg-auto-build/css-regions/"><cite>CSS Regions Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-regions/">https://andreubotella.com/csswg-auto-build/css-regions/</a>
    <dt id="biblio-css-sizing-4">[CSS-SIZING-4]
    <dd>Tab Atkins Jr.; Elika Etemad; Jen Simmons. <a href="https://andreubotella.com/csswg-auto-build/css-sizing-4/"><cite>CSS Box Sizing Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-sizing-4/">https://andreubotella.com/csswg-auto-build/css-sizing-4/</a>
+   <dt id="biblio-filter-effects-1">[FILTER-EFFECTS-1]
+   <dd>Dirk Schulze; Dean Jackson. <a href="https://drafts.fxtf.org/filter-effects-1/"><cite>Filter Effects Module Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/filter-effects-1/">https://drafts.fxtf.org/filter-effects-1/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -4111,9 +4132,9 @@ Strong Containment: the contain property</a>
     <li><a href="#ref-for-paint-containment①">3.4. 
 Paint Containment</a> <a href="#ref-for-paint-containment②">(2)</a>
     <li><a href="#ref-for-paint-containment③">3.4.1. 
-Possible Paint-Containment Optimizations</a>
-    <li><a href="#ref-for-paint-containment④">4. Suppressing An Element’s Contents Entirely: the content-visibility property</a> <a href="#ref-for-paint-containment⑤">(2)</a> <a href="#ref-for-paint-containment⑥">(3)</a> <a href="#ref-for-paint-containment⑦">(4)</a>
-    <li><a href="#ref-for-paint-containment⑧"> Changes from 2019-11-11 Working Draft </a>
+Possible Paint-Containment Optimizations</a> <a href="#ref-for-paint-containment④">(2)</a>
+    <li><a href="#ref-for-paint-containment⑤">4. Suppressing An Element’s Contents Entirely: the content-visibility property</a> <a href="#ref-for-paint-containment⑥">(2)</a> <a href="#ref-for-paint-containment⑦">(3)</a> <a href="#ref-for-paint-containment⑧">(4)</a>
+    <li><a href="#ref-for-paint-containment⑨"> Changes from 2019-11-11 Working Draft </a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="paint-containment-box">
