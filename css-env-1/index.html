@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://drafts.csswg.org/css-env-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="b1b45207014a3a776ce86db312544dc5336cbbcd" name="document-revision">
+  <meta content="0b8d6ffd052d7c409b0634866b9cd2da88bd994b" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -648,7 +648,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Environment Variables Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-05">5 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-08">8 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -672,7 +672,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>This specification defines the concept of <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable">environment variables</a> and the <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env">env()</a> function, which work similarly to custom properties and the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var" id="ref-for-funcdef-var">var()</a> function, but are defined globally for a document. These can be defined either by the user agent, providing values that can be used on the page based on information the UA has special access to, or provided by the author for "global" variables that are guaranteed to be the same no matter where in the document they’re used.</p>
+   <p>This specification defines the concept of <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable">environment variables</a> and the <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env">env()</a> function, which work similarly to custom properties and the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var" id="ref-for-funcdef-var">var()</a> function, but are defined globally for a document. These can be defined either by the user agent, providing values that can be used on the page based on information the UA has special access to, or provided by the author for "global" variables that are guaranteed to be the same no matter where in the document they’re used.</p>
     <a href="https://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents
 (such as HTML and XML)
 on screen, on paper, etc. 
@@ -737,21 +737,21 @@ on screen, on paper, etc.
   <main>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>The <a data-link-type="biblio" href="#biblio-css-variables-1">[css-variables-1]</a> specification defined the concept of "cascading variables",
-author-defined variables created from the value of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property" id="ref-for-custom-property">custom properties</a>,
-capable of being substituted into arbitrary other properties via the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var" id="ref-for-funcdef-var①">var()</a> function.</p>
+author-defined variables created from the value of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property" id="ref-for-custom-property">custom properties</a>,
+capable of being substituted into arbitrary other properties via the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var" id="ref-for-funcdef-var①">var()</a> function.</p>
    <p>This specification defines a related, but simpler, concept of <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable①">environment variables</a>.
 Unlike "cascading variables",
-which can change throughout the page as their corresponding <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property" id="ref-for-custom-property①">custom property</a> takes on different values,
+which can change throughout the page as their corresponding <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property" id="ref-for-custom-property①">custom property</a> takes on different values,
 an <span id="ref-for-css-environment-variable②">environment variable</span> is "global" to a particular document—<wbr>its value is the same everywhere.
 The <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env①">env()</a> function can then be used to substitute the value into arbitrary locations,
-similar to the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var" id="ref-for-funcdef-var②">var()</a> function.</p>
+similar to the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var" id="ref-for-funcdef-var②">var()</a> function.</p>
    <p>These "global" variables have both benefits and downsides versus cascading variables:</p>
    <ul>
     <li data-md>
      <p>Many variables aren’t meant to change over the course of a page;
 they set up themes,
 or are helpers for particular numerical values.
-Using <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable③">environment variables</a> instead of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property" id="ref-for-custom-property②">custom properties</a> to define these
+Using <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable③">environment variables</a> instead of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property" id="ref-for-custom-property②">custom properties</a> to define these
 communicates the proper intent,
 which is good both for the author of the document
 (particularly when multiple people are collaborating on a single document),
@@ -761,13 +761,13 @@ as it can store these variables in a more optimal way.</p>
      <p>Because <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable④">environment variables</a> don’t depend on the value of anything drawn from a particular element,
 they can be used in places where there is no obvious element to draw from,
 such as in <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#at-ruledef-media" id="ref-for-at-ruledef-media">@media</a> rules,
-where the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var" id="ref-for-funcdef-var③">var()</a> function would not be valid.</p>
+where the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var" id="ref-for-funcdef-var③">var()</a> function would not be valid.</p>
     <li data-md>
      <p>Information from the user agent itself,
 such as the margin of the viewport to avoid laying out in by default
 (for example, to avoid overlapping a "notch" in the screen),
 can be retrieved via <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env②">env()</a>,
-whereas the element-specific nature of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var" id="ref-for-funcdef-var④">var()</a> was not an appropriate place to pipe that information in.</p>
+whereas the element-specific nature of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var" id="ref-for-funcdef-var④">var()</a> was not an appropriate place to pipe that information in.</p>
    </ul>
    <p>Most <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable⑤">environment variables</a> will have a single value at a time.
 Some, however, are "indexed", representing multiple values at once,
@@ -781,9 +781,9 @@ similar to selecting one element from a list in a traditional programming langua
 with a syntax like <code>values[0]</code>.</p>
    <h2 class="heading settled" data-level="2" id="environment"><span class="secno">2. </span><span class="content">Environment Variables</span><a class="self-link" href="#environment"></a></h2>
    <p>A CSS <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-noexport id="css-environment-variable">environment variable</dfn> is a name associated with a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value">&lt;declaration-value></a> (a sequence of zero more CSS tokens, with almost no restrictions on what tokens can exist),
-similar to a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property" id="ref-for-custom-property③">custom property</a>. <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable⑥">Environment variables</a> can be defined by the user agent,
+similar to a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property" id="ref-for-custom-property③">custom property</a>. <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable⑥">Environment variables</a> can be defined by the user agent,
 or by the user.
-(In the latter case, the names are <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name">&lt;custom-property-name></a>s,
+(In the latter case, the names are <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name">&lt;custom-property-name></a>s,
 and start with `--` per standard for custom identifiers.)</p>
    <p class="issue" id="issue-c17a17b4"><a class="self-link" href="#issue-c17a17b4"></a> Is the set of UA-defined <a data-link-type="dfn" href="#css-environment-variable" id="ref-for-css-environment-variable⑦">environment variables</a> visible to script?
 If so, define an API on <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> to expose them.</p>
@@ -1017,18 +1017,18 @@ If there are any <span class="css" id="ref-for-funcdef-env①⑥">env()</span> r
     </ol>
    </div>
    <p class="issue" id="issue-91e85376"><a class="self-link" href="#issue-91e85376"></a> Define when substitution happens.
-It has to be before <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var" id="ref-for-funcdef-var⑤">var()</a> substitution.
+It has to be before <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var" id="ref-for-funcdef-var⑤">var()</a> substitution.
 Alternately, should <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env①⑧">env()</a> substitution happen at parse time,
 so unknown variable names cause it to fail syntax checking?
 There’s no particular reason to have it happen at computed-value time,
-like <span class="css" id="ref-for-funcdef-var⑥">var()</span> does—<wbr>that was to ensure that <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property" id="ref-for-custom-property④">custom properties</a> could inherit their value down
+like <span class="css" id="ref-for-funcdef-var⑥">var()</span> does—<wbr>that was to ensure that <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property" id="ref-for-custom-property④">custom properties</a> could inherit their value down
 before they were picked up by a <span class="css" id="ref-for-funcdef-var⑦">var()</span>.</p>
    <p class="issue" id="issue-9806265e"><a class="self-link" href="#issue-9806265e"></a> When I figure out where else <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env①⑨">env()</a> can go,
 define how/when it substitutes.</p>
    <h3 class="heading settled" data-level="3.1" id="env-in-shorthands"><span class="secno">3.1. </span><span class="content">Environment Variables in Shorthand Properties</span><a class="self-link" href="#env-in-shorthands"></a></h3>
    <p class="issue" id="issue-66b99b40"><a class="self-link" href="#issue-66b99b40"></a> If <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env②⓪">env()</a> substitution happens during parsing,
 then this is unnecessary.</p>
-   <p>The <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env②①">env()</a> function causes the same difficulties with <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#shorthand-property" id="ref-for-shorthand-property">shorthand properties</a> as the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var" id="ref-for-funcdef-var⑧">var()</a> function does.
+   <p>The <a class="css" data-link-type="maybe" href="#funcdef-env" id="ref-for-funcdef-env②①">env()</a> function causes the same difficulties with <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#shorthand-property" id="ref-for-shorthand-property">shorthand properties</a> as the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var" id="ref-for-funcdef-var⑧">var()</a> function does.
 When an <span class="css" id="ref-for-funcdef-env②②">env()</span> is used in a <span id="ref-for-shorthand-property①">shorthand property</span>,
 then,
 it has the same effects as defined in <a href="https://andreubotella.com/csswg-auto-build/css-variables-1/#variables-in-shorthands"><cite>CSS Variables 1</cite> § 3.2 Variables in Shorthand Properties</a>.</p>
@@ -1204,28 +1204,28 @@ it has the same effects as defined in <a href="https://andreubotella.com/csswg-a
     <li><a href="#ref-for-mult-opt">3. Using Environment Variables: the env() notation</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-typedef-custom-property-name">
-   <a href="https://andreubotella.com/csswg-auto-build/css-variables-1/#typedef-custom-property-name">https://andreubotella.com/csswg-auto-build/css-variables-1/#typedef-custom-property-name</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-typedef-custom-property-name">2. Environment Variables</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-custom-property">
-   <a href="https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property">https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-custom-property">1. Introduction</a> <a href="#ref-for-custom-property①">(2)</a> <a href="#ref-for-custom-property②">(3)</a>
-    <li><a href="#ref-for-custom-property③">2. Environment Variables</a>
-    <li><a href="#ref-for-custom-property④">3. Using Environment Variables: the env() notation</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="term-for-invalid-at-computed-value-time">
    <a href="https://andreubotella.com/csswg-auto-build/css-variables-1/#invalid-at-computed-value-time">https://andreubotella.com/csswg-auto-build/css-variables-1/#invalid-at-computed-value-time</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-invalid-at-computed-value-time">3. Using Environment Variables: the env() notation</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-typedef-custom-property-name">
+   <a href="https://andreubotella.com/csswg-auto-build/css-variables-2/#typedef-custom-property-name">https://andreubotella.com/csswg-auto-build/css-variables-2/#typedef-custom-property-name</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-typedef-custom-property-name">2. Environment Variables</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-custom-property">
+   <a href="https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property">https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-custom-property">1. Introduction</a> <a href="#ref-for-custom-property①">(2)</a> <a href="#ref-for-custom-property②">(3)</a>
+    <li><a href="#ref-for-custom-property③">2. Environment Variables</a>
+    <li><a href="#ref-for-custom-property④">3. Using Environment Variables: the env() notation</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-funcdef-var">
-   <a href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var">https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var</a><b>Referenced in:</b>
+   <a href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var">https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-funcdef-var">Unnumbered Section</a>
     <li><a href="#ref-for-funcdef-var①">1. Introduction</a> <a href="#ref-for-funcdef-var②">(2)</a> <a href="#ref-for-funcdef-var③">(3)</a> <a href="#ref-for-funcdef-var④">(4)</a>
@@ -1270,9 +1270,13 @@ it has the same effects as defined in <a href="https://andreubotella.com/csswg-a
    <li>
     <a data-link-type="biblio">[CSS-VARIABLES-1]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-invalid-at-computed-value-time">invalid at computed-value time</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-VARIABLES-2]</a> defines the following terms:
+    <ul>
      <li><span class="dfn-paneled" id="term-for-typedef-custom-property-name">&lt;custom-property-name></span>
      <li><span class="dfn-paneled" id="term-for-custom-property">custom property</span>
-     <li><span class="dfn-paneled" id="term-for-invalid-at-computed-value-time">invalid at computed-value time</span>
      <li><span class="dfn-paneled" id="term-for-funcdef-var">var()</span>
     </ul>
    <li>
@@ -1294,6 +1298,8 @@ it has the same effects as defined in <a href="https://andreubotella.com/csswg-a
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-values-4/">https://andreubotella.com/csswg-auto-build/css-values-4/</a>
    <dt id="biblio-css-variables-1">[CSS-VARIABLES-1]
    <dd>CSS Variables Module Level 1 URL: <a href="https://www.w3.org/TR/css-variables-1/">https://www.w3.org/TR/css-variables-1/</a>
+   <dt id="biblio-css-variables-2">[CSS-VARIABLES-2]
+   <dd>CSS Variables Module Level 2 URL: <a href="https://drafts.csswg.org/css-variables-2/">https://drafts.csswg.org/css-variables-2/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -1323,11 +1329,11 @@ like reusing a block of declarations?</p>
      <a class="issue-return" href="#issue-9ee89738" title="Jump to section">↵</a>
    </div>
    <div class="issue"> Define when substitution happens.
-It has to be before <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#funcdef-var">var()</a> substitution.
+It has to be before <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#funcdef-var">var()</a> substitution.
 Alternately, should <a class="css" data-link-type="maybe" href="#funcdef-env">env()</a> substitution happen at parse time,
 so unknown variable names cause it to fail syntax checking?
 There’s no particular reason to have it happen at computed-value time,
-like <span class="css">var()</span> does—<wbr>that was to ensure that <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-1/#custom-property">custom properties</a> could inherit their value down
+like <span class="css">var()</span> does—<wbr>that was to ensure that <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-variables-2/#custom-property">custom properties</a> could inherit their value down
 before they were picked up by a <span class="css">var()</span>. <a class="issue-return" href="#issue-91e85376" title="Jump to section">↵</a></div>
    <div class="issue"> When I figure out where else <a class="css" data-link-type="maybe" href="#funcdef-env">env()</a> can go,
 define how/when it substitutes. <a class="issue-return" href="#issue-9806265e" title="Jump to section">↵</a></div>
