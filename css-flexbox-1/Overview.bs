@@ -554,17 +554,12 @@ Flex Containers: the ''flex'' and ''inline-flex'' 'display' values</h2>
 
 			<wpt>
 				display-flex-001.htm
-				display_flex_exist.html
 			</wpt>
 
 		<dt><dfn>inline-flex</dfn>
 		<dd>
 			This value causes an element to generate a <a>flex container</a> box
 			that is <a>inline-level</a> when placed in <a>flow layout</a>.
-
-			<wpt>
-				display_inline-flex_exist.html
-			</wpt>
 	</dl>
 
 	A <a>flex container</a> establishes a new <dfn export>flex formatting context</dfn> for its contents.
@@ -1033,7 +1028,10 @@ Grid doesn't have similarly meaningful shrinkability, so it doesn't need to care
 	Note this means that percentages calculated against this size
 	will [=behave as auto=].
 
-	For other cases, it does not force the box's size to become indefinite.
+	For any purpose <em>other than</em> calculating intrinsic sizes,
+	a [=content-based minimum size=]
+	(unlike an explicit ''min-content''/etc [=minimum size=])
+	does not force the box's size to become indefinite.
 	However, if a percentage resolved against the box's size <em>before</em> this minimum was applied,
 	it must be re-resolved against the new size after it is applied.
 
@@ -1523,6 +1521,13 @@ The 'flex' Shorthand</h3>
 	If a box is not a <a>flex item</a>,
 	'flex' has no effect.
 
+	Note: The initial values of the 'flex' longhands are equivalent to
+	<a class="css-code" href="#flex-initial">flex: 0 1 auto</a>.
+	This differs from their defaults when omitted in the 'flex' shorthand
+	(effectively ''1 1 0px'')
+	so that the 'flex' shorthand can better accommodate
+	<a href="#flex-common">the most common cases</a>.
+
 	<dl dfn-type=value dfn-for=flex>
 		<dt><dfn><<'flex-grow'>></dfn>
 		<dd>
@@ -1652,12 +1657,6 @@ The 'flex' Shorthand</h3>
 			notice that the item with a flex factor of ''2'' grows twice as fast as the others.
 		</figcaption>
 	</figure>
-
-	The initial values of the 'flex' components are equivalent to <a class="css-code" href="#flex-initial">flex: 0 1 auto</a>.
-
-	Note: The initial values of 'flex-grow' and 'flex-basis'
-	are different from their defaults when omitted in the 'flex' shorthand.
-	This is so that the 'flex' shorthand can better accommodate the most <a href="#flex-common">common cases</a>.
 
 	A unitless zero that is not already preceded by two flex factors
 	must be interpreted as a flex factor.
@@ -2849,7 +2848,7 @@ Definite and Indefinite Sizes</h3>
 		of its [=flex items=]
 		are treated as [=definite=].
 
-	2. If a [=flex-item’s=] [=flex basis=] is [=definite=],
+	2. If a [=flex item’s=] [=flex basis=] is [=definite=],
 		then its post-flexing [=main size=] is also [=definite=].
 
 	3. If a <a>single-line</a> <a>flex container</a> has a definite <a>cross size</a>,
@@ -3714,7 +3713,7 @@ Changes since the <a href="https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/
 					even though it can rely on the <a>indefinite</a> sizes
 					of any flex items in the same line</del>.
 
-					<li><ins>If a [=flex-item’s=] [=flex basis=] is [=definite=],
+					<li><ins>If a [=flex item’s=] [=flex basis=] is [=definite=],
 					then its post-flexing [=main size=] is also [=definite=].</ins>
 				</ol>
 			</blockquote>

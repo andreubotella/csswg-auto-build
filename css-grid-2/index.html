@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-grid-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="ba0b463bce0c6be208d7f1a7a7d85228beef69c2" name="document-revision">
+  <meta content="bd88dfa303277b5746972ae94e3505a082f866b1" name="document-revision">
 <style>
 .example {
 	clear:both
@@ -819,7 +819,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Grid Layout Module Level 2</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-18">18 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-19">19 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2012,10 +2012,11 @@ whose <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-
 	(even if e.g. its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> property specifies a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#definite" id="ref-for-definite⑧">definite</a> size).
 	Note this means that percentages calculated against this size
 	will <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#behave-as-auto" id="ref-for-behave-as-auto">behave as auto</a>.</p>
-   <p>Nonetheless, although this may require an additional layout pass to re-resolve percentages in some cases,
-	this value
-	(like the <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content">min-content</a>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content">max-content</a>, and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-sizing-4/#valdef-width-fit-content" id="ref-for-valdef-width-fit-content②">fit-content</a> values defined in <a data-link-type="biblio" href="#biblio-css-sizing-3">[CSS-SIZING-3]</a>)
-	does not prevent the resolution of percentage sizes within the item.</p>
+   <p>For any purpose <em>other than</em> calculating intrinsic sizes,
+	a <a data-link-type="dfn" href="#content-based-minimum-size" id="ref-for-content-based-minimum-size⑤">content-based minimum size</a> (unlike an explicit <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content">min-content</a>/etc <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width" id="ref-for-min-width③">minimum size</a>)
+	does not force the box’s size to become indefinite.
+	However, if a percentage resolved against the box’s size <em>before</em> this minimum was applied,
+	it must be re-resolved against the new size after it is applied.</p>
    <div class="note" id="min-size-opt" role="note">
     <a class="self-link" href="#min-size-opt"></a> Note that while a content-based minimum size is often appropriate,
 		and helps prevent content from overlapping or spilling outside its container,
@@ -2244,10 +2245,10 @@ whose <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-
     <dt><dfn class="dfn-paneled css" data-dfn-for="grid-template-columns, grid-template-rows" data-dfn-type="value" data-export id="valdef-grid-template-columns-auto">auto</dfn> 
     <dd>
       As a <em>maximum</em>: represents the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution">max-content contribution</a> of the <a data-link-type="dfn" href="#grid-item" id="ref-for-grid-item④②">grid items</a> occupying the <a data-link-type="dfn" href="#grid-track" id="ref-for-grid-track①②">grid track</a>;
-			however, unlike <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①">max-content</a>,
+			however, unlike <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content">max-content</a>,
 			allows expansion of the track
 			by the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-align-3/#propdef-align-content" id="ref-for-propdef-align-content①">align-content</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-align-3/#propdef-justify-content" id="ref-for-propdef-justify-content①">justify-content</a> properties. 
-     <p>As a <em>minimum</em>: represents the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width" id="ref-for-min-width③">minimum size</a> (specified by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-min-width" id="ref-for-propdef-min-width②">min-width</a>/<a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-min-height" id="ref-for-propdef-min-height①">min-height</a>)
+     <p>As a <em>minimum</em>: represents the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width" id="ref-for-min-width④">minimum size</a> (specified by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-min-width" id="ref-for-propdef-min-width②">min-width</a>/<a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-min-height" id="ref-for-propdef-min-height①">min-height</a>)
 			of the <a data-link-type="dfn" href="#grid-item" id="ref-for-grid-item④③">grid items</a> occupying the <a data-link-type="dfn" href="#grid-track" id="ref-for-grid-track①③">grid track</a>.
 			(This initially is often, but not always,
 			equal to a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content①">min-content</a> minimum—<wbr>see <a href="#min-size-auto">§ 6.6 Automatic Minimum Size of Grid Items</a>.)</p>
@@ -2262,7 +2263,7 @@ whose <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-
     <dt><dfn class="dfn-paneled css" data-dfn-for="grid-template-columns, grid-template-rows" data-dfn-type="value" data-export id="valdef-grid-template-columns-min-content">min-content</dfn> 
     <dd> Represents the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution">min-content contribution</a> of the <a data-link-type="dfn" href="#grid-item" id="ref-for-grid-item④⑤">grid items</a> occupying the <a data-link-type="dfn" href="#grid-track" id="ref-for-grid-track①⑤">grid track</a>. 
     <dt><dfn class="dfn-paneled css" data-dfn-for="grid-template-columns, grid-template-rows" data-dfn-type="value" data-export data-lt="fit-content()" id="valdef-grid-template-columns-fit-content">fit-content( <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage⑤">&lt;length-percentage></a> )</dfn> 
-    <dd> Represents the formula <code>max(<var>minimum</var>, min(<var>limit</var>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content②">max-content</a>))</code>,
+    <dd> Represents the formula <code>max(<var>minimum</var>, min(<var>limit</var>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①">max-content</a>))</code>,
 			where <var>minimum</var> represents an <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto⑤">auto</a> minimum
 			(which is often, but not always, equal to a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content②">min-content</a> minimum),
 			and <var>limit</var> is the <a data-link-type="dfn" href="#grid-template-rows-track-sizing-function" id="ref-for-grid-template-rows-track-sizing-function②">track sizing function</a> passed as an argument to <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content①">fit-content()</a>.
@@ -2281,7 +2282,7 @@ whose <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-
 				but no larger than the other half of the <a data-link-type="dfn" href="#free-space" id="ref-for-free-space①">free space</a>. 
     </ol>
     <p>If the non-flexible sizes
-		(<span class="css">100px</span>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content③">max-content</a>, and <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content③">min-content</a>)
+		(<span class="css">100px</span>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content②">max-content</a>, and <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content③">min-content</a>)
 		sum to larger than the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container④⑤">grid container</a>’s width,
 		the final <a data-link-type="dfn" href="#grid-line" id="ref-for-grid-line①⑤">grid line</a> will be a distance equal to their sum away from the start edge of the <span id="ref-for-grid-container④⑥">grid container</span> (the <span class="css">1fr</span> sizes both resolve to <span class="css">0</span>).
 		If the sum is less than the <span id="ref-for-grid-container④⑦">grid container</span>’s width,
@@ -2514,7 +2515,7 @@ and cannot specify track sizes, only <span id="ref-for-line-name⑤">line names<
 	(which happens when the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container⑤③">grid container</a>’s width or height is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#indefinite" id="ref-for-indefinite">indefinite</a>),
 	flex-sized <a data-link-type="dfn" href="#grid-track" id="ref-for-grid-track①⑨">grid tracks</a> are sized to their contents while retaining their respective proportions.
 	The used size of each flex-sized <span id="ref-for-grid-track②⓪">grid track</span> is computed by
-	determining the <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content④">max-content</a> size of each flex-sized <span id="ref-for-grid-track②①">grid track</span> and dividing that size by the respective <a data-link-type="dfn" href="#grid-template-columns-flex-factor" id="ref-for-grid-template-columns-flex-factor⑤">flex factor</a> to determine a “hypothetical <span class="css">1fr</span> size”.
+	determining the <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content③">max-content</a> size of each flex-sized <span id="ref-for-grid-track②①">grid track</span> and dividing that size by the respective <a data-link-type="dfn" href="#grid-template-columns-flex-factor" id="ref-for-grid-template-columns-flex-factor⑤">flex factor</a> to determine a “hypothetical <span class="css">1fr</span> size”.
 	The maximum of those is used as the resolved <span class="css">1fr</span> length (the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="flex-fraction">flex fraction</dfn>),
 	which is then multiplied by each <span id="ref-for-grid-track②②">grid track</span>’s <span id="ref-for-grid-template-columns-flex-factor⑥">flex factor</span> to determine its final size.</p>
    <p class="note" role="note"><span>Note:</span> <a class="production css" data-link-type="type" href="#typedef-flex" id="ref-for-typedef-flex①⓪" title="Expands to: fr">&lt;flex></a> values are not <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#length-value" id="ref-for-length-value" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a>s
@@ -2880,7 +2881,7 @@ grid-template-columns: auto 1fr auto;
        <object data="images/grid-shorthand.svg" type="image/svg+xml">
         <ul>
          <li>Three columns, sized <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto⑦">auto</a>, <span class="css">1fr</span>, and <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto">auto</a>, respectively 
-         <li>Two rows sized as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto⑧">auto</a> and <span class="css">1fr</span>, respectively. 
+         <li>Two rows sized as <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto①">auto</a> and <span class="css">1fr</span>, respectively. 
          <li>A line named both “header-top” and “a-start” at the top,
 							a line with four names—<wbr>“header-bottom”, “main-top”, “a-end”, and “b-start”—<wbr>in the middle,
 							a line named “main-bottom” and “b-end” at the bottom. 
@@ -3743,7 +3744,7 @@ grid-column-start: B 2; grid-column-end: span 1;
    <p>When the second value is omitted,
 	if the first value is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#identifier-value" id="ref-for-identifier-value①⑤">&lt;custom-ident></a>,
 	the <a class="property css" data-link-type="property" href="#propdef-grid-row-end" id="ref-for-propdef-grid-row-end⑦">grid-row-end</a>/<a class="property css" data-link-type="property" href="#propdef-grid-column-end" id="ref-for-propdef-grid-column-end⑧">grid-column-end</a> longhand is also set to that <span class="production" id="ref-for-identifier-value①⑥">&lt;custom-ident></span>;
-	otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto①">auto</a>.</p>
+	otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto②">auto</a>.</p>
    <table class="def propdef" data-link-for-hint="grid-area">
     <tbody>
      <tr>
@@ -3796,14 +3797,14 @@ grid-column-start: B 2; grid-column-end: span 1;
 	and <a class="property css" data-link-type="property" href="#propdef-grid-column-end" id="ref-for-propdef-grid-column-end①⓪">grid-column-end</a> is set to the fourth value.</p>
    <p>When <a class="property css" data-link-type="property" href="#propdef-grid-column-end" id="ref-for-propdef-grid-column-end①①">grid-column-end</a> is omitted,
 	if <a class="property css" data-link-type="property" href="#propdef-grid-column-start" id="ref-for-propdef-grid-column-start①①">grid-column-start</a> is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#identifier-value" id="ref-for-identifier-value①⑦">&lt;custom-ident></a>, <span class="property" id="ref-for-propdef-grid-column-end①②">grid-column-end</span> is set to that <span class="production" id="ref-for-identifier-value①⑧">&lt;custom-ident></span>;
-	otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto②">auto</a>.</p>
+	otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto③">auto</a>.</p>
    <p>When <a class="property css" data-link-type="property" href="#propdef-grid-row-end" id="ref-for-propdef-grid-row-end①⓪">grid-row-end</a> is omitted,
 	if <a class="property css" data-link-type="property" href="#propdef-grid-row-start" id="ref-for-propdef-grid-row-start①⓪">grid-row-start</a> is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#identifier-value" id="ref-for-identifier-value①⑨">&lt;custom-ident></a>, <span class="property" id="ref-for-propdef-grid-row-end①①">grid-row-end</span> is set to that <span class="production" id="ref-for-identifier-value②⓪">&lt;custom-ident></span>;
-	otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto③">auto</a>.</p>
+	otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto④">auto</a>.</p>
    <p>When <a class="property css" data-link-type="property" href="#propdef-grid-column-start" id="ref-for-propdef-grid-column-start①②">grid-column-start</a> is omitted,
 	if <a class="property css" data-link-type="property" href="#propdef-grid-row-start" id="ref-for-propdef-grid-row-start①①">grid-row-start</a> is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#identifier-value" id="ref-for-identifier-value②①">&lt;custom-ident></a>,
 	all four longhands are set to that value.
-	Otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto④">auto</a>.</p>
+	Otherwise, it is set to <a class="css" data-link-type="value" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑤">auto</a>.</p>
    <p class="note" role="note"><span>Note:</span> The resolution order for this shorthand is row-start/column-start/row-end/column-end,
 	which goes <abbr title="counterclockwise">CCW</abbr> for <abbr title="left-to-right">LTR</abbr> pages,
 	the opposite direction of the related 4-edge properties using physical directions, like <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-margin" id="ref-for-propdef-margin">margin</a>.</p>
@@ -4368,7 +4369,7 @@ and return to the previous step.</p>
 		the grid will transform to match,
 		but the offsets won’t.</p>
    </div>
-   <p>Instead of auto-placement, an <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto⑨">auto</a> value for a <a data-link-type="dfn" href="#grid-placement-property" id="ref-for-grid-placement-property①⑨">grid-placement property</a> contributes a special line to the <a data-link-type="dfn" href="#grid-placement" id="ref-for-grid-placement①②">placement</a> whose position is that of the corresponding padding edge of the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container⑦⑥">grid container</a> (the padding edge of the scrollable area, if the <span id="ref-for-grid-container⑦⑦">grid container</span> overflows).
+   <p>Instead of auto-placement, an <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑥">auto</a> value for a <a data-link-type="dfn" href="#grid-placement-property" id="ref-for-grid-placement-property①⑨">grid-placement property</a> contributes a special line to the <a data-link-type="dfn" href="#grid-placement" id="ref-for-grid-placement①②">placement</a> whose position is that of the corresponding padding edge of the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container⑦⑥">grid container</a> (the padding edge of the scrollable area, if the <span id="ref-for-grid-container⑦⑦">grid container</span> overflows).
 	These lines become the first and last lines (0th and -0th) of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="augmented-grid">augmented grid</dfn> used for positioning absolutely-positioned items.</p>
    <p class="note" role="note"><span>Note:</span> Thus, by default, the absolutely-positioned box’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#containing-block" id="ref-for-containing-block⑦">containing block</a> will correspond
 	to the padding edges of the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container⑦⑧">grid container</a>, as it does for <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#block-container" id="ref-for-block-container①">block containers</a>.</p>
@@ -4377,11 +4378,11 @@ and return to the previous step.</p>
 	or affect the size/configuration of the grid in any way.
 	If a <a data-link-type="dfn" href="#grid-placement-property" id="ref-for-grid-placement-property②⓪">grid-placement property</a> refers to a non-existent line
 	either by explicitly specifying such a line or by spanning outside of the existing <a data-link-type="dfn" href="#implicit-grid" id="ref-for-implicit-grid②①">implicit grid</a>,
-	it is instead treated as specifying <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①⓪">auto</a> (instead of creating new <a data-link-type="dfn" href="#implicit-grid-lines" id="ref-for-implicit-grid-lines③">implicit grid lines</a>).</p>
+	it is instead treated as specifying <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto⑧">auto</a> (instead of creating new <a data-link-type="dfn" href="#implicit-grid-lines" id="ref-for-implicit-grid-lines③">implicit grid lines</a>).</p>
    <p class="note" role="note"><span>Note:</span> Remember that implicit lines are assumed to have all line names,
 	so a referenced line might exist even though it is not explicitly named.</p>
    <p>If the <a data-link-type="dfn" href="#grid-placement" id="ref-for-grid-placement①③">placement</a> only contains a <a data-link-type="dfn" href="#grid-span" id="ref-for-grid-span①⑥">grid span</a>,
-	replace it with the two <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①①">auto</a> lines in that axis.
+	replace it with the two <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑦">auto</a> lines in that axis.
 	(This happens when both <a data-link-type="dfn" href="#grid-placement-property" id="ref-for-grid-placement-property②①">grid-placement properties</a> in an axis contributed a span originally,
 	and <a href="#grid-placement-errors">§ 8.3.1 Grid Placement Conflict Handling</a> caused the second span to be ignored.)</p>
    <h3 class="heading settled" data-level="10.2" id="static-position"><span class="secno">10.2. </span><span class="content"> With a Grid Container as Parent</span><a class="self-link" href="#static-position"></a></h3>
@@ -4590,7 +4591,7 @@ and return to the previous step.</p>
 	Each <span id="ref-for-grid-template-rows-track-sizing-function⑥">sizing function</span> is either:</p>
    <ul>
     <li>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="fixed-sizing-function">fixed sizing function</dfn> (<a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#length-value" id="ref-for-length-value②" title="Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | q | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw">&lt;length></a> or resolvable <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value" id="ref-for-percentage-value③">&lt;percentage></a>). 
-    <li>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="intrinsic-sizing-function">intrinsic sizing function</dfn> (<a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content④">min-content</a>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑤">max-content</a>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①②">auto</a>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content②">fit-content()</a>). 
+    <li>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="intrinsic-sizing-function">intrinsic sizing function</dfn> (<a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content④">min-content</a>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content④">max-content</a>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto⑨">auto</a>, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content②">fit-content()</a>). 
     <li>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="flexible-sizing-function">flexible sizing function</dfn> (<a class="production css" data-link-type="type" href="#typedef-flex" id="ref-for-typedef-flex①③" title="Expands to: fr">&lt;flex></a>). 
    </ul>
    <p>The <a data-link-type="dfn" href="#grid-sizing-algorithm" id="ref-for-grid-sizing-algorithm">grid sizing algorithm</a> defines how to resolve these sizing constraints into used track sizes.</p>
@@ -4785,13 +4786,13 @@ and return to the previous step.</p>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="min-track-sizing-function">min track sizing function</dfn> 
     <dd> If the track was sized with a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-minmax" id="ref-for-valdef-grid-template-columns-minmax④">minmax()</a> function,
 			this is the first argument to that function.
-			If the track was sized with a <a class="production css" data-link-type="type" href="#typedef-flex" id="ref-for-typedef-flex①④" title="Expands to: fr">&lt;flex></a> value or <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content③">fit-content()</a> function, <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①③">auto</a>.
+			If the track was sized with a <a class="production css" data-link-type="type" href="#typedef-flex" id="ref-for-typedef-flex①④" title="Expands to: fr">&lt;flex></a> value or <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content③">fit-content()</a> function, <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑧">auto</a>.
 			Otherwise, the track’s sizing function. 
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="max-track-sizing-function">max track sizing function</dfn> 
     <dd> If the track was sized with a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-minmax" id="ref-for-valdef-grid-template-columns-minmax⑤">minmax()</a> function,
 			this is the second argument to that function.
 			Otherwise, the track’s sizing function.
-			In all cases, treat <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①④">auto</a> and <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content④">fit-content()</a> as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑥">max-content</a>,
+			In all cases, treat <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑨">auto</a> and <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content④">fit-content()</a> as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑤">max-content</a>,
 			except where specified otherwise for <span class="css" id="ref-for-valdef-grid-template-columns-fit-content⑤">fit-content()</span>. 
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="available-grid-space">available grid space</dfn> 
     <dd>
@@ -4805,7 +4806,7 @@ then use the size of its content box.</p>
 a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-constraint" id="ref-for-min-content-constraint①">min-content constraint</a> or <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-constraint" id="ref-for-max-content-constraint①">max-content constraint</a> then the <a data-link-type="dfn" href="#available-grid-space" id="ref-for-available-grid-space①">available grid space</a> is that constraint
 (and is indefinite).</p>
      </ul>
-     <p class="note" role="note"><span>Note:</span> <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①⑤">auto</a> sizes that indicate content-based sizing (e.g. the height of a block-level box in horizontal writing modes) are equivalent to <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑦">max-content</a>.</p>
+     <p class="note" role="note"><span>Note:</span> <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto①⓪">auto</a> sizes that indicate content-based sizing (e.g. the height of a block-level box in horizontal writing modes) are equivalent to <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑥">max-content</a>.</p>
      <p>In all cases, clamp the <a data-link-type="dfn" href="#available-grid-space" id="ref-for-available-grid-space②">available grid space</a> according to the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container①①①">grid container’s</a> min/max-width/height properties,
 			if they are definite.</p>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="free-space">free space</dfn> 
@@ -4844,7 +4845,7 @@ a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-s
     <dd>
       Resolve to an absolute length and use that size as the track’s initial <a data-link-type="dfn" href="#base-size" id="ref-for-base-size②">base size</a>. 
      <p class="note" role="note"><span>Note:</span> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#indefinite" id="ref-for-indefinite⑤">Indefinite</a> lengths cannot occur,
-			as they’re treated as <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑤">auto</a>.</p>
+			as they’re treated as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①⓪">auto</a>.</p>
     <dt>An <a data-link-type="dfn" href="#intrinsic-sizing-function" id="ref-for-intrinsic-sizing-function②">intrinsic sizing function</a> 
     <dd> Use an initial <a data-link-type="dfn" href="#base-size" id="ref-for-base-size③">base size</a> of zero. 
    </dl>
@@ -4868,7 +4869,7 @@ a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-s
 	insofar as possible.</p>
    <p class="note" role="note"><span>Note:</span> When this step is complete,
 	all intrinsic <a data-link-type="dfn" href="#base-size" id="ref-for-base-size⑥">base sizes</a> and <a data-link-type="dfn" href="#growth-limit" id="ref-for-growth-limit④">growth limits</a> will have been resolved to absolute lengths.</p>
-   <p class="note" role="note"><span>Note:</span> <a href="#algo-terms">Remember that</a> <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content⑥">fit-content()</a> and <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑥">auto</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⓪">max track sizing functions</a> are treated the same as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑧">max-content</a> except where explicitly specified otherwise.</p>
+   <p class="note" role="note"><span>Note:</span> <a href="#algo-terms">Remember that</a> <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content⑥">fit-content()</a> and <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto①①">auto</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⓪">max track sizing functions</a> are treated the same as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑦">max-content</a> except where explicitly specified otherwise.</p>
    <ol>
     <li id="algo-baseline-shims">
      <a class="self-link" href="#algo-baseline-shims"></a> <strong>Shim baseline-aligned items
@@ -4903,12 +4904,12 @@ a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-s
 					set its <a data-link-type="dfn" href="#base-size" id="ref-for-base-size⑦">base size</a> to the maximum of the items’ <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑤">min-content contributions</a>,
 					floored at zero. 
       <dt>For max-content minimums: 
-      <dd> If the track has a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑨">max-content</a> <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function⑦">min track sizing function</a>,
+      <dd> If the track has a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑧">max-content</a> <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function⑦">min track sizing function</a>,
 					set its <a data-link-type="dfn" href="#base-size" id="ref-for-base-size⑧">base size</a> to the maximum of the items’ <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution④">max-content contributions</a>,
 					floored at zero. 
       <dt>For auto minimums: 
       <dd>
-        If the track has an <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①⑥">auto</a> <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function⑧">min track sizing function</a> and the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container①①③">grid container</a> is being sized
+        If the track has an <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①①">auto</a> <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function⑧">min track sizing function</a> and the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container①①③">grid container</a> is being sized
 					under a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-constraint" id="ref-for-min-content-constraint②">min-</a>/<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-constraint" id="ref-for-max-content-constraint②">max-content constraint</a>,
 					set the track’s <a data-link-type="dfn" href="#base-size" id="ref-for-base-size⑨">base size</a> to the maximum of its items’ <a data-link-type="dfn" href="#limited-contribution" id="ref-for-limited-contribution">limited min-/max-content contributions</a> (respectively),
 					floored at zero.
@@ -4925,7 +4926,7 @@ a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-s
 					if the item’s computed <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#preferred-size" id="ref-for-preferred-size④">preferred size</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#behave-as-auto" id="ref-for-behave-as-auto①">behaves as auto</a> or depends on the size of its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#containing-block" id="ref-for-containing-block⑨">containing block</a> in the relevant axis,
 					its <span id="ref-for-minimum-contribution②">minimum contribution</span> is
 					the <span id="ref-for-outer-size①">outer size</span> that would result from assuming
-					the item’s used <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width" id="ref-for-min-width④">minimum size</a> as its <span id="ref-for-preferred-size⑤">preferred size</span>;
+					the item’s used <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width" id="ref-for-min-width⑤">minimum size</a> as its <span id="ref-for-preferred-size⑤">preferred size</span>;
 					else the item’s <span id="ref-for-minimum-contribution③">minimum contribution</span> is
 					its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑦">min-content contribution</a>.
 					Because the <span id="ref-for-minimum-contribution④">minimum contribution</span> often depends
@@ -4939,7 +4940,7 @@ a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-s
       <dd> If the track has a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content⑥">min-content</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①②">max track sizing function</a>,
 					set its <a data-link-type="dfn" href="#growth-limit" id="ref-for-growth-limit⑤">growth limit</a> to the maximum of the items’ <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution①⓪">min-content contributions</a>. 
       <dt>For max-content maximums: 
-      <dd> If the track has a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①⓪">max-content</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①③">max track sizing function</a>,
+      <dd> If the track has a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content⑨">max-content</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①③">max track sizing function</a>,
 					set its <a data-link-type="dfn" href="#growth-limit" id="ref-for-growth-limit⑥">growth limit</a> to the maximum of the items’ <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution⑦">max-content contributions</a>.
 					For <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content⑧">fit-content()</a> maximums,
 					furthermore clamp this <span id="ref-for-growth-limit⑦">growth limit</span> by the <span class="css" id="ref-for-valdef-grid-template-columns-fit-content⑨">fit-content()</span> argument. 
@@ -4964,17 +4965,17 @@ a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-s
 					its <span id="ref-for-limited-contribution②">limited min-/max-content contribution</span> is the <em>sum</em> of the <a data-link-type="dfn" href="#fixed-sizing-function" id="ref-for-fixed-sizing-function⑥">fixed</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①④">max track sizing functions</a> of any tracks it spans,
 					and is applied if it only spans such tracks.)</p>
       <li id="track-size-content-min"><a class="self-link" href="#track-size-content-min"></a> <strong>For content-based minimums:</strong> Next continue to <a data-link-type="dfn" href="#distribute-extra-space" id="ref-for-distribute-extra-space①">distribute extra space</a> to the <a data-link-type="dfn" href="#base-size" id="ref-for-base-size①④">base sizes</a> of tracks with
-					a <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function①⓪">min track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content⑦">min-content</a> or <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①①">max-content</a>,
+					a <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function①⓪">min track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-min-content" id="ref-for-valdef-grid-template-columns-min-content⑦">min-content</a> or <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①⓪">max-content</a>,
 					to accommodate these items' <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution①①">min-content contributions</a>. 
       <li id="track-size-max-content-min">
        <a class="self-link" href="#track-size-max-content-min"></a> <strong>For max-content minimums:</strong> Next, if the grid container is being sized
 					under a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-constraint" id="ref-for-max-content-constraint④">max-content constraint</a>,
 					continue to <a data-link-type="dfn" href="#distribute-extra-space" id="ref-for-distribute-extra-space②">distribute extra space</a> to the <a data-link-type="dfn" href="#base-size" id="ref-for-base-size①⑤">base sizes</a> of tracks with
-					a <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function①①">min track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①⑦">auto</a> or <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①②">max-content</a>,
+					a <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function①①">min track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①②">auto</a> or <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①①">max-content</a>,
 					to accommodate these items' <a data-link-type="dfn" href="#limited-contribution" id="ref-for-limited-contribution③">limited max-content contributions</a>. 
        <p>In all cases,
 					continue to <a data-link-type="dfn" href="#distribute-extra-space" id="ref-for-distribute-extra-space③">distribute extra space</a> to the <a data-link-type="dfn" href="#base-size" id="ref-for-base-size①⑥">base sizes</a> of tracks with
-					a <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function①②">min track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①③">max-content</a>,
+					a <a data-link-type="dfn" href="#min-track-sizing-function" id="ref-for-min-track-sizing-function①②">min track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①②">max-content</a>,
 					to accommodate these items' <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution⑧">max-content contributions</a>.</p>
       <li> If at this point any track’s <a data-link-type="dfn" href="#growth-limit" id="ref-for-growth-limit①⓪">growth limit</a> is now less than its <a data-link-type="dfn" href="#base-size" id="ref-for-base-size①⑦">base size</a>,
 					increase its <span id="ref-for-growth-limit①①">growth limit</span> to match its <span id="ref-for-base-size①⑧">base size</span>. 
@@ -5021,7 +5022,7 @@ which we considered a better result because the first track remains sized exactl
         </blockquote>
        </details>
       <li> <strong>For max-content maximums:</strong> Lastly continue to <a data-link-type="dfn" href="#distribute-extra-space" id="ref-for-distribute-extra-space⑤">distribute extra space</a> to the <a data-link-type="dfn" href="#growth-limit" id="ref-for-growth-limit①④">growth limits</a> of tracks with
-					a <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⑥">max track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①④">max-content</a>,
+					a <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⑥">max track sizing function</a> of <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①③">max-content</a>,
 					to accommodate these items' <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution⑨">max-content contributions</a>.
 					However, limit the growth of any <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content①⓪">fit-content()</a> tracks
 					by their <span class="css" id="ref-for-valdef-grid-template-columns-fit-content①①">fit-content()</span> argument. 
@@ -5104,14 +5105,14 @@ of which grid items spanning those tracks (the <var>item</var>s).</p>
 								any <var>affected track</var> that happens to also have an intrinsic <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⑦">max track sizing function</a>;
 								if there are no such tracks, then all <var>affected track</var>s. 
          <li> when <a href="#track-size-max-content-min">accommodating max-content contributions</a>:
-								any <var>affected track</var> that happens to also have a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①⑤">max-content</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⑧">max track sizing function</a>;
+								any <var>affected track</var> that happens to also have a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①④">max-content</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⑧">max track sizing function</a>;
 								if there are no such tracks, then all <var>affected track</var>s. 
          <li> when handling any intrinsic <a data-link-type="dfn" href="#growth-limit" id="ref-for-growth-limit②③">growth limit</a>:
 								all <var>affected track</var>s. 
         </ul>
         <p>For this purpose,
 						the <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function①⑨">max track sizing function</a> of a <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-fit-content" id="ref-for-valdef-grid-template-columns-fit-content①②">fit-content()</a> track
-						is treated as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①⑥">max-content</a> until it reaches the limit specified as the <span class="css" id="ref-for-valdef-grid-template-columns-fit-content①③">fit-content()</span> argument,
+						is treated as <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-max-content" id="ref-for-valdef-grid-template-columns-max-content①⑤">max-content</a> until it reaches the limit specified as the <span class="css" id="ref-for-valdef-grid-template-columns-fit-content①③">fit-content()</span> argument,
 						after which it is treated as having a <a data-link-type="dfn" href="#fixed-sizing-function" id="ref-for-fixed-sizing-function⑧">fixed sizing function</a> of that argument.</p>
         <p class="note" role="note"><span>Note:</span> This step prioritizes the distribution of space
 						for accommodating <var>size contribution</var>s
@@ -5190,7 +5191,7 @@ of which grid items spanning those tracks (the <var>item</var>s).</p>
    <h3 class="heading settled" data-level="12.8" id="algo-stretch"><span class="secno">12.8. </span><span class="content"> Stretch <span class="css">auto</span> Tracks</span><a class="self-link" href="#algo-stretch"></a></h3>
    <p>When the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-align-3/#content-distribution-properties" id="ref-for-content-distribution-properties">content-distribution property</a> of the <a data-link-type="dfn" href="#grid-container" id="ref-for-grid-container①②①">grid container</a> is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-align-3/#valdef-justify-content-normal" id="ref-for-valdef-justify-content-normal">normal</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-align-3/#valdef-align-content-stretch" id="ref-for-valdef-align-content-stretch①">stretch</a> in this axis,
 	this step expands tracks that have
-	an <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①⑧">auto</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function②①">max track sizing function</a> by dividing any remaining positive, <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#definite" id="ref-for-definite②①">definite</a> <a data-link-type="dfn" href="#free-space" id="ref-for-free-space①⓪">free space</a> equally amongst them.
+	an <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①③">auto</a> <a data-link-type="dfn" href="#max-track-sizing-function" id="ref-for-max-track-sizing-function②①">max track sizing function</a> by dividing any remaining positive, <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#definite" id="ref-for-definite②①">definite</a> <a data-link-type="dfn" href="#free-space" id="ref-for-free-space①⓪">free space</a> equally amongst them.
 	If the <span id="ref-for-free-space①①">free space</span> is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#indefinite" id="ref-for-indefinite⑧">indefinite</a>,
 	but the <span id="ref-for-grid-container①②②">grid container</span> has a <span id="ref-for-definite②②">definite</span> <a class="css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-min-width" id="ref-for-propdef-min-width⑤">min-width/height</a>,
 	use that size to calculate the <span id="ref-for-free-space①②">free space</span> for this step instead.</p>
@@ -5237,7 +5238,7 @@ of which grid items spanning those tracks (the <var>item</var>s).</p>
 		Feedback is welcome; please reference the rules above instead as implementation guidance. </p>
    <ol>
     <li> Layout the grid following the <a href="#layout-algorithm">§ 12 Grid Sizing</a> by using the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container②">fragmentation container</a>’s inline size and assume unlimited block size.
-			During this step all <a class="property css" data-link-type="property" href="#propdef-grid-row" id="ref-for-propdef-grid-row⑥">grid-row</a> <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto⑦">auto</a> and <a class="css" data-link-type="maybe" href="#valdef-flex-fr" id="ref-for-valdef-flex-fr⑨">fr</a> values must be resolved. 
+			During this step all <a class="property css" data-link-type="property" href="#propdef-grid-row" id="ref-for-propdef-grid-row⑥">grid-row</a> <a class="css" data-link-type="maybe" href="#grid-placement-auto" id="ref-for-grid-placement-auto①②">auto</a> and <a class="css" data-link-type="maybe" href="#valdef-flex-fr" id="ref-for-valdef-flex-fr⑨">fr</a> values must be resolved. 
     <li> Layout the grid container using the values resolved in the previous step. 
     <li>
       If a <a data-link-type="dfn" href="#grid-area" id="ref-for-grid-area③⑦">grid area</a>’s size changes due to fragmentation (do not include items that
@@ -5246,7 +5247,7 @@ of which grid items spanning those tracks (the <var>item</var>s).</p>
       <li> have a content min track sizing function. 
       <li> are in a grid that does not have an explicit height and the grid row is flexible. 
      </ul>
-    <li> If the grid height is <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①⑨">auto</a>, the height of the grid should be the sum of the final
+    <li> If the grid height is <a class="css" data-link-type="maybe" href="#valdef-grid-template-columns-auto" id="ref-for-valdef-grid-template-columns-auto①④">auto</a>, the height of the grid should be the sum of the final
 			row sizes. 
     <li> If a grid area overflows the grid container due to margins being collapsed during
 			fragmentation, extend the grid container to contain this grid area (this step is
@@ -5293,7 +5294,7 @@ of which grid items spanning those tracks (the <var>item</var>s).</p>
 				according to the ratios of their <a data-link-type="dfn" href="#flexible-sizing-function" id="ref-for-flexible-sizing-function①⓪">flexible sizing functions</a> and the rest equally</ins>
       </p>
      </blockquote>
-    <li id="change-2020-auto-min-contribution"><a class="self-link" href="#change-2020-auto-min-contribution"></a> Clarified that the <a data-link-type="dfn" href="#content-based-minimum-size" id="ref-for-content-based-minimum-size⑤">content-based minimum size</a> of a grid item
+    <li id="change-2020-auto-min-contribution"><a class="self-link" href="#change-2020-auto-min-contribution"></a> Clarified that the <a data-link-type="dfn" href="#content-based-minimum-size" id="ref-for-content-based-minimum-size⑥">content-based minimum size</a> of a grid item
 			is a type of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#intrinsic-size-contribution" id="ref-for-intrinsic-size-contribution②">intrinsic size contribution</a>,
 			and thus impacted by associated rules in <a data-link-type="biblio" href="#biblio-css-sizing-3">[CSS-SIZING-3]</a>.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/5665#issuecomment-738391191">Issue 5665</a>) 
@@ -5302,7 +5303,7 @@ of which grid items spanning those tracks (the <var>item</var>s).</p>
 			via <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a>. <a data-link-type="biblio" href="#biblio-css-sizing-4">[CSS-SIZING-4]</a> (<a href="https://github.com/w3c/csswg-drafts/issues/6069">Issue 6069</a>) 
     <li id="change-2020-auto-min-compressible">
      <a class="self-link" href="#change-2020-auto-min-compressible"></a> Defined that percentages on the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#preferred-size" id="ref-for-preferred-size⑥">preferred size</a> and the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-width" id="ref-for-max-width⑤">maximum size</a> of compressible replaced elements
-			are resolved against zero and used to clamp the <a data-link-type="dfn" href="#content-based-minimum-size" id="ref-for-content-based-minimum-size⑥">content-based minimum size</a>,
+			are resolved against zero and used to clamp the <a data-link-type="dfn" href="#content-based-minimum-size" id="ref-for-content-based-minimum-size⑦">content-based minimum size</a>,
 			so that their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#automatic-minimum-size" id="ref-for-automatic-minimum-size②">automatic minimum size</a> is not larger than their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution①③">min-content contribution</a>.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/6278">Issue #6278</a>) 
      <blockquote>
@@ -5323,7 +5324,7 @@ of which grid items spanning those tracks (the <var>item</var>s).</p>
      <blockquote>
       <p>If the item has a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-4/#preferred-aspect-ratio" id="ref-for-preferred-aspect-ratio④">preferred aspect ratio</a> and its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#preferred-size" id="ref-for-preferred-size⑨">preferred size</a> in the opposite axis is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#definite" id="ref-for-definite②③">definite</a>,
 				then the <a data-link-type="dfn" href="#transferred-size-suggestion" id="ref-for-transferred-size-suggestion⑦">transferred size suggestion</a> is that size
-				(clamped by the opposite-axis <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width" id="ref-for-min-width⑤">minimum</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-width" id="ref-for-max-width⑨">maximum sizes</a> if they are <span id="ref-for-definite②④">definite</span>),
+				(clamped by the opposite-axis <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width" id="ref-for-min-width⑥">minimum</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#max-width" id="ref-for-max-width⑨">maximum sizes</a> if they are <span id="ref-for-definite②④">definite</span>),
 				converted through the aspect ratio.
 				It is otherwise undefined.</p>
       <p>
@@ -6610,12 +6611,12 @@ Automatic Minimum Size of Grid Items</a> <a href="#ref-for-min-content②">(2)</
    <a href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width">https://andreubotella.com/csswg-auto-build/css-sizing-3/#min-width</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-min-width">6.6. 
-Automatic Minimum Size of Grid Items</a> <a href="#ref-for-min-width①">(2)</a> <a href="#ref-for-min-width②">(3)</a>
-    <li><a href="#ref-for-min-width③">7.2.1. 
+Automatic Minimum Size of Grid Items</a> <a href="#ref-for-min-width①">(2)</a> <a href="#ref-for-min-width②">(3)</a> <a href="#ref-for-min-width③">(4)</a>
+    <li><a href="#ref-for-min-width④">7.2.1. 
 Track Sizes</a>
-    <li><a href="#ref-for-min-width④">12.5. 
+    <li><a href="#ref-for-min-width⑤">12.5. 
 Resolve Intrinsic Track Sizes</a>
-    <li><a href="#ref-for-min-width⑤">16.1. 
+    <li><a href="#ref-for-min-width⑥">16.1. 
 Changes since the 18 December 2020 CR</a>
    </ul>
   </aside>
@@ -6674,8 +6675,6 @@ Changes since the August 2020 CR</a>
    <ul>
     <li><a href="#ref-for-valdef-width-fit-content">6.2. 
 	Grid Item Sizing</a> <a href="#ref-for-valdef-width-fit-content①">(2)</a>
-    <li><a href="#ref-for-valdef-width-fit-content②">6.6. 
-Automatic Minimum Size of Grid Items</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-preferred-aspect-ratio">
@@ -8221,9 +8220,9 @@ Fragmenting Grid Layout</a> <a href="#ref-for-grid-item①③①">(2)</a>
    <b><a href="#content-based-minimum-size">#content-based-minimum-size</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-content-based-minimum-size">6.6. 
-Automatic Minimum Size of Grid Items</a> <a href="#ref-for-content-based-minimum-size①">(2)</a> <a href="#ref-for-content-based-minimum-size②">(3)</a> <a href="#ref-for-content-based-minimum-size③">(4)</a> <a href="#ref-for-content-based-minimum-size④">(5)</a>
-    <li><a href="#ref-for-content-based-minimum-size⑤">16.1. 
-Changes since the 18 December 2020 CR</a> <a href="#ref-for-content-based-minimum-size⑥">(2)</a>
+Automatic Minimum Size of Grid Items</a> <a href="#ref-for-content-based-minimum-size①">(2)</a> <a href="#ref-for-content-based-minimum-size②">(3)</a> <a href="#ref-for-content-based-minimum-size③">(4)</a> <a href="#ref-for-content-based-minimum-size④">(5)</a> <a href="#ref-for-content-based-minimum-size⑤">(6)</a>
+    <li><a href="#ref-for-content-based-minimum-size⑥">16.1. 
+Changes since the 18 December 2020 CR</a> <a href="#ref-for-content-based-minimum-size⑦">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="specified-size-suggestion">
@@ -8572,38 +8571,36 @@ Automatic Minimum Size of Grid Items</a>
     <li><a href="#ref-for-valdef-grid-template-columns-auto⑤">7.2.1. 
 Track Sizes</a>
     <li><a href="#ref-for-valdef-grid-template-columns-auto⑥">7.4. 
-Explicit Grid Shorthand: the grid-template property</a> <a href="#ref-for-valdef-grid-template-columns-auto⑦">(2)</a> <a href="#ref-for-valdef-grid-template-columns-auto⑧">(3)</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-auto⑨">10.1. 
-With a Grid Container as Containing Block</a> <a href="#ref-for-valdef-grid-template-columns-auto①⓪">(2)</a> <a href="#ref-for-valdef-grid-template-columns-auto①①">(3)</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-auto①②">12. 
+Explicit Grid Shorthand: the grid-template property</a> <a href="#ref-for-valdef-grid-template-columns-auto⑦">(2)</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-auto⑧">10.1. 
+With a Grid Container as Containing Block</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-auto⑨">12. 
 Grid Sizing</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-auto①③">12.2. 
-Track Sizing Terminology</a> <a href="#ref-for-valdef-grid-template-columns-auto①④">(2)</a> <a href="#ref-for-valdef-grid-template-columns-auto①⑤">(3)</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-auto①⑥">12.5. 
-Resolve Intrinsic Track Sizes</a> <a href="#ref-for-valdef-grid-template-columns-auto①⑦">(2)</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-auto①⑧">12.8. 
+    <li><a href="#ref-for-valdef-grid-template-columns-auto①⓪">12.4. 
+Initialize Track Sizes</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-auto①①">12.5. 
+Resolve Intrinsic Track Sizes</a> <a href="#ref-for-valdef-grid-template-columns-auto①②">(2)</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-auto①③">12.8. 
 Stretch auto Tracks</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-auto①⑨">13.1. 
+    <li><a href="#ref-for-valdef-grid-template-columns-auto①④">13.1. 
 Sample Fragmentation Algorithm</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-grid-template-columns-max-content">
    <b><a href="#valdef-grid-template-columns-max-content">#valdef-grid-template-columns-max-content</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-grid-template-columns-max-content">6.6. 
-Automatic Minimum Size of Grid Items</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-max-content①">7.2.1. 
-Track Sizes</a> <a href="#ref-for-valdef-grid-template-columns-max-content②">(2)</a> <a href="#ref-for-valdef-grid-template-columns-max-content③">(3)</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-max-content④">7.2.4. 
+    <li><a href="#ref-for-valdef-grid-template-columns-max-content">7.2.1. 
+Track Sizes</a> <a href="#ref-for-valdef-grid-template-columns-max-content①">(2)</a> <a href="#ref-for-valdef-grid-template-columns-max-content②">(3)</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-max-content③">7.2.4. 
 Flexible Lengths: the fr unit</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-max-content⑤">12. 
+    <li><a href="#ref-for-valdef-grid-template-columns-max-content④">12. 
 Grid Sizing</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-max-content⑥">12.2. 
-Track Sizing Terminology</a> <a href="#ref-for-valdef-grid-template-columns-max-content⑦">(2)</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-max-content⑧">12.5. 
-Resolve Intrinsic Track Sizes</a> <a href="#ref-for-valdef-grid-template-columns-max-content⑨">(2)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①⓪">(3)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①①">(4)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①②">(5)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①③">(6)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①④">(7)</a>
-    <li><a href="#ref-for-valdef-grid-template-columns-max-content①⑤">12.5.1. 
-Distributing Extra Space Across Spanned Tracks</a> <a href="#ref-for-valdef-grid-template-columns-max-content①⑥">(2)</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-max-content⑤">12.2. 
+Track Sizing Terminology</a> <a href="#ref-for-valdef-grid-template-columns-max-content⑥">(2)</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-max-content⑦">12.5. 
+Resolve Intrinsic Track Sizes</a> <a href="#ref-for-valdef-grid-template-columns-max-content⑧">(2)</a> <a href="#ref-for-valdef-grid-template-columns-max-content⑨">(3)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①⓪">(4)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①①">(5)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①②">(6)</a> <a href="#ref-for-valdef-grid-template-columns-max-content①③">(7)</a>
+    <li><a href="#ref-for-valdef-grid-template-columns-max-content①④">12.5.1. 
+Distributing Extra Space Across Spanned Tracks</a> <a href="#ref-for-valdef-grid-template-columns-max-content①⑤">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-grid-template-columns-min-content">
@@ -9304,14 +9301,16 @@ Placement Shorthands: the grid-column, grid-row, and grid-area properties</a> <a
    <b><a href="#grid-placement-auto">#grid-placement-auto</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-grid-placement-auto">7.4. 
-Explicit Grid Shorthand: the grid-template property</a>
-    <li><a href="#ref-for-grid-placement-auto①">8.4. 
-Placement Shorthands: the grid-column, grid-row, and grid-area properties</a> <a href="#ref-for-grid-placement-auto②">(2)</a> <a href="#ref-for-grid-placement-auto③">(3)</a> <a href="#ref-for-grid-placement-auto④">(4)</a>
-    <li><a href="#ref-for-grid-placement-auto⑤">12.4. 
-Initialize Track Sizes</a>
-    <li><a href="#ref-for-grid-placement-auto⑥">12.5. 
+Explicit Grid Shorthand: the grid-template property</a> <a href="#ref-for-grid-placement-auto①">(2)</a>
+    <li><a href="#ref-for-grid-placement-auto②">8.4. 
+Placement Shorthands: the grid-column, grid-row, and grid-area properties</a> <a href="#ref-for-grid-placement-auto③">(2)</a> <a href="#ref-for-grid-placement-auto④">(3)</a> <a href="#ref-for-grid-placement-auto⑤">(4)</a>
+    <li><a href="#ref-for-grid-placement-auto⑥">10.1. 
+With a Grid Container as Containing Block</a> <a href="#ref-for-grid-placement-auto⑦">(2)</a>
+    <li><a href="#ref-for-grid-placement-auto⑧">12.2. 
+Track Sizing Terminology</a> <a href="#ref-for-grid-placement-auto⑨">(2)</a> <a href="#ref-for-grid-placement-auto①⓪">(3)</a>
+    <li><a href="#ref-for-grid-placement-auto①①">12.5. 
 Resolve Intrinsic Track Sizes</a>
-    <li><a href="#ref-for-grid-placement-auto⑦">13.1. 
+    <li><a href="#ref-for-grid-placement-auto①②">13.1. 
 Sample Fragmentation Algorithm</a>
    </ul>
   </aside>
