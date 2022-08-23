@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-cascade-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="b14636c2b6ebea0fd1e9dae306351491f910203a" name="document-revision">
+  <meta content="3aea8da25e7a4ac13323d65177d67539d4374dcd" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2415,7 +2415,32 @@ h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkslateblue<c- p>;</c-> <c- p>}</
 	however,
 	it only reverts the <a href="#style-attr">element-attached styles</a> and the intervening <a data-link-type="dfn" href="#cascade-origin-animation" id="ref-for-cascade-origin-animation">animation origin</a>,
 	and not any of the intervening <a data-link-type="dfn" href="#cascade-origin-author" id="ref-for-cascade-origin-author①③">author-origin</a> <span id="ref-for-important②①">important</span> rules.</p>
-   <p class="note" role="note"><span>Note:</span> If there are no lower-precedence <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssstyledeclaration-declarations" id="ref-for-cssstyledeclaration-declarations①②">declarations</a> in the same <a data-link-type="dfn" href="#origin" id="ref-for-origin①⑦">cascade origin</a> as the <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑥">revert-layer</a> value,
+   <div class="example" id="example-8f3e3ea0">
+    <a class="self-link" href="#example-8f3e3ea0"></a> For example,
+		applying <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑥">revert-layer</a> to the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a> in layer <code>two</code>,
+		reverts the <span class="property" id="ref-for-propdef-height②">height</span> property to the value
+		defined in layer <code>one</code>,
+		yielding a <span class="property" id="ref-for-propdef-height③">height</span> of <code>100px</code>. 
+<pre class="lang-css highlight"><c- n>@layer</c-> one <c- p>{</c->
+  div <c- p>{</c-> <c- k>height</c-><c- p>:</c-> <c- m>100</c-><c- k>px</c-> <c- p>}</c->
+<c- p>}</c->
+
+<c- n>@layer</c-> two <c- p>{</c->
+  div <c- p>{</c-> <c- k>height</c-><c- p>:</c-> <c- m>200</c-><c- k>px</c-> <c- p>}</c->
+  div <c- p>{</c-> <c- k>height</c-><c- p>:</c-> revert-layer <c- p>}</c->
+<c- p>}</c->
+</pre>
+    <p>Note that since <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-sizing-3/#propdef-height" id="ref-for-propdef-height④">height</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-logical-1/#propdef-block-size" id="ref-for-propdef-block-size">block-size</a> are
+		paired properties in a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-logical-1/#logical-property-group" id="ref-for-logical-property-group①">logical property group</a>,
+		the following layer <code>two</code> declaration
+		would also revert to the <span class="property" id="ref-for-propdef-height⑤">height</span> defined in layer <code>one</code>.</p>
+<pre class="lang-css highlight"><c- n>@layer</c-> two <c- p>{</c->
+  div <c- p>{</c-> <c- k>height</c-><c- p>:</c-> <c- m>200</c-><c- k>px</c-> <c- p>}</c->
+  div <c- p>{</c-> <c- k>block-size</c-><c- p>:</c-> revert-layer <c- p>}</c->
+<c- p>}</c->
+</pre>
+   </div>
+   <p class="note" role="note"><span>Note:</span> If there are no lower-precedence <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssstyledeclaration-declarations" id="ref-for-cssstyledeclaration-declarations①②">declarations</a> in the same <a data-link-type="dfn" href="#origin" id="ref-for-origin①⑦">cascade origin</a> as the <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑦">revert-layer</a> value,
 	the <a data-link-type="dfn" href="#cascaded-value" id="ref-for-cascaded-value①⑦">cascaded value</a> will roll back to the previous origin.</p>
    <p class="note" role="note"><span>Note:</span> The <a data-link-type="dfn" href="#cascade-origin-animation" id="ref-for-cascade-origin-animation①">animation origin</a> is not collapsed with the <a data-link-type="dfn" href="#cascade-origin-author" id="ref-for-cascade-origin-author①④">author origin</a> for this purpose
 	as it is for <a class="css" data-link-type="maybe" href="#valdef-all-revert" id="ref-for-valdef-all-revert⑥">revert</a>,
@@ -2469,7 +2494,7 @@ h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkslateblue<c- p>;</c-> <c- p>}</
    <p>Non-trivial changes since the <a href="CSS Cascading and Inheritance Level 5">13 January 2022 Candidate Recommendation Snapshot</a>:</p>
    <ul>
     <li data-md>
-     <p>Clarify that all “aliases” of a property are reverted by <a class="css" data-link-type="maybe" href="#valdef-all-revert" id="ref-for-valdef-all-revert⑦">revert</a>/<a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑦">revert-layer</a>.</p>
+     <p>Clarify that all “aliases” of a property are reverted by <a class="css" data-link-type="maybe" href="#valdef-all-revert" id="ref-for-valdef-all-revert⑦">revert</a>/<a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑧">revert-layer</a>.</p>
     <li data-md>
      <p>Clarify that style sheets are ordered in [[final CSS style sheets]] order.</p>
     <li data-md>
@@ -2495,7 +2520,7 @@ h1 <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkslateblue<c- p>;</c-> <c- p>}</
      <p>Added <a href="#layer-apis">§ 8 Layer APIs</a> section.
 (<a href="https://github.com/w3c/csswg-drafts/issues/6576">Issue 6576</a>)</p>
     <li data-md>
-     <p>Clarified the behavior of <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑧">revert-layer</a> keyword when
+     <p>Clarified the behavior of <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑨">revert-layer</a> keyword when
 used in the style attribute or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes①">@keyframes</a> at-rule.
 (<a href="https://github.com/w3c/csswg-drafts/issues/6743">Issue 6743</a>)</p>
     <li data-md>
@@ -2547,7 +2572,7 @@ from highest to lowest precedence in the normal origins.
      <p>Switched <a data-link-type="dfn" href="#cascade-layers" id="ref-for-cascade-layers①⑦">layer</a> import syntax from using <a class="css" data-link-type="maybe" href="#at-ruledef-layer" id="ref-for-at-ruledef-layer②⑦">@layer</a> to using <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="ref-for-at-ruledef-import②⑨">@import</a>.
 (<a href="https://github.com/w3c/csswg-drafts/issues/5681">Issue 5681</a>)</p>
     <li data-md>
-     <p>Added <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer⑨">revert-layer</a> keyword.
+     <p>Added <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer①⓪">revert-layer</a> keyword.
 (<a href="https://github.com/w3c/csswg-drafts/issues/5793">Issue 5793</a>)</p>
    </ul>
    <h3 class="heading settled" data-level="9.7" id="additions-l4"><span class="secno">9.7. </span><span class="content"> Additions Since Level 4</span><a class="self-link" href="#additions-l4"></a></h3>
@@ -2562,7 +2587,7 @@ so that they interact appropriately).</p>
     <li data-md>
      <p>Added <span class="css">layer</span>/<span class="css">layer()</span> option to <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="ref-for-at-ruledef-import③⓪">@import</a> definition.</p>
     <li data-md>
-     <p>Introduced the <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer①⓪">revert-layer</a> keyword for rolling back values to previous layers.</p>
+     <p>Introduced the <a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer①①">revert-layer</a> keyword for rolling back values to previous layers.</p>
    </ul>
    <h3 class="heading settled" data-level="9.8" id="additions-l3"><span class="secno">9.8. </span><span class="content"> Additions Since Level 3</span><a class="self-link" href="#additions-l3"></a></h3>
    <p>The following features have been added since <a href="https://www.w3.org/TR/css-cascade-3/">Level 3</a>:</p>
@@ -3198,11 +3223,20 @@ Applicable Properties</a>
 Examples</a> <a href="#ref-for-propdef-list-style-position①">(2)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-propdef-block-size">
+   <a href="https://andreubotella.com/csswg-auto-build/css-logical-1/#propdef-block-size">https://andreubotella.com/csswg-auto-build/css-logical-1/#propdef-block-size</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-block-size">7.3.5. 
+Rolling Back Cascade Layers: the revert-layer keyword</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-logical-property-group">
    <a href="https://andreubotella.com/csswg-auto-build/css-logical-1/#logical-property-group">https://andreubotella.com/csswg-auto-build/css-logical-1/#logical-property-group</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-logical-property-group">7.3.4. 
 Rolling Back Cascade Origins: the revert keyword</a>
+    <li><a href="#ref-for-logical-property-group①">7.3.5. 
+Rolling Back Cascade Layers: the revert-layer keyword</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-selectordef-after">
@@ -3263,6 +3297,8 @@ Cascade Sorting Order</a> <a href="#ref-for-tree-context①">(2)</a>
    <ul>
     <li><a href="#ref-for-propdef-height">4.7. 
 Examples</a>
+    <li><a href="#ref-for-propdef-height①">7.3.5. 
+Rolling Back Cascade Layers: the revert-layer keyword</a> <a href="#ref-for-propdef-height②">(2)</a> <a href="#ref-for-propdef-height③">(3)</a> <a href="#ref-for-propdef-height④">(4)</a> <a href="#ref-for-propdef-height⑤">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-width">
@@ -3889,6 +3925,7 @@ The CSSLayerStatementRule interface</a>
    <li>
     <a data-link-type="biblio">[CSS-LOGICAL-1]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-block-size">block-size</span>
      <li><span class="dfn-paneled" id="term-for-logical-property-group">logical property group</span>
     </ul>
    <li>
@@ -4762,14 +4799,14 @@ Precedence of Non-CSS Presentational Hints</a>
     <li><a href="#ref-for-valdef-all-revert-layer②">7.3. 
 Explicit Defaulting</a>
     <li><a href="#ref-for-valdef-all-revert-layer③">7.3.5. 
-Rolling Back Cascade Layers: the revert-layer keyword</a> <a href="#ref-for-valdef-all-revert-layer④">(2)</a> <a href="#ref-for-valdef-all-revert-layer⑤">(3)</a> <a href="#ref-for-valdef-all-revert-layer⑥">(4)</a>
-    <li><a href="#ref-for-valdef-all-revert-layer⑦">9.1. 
+Rolling Back Cascade Layers: the revert-layer keyword</a> <a href="#ref-for-valdef-all-revert-layer④">(2)</a> <a href="#ref-for-valdef-all-revert-layer⑤">(3)</a> <a href="#ref-for-valdef-all-revert-layer⑥">(4)</a> <a href="#ref-for-valdef-all-revert-layer⑦">(5)</a>
+    <li><a href="#ref-for-valdef-all-revert-layer⑧">9.1. 
 Changes since the 13 Jan 2022 Candidate Recommendation Snapshot</a>
-    <li><a href="#ref-for-valdef-all-revert-layer⑧">9.2. 
+    <li><a href="#ref-for-valdef-all-revert-layer⑨">9.2. 
 Changes since the 15 Oct 2021 Working Draft</a>
-    <li><a href="#ref-for-valdef-all-revert-layer⑨">9.6. 
+    <li><a href="#ref-for-valdef-all-revert-layer①⓪">9.6. 
 Changes since the 19 January 2021 Working Draft</a>
-    <li><a href="#ref-for-valdef-all-revert-layer①⓪">9.7. 
+    <li><a href="#ref-for-valdef-all-revert-layer①①">9.7. 
 Additions Since Level 4</a>
    </ul>
   </aside>
