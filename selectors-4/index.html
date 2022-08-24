@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/selectors-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fd1ef96dfa5b5ab315b4c40e7b8eb387a855beb8" name="document-revision">
+  <meta content="e4e3ca1a9576029c4c4523bab49124183796a4fe" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!selectors-4_dev/selectors-4"></script>
 <style>
 #selector-examples td:first-child {
@@ -2040,7 +2040,13 @@ nav a {
 	is a functional pseudo-class taking a <a class="production css" data-link-type="type" href="#typedef-forgiving-relative-selector-list" id="ref-for-typedef-forgiving-relative-selector-list">&lt;forgiving-relative-selector-list></a> as an argument.
 	It represents an element if any of the <a data-link-type="dfn" href="#relative-selector" id="ref-for-relative-selector①">relative selectors</a> would match at least one element
 	when <a data-link-type="dfn" href="#relative-selector-anchor-elements" id="ref-for-relative-selector-anchor-elements②">anchored against</a> this element.</p>
-   <p><a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo②">:has()</a> pseudo-class cannot be nested; <span class="css" id="ref-for-has-pseudo③">:has()</span> is not valid within <span class="css" id="ref-for-has-pseudo④">:has()</span>.</p>
+   <p>The <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo②">:has()</a> pseudo-class cannot be nested; <span class="css" id="ref-for-has-pseudo③">:has()</span> is not valid within <span class="css" id="ref-for-has-pseudo④">:has()</span>.
+	Also, unless explicitly defined as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="has-allowed-pseudo-element">:has-allowed pseudo-element</dfn>, <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑥">pseudo-elements</a> are not valid selectors within <span class="css" id="ref-for-has-pseudo⑤">:has()</span>.
+	(This specification does not define any <a data-link-type="dfn" href="#has-allowed-pseudo-element" id="ref-for-has-allowed-pseudo-element">:has-allowed pseudo-elements</a>,
+	but other specifications may do so.)</p>
+   <p class="note" role="note"><span>Note:</span> Pseudo-elements are generally excluded from <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑥">:has()</a> because
+	many of them exist conditionally, based on the styling of their ancestors,
+	so allowing these to be queried by <span class="css" id="ref-for-has-pseudo⑦">:has()</span> would introduce cycles.</p>
    <div class="example" id="example-61d52da1">
     <a class="self-link" href="#example-61d52da1"></a> For example, the following selector matches only <code>&lt;a></code> elements that contain an <code>&lt;img></code> child: 
 <pre>a:has(> img)</pre>
@@ -3720,7 +3726,7 @@ the default <a class="css" data-link-type="maybe" href="#focus-pseudo" id="ref-f
 	of children of its parent. When calculating the position of an element in
 	the list of children of its parent, the index numbering starts at 1.</p>
    <p>The <a data-link-type="dfn" href="#structural-pseudo-classes" id="ref-for-structural-pseudo-classes①">structural pseudo-classes</a> only apply to elements in the document tree;
-	they must never match <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑥">pseudo-elements</a>.</p>
+	they must never match <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑦">pseudo-elements</a>.</p>
    <h3 class="heading settled" data-level="14.1" id="the-root-pseudo"><span class="secno">14.1. </span><span class="content"> <a class="css" data-link-type="maybe" href="#root-pseudo" id="ref-for-root-pseudo①">:root</a> pseudo-class</span><a class="self-link" href="#the-root-pseudo"></a></h3>
    <div class="mdn-anno wrapped">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
@@ -4400,7 +4406,7 @@ is &lt;em>very&lt;/em> important&lt;/span>&lt;/h1>
    <p>A few pseudo-classes provide “evaluation contexts” for other selectors,
 	and so have their specificity defined specially:</p>
    <ul>
-    <li> The specificity of an <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo①④">:is()</a>, <a class="css" data-link-type="maybe" href="#negation-pseudo" id="ref-for-negation-pseudo⑧">:not()</a>, or <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑤">:has()</a> pseudo-class
+    <li> The specificity of an <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo①④">:is()</a>, <a class="css" data-link-type="maybe" href="#negation-pseudo" id="ref-for-negation-pseudo⑧">:not()</a>, or <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑧">:has()</a> pseudo-class
 			is replaced by the specificity of
 			the most specific <a data-link-type="dfn" href="#complex" id="ref-for-complex⑥">complex selector</a> in its <a data-link-type="dfn" href="#selector-list" id="ref-for-selector-list①⓪">selector list</a> argument. 
     <li> Analogously, the specificity of an <a class="css" data-link-type="maybe" href="#nth-child-pseudo" id="ref-for-nth-child-pseudo⑤">:nth-child()</a> or <a class="css" data-link-type="maybe" href="#nth-last-child-pseudo" id="ref-for-nth-last-child-pseudo③">:nth-last-child()</a> selector
@@ -4529,7 +4535,7 @@ of a <a class="production css" data-link-type="type" href="#typedef-pseudo-eleme
      <p>Whitespace is <em>required</em> between two <a class="production css" data-link-type="type" href="#typedef-compound-selector" id="ref-for-typedef-compound-selector⑤">&lt;compound-selector></a>s
 		if the <a class="production css" data-link-type="type" href="#typedef-combinator" id="ref-for-typedef-combinator③">&lt;combinator></a> between them is omitted.
 		(This indicates the descendant combinator is being used.)</p>
-    <li id="single-colon-pseudos"><a class="self-link" href="#single-colon-pseudos"></a> The four <a href="https://www.w3.org/TR/CSS2/selectors.html#pseudo-element-selectors">Level 2</a> <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑦">pseudo-elements</a> (<a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-before" id="ref-for-selectordef-before④">::before</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-after" id="ref-for-selectordef-after②">::after</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-first-line" id="ref-for-selectordef-first-line⑨">::first-line</a>, and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-first-letter" id="ref-for-selectordef-first-letter②">::first-letter</a>)
+    <li id="single-colon-pseudos"><a class="self-link" href="#single-colon-pseudos"></a> The four <a href="https://www.w3.org/TR/CSS2/selectors.html#pseudo-element-selectors">Level 2</a> <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑧">pseudo-elements</a> (<a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-before" id="ref-for-selectordef-before④">::before</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-after" id="ref-for-selectordef-after②">::after</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-first-line" id="ref-for-selectordef-first-line⑨">::first-line</a>, and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#selectordef-first-letter" id="ref-for-selectordef-first-letter②">::first-letter</a>)
 		may, for legacy reasons,
 		be represented using the <a class="production css" data-link-type="type" href="#typedef-pseudo-class-selector" id="ref-for-typedef-pseudo-class-selector④">&lt;pseudo-class-selector></a> grammar,
 		with only a single ":" character at their start. 
@@ -4544,7 +4550,7 @@ of a <a class="production css" data-link-type="type" href="#typedef-pseudo-eleme
 	In some circumstances, however,
 	it can be followed by more <span class="production" id="ref-for-typedef-pseudo-element-selector④">&lt;pseudo-element-selector></span>s or <a class="production css" data-link-type="type" href="#typedef-pseudo-class-selector" id="ref-for-typedef-pseudo-class-selector⑤">&lt;pseudo-class-selector></a>s;
 	but these are specified on a case-by-case basis.
-	(For example, the <a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class">user action pseudo-classes</a> are allowed after any <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑧">pseudo-element</a>,
+	(For example, the <a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class">user action pseudo-classes</a> are allowed after any <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑨">pseudo-element</a>,
 	and the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding">tree-abiding pseudo-elements</a> are allowed after the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-scoping-1/#selectordef-slotted" id="ref-for-selectordef-slotted">::slotted()</a> pseudo-element.)</p>
    <h3 class="heading settled" data-level="18.1" id="forgiving-selector"><span class="secno">18.1. </span><span class="content"> <a class="production css" data-link-type="type" href="#typedef-forgiving-selector-list" id="ref-for-typedef-forgiving-selector-list①">&lt;forgiving-selector-list></a> and <a class="production css" data-link-type="type" href="#typedef-forgiving-relative-selector-list" id="ref-for-typedef-forgiving-relative-selector-list①">&lt;forgiving-relative-selector-list></a></span><a class="self-link" href="#forgiving-selector"></a></h3>
    <p>For legacy reasons,
@@ -4675,7 +4681,7 @@ then return a <a class="production css" data-link-type="type" href="#typedef-sel
    <ul>
     <li> One or more <a data-link-type="dfn" href="#scoping-root" id="ref-for-scoping-root①⓪">scoping roots</a> indicating the selector is <a data-link-type="dfn" href="#scoped-selector" id="ref-for-scoped-selector②">scoped</a>. 
     <li>
-      A list of <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑨">pseudo-elements</a> that are allowed to show up in the match list.
+      A list of <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③⓪">pseudo-elements</a> that are allowed to show up in the match list.
 			If not specified, this defaults to allowing all pseudo-elements. 
      <p class="issue" id="issue-15f3317f"><a class="self-link" href="#issue-15f3317f"></a> Only the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding①">tree-abiding pseudo-elements</a> are really
 			handled in any way remotely like this.</p>
@@ -4751,7 +4757,7 @@ then return a <a class="production css" data-link-type="type" href="#typedef-sel
       If any elements match any pseudo-classes or have any pseudo-elements,
 			that must be explicitly defined. 
      <p class="issue" id="issue-772ec278"><a class="self-link" href="#issue-772ec278"></a> Some pseudo-classes are *syntactical*,
-			like <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑥">:has()</a> and <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo①⑦">:is()</a>,
+			like <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑨">:has()</a> and <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo①⑦">:is()</a>,
 			and thus should always work.
 			Need to indicate that somewhere.
 			Probably the structural pseudos always work
@@ -4782,7 +4788,7 @@ then return a <a class="production css" data-link-type="type" href="#typedef-sel
 	user agents expecting to parse Web documents must support the following features:</p>
    <ul>
     <li data-md>
-     <p>All <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③⓪">pseudo-elements</a> whose names begin with the string “-webkit-”
+     <p>All <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③①">pseudo-elements</a> whose names begin with the string “-webkit-”
 (matched <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive⑨">ASCII case-insensitively</a>)
 and that are not functional notations
 must be treated as valid at parse time.
@@ -4852,7 +4858,7 @@ in terms of the anchoring element.</p>
    <h3 class="heading settled" data-level="20.2" id="changes-2018-11"><span class="secno">20.2. </span><span class="content"> Changes since the 21 November 2018 Working Draft</span><a class="self-link" href="#changes-2018-11"></a></h3>
    <p>Significant changes since the <a href="https://www.w3.org/TR/2018/WD-selectors-4-20181121/">21 November 2018 Working Draft</a>:</p>
    <ul>
-    <li>Removed the Selector profiles, marked <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑦">:has()</a> as optional and at-risk instead.
+    <li>Removed the Selector profiles, marked <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①⓪">:has()</a> as optional and at-risk instead.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/3925">Issue 3925</a>) 
     <li>Added <a href="#sub-pseudo-elements">§ 3.6.4 Sub-pseudo-elements</a> to define <a data-link-type="dfn" href="#sub-pseudo-element" id="ref-for-sub-pseudo-element③">sub-pseudo-elements</a> and related terminology. 
     <li>Added <a class="css" data-link-type="maybe" href="#defined-pseudo" id="ref-for-defined-pseudo③">:defined</a>.
@@ -4869,7 +4875,7 @@ in terms of the anchoring element.</p>
 			(<a href="https://github.com/w3c/csswg-drafts/issues/5775">Issue 5775</a>) 
     <li>Added <a class="css" data-link-type="maybe" href="#user-valid-pseudo" id="ref-for-user-valid-pseudo②">:user-valid</a>.
 			(<a href="https://lists.w3.org/Archives/Public/www-style/2015Sep/0111.html">Discussion</a>) 
-    <li>Defined <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo①⑧">:is()</a>, <a class="css" data-link-type="maybe" href="#where-pseudo" id="ref-for-where-pseudo⑤">:where()</a>, <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑧">:has()</a>, <a class="css" data-link-type="maybe" href="#nth-child-pseudo" id="ref-for-nth-child-pseudo⑦">:nth-child()</a>, and <a class="css" data-link-type="maybe" href="#nth-last-child-pseudo" id="ref-for-nth-last-child-pseudo④">:nth-last-child()</a> to not be themselves invalidated when containing an invalid selector.
+    <li>Defined <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo①⑧">:is()</a>, <a class="css" data-link-type="maybe" href="#where-pseudo" id="ref-for-where-pseudo⑤">:where()</a>, <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①①">:has()</a>, <a class="css" data-link-type="maybe" href="#nth-child-pseudo" id="ref-for-nth-child-pseudo⑦">:nth-child()</a>, and <a class="css" data-link-type="maybe" href="#nth-last-child-pseudo" id="ref-for-nth-last-child-pseudo④">:nth-last-child()</a> to not be themselves invalidated when containing an invalid selector.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/3264">Issue 3264</a>) 
     <li>Limited selectors in <a class="css" data-link-type="maybe" href="#nth-child-pseudo" id="ref-for-nth-child-pseudo⑧">:nth-child()</a> and <a class="css" data-link-type="maybe" href="#nth-last-child-pseudo" id="ref-for-nth-last-child-pseudo⑤">:nth-last-child()</a> to <a data-link-type="dfn" href="#compound" id="ref-for-compound③⑧">compound selectors</a> for now.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/3760">Issue 3760</a>) 
@@ -4891,7 +4897,7 @@ in terms of the anchoring element.</p>
 		(<a href="https://github.com/w3c/csswg-drafts/issues/1967">Issue 1967</a>) 
     <li>Redefined <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo②">:blank</a> to represent empty user input, rather than empty elements.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/1283">Issue 1283</a>) 
-    <li>Changed the specificity of <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo②⓪">:is()</a>, <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑨">:has()</a>, and <a class="css" data-link-type="maybe" href="#nth-child-pseudo" id="ref-for-nth-child-pseudo⑨">:nth-child()</a> to not depend on which selector argument matched.
+    <li>Changed the specificity of <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo②⓪">:is()</a>, <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①②">:has()</a>, and <a class="css" data-link-type="maybe" href="#nth-child-pseudo" id="ref-for-nth-child-pseudo⑨">:nth-child()</a> to not depend on which selector argument matched.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/1027">Issue 1027</a>) 
     <li>Dropped the <span class="css">:drop()</span> pseudo-classes since HTML dropped the related feature.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/2257">Issue 2257</a>) 
@@ -4908,7 +4914,7 @@ in terms of the anchoring element.</p>
    <ul>
     <li>Added the <a class="css" data-link-type="maybe" href="#target-within-pseudo" id="ref-for-target-within-pseudo②">:target-within</a>, <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo②">:focus-within</a>, <a class="css" data-link-type="maybe" href="#focus-visible-pseudo" id="ref-for-focus-visible-pseudo⑦">:focus-visible</a>, <a class="css" data-link-type="maybe" href="#selectordef-playing" id="ref-for-selectordef-playing③">:playing</a>, and <a class="css" data-link-type="maybe" href="#selectordef-paused" id="ref-for-selectordef-paused①">:paused</a> pseudo-classes. 
     <li>Added a zero-specificity <a class="css" data-link-type="maybe" href="#selectordef-matches" id="ref-for-selectordef-matches①">:matches()</a>-type pseudo-class, with name TBD. 
-    <li>Replaced subject indicator (<span class="css">!</span>) feature with <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①⓪">:has()</a>. 
+    <li>Replaced subject indicator (<span class="css">!</span>) feature with <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①③">:has()</a>. 
     <li>Replaced the <span class="css">:nth-match()</span> and <span class="css">:nth-last-match()</span> selectors
 		    with <span class="css">:nth-child(… of selector)</span> and <span class="css">:nth-last-child(… of selector)</span>. 
     <li>Changed the <span class="css">:active-drop-target</span>, <span class="css">:valid-drop-target</span>, <span class="css">:invalid-drop-target</span> with <span class="css">:drop()</span>. 
@@ -4973,7 +4979,7 @@ in terms of the anchoring element.</p>
    <p>Additions since <a href="https://www.w3.org/TR/selectors-3/">Level 3</a>:</p>
    <ul>
     <li>Extended <a class="css" data-link-type="maybe" href="#negation-pseudo" id="ref-for-negation-pseudo①①">:not()</a> to accept a selector list. 
-    <li>Added <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo②①">:is()</a> and <a class="css" data-link-type="maybe" href="#where-pseudo" id="ref-for-where-pseudo⑦">:where()</a> and <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①①">:has()</a>. 
+    <li>Added <a class="css" data-link-type="maybe" href="#matches-pseudo" id="ref-for-matches-pseudo②①">:is()</a> and <a class="css" data-link-type="maybe" href="#where-pseudo" id="ref-for-where-pseudo⑦">:where()</a> and <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①④">:has()</a>. 
     <li>Added <a class="css" data-link-type="maybe" href="#scope-pseudo" id="ref-for-scope-pseudo③">:scope</a>. 
     <li>Added <a class="css" data-link-type="maybe" href="#any-link-pseudo" id="ref-for-any-link-pseudo①">:any-link</a> and <a class="css" data-link-type="maybe" href="#local-link-pseudo" id="ref-for-local-link-pseudo②">:local-link</a>. 
     <li>Added <a href="#time-pseudos">time-dimensional pseudo-classes</a>. 
@@ -5156,6 +5162,7 @@ in terms of the anchoring element.</p>
    <li><a href="#functional-pseudo-class">functional pseudo-class</a><span>, in § 3.5</span>
    <li><a href="#future-pseudo">:future</a><span>, in § 10.3</span>
    <li><a href="#has-pseudo">:has()</a><span>, in § 4.5</span>
+   <li><a href="#has-allowed-pseudo-element">:has-allowed pseudo-element</a><span>, in § 4.5</span>
    <li><a href="#host-language">host language</a><span>, in § 3.2</span>
    <li><a href="#hover-pseudo">:hover</a><span>, in § 9.1</span>
    <li><a href="#typedef-id-selector">&lt;id-selector></a><span>, in § 18</span>
@@ -6540,13 +6547,15 @@ Pseudo-classing Pseudo-elements</a> <a href="#ref-for-pseudo-element①⑥">(2)<
 Sub-pseudo-elements</a> <a href="#ref-for-pseudo-element②①">(2)</a> <a href="#ref-for-pseudo-element②②">(3)</a>
     <li><a href="#ref-for-pseudo-element②③">3.6.5. 
 Internal Structure</a> <a href="#ref-for-pseudo-element②④">(2)</a> <a href="#ref-for-pseudo-element②⑤">(3)</a>
-    <li><a href="#ref-for-pseudo-element②⑥">14. 
+    <li><a href="#ref-for-pseudo-element②⑥">4.5. 
+The Relational Pseudo-class: :has()</a>
+    <li><a href="#ref-for-pseudo-element②⑦">14. 
 Tree-Structural pseudo-classes</a>
-    <li><a href="#ref-for-pseudo-element②⑦">18. 
-Grammar</a> <a href="#ref-for-pseudo-element②⑧">(2)</a>
-    <li><a href="#ref-for-pseudo-element②⑨">19.5. 
+    <li><a href="#ref-for-pseudo-element②⑧">18. 
+Grammar</a> <a href="#ref-for-pseudo-element②⑨">(2)</a>
+    <li><a href="#ref-for-pseudo-element③⓪">19.5. 
 Match a Selector Against a Tree</a>
-    <li><a href="#ref-for-pseudo-element③⓪"> Appendix B: Obsolete but Required Parsing Quirks for Web Compat</a>
+    <li><a href="#ref-for-pseudo-element③①"> Appendix B: Obsolete but Required Parsing Quirks for Web Compat</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="originating-element">
@@ -6696,18 +6705,25 @@ Changes Since Level 3</a>
    <b><a href="#has-pseudo">#has-pseudo</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-has-pseudo①">4.5. 
-The Relational Pseudo-class: :has()</a> <a href="#ref-for-has-pseudo②">(2)</a> <a href="#ref-for-has-pseudo③">(3)</a> <a href="#ref-for-has-pseudo④">(4)</a>
-    <li><a href="#ref-for-has-pseudo⑤">17. 
+The Relational Pseudo-class: :has()</a> <a href="#ref-for-has-pseudo②">(2)</a> <a href="#ref-for-has-pseudo③">(3)</a> <a href="#ref-for-has-pseudo④">(4)</a> <a href="#ref-for-has-pseudo⑤">(5)</a> <a href="#ref-for-has-pseudo⑥">(6)</a> <a href="#ref-for-has-pseudo⑦">(7)</a>
+    <li><a href="#ref-for-has-pseudo⑧">17. 
 Calculating a selector’s specificity</a>
-    <li><a href="#ref-for-has-pseudo⑥"> Appendix A: Guidance on Mapping Source Documents &amp; Data to an Element Tree</a>
-    <li><a href="#ref-for-has-pseudo⑦">20.2. 
-Changes since the 21 November 2018 Working Draft</a> <a href="#ref-for-has-pseudo⑧">(2)</a>
-    <li><a href="#ref-for-has-pseudo⑨">20.3. 
+    <li><a href="#ref-for-has-pseudo⑨"> Appendix A: Guidance on Mapping Source Documents &amp; Data to an Element Tree</a>
+    <li><a href="#ref-for-has-pseudo①⓪">20.2. 
+Changes since the 21 November 2018 Working Draft</a> <a href="#ref-for-has-pseudo①①">(2)</a>
+    <li><a href="#ref-for-has-pseudo①②">20.3. 
 Changes since the 2 February 2018 Working Draft</a>
-    <li><a href="#ref-for-has-pseudo①⓪">20.4. 
+    <li><a href="#ref-for-has-pseudo①③">20.4. 
 Changes since the 2 May 2013 Working Draft</a>
-    <li><a href="#ref-for-has-pseudo①①">20.7. 
+    <li><a href="#ref-for-has-pseudo①④">20.7. 
 Changes Since Level 3</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="has-allowed-pseudo-element">
+   <b><a href="#has-allowed-pseudo-element">#has-allowed-pseudo-element</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-has-allowed-pseudo-element">4.5. 
+The Relational Pseudo-class: :has()</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="type-selector">
