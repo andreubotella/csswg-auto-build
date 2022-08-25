@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/mediaqueries-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="e4e3ca1a9576029c4c4523bab49124183796a4fe" name="document-revision">
+  <meta content="447e4de77b87c395ada7266fa9e988a3ad54f4bb" name="document-revision">
 <style>
 ul.index ul li span {
 	white-space: normal;
@@ -837,7 +837,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Media Queries Level 5</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-24">24 August 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-08-25">25 August 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -3794,6 +3794,27 @@ CSS.customMedia.set('--foo', 5);
 	UAs are expected to take such variances into consideration
 	so that <a class="property css" data-link-type="property">prefers-color-scheme</a> reflects preferences appropriate to the medium
 	rather than preferences taken out of context.</p>
+   <p>If evaluated in an embedded SVG document
+	using the "Secure Animated" embedding mode,
+	the preferred color scheme must reflect the value of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-color-adjust-1/#used-color-scheme" id="ref-for-used-color-scheme">used color scheme</a> on the embedding node in the embedding document.</p>
+   <details class="note">
+    <summary>Why do this?</summary>
+    <p>While the outermost document needs to get the user’s preference directly,
+		it’s more useful for an embedded document
+		to use the color scheme of its surrounding embedding context,
+		so it matches the surrounding content.</p>
+    <p>However, this enables communication
+		from the embedding document to the embedded document,
+		so it’s currently restricted to SVG’s
+		using the "Secure Animated" mode,
+		which can’t load external resources
+		or run script,
+		and thus can’t respond to the color scheme
+		in any way observable to the outside world.</p>
+    <p>Whether or not to do similar for iframes,
+		and under what conditions,
+		is being discussed in <a href="https://github.com/w3c/csswg-drafts/issues/7213/">Issue 7213</a>.</p>
+   </details>
    <div class="note" role="note">
      This feature, like the other <a class="property css" data-link-type="property">prefers-*</a> features,
 		previously had a <span class="css">no-preference</span> value
@@ -4464,6 +4485,13 @@ Detecting the desire for increased or decreased color contrast from elements on 
 Detecting Forced Colors Mode: the forced-colors feature</a> <a href="#ref-for-forced-colors-mode④">(2)</a> <a href="#ref-for-forced-colors-mode⑤">(3)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-used-color-scheme">
+   <a href="https://andreubotella.com/csswg-auto-build/css-color-adjust-1/#used-color-scheme">https://andreubotella.com/csswg-auto-build/css-color-adjust-1/#used-color-scheme</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-used-color-scheme">11.5. 
+Detecting the desire for light or dark color schemes: the prefers-color-scheme feature</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-at-ruledef-media">
    <a href="https://andreubotella.com/csswg-auto-build/css-conditional-3/#at-ruledef-media">https://andreubotella.com/csswg-auto-build/css-conditional-3/#at-ruledef-media</a><b>Referenced in:</b>
    <ul>
@@ -4865,6 +4893,7 @@ Syntax</a>
     <a data-link-type="biblio">[CSS-COLOR-ADJUST-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-forced-colors-mode">forced colors mode</span>
+     <li><span class="dfn-paneled" id="term-for-used-color-scheme">used color scheme</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-CONDITIONAL-3]</a> defines the following terms:
