@@ -9,8 +9,17 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-fonts-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="a5ee8c6f1578107269d42bae5a219dcb65f77e41" name="document-revision">
+  <meta content="770f52b4c0cf284d42b47a7b8dc63650e97735eb" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-fonts-4_dev/css-fonts-4"></script>
+<style>
+	/* work-around for https://github.com/tabatkins/bikeshed/issues/1799 */
+	div.example {
+		overflow: visible;
+	}
+	div.example>a.self-link::before {
+		content: "¶";
+	}
+</style>
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1039,15 +1048,16 @@ the <span class="property">ascent-override</span>, <span class="property">descen
     <li>
      <a href="#changes"><span class="secno">17</span> <span class="content"> Changes </span></a>
      <ol class="toc">
-      <li><a href="#changes-2021-07-29"><span class="secno">17.1</span> <span class="content">Changes from the <span>29 July 2021 Working Draft</span> </span></a>
-      <li><a href="#changes-2020-11-17"><span class="secno">17.2</span> <span class="content">Changes from the <span>17 November 2020 Working Draft</span> </span></a>
-      <li><a href="#changes-2019-11-13"><span class="secno">17.3</span> <span class="content">Changes from the <span>13 November 2019
+      <li><a href="#changes-2021-12-21"><span class="secno">17.1</span> <span class="content">Changes from the <span>21 December 2021 Working Draft</span> </span></a>
+      <li><a href="#changes-2021-07-29"><span class="secno">17.2</span> <span class="content">Changes from the <span>29 July 2021 Working Draft</span> </span></a>
+      <li><a href="#changes-2020-11-17"><span class="secno">17.3</span> <span class="content">Changes from the <span>17 November 2020 Working Draft</span> </span></a>
+      <li><a href="#changes-2019-11-13"><span class="secno">17.4</span> <span class="content">Changes from the <span>13 November 2019
 	Working Draft</span></span></a>
-      <li><a href="#changes-2018-09-20"><span class="secno">17.4</span> <span class="content">Changes from the <span>20 September 2018
+      <li><a href="#changes-2018-09-20"><span class="secno">17.5</span> <span class="content">Changes from the <span>20 September 2018
 	Working Draft</span></span></a>
-      <li><a href="#changes-2018-04-10"><span class="secno">17.5</span> <span class="content"> Changes from the <span>10 April 2018
+      <li><a href="#changes-2018-04-10"><span class="secno">17.6</span> <span class="content"> Changes from the <span>10 April 2018
 	Working Draft</span> </span></a>
-      <li><a href="#changes-fonts-3"><span class="secno">17.6</span> <span class="content"> Changes from the 20 September 2018 <span>CSS Fonts 3 Recommendation</span> </span></a>
+      <li><a href="#changes-fonts-3"><span class="secno">17.7</span> <span class="content"> Changes from the 20 September 2018 <span>CSS Fonts 3 Recommendation</span> </span></a>
      </ol>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
@@ -1176,8 +1186,8 @@ other.</p>
     (See <a href="#cluster-matching">§ 5.3 Cluster matching</a>.)
     This allows for differences in available fonts across platforms and
     for differences in the range of characters supported by individual fonts.</p>
-   <div class="example" id="example-cdca51fe">
-    <a class="self-link" href="#example-cdca51fe"></a> 
+   <div class="example" id="ex-font-list">
+    <a class="self-link" href="#ex-font-list"></a> 
 <pre>body {
     font-family: Helvetica, Verdana, sans-serif;
 }
@@ -1209,8 +1219,8 @@ other.</p>
     or unquoted as a sequence of one or more <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a>.</p>
    <p class="note" role="note"><span>Note:</span> This means most punctuation characters and digits at the start of
     each token must be escaped in unquoted font family names.</p>
-   <div class="example" id="example-5ca76aed">
-    <a class="self-link" href="#example-5ca76aed"></a> To illustrate this, the following declarations are invalid: 
+   <div class="example" id="ex-no-unquoted-punctuation">
+    <a class="self-link" href="#ex-no-unquoted-punctuation"></a> To illustrate this, the following declarations are invalid: 
 <pre>font-family: Red/Black, sans-serif;
 font-family: "Lucida" Grande, sans-serif;
 font-family: Ahem!, sans-serif;
@@ -1229,8 +1239,8 @@ font-family: Hawaii 5-0, sans-serif;
 	is the same as one of the <a class="production css" data-link-type="type" href="#generic-family-value" id="ref-for-generic-family-value⑥" title="Expands to: cursive | emoji | fangsong | fantasy | math | monospace | sans-serif | serif | system-ui | ui-monospace | ui-rounded | ui-sans-serif | ui-serif">&lt;generic-family></a> names,
 	or the <span class="css">common-keywords|CSS-wide keyword values</span>,
 	it must be quoted.</p>
-   <div class="example" id="example-c2604b3d">
-    <a class="self-link" href="#example-c2604b3d"></a> To illustrate this,
+   <div class="example" id="ex-valid-unusual-generic-like">
+    <a class="self-link" href="#ex-valid-unusual-generic-like"></a> To illustrate this,
 			the following unusual font family names are valid
 			because they are quoted: 
 <pre>font-family: "sans-serif", sans-serif;
@@ -1247,8 +1257,8 @@ font-family: "inherit", sans-serif;
     it is recommended to quote font family names
     that contain white space, digits,
     or punctuation characters other than hyphens:</p>
-   <div class="example" id="example-b61293ec">
-    <a class="self-link" href="#example-b61293ec"></a> Quoting font families prevents escaping mistakes. 
+   <div class="example" id="ex-best-quote">
+    <a class="self-link" href="#ex-best-quote"></a> Quoting font families prevents escaping mistakes. 
 <pre>body { font-family: "New Century Schoolbook", serif }
 
 &lt;body style="font-family: '21st Century', fantasy">
@@ -1263,8 +1273,8 @@ font-family: "inherit", sans-serif;
    <h4 class="heading settled" data-level="2.1.2" id="font-families"><span class="secno">2.1.2. </span><span class="content"> Relationship Between Faces and Families </span><a class="self-link" href="#font-families"></a></h4>
    <p>A font family name only specifies a name given to a set of font faces;
     it does not specify an individual face.</p>
-   <div class="example" id="example-cabb9a87">
-    <a class="self-link" href="#example-cabb9a87"></a> For example, given the availability of the fonts below,
+   <div class="example" id="ex-futura-matches">
+    <a class="self-link" href="#ex-futura-matches"></a> For example, given the availability of the fonts below,
         Futura would match but Futura Medium would not: 
     <figure>
       <img alt="family and face names" height="151" src="images/familyvsfacename.png" width="597"> 
@@ -1432,8 +1442,8 @@ font-family: "inherit", sans-serif;
             A cross-platform UA should use different fonts on its different supported platforms.
             The purpose of <a class="css" data-link-type="maybe" href="#valdef-font-family-system-ui" id="ref-for-valdef-font-family-system-ui">system-ui</a> is to allow web content
             to integrate with the look and feel of the native OS. 
-     <div class="example" id="example-47fbe4c5">
-      <a class="self-link" href="#example-47fbe4c5"></a> As with other generic font families,
+     <div class="example" id="ex-system-ui-opaque">
+      <a class="self-link" href="#ex-system-ui-opaque"></a> As with other generic font families,
                 the substitution of specific installed fonts for <a class="css" data-link-type="maybe" href="#valdef-font-family-system-ui" id="ref-for-valdef-font-family-system-ui①">system-ui</a> does not affect the computed style. 
 <pre>&lt;div id="system-text" style="font-family: system-ui">&lt;/div>
 ...
@@ -1442,7 +1452,7 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
       <p>The script above should not have any knowledge of how <a class="css" data-link-type="maybe" href="#valdef-font-family-system-ui" id="ref-for-valdef-font-family-system-ui②">system-ui</a> is expanded to include a collection of system user interface fonts.
                 In particular, the above script should yield a result of "system-ui" on every platform.</p>
      </div>
-    <dt id="emoji-def"><a class="self-link" href="#emoji-def"></a><dfn class="dfn-paneled css" data-dfn-for="font-family,<generic-family>" data-dfn-type="value" data-export id="valdef-font-family-emoji">emoji</dfn> 
+    <dt id="emoji-def"><a class="self-link" href="#emoji-def"></a><dfn class="css" data-dfn-for="font-family,<generic-family>" data-dfn-type="value" data-export id="valdef-font-family-emoji">emoji<a class="self-link" href="#valdef-font-family-emoji"></a></dfn> 
     <dd>
       This font family is intended for use with emoji characters. 
      <p>Emoji are pictographs (pictorial symbols)
@@ -1452,7 +1462,7 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
 			food and drink, animals and plants,
 			or icons that represent emotions, feelings, or activities.</p>
      <p class="note" role="note"><span>Note:</span> Some user agents allow users to change the mapping of the <a class="css" data-link-type="maybe" href="#valdef-font-variant-emoji-emoji" id="ref-for-valdef-font-variant-emoji-emoji">emoji</a> generic font
-            family by setting user agent preferences. Because the <a class="css" data-link-type="maybe" href="#valdef-font-family-emoji" id="ref-for-valdef-font-family-emoji">emoji</a> generic font family is
+            family by setting user agent preferences. Because the <span class="css" id="ref-for-valdef-font-variant-emoji-emoji①">emoji</span> generic font family is
             intended to support emoji characters, user agents should encourage users to select
             fonts for this generic font family which support those characters, if necessary.</p>
     <dt id="math-def"><a class="self-link" href="#math-def"></a><dfn class="css" data-dfn-for="font-family,<generic-family>" data-dfn-type="value" data-export id="valdef-font-family-math">math<a class="self-link" href="#valdef-font-family-math"></a></dfn> 
@@ -1480,8 +1490,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
             content to integrate with the look and feel of the native OS. 
      <p class="note" role="note"><span>Note:</span> <a class="css" data-link-type="maybe" href="#valdef-font-family-ui-serif" id="ref-for-valdef-font-family-ui-serif①">ui-serif</a> is not expected to map to any font on platforms
             without an appropriate system font.</p>
-     <div class="example" id="example-fbfc9aa3">
-      <a class="self-link" href="#example-fbfc9aa3"></a> 
+     <div class="example" id="ex-sample-ui-serif">
+      <a class="self-link" href="#ex-sample-ui-serif"></a> 
       <figure>
         <img alt="sample ui-serif font" height="191" src="images/ui-serif.png" width="768"> 
        <figcaption>Sample ui-serif font on macOS Catalina and iOS 13: New York</figcaption>
@@ -1494,8 +1504,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
             content to integrate with the look and feel of the native OS. 
      <p class="note" role="note"><span>Note:</span> <a class="css" data-link-type="maybe" href="#valdef-font-family-ui-sans-serif" id="ref-for-valdef-font-family-ui-sans-serif①">ui-sans-serif</a> is not expected to map to any font on platforms
             without an appropriate system font.</p>
-     <div class="example" id="example-56156920">
-      <a class="self-link" href="#example-56156920"></a> 
+     <div class="example" id="ex-sample-ui-sans">
+      <a class="self-link" href="#ex-sample-ui-sans"></a> 
       <figure>
         <img alt="sample ui-sans-serif font" height="306" src="images/ui-sans-serif.png" width="1522"> 
        <figcaption>Sample ui-sans-serif font on macOS Catalina and iOS 13: San Francisco</figcaption>
@@ -1509,8 +1519,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
             native OS. 
      <p class="note" role="note"><span>Note:</span> <a class="css" data-link-type="maybe" href="#valdef-font-family-ui-monospace" id="ref-for-valdef-font-family-ui-monospace①">ui-monospace</a> is not expected to map to any font on platforms
             without an appropriate system font.</p>
-     <div class="example" id="example-f3e5d34a">
-      <a class="self-link" href="#example-f3e5d34a"></a> 
+     <div class="example" id="ex-sample-ui-mono">
+      <a class="self-link" href="#ex-sample-ui-mono"></a> 
       <figure>
         <img alt="sample ui-monospace font" height="189" src="images/ui-monospace.png" width="964"> 
        <figcaption>Sample ui-monospace font on macOS Catalina and iOS 13: SF Mono</figcaption>
@@ -1523,8 +1533,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
             content to integrate with the look and feel of the native OS. 
      <p class="note" role="note"><span>Note:</span> <a class="css" data-link-type="maybe" href="#valdef-font-family-ui-rounded" id="ref-for-valdef-font-family-ui-rounded①">ui-rounded</a> is not expected to map to any font on platforms
             without an appropriate system font.</p>
-     <div class="example" id="example-33c8dda3">
-      <a class="self-link" href="#example-33c8dda3"></a> 
+     <div class="example" id="ex-sample-ui-rounded">
+      <a class="self-link" href="#ex-sample-ui-rounded"></a> 
       <figure>
         <img alt="sample ui-rounded font" height="185" src="images/ui-rounded.png" width="762"> 
        <figcaption>Sample ui-rounded font on macOS Catalina and iOS 13: SF Rounded</figcaption>
@@ -1684,8 +1694,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
     When a weight is specified for which no face exists, a face with a nearby weight is used.
     In general, bold weights map to faces with heavier weights and light weights map to faces with lighter weights.
     (See the <a href="#font-matching-algorithm">§ 5 Font Matching Algorithm</a> for a precise definition.)</p>
-   <div class="example" id="example-8bd53b8d">
-    <a class="self-link" href="#example-8bd53b8d"></a> The examples here illustrate which face is used for different weights.
+   <div class="example" id="ex-nearby-weights">
+    <a class="self-link" href="#ex-nearby-weights"></a> The examples here illustrate which face is used for different weights.
         Grey indicates that a face for the desired weight does not exist, so a face with a nearby weight is used. 
     <figure>
       <img alt="weight mappings for a family with 400, 700 and 900 weights" height="127" src="images/optimaweights.png" width="697"> 
@@ -1824,8 +1834,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
     (see the <a href="#font-matching-algorithm">§ 5 Font Matching Algorithm</a> for the precise algorithm).
     For TrueType / OpenType fonts that support variations,
     the <code>wdth</code> variation is used to implement varying widths.</p>
-   <div class="example" id="example-c83ed20d">
-    <a class="self-link" href="#example-c83ed20d"></a> The figure below shows how nine font-stretch property settings
+   <div class="example" id="ex-font-stretch-matching">
+    <a class="self-link" href="#ex-font-stretch-matching"></a> The figure below shows how nine font-stretch property settings
         affect font matching for a font family containing a variety of discrete widths.
         Grey indicates a width for which no face exists and a different width is substituted: 
     <figure>
@@ -1897,8 +1907,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
    </table>
    <p>The <a class="property css" data-link-type="property" href="#propdef-font-style" id="ref-for-propdef-font-style②">font-style</a> property allows italic or oblique faces to be selected.
     Italic forms are generally cursive in nature while oblique faces are typically sloped versions of the regular face.</p>
-   <div class="example" id="example-844136d9">
-    <a class="self-link" href="#example-844136d9"></a> Compare the artificially sloped renderings of Palatino "a" and Baskerville "N" in grey
+   <div class="example" id="ex-faux-vs-italic">
+    <a class="self-link" href="#ex-faux-vs-italic"></a> Compare the artificially sloped renderings of Palatino "a" and Baskerville "N" in grey
         with the actual italic versions: 
     <figure>
       <img alt="artificial sloping vs. real italics" height="126" src="images/realvsfakeitalics.png" width="599"> 
@@ -2088,8 +2098,8 @@ window.getComputedStyle(document.getElementById("system-text")).getPropertyValue
     <dd> Special <a href="https://w3c.github.io/mathml-core/#the-math-script-level-property"> mathematical scaling rules</a> must be applied
 			when determining the computed value of the <a class="property css" data-link-type="property" href="#propdef-font-size" id="ref-for-propdef-font-size④">font-size</a> property. 
    </dl>
-   <div class="example" id="example-3607a91c">
-    <a class="self-link" href="#example-3607a91c"></a> The following style sheet demonstrates
+   <div class="example" id="ex-specify-size">
+    <a class="self-link" href="#ex-specify-size"></a> The following style sheet demonstrates
         various ways of specifying the font size. 
 <pre>p { font-size: 12pt; }
 blockquote { font-size: larger }
@@ -2104,8 +2114,8 @@ em { font-size: 1.5em }
     which is not affected by <span class="property" id="ref-for-propdef-font-size-adjust①">font-size-adjust</span> (otherwise, the effect of <span class="property" id="ref-for-propdef-font-size-adjust②">font-size-adjust</span> would compound).</p>
    <p>The actual value of this property can differ from the used value
 	due to the unavailability of certain font sizes.</p>
-   <div class="example" id="example-6c97a2cd">
-    <a class="self-link" href="#example-6c97a2cd"></a> font-size can be clamped, for responsive typography. 
+   <div class="example" id="ex-clamp-size">
+    <a class="self-link" href="#ex-clamp-size"></a> font-size can be clamped, for responsive typography. 
 <pre>font-size: clamp(10px, ..., 36px);
 </pre>
    </div>
@@ -2234,8 +2244,8 @@ em { font-size: 1.5em }
 	It does this by adjusting the font-size
 	so that the x-height is the same
 	regardless of the font used.</p>
-   <div class="example" id="example-c75baaf7">
-    <a class="self-link" href="#example-c75baaf7"></a> The style defined below defines Verdana as the desired font family,
+   <div class="example" id="ex-verdana-futura">
+    <a class="self-link" href="#ex-verdana-futura"></a> The style defined below defines Verdana as the desired font family,
 		but if Verdana is not available Futura or Times will be used.
 		One paragraph also has font-size-adjust specified. 
 <pre>p {
@@ -2313,8 +2323,8 @@ c  =  adjusted font-size to use
 	when <span class="property" id="ref-for-propdef-font-size-adjust①①">font-size-adjust</span> is used.
 	Setting the line height too tightly can result in
 	overlapping lines of text in this situation.</p>
-   <div class="example" id="example-771aee48">
-    <a class="self-link" href="#example-771aee48"></a> Authors can calculate the <a data-link-type="dfn" href="#aspect-value" id="ref-for-aspect-value⑤">aspect value</a> for a given font
+   <div class="example" id="ex-calc-aspect">
+    <a class="self-link" href="#ex-calc-aspect"></a> Authors can calculate the <a data-link-type="dfn" href="#aspect-value" id="ref-for-aspect-value⑤">aspect value</a> for a given font
 		by comparing spans with the same content
 		but different <a class="property css" data-link-type="property" href="#propdef-font-size-adjust" id="ref-for-propdef-font-size-adjust①②">font-size-adjust</a> properties.
 		If the same font-size is used, the spans will match
@@ -2428,8 +2438,8 @@ span {
 	it is not possible to set <span class="property" id="ref-for-propdef-font-size-adjust①⑥">font-size-adjust</span> to anything other than its initial value
 	using the <span class="property" id="ref-for-propdef-font⑥">font</span> shorthand property;
 	instead, use the individual property.</p>
-   <div class="example" id="example-43f2026b">
-    <a class="self-link" href="#example-43f2026b"></a> 
+   <div class="example" id="ex-font-shorthand">
+    <a class="self-link" href="#ex-font-shorthand"></a> 
 <pre>p { font: 12pt/14pt sans-serif }
 p { font: 80% sans-serif }
 p { font: x-large/110% "new century schoolbook", serif }
@@ -2518,8 +2528,8 @@ p { font: condensed oblique 25deg 753 12pt "Helvetica Neue", serif; }
 <pre>font: menu;        /* use the font settings for system menus */
 font: large menu;  /* use a font family named "menu" */
 </pre>
-   <div class="example" id="example-f6596a8c">
-    <a class="self-link" href="#example-f6596a8c"></a> 
+   <div class="example" id="ex-menu-font">
+    <a class="self-link" href="#ex-menu-font"></a> 
 <pre>button { font: 300 italic 1.3em/1.7em "FB Armada", sans-serif }
 button p { font: menu }
 button p em { font-weight: bolder }
@@ -2771,8 +2781,8 @@ button p em { font-weight: bolder }
       <td>auto 
       <td>auto 
    </table>
-   <div class="example" id="example-074790a7">
-    <a class="self-link" href="#example-074790a7"></a> The style rule below disables the use of synthetically obliqued Arabic: 
+   <div class="example" id="ex-no-obliqued-arabic">
+    <a class="self-link" href="#ex-no-obliqued-arabic"></a> The style rule below disables the use of synthetically obliqued Arabic: 
 <pre>*:lang(ar) { font-synthesis: none; }</pre>
    </div>
    <h2 class="heading settled" data-level="3" id="font-rendering-controls"><span class="secno">3. </span><span class="content"> Font Rendering Controls</span><a class="self-link" href="#font-rendering-controls"></a></h2>
@@ -2958,8 +2968,8 @@ Otherwise, the font face is used normally.</p>
 	When a given descriptor occurs multiple times in a given <span class="css" id="ref-for-at-font-face-rule⑦">@font-face</span> rule,
 	only the last descriptor declaration is used
 	and all prior declarations for that descriptor are ignored.</p>
-   <div class="example" id="example-ff60a5cd">
-    <a class="self-link" href="#example-ff60a5cd"></a> To use a downloadable font called Gentium: 
+   <div class="example" id="ex-gentium">
+    <a class="self-link" href="#ex-gentium"></a> To use a downloadable font called Gentium: 
 <pre>@font-face {
 font-family: Gentium;
 src: url(http://example.com/fonts/Gentium.woff);
@@ -3168,8 +3178,8 @@ or font format.</p>
 	which do not support OpenType collections
 	will skip to the next url in the list. </p>
    <p></p>
-   <div class="example" id="example-3c5bd153">
-    <a class="self-link" href="#example-3c5bd153"></a> 
+   <div class="example" id="ex-load-font-fragment">
+    <a class="self-link" href="#ex-load-font-fragment"></a> 
 <pre>src: url(fonts/simple.woff);       /* load simple.woff relative to stylesheet location */
 src: url(/fonts/simple.woff);      /* load simple.woff from absolute location */
 src: url(fonts/coll.otc#foo);      /* load font foo from collection coll.otc
@@ -3187,8 +3197,8 @@ src: url(fonts.svg#simple);        /* load SVG font with id 'simple' */
     or if any of the font technologies are unsupported by the user agent.
 	If no format hint is supplied,
 	the user agent should download the font resource.</p>
-   <div class="example" id="example-d3d2703e">
-    <a class="self-link" href="#example-d3d2703e"></a> For example, the following shows how to load a WOFF 2 font if possible,
+   <div class="example" id="ex-woff2-woff1">
+    <a class="self-link" href="#ex-woff2-woff1"></a> For example, the following shows how to load a WOFF 2 font if possible,
 	otherwise a WOFF 1,
 	otherwise use an OpenType font 
 <pre>@font-face {
@@ -3199,15 +3209,15 @@ src: url(ideal-sans-serif.woff2) format("woff2"),
 }
 </pre>
    </div>
-   <div class="example" id="example-dff40b01">
-    <a class="self-link" href="#example-dff40b01"></a> In this example, if woff2 is not supported,
+   <div class="example" id="ex-fictitious-zebra">
+    <a class="self-link" href="#ex-fictitious-zebra"></a> In this example, if woff2 is not supported,
 		an unsupported and fictitious "zebra" format is skipped
 		and the opentype font is downloaded: 
 <pre>src: url(ideal.woff2) format("woff2"),url(unsupported.zeb) format("zebra"),
 url(basic.ttf) format("opentype");</pre>
    </div>
-   <div class="example" id="example-3a453484">
-    <a class="self-link" href="#example-3a453484"></a>Here an individual instance in a collection is loaded,
+   <div class="example" id="ex-instance-in-collection">
+    <a class="self-link" href="#ex-instance-in-collection"></a>Here an individual instance in a collection is loaded,
 	or if collections are not supported, download an individual font instead. 
 <pre>@font-face {
   font-family: 源ノ角ゴシック Code JP;
@@ -3294,8 +3304,8 @@ font-weight: bold;
    <p class="note" role="note"><span>Note:</span> This also allows for referencing faces
 	that belong to larger families
 	that cannot otherwise be referenced.</p>
-   <div class="example" id="example-00d620ad">
-    <a class="self-link" href="#example-00d620ad"></a> Use a local font or reference an SVG font in another document: 
+   <div class="example" id="ex-local-font">
+    <a class="self-link" href="#ex-local-font"></a> Use a local font or reference an SVG font in another document: 
 <pre>@font-face {
 font-family: Headline;
 src: local(Futura-Medium),
@@ -3464,8 +3474,8 @@ src: local("Gentium"), url(gentium.woff);  /* Overrides src definition */
 	However, variation values applied to fonts defined with '@font-face'
 	will be clamped to both the values specified in these descriptors
 	as well as the values supported by the font file itself.</p>
-   <div class="example" id="example-f67d9f89">
-    <a class="self-link" href="#example-f67d9f89"></a> The font descriptors defined in this section
+   <div class="example" id="ex-descriptors-matching">
+    <a class="self-link" href="#ex-descriptors-matching"></a> The font descriptors defined in this section
 		are used for selecting a font
 		from within the set of fonts defined by <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule②④">@font-face</a> rules for a given family. 
     <p>Consider a family containing a single, regular face:</p>
@@ -3605,8 +3615,8 @@ be checked for a given character.</p>
     <dt>unicode-range: U+A5, U+4E00-9FFF, U+30??, U+FF00-FF9F;
     <dd>code range for Japanese kanji, hiragana and katakana characters plus yen/yuan symbol
    </dl>
-   <div class="example" id="example-1c91e57a">
-    <a class="self-link" href="#example-1c91e57a"></a> The BBC provides news services in a wide variety of languages, many
+   <div class="example" id="ex-urange-bengali">
+    <a class="self-link" href="#ex-urange-bengali"></a> The BBC provides news services in a wide variety of languages, many
 	that are not well supported across all platforms. Using an <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule③⓪">@font-face</a> rule, the BBC could provide a font for any of these languages, as it
 	already does via a manual font download.
     <p></p>
@@ -3617,8 +3627,8 @@ be checked for a given character.</p>
 }
 </pre>
    </div>
-   <div class="example" id="example-3fd9c28a">
-    <a class="self-link" href="#example-3fd9c28a"></a> Technical documents often require a wide range of symbols.  The STIX
+   <div class="example" id="ex-stix">
+    <a class="self-link" href="#ex-stix"></a> Technical documents often require a wide range of symbols.  The STIX
 	Fonts project is one project aimed at providing fonts to support a wide
 	range of technical typesetting in a standardized way.  The example below
 	shows the use of a font that provides glyphs for many of the
@@ -3630,8 +3640,8 @@ be checked for a given character.</p>
 }
 </pre>
    </div>
-   <div class="example" id="example-7694c528">
-    <a class="self-link" href="#example-7694c528"></a> This example shows how an author can override the glyphs used for
+   <div class="example" id="ex-better-latin">
+    <a class="self-link" href="#ex-better-latin"></a> This example shows how an author can override the glyphs used for
 	Latin characters in a Japanese font with glyphs from a different font.
 	The first rule specifies no range so it defaults to the entire range.
 	The range specified in the second rule overlaps but takes precedence
@@ -3649,8 +3659,8 @@ be checked for a given character.</p>
 }
 </pre>
    </div>
-   <div class="example" id="example-cf27d555">
-    <a class="self-link" href="#example-cf27d555"></a> Consider a family constructed to optimize bandwidth by separating out
+   <div class="example" id="ex-subset-ftw">
+    <a class="self-link" href="#ex-subset-ftw"></a> Consider a family constructed to optimize bandwidth by separating out
 	Latin, Japanese and other characters into different font files: 
 <pre>/* fallback font - size: 4.5MB */
 @font-face {
@@ -3783,8 +3793,8 @@ If no such named instance exists,
 this descriptor is treated as if it has a value of <span class="property">auto</span>.
 Otherwise, this named instance’s variation axis values
 are applied to this position in the <a href="#font-feature-variation-resolution">§ 7 Font Feature and Variation Resolution</a>.</p>
-   <div class="example" id="example-c47e5df7">
-    <a class="self-link" href="#example-c47e5df7"></a> For example, the following <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule③⑦">@font-face</a> block will
+   <div class="example" id="ex-grotesque-XHGT">
+    <a class="self-link" href="#ex-grotesque-XHGT"></a> For example, the following <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule③⑦">@font-face</a> block will
 apply the instance named "Grotesque"
 but will override the "XHGT" axis to have a value of 0.7. 
 <pre>@font-face {
@@ -3854,8 +3864,8 @@ will typically not be loaded cross-origin unless authors specifically
 takes steps to permit cross-origin loads. Sites can explicitly allow
 cross-site loading of font data using the <code>Access-Control-Allow-Origin</code> HTTP header.  For other schemes, no explicit mechanism to allow
 cross-origin loading, beyond what is permitted by the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch">fetch</a> algorithm, is defined or required.</p>
-   <div class="example" id="example-28b80dd5">
-    <a class="self-link" href="#example-28b80dd5"></a> For the examples given below, assume that a document is located at <code>https://example.com/page.html</code> and all URL’s link to valid
+   <div class="example" id="ex-cross-origin">
+    <a class="self-link" href="#ex-cross-origin"></a> For the examples given below, assume that a document is located at <code>https://example.com/page.html</code> and all URL’s link to valid
 	font resources supported by the user agent. 
     <p>Fonts defined with the <a class="property css" data-link-type="property">src</a> descriptor values below will be loaded:</p>
 <pre>/* same origin (i.e. domain, scheme, port match document) */src: url(fonts/simple.woff);
@@ -3876,7 +3886,7 @@ src: url(http://example.com/fonts/simple.woff);
 src: url(http://another.example.com/fonts/simple.woff);
 </pre>
    </div>
-   <h3 class="heading settled" data-level="4.9" id="font-display-desc"><span class="secno">4.9. </span><span class="content"> Controlling Font Display Per Font-Face: the <a class="property css" data-link-type="descriptor" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display">font-display</a> descriptor</span><a class="self-link" href="#font-display-desc"></a></h3>
+   <h3 class="heading settled" data-level="4.9" id="font-display-desc"><span class="secno">4.9. </span><span class="content"> Controlling Font Display Per Font-Face: the <a class="property css" data-link-type="descriptor" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display①">font-display</a> descriptor</span><a class="self-link" href="#font-display-desc"></a></h3>
    <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
     <div class="feature">
@@ -3893,7 +3903,7 @@ src: url(http://another.example.com/fonts/simple.woff);
      </div>
     </div>
    </div>
-   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display①">font-display</a> descriptor for <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule④③">@font-face</a> determines how a font face is displayed,
+   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display②">font-display</a> descriptor for <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule④③">@font-face</a> determines how a font face is displayed,
 based on whether and when it is downloaded and ready to use.</p>
    <table class="def descdef">
     <tbody>
@@ -3912,7 +3922,7 @@ based on whether and when it is downloaded and ready to use.</p>
    </table>
    <p class="note" role="note"><span>Note:</span> For all of these values,
 user agents may use slightly different durations,
-or more sophisticated behaviors that can’t be directly expressed in the <a class="property css" data-link-type="descriptor" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display①">font-display</a> syntax,
+or more sophisticated behaviors that can’t be directly expressed in the <a class="property css" data-link-type="descriptor" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display③">font-display</a> syntax,
 in order to provide more useful behavior for their users.
 They may also provide the ability for users to override author-chosen behavior
 with something more desirable;
@@ -3930,8 +3940,8 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
 		but swaps the font face in as soon as it loads.</p>
      <p>This value must only be used when rendering text in a particular font is required for the page to be usable.
 		It must only be used for small pieces of text.</p>
-     <div class="example" id="example-87d17269">
-      <a class="self-link" href="#example-87d17269"></a> For example, badly designed "icon fonts" might associate a "⎙" (printer) icon
+     <div class="example" id="ex-bad-icon-fonts">
+      <a class="self-link" href="#ex-bad-icon-fonts"></a> For example, badly designed "icon fonts" might associate a "⎙" (printer) icon
 			with an unrelated character like "P",
 			so if the text is displayed with a fallback font instead
 			there will be confusing letters scattered around the page
@@ -3951,7 +3961,7 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
      <p>This value should only be used when rendering text in a particular font is very important for the page,
 		but rendering in any font will still get a correct message across.
 		It should only be used for small pieces of text.</p>
-     <div class="example" id="example-bc8b70fc"><a class="self-link" href="#example-bc8b70fc"></a> For example,
+     <div class="example" id="ex-logo-font"><a class="self-link" href="#ex-logo-font"></a> For example,
 			if a website has a custom font for rendering their logo,
 			rendering that logo correctly is fairly important for branding purposes,
 			but displaying the logo in any font will at least get the point across without confusion. </div>
@@ -3967,7 +3977,7 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
 		or any other text where the use of the chosen font is useful and desired,
 		but it’s acceptable for the user to see the text in a fallback font.
 		This value is appropriate to use for large pieces of text.</p>
-     <div class="example" id="example-d1362f0c"><a class="self-link" href="#example-d1362f0c"></a> For example,
+     <div class="example" id="ex-avoid-shifting"><a class="self-link" href="#ex-avoid-shifting"></a> For example,
 			in large pieces of body text,
 			it’s most important just to get the text rendered quickly,
 			so the user can begin to read as quickly as possible.
@@ -3997,8 +4007,8 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
 		or any other text where the chosen font is purely a decorative "nice-to-have".
 		It should be used anytime it is more important that the web page render quickly on first visit,
 		than it is that the user wait a longer time to see everything perfect immediately.</p>
-     <div class="example" id="example-97656cbd">
-      <a class="self-link" href="#example-97656cbd"></a> For example, body text is perfectly readable in one of the browser default fonts,
+     <div class="example" id="ex-perfectly-readable">
+      <a class="self-link" href="#ex-perfectly-readable"></a> For example, body text is perfectly readable in one of the browser default fonts,
 			though a downloadable font face might be more attractive
 			and mesh with the site’s aesthetics better.
 			First time visitors to a site generally care far more about the site being quickly usable
@@ -4030,13 +4040,13 @@ for example, forcing all fonts to have a <span class="css">0s</span> <a data-lin
      </div>
    </dl>
    <h4 class="heading settled" data-level="4.9.1" id="font-display-font-feature-values"><span class="secno">4.9.1. </span><span class="content"> Controlling Font Display Per Font-Family via <a class="css" data-link-type="maybe" href="#at-ruledef-font-feature-values" id="ref-for-at-ruledef-font-feature-values">@font-feature-values</a></span><a class="self-link" href="#font-display-font-feature-values"></a></h4>
-   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display②">font-display</a> descriptor for <a class="css" data-link-type="maybe" href="#at-ruledef-font-feature-values" id="ref-for-at-ruledef-font-feature-values①">@font-feature-values</a> determines how a font family is displayed,
+   <p>The <a class="property" data-link-type="propdesc" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display">font-display</a> descriptor for <a class="css" data-link-type="maybe" href="#at-ruledef-font-feature-values" id="ref-for-at-ruledef-font-feature-values①">@font-feature-values</a> determines how a font family is displayed,
 by setting the "default" font-display value
 for <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule④⑤">@font-face</a> rules targeting the same font family.
-When <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display②">font-display</a> is omitted in an <span class="css" id="ref-for-at-font-face-rule④⑥">@font-face</span> rule,
-the user agent uses the <span class="property" id="ref-for-descdef-font-feature-values-font-display③">font-display</span> value
+When <a class="property" data-link-type="propdesc" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display④">font-display</a> is omitted in an <span class="css" id="ref-for-at-font-face-rule④⑥">@font-face</span> rule,
+the user agent uses the <span class="property" id="ref-for-descdef-font-feature-values-font-display①">font-display</span> value
 set via <span class="css" id="ref-for-at-ruledef-font-feature-values②">@font-feature-values</span> for the relevant font-family if one is set,
-and otherwise defaults to <span class="css" id="ref-for-descdef-font-face-font-display③">font-display: auto</span>.</p>
+and otherwise defaults to <span class="css" id="ref-for-descdef-font-face-font-display⑤">font-display: auto</span>.</p>
    <p>This mechanism can be used to set a default display policy for an entire font-family,
 and enables developers to set a display policy for <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule④⑦">@font-face</a> rules
 that are not directly under their control.
@@ -4172,8 +4182,8 @@ font file directly.</p>
 which results in different text layouts.</p>
    <p>When the descriptor value is a percentage, the corresponding metric value is resolved as the
 given percentage multiplied by the used font size. Negative values are invalid at parse time.</p>
-   <div class="example" id="example-7315a3e2">
-    <a class="self-link" href="#example-7315a3e2"></a> The percentage is resolved against different font sizes for different elements. 
+   <div class="example" id="ex-percent-resolve">
+    <a class="self-link" href="#ex-percent-resolve"></a> The percentage is resolved against different font sizes for different elements. 
 <pre>@font-face {
   font-family: overridden-font;
   ascent-override: 50%;
@@ -4188,8 +4198,8 @@ given percentage multiplied by the used font size. Negative values are invalid a
     <p>The outer span uses an <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-inline-3/#ascent-metric" id="ref-for-ascent-metric①">ascent</a> value of
 	10px, whereas the inner span uses 15px.</p>
    </div>
-   <div class="example" id="example-c9d30fd3">
-    <a class="self-link" href="#example-c9d30fd3"></a> We may override the metrics of a local fallback font to match the primary font, which
+   <div class="example" id="ex-override-local-metrics">
+    <a class="self-link" href="#ex-override-local-metrics"></a> We may override the metrics of a local fallback font to match the primary font, which
 	is a web font. This reduces layout shifting when switching from fallback to the
 	primary font. 
 <pre>@font-face {
@@ -4226,8 +4236,8 @@ containing a glyph for that character.</p>
     User agents must recognize and correctly match all of these names
     independent of the underlying platform localization,
     system API used, or document encoding.</p>
-   <div class="example" id="example-eaaf90d9">
-    <a class="self-link" href="#example-eaaf90d9"></a> For example,
+   <div class="example" id="ex-localized-name">
+    <a class="self-link" href="#ex-localized-name"></a> For example,
         for each of the fonts listed below,
         the author can use either the Latin name
         or the localized name
@@ -4350,14 +4360,14 @@ match is found.</p>
        <p>Once the
 closest matching width has been determined by this process,
 faces with widths which do not include this determined width are removed from the matching set.</p>
-       <div class="example" id="ascendingstretch">
-        <a class="self-link" href="#ascendingstretch"></a> This search algorithm can be thought of as a distance function, where the lowest-distance value present in the font family is selected, and all fonts not including that value are eliminated. 
+       <div class="example" id="ex-ascending-stretch">
+        <a class="self-link" href="#ex-ascending-stretch"></a> This search algorithm can be thought of as a distance function, where the lowest-distance value present in the font family is selected, and all fonts not including that value are eliminated. 
         <p>Consider a font family with three fonts, named A, B, and C, each with associated supported ranges for the <a class="property css" data-link-type="property" href="#propdef-font-stretch" id="ref-for-propdef-font-stretch①⑥">font-stretch</a> descriptor. If an element is styled with "font-stretch: 125%", the search algorithm can be visualized as follows:</p>
         <p><img alt="algorithm" src="images/stretchdistance.svg"></p>
         <p>The font stretch ranges supported by fonts A, B, and C are shown in the graph above. As you can see, because font B contains the minimum stretch value across the entire family, font B would be selected by this algorithm. However, if font B were somehow eliminated from the family, font C would then contain the lowest distance in the family, so it would be selected.</p>
        </div>
-       <div class="example" id="example-17d88513">
-        <a class="self-link" href="#example-17d88513"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-stretch: 75%": 
+       <div class="example" id="ex-ascending-stretch-2">
+        <a class="self-link" href="#ex-ascending-stretch-2"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-stretch: 75%": 
         <p><img alt="distance graph" src="images/stretchdistance2.svg"></p>
         <p>As you can see, because font B contains the minimum stretch value across the entire family, font B would be selected by this algorithm. However, if font B were somehow eliminated from the family, font A would then contain the lowest distance in the family, so it would be selected.</p>
        </div>
@@ -4384,8 +4394,8 @@ are checked in this stage.</p>
          <p>If no match is found, italic values less than or equal to 0 are checked in descending order until a match is found.</p>
         <li data-md>
          <p>If no match is found, oblique values less than or equal to 0deg are checked in descending order until a match is found.</p>
-         <div class="example" id="example-1eed5a8f">
-          <a class="self-link" href="#example-1eed5a8f"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: italic": 
+         <div class="example" id="ex-ascending-italic">
+          <a class="self-link" href="#ex-ascending-italic"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: italic": 
           <p><img alt="distance graph" src="images/styledistance.svg"></p>
           <p>As you can see, because font D contains the minimum italic value across the entire family, font D would be selected by this algorithm. However, if font D were somehow eliminated from the family, font E would then contain the lowest distance in the family, so it would be selected. If E were eliminated, C would be selected. If C were eliminated, font B would not be chosen immediately; instead, oblique values would be consulted and an oblique value might be chosen. However, if no oblique value is chosen, font B would then be selected, followed by font A.</p>
          </div>
@@ -4413,8 +4423,8 @@ followed by italic values below 1 in descending order, until 0 is hit. Only posi
          <p>If no match is found, oblique values less than or equal to 0deg are checked in descending order until a match is found.</p>
         <li data-md>
          <p>If no match is found, italic values less than or equal to 0 are checked in descending order until a match is found.</p>
-         <div class="example" id="example-1717b62c">
-          <a class="self-link" href="#example-1717b62c"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: oblique 40deg": 
+         <div class="example" id="ex-ascending-oblique-40">
+          <a class="self-link" href="#ex-ascending-oblique-40"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: oblique 40deg": 
           <p><img alt="distance graph" src="images/styledistance2.svg"></p>
           <p>As you can see, because font D contains the minimum oblique value across the entire family, font D would be selected by this algorithm. However, if font D were somehow eliminated from the family, font E would then contain the lowest distance in the family, so it would be selected. If E were eliminated, C would be selected. If C were eliminated, font B would not be chosen immediately; instead, italic values would be consulted and an italic value might be chosen. However, if no italic value is chosen, font B would then be selected, followed by font A.</p>
          </div>
@@ -4446,8 +4456,8 @@ are checked in this stage.</p>
         <li data-md>
          <p>If no match is found, italic values less than or equal to 0 are checked in descending order until a match is found.</p>
        </ol>
-       <div class="example" id="example-c1b8e89a">
-        <a class="self-link" href="#example-c1b8e89a"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: oblique 13deg": 
+       <div class="example" id="ex-ascending-oblique-13">
+        <a class="self-link" href="#ex-ascending-oblique-13"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: oblique 13deg": 
         <p><img alt="distance graph" src="images/styledistance3.svg"></p>
         <p>As you can see, because font D contains the minimum oblique value across the entire family, font D would be selected by this algorithm. However, if font D were somehow eliminated from the family, font C would then contain the lowest distance in the family, so it would be selected. If C were eliminated, E would be selected. If E were eliminated, font B would not be chosen immediately; instead, italic values would be consulted and an italic value might be chosen. However, if no italic value is chosen, font B would then be selected, followed by font A.</p>
        </div>
@@ -4463,8 +4473,8 @@ are checked in this stage.</p>
         <li data-md>
          <p>If no match is found, italic values less than 0 are checked in descending order until a match is found.</p>
        </ol>
-       <div class="example" id="example-249f724a">
-        <a class="self-link" href="#example-249f724a"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: normal": 
+       <div class="example" id="ex-ascending-normal">
+        <a class="self-link" href="#ex-ascending-normal"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-style: normal": 
         <p><img alt="distance graph" src="images/styledistance4.svg"></p>
         <p>As you can see, because font C contains the minimum oblique value across the entire family, font C would be selected by this algorithm. However, if font C were somehow eliminated from the family, font B would not be chosen immediately; instead, italic values would be consulted and an italic value might be chosen. However, if no italic value is chosen, font B would then be selected, followed by font A.</p>
        </div>
@@ -4491,23 +4501,23 @@ desired weight are checked in ascending order followed by
 weights below the desired weight in descending order until a
 match is found.</p>
        </ul>
-       <div class="example" id="example-e50578cb">
-        <a class="self-link" href="#example-e50578cb"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 400": 
+       <div class="example" id="ex-weight-400">
+        <a class="self-link" href="#ex-weight-400"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 400": 
         <p><img alt="distance graph" src="images/styleweight.svg"></p>
         <p>As you can see, because font B contains the minimum distance across the entire family, font B would be selected by this algorithm. However, if font B were somehow eliminated from the family, font C would then contain the lowest distance in the family, so it would be selected. If C were eliminated, D would be selected, followed by fonts A and then E.</p>
        </div>
-       <div class="example" id="example-5b43f390">
-        <a class="self-link" href="#example-5b43f390"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 450": 
+       <div class="example" id="ex-weight-450">
+        <a class="self-link" href="#ex-weight-450"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 450": 
         <p><img alt="distance graph" src="images/styleweight450.svg"></p>
         <p>As you can see, because font C contains the minimum distance across the entire family, font C would be selected by this algorithm. However, if font C were somehow eliminated from the family, font D would then contain the lowest distance in the family, so it would be selected. If D were also eliminated, B would be selected, followed by fonts A and then E.</p>
        </div>
-       <div class="example" id="example-827dee2b">
-        <a class="self-link" href="#example-827dee2b"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 500": 
+       <div class="example" id="ex-weight-500">
+        <a class="self-link" href="#ex-weight-500"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 500": 
         <p><img alt="distance graph" src="images/weightmatching.svg"></p>
         <p>As you can see, because font D contains the minimum distance across the entire family, font D would be selected by this algorithm. However, if font D were somehow eliminated from the family, font B would then contain the lowest distance in the family, so it would be selected. If B were eliminated, C would be selected, followed by fonts B, A, and then E.</p>
        </div>
-       <div class="example" id="example-7b6f8049">
-        <a class="self-link" href="#example-7b6f8049"></a> Similar to the <a href="#ascendingstretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 300": 
+       <div class="example" id="ex-weight-300">
+        <a class="self-link" href="#ex-weight-300"></a> Similar to the <a href="#ex-ascending-stretch">previous example</a>, here is the conceptual distance graph for an element styled with "font-weight: 300": 
         <p><img alt="distance graph" src="images/weightmatching2.svg"></p>
         <p>As you can see, because font B contains the minimum distance across the entire family, font B would be selected by this algorithm. However, if font B were somehow eliminated from the family, font A would then contain the lowest distance in the family, so it would be selected. If A were eliminated, C would be selected.</p>
        </div>
@@ -5181,8 +5191,8 @@ This makes superscript and subscript variants
 ideal for situations where it’s important
 that leading remain constant,
 such as in multi-column layout.</p>
-   <div class="example" id="example-cb776798">
-    <a class="self-link" href="#example-cb776798"></a> 
+   <div class="example" id="ex-typical-ua-style">
+    <a class="self-link" href="#ex-typical-ua-style"></a> 
     <p>A typical user agent default style for the <span class="tag">sub</span> element:</p>
 <pre>sub {  vertical-align: sub;
   font-size: smaller;
@@ -5326,8 +5336,8 @@ also affects the decision of
 whether or not to use a simulated small-caps font
 (unlike CSS Fonts 3).</p>
    <p></p>
-   <div class="example" id="example-06f22977">
-    <a class="self-link" href="#example-06f22977"></a> 
+   <div class="example" id="ex-small-caps">
+    <a class="self-link" href="#ex-small-caps"></a> 
 <pre>#example1 { font-variant-caps: small-caps; }#example2 { font-variant-caps: small-caps; font-feature-settings: 'smcp' 0; }</pre>
     <p>For fonts which don’t support small caps, both #example1 and #example2
 should be rendered with synthesized small caps. However, for fonts which
@@ -5373,8 +5383,8 @@ in all uppercase letters.</p>
     <img alt="using all-small-caps in acronym-laden text" class="hires" src="images/acronym-laden-text.png" width="596">
     <p class="caption">Using small capitals to improve readability in acronym-laden text</p>
    </div>
-   <div class="example" id="example-e5d6a864">
-    <a class="self-link" href="#example-e5d6a864"></a> 
+   <div class="example" id="ex-quote-italic-small-caps">
+    <a class="self-link" href="#ex-quote-italic-small-caps"></a> 
     <p>Quotes rendered italicized, with small-caps on the first line:</p>
 <pre>blockquote            { font-style: italic; }blockquote:first-line { font-variant: small-caps; }
 
@@ -5497,8 +5507,8 @@ ordinal forms may differ from superscript forms.
 In Italian, for example,
 ordinal forms sometimes include an underline in the ordinal design.</p>
    </div>
-   <div class="example" id="steak-marinade">
-    <a class="self-link" href="#steak-marinade"></a> 
+   <div class="example" id="ex-steak-marinade">
+    <a class="self-link" href="#ex-steak-marinade"></a> 
     <p>A simple flank steak marinade recipe,
 rendered with automatic fractions and old-style numerals:</p>
 <pre>.amount { font-variant-numeric: oldstyle-nums diagonal-fractions; }
@@ -5581,7 +5591,7 @@ of these alternates is font-specific, the <a class="css" data-link-type="maybe" 
 specific font family or set of families that associate a font-specific
 numeric <a class="production css" data-link-type="type">&lt;feature-index></a> with a custom <a class="production css" data-link-type="type" href="#feature-value-name-value" id="ref-for-feature-value-name-value⑥">&lt;feature-value-name></a>, which is then used in this
 property to select specific alternates:</p>
-<pre class="example highlight" id="example-244de8a1"><a class="self-link" href="#example-244de8a1"></a><c- n>@font-feature-values</c-> Noble Script <c- p>{</c-> <c- n>@swash</c-> <c- p>{</c-> <c- k>swishy</c-><c- p>:</c-> <c- m>1</c-><c- p>;</c-> <c- k>flowing</c-><c- p>:</c-> <c- m>2</c-><c- p>;</c-> <c- p>}</c-> <c- p>}</c->
+<pre class="example highlight" id="ex-noble-script"><a class="self-link" href="#ex-noble-script"></a><c- n>@font-feature-values</c-> Noble Script <c- p>{</c-> <c- n>@swash</c-> <c- p>{</c-> <c- k>swishy</c-><c- p>:</c-> <c- m>1</c-><c- p>;</c-> <c- k>flowing</c-><c- p>:</c-> <c- m>2</c-><c- p>;</c-> <c- p>}</c-> <c- p>}</c->
 
 p <c- p>{</c->
   <c- k>font-family</c-><c- p>:</c-> Noble Script<c- p>;</c->
@@ -5592,7 +5602,7 @@ p <c- p>{</c->
 been defined for a given family or for a particular feature type, the
 computed value must be the same as if it had been defined.  However,
 property values that contain these undefined <span class="production" id="ref-for-feature-value-name-value⑧">&lt;feature-value-name></span> identifiers must be ignored when choosing glyphs.</p>
-<pre class="example highlight" id="example-925f6805"><a class="self-link" href="#example-925f6805"></a><c- c>/* these two style rules are effectively the same */</c->
+<pre class="example highlight" id="ex-effectively-same"><a class="self-link" href="#ex-effectively-same"></a><c- c>/* these two style rules are effectively the same */</c->
 
 p <c- p>{</c-> <c- k>font-variant-alternates</c-><c- p>:</c-> <c- nf>swash</c-><c- p>(</c->unknown-value<c- p>);</c-> <c- p>}</c-> <c- c>/* not a defined value, ignored */</c->
 p <c- p>{</c-> <c- k>font-variant-alternates</c-><c- p>:</c-> normal<c- p>;</c-> <c- p>}</c->
@@ -5673,8 +5683,8 @@ an author can easily turn on similar features regardless of the font in use
 (if they’ve defined that name for all the fonts),
 and be sure they’re not accidentally turning on unrelated features
 (as fonts without those names defined for them simply won’t do anything).</p>
-   <div class="example" id="example-21e94b5d">
-    <a class="self-link" href="#example-21e94b5d"></a> 
+   <div class="example" id="ex-font-feature-values">
+    <a class="self-link" href="#ex-font-feature-values"></a> 
     <p>Using a commonly named value allows authors to use a single style rule
     to cover a set of fonts for which the underlying selector is different for
     each font. If either font in the example below is found, a circled number
@@ -5730,7 +5740,7 @@ and must be ignored.</p>
 these list items are either:</p>
    <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#at-rule" id="ref-for-at-rule">at-rules</a> named by one of the <a class="production css" data-link-type="type">&lt;font-feature-value-type></a> at-keyword tokens,
 or
-the <a class="property" data-link-type="propdesc" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display④">font-display</a> descriptor.</p>
+the <a class="property" data-link-type="propdesc" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display②">font-display</a> descriptor.</p>
    <p>Specifying the same <a class="production css" data-link-type="type">&lt;font-feature-value-type></a> more than once is valid;
 their contents are cascaded together.
 Each <span class="production">&lt;feature-value-block></span> accepts a list of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssstyledeclaration-declarations" id="ref-for-cssstyledeclaration-declarations">declarations</a>,
@@ -5753,8 +5763,9 @@ each <a data-link-type="dfn" href="#font-feature-value-declaration" id="ref-for-
 If the same tuple appears more than once in a document
 (such as if a single block),
 the last-defined one is used.</p>
-   <div class="example" id="example-ebee1a4a">
-    <a class="self-link" href="#example-ebee1a4a"></a> For example, the following all define the exact same set of font feature values: 
+   <div class="example" id="ex-same-font-feature-values
+">
+    <a class="self-link" href="#ex-same-font-feature-values%0a"></a> For example, the following all define the exact same set of font feature values: 
 <pre class="highlight"><c- c>/* Default */</c->
 <c- n>@font-feature-values</c-> foo <c- p>{</c->
     <c- n>@swash</c-> <c- p>{</c-> <c- k>pretty</c-><c- p>:</c-> <c- m>1</c-><c- p>;</c-> <c- k>cool</c-><c- p>:</c-> <c- m>2</c-><c- p>;</c-> <c- p>}</c->
@@ -5786,8 +5797,8 @@ An unknown at-rule within a <a class="css" data-link-type="maybe" href="#at-rule
 (not using one of the predefined list of allowed at-keywords)
 makes that at-rule invalid and ignored,
 but does not invalidate the <span class="css" id="ref-for-at-ruledef-font-feature-values①③">@font-feature-values</span> rule.</p>
-   <div class="example" id="example-a4e868e2">
-    <a class="self-link" href="#example-a4e868e2"></a> Rules that are equivalent given syntax error handling: 
+   <div class="example" id="ex-invalid-ignored">
+    <a class="self-link" href="#ex-invalid-ignored"></a> Rules that are equivalent given syntax error handling: 
 <pre class="highlight"><c- n>@font-feature-values</c-> Bongo <c- p>{</c->
     <c- n>@swash</c-> <c- p>{</c-> <c- k>ornate</c-><c- p>:</c-> <c- m>1</c-><c- p>;</c-> <c- p>}</c->
     annotation <c- p>{</c-> <c- k>boxed</c-><c- p>:</c-> <c- m>4</c-><c- p>;</c-> <c- p>}</c-> <c- c>/* should be @annotation! */</c->
@@ -5810,8 +5821,8 @@ a given family, the resulting values definitions are the union of the
 definitions contained within these rules. This allows a set of named
 values to be defined for a given font family globally for a site and
 specific additions made per-page.</p>
-   <div class="example" id="example-a442ca99">
-    <a class="self-link" href="#example-a442ca99"></a> Using both site-wide and per-page feature values: 
+   <div class="example" id="ex-site-wide-per-page">
+    <a class="self-link" href="#ex-site-wide-per-page"></a> Using both site-wide and per-page feature values: 
     <p>site.css:</p>
 <pre class="highlight"><c- n>@font-feature-values</c-> Mercury Serif <c- p>{</c->
     <c- n>@styleset</c-> <c- p>{</c->
@@ -5845,7 +5856,7 @@ body <c- p>{</c->
 	However, the OpenType standard only officially defines <span class="tag">ss01</span> through <span class="tag">ss20</span>.
 	For OpenType fonts, values greater than 99 or equal to 0 do not
 	generate a syntax error when parsed but enable no OpenType features.</p>
-<pre class="example" id="example-d732baca"><a class="self-link" href="#example-d732baca"></a>@font-feature-values Mars Serif {  @styleset {
+<pre class="example" id="ex-multi-valued-feature"><a class="self-link" href="#ex-multi-valued-feature"></a>@font-feature-values Mars Serif {  @styleset {
   alt-g: 1;        /* implies ss01 = 1 */
   curly-quotes: 3; /* implies ss03 = 1 */
   code: 4 5;       /* implies ss04 = 1, ss05 = 1 */
@@ -5873,7 +5884,7 @@ p.codeblock {
 	syntax error occurs and the entire
 	feature value definition is
 	ignored.</p>
-<pre class="example" id="example-4f4f484d"><a class="self-link" href="#example-4f4f484d"></a>@font-feature-values MM Greek {  @character-variant { alpha-2: 1 2; }   /* implies cv01 = 2 */
+<pre class="example" id="ex-greek-variant-features"><a class="self-link" href="#ex-greek-variant-features"></a>@font-feature-values MM Greek {  @character-variant { alpha-2: 1 2; }   /* implies cv01 = 2 */
   @character-variant { beta-3: 2 3; }    /* implies cv02 = 3 */
   @character-variant { epsilon: 5 3 6; } /* more than 2 values, syntax error, definition ignored */
   @character-variant { gamma: 12; }      /* implies cv12 = 1 */
@@ -5901,8 +5912,8 @@ p {
     <img alt="Matching text on Byzantine seals using character variants" height="522" src="images/byzantineseal.png" width="543">
     <p class="caption">Byzantine seal text displayed with character variants</p>
    </div>
-   <div class="example" id="example-232e7d20">
-    <a class="self-link" href="#example-232e7d20"></a> 
+   <div class="example" id="ex-byzantine-variants">
+    <a class="self-link" href="#ex-byzantine-variants"></a> 
     <p>In the figure above, the text in red is rendered using a font containing
 	character variants that mimic the character forms found on a Byzantine seal
 	from the 8th century A.D.  Two lines below is the same text displayed in
@@ -6105,7 +6116,7 @@ span.alt-U {
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-font-variant">font-variant</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①①⑧">|</a> none <span id="ref-for-comb-one①①⑨">|</span> [ <a class="production css" data-link-type="type" href="#common-lig-values" id="ref-for-common-lig-values">&lt;common-lig-values></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-any" id="ref-for-comb-any②⓪">||</a> <a class="production css" data-link-type="type" href="#discretionary-lig-values" id="ref-for-discretionary-lig-values">&lt;discretionary-lig-values></a> <span id="ref-for-comb-any②①">||</span> <a class="production css" data-link-type="type" href="#historical-lig-values" id="ref-for-historical-lig-values">&lt;historical-lig-values></a> <span id="ref-for-comb-any②②">||</span> <a class="production css" data-link-type="type" href="#contextual-alt-values" id="ref-for-contextual-alt-values">&lt;contextual-alt-values></a> <span id="ref-for-comb-any②③">||</span> [ small-caps <span id="ref-for-comb-one①②⓪">|</span> all-small-caps <span id="ref-for-comb-one①②①">|</span> petite-caps <span id="ref-for-comb-one①②②">|</span> all-petite-caps <span id="ref-for-comb-one①②③">|</span> unicase <span id="ref-for-comb-one①②④">|</span> titling-caps ] <span id="ref-for-comb-any②④">||</span> [ stylistic(<a class="production css" data-link-type="type" href="#feature-value-name-value" id="ref-for-feature-value-name-value①⑤">&lt;feature-value-name></a>) <span id="ref-for-comb-any②⑤">||</span> historical-forms <span id="ref-for-comb-any②⑥">||</span> styleset(<span class="production" id="ref-for-feature-value-name-value①⑥">&lt;feature-value-name></span><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma⑦">#</a>) <span id="ref-for-comb-any②⑦">||</span> character-variant(<span class="production" id="ref-for-feature-value-name-value①⑦">&lt;feature-value-name></span><span id="ref-for-mult-comma⑧">#</span>) <span id="ref-for-comb-any②⑧">||</span> swash(<span class="production" id="ref-for-feature-value-name-value①⑧">&lt;feature-value-name></span>) <span id="ref-for-comb-any②⑨">||</span> ornaments(<span class="production" id="ref-for-feature-value-name-value①⑨">&lt;feature-value-name></span>) <span id="ref-for-comb-any③⓪">||</span> annotation(<span class="production" id="ref-for-feature-value-name-value②⓪">&lt;feature-value-name></span>) ] <span id="ref-for-comb-any③①">||</span> <a class="production css" data-link-type="type" href="#numeric-figure-values" id="ref-for-numeric-figure-values①">&lt;numeric-figure-values></a> <span id="ref-for-comb-any③②">||</span> <a class="production css" data-link-type="type" href="#numeric-spacing-values" id="ref-for-numeric-spacing-values①">&lt;numeric-spacing-values></a> <span id="ref-for-comb-any③③">||</span> <a class="production css" data-link-type="type" href="#numeric-fraction-values" id="ref-for-numeric-fraction-values①">&lt;numeric-fraction-values></a> <span id="ref-for-comb-any③④">||</span> ordinal <span id="ref-for-comb-any③⑤">||</span> slashed-zero <span id="ref-for-comb-any③⑥">||</span> <a class="production css" data-link-type="type" href="#east-asian-variant-values" id="ref-for-east-asian-variant-values①">&lt;east-asian-variant-values></a> <span id="ref-for-comb-any③⑦">||</span> <a class="production css" data-link-type="type" href="#east-asian-width-values" id="ref-for-east-asian-width-values①">&lt;east-asian-width-values></a> <span id="ref-for-comb-any③⑧">||</span> ruby <span id="ref-for-comb-any③⑨">||</span> [ sub <span id="ref-for-comb-one①②⑤">|</span> super ] ]
+      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①①⑧">|</a> none <span id="ref-for-comb-one①①⑨">|</span> [ <a class="production css" data-link-type="type" href="#common-lig-values" id="ref-for-common-lig-values">&lt;common-lig-values></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-any" id="ref-for-comb-any②⓪">||</a> <a class="production css" data-link-type="type" href="#discretionary-lig-values" id="ref-for-discretionary-lig-values">&lt;discretionary-lig-values></a> <span id="ref-for-comb-any②①">||</span> <a class="production css" data-link-type="type" href="#historical-lig-values" id="ref-for-historical-lig-values">&lt;historical-lig-values></a> <span id="ref-for-comb-any②②">||</span> <a class="production css" data-link-type="type" href="#contextual-alt-values" id="ref-for-contextual-alt-values">&lt;contextual-alt-values></a> <span id="ref-for-comb-any②③">||</span> [ small-caps <span id="ref-for-comb-one①②⓪">|</span> all-small-caps <span id="ref-for-comb-one①②①">|</span> petite-caps <span id="ref-for-comb-one①②②">|</span> all-petite-caps <span id="ref-for-comb-one①②③">|</span> unicase <span id="ref-for-comb-one①②④">|</span> titling-caps ] <span id="ref-for-comb-any②④">||</span> [ stylistic(<a class="production css" data-link-type="type" href="#feature-value-name-value" id="ref-for-feature-value-name-value①⑤">&lt;feature-value-name></a>) <span id="ref-for-comb-any②⑤">||</span> historical-forms <span id="ref-for-comb-any②⑥">||</span> styleset(<span class="production" id="ref-for-feature-value-name-value①⑥">&lt;feature-value-name></span><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma⑦">#</a>) <span id="ref-for-comb-any②⑦">||</span> character-variant(<span class="production" id="ref-for-feature-value-name-value①⑦">&lt;feature-value-name></span><span id="ref-for-mult-comma⑧">#</span>) <span id="ref-for-comb-any②⑧">||</span> swash(<span class="production" id="ref-for-feature-value-name-value①⑧">&lt;feature-value-name></span>) <span id="ref-for-comb-any②⑨">||</span> ornaments(<span class="production" id="ref-for-feature-value-name-value①⑨">&lt;feature-value-name></span>) <span id="ref-for-comb-any③⓪">||</span> annotation(<span class="production" id="ref-for-feature-value-name-value②⓪">&lt;feature-value-name></span>) ] <span id="ref-for-comb-any③①">||</span> <a class="production css" data-link-type="type" href="#numeric-figure-values" id="ref-for-numeric-figure-values①">&lt;numeric-figure-values></a> <span id="ref-for-comb-any③②">||</span> <a class="production css" data-link-type="type" href="#numeric-spacing-values" id="ref-for-numeric-spacing-values①">&lt;numeric-spacing-values></a> <span id="ref-for-comb-any③③">||</span> <a class="production css" data-link-type="type" href="#numeric-fraction-values" id="ref-for-numeric-fraction-values①">&lt;numeric-fraction-values></a> <span id="ref-for-comb-any③④">||</span> ordinal <span id="ref-for-comb-any③⑤">||</span> slashed-zero <span id="ref-for-comb-any③⑥">||</span> <a class="production css" data-link-type="type" href="#east-asian-variant-values" id="ref-for-east-asian-variant-values①">&lt;east-asian-variant-values></a> <span id="ref-for-comb-any③⑦">||</span> <a class="production css" data-link-type="type" href="#east-asian-width-values" id="ref-for-east-asian-width-values①">&lt;east-asian-width-values></a> <span id="ref-for-comb-any③⑧">||</span> ruby <span id="ref-for-comb-any③⑨">||</span> [ sub <span id="ref-for-comb-one①②⑤">|</span> super ] <span id="ref-for-comb-any④⓪">||</span> [ text <span id="ref-for-comb-one①②⑥">|</span> emoji <span id="ref-for-comb-one①②⑦">|</span> unicode ] ]
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>normal
@@ -6132,10 +6143,23 @@ span.alt-U {
 is a shorthand for all font-variant subproperties: </p>
    <ul>
     <li data-md>
+     <p><a class="property css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures①">font-variant-ligatures</a></p>
+    <li data-md>
+     <p><a class="property css" data-link-type="property" href="#propdef-font-variant-position" id="ref-for-propdef-font-variant-position⑥">font-variant-position</a></p>
+    <li data-md>
+     <p><a class="property css" data-link-type="property" href="#propdef-font-variant-caps" id="ref-for-propdef-font-variant-caps①">font-variant-caps</a></p>
+    <li data-md>
+     <p><a class="property css" data-link-type="property" href="#propdef-font-variant-numeric" id="ref-for-propdef-font-variant-numeric①">font-variant-numeric</a></p>
+    <li data-md>
+     <p><a class="property css" data-link-type="property" href="#propdef-font-variant-alternates" id="ref-for-propdef-font-variant-alternates③">font-variant-alternates</a></p>
+    <li data-md>
+     <p><a class="property css" data-link-type="property" href="#propdef-font-variant-east-asian" id="ref-for-propdef-font-variant-east-asian①">font-variant-east-asian</a></p>
+    <li data-md>
+     <p><a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji">font-variant-emoji</a></p>
    </ul>
    <p>The value <dfn class="dfn-paneled css" data-dfn-for="font-variant" data-dfn-type="value" data-export id="font-variant-normal-value" title="normal!!font-variant"><a class="property css" data-link-type="property">normal</a></dfn> resets all subproperties of <span title="font-variant!!property"><a class="property css" data-link-type="property" href="#propdef-font-variant" id="ref-for-propdef-font-variant①①">font-variant</a></span> to their initial value.
 The <dfn class="css" data-dfn-for="font-variant" data-dfn-type="value" data-export id="font-variant-none-value" title="none!!font-variant"><a class="property css" data-link-type="property">none</a><a class="self-link" href="#font-variant-none-value"></a></dfn> value
-sets <a class="property css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures①">font-variant-ligatures</a> to <a class="property css" data-link-type="property">none</a> and resets all other font feature properties to their initial value.
+sets <a class="property css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures②">font-variant-ligatures</a> to <a class="property css" data-link-type="property">none</a> and resets all other font feature properties to their initial value.
 Like other shorthands,
 using <span title="font-variant!!property"><a class="property css" data-link-type="property" href="#propdef-font-variant" id="ref-for-propdef-font-variant①②">font-variant</a></span> resets unspecified <span title="font-variant!!property"><a class="property css" data-link-type="property" href="#propdef-font-variant" id="ref-for-propdef-font-variant①③">font-variant</a></span> subproperties
 to their initial values.</p>
@@ -6165,7 +6189,7 @@ to their initial values.</p>
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-font-feature-settings">font-feature-settings</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①②⑥">|</a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-fonts-3/#feature-tag-value" id="ref-for-feature-tag-value①">&lt;feature-tag-value></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma⑨">#</a>
+      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①②⑧">|</a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-fonts-3/#feature-tag-value" id="ref-for-feature-tag-value①">&lt;feature-tag-value></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma⑨">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>normal
@@ -6202,13 +6226,13 @@ for special cases
 where its use is the only way
 of accessing
 a particular infrequently used font feature.</p>
-   <div class="example" id="example-c3ecff70">
-    <a class="self-link" href="#example-c3ecff70"></a> 
+   <div class="example" id="ex-small-caps-swash">
+    <a class="self-link" href="#ex-small-caps-swash"></a> 
     <p>Enable small caps, and use second swash alternate</p>
 <pre>font-feature-settings: "smcp", "swsh" 2;</pre>
    </div>
-   <div class="example" id="example-d625205e">
-    <a class="self-link" href="#example-d625205e"></a> 
+   <div class="example" id="ex-scientific-inferiors">
+    <a class="self-link" href="#ex-scientific-inferiors"></a> 
     <p>For example, there is no font-variant value to control
 Scientific Inferiors (small numerals used in chemical formulae).
 Readability is enhanced by using them, so they must be enabled
@@ -6231,7 +6255,7 @@ using font-feature-settings:</p>
 in glyph selection or positioning
 occurs due to this property.</p>
    <p>Feature tag values have the following syntax:</p>
-<pre class="prod"><dfn data-dfn-for="font-feature-settings" data-dfn-type="value" data-export id="feature-tag-value"><var>&lt;feature-tag-value></var><a class="self-link" href="#feature-tag-value"></a></dfn> = &lt;string> [ &lt;integer> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①②⑦">|</a> on <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①②⑧">|</a> off ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-opt" id="ref-for-mult-opt④">?</a></pre>
+<pre class="prod"><dfn data-dfn-for="font-feature-settings" data-dfn-type="value" data-export id="feature-tag-value"><var>&lt;feature-tag-value></var><a class="self-link" href="#feature-tag-value"></a></dfn> = &lt;string> [ &lt;integer> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①②⑨">|</a> on <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③⓪">|</a> off ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-opt" id="ref-for-mult-opt④">?</a></pre>
    <p>The &lt;string> is a case-sensitive OpenType feature tag.
 As specified in the OpenType specification <a data-link-type="biblio" href="#biblio-opentype">[OPENTYPE]</a>,
 feature tags contain four ASCII characters.
@@ -6277,8 +6301,8 @@ must not be preserved.
 If the same axis name appears more than once,
 the value associated with the last appearance supersedes
 any previous value for that axis.</p>
-   <div class="example" id="example-b60d8e55">
-    <a class="self-link" href="#example-b60d8e55"></a> 
+   <div class="example" id="ex-font-feature-settings-map">
+    <a class="self-link" href="#ex-font-feature-settings-map"></a> 
 <pre>font-feature-settings: "dlig" 1;       /* dlig=1 enable discretionary ligatures */
 font-feature-settings: "smcp" on;      /* smcp=1 enable small caps */
 font-feature-settings: 'c2sc';         /* c2sc=1 enable caps to small caps */
@@ -6311,8 +6335,8 @@ Where possible,
 features defined for other font formats
 should attempt to follow
 the pattern of registered OpenType tags.</p>
-   <div class="example" id="example-b4ef3250">
-    <a class="self-link" href="#example-b4ef3250"></a> 
+   <div class="example" id="ex-half-width-kana">
+    <a class="self-link" href="#ex-half-width-kana"></a> 
     <p>The Japanese text below will be rendered with half-width kana characters:</p>
 <pre lang="ja">body { font-feature-settings: "hwid"; /* Half-width OpenType feature */ }
 
@@ -6343,7 +6367,7 @@ the pattern of registered OpenType tags.</p>
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-font-language-override">font-language-override</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①②⑨">|</a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#string-value" id="ref-for-string-value⑥">&lt;string></a>
+      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③①">|</a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#string-value" id="ref-for-string-value⑥">&lt;string></a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>normal
@@ -6369,8 +6393,8 @@ the pattern of registered OpenType tags.</p>
    <p>Normally, authors can control the use of language-specific glyph substitutions and positioning
 by setting the content language of an element, as <a href="#language-specific-support">described
 	above</a>:</p>
-   <div class="example" id="example-4e544104">
-    <a class="self-link" href="#example-4e544104"></a> 
+   <div class="example" id="ex-font-lang-override">
+    <a class="self-link" href="#ex-font-lang-override"></a> 
 <pre>&lt;!-- Display text using S’gaw Karen specific features -->
 &lt;p lang="ksw">...&lt;/p></pre>
    </div>
@@ -6392,8 +6416,8 @@ the language system of the font, overriding the language system implied by the c
    </dl>
    <p>Unknown OpenType language system tags are silently ignored, and do not affect
 glyph selection and placement.</p>
-   <div class="example" id="example-52535338">
-    <a class="self-link" href="#example-52535338"></a> The <a href="https://www.un.org/en/documents/udhr/index.shtml">Universal Declaration of
+   <div class="example" id="ex-related-language">
+    <a class="self-link" href="#ex-related-language"></a> The <a href="https://www.un.org/en/documents/udhr/index.shtml">Universal Declaration of
 Human Rights</a> has been translated into a wide variety of languages.  In Turkish,
 Article 9 of this document might be marked up as below: 
 <pre lang="tr">&lt;body lang="tr">
@@ -6438,7 +6462,7 @@ and features required for proper display of composed characters and marks
 These features must always be enabled,
 even when the value of the <a class="property css" data-link-type="property" href="#propdef-font-variant" id="ref-for-propdef-font-variant①⑥">font-variant</a> and <a class="property css" data-link-type="property" href="#propdef-font-feature-settings" id="ref-for-propdef-font-feature-settings⑧">font-feature-settings</a> properties is <span class="css">normal</span>.
 Individual features are only disabled when explicitly overridden by the author,
-as when <a class="property css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures②">font-variant-ligatures</a> is set to <a class="property css" data-link-type="property">no-common-ligatures</a>.</p>
+as when <a class="property css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures③">font-variant-ligatures</a> is set to <a class="property css" data-link-type="property">no-common-ligatures</a>.</p>
    <p>For handling complex scripts such as <a href="https://www.microsoft.com/typography/otfntdev/arabicot/features.aspx">Arabic</a>, <a href="https://www.microsoft.com/typography/otfntdev/mongolot/features.htm">Mongolian</a> or <a href="https://www.microsoft.com/typography/otfntdev/devanot/features.aspx">Devanagari</a> additional features are required.
 For upright text within vertical text runs,
 vertical alternates (OpenType feature: <span class="tag">vert</span>) must be enabled.</p>
@@ -6511,8 +6535,8 @@ text is simply rendered as if that font feature was not enabled; font
 fallback does not occur and no attempt is made to synthesize the
 feature except where explicitly defined for specific properties.</p>
    <h3 class="heading settled" data-level="7.3" id="feature-precedence-examples"><span class="secno">7.3. </span><span class="content"> Feature precedence examples</span><a class="self-link" href="#feature-precedence-examples"></a></h3>
-   <div class="example" id="example-e9170b84">
-    <a class="self-link" href="#example-e9170b84"></a> With the styles below, numbers are rendered proportionally when used within
+   <div class="example" id="ex-tabular-prices">
+    <a class="self-link" href="#ex-tabular-prices"></a> With the styles below, numbers are rendered proportionally when used within
 	a paragraph but are shown in tabular form within tables of prices: 
 <pre>body {
   font-variant-numeric: proportional-nums;
@@ -6523,8 +6547,8 @@ table.prices td {
 }
 </pre>
    </div>
-   <div class="example" id="example-9611368d">
-    <a class="self-link" href="#example-9611368d"></a> When the <span>font-variant</span> descriptor
+   <div class="example" id="ex-descriptor-only-that-rule">
+    <a class="self-link" href="#ex-descriptor-only-that-rule"></a> When the <span>font-variant</span> descriptor
 	is used within an <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule⑦④">@font-face</a> rule, it only
 	applies to the font defined by that rule. 
 <pre>@font-face {
@@ -6546,8 +6570,8 @@ table.prices td {
 	tabular values will be used in price tables since <a class="css" data-link-type="maybe" href="#valdef-font-variant-numeric-tabular-nums" id="ref-for-valdef-font-variant-numeric-tabular-nums">tabular-nums</a> appears in a general style rule and its use is mutually exclusive with <a class="css" data-link-type="maybe" href="#valdef-font-variant-numeric-proportional-nums" id="ref-for-valdef-font-variant-numeric-proportional-nums">proportional-nums</a>.  Stylistic alternate sets will only be used where
 	MainText is used.</p>
    </div>
-   <div class="example" id="example-93e7be1a">
-    <a class="self-link" href="#example-93e7be1a"></a> The <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule⑦⑤">@font-face</a> rule can also be used to access font features in locally available
+   <div class="example" id="ex-features-local">
+    <a class="self-link" href="#ex-features-local"></a> The <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule⑦⑤">@font-face</a> rule can also be used to access font features in locally available
 	fonts via the use of <code>local()</code> in the <a class="property css" data-link-type="property">src</a> descriptor of the <span class="css" id="ref-for-at-font-face-rule⑦⑥">@font-face</span> definition: 
 <pre>@font-face {
   font-family: BodyText;
@@ -6563,8 +6587,8 @@ body { font-family: BodyText, serif; }
 	be italicized.  Text rendered with the fallback serif font will use default
 	rendering properties.</p>
    </div>
-   <div class="example" id="example-eee12948">
-    <a class="self-link" href="#example-eee12948"></a> In the example below, discretionary ligatures are enabled only for a downloadable font
+   <div class="example" id="ex-no-dlig-in-special">
+    <a class="self-link" href="#ex-no-dlig-in-special"></a> In the example below, discretionary ligatures are enabled only for a downloadable font
 	but are disabled within spans of class "special": 
 <pre>@font-face {
   font-family: main;
@@ -6582,9 +6606,9 @@ span.special { font-variant-ligatures: no-discretionary-ligatures; }
 </pre>
     <p>In this case, discretionary ligatures <em>will</em> be rendered
 	within spans of class "special".
-	This is because both the <a class="property css" data-link-type="property" href="#propdef-font-feature-settings" id="ref-for-propdef-font-feature-settings①②">font-feature-settings</a> and <a class="property css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures③">font-variant-ligatures</a> properties
+	This is because both the <a class="property css" data-link-type="property" href="#propdef-font-feature-settings" id="ref-for-propdef-font-feature-settings①②">font-feature-settings</a> and <a class="property css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures④">font-variant-ligatures</a> properties
 	apply to these spans.
-	Although the <a class="css" data-link-type="maybe" href="#valdef-font-variant-ligatures-no-discretionary-ligatures" id="ref-for-valdef-font-variant-ligatures-no-discretionary-ligatures">no-discretionary-ligatures</a> setting of <span class="property" id="ref-for-propdef-font-variant-ligatures④">font-variant-ligatures</span> effectively disables the OpenType "dlig" feature,
+	Although the <a class="css" data-link-type="maybe" href="#valdef-font-variant-ligatures-no-discretionary-ligatures" id="ref-for-valdef-font-variant-ligatures-no-discretionary-ligatures">no-discretionary-ligatures</a> setting of <span class="property" id="ref-for-propdef-font-variant-ligatures⑤">font-variant-ligatures</span> effectively disables the OpenType "dlig" feature,
 	because the <span class="property" id="ref-for-propdef-font-feature-settings①③">font-feature-settings</span> is resolved after that,
 	the "dlig" value reenables discretionary ligatures.</p>
    </div>
@@ -6615,7 +6639,7 @@ An instance of one such font as a "variable font."</p>
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-font-optical-sizing">font-optical-sizing</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③⓪">|</a> none
+      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③②">|</a> none
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto
@@ -6719,7 +6743,7 @@ apply an optical sizing value appropriate for the adjusted font size, subject to
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-font-variation-settings">font-variation-settings</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③①">|</a> [ <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#string-value" id="ref-for-string-value⑧">&lt;string></a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#number-value" id="ref-for-number-value⑤">&lt;number></a>]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma①⓪">#</a>
+      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③③">|</a> [ <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#string-value" id="ref-for-string-value⑧">&lt;string></a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#number-value" id="ref-for-number-value⑤">&lt;number></a>]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#mult-comma" id="ref-for-mult-comma①⓪">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>normal
@@ -6843,7 +6867,7 @@ as well as the colored versions.</p>
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-font-palette">font-palette</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③②">|</a> light <span id="ref-for-comb-one①③③">|</span> dark <span id="ref-for-comb-one①③④">|</span> <a class="production css" data-link-type="type" href="#typedef-font-palette-palette-identifier" id="ref-for-typedef-font-palette-palette-identifier">&lt;palette-identifier></a>
+      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③④">|</a> light <span id="ref-for-comb-one①③⑤">|</span> dark <span id="ref-for-comb-one①③⑥">|</span> <a class="production css" data-link-type="type" href="#typedef-font-palette-palette-identifier" id="ref-for-typedef-font-palette-palette-identifier">&lt;palette-identifier></a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>normal
@@ -6870,8 +6894,8 @@ as well as the colored versions.</p>
     <dt><dfn class="dfn-paneled css" data-dfn-for="font-palette" data-dfn-type="value" data-export id="valdef-font-palette-normal">normal</dfn> 
     <dd>
       User-Agents display the color font with the default palette or default glyph colorisation. User-agents should take the computed value of the color property into consideration when a color font format requires use of the foreground color 
-     <div class="example" id="example-7ec51fa8"><a class="self-link" href="#example-7ec51fa8"></a>In the <code>COLR</code> <a data-link-type="biblio" href="#biblio-opentype">[OPENTYPE]</a> table, color index 0xFFFF should be rendered according the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color">color</a> property.</div>
-     <div class="example" id="example-b49e3539"><a class="self-link" href="#example-b49e3539"></a>For <code>COLR</code>/<code>CPAL</code> <a data-link-type="biblio" href="#biblio-opentype">[OPENTYPE]</a> fonts, <a class="property css" data-link-type="property" href="#propdef-font-palette" id="ref-for-propdef-font-palette④">font-palette</a>: <a class="css" data-link-type="maybe" href="#valdef-font-palette-normal" id="ref-for-valdef-font-palette-normal">normal</a> usually means rendering the font with the palette in the font at index 0.</div>
+     <div class="example" id="ex-FFFF-means-color"><a class="self-link" href="#ex-FFFF-means-color"></a>In the <code>COLR</code> <a data-link-type="biblio" href="#biblio-opentype">[OPENTYPE]</a> table, color index 0xFFFF should be rendered according the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color">color</a> property.</div>
+     <div class="example" id="ex-normal-is-index-0"><a class="self-link" href="#ex-normal-is-index-0"></a>For <code>COLR</code>/<code>CPAL</code> <a data-link-type="biblio" href="#biblio-opentype">[OPENTYPE]</a> fonts, <a class="property css" data-link-type="property" href="#propdef-font-palette" id="ref-for-propdef-font-palette④">font-palette</a>: <a class="css" data-link-type="maybe" href="#valdef-font-palette-normal" id="ref-for-valdef-font-palette-normal">normal</a> usually means rendering the font with the palette in the font at index 0.</div>
     <dt><dfn class="css" data-dfn-for="font-palette" data-dfn-type="value" data-export id="valdef-font-palette-light">light<a class="self-link" href="#valdef-font-palette-light"></a></dfn> 
     <dd> Some color font formats include metadata
 		marking certain palettes as applicable on a light (close to white) background.
@@ -6902,8 +6926,8 @@ as well as the colored versions.</p>
    </dl>
    <p class="note" role="note"><span>Note:</span> The names <a class="property css" data-link-type="property">light</a> and <span class="property">dark</span> describe the <i>background</i> the color palette is usable on,
       not the colors in the color palette themselves.</p>
-   <div class="example" id="example-6784fc11">
-    <a class="self-link" href="#example-6784fc11"></a>When dark mode is in effect, use a dark mode palette 
+   <div class="example" id="ex-dark-mode-palette">
+    <a class="self-link" href="#ex-dark-mode-palette"></a>When dark mode is in effect, use a dark mode palette 
 <pre>@media (prefers-color-scheme: dark) {  .banner {font-palette: dark;
   }
 }
@@ -6944,8 +6968,8 @@ as well as the colored versions.</p>
 }
 </pre>
    <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-font-palette-values" id="ref-for-at-ruledef-font-palette-values⑨">@font-palette-values</a> rule accepts the descriptors defined in this specification.</p>
-   <div class="example" id="example-5a5cf766">
-    <a class="self-link" href="#example-5a5cf766"></a> Modify Bixa Color’s color palette. 
+   <div class="example" id="ex-bixa-palette">
+    <a class="self-link" href="#ex-bixa-palette"></a> Modify Bixa Color’s color palette. 
 <pre>@font-palette-values --Cooler {
     font-family: Bixa;
     base-palette: 1;
@@ -6959,8 +6983,8 @@ as well as the colored versions.</p>
 				below, the orange changed to a blue.</figcaption>
     </figure>
    </div>
-   <div class="example" id="example-614177de">
-    <a class="self-link" href="#example-614177de"></a> Modify Handover Sans’s color palette 
+   <div class="example" id="ex-handover-palette">
+    <a class="self-link" href="#ex-handover-palette"></a> Modify Handover Sans’s color palette 
 <pre>@font-palette-values --Augusta {
     font-family: Handover Sans;
     base-palette: 3;
@@ -6977,8 +7001,8 @@ as well as the colored versions.</p>
 	and all prior declarations for that descriptor are ignored.</p>
    <p>Each of these palettes are applied
 	to each @font-face that share a family name.</p>
-   <div class="example" id="example-4eb7202f">
-    <a class="self-link" href="#example-4eb7202f"></a> I want to use two color fonts in a greenish palette.
+   <div class="example" id="ex-greenish-two-fonts">
+    <a class="self-link" href="#ex-greenish-two-fonts"></a> I want to use two color fonts in a greenish palette.
 		The first font, Bixxxa, already has palette that I can use,
 		but for Bungeehee I need to overwrite one color
 		to get my green palette. 
@@ -7024,8 +7048,8 @@ h2 <c- p>{</c->
 	using <a class="css" data-link-type="maybe" href="#at-ruledef-font-palette-values" id="ref-for-at-ruledef-font-palette-values①②">@font-palette-values</a> is unlikely to be what the author intended.
 	In this case,
 	it is better to supply a complete palette definition.</p>
-   <div class="example" id="example-80137df5">
-    <a class="self-link" href="#example-80137df5"></a> In the above example,
+   <div class="example" id="ex-named-palettes">
+    <a class="self-link" href="#ex-named-palettes"></a> In the above example,
 		since two different font families have been set up
 		to have compatible named palettes,
 		one could go on to write 
@@ -7057,7 +7081,7 @@ h2 <c- p>{</c->
     do not implement support for color fonts,
     or implement the ability to disable color fonts, <a class="css" data-link-type="maybe" href="#at-ruledef-font-palette-values" id="ref-for-at-ruledef-font-palette-values①⑥">@font-palette-values</a> rules must simply be ignored;
     the behavior of individual descriptors as defined in this specification should not be altered.</p>
-   <h4 class="heading settled" data-level="9.2.1" id="font-family-2-desc"><span class="secno">9.2.1. </span><span class="content"> Font family: the <a class="property css" data-link-type="descriptor" href="#descdef-font-palette-values-font-family" id="ref-for-descdef-font-palette-values-font-family①">font-family</a> descriptor</span><a class="self-link" href="#font-family-2-desc"></a></h4>
+   <h4 class="heading settled" data-level="9.2.1" id="font-family-2-desc"><span class="secno">9.2.1. </span><span class="content"> Font family: the <a class="property css" data-link-type="descriptor" href="#descdef-font-face-font-family" id="ref-for-descdef-font-face-font-family①">font-family</a> descriptor</span><a class="self-link" href="#font-family-2-desc"></a></h4>
    <table class="def descdef">
     <tbody>
      <tr>
@@ -7091,7 +7115,7 @@ h2 <c- p>{</c->
       <td><a class="css" data-link-type="at-rule" href="#at-ruledef-font-palette-values" id="ref-for-at-ruledef-font-palette-values①⑧">@font-palette-values</a> 
      <tr>
       <th>Value:
-      <td class="prod">light <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③⑤">|</a> dark <span id="ref-for-comb-one①③⑥">|</span> <a class="production css" data-link-type="type">&lt;integer [0,∞]></a> 
+      <td class="prod">light <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③⑦">|</a> dark <span id="ref-for-comb-one①③⑧">|</span> <a class="production css" data-link-type="type">&lt;integer [0,∞]></a> 
      <tr>
       <th>Initial:
       <td>N/A 
@@ -7114,8 +7138,8 @@ h2 <c- p>{</c->
     <dt><dfn class="css" data-dfn-for="base-palette" data-dfn-type="type" data-export id="typedef-base-palette-integer"><a class="production css" data-link-type="type">&lt;integer></a><a class="self-link" href="#typedef-base-palette-integer"></a></dfn> 
     <dd> Identifies a (zero-based) numerical palette index within the font. 
    </dl>
-   <div class="example" id="example-e71f6555">
-    <a class="self-link" href="#example-e71f6555"></a> Modify Banner Flag’s color palette 
+   <div class="example" id="ex-banner-palette">
+    <a class="self-link" href="#ex-banner-palette"></a> Modify Banner Flag’s color palette 
 <pre>@font-palette-values --Festival {
     font-family: Banner Flag;
     base-palette: 1;
@@ -7134,8 +7158,8 @@ h2 <c- p>{</c->
     If a <span class="production">&lt;override-colors></span> key is present in the <span class="css" id="ref-for-at-ruledef-font-palette-values②②">@font-palette-values</span> rule,
     each item in the value of that descriptor overrides a single color
     in the color palette represented by this <span class="css" id="ref-for-at-ruledef-font-palette-values②③">@font-palette-values</span> block.</p>
-   <div class="example" id="example-e6026afb">
-    <a class="self-link" href="#example-e6026afb"></a> Rename Handover Sans’s 3rd color palette 
+   <div class="example" id="ex-handover-3rd">
+    <a class="self-link" href="#ex-handover-3rd"></a> Rename Handover Sans’s 3rd color palette 
 <pre>@font-palette-values --Augusta {
     font-family: Handover Sans;
     base-palette: 3;
@@ -7191,7 +7215,7 @@ h2 <c- p>{</c->
     (as overrides, or as new entries)
     may use any supported colorspace.</p>
    <p class="note" role="note"><span>Note:</span> The colors specified in versions 0 and 1 of the CPAL table are in sRGB.</p>
-   <h3 class="heading settled" data-level="9.3" id="font-variant-emoji-prop"><span class="secno">9.3. </span><span class="content"> Selecting the text presentation style: The <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji">font-variant-emoji</a> property</span><a class="self-link" href="#font-variant-emoji-prop"></a></h3>
+   <h3 class="heading settled" data-level="9.3" id="font-variant-emoji-prop"><span class="secno">9.3. </span><span class="content"> Selecting the text presentation style: The <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji①">font-variant-emoji</a> property</span><a class="self-link" href="#font-variant-emoji-prop"></a></h3>
    <table class="def propdef" data-link-for-hint="font-variant-emoji">
     <tbody>
      <tr>
@@ -7199,7 +7223,7 @@ h2 <c- p>{</c->
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-font-variant-emoji">font-variant-emoji</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③⑦">|</a> text <span id="ref-for-comb-one①③⑧">|</span> emoji <span id="ref-for-comb-one①③⑨">|</span> unicode
+      <td class="prod">normal <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/css-values-4/#comb-one" id="ref-for-comb-one①③⑨">|</a> text <span id="ref-for-comb-one①④⓪">|</span> emoji <span id="ref-for-comb-one①④①">|</span> unicode
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto
@@ -7228,7 +7252,7 @@ for certain emoji code points.
 Traditionally, these presentation styles were selected
 by appending Variation Selector 15 (U+FE0E) or Variation Selector 16 (U+FE0F)
 to certain code points.
-However, <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji①">font-variant-emoji</a> allows web authors to set a default presentation style
+However, <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji②">font-variant-emoji</a> allows web authors to set a default presentation style
 which can replace the variation selectors.</p>
    <p>Only the code points <a href="http://www.unicode.org/emoji/charts/emoji-variants.html">listed</a> by Unicode
 as contributing to a Unicode emoji presentation sequence
@@ -7237,18 +7261,18 @@ Within this CSS specification,
 these characters are referred to as <dfn data-dfn-type="dfn" data-noexport id="emoji-presentation-participating-code-points">Emoji Presentation Participating Code Points<a class="self-link" href="#emoji-presentation-participating-code-points"></a></dfn>.
 This property has no effect on any other characters.</p>
    <p>This property is expected to affect font fallback;
-however, the exact nature of the interaction of font fallback with <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji②">font-variant-emoji</a> is explicitly unspecified.
+however, the exact nature of the interaction of font fallback with <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji③">font-variant-emoji</a> is explicitly unspecified.
 However, a variation selector must be included in a previous cluster
 as defined by the <a href="#cluster-matching">cluster matching</a> section above.
 Therefore, the presence of a variation selector
 is treated as ancillary data to inform the font fallback routine.
 A natural result of this behavior
 is that a variation selector must not be rendered in a different font than the previous character.</p>
-   <p>Even when <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji③">font-variant-emoji</a> is used,
+   <p>Even when <a class="property css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji④">font-variant-emoji</a> is used,
 the presence of Variation Selector 15 (U+FE0E) or Variation Selector 16 (U+FE0F)
 in the contents of an element
-override the rendering specified in <span class="property" id="ref-for-propdef-font-variant-emoji④">font-variant-emoji</span>.
-Therefore, <span class="property" id="ref-for-propdef-font-variant-emoji⑤">font-variant-emoji</span> sets a default presentation
+override the rendering specified in <span class="property" id="ref-for-propdef-font-variant-emoji⑤">font-variant-emoji</span>.
+Therefore, <span class="property" id="ref-for-propdef-font-variant-emoji⑥">font-variant-emoji</span> sets a default presentation
 which the text being rendered can opt out of.</p>
    <p class="note" role="note"><span>Note:</span> Different platforms have different conventions about how to handle emoji presentation sequences.
 A cross-platform UA might wish to follow the conventions of each individual platform,
@@ -7265,7 +7289,7 @@ the variation selector is ignored.</p>
    <p>BCP47’s <code>-u-</code> extension to the language tag accepted by <code>lang</code> or <code>xml:lang</code> should not be
 considered when the user-agent decides whether to use emoji presentation or text presentation for a particular character.</p>
    <dl>
-    <dt><dfn class="css" data-dfn-for="font-variant-emoji" data-dfn-type="value" data-export id="valdef-font-variant-emoji-auto">auto<a class="self-link" href="#valdef-font-variant-emoji-auto"></a></dfn> 
+    <dt><dfn class="css" data-dfn-for="font-variant-emoji" data-dfn-type="value" data-export id="valdef-font-variant-emoji-normal">normal<a class="self-link" href="#valdef-font-variant-emoji-normal"></a></dfn> 
     <dd> User agents can choose to draw a <a data-link-type="dfn">Presentation Participating Code Point</a> in either emoji style or text style.
 		User agents typically follow platform conventions when performing this decision. 
     <dt><dfn class="css" data-dfn-for="font-variant-emoji" data-dfn-type="value" data-export id="valdef-font-variant-emoji-text">text<a class="self-link" href="#valdef-font-variant-emoji-text"></a></dfn> 
@@ -7281,8 +7305,8 @@ considered when the user-agent decides whether to use emoji presentation or text
 		If present, FE0E VARIATION SELECTOR-15 and U+FE0F VARIATION SELECTOR-16
 		will override the default presentation of individual <span>Presentation Participating Code Points</span>. 
    </dl>
-   <div class="example" id="example-50b891cb">
-    <a class="self-link" href="#example-50b891cb"></a> To show the emoji form of U+1F6CB COUCH AND LAMP,
+   <div class="example" id="ex-emoji-variant">
+    <a class="self-link" href="#ex-emoji-variant"></a> To show the emoji form of U+1F6CB COUCH AND LAMP,
 	let CustomEmoji.ttf obey the user agent’s notion
 	of supporting the emoji form of this character,
 	and use the following: 
@@ -7346,8 +7370,8 @@ considered when the user-agent decides whether to use emoji presentation or text
 	This mechanism can be used for gracefully falling back
 	to an ancillary font
 	when requested support is not present.</p>
-   <div class="example" id="example-e9f3647f">
-    <a class="self-link" href="#example-e9f3647f"></a> This <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule⑧⓪">@font-face</a> block shows how to use a color font if support is present on the user agent,
+   <div class="example" id="ex-color-if-supported">
+    <a class="self-link" href="#ex-color-if-supported"></a> This <a class="css" data-link-type="maybe" href="#at-font-face-rule" id="ref-for-at-font-face-rule⑧⓪">@font-face</a> block shows how to use a color font if support is present on the user agent,
     and falls back to a non-color-font if support is not present. 
 <pre>@font-face {
     font-family: "Trickster";
@@ -7450,9 +7474,9 @@ This definition supersedes that one.</p>
    <p>The <code>CSSRule</code> interface is extended as follows:</p>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssrule" id="ref-for-cssrule①"><c- g>CSSRule</c-></a> {  <c- b>const</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-short" id="ref-for-idl-unsigned-short"><c- b>unsigned</c-> <c- b>short</c-></a> <dfn class="idl-code" data-dfn-for="CSSRule" data-dfn-type="const" data-export id="dom-cssrule-font_feature_values_rule"><code><c- g>FONT_FEATURE_VALUES_RULE</c-></code><a class="self-link" href="#dom-cssrule-font_feature_values_rule"></a></dfn> = 14;
 };</pre>
-   <p>The <dfn data-dfn-type="dfn" data-noexport id="cssfontfeaturevaluesrule">CSSFontFeatureValuesRule<a class="self-link" href="#cssfontfeaturevaluesrule"></a></dfn> interface represents a <code>@font-feature-values</code> rule.</p>
+   <p>The <dfn data-dfn-type="dfn" data-noexport id="cssfontfeaturevaluesrule-dfn">CSSFontFeatureValuesRule<a class="self-link" href="#cssfontfeaturevaluesrule-dfn"></a></dfn> interface represents a <code>@font-feature-values</code> rule.</p>
 <pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>interface</c-> <dfn class="idl-code" data-dfn-type="interface" data-export id="cssfontfeaturevaluesrule①"><code><c- g>CSSFontFeatureValuesRule</c-></code><a class="self-link" href="#cssfontfeaturevaluesrule①"></a></dfn> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssrule" id="ref-for-cssrule②"><c- n>CSSRule</c-></a> {
+<c- b>interface</c-> <dfn class="idl-code" data-dfn-type="interface" data-export id="cssfontfeaturevaluesrule"><code><c- g>CSSFontFeatureValuesRule</c-></code><a class="self-link" href="#cssfontfeaturevaluesrule"></a></dfn> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssrule" id="ref-for-cssrule②"><c- n>CSSRule</c-></a> {
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring"><c- n>CSSOMString</c-></a> <dfn class="idl-code" data-dfn-for="CSSFontFeatureValuesRule" data-dfn-type="attribute" data-export data-type="CSSOMString" id="dom-cssfontfeaturevaluesrule-fontfamily"><code><c- g>fontFamily</c-></code><a class="self-link" href="#dom-cssfontfeaturevaluesrule-fontfamily"></a></dfn>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#cssfontfeaturevaluesmap" id="ref-for-cssfontfeaturevaluesmap"><c- n>CSSFontFeatureValuesMap</c-></a> <dfn class="idl-code" data-dfn-for="CSSFontFeatureValuesRule" data-dfn-type="attribute" data-export data-readonly data-type="CSSFontFeatureValuesMap" id="dom-cssfontfeaturevaluesrule-annotation"><code><c- g>annotation</c-></code><a class="self-link" href="#dom-cssfontfeaturevaluesrule-annotation"></a></dfn>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#cssfontfeaturevaluesmap" id="ref-for-cssfontfeaturevaluesmap①"><c- n>CSSFontFeatureValuesMap</c-></a> <dfn class="idl-code" data-dfn-for="CSSFontFeatureValuesRule" data-dfn-type="attribute" data-export data-readonly data-type="CSSFontFeatureValuesMap" id="dom-cssfontfeaturevaluesrule-ornaments"><code><c- g>ornaments</c-></code><a class="self-link" href="#dom-cssfontfeaturevaluesrule-ornaments"></a></dfn>;
@@ -7473,7 +7497,7 @@ This definition supersedes that one.</p>
     <dt><var>fontFamily</var> of type <code>CSSOMString</code> 
     <dd>The list of one or more font families for which a given set of feature values is defined.
     <dt>value maps of type <code>CSSFontFeatureValuesMap</code>, readonly 
-    <dd>Maps of feature values associated with feature value names for a given <a class="property css" data-link-type="property" href="#propdef-font-variant-alternates" id="ref-for-propdef-font-variant-alternates③">font-variant-alternates</a> value type
+    <dd>Maps of feature values associated with feature value names for a given <a class="property css" data-link-type="property" href="#propdef-font-variant-alternates" id="ref-for-propdef-font-variant-alternates④">font-variant-alternates</a> value type
    </dl>
    <p>Each value map attribute of <code>CSSFontFeatureValuesRule</code> reflects the values
 defined via a corresponding <i title="feature_value_block">feature value block</i>.
@@ -7789,10 +7813,24 @@ and prevent their being used.</p>
    <p>Peter Constable for assorted language fixes.</p>
    <p>Optical sizing <a href="#optical-size-example">image</a> prepared by Nick Sherman.</p>
    <p>Special thanks to Tab Atkins Jr.
-for providing the text for the section on <a href="#font-rendering-controls">Font Rendering Controls</a> as well as the section on the <a class="property css" data-link-type="descriptor" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display④">font-display</a> descriptor.
+for providing the text for the section on <a href="#font-rendering-controls">Font Rendering Controls</a> as well as the section on the <a class="property css" data-link-type="descriptor" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display⑥">font-display</a> descriptor.
 Special thanks to Ilya Grigorik and David Kuettel for their help in developing these sections.</p>
    <h2 class="heading settled" data-level="17" id="changes"><span class="secno">17. </span><span class="content"> Changes </span><a class="self-link" href="#changes"></a></h2>
-   <h3 class="heading settled" data-level="17.1" id="changes-2021-07-29"><span class="secno">17.1. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2021/WD-css-fonts-4-20210729/">29 July 2021 Working Draft</a> </span><a class="self-link" href="#changes-2021-07-29"></a></h3>
+   <h3 class="heading settled" data-level="17.1" id="changes-2021-12-21"><span class="secno">17.1. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2021/WD-css-fonts-4-20211221/">21 December 2021 Working Draft</a> </span><a class="self-link" href="#changes-2021-12-21"></a></h3>
+   <ul>
+    <li>Changed initial value of font-variant-emoji from auto to normal, for consistency with other font-variant-* properties 
+    <li>Added values from font-variant-emoji to font-variant shorthand 
+    <li>Added canonical list of font-variant-* properties affected by font-variant shorthand 
+    <li>Renamed "system font fallback" to "installed font fallback 
+    <li>Updated property and descriptor values to use the range notation 
+    <li>Fixed some examples which did not match the specification 
+    <li>Clarified that color fonts are not enabled by default 
+    <li>Added some more explanation to font-palette:light|dark 
+    <li>Use last declaration of key/palette index in override-colors 
+    <li>Removed currentColor from override-colors example 
+    <li>Clarified that out of range palette indexes are ignored 
+   </ul>
+   <h3 class="heading settled" data-level="17.2" id="changes-2021-07-29"><span class="secno">17.2. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2021/WD-css-fonts-4-20210729/">29 July 2021 Working Draft</a> </span><a class="self-link" href="#changes-2021-07-29"></a></h3>
    <ul>
     <li>Clarified that functions and relative lengths in palettes are evaluated
 		within the root element’s context
@@ -7826,7 +7864,7 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
     <li>Reduced the critical angle for oblique font matching from 20deg to 11deg, per WG resolution
     <li>Allowed font-display in @font-feature-values (the prose allowed it but the grammar did not)
    </ul>
-   <h3 class="heading settled" data-level="17.2" id="changes-2020-11-17"><span class="secno">17.2. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2020/WD-css-fonts-4-20201117/">17 November 2020 Working Draft</a> </span><a class="self-link" href="#changes-2020-11-17"></a></h3>
+   <h3 class="heading settled" data-level="17.3" id="changes-2020-11-17"><span class="secno">17.3. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2020/WD-css-fonts-4-20201117/">17 November 2020 Working Draft</a> </span><a class="self-link" href="#changes-2020-11-17"></a></h3>
    <ul>
     <li>Added Graphite reference
     <li>Added font feature technology keywords opentype, aat, and graphite
@@ -7846,7 +7884,7 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
     <li>Updated links
     <li>Fixed typos, syntax errors
    </ul>
-   <h3 class="heading settled" data-level="17.3" id="changes-2019-11-13"><span class="secno">17.3. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/">13 November 2019
+   <h3 class="heading settled" data-level="17.4" id="changes-2019-11-13"><span class="secno">17.4. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2019/WD-css-fonts-4-20191113/">13 November 2019
 	Working Draft</a></span><a class="self-link" href="#changes-2019-11-13"></a></h3>
    <ul>
     <li>Clarified that JS-free probing of Unicode support of fonts is possible
@@ -7881,7 +7919,7 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
     <li>Added example for ui-sans-serif 
     <li>Miscellaneous editorial improvements, typo fixes, broken link fixes and markup improvements
    </ul>
-   <h3 class="heading settled" data-level="17.4" id="changes-2018-09-20"><span class="secno">17.4. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2018/WD-css-fonts-4-20180920/">20 September 2018
+   <h3 class="heading settled" data-level="17.5" id="changes-2018-09-20"><span class="secno">17.5. </span><span class="content">Changes from the <a href="https://www.w3.org/TR/2018/WD-css-fonts-4-20180920/">20 September 2018
 	Working Draft</a></span><a class="self-link" href="#changes-2018-09-20"></a></h3>
    <ul>
     <li>Add note encouraging UAs to also implement platform-specific names for standard font families
@@ -7920,7 +7958,7 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
     <li>Assorted formatting and markup fixes, link fixes, removal of inline closed issues
     <li>Linking to latest versions of normative references
    </ul>
-   <h3 class="heading settled" data-level="17.5" id="changes-2018-04-10"><span class="secno">17.5. </span><span class="content"> Changes from the <a href="https://www.w3.org/TR/2018/WD-css-fonts-4-20180410/">10 April 2018
+   <h3 class="heading settled" data-level="17.6" id="changes-2018-04-10"><span class="secno">17.6. </span><span class="content"> Changes from the <a href="https://www.w3.org/TR/2018/WD-css-fonts-4-20180410/">10 April 2018
 	Working Draft</a> </span><a class="self-link" href="#changes-2018-04-10"></a></h3>
    <ul>
     <li>Added unicode value to font-variant-emoji
@@ -7945,7 +7983,7 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
     <li>Editorial cleanup, clarifying examples, markup improvements, linkfixes,
 		updating to latest references, and so on
    </ul>
-   <h3 class="heading settled" data-level="17.6" id="changes-fonts-3"><span class="secno">17.6. </span><span class="content"> Changes from the 20 September 2018 <a href="https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/">CSS Fonts 3 Recommendation</a> </span><a class="self-link" href="#changes-fonts-3"></a></h3>
+   <h3 class="heading settled" data-level="17.7" id="changes-fonts-3"><span class="secno">17.7. </span><span class="content"> Changes from the 20 September 2018 <a href="https://www.w3.org/TR/2018/REC-css-fonts-3-20180920/">CSS Fonts 3 Recommendation</a> </span><a class="self-link" href="#changes-fonts-3"></a></h3>
    <p>This summarizes the changes in CSS Fonts 4, compared to CSS Fonts 3.</p>
    <ul>
     <li>Added font-display descriptor for @font-face
@@ -8072,7 +8110,6 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
      <li><a href="#valdef-font-synthesis-small-caps-auto">value for font-synthesis-small-caps</a><span>, in § 2.8.3</span>
      <li><a href="#valdef-font-synthesis-style-auto">value for font-synthesis-style</a><span>, in § 2.8.2</span>
      <li><a href="#valdef-font-synthesis-weight-auto">value for font-synthesis-weight</a><span>, in § 2.8.1</span>
-     <li><a href="#valdef-font-variant-emoji-auto">value for font-variant-emoji</a><span>, in § 9.3</span>
     </ul>
    <li><a href="#descdef-font-palette-values-base-palette">base-palette</a><span>, in § 9.2.2</span>
    <li><a href="#dom-cssfontpalettevaluesrule-basepalette">basePalette</a><span>, in § 12.3</span>
@@ -8101,8 +8138,8 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
    <li>
     CSSFontFeatureValuesRule
     <ul>
-     <li><a href="#cssfontfeaturevaluesrule①">(interface)</a><span>, in § 12.2</span>
-     <li><a href="#cssfontfeaturevaluesrule">definition of</a><span>, in § 12.2</span>
+     <li><a href="#cssfontfeaturevaluesrule">(interface)</a><span>, in § 12.2</span>
+     <li><a href="#cssfontfeaturevaluesrule-dfn">definition of</a><span>, in § 12.2</span>
     </ul>
    <li><a href="#cssfontpalettevaluesrule">CSSFontPaletteValuesRule</a><span>, in § 12.3</span>
    <li><a href="#valdef-font-family-cursive">cursive</a><span>, in § 2.1.3</span>
@@ -8291,6 +8328,7 @@ Special thanks to Ilya Grigorik and David Kuettel for their help in developing t
      <li><a href="#font-variant-alternates-normal-value">value for font-variant-alternates</a><span>, in § 6.8</span>
      <li><a href="#font-variant-caps-normal-value">value for font-variant-caps</a><span>, in § 6.6</span>
      <li><a href="#font-variant-east-asian-normal-value">value for font-variant-east-asian</a><span>, in § 6.10</span>
+     <li><a href="#valdef-font-variant-emoji-normal">value for font-variant-emoji</a><span>, in § 9.3</span>
      <li><a href="#font-variant-ligatures-normal-value">value for font-variant-ligatures</a><span>, in § 6.4</span>
      <li><a href="#font-variant-numeric-normal-value">value for font-variant-numeric</a><span>, in § 6.7</span>
      <li><a href="#font-variant-position-normal-value">value for font-variant-position</a><span>, in § 6.5</span>
@@ -8785,20 +8823,20 @@ Alternates and swashes: the font-variant-alternates property</a>
     <li><a href="#ref-for-comb-one①①①">6.10. 
 East Asian text rendering: the font-variant-east-asian property</a> <a href="#ref-for-comb-one①①②">(2)</a> <a href="#ref-for-comb-one①①③">(3)</a> <a href="#ref-for-comb-one①①④">(4)</a> <a href="#ref-for-comb-one①①⑤">(5)</a> <a href="#ref-for-comb-one①①⑥">(6)</a> <a href="#ref-for-comb-one①①⑦">(7)</a>
     <li><a href="#ref-for-comb-one①①⑧">6.11. 
-Overall shorthand for font rendering: the font-variant property</a> <a href="#ref-for-comb-one①①⑨">(2)</a> <a href="#ref-for-comb-one①②⓪">(3)</a> <a href="#ref-for-comb-one①②①">(4)</a> <a href="#ref-for-comb-one①②②">(5)</a> <a href="#ref-for-comb-one①②③">(6)</a> <a href="#ref-for-comb-one①②④">(7)</a> <a href="#ref-for-comb-one①②⑤">(8)</a>
-    <li><a href="#ref-for-comb-one①②⑥">6.12. 
-Low-level font feature settings control: the font-feature-settings property</a> <a href="#ref-for-comb-one①②⑦">(2)</a> <a href="#ref-for-comb-one①②⑧">(3)</a>
-    <li><a href="#ref-for-comb-one①②⑨">6.13. Font language override: the font-language-override property</a>
-    <li><a href="#ref-for-comb-one①③⓪">8.1. 
+Overall shorthand for font rendering: the font-variant property</a> <a href="#ref-for-comb-one①①⑨">(2)</a> <a href="#ref-for-comb-one①②⓪">(3)</a> <a href="#ref-for-comb-one①②①">(4)</a> <a href="#ref-for-comb-one①②②">(5)</a> <a href="#ref-for-comb-one①②③">(6)</a> <a href="#ref-for-comb-one①②④">(7)</a> <a href="#ref-for-comb-one①②⑤">(8)</a> <a href="#ref-for-comb-one①②⑥">(9)</a> <a href="#ref-for-comb-one①②⑦">(10)</a>
+    <li><a href="#ref-for-comb-one①②⑧">6.12. 
+Low-level font feature settings control: the font-feature-settings property</a> <a href="#ref-for-comb-one①②⑨">(2)</a> <a href="#ref-for-comb-one①③⓪">(3)</a>
+    <li><a href="#ref-for-comb-one①③①">6.13. Font language override: the font-language-override property</a>
+    <li><a href="#ref-for-comb-one①③②">8.1. 
 Optical sizing control: the font-optical-sizing property</a>
-    <li><a href="#ref-for-comb-one①③①">8.2. 
+    <li><a href="#ref-for-comb-one①③③">8.2. 
 Low-level font variation settings control: the font-variation-settings property</a>
-    <li><a href="#ref-for-comb-one①③②">9.1. 
-Controlling Color Font Palettes: The font-palette property</a> <a href="#ref-for-comb-one①③③">(2)</a> <a href="#ref-for-comb-one①③④">(3)</a>
-    <li><a href="#ref-for-comb-one①③⑤">9.2.2. 
-Specifying the base palette: the base-palette descriptor</a> <a href="#ref-for-comb-one①③⑥">(2)</a>
-    <li><a href="#ref-for-comb-one①③⑦">9.3. 
-Selecting the text presentation style: The font-variant-emoji property</a> <a href="#ref-for-comb-one①③⑧">(2)</a> <a href="#ref-for-comb-one①③⑨">(3)</a>
+    <li><a href="#ref-for-comb-one①③④">9.1. 
+Controlling Color Font Palettes: The font-palette property</a> <a href="#ref-for-comb-one①③⑤">(2)</a> <a href="#ref-for-comb-one①③⑥">(3)</a>
+    <li><a href="#ref-for-comb-one①③⑦">9.2.2. 
+Specifying the base palette: the base-palette descriptor</a> <a href="#ref-for-comb-one①③⑧">(2)</a>
+    <li><a href="#ref-for-comb-one①③⑨">9.3. 
+Selecting the text presentation style: The font-variant-emoji property</a> <a href="#ref-for-comb-one①④⓪">(2)</a> <a href="#ref-for-comb-one①④①">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-comb-any">
@@ -8817,7 +8855,7 @@ Alternates and swashes: the font-variant-alternates property</a> <a href="#ref-f
     <li><a href="#ref-for-comb-any①⑧">6.10. 
 East Asian text rendering: the font-variant-east-asian property</a> <a href="#ref-for-comb-any①⑨">(2)</a>
     <li><a href="#ref-for-comb-any②⓪">6.11. 
-Overall shorthand for font rendering: the font-variant property</a> <a href="#ref-for-comb-any②①">(2)</a> <a href="#ref-for-comb-any②②">(3)</a> <a href="#ref-for-comb-any②③">(4)</a> <a href="#ref-for-comb-any②④">(5)</a> <a href="#ref-for-comb-any②⑤">(6)</a> <a href="#ref-for-comb-any②⑥">(7)</a> <a href="#ref-for-comb-any②⑦">(8)</a> <a href="#ref-for-comb-any②⑧">(9)</a> <a href="#ref-for-comb-any②⑨">(10)</a> <a href="#ref-for-comb-any③⓪">(11)</a> <a href="#ref-for-comb-any③①">(12)</a> <a href="#ref-for-comb-any③②">(13)</a> <a href="#ref-for-comb-any③③">(14)</a> <a href="#ref-for-comb-any③④">(15)</a> <a href="#ref-for-comb-any③⑤">(16)</a> <a href="#ref-for-comb-any③⑥">(17)</a> <a href="#ref-for-comb-any③⑦">(18)</a> <a href="#ref-for-comb-any③⑧">(19)</a> <a href="#ref-for-comb-any③⑨">(20)</a>
+Overall shorthand for font rendering: the font-variant property</a> <a href="#ref-for-comb-any②①">(2)</a> <a href="#ref-for-comb-any②②">(3)</a> <a href="#ref-for-comb-any②③">(4)</a> <a href="#ref-for-comb-any②④">(5)</a> <a href="#ref-for-comb-any②⑤">(6)</a> <a href="#ref-for-comb-any②⑥">(7)</a> <a href="#ref-for-comb-any②⑦">(8)</a> <a href="#ref-for-comb-any②⑧">(9)</a> <a href="#ref-for-comb-any②⑨">(10)</a> <a href="#ref-for-comb-any③⓪">(11)</a> <a href="#ref-for-comb-any③①">(12)</a> <a href="#ref-for-comb-any③②">(13)</a> <a href="#ref-for-comb-any③③">(14)</a> <a href="#ref-for-comb-any③④">(15)</a> <a href="#ref-for-comb-any③⑤">(16)</a> <a href="#ref-for-comb-any③⑥">(17)</a> <a href="#ref-for-comb-any③⑦">(18)</a> <a href="#ref-for-comb-any③⑧">(19)</a> <a href="#ref-for-comb-any③⑨">(20)</a> <a href="#ref-for-comb-any④⓪">(21)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-funcdef-var">
@@ -9440,7 +9478,7 @@ normal animates as 'oblique 0deg'
       <td>visual
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant" id="ref-for-propdef-font-variant②①">font-variant</a>
-      <td>normal | none | [ &lt;common-lig-values> || &lt;discretionary-lig-values> || &lt;historical-lig-values> || &lt;contextual-alt-values> || [ small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps ] || [ stylistic(&lt;feature-value-name>) || historical-forms || styleset(&lt;feature-value-name>#) || character-variant(&lt;feature-value-name>#) || swash(&lt;feature-value-name>) || ornaments(&lt;feature-value-name>) || annotation(&lt;feature-value-name>) ]  || &lt;numeric-figure-values> || &lt;numeric-spacing-values> || &lt;numeric-fraction-values> || ordinal || slashed-zero || &lt;east-asian-variant-values> || &lt;east-asian-width-values> || ruby || [ sub | super ] ]
+      <td>normal | none | [ &lt;common-lig-values> || &lt;discretionary-lig-values> || &lt;historical-lig-values> || &lt;contextual-alt-values> || [ small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps ] || [ stylistic(&lt;feature-value-name>) || historical-forms || styleset(&lt;feature-value-name>#) || character-variant(&lt;feature-value-name>#) || swash(&lt;feature-value-name>) || ornaments(&lt;feature-value-name>) || annotation(&lt;feature-value-name>) ]  || &lt;numeric-figure-values> || &lt;numeric-spacing-values> || &lt;numeric-fraction-values> || ordinal || slashed-zero || &lt;east-asian-variant-values> || &lt;east-asian-width-values> || ruby || [ sub | super ] || [ text | emoji | unicode ] ]
       <td>normal
       <td>all elements and text
       <td>yes
@@ -9450,7 +9488,7 @@ normal animates as 'oblique 0deg'
       <td>as specified
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-alternates" id="ref-for-propdef-font-variant-alternates④">font-variant-alternates</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-alternates" id="ref-for-propdef-font-variant-alternates⑤">font-variant-alternates</a>
       <td>normal | [ stylistic(&lt;feature-value-name>) ||
 historical-forms ||
 styleset(&lt;feature-value-name>#) ||
@@ -9467,7 +9505,7 @@ annotation(&lt;feature-value-name>) ]
       <td>as specified
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-caps" id="ref-for-propdef-font-variant-caps①">font-variant-caps</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-caps" id="ref-for-propdef-font-variant-caps②">font-variant-caps</a>
       <td>normal | small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps
       <td>normal
       <td>all elements and text
@@ -9478,7 +9516,7 @@ annotation(&lt;feature-value-name>) ]
       <td>as specified
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-east-asian" id="ref-for-propdef-font-variant-east-asian①">font-variant-east-asian</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-east-asian" id="ref-for-propdef-font-variant-east-asian②">font-variant-east-asian</a>
       <td>normal | [ &lt;east-asian-variant-values> || &lt;east-asian-width-values> || ruby ]
       <td>normal
       <td>all elements and text
@@ -9489,8 +9527,8 @@ annotation(&lt;feature-value-name>) ]
       <td>as specified
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji⑥">font-variant-emoji</a>
-      <td>auto | text | emoji | unicode
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-emoji" id="ref-for-propdef-font-variant-emoji⑦">font-variant-emoji</a>
+      <td>normal | text | emoji | unicode
       <td>auto
       <td>all elements and text
       <td>yes
@@ -9500,7 +9538,7 @@ annotation(&lt;feature-value-name>) ]
       <td>specified keyword
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures⑤">font-variant-ligatures</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-ligatures" id="ref-for-propdef-font-variant-ligatures⑥">font-variant-ligatures</a>
       <td>normal | none | [ &lt;common-lig-values> || &lt;discretionary-lig-values> || &lt;historical-lig-values> || &lt;contextual-alt-values> ]
       <td>normal
       <td>all elements and text
@@ -9511,7 +9549,7 @@ annotation(&lt;feature-value-name>) ]
       <td>as specified
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-numeric" id="ref-for-propdef-font-variant-numeric①">font-variant-numeric</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-numeric" id="ref-for-propdef-font-variant-numeric②">font-variant-numeric</a>
       <td>normal | [ &lt;numeric-figure-values> || &lt;numeric-spacing-values> || &lt;numeric-fraction-values> || ordinal || slashed-zero ]
       <td>normal
       <td>all elements and text
@@ -9522,7 +9560,7 @@ annotation(&lt;feature-value-name>) ]
       <td>as specified
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-position" id="ref-for-propdef-font-variant-position⑥">font-variant-position</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-font-variant-position" id="ref-for-propdef-font-variant-position⑦">font-variant-position</a>
       <td>normal | sub | super
       <td>normal
       <td>all elements and text
@@ -9574,11 +9612,11 @@ annotation(&lt;feature-value-name>) ]
       <td>normal | &lt;percentage [0,∞]>
       <td>normal
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display⑤">font-display</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-face-font-display" id="ref-for-descdef-font-face-font-display⑦">font-display</a>
       <td>auto | block | swap | fallback | optional
       <td>auto
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-face-font-family" id="ref-for-descdef-font-face-font-family①">font-family</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-face-font-family" id="ref-for-descdef-font-face-font-family②">font-family</a>
       <td>&lt;family-name>
       <td>N/A
      <tr>
@@ -9633,7 +9671,7 @@ annotation(&lt;feature-value-name>) ]
       <th scope="col">Initial
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display⑤">font-display</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-feature-values-font-display" id="ref-for-descdef-font-feature-values-font-display③">font-display</a>
       <td>auto | block | swap | fallback | optional
       <td>auto
    </table>
@@ -9652,7 +9690,7 @@ annotation(&lt;feature-value-name>) ]
       <td>light | dark | &lt;integer [0,∞]>
       <td>N/A
      <tr>
-      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-palette-values-font-family" id="ref-for-descdef-font-palette-values-font-family②">font-family</a>
+      <th scope="row"><a class="css" data-link-type="descriptor" href="#descdef-font-palette-values-font-family" id="ref-for-descdef-font-palette-values-font-family①">font-family</a>
       <td>&lt;'font-family'>
       <td>N/A
      <tr>
@@ -9670,7 +9708,7 @@ annotation(&lt;feature-value-name>) ]
 <c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssrule"><c- g>CSSRule</c-></a> {  <c- b>const</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-unsigned-short"><c- b>unsigned</c-> <c- b>short</c-></a> <a href="#dom-cssrule-font_feature_values_rule"><code><c- g>FONT_FEATURE_VALUES_RULE</c-></code></a> = 14;
 };
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>interface</c-> <a href="#cssfontfeaturevaluesrule①"><code><c- g>CSSFontFeatureValuesRule</c-></code></a> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssrule"><c- n>CSSRule</c-></a> {
+<c- b>interface</c-> <a href="#cssfontfeaturevaluesrule"><code><c- g>CSSFontFeatureValuesRule</c-></code></a> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssrule"><c- n>CSSRule</c-></a> {
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring"><c- n>CSSOMString</c-></a> <a data-type="CSSOMString" href="#dom-cssfontfeaturevaluesrule-fontfamily"><code><c- g>fontFamily</c-></code></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#cssfontfeaturevaluesmap"><c- n>CSSFontFeatureValuesMap</c-></a> <a data-readonly data-type="CSSFontFeatureValuesMap" href="#dom-cssfontfeaturevaluesrule-annotation"><code><c- g>annotation</c-></code></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#cssfontfeaturevaluesmap"><c- n>CSSFontFeatureValuesMap</c-></a> <a data-readonly data-type="CSSFontFeatureValuesMap" href="#dom-cssfontfeaturevaluesrule-ornaments"><code><c- g>ornaments</c-></code></a>;
@@ -9802,13 +9840,6 @@ Generic font families</a> <a href="#ref-for-valdef-font-family-system-ui①">(2)
     <li><a href="#ref-for-valdef-font-family-system-ui③">10.4. 
 System Font</a>
     <li><a href="#ref-for-valdef-font-family-system-ui④">14.6. What information from the underlying platform, e.g. configuration data, is exposed by this specification to an origin? </a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="valdef-font-family-emoji">
-   <b><a href="#valdef-font-family-emoji">#valdef-font-family-emoji</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-font-family-emoji">2.1.3. 
-Generic font families</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-font-family-ui-serif">
@@ -9963,7 +9994,7 @@ Shorthand font property: the font property</a> <a href="#ref-for-propdef-font-si
     <li><a href="#ref-for-propdef-font-size①⑥">5.2. Matching font styles</a> <a href="#ref-for-propdef-font-size①⑦">(2)</a>
     <li><a href="#ref-for-propdef-font-size①⑧">8.1. 
 Optical sizing control: the font-optical-sizing property</a> <a href="#ref-for-propdef-font-size①⑨">(2)</a> <a href="#ref-for-propdef-font-size②⓪">(3)</a>
-    <li><a href="#ref-for-propdef-font-size②①">17.1. Changes from the 29 July 2021 Working Draft </a>
+    <li><a href="#ref-for-propdef-font-size②①">17.2. Changes from the 29 July 2021 Working Draft </a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-font-size-adjust">
@@ -9977,7 +10008,7 @@ Relative sizing: the font-size-adjust property</a> <a href="#ref-for-propdef-fon
 Shorthand font property: the font property</a> <a href="#ref-for-propdef-font-size-adjust①⑥">(2)</a>
     <li><a href="#ref-for-propdef-font-size-adjust①⑦">8.1. 
 Optical sizing control: the font-optical-sizing property</a>
-    <li><a href="#ref-for-propdef-font-size-adjust①⑧">17.3. Changes from the 13 November 2019
+    <li><a href="#ref-for-propdef-font-size-adjust①⑧">17.4. Changes from the 13 November 2019
 	Working Draft</a>
    </ul>
   </aside>
@@ -10166,6 +10197,8 @@ The CSSFontFaceRule interface</a>
    <b><a href="#descdef-font-face-font-family">#descdef-font-face-font-family</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-descdef-font-face-font-family">4.2. Font family: the font-family descriptor</a>
+    <li><a href="#ref-for-descdef-font-face-font-family①">9.2.1. 
+Font family: the font-family descriptor</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="descdef-font-face-src">
@@ -10261,10 +10294,10 @@ Feature and variation precedence</a>
    <ul>
     <li><a href="#ref-for-descdef-font-face-font-display">4.8.1. Font loading guidelines</a>
     <li><a href="#ref-for-descdef-font-face-font-display①">4.9. 
-Controlling Font Display Per Font-Face: the font-display descriptor</a>
-    <li><a href="#ref-for-descdef-font-face-font-display②">4.9.1. 
-Controlling Font Display Per Font-Family via @font-feature-values</a> <a href="#ref-for-descdef-font-face-font-display③">(2)</a>
-    <li><a href="#ref-for-descdef-font-face-font-display④">16. 
+Controlling Font Display Per Font-Face: the font-display descriptor</a> <a href="#ref-for-descdef-font-face-font-display②">(2)</a> <a href="#ref-for-descdef-font-face-font-display③">(3)</a>
+    <li><a href="#ref-for-descdef-font-face-font-display④">4.9.1. 
+Controlling Font Display Per Font-Family via @font-feature-values</a> <a href="#ref-for-descdef-font-face-font-display⑤">(2)</a>
+    <li><a href="#ref-for-descdef-font-face-font-display⑥">16. 
 Acknowledgments</a>
    </ul>
   </aside>
@@ -10284,17 +10317,15 @@ Controlling Font Display Per Font-Face: the font-display descriptor</a>
 The Font Display Timeline</a>
     <li><a href="#ref-for-valdef-font-face-font-display-optional①">4.9. 
 Controlling Font Display Per Font-Face: the font-display descriptor</a> <a href="#ref-for-valdef-font-face-font-display-optional②">(2)</a> <a href="#ref-for-valdef-font-face-font-display-optional③">(3)</a> <a href="#ref-for-valdef-font-face-font-display-optional④">(4)</a> <a href="#ref-for-valdef-font-face-font-display-optional⑤">(5)</a> <a href="#ref-for-valdef-font-face-font-display-optional⑥">(6)</a>
-    <li><a href="#ref-for-valdef-font-face-font-display-optional⑦">17.2. Changes from the 17 November 2020 Working Draft </a>
+    <li><a href="#ref-for-valdef-font-face-font-display-optional⑦">17.3. Changes from the 17 November 2020 Working Draft </a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="descdef-font-feature-values-font-display">
    <b><a href="#descdef-font-feature-values-font-display">#descdef-font-feature-values-font-display</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-descdef-font-feature-values-font-display">4.9. 
-Controlling Font Display Per Font-Face: the font-display descriptor</a> <a href="#ref-for-descdef-font-feature-values-font-display①">(2)</a>
-    <li><a href="#ref-for-descdef-font-feature-values-font-display②">4.9.1. 
-Controlling Font Display Per Font-Family via @font-feature-values</a> <a href="#ref-for-descdef-font-feature-values-font-display③">(2)</a>
-    <li><a href="#ref-for-descdef-font-feature-values-font-display④">6.9.1. Basic syntax</a>
+    <li><a href="#ref-for-descdef-font-feature-values-font-display">4.9.1. 
+Controlling Font Display Per Font-Family via @font-feature-values</a> <a href="#ref-for-descdef-font-feature-values-font-display①">(2)</a>
+    <li><a href="#ref-for-descdef-font-feature-values-font-display②">6.9.1. Basic syntax</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="descdef-font-face-font-language-override">
@@ -10354,11 +10385,11 @@ Feature and variation precedence</a>
     <li><a href="#ref-for-propdef-font-variant-ligatures">6.4. 
 Ligatures: the font-variant-ligatures property</a>
     <li><a href="#ref-for-propdef-font-variant-ligatures①">6.11. 
-Overall shorthand for font rendering: the font-variant property</a>
-    <li><a href="#ref-for-propdef-font-variant-ligatures②">7.1. 
+Overall shorthand for font rendering: the font-variant property</a> <a href="#ref-for-propdef-font-variant-ligatures②">(2)</a>
+    <li><a href="#ref-for-propdef-font-variant-ligatures③">7.1. 
 Default features</a>
-    <li><a href="#ref-for-propdef-font-variant-ligatures③">7.3. 
-Feature precedence examples</a> <a href="#ref-for-propdef-font-variant-ligatures④">(2)</a>
+    <li><a href="#ref-for-propdef-font-variant-ligatures④">7.3. 
+Feature precedence examples</a> <a href="#ref-for-propdef-font-variant-ligatures⑤">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="common-lig-values">
@@ -10401,6 +10432,8 @@ Feature precedence examples</a>
    <ul>
     <li><a href="#ref-for-propdef-font-variant-position①">6.5. 
 Subscript and superscript forms: the font-variant-position property</a> <a href="#ref-for-propdef-font-variant-position②">(2)</a> <a href="#ref-for-propdef-font-variant-position③">(3)</a> <a href="#ref-for-propdef-font-variant-position④">(4)</a> <a href="#ref-for-propdef-font-variant-position⑤">(5)</a>
+    <li><a href="#ref-for-propdef-font-variant-position⑥">6.11. 
+Overall shorthand for font rendering: the font-variant property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="propdef-font-variant-caps">
@@ -10408,6 +10441,8 @@ Subscript and superscript forms: the font-variant-position property</a> <a href=
    <ul>
     <li><a href="#ref-for-propdef-font-variant-caps">6.6. 
 Capitalization: the font-variant-caps property</a>
+    <li><a href="#ref-for-propdef-font-variant-caps①">6.11. 
+Overall shorthand for font rendering: the font-variant property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-font-variant-caps-small-caps">
@@ -10422,6 +10457,8 @@ Shorthand font property: the font property</a>
    <ul>
     <li><a href="#ref-for-propdef-font-variant-numeric">6.7. 
 Numerical formatting: the font-variant-numeric property</a>
+    <li><a href="#ref-for-propdef-font-variant-numeric①">6.11. 
+Overall shorthand for font rendering: the font-variant property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="numeric-figure-values">
@@ -10474,7 +10511,9 @@ Alternates and swashes: the font-variant-alternates property</a>
 Defining font specific alternates: the @font-feature-values rule</a>
     <li><a href="#ref-for-propdef-font-variant-alternates②">6.9.2. 
 Multi-valued feature value definitions</a>
-    <li><a href="#ref-for-propdef-font-variant-alternates③">12.2. 
+    <li><a href="#ref-for-propdef-font-variant-alternates③">6.11. 
+Overall shorthand for font rendering: the font-variant property</a>
+    <li><a href="#ref-for-propdef-font-variant-alternates④">12.2. 
 The CSSFontFeatureValuesRule interface</a>
    </ul>
   </aside>
@@ -10540,6 +10579,8 @@ Object Model</a>
    <ul>
     <li><a href="#ref-for-propdef-font-variant-east-asian">6.10. 
 East Asian text rendering: the font-variant-east-asian property</a>
+    <li><a href="#ref-for-propdef-font-variant-east-asian①">6.11. 
+Overall shorthand for font rendering: the font-variant property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="east-asian-variant-values">
@@ -10708,8 +10749,6 @@ Overriding a colors from a palette: The override-colors descriptor</a> <a href="
    <ul>
     <li><a href="#ref-for-descdef-font-palette-values-font-family">9.2. 
 User-defined font color palettes: The @font-palette-values rule</a>
-    <li><a href="#ref-for-descdef-font-palette-values-font-family①">9.2.1. 
-Font family: the font-family descriptor</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="descdef-font-palette-values-override-colors">
@@ -10722,15 +10761,17 @@ Overriding a colors from a palette: The override-colors descriptor</a> <a href="
   <aside class="dfn-panel" data-for="propdef-font-variant-emoji">
    <b><a href="#propdef-font-variant-emoji">#propdef-font-variant-emoji</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-font-variant-emoji">9.3. 
-Selecting the text presentation style: The font-variant-emoji property</a> <a href="#ref-for-propdef-font-variant-emoji①">(2)</a> <a href="#ref-for-propdef-font-variant-emoji②">(3)</a> <a href="#ref-for-propdef-font-variant-emoji③">(4)</a> <a href="#ref-for-propdef-font-variant-emoji④">(5)</a> <a href="#ref-for-propdef-font-variant-emoji⑤">(6)</a>
+    <li><a href="#ref-for-propdef-font-variant-emoji">6.11. 
+Overall shorthand for font rendering: the font-variant property</a>
+    <li><a href="#ref-for-propdef-font-variant-emoji①">9.3. 
+Selecting the text presentation style: The font-variant-emoji property</a> <a href="#ref-for-propdef-font-variant-emoji②">(2)</a> <a href="#ref-for-propdef-font-variant-emoji③">(3)</a> <a href="#ref-for-propdef-font-variant-emoji④">(4)</a> <a href="#ref-for-propdef-font-variant-emoji⑤">(5)</a> <a href="#ref-for-propdef-font-variant-emoji⑥">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-font-variant-emoji-emoji">
    <b><a href="#valdef-font-variant-emoji-emoji">#valdef-font-variant-emoji-emoji</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-valdef-font-variant-emoji-emoji">2.1.3. 
-Generic font families</a>
+Generic font families</a> <a href="#ref-for-valdef-font-variant-emoji-emoji①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="cssfontfeaturevaluesmap">
