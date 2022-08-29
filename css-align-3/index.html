@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-align-3/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="479faae64403b0b94ab73e81056bfae2dc356505" name="document-revision">
+  <meta content="a77d2fd4ad86e76927b71204d00a12a9daf693da" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-align-3_dev/css-align-3"></script>
 <style>
 .issue th:first-child { text-align: left !important; }
@@ -826,7 +826,8 @@ on screen, on paper, etc.
      </ol>
     <li><a href="#staticpos-rect"><span class="secno"></span> <span class="content"> Appendix A: Static Position Terminology</span></a>
     <li><a href="#changes"><span class="secno">10</span> <span class="content"> Changes</span></a>
-    <li><a href="#privacy-security"><span class="secno">11</span> <span class="content"> Privacy and Security Considerations</span></a>
+    <li><a href="#privacy"><span class="secno">11</span> <span class="content"> Privacy Considerations</span></a>
+    <li><a href="#security"><span class="secno">12</span> <span class="content"> Security Considerations</span></a>
     <li><a href="#acknowledgments"><span class="secno"></span> <span class="content"> Acknowledgments</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
@@ -2775,20 +2776,27 @@ whichever is orthogonal to the box’s own <span class="property" id="ref-for-pr
    <p>Given a set of <a data-link-type="dfn" href="#alignment-subject" id="ref-for-alignment-subject⑥⑥">alignment subjects</a> and their baselines
 	that all belong to a single <a data-link-type="dfn" href="#baseline-sharing-group" id="ref-for-baseline-sharing-group①⓪">baseline-sharing group</a>,
 	the <span id="ref-for-alignment-subject⑥⑦">alignment subjects</span> are baseline-aligned as follows:</p>
-   <p>First, generate the <a data-link-type="dfn" href="#baseline-sharing-group" id="ref-for-baseline-sharing-group①①">baseline-sharing group</a>’s baseline table
-	from the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-fonts-3/#first-available-font" id="ref-for-first-available-font②">first available font</a> of the group’s <a data-link-type="dfn" href="#shared-alignment-context" id="ref-for-shared-alignment-context①③">alignment context</a> and overlay also the mirror of this baseline table by aligning their central baselines.
-	These are the baseline “grids” to which the <a data-link-type="dfn" href="#alignment-subject" id="ref-for-alignment-subject⑥⑧">alignment subjects</a> will align.</p>
-   <p>Next, align each <a data-link-type="dfn" href="#alignment-subject" id="ref-for-alignment-subject⑥⑨">alignment subject</a> by its specified <a data-link-type="dfn" href="#alignment-baseline" id="ref-for-alignment-baseline⑧">alignment baseline</a> to the group’s baseline table
-	or its mirror, whichever matches the <span id="ref-for-alignment-subject⑦⓪">alignment subject’s</span> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#line-orientation" id="ref-for-line-orientation">line orientation</a>.
-	Unless otherwise specified (e.g. via the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-inline-3/#propdef-alignment-baseline" id="ref-for-propdef-alignment-baseline①">alignment-baseline</a> property),
-	the <span id="ref-for-alignment-baseline⑨">alignment baseline</span> is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-3/#dominant-baseline" id="ref-for-dominant-baseline">dominant baseline</a> of the <a data-link-type="dfn" href="#shared-alignment-context" id="ref-for-shared-alignment-context①④">alignment context</a>.</p>
-   <p>Position the aligned <a data-link-type="dfn" href="#baseline-sharing-group" id="ref-for-baseline-sharing-group①②">baseline-sharing group</a> within the <a data-link-type="dfn" href="#alignment-container" id="ref-for-alignment-container④⑨">alignment container</a> according to the <a data-link-type="dfn" href="#fallback-alignment" id="ref-for-fallback-alignment①⑦">fallback alignment</a> associated with the
-	specified <a data-link-type="dfn" href="#baseline-alignment-preference" id="ref-for-baseline-alignment-preference⑧">baseline alignment preference</a>.
-	For first/last <a data-link-type="dfn" href="#baseline-content-alignment" id="ref-for-baseline-content-alignment①②">baseline content-alignment</a>,
-	then add the minimum necessary extra space
-	between the <span id="ref-for-alignment-container⑤⓪">alignment container’s</span> start/end content edge
-	and the <a data-link-type="dfn" href="#alignment-subject" id="ref-for-alignment-subject⑦①">alignment subject’s</a> edge
-	to align the start/end margin edges of all the <span id="ref-for-alignment-container⑤①">alignment containers</span> in the <a data-link-type="dfn" href="#shared-alignment-context" id="ref-for-shared-alignment-context①⑤">alignment context</a> while maintaining baseline alignment within the <span id="ref-for-baseline-sharing-group①③">baseline-sharing group</span>.</p>
+   <ol>
+    <li data-md>
+     <p>Generate the <a data-link-type="dfn" href="#baseline-sharing-group" id="ref-for-baseline-sharing-group①①">baseline-sharing group</a>’s baseline table
+from the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-fonts-3/#first-available-font" id="ref-for-first-available-font②">first available font</a> of the group’s <a data-link-type="dfn" href="#shared-alignment-context" id="ref-for-shared-alignment-context①③">alignment context</a> and overlay also the mirror of this baseline table by aligning their central baselines.
+These are the baseline “grids” to which the <a data-link-type="dfn" href="#alignment-subject" id="ref-for-alignment-subject⑥⑧">alignment subjects</a> will align.</p>
+    <li data-md>
+     <p>Align each <a data-link-type="dfn" href="#alignment-subject" id="ref-for-alignment-subject⑥⑨">alignment subject</a> by its specified <a data-link-type="dfn" href="#alignment-baseline" id="ref-for-alignment-baseline⑧">alignment baseline</a> to the group’s baseline table
+or its mirror, whichever matches the <span id="ref-for-alignment-subject⑦⓪">alignment subject’s</span> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#line-orientation" id="ref-for-line-orientation">line orientation</a>.
+Unless otherwise specified (e.g. via the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-inline-3/#propdef-alignment-baseline" id="ref-for-propdef-alignment-baseline①">alignment-baseline</a> property),
+the <span id="ref-for-alignment-baseline⑨">alignment baseline</span> is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-3/#dominant-baseline" id="ref-for-dominant-baseline">dominant baseline</a> of the <a data-link-type="dfn" href="#shared-alignment-context" id="ref-for-shared-alignment-context①④">alignment context</a>.</p>
+    <li data-md>
+     <p>Position the aligned <a data-link-type="dfn" href="#baseline-sharing-group" id="ref-for-baseline-sharing-group①②">baseline-sharing group</a> within the <a data-link-type="dfn" href="#alignment-container" id="ref-for-alignment-container④⑨">alignment container</a> according to its <a data-link-type="dfn" href="#fallback-alignment" id="ref-for-fallback-alignment①⑦">fallback alignment</a>.
+The <span id="ref-for-fallback-alignment①⑧">fallback alignment</span> of a <span id="ref-for-baseline-sharing-group①③">baseline-sharing group</span> is the <span id="ref-for-fallback-alignment①⑨">fallback alignment</span> of its items
+as resolved to <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#physical-direction" id="ref-for-physical-direction">physical directions</a>.</p>
+    <li data-md>
+     <p>For first/last <a data-link-type="dfn" href="#baseline-content-alignment" id="ref-for-baseline-content-alignment①②">baseline <em>content</em>-alignment</a>,
+then add the minimum necessary extra space
+between the <a data-link-type="dfn" href="#alignment-container" id="ref-for-alignment-container⑤⓪">alignment container’s</a> start/end content edge
+and the <a data-link-type="dfn" href="#alignment-subject" id="ref-for-alignment-subject⑦①">alignment subject’s</a> edge
+to align the start/end margin edges of all the <span id="ref-for-alignment-container⑤①">alignment containers</span> in the <a data-link-type="dfn" href="#shared-alignment-context" id="ref-for-shared-alignment-context①⑤">alignment context</a> while maintaining baseline alignment within the <a data-link-type="dfn" href="#baseline-sharing-group" id="ref-for-baseline-sharing-group①④">baseline-sharing group</a>.</p>
+   </ol>
    <h2 class="heading settled" id="staticpos-rect"><span class="content"> Appendix A: Static Position Terminology</span><a class="self-link" href="#staticpos-rect"></a></h2>
    <p>When both <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-logical-1/#inset-properties" id="ref-for-inset-properties">inset properties</a> in a given axis are <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-position-3/#valdef-top-auto" id="ref-for-valdef-top-auto①②">auto</a> on an <a href="https://www.w3.org/TR/CSS2/visuren.html#absolutely-positioned">absolutely positioned box</a>,
 	CSS2 uses its <a data-link-type="dfn">static position</a> to resolve its size and position.
@@ -2827,7 +2835,7 @@ whichever is orthogonal to the box’s own <span class="property" id="ref-for-pr
    <ul>
     <li>Allowed reordering of <span class="css">[ first | last ]</span> and <a class="css" data-link-type="maybe" href="#valdef-justify-self-baseline" id="ref-for-valdef-justify-self-baseline⑤">baseline</a> components of <a class="production css" data-link-type="type" href="#typedef-baseline-position" id="ref-for-typedef-baseline-position⑨" title="Expands to: baseline | first | last">&lt;baseline-position></a>.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/5235">Issue 5235</a>) 
-    <li>Make <a data-link-type="dfn" href="#fallback-alignment" id="ref-for-fallback-alignment①⑧">fallback alignment</a> of <a class="css" data-link-type="maybe" href="#valdef-align-content-space-around" id="ref-for-valdef-align-content-space-around①">space-around</a> and <a class="css" data-link-type="maybe" href="#valdef-align-content-space-evenly" id="ref-for-valdef-align-content-space-evenly②">space-evenly</a> include <a class="css" data-link-type="maybe" href="#valdef-overflow-position-safe" id="ref-for-valdef-overflow-position-safe②">safe</a>.
+    <li>Make <a data-link-type="dfn" href="#fallback-alignment" id="ref-for-fallback-alignment②⓪">fallback alignment</a> of <a class="css" data-link-type="maybe" href="#valdef-align-content-space-around" id="ref-for-valdef-align-content-space-around①">space-around</a> and <a class="css" data-link-type="maybe" href="#valdef-align-content-space-evenly" id="ref-for-valdef-align-content-space-evenly②">space-evenly</a> include <a class="css" data-link-type="maybe" href="#valdef-overflow-position-safe" id="ref-for-valdef-overflow-position-safe②">safe</a>.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/5088">Issue 5088</a>) 
     <li>Various corrections to <span class="css">normal</span> alignment and percentage gaps
 		to match respective layout specs. 
@@ -2842,6 +2850,8 @@ whichever is orthogonal to the box’s own <span class="property" id="ref-for-pr
 		(<a href="https://github.com/w3c/csswg-drafts/issues/5923">Issue 5923</a>) 
     <li>Better define how baseline self-alignment and content-alignment interact.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/6389">Issue 6389</a>) 
+    <li>Clarify how baseline-sharing groups determine their fallback alignment.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/7645">Issue 7645</a>) 
    </ul>
    <p>Changes since the <a href="https://www.w3.org/TR/2018/WD-css-align-3-20181206/">6 December 2018 Working Draft</a> include:</p>
    <ul>
@@ -2905,9 +2915,12 @@ whichever is orthogonal to the box’s own <span class="property" id="ref-for-pr
     <li>Clamped baselines of scrollable boxes to the border edge, rather than margin edge.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/766">Issue 766</a>) 
    </ul>
-   <h2 class="heading settled" data-level="11" id="privacy-security"><span class="secno">11. </span><span class="content"> Privacy and Security Considerations</span><a class="self-link" href="#privacy-security"></a></h2>
+   <h2 class="heading settled" data-level="11" id="privacy"><span class="secno">11. </span><span class="content"> Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <p>As a simple layout spec,
-	this introduces no new privacy or security considerations.</p>
+	this introduces no new privacy considerations.</p>
+   <h2 class="heading settled" data-level="12" id="security"><span class="secno">12. </span><span class="content"> Security Considerations</span><a class="self-link" href="#security"></a></h2>
+   <p>As a simple layout spec,
+	this introduces no new security considerations.</p>
    <h2 class="no-num heading settled" id="acknowledgments"><span class="content"> Acknowledgments</span><a class="self-link" href="#acknowledgments"></a></h2>
    <p>Special thanks goes to David Baron, Javier Fernandez, Markus Mielke, Alex Mogilevsky,
 	and the participants in the CSSWG’s March 2008 F2F alignment discussions
@@ -4060,6 +4073,13 @@ Determining the Baselines of a Box</a> <a href="#ref-for-line-under①">(2)</a>
 Effects on Sizing of Absolutely Positioned Boxes with Static-Position Insets</a> <a href="#ref-for-valdef-direction-ltr①">(2)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-physical-direction">
+   <a href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#physical-direction">https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#physical-direction</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-physical-direction">9.3. 
+Aligning Boxes by Baseline</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-physical-left">
    <a href="https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#physical-left">https://andreubotella.com/csswg-auto-build/css-writing-modes-4/#physical-left</a><b>Referenced in:</b>
    <ul>
@@ -4372,6 +4392,7 @@ Baseline Alignment Details</a>
      <li><span class="dfn-paneled" id="term-for-line-right">line-right</span>
      <li><span class="dfn-paneled" id="term-for-line-under">line-under</span>
      <li><span class="dfn-paneled" id="term-for-valdef-direction-ltr">ltr</span>
+     <li><span class="dfn-paneled" id="term-for-physical-direction">physical direction</span>
      <li><span class="dfn-paneled" id="term-for-physical-left">physical left</span>
      <li><span class="dfn-paneled" id="term-for-physical-right">physical right</span>
      <li><span class="dfn-paneled" id="term-for-valdef-direction-rtl">rtl</span>
@@ -4694,8 +4715,8 @@ Baseline Content-Alignment</a> <a href="#ref-for-fallback-alignment①⑤">(2)</
     <li><a href="#ref-for-fallback-alignment①⑥">6.5. 
 Effects on Sizing of Absolutely Positioned Boxes with Static-Position Insets</a>
     <li><a href="#ref-for-fallback-alignment①⑦">9.3. 
-Aligning Boxes by Baseline</a>
-    <li><a href="#ref-for-fallback-alignment①⑧">10. 
+Aligning Boxes by Baseline</a> <a href="#ref-for-fallback-alignment①⑧">(2)</a> <a href="#ref-for-fallback-alignment①⑨">(3)</a>
+    <li><a href="#ref-for-fallback-alignment②⓪">10. 
 Changes</a>
    </ul>
   </aside>
@@ -4886,8 +4907,6 @@ Baseline Alignment: the baseline keyword and first/last modifiers</a> <a href="#
 Baseline Content-Alignment</a> <a href="#ref-for-baseline-alignment-preference③">(2)</a> <a href="#ref-for-baseline-alignment-preference④">(3)</a>
     <li><a href="#ref-for-baseline-alignment-preference⑤">9.2. 
 Baseline Alignment Grouping</a> <a href="#ref-for-baseline-alignment-preference⑥">(2)</a> <a href="#ref-for-baseline-alignment-preference⑦">(3)</a>
-    <li><a href="#ref-for-baseline-alignment-preference⑧">9.3. 
-Aligning Boxes by Baseline</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="valdef-justify-self-baseline">
@@ -5568,7 +5587,7 @@ Baseline Alignment Details</a>
     <li><a href="#ref-for-baseline-sharing-group⑧">9.2. 
 Baseline Alignment Grouping</a> <a href="#ref-for-baseline-sharing-group⑨">(2)</a>
     <li><a href="#ref-for-baseline-sharing-group①⓪">9.3. 
-Aligning Boxes by Baseline</a> <a href="#ref-for-baseline-sharing-group①①">(2)</a> <a href="#ref-for-baseline-sharing-group①②">(3)</a> <a href="#ref-for-baseline-sharing-group①③">(4)</a>
+Aligning Boxes by Baseline</a> <a href="#ref-for-baseline-sharing-group①①">(2)</a> <a href="#ref-for-baseline-sharing-group①②">(3)</a> <a href="#ref-for-baseline-sharing-group①③">(4)</a> <a href="#ref-for-baseline-sharing-group①④">(5)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="shared-alignment-context">
