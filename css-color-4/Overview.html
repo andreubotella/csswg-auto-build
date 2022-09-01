@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fc5994002b1f2f9be0a8b0a3621a1f584f877efe" name="document-revision">
+  <meta content="87a2abdffbb4df551147116b9dbff4b712ebee5e" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-4_dev/css-color-4"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -6614,7 +6614,7 @@ the two colors will look the same and represent the same color sensation.</p>
    <p>Interpolation between <a class="production css" data-link-type="type" href="#typedef-color" id="ref-for-typedef-color①②" title="Expands to: aliceblue | antiquewhite | aqua | aquamarine | azure | beige | bisque | black | blanchedalmond | blue | blueviolet | brown | burlywood | cadetblue | chartreuse | chocolate | coral | cornflowerblue | cornsilk | crimson | currentcolor | cyan | darkblue | darkcyan | darkgoldenrod | darkgray | darkgreen | darkgrey | darkkhaki | darkmagenta | darkolivegreen | darkorange | darkorchid | darkred | darksalmon | darkseagreen | darkslateblue | darkslategray | darkslategrey | darkturquoise | darkviolet | deeppink | deepskyblue | dimgray | dimgrey | dodgerblue | firebrick | floralwhite | forestgreen | fuchsia | gainsboro | ghostwhite | gold | goldenrod | gray | green | greenyellow | grey | honeydew | hotpink | indianred | indigo | ivory | khaki | lavender | lavenderblush | lawngreen | lemonchiffon | lightblue | lightcoral | lightcyan | lightgoldenrodyellow | lightgray | lightgreen | lightgrey | lightpink | lightsalmon | lightseagreen | lightskyblue | lightslategray | lightslategrey | lightsteelblue | lightyellow | lime | limegreen | linen | magenta | maroon | mediumaquamarine | mediumblue | mediumorchid | mediumpurple | mediumseagreen | mediumslateblue | mediumspringgreen | mediumturquoise | mediumvioletred | midnightblue | mintcream | mistyrose | moccasin | navajowhite | navy | none | oldlace | olive | olivedrab | orange | orangered | orchid | palegoldenrod | palegreen | paleturquoise | palevioletred | papayawhip | peachpuff | peru | pink | plum | powderblue | purple | rebeccapurple | red | rosybrown | royalblue | saddlebrown | salmon | sandybrown | seagreen | seashell | sienna | silver | skyblue | slateblue | slategray | slategrey | snow | springgreen | steelblue | tan | teal | thistle | tomato | transparent | turquoise | violet | wheat | white | whitesmoke | yellow | yellowgreen">&lt;color></a> values
 	occurs by first
 	converting them to a given color space
-	which will be referred to as the 'interpolation space' below,
+	which will be referred to as the <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="interpolation-color-space">interpolation color space</dfn> below,
 	and then
 	linearly interpolating each component of the computed value of the color
 	separately.</p>
@@ -6639,7 +6639,7 @@ the two colors will look the same and represent the same color sensation.</p>
     </ul>
    </div>
    <p>Mixing or otherwise combining colors
-	has different results depending on the color space used.
+	has different results depending on the <a data-link-type="dfn" href="#interpolation-color-space" id="ref-for-interpolation-color-space">interpolation color space</a> used.
 	Thus, different color spaces may be more appropriate for each interpolation use case.</p>
    <ul>
     <li data-md>
@@ -6658,7 +6658,7 @@ even though it produces poorer results (overly dark or greyish mixes).</p>
    </ul>
    <p>These features are collectively termed the <dfn data-dfn-type="dfn" data-export id="host-syntax">host syntax<a class="self-link" href="#host-syntax"></a></dfn>.
 	The host syntax should define
-	what the default interpolation space should be for each case,
+	what the default <a data-link-type="dfn" href="#interpolation-color-space" id="ref-for-interpolation-color-space①">interpolation color space</a> should be for each case,
 	and optionally provide syntax for authors to override this default.
 	If such syntax is part of a property value, it should use a <a class="production css" data-link-type="type" href="#color-interpolation-method" id="ref-for-color-interpolation-method">&lt;color-interpolation-method></a> token,
 	defined below for easy reference from other specifications.
@@ -6695,18 +6695,81 @@ even though it produces poorer results (overly dark or greyish mixes).</p>
 	by using the non-legacy <span class="css">color(srgb r g b)</span> form
 	for at least one of their colors.</p>
    <p>If the colors to be interpolated are outside the gamut
-	of the interpolation space,
+	of the <a data-link-type="dfn" href="#interpolation-color-space" id="ref-for-interpolation-color-space②">interpolation color space</a> ,
 	then once converted to that space,
 	they will contain out of range values.</p>
    <p>These are not clipped, but the values are interpolated as-is.</p>
    <h3 class="heading settled" data-level="12.2" id="interpolation-missing"><span class="secno">12.2. </span><span class="content"> Interpolating with Missing Components</span><a class="self-link" href="#interpolation-missing"></a></h3>
-   <p>If a color with a <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑧">missing component</a> is interpolated
+   <p>In the course of converting the two colors
+	to the <a data-link-type="dfn" href="#interpolation-color-space" id="ref-for-interpolation-color-space③">interpolation color space</a>,
+	any <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑧">missing components</a> will be replaced with the value 0.</p>
+   <p>Thus, the first stage in interpolating two colors
+	is to classify any <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component⑨">missing components</a> in the input colors,
+	and compare them to the components of the <a data-link-type="dfn" href="#interpolation-color-space" id="ref-for-interpolation-color-space④">interpolation color space</a>.
+	If any analogous <span id="ref-for-missing-color-component①⓪">missing components</span> are found,
+	they will be <strong>carried forward</strong> and re-inserted in the converted color
+	before linear interpolation takes place.</p>
+   <p>The analogous components are as follows:</p>
+   <table>
+    <tbody>
+     <tr>
+      <th>Category
+      <th>Components
+     <tr>
+      <td>Reds
+      <td>r,x
+     <tr>
+      <td>Greens
+      <td>g,y
+     <tr>
+      <td>Blues
+      <td>b,z
+     <tr>
+      <td>Lightness
+      <td>L
+     <tr>
+      <td>Colorfulness
+      <td>C, S
+     <tr>
+      <td>Hue
+      <td>H
+   </table>
+   <p class="note" role="note"><span>Note:</span> for the purposes of this classification,
+	the XYZ spaces are considered super-saturated RGB spaces.
+	Also, despite Saturation being Lightness-dependent,
+	it falls in the same category as Chroma here.
+	The Whiteness and Blackness components of HWB
+	have no analogs in other color spaces.</p>
+   <div class="example" id="ex-analogous-hue">
+    <a class="self-link" href="#ex-analogous-hue"></a> For example, if these two colors
+		are to be interpolated in OKLCH,
+		the missing hue in the CIE LCH color
+		is analogous to the hue component of OKLCH
+		and will be carried forward
+		while the missing blue component
+		in the second color
+		is not analogous to any OKLCH component
+		and will not be carried forward: 
+<pre class="highlight"><span class="swatch" style="--color: rgb(46.647% 46.628% 46.633%)"></span> <c- nf>lch</c-><c- p>(</c-><c- m>50</c-><c- k>%</c-> <c- m>0.02</c-> none<c- p>)</c->
+<span class="swatch" style="--color: rgb(71.559% 49.813% 0%)"></span> <c- nf>color</c-><c- p>(</c->display-p3 <c- m>0.7</c-> <c- m>0.5</c-> none<c- p>)</c->
+</pre>
+    <p>which convert to</p>
+<pre class="highlight"><span class="swatch" style="--color: rgb(46.647% 46.628% 46.633%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>56.897</c-><c- k>%</c-> <c- m>0.0001</c-> <c- m>0</c-><c- p>)</c->
+<span class="swatch" style="--color: rgb(71.559% 49.813% 0%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>63.612</c-><c- k>%</c-> <c- m>0.1522</c-> <c- m>78.748</c-><c- p>)</c->
+</pre>
+    <p>and with carried forward <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①①">missing component</a> re-inserted,
+		the two colors to be interpolated are:</p>
+<pre class="highlight"><span class="swatch" style="--color: rgb(46.647% 46.628% 46.633%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>56.897</c-><c- k>%</c-> <c- m>0.0001</c-> none<c- p>)</c->
+<span class="swatch" style="--color: rgb(71.559% 49.813% 0%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>63.612</c-><c- k>%</c-> <c- m>0.1522</c-> <c- m>78.748</c-><c- p>)</c->
+</pre>
+   </div>
+   <p>If a color with a carried forward <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①②">missing component</a> is interpolated
 	with another color
 	which is not missing that component,
-	the <span id="ref-for-missing-color-component⑨">missing component</span> is treated as having
-	the other color’s component value.</p>
-   <div class="example" id="ex-">
-    <a class="self-link" href="#ex-"></a> For example, if these two colors are interpolated,
+	the <span id="ref-for-missing-color-component①③">missing component</span> is treated as having
+	the <em>other color’s</em> component value.</p>
+   <div class="example" id="ex-oklch-missing-hue">
+    <a class="self-link" href="#ex-oklch-missing-hue"></a> For example, if these two colors are interpolated,
 		the second of which has a missing hue: 
 <pre class="highlight"><span class="swatch" style="--color: rgb(86.6% 62.7% 86.7%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>78.3</c-><c- k>%</c-> <c- m>0.108</c-> <c- m>326.5</c-><c- p>)</c->
 <span class="swatch" style="--color: rgb(48.4% 0% 22.8%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>39.2</c-><c- k>%</c-> <c- m>0.4</c-> none<c- p>)</c->
@@ -6717,12 +6780,12 @@ even though it produces poorer results (overly dark or greyish mixes).</p>
 </pre>
     <p>and not</p>
 <pre class="highlight"><span class="swatch" style="--color: rgb(86.6% 62.7% 86.7%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>78.3</c-><c- k>%</c-> <c- m>0.108</c-> <c- m>326.5</c-><c- p>)</c->
-<span class="swatch" style="--color: rgb(48.4% 0% 22.8%)"></span><c- nf>oklch</c-><c- p>(</c-><c- m>39.2</c-><c- k>%</c-> <c- m>0.4</c-> <c- m>0</c-><c- p>)</c->
+<span class="swatch" style="--color: rgb(48.4% 0% 22.8%)"></span> <c- nf>oklch</c-><c- p>(</c-><c- m>39.2</c-><c- k>%</c-> <c- m>0.4</c-> <c- m>0</c-><c- p>)</c->
 </pre>
    </div>
-   <p>If both colors are <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①⓪">missing</a> a given component,
+   <p>If both colors are <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①④">missing</a> a given component,
 	the interpolated color
-	will also be <span id="ref-for-missing-color-component①①">missing</span> that component.</p>
+	will also be <span id="ref-for-missing-color-component①⑤">missing</span> that component.</p>
    <details class="wpt-tests-block" dir="ltr" lang="en" open>
     <summary>Tests</summary>
     <ul class="wpt-tests-list">
@@ -6865,7 +6928,7 @@ is divided by the interpolated alpha value.</p>
    </details>
    <p class="note" role="note"><span>Note:</span> As a reminder,
 	if the interpolating colors were not already in the specified interpolation syntax,
-	then converting them will turn any <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①⑧">powerless components</a> into <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①②">missing components</a>.</p>
+	then converting them will turn any <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①⑧">powerless components</a> into <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①⑥">missing components</a>.</p>
    <h4 class="heading settled" data-level="12.4.1" id="hue-shorter"><span class="secno">12.4.1. </span><span class="content"> <dfn data-dfn-type="dfn" data-export id="shorter">shorter<a class="self-link" href="#shorter"></a></dfn></span><a class="self-link" href="#hue-shorter"></a></h4>
    <p>Angles are adjusted so that <var>θ₂ - θ₁</var> ∈ [-180, 180]. In pseudo-Javascript:</p>
 <pre class="highlight">if <c- p>(</c->θ₂ - θ₁ > <c- m>180</c-><c- p>)</c-> <c- p>{</c->
@@ -7384,7 +7447,7 @@ and is treated as being all lowercase.</p>
     <p>The string "." shall be used as a decimal separator,
 regardless of locale,
 and there shall be no thousands separator.</p>
-    <p>For syntactic forms which support <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①③">missing color components</a>,
+    <p>For syntactic forms which support <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①⑦">missing color components</a>,
 the value <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①⓪">none</a> (equivalently NONE, nOnE, etc),
 shall be serialized in all-lower case
 as the string "none".</p>
@@ -7453,7 +7516,7 @@ as the string "none".</p>
 	(depending on whether the alpha is exactly 1, or not),
 	with lowercase letters for the function name.</p>
     <p>During serialization,
-	any <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①④">missing</a> values
+	any <a data-link-type="dfn" href="#missing-color-component" id="ref-for-missing-color-component①⑧">missing</a> values
 	are converted to 0.</p>
     <p>For compatibility, the sRGB component values
 	are serialized in <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#number-value" id="ref-for-number-value②⑤">&lt;number></a> form, not <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/css-values-4/#percentage-value" id="ref-for-percentage-value②⑨">&lt;percentage></a>).
@@ -9117,6 +9180,7 @@ which is a fingerprinting risk.</p>
    <li><a href="#valdef-color-indigo">indigo</a><span>, in § 6.1</span>
    <li><a href="#infobackground">InfoBackground</a><span>, in § Unnumbered section</span>
    <li><a href="#infotext">InfoText</a><span>, in § Unnumbered section</span>
+   <li><a href="#interpolation-color-space">interpolation color space</a><span>, in § 12</span>
    <li><a href="#invalid-color">invalid color</a><span>, in § 10.1</span>
    <li><a href="#valdef-color-ivory">ivory</a><span>, in § 6.1</span>
    <li><a href="#valdef-color-khaki">khaki</a><span>, in § 6.1</span>
@@ -10227,12 +10291,12 @@ Converting Lab or OKLab colors to LCH or OKLCH colors</a>
     <li><a href="#ref-for-missing-color-component⑥">11. 
 Converting Colors</a> <a href="#ref-for-missing-color-component⑦">(2)</a>
     <li><a href="#ref-for-missing-color-component⑧">12.2. 
-Interpolating with Missing Components</a> <a href="#ref-for-missing-color-component⑨">(2)</a> <a href="#ref-for-missing-color-component①⓪">(3)</a> <a href="#ref-for-missing-color-component①①">(4)</a>
-    <li><a href="#ref-for-missing-color-component①②">12.4. 
+Interpolating with Missing Components</a> <a href="#ref-for-missing-color-component⑨">(2)</a> <a href="#ref-for-missing-color-component①⓪">(3)</a> <a href="#ref-for-missing-color-component①①">(4)</a> <a href="#ref-for-missing-color-component①②">(5)</a> <a href="#ref-for-missing-color-component①③">(6)</a> <a href="#ref-for-missing-color-component①④">(7)</a> <a href="#ref-for-missing-color-component①⑤">(8)</a>
+    <li><a href="#ref-for-missing-color-component①⑥">12.4. 
 Hue Interpolation</a>
-    <li><a href="#ref-for-missing-color-component①③">15. 
+    <li><a href="#ref-for-missing-color-component①⑦">15. 
 Serializing &lt;color> Values</a>
-    <li><a href="#ref-for-missing-color-component①④">15.2. 
+    <li><a href="#ref-for-missing-color-component①⑧">15.2. 
 Serializing sRGB values</a>
    </ul>
   </aside>
@@ -11095,6 +11159,15 @@ Color Space for Interpolation</a>
 Resolving values of the color() function</a>
     <li><a href="#ref-for-valdef-color-xyz⑥">15.5. 
 Serializing values of the color() function</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="interpolation-color-space">
+   <b><a href="#interpolation-color-space">#interpolation-color-space</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-interpolation-color-space">12.1. 
+Color Space for Interpolation</a> <a href="#ref-for-interpolation-color-space①">(2)</a> <a href="#ref-for-interpolation-color-space②">(3)</a>
+    <li><a href="#ref-for-interpolation-color-space③">12.2. 
+Interpolating with Missing Components</a> <a href="#ref-for-interpolation-color-space④">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="typedef-rectangular-color-space">
