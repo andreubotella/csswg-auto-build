@@ -3409,13 +3409,14 @@ Specifying Predefined Colors: the ''color()'' function</h3>
 		<dfn>&lt;colorspace-params></dfn> = [ <<predefined-rgb-params>> | <<xyz-params>>]
 		<dfn>&lt;predefined-rgb-params></dfn> = <<predefined-rgb>> [ <<number>> | <<percentage>> | none ]{3}
 		<dfn>&lt;predefined-rgb></dfn> = ''srgb'' | ''srgb-linear'' | ''display-p3'' | ''a98-rgb'' | ''prophoto-rgb'' | ''rec2020''
-		<dfn>&lt;xyz-params></dfn> = <<xyz-space>> [ <<number>> | none ]{3}
+		<dfn>&lt;xyz-params></dfn> = <<xyz-space>> [ <<number>> | <<percentage>> | none ]{3}
 		<dfn>&lt;xyz-space></dfn> = ''xyz'' | ''xyz-d50'' | ''xyz-d65''
 	</pre>
 
-	<!-- check this test, remove any fallback testing -->
 	<wpt>
 		color-function-parsing.html
+		parsing/color-mixed-num-pct.html
+		parsing/color-valid.html
 	</wpt>
 
 	The color function takes parameters specifying a color, in an explicitly listed color space.
@@ -3432,13 +3433,6 @@ Specifying Predefined Colors: the ''color()'' function</h3>
 	It is said to be <dfn export>out of gamut</dfn>
 	for that color space.
 
-	An out of gamut color has component values
-	less than 0 or 0%, or greater than 1 or 100%.
-	These are not invalid and are retained for intermediate computations;
-	instead, for display, they are
-	<a>css gamut mapped</a> using a relative colorimetric intent
-	which brings the values within the range 0/0% to 1/100%
-	at actual-value time.
 
 	Each [=valid color=] is either in-gamut for the output device (screen, or printer),
 	or it is [=out of gamut=].
@@ -3459,12 +3453,15 @@ Specifying Predefined Colors: the ''color()'' function</h3>
 
 	* One or more <<number>>s or <<percentage>>s providing the parameter values that the color space takes.
 
-		Specified component values
-		less than 0 or 0%, or greater than 1 or 100%
-		are not invalid;
-		these out of gamut colors
-		are gamut mapped to the valid range at computed value time,
-		with a relative colorimetric intent.
+	An out of gamut color has component values
+	less than 0 or 0%, or greater than 1 or 100%.
+	These are not invalid and are retained for intermediate computations;
+	instead, for display, they are
+	<a>css gamut mapped</a> using a relative colorimetric intent
+	which brings the values 
+	(in the display color space)
+	within the range 0/0% to 1/100%
+	at actual-value time.
 
 
 	* An optional slash-separated <<alpha-value>>.
@@ -3490,7 +3487,7 @@ Specifying Predefined Colors: the ''color()'' function</h3>
 
 	If the specified color
 	is a [=valid color=]
-	but [=can't be displayed=]],
+	but [=can't be displayed=],
 	the actual value is derived from the specified color,
 	<a>css gamut mapped</a> for display.
 
@@ -3604,6 +3601,7 @@ The Predefined sRGB Color Space: the ''sRGB'' keyword</h3>
 				predefined-001.html
 				predefined-002.html
 				parsing/color-valid.html
+				parsing/color-mixed-num-pct.html
 			</wpt>
 		</dl>
 
@@ -3658,6 +3656,7 @@ The Predefined Linear-light sRGB Color Space: the ''srgb-linear'' keyword</h3>
 					srgb-linear-003.html
 					srgb-linear-004.html
 					parsing/color-valid.html
+					parsing/color-mixed-num-pct.html
 				</wpt>
 
 				To avoid banding artifacts, a
@@ -3734,6 +3733,7 @@ The Predefined Display P3 Color Space: the ''display-p3'' keyword</h3>
 				display-p3-004.html
 				display-p3-005.html
 				display-p3-006.html
+				parsing/color-mixed-num-pct.html
 			</wpt>
 
 		</dl>
@@ -3793,6 +3793,7 @@ The Predefined A98 RGB Color Space: the ''a98-rgb'' keyword</h3>
 				a98rgb-003.html
 				a98rgb-004.html
 				parsing/color-valid.html
+				parsing/color-mixed-num-pct.html
 			</wpt>
 		</dl>
 
@@ -3889,6 +3890,7 @@ The Predefined ProPhoto RGB Color Space: the ''prophoto-rgb'' keyword</h3>
 					prophoto-rgb-004.html
 					prophoto-rgb-005.html
 					parsing/color-valid.html
+					parsing/color-mixed-num-pct.html
 				</wpt>
 		</dl>
 
@@ -3969,6 +3971,7 @@ The Predefined ITU-R BT.2020-2 Color Space: the ''rec2020'' keyword</h3>
 				rec2020-004.html
 				rec2020-005.html
 				parsing/color-valid.html
+				parsing/color-mixed-num-pct.html
 			</wpt>
 		</dl>
 
@@ -3986,9 +3989,9 @@ The Predefined CIE XYZ Color Spaces: the ''xyz-d50'', ''xyz-d65'', and ''xyz'' k
 				The reference white for ''xyz-d50'' is [=D50=], while
 				the reference white for ''xyz-d65''  and ''xyz'' is [=D65=].
 
-				Values greater than 1.0 are allowed and must not be clamped;
+				Values greater than 1.0/100% are allowed and must not be clamped;
 				they represent colors brighter than diffuse white.
-				Values less than 0 are uncommon,
+				Values less than 0/0% are uncommon,
 				but can occur as a result of chromatic adaptation,
 				and likewise must not be clamped.
 
@@ -4035,13 +4038,10 @@ The Predefined CIE XYZ Color Spaces: the ''xyz-d50'', ''xyz-d65'', and ''xyz'' k
 					xyz-d65-004.html
 					xyz-d65-005.html
 					parsing/color-valid.html
+					parsing/color-mixed-num-pct.html
 				</wpt>
 	</dl>
 
-	<!-- remove this test from wpt -->
-				<!-- <wpt>
-					predefined-013.html
-				</wpt> -->
 
 <h3 id="predefined-to-lab-oklab">
 Converting Predefined Color Spaces to Lab or OKLab</h3>
