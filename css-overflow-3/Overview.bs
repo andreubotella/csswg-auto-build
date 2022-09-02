@@ -22,6 +22,7 @@ Abstract: This module contains the features of CSS relating to scrollable overfl
 Ignored Vars: B, P
 Ignored Terms: padding edge, viewport, line box, flex order, -webkit-box-orient
 At Risk: the 'max-lines' property
+At Risk: application of 'overflow' to [=replaced elements=]
 Status Text:
 	The description of 'overflow' and its longhands is considered
 	significantly more complete and correct than previous working drafts
@@ -190,6 +191,8 @@ Types of Overflow</h2>
 	in the box's coordinate system, but might be non-rectangular
 	in other coordinate systems due to transforms. [[CSS3-TRANSFORMS]]
 
+	Any overflow of [=replaced=] content is always [=ink overflow=]
+	(as opposed to [=scrollable overflow=]).
 
 <h3 id="scrollable">
 Scrollable Overflow</h3>
@@ -375,11 +378,6 @@ Scrolling and Clipping Overflow: the 'overflow-x', 'overflow-y', and 'overflow' 
 			the box’s content is rendered outside the box if positioned there.
 			The box is not a <a>scroll container</a>.
 
-			If the element is [=replaced=],
-			any overflow is [=ink overflow=].
-			(Otherwise, it might be [=ink overflow=] or [=scrollable overflow=],
-			depending on what precisely is overflowing.)
-
 		<dt><dfn>hidden</dfn>
 		<dd>
 			This value indicates that
@@ -478,8 +476,8 @@ Scrolling and Clipping Overflow: the 'overflow-x', 'overflow-y', and 'overflow' 
 
 	On [=replaced elements=],
 	the [=used values=]
-	for all computed values other than ''visible''
-	become ''overflow/clip''.
+	of all computed values other than ''visible''
+	is ''overflow/clip''.
 
 <h3 id="static-media">
 Overflow in Print and Other Static Media</h3>
@@ -1689,7 +1687,22 @@ Fragmentation of Overflow: the 'continue' property</h3>
 <h3 id="changes-since-2021-12-02">
 Changes from the <a href="https://www.w3.org/TR/2021/WD-css-overflow-3-20211202/">2021-12-02 Working Draft</a></h3>
 
-	No significant change yet.
+
+	* Require end-edge [=padding=] to be included
+		in the [=scrollable overflow area=] of [=block containers=];
+		this was previously optional for [=block containers=] with ''align-content/normal'' [=content distribution=],
+		pending Web-compatibility investigations.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/129#issuecomment-1113489051">Issue 129</a>)
+	* Extended 'overflow' to apply to [=replaced elements=].
+		(<a href="https://github.com/w3c/csswg-drafts/issues/7144">Issue 7144</a>)
+	* More precisely define the interaction of '-webkit-line-clamp'
+		and the various 'line-clamp' longhands. See [[#webkit-line-clamp]].
+		(<a href="https://github.com/w3c/csswg-drafts/issues/6842">Issue 6842</a>)
+	* Clarified that [=region breaks=] are what trigger discarding of subsequent content
+		for ''continue: discard'' (and that other types of breaks do not);
+		and gave examples of what triggers a [=region break=] on such a box.
+	* Minor clarifications:
+		* Annotate <<length-percentage>> value definitions using [=bracketed range notation=].
 
 <h3 id="changes-since-2020-06-03">
 Changes from the <a href="https://www.w3.org/TR/2020/WD-css-overflow-3-20200603/">2020-06-03 Working Draft</a></h3>
