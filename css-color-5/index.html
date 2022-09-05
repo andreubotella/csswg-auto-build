@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="0dc8a8317fa643298e72f8f9c6ff6b61af875481" name="document-revision">
+  <meta content="afb492b9ad6529cb65619ec35333b663f69aba92" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-5_dev/css-color-5"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -788,7 +788,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Color Module Level 5</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-09-03">3 September 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-09-05">5 September 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -947,7 +947,7 @@ on screen, on paper, etc.
 	and multiple user preferences, like the increased capability of Dark Mode in UI,
 	this becomes even more useful to not need to manually set color,
 	and to instead have a single source from which schemes are calculated.</p>
-   <figure>
+   <figure id="fig-chloropleth">
     <p><img alt="LC color picker" height="1045" src="images/LC-picker-scale.png" style="width: 40vmin" width="1168"><br> <img alt="chloropleth map of the US" height="1014" src="images/LC-picker-map2.png" style="width: 48vmin" width="1396"></p>
     <figcaption>Above, a color picker operating in CIE LCH space.
 			Here, a pair of colors are being used
@@ -1090,15 +1090,20 @@ and a percentage of 100% returns the same color converted to the specified color
 <pre class="lang-css highlight"><c- nf>color-mix</c-><c- p>(</c->in lch<c- p>,</c-> peru <c- m>40</c-><c- k>%</c-><c- p>,</c-> palegoldenrod<c- p>)</c-></pre>
     <p>The mixing is done in <a class="css" data-link-type="maybe" href="#funcdef-lch" id="ref-for-funcdef-lch">lch()</a> color space.
 	Here is a top-down view, looking along the neutral L axis:</p>
-    <figure>
-      <img height="480" src="images/CH-mixing.svg" width="480"> 
-     <figcaption>Mixtures of peru and palegoldenrod.
+    <figure id="fig-LCH-peru-goldenrod">
+     <object data="images/CH-mixing.svg" height="480" width="480">
+      <p>A mixture of two colours, and the mixed output. 
+				We are looking down the CIE L axis onto the ab plane. 
+				There are two axes, labelled <a class="property css" data-link-type="property">a</a> and <span class="property">b</span> which cross at the origin, 
+				which is in the centre of the plot.</p>
+     </object>
+     <figcaption>Mixtures of peru and palegoldenrod in CIE LCH.
 			Peru has a hue angle, measured from the positive a axis,
 			of 63.677 degrees
 			while palegoldenrod has a hue angle of 98.834 degrees.
 			Peru has a chroma, or distance from the central neutral axis, of 54.011
 			while palegoldenrod has a chroma of 31.406.
-			Mixtures lie along the curve. A 40%/60% mixture is shown. </figcaption>
+			All possible mixtures lie along the curve. A 40%/60% mixture is shown. </figcaption>
     </figure>
     <p>The calculation is as follows:</p>
     <ul>
@@ -1125,7 +1130,7 @@ and a percentage of 100% returns the same color converted to the specified color
 	keeps the intermediate colors
 	as saturated as the endpoint colors.</p>
 <pre class="lang-css highlight"><c- nf>color-mix</c-><c- p>(</c->in lch<c- p>,</c-> teal <c- m>65</c-><c- k>%</c-><c- p>,</c-> olive<c- p>);</c-></pre>
-    <figure>
+    <figure id="fig-LCH-teal-olive">
       <img height="500" src="images/CH-mixing3.svg" width="500"> 
      <figcaption>Mixtures of teal and olive.
 			Teal has a hue angle, measured from the positive a axis,
@@ -1672,7 +1677,7 @@ lch(from var(--mycolor) l c calc(h - 120));
 	and even rec2020: <span class="swatch oog" style="--color: rgb(0% 64.2% 66.3%)"></span> color(rec2020 -0.14 0.623 0.729).</p>
     <p>The closest color inside the sRGB gamut would be <span class="swatch" style="--color: rgb(0% 64.2% 66.3%)"></span> lch(60.71% 37.56 201.1)
 	which is <span class="swatch" style="--color: rgb(0% 64.2% 66.3%)"></span> rgb(0% 64.2% 66.3%). The difference in chroma (37.5, instead of 90) is huge.</p>
-    <figure>
+    <figure id="fig-LCH-rotation-oog">
       <img alt="Diagram of CH plane showing relative color manipulation" height="520" src="images/LCH-rotation-oog.svg" width="540"> 
      <figcaption> This diagram shows the sRGB gamut, in the CIE ab plane.
 			Small circles indicate the primary and secondary color.
@@ -2160,7 +2165,7 @@ or any other color or monochrome output device which has been characterized.</p>
    <p>Also, procedures that rely on knowing the color
 	(anti-aliasing, compositing, using the color in a gradient, etc)
 	can proceed as normal.</p>
-   <figure id="fogra51-roundtrip">
+   <figure id="fig-fogra51-roundtrip">
      <img height="450" src="images/macbeth-roundtrip.svg" width="670"> 
     <figcaption>
      <p>A color checker, used for ensuring color fidelity
@@ -2375,7 +2380,7 @@ color: <span class="swatch" style="--color: rgb(70.690% 26.851% 19.724%)"></span
 		since it has no knowledge of the colorimetry of the inks,
 		the dot gain,
 		the colorimetry of the RGB space, and so on.</p>
-   <figure>
+   <figure id="fig-naive-cmyk">
      <img height="450" src="images/macbeth-naive.svg" width="670"> 
     <figcaption>
      <p>A color checker, used for ensuring color fidelity
