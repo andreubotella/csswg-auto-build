@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <meta charset="UTF-8" />
-<meta http-equiv="refresh" content="0; URL=../selectors-4/" />
+<!--
+  We want the redirect to keep the current URL's fragment, but that can't be
+  done if without JS support. So we use a meta refresh inside a noscript for
+  browsers that don't support JS, and do a JS-based redirection otherwise.
+-->
+<noscript>
+  <meta http-equiv="refresh" content="0; URL=../selectors-4/" />
+</noscript>
 <title>Redirecting...</title>
 <style>
   :root {
@@ -8,3 +15,10 @@
   }
 </style>
 <p>Redirecting to <a href="../selectors-4/">selectors-4</a>...</p>
+
+<script>
+  // JS-based redirection.
+  const url = new URL("../selectors-4/", location.href);
+  url.hash = location.hash;
+  location.replace(url.href);
+</script>
