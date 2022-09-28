@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://drafts.csswg.org/css-shared-element-transitions-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="812cef0a6954d9203f73936cb17134bb30273955" name="document-revision">
+  <meta content="80c9657be45158e255a3a8b5f0ccf90c97e63c5a" name="document-revision">
 <style>
 /* Put nice boxes around each algorithm. */
 [data-algorithm]:not(.heading) {
@@ -868,12 +868,87 @@ on screen, on paper, etc.
   </nav>
   <main>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
+   <p><em>This section is non-normative.</em></p>
+   <p>Shared element transitions is a set of API that allow DOM changes to smoothly
+animate between states. This is accomplished by leveraging user-agents ability
+to persist visual representations of state (i.e. snapshots) and blend them with
+current DOM state’s visual output. The API also allows the animations to be
+customized via standard CSS animation properties.</p>
    <p>This spec describes the CSS and JS mechanics of the single-page transition API.</p>
    <h2 class="heading settled" data-level="2" id="transitions-as-enhancements"><span class="secno">2. </span><span class="content">Transitions as an enhancement</span><a class="self-link" href="#transitions-as-enhancements"></a></h2>
    <p><em>This section is non-normative.</em></p>
-   <p>A key part of this API design is the view that an animated transition is an enhancement to a DOM change.</p>
-   <p>If a transition cannot run, or is skipped, the DOM change should still happen. If the DOM change should also be skipped, then that should be handled by another feature. The <a href="https://wicg.github.io/navigation-api/#navigate-event-class">`signal` on `NavigateEvent`</a> is an example of a feature developers could use to handle this.</p>
-   <p>Although the transition API allows DOM changes to be asynchronous via the <code class="idl"><a data-link-type="idl" href="#dom-domtransitioninit-updatedom" id="ref-for-dom-domtransitioninit-updatedom">updateDOM</a></code> callback, the transition API is not responsible for queuing or otherwise scheduling the DOM changes, beyond the scheduling needed for the transition itself. Some asynchronous DOM changes can happen concurrently (e.g if they’re happening within independent components), whereas others need to queue, or abort an earlier change. This is best left to a feature or framework that has a more holistic view of the update.</p>
+   <p>A key part of this API design is the view that an animated transition is an
+enhancement to a DOM change. Specifically, there are two components of the API:
+the DOM change, and the visual state animation.</p>
+   <p>In order for the user-agent to generate a set of snapshots prior to the DOM
+change, the API is designed to take the DOM change callback as part of the
+request to initiate a transition. This means that the user-agent has an
+opportunity to generate snapshots for the existing visual representation, run
+the given callback to update the state, and finally generate structures and set
+up animations required for the transition to occur. All this is accomplished
+with a single call to the JavaScript API.</p>
+   <p>The user-agent provides additional JavaScript functionality and promises to
+control and observe the state of the animations. These are described in detail
+in the <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition">DOMTransition</a></code> section.</p>
+   <p>After the callback has finished running, the user-agent creates a structure of
+pseudo-elements that represent both the "before" and "after" states of the
+transition. The structure of the pseudo-elements is dictated by the <span class="css">page-transition-tag</span> property. Specifically, each element that is "tagged"
+with a <span class="css">page-transition-tag</span> creates a separate snapshot and thus a separate
+group of pseudo-elements that are animated independently from the rest. Note
+that for convenience, the root element is tagged with name "root" in the
+user-agent style sheet.</p>
+   <p>The groups induced by the <span class="css">page-transition-tag</span> are all positioned within a
+common pseudo-element root, which itself is attached to the root element of the
+page.</p>
+   <p>Each of the groups is comprised of up to four pseudo elements:</p>
+   <ul>
+    <li data-md>
+     <p>Container pseudo-element: this element initially mirrors the size and
+position of the "before" state element that it represents (i.e. the tagged
+element that caused this group to be created). The element is animated to
+the "after" state and position.</p>
+    <li data-md>
+     <p>Wrapper pseudo-element: this element is a child of the container element and
+provides <a class="css" data-link-type="propdesc" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation: isolate</a> for its children. It’s needed so that its
+children can be blended with non-normal blend modes without affecting other
+visual outputs.</p>
+    <li data-md>
+     <p>Outgoing image: this element is a child of the wrapper element. It is a
+replaced element that produced the visual representation of the "before"
+state taken from user-agent provided snapshots. Note that the contents of
+this element can be manipulated with <span class="css">object-*</span> properties in the same way
+that other replaced elements can be.</p>
+    <li data-md>
+     <p>Incoming image: this element is a child of the wrapper element. It is a
+replaced element that produces the visual representation of the "after"
+state, taken from the page’s visual output of the represented elements. Like
+outgoing image, the contents can be manipulated with <span class="css">object-*</span> properties.
+Note that because this element’s snapshots are taken from the pages output,
+the visual output changes if the visual output of the represented element
+changes. This is similar to how an '<a href="https://w3c.github.io/csswg-drafts/css-images-4/#element-notation">element()</a>'
+function would work.</p>
+   </ul>
+   <p class="issue" id="issue-07d78924"><a class="self-link" href="#issue-07d78924"></a> This sections can benefit from diagrams.</p>
+   <p>Each of the pseudo-elements generated can be targeted by CSS in order to
+customize its appearance, behavior and/or add animations. This enables full customization of the
+transition.</p>
+   <p>Note that because these APIs are an enhancement to the DOM change, some principles emerge:</p>
+   <ul>
+    <li data-md>
+     <p>If a transition cannot run, or is skipped, the DOM change should still
+happen. If the DOM change should also be skipped, then that should be handled
+by another feature. The <a href="https://wicg.github.io/navigation-api/#navigate-event-class">`signal`
+on `NavigateEvent`</a> is an example of a feature developers could use to
+handle this.</p>
+    <li data-md>
+     <p>Although the transition API allows DOM changes to be asynchronous via the <code class="idl"><a data-link-type="idl" href="#dom-domtransitioninit-updatedom" id="ref-for-dom-domtransitioninit-updatedom">updateDOM</a></code> callback, the transition API is not
+responsible for queuing or otherwise scheduling the DOM changes, beyond the
+scheduling needed for the transition itself. Some asynchronous DOM changes
+can happen concurrently (e.g if they’re happening within independent
+components), whereas others need to queue, or abort an earlier change. This
+is best left to a feature or framework that has a more holistic view of the
+update.</p>
+   </ul>
    <h2 class="heading settled" data-level="3" id="css-properties"><span class="secno">3. </span><span class="content">CSS properties</span><a class="self-link" href="#css-properties"></a></h2>
    <h3 class="heading settled" data-level="3.1" id="page-transition-tag-prop"><span class="secno">3.1. </span><span class="content"><a class="property css" data-link-type="property" href="#propdef-page-transition-tag" id="ref-for-propdef-page-transition-tag">page-transition-tag</a></span><a class="self-link" href="#page-transition-tag-prop"></a></h3>
    <table class="def propdef" data-link-for-hint="page-transition-tag">
@@ -925,6 +1000,15 @@ the following style in the <a data-link-type="dfn" href="https://andreubotella.c
   <c- k>page-transition-tag</c-><c- p>:</c-> root<c- p>;</c->
 <c- p>}</c->
 </code></pre>
+   <div class="note" role="note">This property causes the user-agent to both capture separate
+snapshots from the elements, as well as create separate pseudo-element
+sub-trees representing this element’s "before" and "after" states. Note that
+for the purposes of this API, if one element has a tag "foo" in the before
+state, and another element has a tag "foo" in the after state, they are treated
+as representing different visual state of the same element. This may be
+confusing, since the elements themselves are not necessarily referring to the
+same object, but it is a useful model to consider them to be visual states of
+the same conceptual page entity, that we happen to call element. </div>
    <h2 class="heading settled" data-level="4" id="pseudo"><span class="secno">4. </span><span class="content">Pseudo-elements</span><a class="self-link" href="#pseudo"></a></h2>
    <p>While the UA is <a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition">animating a page transition</a>,
 it creates the following <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="page-transition-pseudo-elements">page-transition pseudo-elements</dfn>,
@@ -947,7 +1031,8 @@ created as a result of the <span class="css">page-transition-tag</span> property
 the same <span class="production" id="ref-for-identifier-value⑥">&lt;custom-ident></span> value. The specificity of a page-transition selector
 with a <span class="production" id="ref-for-identifier-value⑦">&lt;custom-ident></span> argument is the same as for other pseudo-elements, and
 is equivalent to a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#type-selector" id="ref-for-type-selector">type selector</a>.</p>
-   <p>The following describes all of the <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements②">page-transition pseudo-elements</a> and their function:</p>
+   <p>The following describes all of the <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements②">page-transition pseudo-elements</a> and
+their function:</p>
    <dl>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-page-transition">::page-transition</dfn>
     <dd data-md>
@@ -1051,8 +1136,18 @@ except it deals with the incoming element instead.</p>
 pseudo-elements, is defined in the <a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements">Create transition pseudo-elements</a> algorithm.</p>
    <h2 class="heading settled" data-level="5" id="concepts"><span class="secno">5. </span><span class="content">Concepts</span><a class="self-link" href="#concepts"></a></h2>
    <h3 class="heading settled" data-level="5.1" id="phases-concept"><span class="secno">5.1. </span><span class="content">Phases</span><a class="self-link" href="#phases-concept"></a></h3>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="phases">Phases</dfn> represent an ordered sequence of states. Since <a data-link-type="dfn" href="#phases" id="ref-for-phases">phases</a> are ordered, prose can refer to phases <dfn class="dfn-paneled" data-dfn-for="phases" data-dfn-type="dfn" data-noexport id="phases-before">before</dfn> a particular phase, meaning they appear earlier in the sequence, or <dfn class="dfn-paneled" data-dfn-for="phases" data-dfn-type="dfn" data-noexport id="phases-after">after</dfn> a particular phase, meaning they appear later in the sequence.</p>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="phases">Phases</dfn> represent an ordered sequence of states. Since <a data-link-type="dfn" href="#phases" id="ref-for-phases">phases</a> are
+ordered, prose can refer to phases <dfn class="dfn-paneled" data-dfn-for="phases" data-dfn-type="dfn" data-noexport id="phases-before">before</dfn> a particular
+phase, meaning they appear earlier in the sequence, or <dfn class="dfn-paneled" data-dfn-for="phases" data-dfn-type="dfn" data-noexport id="phases-after">after</dfn> a particular phase, meaning they appear later in the
+sequence.</p>
    <p>The initial phase is the first item in the sequence.</p>
+   <p class="note" role="note"><span>Note:</span> For the most part, a developer using this API does not need to worry
+about the different phases, since they progress automatically. It is, however,
+important to understand what steps happen in each of the phases: when the
+snapshots are captured, when pseudo-element DOM is created, etc. The
+description of the phases below tries to be as precise as possible, with an
+intent to provide an unambiguous set of steps for implementors to follow in
+order to produce a spec-compliant implementation.</p>
    <h3 class="heading settled" data-level="5.2" id="page-transition-stacking-layer"><span class="secno">5.2. </span><span class="content">The <a data-link-type="dfn" href="#page-transition-layer" id="ref-for-page-transition-layer">page-transition layer</a> stacking layer</span><a class="self-link" href="#page-transition-stacking-layer"></a></h3>
    <p>This specification introduces a stacking layer to the <a href="https://www.w3.org/TR/CSS2/zindex.html">Elaborate description of Stacking Contexts</a>.</p>
    <p>The <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition②">::page-transition</a> pseudo-element generates a new stacking context
@@ -1094,7 +1189,7 @@ layer elements has filters and effects coming from the root element’s style?</
    <dl>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="document" data-dfn-type="dfn" data-noexport id="document-active-dom-transition">active DOM transition</dfn>
     <dd data-md>
-     <p>a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition">DOMTransition</a></code> or null. Initially null.</p>
+     <p>a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition①">DOMTransition</a></code> or null. Initially null.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="document" data-dfn-type="dfn" data-noexport id="document-transition-suppressing-rendering">transition suppressing rendering</dfn>
     <dd data-md>
      <p>a boolean. Initially false.</p>
@@ -1102,7 +1197,7 @@ layer elements has filters and effects coming from the root element’s style?</
    <h2 class="heading settled" data-level="6" id="api"><span class="secno">6. </span><span class="content">API</span><a class="self-link" href="#api"></a></h2>
    <h3 class="heading settled" data-level="6.1" id="additions-to-document-api"><span class="secno">6.1. </span><span class="content">Additions to <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code></span><a class="self-link" href="#additions-to-document-api"></a></h3>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③"><c- g>Document</c-></a> {
-    <a data-link-type="idl-name" href="#domtransition" id="ref-for-domtransition①"><c- n>DOMTransition</c-></a> <a class="idl-code" data-link-type="method" href="#dom-document-createtransition" id="ref-for-dom-document-createtransition"><c- g>createTransition</c-></a>(<a data-link-type="idl-name" href="#dictdef-domtransitioninit" id="ref-for-dictdef-domtransitioninit"><c- n>DOMTransitionInit</c-></a> <dfn class="idl-code" data-dfn-for="Document/createTransition(init)" data-dfn-type="argument" data-export id="dom-document-createtransition-init-init"><code><c- g>init</c-></code><a class="self-link" href="#dom-document-createtransition-init-init"></a></dfn>);
+    <a data-link-type="idl-name" href="#domtransition" id="ref-for-domtransition②"><c- n>DOMTransition</c-></a> <a class="idl-code" data-link-type="method" href="#dom-document-createtransition" id="ref-for-dom-document-createtransition"><c- g>createTransition</c-></a>(<a data-link-type="idl-name" href="#dictdef-domtransitioninit" id="ref-for-dictdef-domtransitioninit"><c- n>DOMTransitionInit</c-></a> <dfn class="idl-code" data-dfn-for="Document/createTransition(init)" data-dfn-type="argument" data-export id="dom-document-createtransition-init-init"><code><c- g>init</c-></code><a class="self-link" href="#dom-document-createtransition-init-init"></a></dfn>);
 };
 
 <c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-domtransitioninit"><code><c- g>DOMTransitionInit</c-></code></dfn> {
@@ -1116,14 +1211,18 @@ layer elements has filters and effects coming from the root element’s style?</
      The <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#method-steps" id="ref-for-method-steps">method steps</a> for <dfn class="dfn-paneled idl-code" data-dfn-for="Document" data-dfn-type="method" data-export id="dom-document-createtransition"><code>createTransition(<var>init</var>)</code></dfn> are as follows: 
     <ol>
      <li data-md>
-      <p>Let <var>transition</var> be a new <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition②">DOMTransition</a></code> object in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a>.</p>
+      <p>Let <var>transition</var> be a new <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition③">DOMTransition</a></code> object in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant Realm</a>.</p>
      <li data-md>
       <p>Set <var>transition</var>’s <a data-link-type="dfn" href="#domtransition-dom-update-callback" id="ref-for-domtransition-dom-update-callback">DOM update callback</a> to <var>init</var>[<code class="idl"><a data-link-type="idl" href="#dom-domtransitioninit-updatedom" id="ref-for-dom-domtransitioninit-updatedom①">updateDOM</a></code>].</p>
      <li data-md>
       <p>Let <var>document</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window">associated document</a>.</p>
      <li data-md>
       <p>If <var>document</var>’s <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition">active DOM transition</a> is not null, then <a data-link-type="dfn" href="#skip-the-page-transition" id="ref-for-skip-the-page-transition">skip the page transition</a> <var>document</var>’s <span id="ref-for-document-active-dom-transition①">active DOM transition</span> with an "<code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#aborterror" id="ref-for-aborterror">AbortError</a></code>" <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant Realm</a>.</p>
-      <p class="note" role="note"><span>Note:</span> This can result in two asynchronous <a data-link-type="dfn" href="#domtransition-dom-update-callback" id="ref-for-domtransition-dom-update-callback①">DOM update callbacks</a> running concurrently. One for the <var>document</var>’s current <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition②">active DOM transition</a>, and another for this <var>transition</var>. As per the [design of this feature](#transitions-as-enhancements), it’s assumed that the developer is using another feature or framework to correctly schedule these DOM changes.</p>
+      <p class="note" role="note"><span>Note:</span> This can result in two asynchronous <a data-link-type="dfn" href="#domtransition-dom-update-callback" id="ref-for-domtransition-dom-update-callback①">DOM update
+callbacks</a> running concurrently. One for the <var>document</var>’s current <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition②">active DOM transition</a>, and another for this <var>transition</var>. As per
+the [design of this feature](#transitions-as-enhancements), it’s
+assumed that the developer is using another feature or framework to
+correctly schedule these DOM changes.</p>
      <li data-md>
       <p>Set <var>document</var>’s <a data-link-type="dfn" href="#document-active-dom-transition" id="ref-for-document-active-dom-transition③">active DOM transition</a> to <var>transition</var>.</p>
       <p class="note" role="note"><span>Note:</span> The process continues in <a data-link-type="dfn" href="#perform-an-outgoing-capture" id="ref-for-perform-an-outgoing-capture">perform an outgoing capture</a>.</p>
@@ -1183,7 +1282,7 @@ layer elements has filters and effects coming from the root element’s style?</
 <c- p>}</c->
 </pre>
    </div>
-   <h3 class="heading settled" data-level="6.2" id="the-domtransition-interface"><span class="secno">6.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition③">DOMTransition</a></code> interface</span><a class="self-link" href="#the-domtransition-interface"></a></h3>
+   <h3 class="heading settled" data-level="6.2" id="the-domtransition-interface"><span class="secno">6.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition④">DOMTransition</a></code> interface</span><a class="self-link" href="#the-domtransition-interface"></a></h3>
 <pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="domtransition"><code><c- g>DOMTransition</c-></code></dfn> {
     <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined"><c- b>undefined</c-></a> <a class="idl-code" data-link-type="method" href="#dom-domtransition-skiptransition" id="ref-for-dom-domtransition-skiptransition"><c- g>skipTransition</c-></a>();
@@ -1192,11 +1291,11 @@ layer elements has filters and effects coming from the root element’s style?</
     <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise③"><c- b>Promise</c-></a>&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined③"><c- b>undefined</c-></a>> <dfn class="dfn-paneled idl-code" data-dfn-for="DOMTransition" data-dfn-type="attribute" data-export data-readonly data-type="Promise<undefined>" id="dom-domtransition-domupdated"><code><c- g>domUpdated</c-></code></dfn>;
 };
 </pre>
-   <div class="note" role="note"> The <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition④">DOMTransition</a></code> represents and controls
+   <div class="note" role="note"> The <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑤">DOMTransition</a></code> represents and controls
     a single same-document transition. That is, it controls a transition where the
     starting and ending document are the same, possibly with changes to the
     document’s DOM structure. </div>
-   <p>A <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑤">DOMTransition</a></code> has the following:</p>
+   <p>A <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑥">DOMTransition</a></code> has the following:</p>
    <dl>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="DOMTransition" data-dfn-type="dfn" data-noexport id="domtransition-tagged-elements">tagged elements</dfn>
     <dd data-md>
@@ -1292,7 +1391,7 @@ captured in snapshots.</p>
    </div>
    <h3 class="heading settled" data-level="7.3" id="perform-an-outgoing-capture-algorithm"><span class="secno">7.3. </span><span class="content"><a data-link-type="dfn" href="#perform-an-outgoing-capture" id="ref-for-perform-an-outgoing-capture②">Perform an outgoing capture</a></span><a class="self-link" href="#perform-an-outgoing-capture-algorithm"></a></h3>
    <div class="algorithm" data-algorithm="perform an outgoing capture">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="perform-an-outgoing-capture">perform an outgoing capture</dfn> given a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑥">DOMTransition</a></code> <var>transition</var>,
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="perform-an-outgoing-capture">perform an outgoing capture</dfn> given a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑦">DOMTransition</a></code> <var>transition</var>,
         perform the following steps: 
     <ol>
      <li data-md>
@@ -1456,7 +1555,7 @@ then set <var>taggedElements</var>[<var>transitionTag</var>] to a new <a data-li
    </div>
    <h3 class="heading settled" data-level="7.4" id="skip-the-page-transition-algorithm"><span class="secno">7.4. </span><span class="content">Skip the page transition</span><a class="self-link" href="#skip-the-page-transition-algorithm"></a></h3>
    <div class="algorithm" data-algorithm="skip the page transition">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="skip-the-page-transition">skip the page transition</dfn> for <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑦">DOMTransition</a></code> <var>transition</var> with reason <var>reason</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="skip-the-page-transition">skip the page transition</dfn> for <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑧">DOMTransition</a></code> <var>transition</var> with reason <var>reason</var>: 
     <ol>
      <li data-md>
       <p>Let <var>document</var> be <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window②">associated document</a>.</p>
@@ -1521,7 +1620,7 @@ The natural size of the image is equal to the <var>interestRectangle</var> bound
    </div>
    <h3 class="heading settled" data-level="7.6" id="update-transition-dom-algorithm"><span class="secno">7.6. </span><span class="content"><a data-link-type="dfn" href="#update-transition-dom" id="ref-for-update-transition-dom②">Update transition DOM</a></span><a class="self-link" href="#update-transition-dom-algorithm"></a></h3>
    <div class="algorithm" data-algorithm="update transition DOM">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="update-transition-dom">update transition DOM</dfn> given a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑧">DOMTransition</a></code> <var>transition</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="update-transition-dom">update transition DOM</dfn> given a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑨">DOMTransition</a></code> <var>transition</var>: 
     <ol>
      <li data-md>
       <p>Let <var>document</var> be <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global④">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window③">associated document</a>.</p>
@@ -1583,7 +1682,7 @@ then return a rectangle that is equal to <var>el</var>’s <a data-link-type="df
    </div>
    <h3 class="heading settled" data-level="7.8" id="animate-a-page-transition-algorithm"><span class="secno">7.8. </span><span class="content"><a data-link-type="dfn" href="#animate-a-page-transition" id="ref-for-animate-a-page-transition③">Animate a page transition</a></span><a class="self-link" href="#animate-a-page-transition-algorithm"></a></h3>
    <div class="algorithm" data-algorithm="animate a page transition">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="animate-a-page-transition">animate a page transition</dfn> given a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition⑨">DOMTransition</a></code> <var>transition</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="animate-a-page-transition">animate a page transition</dfn> given a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition①⓪">DOMTransition</a></code> <var>transition</var>: 
     <ol>
      <li data-md>
       <p>Generate a <a class="production css" data-link-type="type">&lt;keyframe></a> named "page-transition-fade-out" in <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua①⓪">user-agent origin</a> as follows:</p>
@@ -1648,7 +1747,7 @@ html:<c- nf>:page-transition-incoming-image</c-><c- p>(</c->*<c- p>)</c-> <c- p>
    </div>
    <h3 class="heading settled" data-level="7.9" id="create-transition-pseudo-elements-algorithm"><span class="secno">7.9. </span><span class="content"><a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements②">Create transition pseudo-elements</a></span><a class="self-link" href="#create-transition-pseudo-elements-algorithm"></a></h3>
    <div class="algorithm" data-algorithm="create transition pseudo-elements">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-transition-pseudo-elements">create transition pseudo-elements</dfn> for a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition①⓪">DOMTransition</a></code> <var>transition</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-transition-pseudo-elements">create transition pseudo-elements</dfn> for a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition①①">DOMTransition</a></code> <var>transition</var>: 
     <ol>
      <li data-md>
       <p>Let <var>transitionRoot</var> be the result of creating a new <a class="css" data-link-type="maybe" href="#selectordef-page-transition" id="ref-for-selectordef-page-transition③">::page-transition</a> pseudo-element.</p>
@@ -1733,7 +1832,7 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
     </ol>
    </div>
    <div class="algorithm" data-algorithm="call the DOM update callback">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="call-the-dom-update-callback">call the DOM update callback</dfn> of a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition①①">DOMTransition</a></code> <var>transition</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="call-the-dom-update-callback">call the DOM update callback</dfn> of a <code class="idl"><a data-link-type="idl" href="#domtransition" id="ref-for-domtransition①②">DOMTransition</a></code> <var>transition</var>: 
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert②">Assert</a>: <var>transition</var>’s <a data-link-type="dfn" href="#domtransition-phase" id="ref-for-domtransition-phase①③">phase</a> is <a data-link-type="dfn" href="#phases-before" id="ref-for-phases-before①">before</a> "`dom-update-callback-called`".</p>
@@ -1894,6 +1993,12 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
    <li><a href="#callbackdef-updatedomcallback">UpdateDOMCallback</a><span>, in § 6.1</span>
    <li><a href="#update-transition-dom">update transition DOM</a><span>, in § 7.6</span>
   </ul>
+  <aside class="dfn-panel" data-for="term-for-propdef-isolation">
+   <a href="https://drafts.fxtf.org/compositing-2/#propdef-isolation">https://drafts.fxtf.org/compositing-2/#propdef-isolation</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-propdef-isolation">2. Transitions as an enhancement</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-border-box">
    <a href="https://andreubotella.com/csswg-auto-build/css-box-4/#border-box">https://andreubotella.com/csswg-auto-build/css-box-4/#border-box</a><b>Referenced in:</b>
    <ul>
@@ -2312,6 +2417,11 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
+    <a data-link-type="biblio">[COMPOSITING-2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-propdef-isolation">isolation</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-BOX-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-border-box">border box</span>
@@ -2455,6 +2565,8 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-compositing-2">[COMPOSITING-2]
+   <dd>Compositing and Blending Level 2 URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
    <dt id="biblio-css-box-4">[CSS-BOX-4]
    <dd>Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/css-box-4/"><cite>CSS Box Model Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-box-4/">https://andreubotella.com/csswg-auto-build/css-box-4/</a>
    <dt id="biblio-css-break-4">[CSS-BREAK-4]
@@ -2547,6 +2659,7 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
 </pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
+   <div class="issue"> This sections can benefit from diagrams. <a class="issue-return" href="#issue-07d78924" title="Jump to section">↵</a></div>
    <div class="issue"> The selector for this and subsequently defined pseudo-elements is
 likely to change to indicate position in the pseudo-tree hierarchy. <a class="issue-return" href="#issue-276a27ed" title="Jump to section">↵</a></div>
    <div class="issue"> Isolation is only necessary to get the right cross-fade between
@@ -2756,15 +2869,16 @@ get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to
   <aside class="dfn-panel" data-for="domtransition">
    <b><a href="#domtransition">#domtransition</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-domtransition">5.4. Additions to Document</a>
-    <li><a href="#ref-for-domtransition①">6.1. Additions to Document</a>
-    <li><a href="#ref-for-domtransition②">6.1.1. createTransition()</a>
-    <li><a href="#ref-for-domtransition③">6.2. The DOMTransition interface</a> <a href="#ref-for-domtransition④">(2)</a> <a href="#ref-for-domtransition⑤">(3)</a>
-    <li><a href="#ref-for-domtransition⑥">7.3. Perform an outgoing capture</a>
-    <li><a href="#ref-for-domtransition⑦">7.4. Skip the page transition</a>
-    <li><a href="#ref-for-domtransition⑧">7.6. Update transition DOM</a>
-    <li><a href="#ref-for-domtransition⑨">7.8. Animate a page transition</a>
-    <li><a href="#ref-for-domtransition①⓪">7.9. Create transition pseudo-elements</a> <a href="#ref-for-domtransition①①">(2)</a>
+    <li><a href="#ref-for-domtransition">2. Transitions as an enhancement</a>
+    <li><a href="#ref-for-domtransition①">5.4. Additions to Document</a>
+    <li><a href="#ref-for-domtransition②">6.1. Additions to Document</a>
+    <li><a href="#ref-for-domtransition③">6.1.1. createTransition()</a>
+    <li><a href="#ref-for-domtransition④">6.2. The DOMTransition interface</a> <a href="#ref-for-domtransition⑤">(2)</a> <a href="#ref-for-domtransition⑥">(3)</a>
+    <li><a href="#ref-for-domtransition⑦">7.3. Perform an outgoing capture</a>
+    <li><a href="#ref-for-domtransition⑧">7.4. Skip the page transition</a>
+    <li><a href="#ref-for-domtransition⑨">7.6. Update transition DOM</a>
+    <li><a href="#ref-for-domtransition①⓪">7.8. Animate a page transition</a>
+    <li><a href="#ref-for-domtransition①①">7.9. Create transition pseudo-elements</a> <a href="#ref-for-domtransition①②">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-domtransition-finished">
