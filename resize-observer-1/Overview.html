@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/resize-observer/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="ed8038131a6c5af71303407e4fc672f60aaa147d" name="document-revision">
+  <meta content="f81fcdab8acea45d059fb3acf35fa2bbf9fdfa67" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -851,11 +851,11 @@ on screen, on paper, etc.
       <li>
        <a href="#algorithms"><span class="secno">3.4</span> <span class="content">Algorithms</span></a>
        <ol class="toc">
-        <li><a href="#gather-active-observations-h"><span class="secno">3.4.1</span> <span class="content">Gather active observations at depth</span></a>
-        <li><a href="#has-active-observations-h"><span class="secno">3.4.2</span> <span class="content">Has active observations</span></a>
-        <li><a href="#has-skipped-observations-h"><span class="secno">3.4.3</span> <span class="content">Has skipped observations</span></a>
+        <li><a href="#gather-active-observations-h"><span class="secno">3.4.1</span> <span class="content">Gather active resize observations at depth</span></a>
+        <li><a href="#has-active-observations-h"><span class="secno">3.4.2</span> <span class="content">Has active resize observations</span></a>
+        <li><a href="#has-skipped-observations-h"><span class="secno">3.4.3</span> <span class="content">Has skipped resize observations</span></a>
         <li><a href="#create-and-populate-resizeobserverentry-h"><span class="secno">3.4.4</span> <span class="content"> Create and populate a ResizeObserverEntry </span></a>
-        <li><a href="#broadcast-resize-notifications-h"><span class="secno">3.4.5</span> <span class="content">Broadcast active observations</span></a>
+        <li><a href="#broadcast-resize-notifications-h"><span class="secno">3.4.5</span> <span class="content">Broadcast active resize observations</span></a>
         <li><a href="#deliver-resize-error"><span class="secno">3.4.6</span> <span class="content">Deliver Resize Loop Error</span></a>
         <li><a href="#calculate-depth-for-node-h"><span class="secno">3.4.7</span> <span class="content">Calculate depth for node</span></a>
         <li><a href="#calculate-box-size-h"><span class="secno">3.4.8</span> <span class="content">Calculate box size, given target and observed box</span></a>
@@ -1155,7 +1155,7 @@ ro1<c- p>.</c->observe<c- p>(</c->document<c- p>.</c->querySelector<c- p>(</c-><
    <h3 class="heading settled" data-level="2.2" id="resize-observer-callback"><span class="secno">2.2. </span><span class="content">ResizeObserverCallback</span><a class="self-link" href="#resize-observer-callback"></a></h3>
 <pre class="idl highlight def"><c- b>callback</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="callback" data-export id="callbackdef-resizeobservercallback"><code><c- g>ResizeObserverCallback</c-></code></dfn> = <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-undefined" id="ref-for-idl-undefined③"><c- b>undefined</c-></a> (<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#resizeobserverentry" id="ref-for-resizeobserverentry"><c- n>ResizeObserverEntry</c-></a>> <dfn class="idl-code" data-dfn-for="ResizeObserverCallback" data-dfn-type="argument" data-export id="dom-resizeobservercallback-entries"><code><c- g>entries</c-></code><a class="self-link" href="#dom-resizeobservercallback-entries"></a></dfn>, <a data-link-type="idl-name" href="#resizeobserver" id="ref-for-resizeobserver①"><c- n>ResizeObserver</c-></a> <dfn class="idl-code" data-dfn-for="ResizeObserverCallback" data-dfn-type="argument" data-export id="dom-resizeobservercallback-observer"><code><c- g>observer</c-></code><a class="self-link" href="#dom-resizeobservercallback-observer"></a></dfn>);
 </pre>
-   <p>This callback delivers <code class="idl"><a data-link-type="idl" href="#resizeobserver" id="ref-for-resizeobserver②">ResizeObserver</a></code>'s notifications. It is invoked by a <a data-link-type="dfn" href="#broadcast-active-observations" id="ref-for-broadcast-active-observations">broadcast active observations</a> algorithm.</p>
+   <p>This callback delivers <code class="idl"><a data-link-type="idl" href="#resizeobserver" id="ref-for-resizeobserver②">ResizeObserver</a></code>'s notifications. It is invoked by a <a data-link-type="dfn" href="#broadcast-active-resize-observations" id="ref-for-broadcast-active-resize-observations">broadcast active resize observations</a> algorithm.</p>
    <h3 class="heading settled" data-level="2.3" id="resize-observer-entry-interface"><span class="secno">2.3. </span><span class="content">ResizeObserverEntry</span><a class="self-link" href="#resize-observer-entry-interface"></a></h3>
    <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
@@ -1421,8 +1421,8 @@ Content rect for the <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/ty
      <p>top and left are 0</p>
    </ul>
    <h3 class="heading settled" data-level="3.4" id="algorithms"><span class="secno">3.4. </span><span class="content">Algorithms</span><a class="self-link" href="#algorithms"></a></h3>
-   <h4 class="heading settled" data-level="3.4.1" id="gather-active-observations-h"><span class="secno">3.4.1. </span><span class="content">Gather active observations at depth</span><a class="self-link" href="#gather-active-observations-h"></a></h4>
-   <p>It computes all active observations for a <var>document</var>. To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="gather-active-observations-at-depth">gather active observations at depth</dfn>, run these steps:</p>
+   <h4 class="heading settled" data-level="3.4.1" id="gather-active-observations-h"><span class="secno">3.4.1. </span><span class="content">Gather active resize observations at depth</span><a class="self-link" href="#gather-active-observations-h"></a></h4>
+   <p>It computes all active resize observations for a <var>document</var>. To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="gather-active-resize-observations-at-depth">gather active resize observations at depth</dfn>, run these steps:</p>
    <ol>
     <li data-md>
      <p>Let <var>depth</var> be the depth passed in.</p>
@@ -1447,8 +1447,8 @@ Content rect for the <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/ty
        </ol>
      </ol>
    </ol>
-   <h4 class="heading settled" data-level="3.4.2" id="has-active-observations-h"><span class="secno">3.4.2. </span><span class="content">Has active observations</span><a class="self-link" href="#has-active-observations-h"></a></h4>
-   <p>To determine if <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="has-active-observations">has active observations</dfn> run these steps:</p>
+   <h4 class="heading settled" data-level="3.4.2" id="has-active-observations-h"><span class="secno">3.4.2. </span><span class="content">Has active resize observations</span><a class="self-link" href="#has-active-observations-h"></a></h4>
+   <p>To determine if <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code> <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="has-active-resize-observations">has active resize observations</dfn> run these steps:</p>
    <ol>
     <li data-md>
      <p>For each <var>observer</var> in <code class="idl"><a data-link-type="idl" href="#dom-document-resizeobservers-slot" id="ref-for-dom-document-resizeobservers-slot②">[[resizeObservers]]</a></code> run this step:</p>
@@ -1459,8 +1459,8 @@ Content rect for the <a data-link-type="dfn" href="https://www.w3.org/TR/SVG2/ty
     <li data-md>
      <p>return false.</p>
    </ol>
-   <h4 class="heading settled" data-level="3.4.3" id="has-skipped-observations-h"><span class="secno">3.4.3. </span><span class="content">Has skipped observations</span><a class="self-link" href="#has-skipped-observations-h"></a></h4>
-   <p>To determine if <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code> <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="has-skipped-observations">has skipped observations</dfn> run these steps:</p>
+   <h4 class="heading settled" data-level="3.4.3" id="has-skipped-observations-h"><span class="secno">3.4.3. </span><span class="content">Has skipped resize observations</span><a class="self-link" href="#has-skipped-observations-h"></a></h4>
+   <p>To determine if <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code> <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="has-skipped-resize-observations">has skipped resize observations</dfn> run these steps:</p>
    <ol>
     <li data-md>
      <p>For each <var>observer</var> in <code class="idl"><a data-link-type="idl" href="#dom-document-resizeobservers-slot" id="ref-for-dom-document-resizeobservers-slot③">[[resizeObservers]]</a></code> run this step:</p>
@@ -1502,11 +1502,11 @@ run these steps:
        <p>Set <var>this</var>.<var>contentRect</var>.top and <var>this</var>.contentRect.left to 0.</p>
      </ol>
    </ol>
-   <h4 class="heading settled" data-level="3.4.5" id="broadcast-resize-notifications-h"><span class="secno">3.4.5. </span><span class="content">Broadcast active observations</span><a class="self-link" href="#broadcast-resize-notifications-h"></a></h4>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="broadcast-active-observations">broadcast active observations</dfn> delivers all active observations
-in a document, and returns the depth of the shallowest broadcast target depth.</p>
-   <p>To broadcast active observations for a <var>document</var>,
-run these steps:</p>
+   <h4 class="heading settled" data-level="3.4.5" id="broadcast-resize-notifications-h"><span class="secno">3.4.5. </span><span class="content">Broadcast active resize observations</span><a class="self-link" href="#broadcast-resize-notifications-h"></a></h4>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="broadcast-active-resize-observations">broadcast active resize observations</dfn> delivers all active resize
+observations in a document, and returns the depth of the shallowest broadcast
+target depth.</p>
+   <p>To broadcast active resize observations for a <var>document</var>, run these steps:</p>
    <ol>
     <li data-md>
      <p>Let <var>shallowestTargetDepth</var> be ∞</p>
@@ -1670,21 +1670,21 @@ will be considered for delivery in the next loop.</p>
     <li data-md>
      <p>Set <var>depth</var> to 0</p>
     <li data-md>
-     <p><a data-link-type="dfn" href="#gather-active-observations-at-depth" id="ref-for-gather-active-observations-at-depth">Gather active observations at depth</a> <var>depth</var> for <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③">Document</a></code></p>
+     <p><a data-link-type="dfn" href="#gather-active-resize-observations-at-depth" id="ref-for-gather-active-resize-observations-at-depth">Gather active resize observations at depth</a> <var>depth</var> for <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③">Document</a></code></p>
     <li data-md>
-     <p>Repeat while document <a data-link-type="dfn" href="#has-active-observations" id="ref-for-has-active-observations">has active observations</a></p>
+     <p>Repeat while document <a data-link-type="dfn" href="#has-active-resize-observations" id="ref-for-has-active-resize-observations">has active resize observations</a></p>
      <ol start="2">
       <li data-md>
-       <p>Set <var>depth</var> to <a data-link-type="dfn" href="#broadcast-active-observations" id="ref-for-broadcast-active-observations①">broadcast active observations</a>.</p>
+       <p>Set <var>depth</var> to <a data-link-type="dfn" href="#broadcast-active-resize-observations" id="ref-for-broadcast-active-resize-observations①">broadcast active resize observations</a>.</p>
       <li data-md>
        <p>Recalc styles</p>
       <li data-md>
        <p>Update layout</p>
       <li data-md>
-       <p><a data-link-type="dfn" href="#gather-active-observations-at-depth" id="ref-for-gather-active-observations-at-depth①">Gather active observations at depth</a> <var>depth</var> for <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document④">Document</a></code></p>
+       <p><a data-link-type="dfn" href="#gather-active-resize-observations-at-depth" id="ref-for-gather-active-resize-observations-at-depth①">Gather active resize observations at depth</a> <var>depth</var> for <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document④">Document</a></code></p>
      </ol>
     <li data-md>
-     <p>If <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑤">Document</a></code> <a data-link-type="dfn" href="#has-skipped-observations" id="ref-for-has-skipped-observations">has skipped observations</a> then <a data-link-type="dfn" href="#deliver-resize-loop-error-notification" id="ref-for-deliver-resize-loop-error-notification">deliver resize loop error notification</a></p>
+     <p>If <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑤">Document</a></code> <a data-link-type="dfn" href="#has-skipped-resize-observations" id="ref-for-has-skipped-resize-observations">has skipped resize observations</a> then <a data-link-type="dfn" href="#deliver-resize-loop-error-notification" id="ref-for-deliver-resize-loop-error-notification">deliver resize loop error notification</a></p>
     <li data-md>
      <p>Update the rendering or user interface of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑥">Document</a></code> and its browsing context to reflect the current state.</p>
    </ol>
@@ -1788,7 +1788,7 @@ will be considered for delivery in the next loop.</p>
    <li><a href="#dom-resizeobserverboxoptions-border-box">"border-box"</a><span>, in § 2.1</span>
    <li><a href="#dom-resizeobserverentry-borderboxsize">borderBoxSize</a><span>, in § 2.3</span>
    <li><a href="#dom-resizeobserveroptions-box">box</a><span>, in § 2.1</span>
-   <li><a href="#broadcast-active-observations">broadcast active observations</a><span>, in § 3.4.5</span>
+   <li><a href="#broadcast-active-resize-observations">broadcast active resize observations</a><span>, in § 3.4.5</span>
    <li><a href="#calculate-box-size">calculate box size</a><span>, in § 3.4.8</span>
    <li><a href="#calculate-depth-for-node">calculate depth for node</a><span>, in § 3.4.7</span>
    <li><a href="#dom-resizeobserver-callback-slot">[[callback]]</a><span>, in § 3.2.2</span>
@@ -1803,9 +1803,9 @@ will be considered for delivery in the next loop.</p>
    <li><a href="#dom-resizeobserverboxoptions-device-pixel-content-box">"device-pixel-content-box"</a><span>, in § 2.1</span>
    <li><a href="#dom-resizeobserverentry-devicepixelcontentboxsize">devicePixelContentBoxSize</a><span>, in § 2.3</span>
    <li><a href="#dom-resizeobserver-disconnect">disconnect()</a><span>, in § 2.1</span>
-   <li><a href="#gather-active-observations-at-depth">gather active observations at depth</a><span>, in § 3.4.1</span>
-   <li><a href="#has-active-observations">has active observations</a><span>, in § 3.4.2</span>
-   <li><a href="#has-skipped-observations">has skipped observations</a><span>, in § 3.4.3</span>
+   <li><a href="#gather-active-resize-observations-at-depth">gather active resize observations at depth</a><span>, in § 3.4.1</span>
+   <li><a href="#has-active-resize-observations">has active resize observations</a><span>, in § 3.4.2</span>
+   <li><a href="#has-skipped-resize-observations">has skipped resize observations</a><span>, in § 3.4.3</span>
    <li><a href="#dom-resizeobserversize-inlinesize">inlineSize</a><span>, in § 2.3</span>
    <li><a href="#dom-resizeobservation-isactive">isActive()</a><span>, in § 3.1</span>
    <li><a href="#dom-resizeobservation-lastreportedsizes">lastReportedSizes</a><span>, in § 3.1</span>
@@ -1855,8 +1855,8 @@ will be considered for delivery in the next loop.</p>
    <a href="https://dom.spec.whatwg.org/#document">https://dom.spec.whatwg.org/#document</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-document">2.1. ResizeObserver interface</a>
-    <li><a href="#ref-for-document①">3.4.2. Has active observations</a>
-    <li><a href="#ref-for-document②">3.4.3. Has skipped observations</a>
+    <li><a href="#ref-for-document①">3.4.2. Has active resize observations</a>
+    <li><a href="#ref-for-document②">3.4.3. Has skipped resize observations</a>
     <li><a href="#ref-for-document③">3.6.1.  HTML Processing Model: Event Loop</a> <a href="#ref-for-document④">(2)</a> <a href="#ref-for-document⑤">(3)</a> <a href="#ref-for-document⑥">(4)</a>
    </ul>
   </aside>
@@ -2137,7 +2137,7 @@ Create and populate a ResizeObserverEntry </a>
     <li><a href="#ref-for-resizeobserverentry">2.2. ResizeObserverCallback</a>
     <li><a href="#ref-for-resizeobserverentry①">3.4.4. 
 Create and populate a ResizeObserverEntry </a>
-    <li><a href="#ref-for-resizeobserverentry②">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-resizeobserverentry②">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobserverentry-target">
@@ -2162,7 +2162,7 @@ Create and populate a ResizeObserverEntry </a>
     <li><a href="#ref-for-dom-resizeobserverentry-borderboxsize">2.3. ResizeObserverEntry</a>
     <li><a href="#ref-for-dom-resizeobserverentry-borderboxsize①">3.4.4. 
 Create and populate a ResizeObserverEntry </a>
-    <li><a href="#ref-for-dom-resizeobserverentry-borderboxsize②">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-dom-resizeobserverentry-borderboxsize②">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobserverentry-contentboxsize">
@@ -2171,7 +2171,7 @@ Create and populate a ResizeObserverEntry </a>
     <li><a href="#ref-for-dom-resizeobserverentry-contentboxsize">2.3. ResizeObserverEntry</a>
     <li><a href="#ref-for-dom-resizeobserverentry-contentboxsize①">3.4.4. 
 Create and populate a ResizeObserverEntry </a> <a href="#ref-for-dom-resizeobserverentry-contentboxsize②">(2)</a>
-    <li><a href="#ref-for-dom-resizeobserverentry-contentboxsize③">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-dom-resizeobserverentry-contentboxsize③">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobserverentry-devicepixelcontentboxsize">
@@ -2180,7 +2180,7 @@ Create and populate a ResizeObserverEntry </a> <a href="#ref-for-dom-resizeobser
     <li><a href="#ref-for-dom-resizeobserverentry-devicepixelcontentboxsize">2.3. ResizeObserverEntry</a>
     <li><a href="#ref-for-dom-resizeobserverentry-devicepixelcontentboxsize①">3.4.4. 
 Create and populate a ResizeObserverEntry </a>
-    <li><a href="#ref-for-dom-resizeobserverentry-devicepixelcontentboxsize②">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-dom-resizeobserverentry-devicepixelcontentboxsize②">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="resizeobserversize">
@@ -2215,68 +2215,68 @@ Create and populate a ResizeObserverEntry </a>
    <b><a href="#dom-resizeobservation-target">#dom-resizeobservation-target</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-resizeobservation-target">3.1. ResizeObservation example struct</a> <a href="#ref-for-dom-resizeobservation-target①">(2)</a>
-    <li><a href="#ref-for-dom-resizeobservation-target②">3.4.1. Gather active observations at depth</a>
-    <li><a href="#ref-for-dom-resizeobservation-target③">3.4.5. Broadcast active observations</a> <a href="#ref-for-dom-resizeobservation-target④">(2)</a>
+    <li><a href="#ref-for-dom-resizeobservation-target②">3.4.1. Gather active resize observations at depth</a>
+    <li><a href="#ref-for-dom-resizeobservation-target③">3.4.5. Broadcast active resize observations</a> <a href="#ref-for-dom-resizeobservation-target④">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobservation-observedbox">
    <b><a href="#dom-resizeobservation-observedbox">#dom-resizeobservation-observedbox</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-resizeobservation-observedbox">3.1. ResizeObservation example struct</a> <a href="#ref-for-dom-resizeobservation-observedbox①">(2)</a>
-    <li><a href="#ref-for-dom-resizeobservation-observedbox②">3.4.5. Broadcast active observations</a> <a href="#ref-for-dom-resizeobservation-observedbox③">(2)</a> <a href="#ref-for-dom-resizeobservation-observedbox④">(3)</a>
+    <li><a href="#ref-for-dom-resizeobservation-observedbox②">3.4.5. Broadcast active resize observations</a> <a href="#ref-for-dom-resizeobservation-observedbox③">(2)</a> <a href="#ref-for-dom-resizeobservation-observedbox④">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobservation-lastreportedsizes">
    <b><a href="#dom-resizeobservation-lastreportedsizes">#dom-resizeobservation-lastreportedsizes</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-resizeobservation-lastreportedsizes">3.1. ResizeObservation example struct</a> <a href="#ref-for-dom-resizeobservation-lastreportedsizes①">(2)</a> <a href="#ref-for-dom-resizeobservation-lastreportedsizes②">(3)</a>
-    <li><a href="#ref-for-dom-resizeobservation-lastreportedsizes③">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-dom-resizeobservation-lastreportedsizes③">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobservation-isactive">
    <b><a href="#dom-resizeobservation-isactive">#dom-resizeobservation-isactive</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-resizeobservation-isactive">3.4.1. Gather active observations at depth</a>
+    <li><a href="#ref-for-dom-resizeobservation-isactive">3.4.1. Gather active resize observations at depth</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-document-resizeobservers-slot">
    <b><a href="#dom-document-resizeobservers-slot">#dom-document-resizeobservers-slot</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-document-resizeobservers-slot">2.1. ResizeObserver interface</a>
-    <li><a href="#ref-for-dom-document-resizeobservers-slot①">3.4.1. Gather active observations at depth</a>
-    <li><a href="#ref-for-dom-document-resizeobservers-slot②">3.4.2. Has active observations</a>
-    <li><a href="#ref-for-dom-document-resizeobservers-slot③">3.4.3. Has skipped observations</a>
-    <li><a href="#ref-for-dom-document-resizeobservers-slot④">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-dom-document-resizeobservers-slot①">3.4.1. Gather active resize observations at depth</a>
+    <li><a href="#ref-for-dom-document-resizeobservers-slot②">3.4.2. Has active resize observations</a>
+    <li><a href="#ref-for-dom-document-resizeobservers-slot③">3.4.3. Has skipped resize observations</a>
+    <li><a href="#ref-for-dom-document-resizeobservers-slot④">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobserver-callback-slot">
    <b><a href="#dom-resizeobserver-callback-slot">#dom-resizeobserver-callback-slot</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-resizeobserver-callback-slot">2.1. ResizeObserver interface</a>
-    <li><a href="#ref-for-dom-resizeobserver-callback-slot①">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-dom-resizeobserver-callback-slot①">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobserver-observationtargets-slot">
    <b><a href="#dom-resizeobserver-observationtargets-slot">#dom-resizeobserver-observationtargets-slot</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-resizeobserver-observationtargets-slot">2.1. ResizeObserver interface</a> <a href="#ref-for-dom-resizeobserver-observationtargets-slot①">(2)</a> <a href="#ref-for-dom-resizeobserver-observationtargets-slot②">(3)</a> <a href="#ref-for-dom-resizeobserver-observationtargets-slot③">(4)</a> <a href="#ref-for-dom-resizeobserver-observationtargets-slot④">(5)</a> <a href="#ref-for-dom-resizeobserver-observationtargets-slot⑤">(6)</a>
-    <li><a href="#ref-for-dom-resizeobserver-observationtargets-slot⑥">3.4.1. Gather active observations at depth</a>
+    <li><a href="#ref-for-dom-resizeobserver-observationtargets-slot⑥">3.4.1. Gather active resize observations at depth</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobserver-activetargets-slot">
    <b><a href="#dom-resizeobserver-activetargets-slot">#dom-resizeobserver-activetargets-slot</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-dom-resizeobserver-activetargets-slot">2.1. ResizeObserver interface</a>
-    <li><a href="#ref-for-dom-resizeobserver-activetargets-slot①">3.4.1. Gather active observations at depth</a> <a href="#ref-for-dom-resizeobserver-activetargets-slot②">(2)</a>
-    <li><a href="#ref-for-dom-resizeobserver-activetargets-slot③">3.4.2. Has active observations</a>
-    <li><a href="#ref-for-dom-resizeobserver-activetargets-slot④">3.4.5. Broadcast active observations</a> <a href="#ref-for-dom-resizeobserver-activetargets-slot⑤">(2)</a> <a href="#ref-for-dom-resizeobserver-activetargets-slot⑥">(3)</a>
+    <li><a href="#ref-for-dom-resizeobserver-activetargets-slot①">3.4.1. Gather active resize observations at depth</a> <a href="#ref-for-dom-resizeobserver-activetargets-slot②">(2)</a>
+    <li><a href="#ref-for-dom-resizeobserver-activetargets-slot③">3.4.2. Has active resize observations</a>
+    <li><a href="#ref-for-dom-resizeobserver-activetargets-slot④">3.4.5. Broadcast active resize observations</a> <a href="#ref-for-dom-resizeobserver-activetargets-slot⑤">(2)</a> <a href="#ref-for-dom-resizeobserver-activetargets-slot⑥">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-resizeobserver-skippedtargets-slot">
    <b><a href="#dom-resizeobserver-skippedtargets-slot">#dom-resizeobserver-skippedtargets-slot</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dom-resizeobserver-skippedtargets-slot">3.4.1. Gather active observations at depth</a> <a href="#ref-for-dom-resizeobserver-skippedtargets-slot①">(2)</a>
-    <li><a href="#ref-for-dom-resizeobserver-skippedtargets-slot②">3.4.3. Has skipped observations</a>
+    <li><a href="#ref-for-dom-resizeobserver-skippedtargets-slot">3.4.1. Gather active resize observations at depth</a> <a href="#ref-for-dom-resizeobserver-skippedtargets-slot①">(2)</a>
+    <li><a href="#ref-for-dom-resizeobserver-skippedtargets-slot②">3.4.3. Has skipped resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="content-rect">
@@ -2285,35 +2285,35 @@ Create and populate a ResizeObserverEntry </a>
     <li><a href="#ref-for-content-rect">2.3. ResizeObserverEntry</a> <a href="#ref-for-content-rect①">(2)</a> <a href="#ref-for-content-rect②">(3)</a> <a href="#ref-for-content-rect③">(4)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="gather-active-observations-at-depth">
-   <b><a href="#gather-active-observations-at-depth">#gather-active-observations-at-depth</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="gather-active-resize-observations-at-depth">
+   <b><a href="#gather-active-resize-observations-at-depth">#gather-active-resize-observations-at-depth</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-gather-active-observations-at-depth">3.6.1.  HTML Processing Model: Event Loop</a> <a href="#ref-for-gather-active-observations-at-depth①">(2)</a>
+    <li><a href="#ref-for-gather-active-resize-observations-at-depth">3.6.1.  HTML Processing Model: Event Loop</a> <a href="#ref-for-gather-active-resize-observations-at-depth①">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="has-active-observations">
-   <b><a href="#has-active-observations">#has-active-observations</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="has-active-resize-observations">
+   <b><a href="#has-active-resize-observations">#has-active-resize-observations</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-has-active-observations">3.6.1.  HTML Processing Model: Event Loop</a>
+    <li><a href="#ref-for-has-active-resize-observations">3.6.1.  HTML Processing Model: Event Loop</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="has-skipped-observations">
-   <b><a href="#has-skipped-observations">#has-skipped-observations</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="has-skipped-resize-observations">
+   <b><a href="#has-skipped-resize-observations">#has-skipped-resize-observations</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-has-skipped-observations">3.6.1.  HTML Processing Model: Event Loop</a>
+    <li><a href="#ref-for-has-skipped-resize-observations">3.6.1.  HTML Processing Model: Event Loop</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="create-and-populate-a-resizeobserverentry">
    <b><a href="#create-and-populate-a-resizeobserverentry">#create-and-populate-a-resizeobserverentry</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-create-and-populate-a-resizeobserverentry">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-create-and-populate-a-resizeobserverentry">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="broadcast-active-observations">
-   <b><a href="#broadcast-active-observations">#broadcast-active-observations</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="broadcast-active-resize-observations">
+   <b><a href="#broadcast-active-resize-observations">#broadcast-active-resize-observations</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-broadcast-active-observations">2.2. ResizeObserverCallback</a>
-    <li><a href="#ref-for-broadcast-active-observations①">3.6.1.  HTML Processing Model: Event Loop</a>
+    <li><a href="#ref-for-broadcast-active-resize-observations">2.2. ResizeObserverCallback</a>
+    <li><a href="#ref-for-broadcast-active-resize-observations①">3.6.1.  HTML Processing Model: Event Loop</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="deliver-resize-loop-error-notification">
@@ -2325,8 +2325,8 @@ Create and populate a ResizeObserverEntry </a>
   <aside class="dfn-panel" data-for="calculate-depth-for-node">
    <b><a href="#calculate-depth-for-node">#calculate-depth-for-node</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-calculate-depth-for-node">3.4.1. Gather active observations at depth</a>
-    <li><a href="#ref-for-calculate-depth-for-node①">3.4.5. Broadcast active observations</a>
+    <li><a href="#ref-for-calculate-depth-for-node">3.4.1. Gather active resize observations at depth</a>
+    <li><a href="#ref-for-calculate-depth-for-node①">3.4.5. Broadcast active resize observations</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="calculate-box-size">
