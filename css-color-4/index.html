@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="49c03bb23ba39d6056bfdfb58880d4e5b90ab08e" name="document-revision">
+  <meta content="a790160dbb77d3b51c47c7cdd5a4117c3eab7135" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-color-4_dev/css-color-4"></script>
   <link href="style.css" rel="stylesheet">
 <style>
@@ -3272,7 +3272,13 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
 	It returns an array of three numbers
 	representing the red, green, and blue channels of the colors,
 	normalized to the range [0, 1].</p>
-<pre class="include-code highlight"><c- a>function</c-> hslToRgb <c- p>(</c->hue<c- p>,</c-> sat<c- p>,</c-> light<c- p>)</c-> <c- p>{</c->
+<pre class="include-code highlight"><c- d>/**</c->
+<c- d> * @param {number} hue - Hue as degrees 0..360</c->
+<c- d> * @param {number} sat - Saturation as percentage 0..100</c->
+<c- d> * @param {number} light - Lightness as percentage 0..100</c->
+<c- d> * @return {number[]} Array of RGB components 0..1</c->
+<c- d> */</c->
+<c- a>function</c-> hslToRgb<c- p>(</c->hue<c- p>,</c-> sat<c- p>,</c-> light<c- p>)</c-> <c- p>{</c->
     hue <c- o>=</c-> hue <c- o>%</c-> <c- mf>360</c-><c- p>;</c->
 
     <c- k>if</c-> <c- p>(</c->hue <c- o>&lt;</c-> <c- mf>0</c-><c- p>)</c-> <c- p>{</c->
@@ -3292,7 +3298,13 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
 <c- p>}</c-></pre>
    <h3 class="heading settled" data-level="7.2" id="rgb-to-hsl"><span class="secno">7.2. </span><span class="content"> Converting sRGB Colors to HSL</span><a class="self-link" href="#rgb-to-hsl"></a></h3>
    <p>Conversion in the reverse direction proceeds similarly.</p>
-<pre class="include-code highlight"><c- a>function</c-> rgbToHsl <c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>)</c-> <c- p>{</c->
+<pre class="include-code highlight"><c- d>/**</c->
+<c- d> * @param {number} red - Red component 0..1</c->
+<c- d> * @param {number} green - Green component 0..1</c->
+<c- d> * @param {number} blue - Blue component 0..1</c->
+<c- d> * @return {number[]} Array of HSL values: Hue as degrees 0..360, Saturation and Lightness as percentages 0..100</c->
+<c- d> */</c->
+<c- a>function</c-> rgbToHsl <c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>)</c-> <c- p>{</c->
     <c- a>let</c-> max <c- o>=</c-> Math<c- p>.</c->max<c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>);</c->
     <c- a>let</c-> min <c- o>=</c-> Math<c- p>.</c->min<c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>);</c->
     <c- a>let</c-> <c- p>[</c->hue<c- p>,</c-> sat<c- p>,</c-> light<c- p>]</c-> <c- o>=</c-> <c- p>[</c-><c- kc>NaN</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- p>(</c->min <c- o>+</c-> max<c- p>)</c-><c- o>/</c-><c- mf>2</c-><c- p>];</c->
@@ -4616,12 +4628,18 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
 	The following Javascript implementation of the algorithm
 	first normalizes the white and black components,
 	so their sum is no larger than 100%.</p>
-<pre class="include-code highlight"><c- a>function</c-> hwbToRgb<c- p>(</c->hue<c- p>,</c-> white<c- p>,</c-> black<c- p>)</c-> <c- p>{</c->
+<pre class="include-code highlight"><c- d>/**</c->
+<c- d> * @param {number} hue -  Hue as degrees 0..360</c->
+<c- d> * @param {number} white -  Whiteness as percentage 0..100</c->
+<c- d> * @param {number} black -  Blackness as percentage 0..100</c->
+<c- d> * @return {number[]} Array of RGB components 0..1</c->
+<c- d> */</c->
+<c- a>function</c-> hwbToRgb<c- p>(</c->hue<c- p>,</c-> white<c- p>,</c-> black<c- p>)</c-> <c- p>{</c->
     white <c- o>/=</c-> <c- mf>100</c-><c- p>;</c->
     black <c- o>/=</c-> <c- mf>100</c-><c- p>;</c->
     <c- k>if</c-> <c- p>(</c->white <c- o>+</c-> black <c- o>>=</c-> <c- mf>1</c-><c- p>)</c-> <c- p>{</c->
         <c- a>let</c-> gray <c- o>=</c-> white <c- o>/</c-> <c- p>(</c->white <c- o>+</c-> black<c- p>);</c->
-    <c- k>return</c-> <c- p>[</c->gray<c- p>,</c-> gray<c- p>,</c-> gray<c- p>];</c->
+        <c- k>return</c-> <c- p>[</c->gray<c- p>,</c-> gray<c- p>,</c-> gray<c- p>];</c->
     <c- p>}</c->
     <c- a>let</c-> rgb <c- o>=</c-> hslToRgb<c- p>(</c->hue<c- p>,</c-> <c- mf>100</c-><c- p>,</c-> <c- mf>50</c-><c- p>);</c->
     <c- k>for</c-> <c- p>(</c-><c- a>let</c-> i <c- o>=</c-> <c- mf>0</c-><c- p>;</c-> i <c- o>&lt;</c-> <c- mf>3</c-><c- p>;</c-> i<c- o>++</c-><c- p>)</c-> <c- p>{</c->
@@ -4632,7 +4650,13 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
 <c- p>}</c-></pre>
    <h3 class="heading settled" data-level="8.2" id="rgb-to-hwb"><span class="secno">8.2. </span><span class="content"> Converting sRGB Colors to HWB</span><a class="self-link" href="#rgb-to-hwb"></a></h3>
    <p>Conversion in the reverse direction proceeds similarly.</p>
-<pre class="include-code highlight"><c- a>function</c-> rgbToHwb<c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>)</c-> <c- p>{</c->
+<pre class="include-code highlight"><c- d>/**</c->
+<c- d> * @param {number} red - Red component 0..1</c->
+<c- d> * @param {number} green - Green component 0..1</c->
+<c- d> * @param {number} blue - Blue component 0..1</c->
+<c- d> * @return {number[]} Array of HWB values: Hue as degrees 0..360, Whiteness and Blackness as percentages 0..100</c->
+<c- d> */</c->
+<c- a>function</c-> rgbToHwb<c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>)</c-> <c- p>{</c->
     <c- a>var</c-> hsl <c- o>=</c-> rgbToHsl<c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>);</c->
     <c- a>var</c-> white <c- o>=</c-> Math<c- p>.</c->min<c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>);</c->
     <c- a>var</c-> black <c- o>=</c-> <c- mf>1</c-> <c- o>-</c-> Math<c- p>.</c->max<c- p>(</c->red<c- p>,</c-> green<c- p>,</c-> blue<c- p>);</c->
