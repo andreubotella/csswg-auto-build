@@ -9,7 +9,7 @@
   <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-pseudo-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="d82b2c9cf2bc752889da42b867e790d991c965b3" name="document-revision">
+  <meta content="4acdbd8f5cc61a792112a3ea3fc52c9154776344" name="document-revision">
 <script defer src="https://test.csswg.org/harness/annotate.js#!css-pseudo-4_dev/css-pseudo-4"></script>
 <style>/* style-autolinks */
 
@@ -916,7 +916,11 @@ on screen, on paper, etc.
      <ol class="toc">
       <li><a href="#highlight-selectors"><span class="secno">3.1</span> <span class="content"> Selecting Highlighted Content: the <span class="css">::selection</span>, <span class="css">::target-text</span>, <span class="css">::spelling-error</span>, and <span class="css">::grammar-error</span> pseudo-elements</span></a>
       <li><a href="#highlight-styling"><span class="secno">3.2</span> <span class="content"> Styling Highlights</span></a>
-      <li><a href="#highlight-ua-styles"><span class="secno">3.3</span> <span class="content"> Default UA Styles</span></a>
+      <li>
+       <a href="#highlight-ua-styles"><span class="secno">3.3</span> <span class="content"> Default UA Styles</span></a>
+       <ol class="toc">
+        <li><a href="#paired-defaults"><span class="secno">3.3.1</span> <span class="content"> Paired Defaults</span></a>
+       </ol>
       <li><a href="#highlight-bounds"><span class="secno">3.4</span> <span class="content"> Area of a Highlight</span></a>
       <li><a href="#highlight-cascade"><span class="secno">3.5</span> <span class="content"> Cascading and Per-Element Highlight Styles</span></a>
       <li>
@@ -1720,7 +1724,8 @@ as ordinary lines in the paragraph.<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
      </details>
    </ul>
    <p class="issue" id="issue-6ca196f5"><a class="self-link" href="#issue-6ca196f5"></a> Are there any other properties that should be included here?</p>
-   <p>The <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color③">color</a> property specifies the color of both the text
+   <p class="note" role="note"><span>Note:</span> The <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color③">color</a> property sets the color of
+  both the text
   and all line decorations (underline, overline, line-through)
   and emphasis marks (<a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#propdef-text-emphasis" id="ref-for-propdef-text-emphasis">text-emphasis</a>)
   applied to the text
@@ -1732,19 +1737,49 @@ as ordinary lines in the paragraph.<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
 <pre class="lang-css highlight"><c- c>/* Represent default spelling/grammar error styling in an adjustable way */</c->
 :root::spelling-error <c- p>{</c-> <c- k>text-decoration-line</c-><c- p>:</c-> spelling-error<c- p>;</c-> <c- p>}</c->
 :root::grammar-error  <c- p>{</c-> <c- k>text-decoration-line</c-><c- p>:</c-> grammar-error<c- p>;</c-> <c- p>}</c->
-<c- c>/* Highlight targeted text */</c->
-:root::target-text    <c- p>{</c-> <c- k>color</c-><c- p>:</c-> MarkText<c- p>;</c-> <c- k>background</c-><c- p>:</c-> Mark<c- p>;</c-> <c- p>}</c->
 </pre>
+   <p>Some <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element④">highlight pseudo-elements</a> should have <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="paired-default-highlight-colors">paired default highlight colors</dfn>—<wbr>a default <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑤">color</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-backgrounds-3/#propdef-background-color" id="ref-for-propdef-background-color②">background-color</a> provided by the UA
+  that are either used or overridden together,
+  see <a href="#paired-defaults">§ 3.3.1 Paired Defaults</a>.
+  For <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection②">::selection</a> they should correspond to <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-highlighttext" id="ref-for-valdef-system-color-highlighttext">HighlightText</a> and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-highlight" id="ref-for-valdef-system-color-highlight">Highlight</a>,
+  while for <a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text③">::target-text</a> they should correspond to <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-marktext" id="ref-for-valdef-system-color-marktext">MarkText</a> and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-mark" id="ref-for-valdef-system-color-mark">Mark</a>.</p>
    <p>UAs may apply additional effects to enhance the presentation
   of highlighted content,
   for example dimming content other than the highlighted text
   or transitioning out a highlight style based on user interactions or timing.
   These are not controlled by CSS.</p>
+   <p class="issue" id="issue-c10df75c"><a class="self-link" href="#issue-c10df75c"></a> UA tweaks to the presentation of highlights
+  in ways that <em>are</em> controlled by CSS
+  are currently under discussion
+  in <a href="https://github.com/w3c/csswg-drafts/issues/6853">Issue 6853</a>.</p>
+   <h4 class="heading settled" data-level="3.3.1" id="paired-defaults"><span class="secno">3.3.1. </span><span class="content"> Paired Defaults</span><a class="self-link" href="#paired-defaults"></a></h4>
+   <p>For compatibility reasons, <a data-link-type="dfn" href="#paired-default-highlight-colors" id="ref-for-paired-default-highlight-colors">paired default highlight colors</a> must only be <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#used-value" id="ref-for-used-value">used</a> when neither <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑥">color</a> nor <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-backgrounds-3/#propdef-background-color" id="ref-for-propdef-background-color③">background-color</a> yield a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascaded-value" id="ref-for-cascaded-value">cascaded value</a> from the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascade-origin-author" id="ref-for-cascade-origin-author">author origin</a> (or inherit their value from the author origin).
+  When a highlight color is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-revert" id="ref-for-valdef-all-revert">revert</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer">revert-layer</a>,
+  the origin <em>after</em> rolling back the cascade
+  determines the <span id="ref-for-cascaded-value①">cascaded value</span>’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-6/#origin" id="ref-for-origin">origin</a>.</p>
+   <p class="note" role="note"><span>Note:</span> Because this rule is for compatibility reasons,
+  it does not apply to other similar properties
+  like <a class="property css" data-link-type="property" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-fill-color" id="ref-for-propdef-fill-color①">fill-color</a> or <a class="property css" data-link-type="property" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-stroke-color" id="ref-for-propdef-stroke-color①">stroke-color</a>.</p>
+   <div class="example" id="example-e46c5169">
+    <a class="self-link" href="#example-e46c5169"></a> For example,
+    given the following markup: 
+<pre class="lang-markup highlight"><c- p>&lt;</c-><c- f>p</c-><c- p>></c->Highlight this <c- p>&lt;</c-><c- f>em</c-><c- p>></c->and this<c- p>&lt;/</c-><c- f>em</c-><c- p>></c->.<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+</pre>
+    <p>Any of the following rules
+    would suppress the default <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-backgrounds-3/#propdef-background-color" id="ref-for-propdef-background-color④">background-color</a> for <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection③">::selection</a> in the <code class="highlight">&lt;em></code> element
+    if given by the author:</p>
+<pre class="lang-css highlight"><c- k>em</c-><c- p>:</c->:selection <c- p>{</c-> <c- k>color</c-><c- p>:</c-> initial<c- p>;</c-> <c- p>}</c->
+em::selection <c- p>{</c-> <c- k>color</c-><c- p>:</c-> inherit<c- p>;</c-> <c- p>}</c->
+em::selection <c- p>{</c-> <c- k>color</c-><c- p>:</c-> unset<c- p>;</c-> <c- p>}</c->
+em::selection <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+p::selection <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+</pre>
+   </div>
    <h3 class="heading settled" data-level="3.4" id="highlight-bounds"><span class="secno">3.4. </span><span class="content"> Area of a Highlight</span><a class="self-link" href="#highlight-bounds"></a></h3>
    <p>For each type of highlighting (see <a href="#highlight-selectors">§ 3.1 Selecting Highlighted Content: the ::selection,  ::target-text, ::spelling-error, and ::grammar-error pseudo-elements</a>)
   there exists a single <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="highlight-overlay">highlight overlay</dfn> for the entire document,
   the active portions of which are represented
-  by the corresponding <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element④">highlight pseudo-element</a>.
+  by the corresponding <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑤">highlight pseudo-element</a>.
   Each box owns the piece of the overlay corresponding to any text or replaced content
   directly contained by the box. </p>
    <ul>
@@ -1780,15 +1815,20 @@ as ordinary lines in the paragraph.<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
    <h3 class="heading settled" data-level="3.5" id="highlight-cascade"><span class="secno">3.5. </span><span class="content"> Cascading and Per-Element Highlight Styles</span><a class="self-link" href="#highlight-cascade"></a></h3>
    <p>Each element draws its own active portions of the <a data-link-type="dfn" href="#highlight-overlay" id="ref-for-highlight-overlay①">highlight overlays</a>,
   which receives the styles specified by
-  the corresponding <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑤">highlight pseudo-element</a> styles
+  the corresponding <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑥">highlight pseudo-element</a> styles
   for which that element is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#originating-element" id="ref-for-originating-element⑦">originating element</a>.
   When multiple styles conflict,
-  the winning style is determined by the cascade.
-  When any supported property is not given a value by the cascade,
-  its value is determined by inheritance from
-  the corresponding <span id="ref-for-highlight-pseudo-element⑥">highlight pseudo-element</span> of its <span id="ref-for-originating-element⑧">originating element</span>’s parent element.
+  the winning style is determined by the cascade.</p>
+   <p>When any supported property is not given a value by the cascade,
+  or given a value of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-inherit" id="ref-for-valdef-all-inherit">inherit</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-unset" id="ref-for-valdef-all-unset">unset</a>,
+  its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#specified-value" id="ref-for-specified-value">specified value</a> is determined by inheritance from
+  the corresponding <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑦">highlight pseudo-element</a> of its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#originating-element" id="ref-for-originating-element⑧">originating element</a>’s parent element.
   This occurs regardless of whether that property is an <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#inherited-property" id="ref-for-inherited-property①">inherited property</a>,
   including <a data-link-type="dfn" href="https://drafts.css-houdini.org/css-properties-values-api-1/#registered-custom-property" id="ref-for-registered-custom-property">registered custom properties</a> where the <a data-link-type="dfn">inherits descriptor</a> is false.</p>
+   <p>Additionally,
+  for <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑧">highlight pseudo-elements</a> originating from the root element,
+  the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#inherited-value" id="ref-for-inherited-value">inherited value</a> of <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑦">color</a> is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor">currentColor</a>,
+  not the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#initial-value" id="ref-for-initial-value">initial value</a>.</p>
    <details class="wpt-tests-block" dir="ltr" lang="en">
     <summary>Tests</summary>
     <ul class="wpt-tests-list">
@@ -1819,7 +1859,7 @@ em::selection     <c- p>{</c-> <c- k>color</c-><c- p>:</c->    red<c- p>;</c-> <
     </ul>
    </details>
    <p class="advisement"> Authors wanting multiple selections styles should use <strong><span class="css">:root::selection</span></strong> for their document-wide selection style,
-  since this will allow clean overriding in descendants. <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection②">::selection</a> alone applies to every element in the tree,
+  since this will allow clean overriding in descendants. <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection④">::selection</a> alone applies to every element in the tree,
   overriding the more specific styles of any ancestors. </p>
    <div class="example" id="example-97480f68">
     <a class="self-link" href="#example-97480f68"></a> For example, if an author specified 
@@ -1830,7 +1870,7 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
 <pre class="lang-markup highlight"><c- p>&lt;</c-><c- f>p</c-> <c- e>class</c-><c- o>=</c-><c- s>"warning"</c-><c- p>></c->Some <c- p>&lt;</c-><c- f>strong</c-><c- p>></c->very important information<c- p>&lt;/</c-><c- f>strong</c-><c- p>>&lt;/</c-><c- f>p</c-><c- p>></c->
 </pre>
     <p>The highlight would be blue over “very important information”
-    because the <code class="highlight">&lt;strong></code> element´s <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection③">::selection</a> also matches the <span class="css">::selection { background: blue; }</span> rule.
+    because the <code class="highlight">&lt;strong></code> element´s <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑤">::selection</a> also matches the <span class="css">::selection { background: blue; }</span> rule.
     (Remember that <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/selectors-3/#x" id="ref-for-x">*</a> is implied when a tag selector is missing.)
     The style rules that would give the intended behavior
     (red highlight within <code class="highlight">p.warning</code>, blue elsewhere) are</p>
@@ -1844,14 +1884,6 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-pseudo/cascade-highlight-002.html" title="css/css-pseudo/cascade-highlight-002.html">cascade-highlight-002.html</a> <a class="wpt-live" href="http://wpt.live/css/css-pseudo/cascade-highlight-002.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-pseudo/cascade-highlight-002.html"><small>(source)</small></a>
     </ul>
    </details>
-   <p>The UA must use its own highlight colors for <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection④">::selection</a> only
-  when neither <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑤">color</a> nor <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-backgrounds-3/#propdef-background-color" id="ref-for-propdef-background-color②">background-color</a> has been specified by the author.</p>
-   <p class="note" role="note"><span>Note:</span> This paired-cascading behavior
-  does not allow using the normal cascade
-  (e.g. <span class="css">:root::selection</span> rules in the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascade-origin-ua" id="ref-for-cascade-origin-ua">UA style sheet</a>)
-  to represent the OS default selection colors.
-  However it has been interoperably implemented in browsers
-  and is thus probably a Web-compatibility requirement.</p>
    <h3 class="heading settled" data-level="3.6" id="highlight-painting"><span class="secno">3.6. </span><span class="content"> Painting the Highlight</span><a class="self-link" href="#highlight-painting"></a></h3>
    <details class="wpt-tests-block" dir="ltr" lang="en">
     <summary>Tests</summary>
@@ -1865,13 +1897,13 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
     </ul>
    </details>
    <h4 class="heading settled" data-level="3.6.1" id="highlight-backgrounds"><span class="secno">3.6.1. </span><span class="content"> Backgrounds</span><a class="self-link" href="#highlight-backgrounds"></a></h4>
-   <p>Each <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑦">highlight pseudo-element</a> draws its background
+   <p>Each <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑨">highlight pseudo-element</a> draws its background
   over the corresponding portion of the <a data-link-type="dfn" href="#highlight-overlay" id="ref-for-highlight-overlay②">highlight overlay</a>,
   painting it
   immediately below any positioned descendants
   (i.e. just before step 8 in <a href="https://www.w3.org/TR/CSS22/zindex.html#painting-order">CSS2.2§E.2</a>).
-  The <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑤">::selection</a> overlay is drawn
-  over the <a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text③">::target-text</a> overlay which is drawn
+  The <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑥">::selection</a> overlay is drawn
+  over the <a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text④">::target-text</a> overlay which is drawn
   over the <a class="css" data-link-type="maybe" href="#selectordef-spelling-error" id="ref-for-selectordef-spelling-error②">::spelling-error</a> overlay
   which is drawn over the <a class="css" data-link-type="maybe" href="#selectordef-grammar-error" id="ref-for-selectordef-grammar-error②">::grammar-error</a> overlay.</p>
    <details class="wpt-tests-block" dir="ltr" lang="en">
@@ -1884,7 +1916,7 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
     </ul>
    </details>
    <h4 class="heading settled" data-level="3.6.2" id="highlight-shadows"><span class="secno">3.6.2. </span><span class="content"> Shadows</span><a class="self-link" href="#highlight-shadows"></a></h4>
-   <p>Any <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#propdef-text-shadow" id="ref-for-propdef-text-shadow①">text-shadow</a> applying to a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑧">highlight pseudo-element</a> is drawn over its corresponding <a data-link-type="dfn" href="#highlight-overlay" id="ref-for-highlight-overlay③">highlight overlay</a> background.
+   <p>Any <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#propdef-text-shadow" id="ref-for-propdef-text-shadow①">text-shadow</a> applying to a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⓪">highlight pseudo-element</a> is drawn over its corresponding <a data-link-type="dfn" href="#highlight-overlay" id="ref-for-highlight-overlay③">highlight overlay</a> background.
   Such text shadows also stack over each other
   (and over any original <span class="property" id="ref-for-propdef-text-shadow②">text-shadow</span> applied to the text and its decorations,
   which continues to apply).</p>
@@ -1892,28 +1924,28 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
   is drawn over any shadows belonging to the layer(s) below,
   a <span id="ref-for-highlight-overlay⑤">highlight overlay</span> background can obscure lower-level shadows.</p>
    <h4 class="heading settled" data-level="3.6.3" id="highlight-text"><span class="secno">3.6.3. </span><span class="content"> Text and Text Decorations</span><a class="self-link" href="#highlight-text"></a></h4>
-   <p>A <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑨">highlight pseudo-element</a> suppresses the normal drawing of any associated text,
+   <p>A <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①①">highlight pseudo-element</a> suppresses the normal drawing of any associated text,
   and the text decorations
   (other than shadows)
   that had been applied to that text.
   Instead the topmost active <a data-link-type="dfn" href="#highlight-overlay" id="ref-for-highlight-overlay⑥">highlight overlay</a> redraws that text
   (and those decorations)
   over all the <span id="ref-for-highlight-overlay⑦">highlight overlay</span> backgrounds
-  using that highlight’s own <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑥">color</a>.</p>
+  using that highlight’s own <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑧">color</a>.</p>
    <p class="note" role="note"><span>Note:</span> This means that unlike shadows,
   line decorations and emphasis marks
   won’t be obscured by any highlight overlay backgrounds
   that are drawn for the associated text.</p>
-   <p>For this purpose, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor">currentColor</a> on a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⓪">highlight pseudo-element</a>’s <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑦">color</a> property represents
-  the <span class="property" id="ref-for-propdef-color⑧">color</span> of the next <em>active</em> <span id="ref-for-highlight-pseudo-element①①">highlight pseudo-element</span> layer below,
+   <p>For this purpose, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor①">currentColor</a> on a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①②">highlight pseudo-element</a>’s <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑨">color</a> property represents
+  the <span class="property" id="ref-for-propdef-color①⓪">color</span> of the next <em>active</em> <span id="ref-for-highlight-pseudo-element①③">highlight pseudo-element</span> layer below,
   falling back finally to the colors that would otherwise have been used
   (those applied by the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#originating-element" id="ref-for-originating-element⑨">originating element</a> or
   an intervening <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#pseudo-element" id="ref-for-pseudo-element⑧">pseudo-element</a> such as <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line①⑧">::first-line</a> or <a class="css" data-link-type="maybe" href="#selectordef-first-letter" id="ref-for-selectordef-first-letter②⑥">::first-letter</a>).</p>
    <p class="note" role="note"><span>Note:</span> The element’s own text decorations
   (both <a href="https://www.w3.org/TR/css-text-decor/#line-decoration">line decorations</a> and <a href="https://www.w3.org/TR/css-text-decor/#emphasis-marks">emphasis marks</a>)
-  are thus drawn in the pseudo-element’s own <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color⑨">color</a> when that is not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor①">currentColor</a>,
+  are thus drawn in the pseudo-element’s own <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color①①">color</a> when that is not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor②">currentColor</a>,
   regardless of their original color or fill specifications.</p>
-   <p>Any text decorations introduced by each <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①②">highlight pseudo-element</a> are stacked in the same order as their backgrounds
+   <p>Any text decorations introduced by each <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①④">highlight pseudo-element</a> are stacked in the same order as their backgrounds
   over the text’s original decorations
   and are all drawn, each decoration in its own color.
   The normal painting order applies,
@@ -1922,35 +1954,35 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
   below overlines which are drawn
   below the text which is drawn
   below any line-throughs.
-  However, text decorations applied by <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑥">::selection</a> may instead all be drawn
+  However, text decorations applied by <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑦">::selection</a> may instead all be drawn
   along with the text
   as a topmost set of layers
   above all other decorations.</p>
    <div class="example" id="example-92591876">
     <a class="self-link" href="#example-92591876"></a> For example, assuming the original text has an underline and a strike-through,
-    that <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑦">::selection</a> applies an underline
-    and <a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text④">::target-text</a> applies both overline and strike-through,
+    that <a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑧">::selection</a> applies an underline
+    and <a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑤">::target-text</a> applies both overline and strike-through,
     the following are both conformant painting orders: 
     <div style="columns: 20em">
      <ol style="break-inside: avoid; margin-top: 0;">
       <li>original underline 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑧">::selection</a> underline 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑤">::target-text</a> overline 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑨">::selection</a>-colored text 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection⑨">::selection</a> underline 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑥">::target-text</a> overline 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection①⓪">::selection</a>-colored text 
       <li>original strike-through 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑥">::target-text</a> strike-through 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑦">::target-text</a> strike-through 
      </ol>
      <ol style="break-inside: avoid; margin-top: 0;">
       <li>original underline 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑦">::target-text</a> overline 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑧">::target-text</a> overline 
       <li>original strike-through 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑧">::target-text</a> strike-through 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection①⓪">::selection</a> underline 
-      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection①①">::selection</a>-colored text 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑨">::target-text</a> strike-through 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection①①">::selection</a> underline 
+      <li><a class="css" data-link-type="maybe" href="#selectordef-selection" id="ref-for-selectordef-selection①②">::selection</a>-colored text 
      </ol>
     </div>
    </div>
-   <p><a href="https://www.w3.org/TR/css-text-decor/#line-decoration">Line decorations</a> introduced by <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①③">highlight pseudo-elements</a> apply only to the text associated with their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#originating-element" id="ref-for-originating-element①⓪">originating element</a>,
+   <p><a href="https://www.w3.org/TR/css-text-decor/#line-decoration">Line decorations</a> introduced by <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑤">highlight pseudo-elements</a> apply only to the text associated with their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#originating-element" id="ref-for-originating-element①⓪">originating element</a>,
   and are not propagated to descendants
   except via property <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#inheritance" id="ref-for-inheritance③">inheritance</a> (as described <a href="#highlight-cascade">above</a>).</p>
    <p class="note" role="note"><span>Note:</span> Unlike the originating element’s own decorations,
@@ -1958,11 +1990,11 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
   propagate to <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#out-of-flow" id="ref-for-out-of-flow">out-of-flow elements</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-display-3/#inline-block" id="ref-for-inline-block">inline blocks</a>,
   with thickness and position varying between descendants.</p>
    <h4 class="heading settled" data-level="3.6.4" id="highlight-replaced"><span class="secno">3.6.4. </span><span class="content"> Replaced Elements</span><a class="self-link" href="#highlight-replaced"></a></h4>
-   <p>For non-replaced content, the UA must honor the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color①⓪">color</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-backgrounds-3/#propdef-background-color" id="ref-for-propdef-background-color③">background-color</a> (including their alpha channels) as specified.
+   <p>For non-replaced content, the UA must honor the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-color-4/#propdef-color" id="ref-for-propdef-color①②">color</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-backgrounds-3/#propdef-background-color" id="ref-for-propdef-background-color⑤">background-color</a> (including their alpha channels) as specified.
   However, for replaced content, the UA should create a semi-transparent wash
   to coat the content so that it can show through the selection.
-  This wash should be of the specified <span class="property" id="ref-for-propdef-background-color④">background-color</span> if that is not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-transparent" id="ref-for-valdef-color-transparent">transparent</a>,
-  else of the specified <span class="property" id="ref-for-propdef-color①①">color</span>;
+  This wash should be of the specified <span class="property" id="ref-for-propdef-background-color⑥">background-color</span> if that is not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-transparent" id="ref-for-valdef-color-transparent">transparent</a>,
+  else of the specified <span class="property" id="ref-for-propdef-color①③">color</span>;
   however the UA may adjust the alpha channel.</p>
    <details class="wpt-tests-block" dir="ltr" lang="en">
     <summary>Tests</summary>
@@ -1979,7 +2011,7 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
    <h2 class="heading settled" data-level="4" id="treelike"><span class="secno">4. </span><span class="content"> Tree-Abiding Pseudo-elements</span><a class="self-link" href="#treelike"></a></h2>
    <p><dfn data-dfn-type="dfn" data-export data-lt="tree-abiding|tree-abiding pseudo-element" id="tree-abiding">Tree-abiding pseudo-elements<a class="self-link" href="#tree-abiding"></a></dfn> always fit within the box tree.
   They <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#inheritance" id="ref-for-inheritance④">inherit</a> any inheritable properties from their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/selectors-4/#originating-element" id="ref-for-originating-element①①">originating element</a>;
-  non-inheritable properties take their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#initial-value" id="ref-for-initial-value">initial values</a> as usual. <a data-link-type="biblio" href="#biblio-css-cascade-4">[CSS-CASCADE-4]</a></p>
+  non-inheritable properties take their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#initial-value" id="ref-for-initial-value①">initial values</a> as usual. <a data-link-type="biblio" href="#biblio-css-cascade-4">[CSS-CASCADE-4]</a></p>
    <h3 class="heading settled" data-level="4.1" id="generated-content"><span class="secno">4.1. </span><span class="content"> Generated Content Pseudo-elements: <a class="css" data-link-type="maybe" href="#selectordef-before" id="ref-for-selectordef-before①">::before</a> and <a class="css" data-link-type="maybe" href="#selectordef-after" id="ref-for-selectordef-after①">::after</a></span><a class="self-link" href="#generated-content"></a></h3>
    <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></button>
@@ -2200,7 +2232,7 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring"><c- n>CSSOMString</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="CSSOMString" href="#dom-csspseudoelement-type" id="ref-for-dom-csspseudoelement-type"><c- g>type</c-></a>;
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element"><c- n>Element</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="Element" href="#dom-csspseudoelement-element" id="ref-for-dom-csspseudoelement-element"><c- g>element</c-></a>;
     <c- b>readonly</c-> <c- b>attribute</c-> (<a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#element" id="ref-for-element①"><c- n>Element</c-></a> <c- b>or</c-> <a data-link-type="idl-name" href="#csspseudoelement" id="ref-for-csspseudoelement②"><c- n>CSSPseudoElement</c-></a>) <a class="idl-code" data-link-type="attribute" data-readonly data-type="(Element or CSSPseudoElement)" href="#dom-csspseudoelement-parent" id="ref-for-dom-csspseudoelement-parent"><c- g>parent</c-></a>;
-    <a data-link-type="idl-name" href="#csspseudoelement" id="ref-for-csspseudoelement③"><c- n>CSSPseudoElement</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="CSSPseudoElement" data-dfn-type="method" data-export data-lt="pseudo(type)" id="dom-csspseudoelement-pseudo"><code class="highlight"><c- g>pseudo</c-></code></dfn>(<a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring①"><c- n>CSSOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="CSSPseudoElement/pseudo(type)" data-dfn-type="argument" data-export id="dom-csspseudoelement-pseudo-type-type"><code class="highlight"><c- g>type</c-></code></dfn>);
+    <a data-link-type="idl-name" href="#csspseudoelement" id="ref-for-csspseudoelement③"><c- n>CSSPseudoElement</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="CSSPseudoElement" data-dfn-type="method" data-export data-lt="pseudo(type)" id="dom-csspseudoelement-pseudo"><code class="highlight"><c- g>pseudo</c-></code></dfn>(<a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring①"><c- n>CSSOMString</c-></a> <dfn class="idl-code" data-dfn-for="CSSPseudoElement/pseudo(type)" data-dfn-type="argument" data-export id="dom-csspseudoelement-pseudo-type-type"><code class="highlight"><c- g>type</c-></code><a class="self-link" href="#dom-csspseudoelement-pseudo-type-type"></a></dfn>);
 };
 </pre>
    <p class="issue" id="issue-22d457b7"><a class="self-link" href="#issue-22d457b7"></a> This interface is under design development,
@@ -2269,18 +2301,18 @@ p.warning::selection <c- p>{</c-> <c- k>background</c-><c- p>:</c->  red<c- p>;<
    <p>A new method is added to the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#element" id="ref-for-element⑤">Element</a></code> interface to retrieve
   pseudo-elements created by a given element for a given type:</p>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://dom.spec.whatwg.org/#element" id="ref-for-element⑥"><c- g>Element</c-></a> {
-  <a data-link-type="idl-name" href="#csspseudoelement" id="ref-for-csspseudoelement⑥"><c- n>CSSPseudoElement</c-></a>? <a class="idl-code" data-link-type="method" href="#dom-element-pseudo" id="ref-for-dom-element-pseudo①"><c- g>pseudo</c-></a>(<a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring②"><c- n>CSSOMString</c-></a> <dfn class="idl-code" data-dfn-for="Element/pseudo(type)" data-dfn-type="argument" data-export id="dom-element-pseudo-type-type"><code class="highlight"><c- g>type</c-></code><a class="self-link" href="#dom-element-pseudo-type-type"></a></dfn>);
+  <a data-link-type="idl-name" href="#csspseudoelement" id="ref-for-csspseudoelement⑥"><c- n>CSSPseudoElement</c-></a>? <a class="idl-code" data-link-type="method" href="#dom-element-pseudo" id="ref-for-dom-element-pseudo①"><c- g>pseudo</c-></a>(<a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/cssom-1/#cssomstring" id="ref-for-cssomstring②"><c- n>CSSOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Element/pseudo(type)" data-dfn-type="argument" data-export id="dom-element-pseudo-type-type"><code class="highlight"><c- g>type</c-></code></dfn>);
 };
 </pre>
    <div class="algorithm" data-algorithm="pseudo(CSSOMString type)" data-algorithm-for="Element">
      The <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="pseudo(type)" id="dom-element-pseudo" title="pseudo(type)"><code class="highlight"><c- nf>pseudo</c-><c- p>(</c->CSSOMString type<c- p>)</c-></code></dfn> method
     is used to retrieve the <code class="idl"><a data-link-type="idl" href="#csspseudoelement" id="ref-for-csspseudoelement⑦">CSSPseudoElement</a></code> instance
-    of the type matching <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-csspseudoelement-pseudo-type-type" id="ref-for-dom-csspseudoelement-pseudo-type-type">type</a></code> associated with the element.
+    of the type matching <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-element-pseudo-type-type" id="ref-for-dom-element-pseudo-type-type">type</a></code> associated with the element.
     When it is called,
     execute the following steps: 
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#css-parse-something-according-to-a-css-grammar" id="ref-for-css-parse-something-according-to-a-css-grammar">Parse</a> the <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-csspseudoelement-pseudo-type-type" id="ref-for-dom-csspseudoelement-pseudo-type-type①">type</a></code> argument as a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/selectors-4/#typedef-pseudo-element-selector" id="ref-for-typedef-pseudo-element-selector">&lt;pseudo-element-selector></a>,
+      <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/css-syntax-3/#css-parse-something-according-to-a-css-grammar" id="ref-for-css-parse-something-according-to-a-css-grammar">Parse</a> the <code class="idl"><a class="idl-code" data-link-type="argument" href="#dom-element-pseudo-type-type" id="ref-for-dom-element-pseudo-type-type①">type</a></code> argument as a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/selectors-4/#typedef-pseudo-element-selector" id="ref-for-typedef-pseudo-element-selector">&lt;pseudo-element-selector></a>,
 and let <var>type</var> be the result.</p>
      <li data-md>
       <p>If <var>type</var> is failure,
@@ -2300,7 +2332,7 @@ that would match the selector <var>type</var> with <a data-link-type="dfn" href=
   of the <code class="idl"><a data-link-type="idl" href="#dom-csspseudoelement-pseudo" id="ref-for-dom-csspseudoelement-pseudo①">pseudo()</a></code> method is still under discussion.
   See <a href="https://github.com/w3c/csswg-drafts/issues/3607">Issue 3607</a> and <a href="https://github.com/w3c/csswg-drafts/issues/3603">Issue 3603</a>.</p>
    <h3 class="heading settled" data-level="6.3" id="getComputedStyle"><span class="secno">6.3. </span><span class="content"> <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle">getComputedStyle()</a></code></span><a class="self-link" href="#getComputedStyle"></a></h3>
-   <p>When the second parameter <var>pseudoElt</var> refers to a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①④">highlight pseudo-element</a>, <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle①">getComputedStyle()</a></code> returns styles
+   <p>When the second parameter <var>pseudoElt</var> refers to a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑥">highlight pseudo-element</a>, <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle①">getComputedStyle()</a></code> returns styles
 as if that highlight is active
 and all other highlights are inactive.
 This avoids the potential
@@ -2327,7 +2359,7 @@ that depends on the actual highlight state.</p>
     <li>Defined interaction of <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css2/#propdef-line-height" id="ref-for-propdef-line-height①">line-height</a> and <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line②⑤">::first-line</a>. 
     <li>Defined box structure interaction of <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line②⑥">::first-line</a> and <a class="css" data-link-type="maybe" href="#selectordef-first-letter" id="ref-for-selectordef-first-letter③④">::first-letter</a>. 
     <li>Clarified painting order of highlight text decorations. 
-    <li>Removed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-caret-color" id="ref-for-propdef-caret-color">caret-color</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-cursor" id="ref-for-propdef-cursor">cursor</a> from applying to <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑤">highlight pseudo-elements</a>.
+    <li>Removed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-caret-color" id="ref-for-propdef-caret-color">caret-color</a> and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-cursor" id="ref-for-propdef-cursor">cursor</a> from applying to <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑦">highlight pseudo-elements</a>.
       (<a href="https://github.com/w3c/csswg-drafts/issues/4100">Issue 4100</a>) 
     <li>Extended the <code class="idl"><a data-link-type="idl" href="#csspseudoelement" id="ref-for-csspseudoelement①⓪">CSSPseudoElement</a></code> interface
       with a <code class="idl"><a data-link-type="idl" href="#dom-csspseudoelement-parent" id="ref-for-dom-csspseudoelement-parent③">parent</a></code> attribute
@@ -2337,7 +2369,7 @@ that depends on the actual highlight state.</p>
    </ul>
    <p>Significant changes since the <a href="https://www.w3.org/TR/2019/WD-css-pseudo-4-20190225/">25 February 2019 Working Draft</a> include:</p>
    <ul>
-    <li>Added <a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text⑨">::target-text</a> pseudo-element.
+    <li>Added <a class="css" data-link-type="maybe" href="#selectordef-target-text" id="ref-for-selectordef-target-text①⓪">::target-text</a> pseudo-element.
     (<a href="https://github.com/w3c/csswg-drafts/issues/5522">Issue 5522</a>) 
     <li>Removed <span class="css">::inactive-selection</span>.
     (<a href="https://github.com/w3c/csswg-drafts/issues/4579">Issue 4579</a>) 
@@ -2362,10 +2394,10 @@ that depends on the actual highlight state.</p>
     (Issues <a href="https://github.com/w3c/csswg-drafts/issues/3603">3603</a> and <a href="https://github.com/w3c/csswg-drafts/issues/3607">3607</a>) 
     <li>Allowed highlight overlay of inline-level boxes to extend to the line box edges.
     (Issues <a href="https://github.com/w3c/csswg-drafts/issues/5395">5395</a> and <a href="https://github.com/w3c/csswg-drafts/issues/4624">4624</a>) 
-    <li>Clarified that <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor②">currentColor</a> on a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑥">highlight pseudo-element</a> uses the color that would be used if the text were not “highlighted”,
+    <li>Clarified that <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor③">currentColor</a> on a <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑧">highlight pseudo-element</a> uses the color that would be used if the text were not “highlighted”,
     even if that color was provided by a pseudo-element like <a class="css" data-link-type="maybe" href="#selectordef-first-line" id="ref-for-selectordef-first-line②⑨">::first-line</a>.
     (<a href="https://github.com/w3c/csswg-drafts/issues/4625">Issue 4625</a>) 
-    <li>Defined how <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#propdef-text-shadow" id="ref-for-propdef-text-shadow③">text-shadow</a> interacts with <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑦">highlight pseudo-elements</a>.
+    <li>Defined how <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#propdef-text-shadow" id="ref-for-propdef-text-shadow③">text-shadow</a> interacts with <a data-link-type="dfn" href="#highlight-pseudo-element" id="ref-for-highlight-pseudo-element①⑨">highlight pseudo-elements</a>.
     (<a href="https://github.com/w3c/csswg-drafts/issues/3932">Issue 3932</a>) 
     <li>Improved the <a href="#highlight-ua-styles">default UA style sheet</a> rules applying to highlight pseudo-elements. 
    </ul>
@@ -2373,7 +2405,7 @@ that depends on the actual highlight state.</p>
    <ul>
     <li>Specified <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#valdef-text-decoration-line-spelling-error" id="ref-for-valdef-text-decoration-line-spelling-error">spelling-error</a> and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/css-text-decor-4/#valdef-text-decoration-line-grammar-error" id="ref-for-valdef-text-decoration-line-grammar-error">grammar-error</a> with <a class="css" data-link-type="maybe" href="#selectordef-spelling-error" id="ref-for-selectordef-spelling-error④">::spelling-error</a> and <a class="css" data-link-type="maybe" href="#selectordef-grammar-error" id="ref-for-selectordef-grammar-error④">::grammar-error</a> in the UA stylesheet. 
     <li>Redefined value propagation between parent/child highlight pseudo-elements to use inheritance rather than cascading. See discussion in and linked from <a href="https://github.com/w3c/csswg-drafts/issues/2474">Issue 2474</a>. 
-    <li>Refined list of supported properties for highlight pseudo-elements, e.g. adding <a class="property css" data-link-type="property" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-stroke-color" id="ref-for-propdef-stroke-color①">stroke-color</a>/<a class="property css" data-link-type="property" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-fill-color" id="ref-for-propdef-fill-color①">fill-color</a>, removing <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a>, etc. 
+    <li>Refined list of supported properties for highlight pseudo-elements, e.g. adding <a class="property css" data-link-type="property" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-stroke-color" id="ref-for-propdef-stroke-color②">stroke-color</a>/<a class="property css" data-link-type="property" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-fill-color" id="ref-for-propdef-fill-color②">fill-color</a>, removing <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a>, etc. 
     <li>Clarified how text and text decoration colors are painted for highlight pseudo-elements. 
     <li>Added the <code class="idl"><a data-link-type="idl" href="#dom-csspseudoelement-element" id="ref-for-dom-csspseudoelement-element③">element</a></code> attribute to the <code class="idl"><a data-link-type="idl" href="#csspseudoelement" id="ref-for-csspseudoelement①②">CSSPseudoElement</a></code> interface. 
     <li>Changed the values of the <code class="idl"><a data-link-type="idl" href="#dom-csspseudoelement-type" id="ref-for-dom-csspseudoelement-type①">type</a></code> attribute on the <code class="idl"><a data-link-type="idl" href="#csspseudoelement" id="ref-for-csspseudoelement①③">CSSPseudoElement</a></code> interface to match the corresponding pseudo-elements. 
@@ -2502,6 +2534,7 @@ that depends on the actual highlight state.</p>
    <li><a href="#highlight-overlay">highlight overlay</a><span>, in § 3.4</span>
    <li><a href="#highlight-pseudo-element">highlight pseudo-element</a><span>, in § 3.1</span>
    <li><a href="#selectordef-marker">::marker</a><span>, in § 4.2</span>
+   <li><a href="#paired-default-highlight-colors">paired default highlight colors</a><span>, in § 3.3</span>
    <li><a href="#dom-csspseudoelement-parent">parent</a><span>, in § 6.1</span>
    <li><a href="#selectordef-placeholder">::placeholder</a><span>, in § 4.3</span>
    <li><a href="#selectordef-first-letter-postfix">::postfix</a><span>, in § 2.2</span>
@@ -2525,10 +2558,12 @@ that depends on the actual highlight state.</p>
    <ul>
     <li><a href="#ref-for-propdef-background-color">3.2. 
 Styling Highlights</a> <a href="#ref-for-propdef-background-color①">(2)</a>
-    <li><a href="#ref-for-propdef-background-color②">3.5. 
-Cascading and Per-Element Highlight Styles</a>
-    <li><a href="#ref-for-propdef-background-color③">3.6.4. 
-Replaced Elements</a> <a href="#ref-for-propdef-background-color④">(2)</a>
+    <li><a href="#ref-for-propdef-background-color②">3.3. 
+Default UA Styles</a>
+    <li><a href="#ref-for-propdef-background-color③">3.3.1. 
+Paired Defaults</a> <a href="#ref-for-propdef-background-color④">(2)</a>
+    <li><a href="#ref-for-propdef-background-color⑤">3.6.4. 
+Replaced Elements</a> <a href="#ref-for-propdef-background-color⑥">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-box-shadow">
@@ -2543,6 +2578,27 @@ Styling the First-Letter Pseudo-elements</a>
    <ul>
     <li><a href="#ref-for-box-fragment">2.1.3. 
 Inheritance and the ::first-line Pseudo-element</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-cascade-origin-author">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascade-origin-author">https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascade-origin-author</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-cascade-origin-author">3.3.1. 
+Paired Defaults</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-cascaded-value">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascaded-value">https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascaded-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-cascaded-value">3.3.1. 
+Paired Defaults</a> <a href="#ref-for-cascaded-value①">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-all-inherit">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-inherit">https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-inherit</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-all-inherit">3.5. 
+Cascading and Per-Element Highlight Styles</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-inheritance">
@@ -2567,18 +2623,62 @@ Inheritance and the ::first-line Pseudo-element</a>
 Cascading and Per-Element Highlight Styles</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-inherited-value">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#inherited-value">https://andreubotella.com/csswg-auto-build/css-cascade-5/#inherited-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-inherited-value">3.5. 
+Cascading and Per-Element Highlight Styles</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-initial-value">
    <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#initial-value">https://andreubotella.com/csswg-auto-build/css-cascade-5/#initial-value</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-initial-value">4. 
+    <li><a href="#ref-for-initial-value">3.5. 
+Cascading and Per-Element Highlight Styles</a>
+    <li><a href="#ref-for-initial-value①">4. 
 Tree-Abiding Pseudo-elements</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="term-for-cascade-origin-ua">
-   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascade-origin-ua">https://andreubotella.com/csswg-auto-build/css-cascade-5/#cascade-origin-ua</a><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="term-for-valdef-all-revert">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-revert">https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-revert</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-cascade-origin-ua">3.5. 
+    <li><a href="#ref-for-valdef-all-revert">3.3.1. 
+Paired Defaults</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-all-revert-layer">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-revert-layer">https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-revert-layer</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-all-revert-layer">3.3.1. 
+Paired Defaults</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-specified-value">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#specified-value">https://andreubotella.com/csswg-auto-build/css-cascade-5/#specified-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-specified-value">3.5. 
 Cascading and Per-Element Highlight Styles</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-all-unset">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-unset">https://andreubotella.com/csswg-auto-build/css-cascade-5/#valdef-all-unset</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-all-unset">3.5. 
+Cascading and Per-Element Highlight Styles</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-used-value">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/#used-value">https://andreubotella.com/csswg-auto-build/css-cascade-5/#used-value</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-used-value">3.3.1. 
+Paired Defaults</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-origin">
+   <a href="https://andreubotella.com/csswg-auto-build/css-cascade-6/#origin">https://andreubotella.com/csswg-auto-build/css-cascade-6/#origin</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-origin">3.3.1. 
+Paired Defaults</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-color">
@@ -2590,20 +2690,54 @@ Styling the ::first-line Pseudo-element</a>
 Styling the First-Letter Pseudo-elements</a>
     <li><a href="#ref-for-propdef-color②">3.2. 
 Styling Highlights</a> <a href="#ref-for-propdef-color③">(2)</a> <a href="#ref-for-propdef-color④">(3)</a>
-    <li><a href="#ref-for-propdef-color⑤">3.5. 
+    <li><a href="#ref-for-propdef-color⑤">3.3. 
+Default UA Styles</a>
+    <li><a href="#ref-for-propdef-color⑥">3.3.1. 
+Paired Defaults</a>
+    <li><a href="#ref-for-propdef-color⑦">3.5. 
 Cascading and Per-Element Highlight Styles</a>
-    <li><a href="#ref-for-propdef-color⑥">3.6.3. 
-Text and Text Decorations</a> <a href="#ref-for-propdef-color⑦">(2)</a> <a href="#ref-for-propdef-color⑧">(3)</a> <a href="#ref-for-propdef-color⑨">(4)</a>
-    <li><a href="#ref-for-propdef-color①⓪">3.6.4. 
-Replaced Elements</a> <a href="#ref-for-propdef-color①①">(2)</a>
+    <li><a href="#ref-for-propdef-color⑧">3.6.3. 
+Text and Text Decorations</a> <a href="#ref-for-propdef-color⑨">(2)</a> <a href="#ref-for-propdef-color①⓪">(3)</a> <a href="#ref-for-propdef-color①①">(4)</a>
+    <li><a href="#ref-for-propdef-color①②">3.6.4. 
+Replaced Elements</a> <a href="#ref-for-propdef-color①③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-valdef-color-currentcolor">
    <a href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor">https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-color-currentcolor</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-color-currentcolor">3.6.3. 
-Text and Text Decorations</a> <a href="#ref-for-valdef-color-currentcolor①">(2)</a>
-    <li><a href="#ref-for-valdef-color-currentcolor②"> Changes</a>
+    <li><a href="#ref-for-valdef-color-currentcolor">3.5. 
+Cascading and Per-Element Highlight Styles</a>
+    <li><a href="#ref-for-valdef-color-currentcolor①">3.6.3. 
+Text and Text Decorations</a> <a href="#ref-for-valdef-color-currentcolor②">(2)</a>
+    <li><a href="#ref-for-valdef-color-currentcolor③"> Changes</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-system-color-highlight">
+   <a href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-highlight">https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-highlight</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-system-color-highlight">3.3. 
+Default UA Styles</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-system-color-highlighttext">
+   <a href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-highlighttext">https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-highlighttext</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-system-color-highlighttext">3.3. 
+Default UA Styles</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-system-color-mark">
+   <a href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-mark">https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-mark</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-system-color-mark">3.3. 
+Default UA Styles</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-system-color-marktext">
+   <a href="https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-marktext">https://andreubotella.com/csswg-auto-build/css-color-4/#valdef-system-color-marktext</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-system-color-marktext">3.3. 
+Default UA Styles</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-opacity">
@@ -3067,7 +3201,9 @@ CSSPseudoElement Interface</a>
    <ul>
     <li><a href="#ref-for-propdef-fill-color">3.2. 
 Styling Highlights</a>
-    <li><a href="#ref-for-propdef-fill-color①"> Changes</a>
+    <li><a href="#ref-for-propdef-fill-color①">3.3.1. 
+Paired Defaults</a>
+    <li><a href="#ref-for-propdef-fill-color②"> Changes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-stroke-color">
@@ -3075,7 +3211,9 @@ Styling Highlights</a>
    <ul>
     <li><a href="#ref-for-propdef-stroke-color">3.2. 
 Styling Highlights</a>
-    <li><a href="#ref-for-propdef-stroke-color①"> Changes</a>
+    <li><a href="#ref-for-propdef-stroke-color①">3.3.1. 
+Paired Defaults</a>
+    <li><a href="#ref-for-propdef-stroke-color②"> Changes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-propdef-stroke-width">
@@ -3226,16 +3364,33 @@ pseudo() method of the Element interface</a>
    <li>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-cascade-origin-author">author origin</span>
+     <li><span class="dfn-paneled" id="term-for-cascaded-value">cascaded value</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-all-inherit">inherit</span>
      <li><span class="dfn-paneled" id="term-for-inheritance">inheritance</span>
      <li><span class="dfn-paneled" id="term-for-inherited-property">inherited property</span>
+     <li><span class="dfn-paneled" id="term-for-inherited-value">inherited value</span>
      <li><span class="dfn-paneled" id="term-for-initial-value">initial value</span>
-     <li><span class="dfn-paneled" id="term-for-cascade-origin-ua">ua style sheet</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-all-revert">revert</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-all-revert-layer">revert-layer</span>
+     <li><span class="dfn-paneled" id="term-for-specified-value">specified value</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-all-unset">unset</span>
+     <li><span class="dfn-paneled" id="term-for-used-value">used value</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-CASCADE-6]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-origin">cascade origin</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-COLOR-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-propdef-color">color</span>
      <li><span class="dfn-paneled" id="term-for-valdef-color-currentcolor">currentcolor</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-system-color-highlight">highlight</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-system-color-highlighttext">highlighttext</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-system-color-mark">mark</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-system-color-marktext">marktext</span>
      <li><span class="dfn-paneled" id="term-for-propdef-opacity">opacity</span>
      <li><span class="dfn-paneled" id="term-for-valdef-color-transparent">transparent</span>
     </ul>
@@ -3418,6 +3573,8 @@ pseudo() method of the Element interface</a>
    <dd>Rossen Atanassov; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/css-break-4/"><cite>CSS Fragmentation Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-break-4/">https://andreubotella.com/csswg-auto-build/css-break-4/</a>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-cascade-5/">https://andreubotella.com/csswg-auto-build/css-cascade-5/</a>
+   <dt id="biblio-css-cascade-6">[CSS-CASCADE-6]
+   <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/css-cascade-6/"><cite>CSS Cascading and Inheritance Level 6</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-cascade-6/">https://andreubotella.com/csswg-auto-build/css-cascade-6/</a>
    <dt id="biblio-css-color-4">[CSS-COLOR-4]
    <dd>Tab Atkins Jr.; Chris Lilley; Lea Verou. <a href="https://andreubotella.com/csswg-auto-build/css-color/"><cite>CSS Color Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/css-color/">https://andreubotella.com/csswg-auto-build/css-color/</a>
    <dt id="biblio-css-content-3">[CSS-CONTENT-3]
@@ -3513,6 +3670,10 @@ pseudo() method of the Element interface</a>
   Is there any other case in which this matters? <a href="https://github.com/w3c/csswg-drafts/issues/2282">[Issue #2282]</a> <a class="issue-return" href="#issue-d8d33857" title="Jump to section">↵</a></div>
    <div class="issue"> Bikeshed is <a href="https://github.com/tabatkins/bikeshed/issues/2202">eating punctuation</a> in this note, which is not helpful. <a class="issue-return" href="#issue-14a38cf3" title="Jump to section">↵</a></div>
    <div class="issue"> Are there any other properties that should be included here? <a class="issue-return" href="#issue-6ca196f5" title="Jump to section">↵</a></div>
+   <div class="issue"> UA tweaks to the presentation of highlights
+  in ways that <em>are</em> controlled by CSS
+  are currently under discussion
+  in <a href="https://github.com/w3c/csswg-drafts/issues/6853">Issue 6853</a>. <a class="issue-return" href="#issue-c10df75c" title="Jump to section">↵</a></div>
    <div class="issue"> See <a href="http://lists.w3.org/Archives/Public/www-style/2008Nov/0022.html">F2F minutes</a>, <a href="http://lists.w3.org/Archives/Public/www-style/2008Oct/0268.html">dbaron’s message</a>, <a href="http://lists.w3.org/Archives/Public/www-style/2010May/0247.html">Daniel’s thread</a>, <a href="http://lists.w3.org/Archives/Public/www-style/2010May/0261.html">Gecko notes</a>, <a href="http://lists.w3.org/Archives/Public/www-style/2010May/0366.html">Opera notes</a>, <a href="http://lists.w3.org/Archives/Public/www-style/2010May/0280.html">Webkit notes</a> <a class="issue-return" href="#issue-13b80e20" title="Jump to section">↵</a></div>
    <div class="issue"> Not sure if this is the correct way of describing the way things work. <a class="issue-return" href="#issue-271a1b90" title="Jump to section">↵</a></div>
    <div class="issue"> Interaction of <a class="css" data-link-type="maybe" href="#selectordef-marker">::marker</a> and <a class="css" data-link-type="maybe" href="#selectordef-first-line">::first-line</a> is currently under discussion in <a href="https://github.com/w3c/csswg-drafts/issues/4506">Issue 4506</a>. <a class="issue-return" href="#issue-c80e7017" title="Jump to section">↵</a></div>
@@ -3669,19 +3830,21 @@ List Markers: the ::marker pseudo-element</a>
 Selecting Highlighted Content: the ::selection,  ::target-text, ::spelling-error, and ::grammar-error pseudo-elements</a> <a href="#ref-for-highlight-pseudo-element①">(2)</a>
     <li><a href="#ref-for-highlight-pseudo-element②">3.2. 
 Styling Highlights</a> <a href="#ref-for-highlight-pseudo-element③">(2)</a>
-    <li><a href="#ref-for-highlight-pseudo-element④">3.4. 
+    <li><a href="#ref-for-highlight-pseudo-element④">3.3. 
+Default UA Styles</a>
+    <li><a href="#ref-for-highlight-pseudo-element⑤">3.4. 
 Area of a Highlight</a>
-    <li><a href="#ref-for-highlight-pseudo-element⑤">3.5. 
-Cascading and Per-Element Highlight Styles</a> <a href="#ref-for-highlight-pseudo-element⑥">(2)</a>
-    <li><a href="#ref-for-highlight-pseudo-element⑦">3.6.1. 
+    <li><a href="#ref-for-highlight-pseudo-element⑥">3.5. 
+Cascading and Per-Element Highlight Styles</a> <a href="#ref-for-highlight-pseudo-element⑦">(2)</a> <a href="#ref-for-highlight-pseudo-element⑧">(3)</a>
+    <li><a href="#ref-for-highlight-pseudo-element⑨">3.6.1. 
 Backgrounds</a>
-    <li><a href="#ref-for-highlight-pseudo-element⑧">3.6.2. 
+    <li><a href="#ref-for-highlight-pseudo-element①⓪">3.6.2. 
 Shadows</a>
-    <li><a href="#ref-for-highlight-pseudo-element⑨">3.6.3. 
-Text and Text Decorations</a> <a href="#ref-for-highlight-pseudo-element①⓪">(2)</a> <a href="#ref-for-highlight-pseudo-element①①">(3)</a> <a href="#ref-for-highlight-pseudo-element①②">(4)</a> <a href="#ref-for-highlight-pseudo-element①③">(5)</a>
-    <li><a href="#ref-for-highlight-pseudo-element①④">6.3. 
+    <li><a href="#ref-for-highlight-pseudo-element①①">3.6.3. 
+Text and Text Decorations</a> <a href="#ref-for-highlight-pseudo-element①②">(2)</a> <a href="#ref-for-highlight-pseudo-element①③">(3)</a> <a href="#ref-for-highlight-pseudo-element①④">(4)</a> <a href="#ref-for-highlight-pseudo-element①⑤">(5)</a>
+    <li><a href="#ref-for-highlight-pseudo-element①⑥">6.3. 
 getComputedStyle()</a>
-    <li><a href="#ref-for-highlight-pseudo-element①⑤"> Changes</a> <a href="#ref-for-highlight-pseudo-element①⑥">(2)</a> <a href="#ref-for-highlight-pseudo-element①⑦">(3)</a>
+    <li><a href="#ref-for-highlight-pseudo-element①⑦"> Changes</a> <a href="#ref-for-highlight-pseudo-element①⑧">(2)</a> <a href="#ref-for-highlight-pseudo-element①⑨">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selectordef-selection">
@@ -3689,12 +3852,16 @@ getComputedStyle()</a>
    <ul>
     <li><a href="#ref-for-selectordef-selection">3.1. 
 Selecting Highlighted Content: the ::selection,  ::target-text, ::spelling-error, and ::grammar-error pseudo-elements</a> <a href="#ref-for-selectordef-selection①">(2)</a>
-    <li><a href="#ref-for-selectordef-selection②">3.5. 
-Cascading and Per-Element Highlight Styles</a> <a href="#ref-for-selectordef-selection③">(2)</a> <a href="#ref-for-selectordef-selection④">(3)</a>
-    <li><a href="#ref-for-selectordef-selection⑤">3.6.1. 
+    <li><a href="#ref-for-selectordef-selection②">3.3. 
+Default UA Styles</a>
+    <li><a href="#ref-for-selectordef-selection③">3.3.1. 
+Paired Defaults</a>
+    <li><a href="#ref-for-selectordef-selection④">3.5. 
+Cascading and Per-Element Highlight Styles</a> <a href="#ref-for-selectordef-selection⑤">(2)</a>
+    <li><a href="#ref-for-selectordef-selection⑥">3.6.1. 
 Backgrounds</a>
-    <li><a href="#ref-for-selectordef-selection⑥">3.6.3. 
-Text and Text Decorations</a> <a href="#ref-for-selectordef-selection⑦">(2)</a> <a href="#ref-for-selectordef-selection⑧">(3)</a> <a href="#ref-for-selectordef-selection⑨">(4)</a> <a href="#ref-for-selectordef-selection①⓪">(5)</a> <a href="#ref-for-selectordef-selection①①">(6)</a>
+    <li><a href="#ref-for-selectordef-selection⑦">3.6.3. 
+Text and Text Decorations</a> <a href="#ref-for-selectordef-selection⑧">(2)</a> <a href="#ref-for-selectordef-selection⑨">(3)</a> <a href="#ref-for-selectordef-selection①⓪">(4)</a> <a href="#ref-for-selectordef-selection①①">(5)</a> <a href="#ref-for-selectordef-selection①②">(6)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selectordef-target-text">
@@ -3702,11 +3869,13 @@ Text and Text Decorations</a> <a href="#ref-for-selectordef-selection⑦">(2)</a
    <ul>
     <li><a href="#ref-for-selectordef-target-text">3.1. 
 Selecting Highlighted Content: the ::selection,  ::target-text, ::spelling-error, and ::grammar-error pseudo-elements</a> <a href="#ref-for-selectordef-target-text①">(2)</a> <a href="#ref-for-selectordef-target-text②">(3)</a>
-    <li><a href="#ref-for-selectordef-target-text③">3.6.1. 
+    <li><a href="#ref-for-selectordef-target-text③">3.3. 
+Default UA Styles</a>
+    <li><a href="#ref-for-selectordef-target-text④">3.6.1. 
 Backgrounds</a>
-    <li><a href="#ref-for-selectordef-target-text④">3.6.3. 
-Text and Text Decorations</a> <a href="#ref-for-selectordef-target-text⑤">(2)</a> <a href="#ref-for-selectordef-target-text⑥">(3)</a> <a href="#ref-for-selectordef-target-text⑦">(4)</a> <a href="#ref-for-selectordef-target-text⑧">(5)</a>
-    <li><a href="#ref-for-selectordef-target-text⑨"> Changes</a>
+    <li><a href="#ref-for-selectordef-target-text⑤">3.6.3. 
+Text and Text Decorations</a> <a href="#ref-for-selectordef-target-text⑥">(2)</a> <a href="#ref-for-selectordef-target-text⑦">(3)</a> <a href="#ref-for-selectordef-target-text⑧">(4)</a> <a href="#ref-for-selectordef-target-text⑨">(5)</a>
+    <li><a href="#ref-for-selectordef-target-text①⓪"> Changes</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="selectordef-spelling-error">
@@ -3731,6 +3900,13 @@ Backgrounds</a>
     <li><a href="#ref-for-selectordef-grammar-error③">3.7. 
 Security and Privacy Considerations</a>
     <li><a href="#ref-for-selectordef-grammar-error④"> Changes</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="paired-default-highlight-colors">
+   <b><a href="#paired-default-highlight-colors">#paired-default-highlight-colors</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-paired-default-highlight-colors">3.3.1. 
+Paired Defaults</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="highlight-overlay">
@@ -3824,13 +4000,6 @@ pseudo() method of the Element interface</a> <a href="#ref-for-dom-csspseudoelem
     <li><a href="#ref-for-dom-csspseudoelement-pseudo②"> Changes</a> <a href="#ref-for-dom-csspseudoelement-pseudo③">(2)</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="dom-csspseudoelement-pseudo-type-type">
-   <b><a href="#dom-csspseudoelement-pseudo-type-type">#dom-csspseudoelement-pseudo-type-type</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-dom-csspseudoelement-pseudo-type-type">6.2. 
-pseudo() method of the Element interface</a> <a href="#ref-for-dom-csspseudoelement-pseudo-type-type①">(2)</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="dom-csspseudoelement-type">
    <b><a href="#dom-csspseudoelement-type">#dom-csspseudoelement-type</a></b><b>Referenced in:</b>
    <ul>
@@ -3853,6 +4022,13 @@ CSSPseudoElement Interface</a> <a href="#ref-for-dom-csspseudoelement-element①
     <li><a href="#ref-for-dom-csspseudoelement-parent">6.1. 
 CSSPseudoElement Interface</a> <a href="#ref-for-dom-csspseudoelement-parent①">(2)</a> <a href="#ref-for-dom-csspseudoelement-parent②">(3)</a>
     <li><a href="#ref-for-dom-csspseudoelement-parent③"> Changes</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dom-element-pseudo-type-type">
+   <b><a href="#dom-element-pseudo-type-type">#dom-element-pseudo-type-type</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dom-element-pseudo-type-type">6.2. 
+pseudo() method of the Element interface</a> <a href="#ref-for-dom-element-pseudo-type-type①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dom-element-pseudo">
