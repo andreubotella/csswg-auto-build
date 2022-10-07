@@ -18,10 +18,14 @@ jobs:
         run: pipenv run bikeshed update
       - name: Configure Bikeshed spec data
         run: pipenv run python ./configure-spec-data.py
+      - run: |
+          mkdir output
+          cp test-setup/templates/index.html output/index.html
+          cp -r csswg-drafts output/test
       - name: Compile
         run: |
           set -e
-          for file in ./csswg-drafts/**/*.bs; do
+          for file in ./output/test/**/*.bs; do
             pipenv run bikeshed -f spec "$file" "${file%.bs}.html"
           done
       - name: Fix directory defaults
@@ -29,15 +33,24 @@ jobs:
         # that doesn't work for Github Pages. So we copy them as index.html.
         run: |
           set -e
-          for file in ./csswg-drafts/**/Overview.html; do
+          for file in ./output/test/**/Overview.html; do
             cp "$file" "$(dirname "$file")/index.html"
           done
       - name: Build index
         run: pipenv run python ./build-index.py
-      - run: rm -rf ./csswg-drafts/.git{,attributes,ignore}
+      - run: rm -rf ./output/test/.git{,attributes,ignore}
+      - name: Build redirects to the official mirror
+        run: |
+          # For every folder in ./output/test that has an index.html (except for
+          # ./output/test itself), we build a redirect in ./output
+          set -e
+          for index in ./output/test/*/index.html; do
+            folder_name="$(basename "$(dirname "$index")")"
+            pipenv run python ./test-setup/redirect.py "$folder_name"
+          done
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           exclude_assets: ".github"
-          publish_dir: ./csswg-drafts
+          publish_dir: ./output

@@ -1,15 +1,24 @@
 # csswg-auto-build
 
-A proof of concept to show how the Editor's Drafts for the CSS Working Group
-specifications can be automatically built via Github Actions and served via
-Github Pages.
+This repo used to be a proof of concept to show the Editor's Drafts for the CSS
+Working Group specifications could be automatically built via Github Actions and
+served via Github Pages.
 
-The official server for the CSSWG draft specs, https://drafts.csswg.org, is
-often down lately, particularly on European mornings. This repo serves as a
-mirror that updates every 3 hours, as well as a proof of concept setup for how
-those specs can be built and served using only Github.
+This was needed because the official server for the CSSWG draft specs,
+https://drafts.csswg.org, is often down, particularly on European mornings. I
+set up this repo in January 2022 as a mirror that updated every 3 hours, as well
+as a proof of concept setup for how those specs can be built and served using
+only Github.
 
-The mirror is available at https://andreubotella.com/csswg-auto-build
+And although the canonical URL for the specs is still in
+https://drafts.csswg.org, this setup ended up being adopted in the semi-official
+mirror at https://w3c.github.io/csswg-drafts in September 2022 (see
+w3c/csswg-drafts#7712). This repo and its corresponding mirror
+(https://andreubotella.com/csswg-auto-build) are now only kept as historical
+artifacts and for testing proposed changes to the setup before they're merged
+into the w3c/csswg-drafts repo
+(https://andreubotella.com/csswg-auto-build/test). Any previous links to the
+specs now redirect to the semi-official mirror.
 
 ## High-level build description
 
@@ -31,7 +40,7 @@ served at all.
 
 Since Github Pages can't be configured to serve a directory default other than
 `index.html`, in order to make links like
-https://andreubotella.com/csswg-auto-build/css-text-3 work, we copy every
+https://w3c.github.io/csswg-drafts/css-text-3 work, we copy every
 `Overview.html` file – generated or not – into an `index.html` that Github Pages
 will serve as the default.
 
@@ -45,11 +54,11 @@ work, but it is a heuristic that sometimes gets things wrong and needs a set of
 exceptions.
 
 In `build-index.py` we also add redirects from a level-less shortname
-(https://andreubotella.com/csswg-auto-build/css-grid) to the spec that
-represents the current work for that module (`css-grid-2` in this case). Since
-Github Actions doesn't support specifying server-side redirects, we create a
-`css-grid/index.html` file that uses a [`<meta http-equiv="refresh">`
-](https://html.spec.whatwg.org/multipage/semantics.html#attr-meta-http-equiv-refresh)
+(https://w3c.github.io/csswg-drafts/css-grid) to the spec that represents the
+current work for that module (`css-grid-2` in this case). Since Github Actions
+doesn't support specifying server-side redirects, we create a
+`css-grid/index.html` file that uses a
+[`<meta http-equiv="refresh">`](https://html.spec.whatwg.org/multipage/semantics.html#attr-meta-http-equiv-refresh)
 pragma to achieve that redirect.
 
 After this, the `csswg-drafts` git submodule folder now has additional
@@ -85,8 +94,8 @@ or for running this build setup on the official repo.
 This mirror is also meant to serve as a replacement for when
 https://drafts.csswg.org is down, which means having links to the specs in that
 site is not ideal. Rather than replace links with regex, which would be very
-easy to break, we instead change the [Bikeshed spec
-database](https://github.com/tabatkins/bikeshed-data) with the
+easy to break, we instead change the
+[Bikeshed spec database](https://github.com/tabatkins/bikeshed-data) with the
 `configure-spec-data.py` script. That turns out to be much easier, since that
 database is mostly made of line-delimited plain text files. This might still
 leave any manual link, but the bulk of intra-spec cross-references are correctly
