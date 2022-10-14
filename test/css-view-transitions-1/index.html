@@ -6,7 +6,7 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version e8a706a4b, updated Fri Jul 15 11:08:03 2022 -0700" name="generator">
+  <meta content="Bikeshed version b0de3432c, updated Thu Oct 13 09:16:59 2022 -0700" name="generator">
   <link href="https://drafts.csswg.org/css-view-transitions-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
 <style>
@@ -745,7 +745,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS View Transitions Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-07">7 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-14">14 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1624,12 +1624,22 @@ The natural size of the image is equal to the <var>interestRectangle</var> bound
      <li data-md>
       <p>Let <var>document</var> be <var>transition</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global④">relevant global object’s</a> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/window-object.html#concept-document-window" id="ref-for-concept-document-window③">associated document</a>.</p>
      <li data-md>
-      <p>For each <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑤">page-transition pseudo-elements</a> associated with <var>transition</var>,
-check whether there is an active animation associated with this pseudo-element.</p>
-      <p class="issue" id="issue-9b6c2555"><a class="self-link" href="#issue-9b6c2555"></a> Define what active animation means here.</p>
+      <p>Let <var>hasActiveAnimations</var> be a boolean, initially false. For each <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑤">page-transition pseudo-elements</a> associated with <var>transition</var>:</p>
+      <ol>
+       <li data-md>
+        <p>Let <var>element</var> be the <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑥">page-transition pseudo-element</a>.</p>
+       <li data-md>
+        <p>For each <var>animation</var> that contains at least one <a data-link-type="dfn">animation effect</a> whose <span>effect target</span> is <var>element</var> and whose associated <span>animation timeline</span> is of type <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/web-animations-1/#document-timeline" id="ref-for-document-timeline">document timeline</a>, set <var>hasActiveAnimations</var> to true if any of the
+following conditions is true:</p>
+        <ol>
+         <li data-md>
+          <p><var>animation</var> is in <a data-link-type="dfn">paused</a> or <span>running</span> state.</p>
+         <li data-md>
+          <p><a data-link-type="dfn">pending-animation-event-queue</a> has any events associated with <var>animation</var>.</p>
+        </ol>
+      </ol>
      <li data-md>
-      <p>If no <a data-link-type="dfn" href="#page-transition-pseudo-elements" id="ref-for-page-transition-pseudo-elements⑥">page-transition pseudo-elements</a> has an active animation:</p>
-      <p class="issue" id="issue-7108de0e"><a class="self-link" href="#issue-7108de0e"></a> There needs to be a definition/link for "active animation".</p>
+      <p>If <var>hasActiveAnimations</var> is false:</p>
       <ol>
        <li data-md>
         <p>Set <var>transition</var>’s <a data-link-type="dfn" href="#viewtransition-phase" id="ref-for-viewtransition-phase①①">phase</a> to "`done`".</p>
@@ -1738,11 +1748,6 @@ html:<c- nf>:page-transition-incoming-image</c-><c- p>(</c->*<c- p>)</c-> <c- p>
      <li data-md>
       <p>Set <var>transition</var>’s <a data-link-type="dfn" href="#viewtransition-phase" id="ref-for-viewtransition-phase①②">phase</a> to "`animating`".</p>
     </ol>
-    <p class="issue" id="issue-6e67cab9"><a class="self-link" href="#issue-6e67cab9"></a> How are keyframes scoped to user-agent origin? We could decide
-        scope based on whether `animation-name` in the computed style
-        came from a developer or UA stylesheet.</p>
-    <p class="issue" id="issue-7115bd7f"><a class="self-link" href="#issue-7115bd7f"></a> We should retarget the animation if computed properties for
-        incoming elements change.</p>
    </div>
    <h3 class="heading settled" data-level="7.9" id="create-transition-pseudo-elements-algorithm"><span class="secno">7.9. </span><span class="content"><a data-link-type="dfn" href="#create-transition-pseudo-elements" id="ref-for-create-transition-pseudo-elements②">Create transition pseudo-elements</a></span><a class="self-link" href="#create-transition-pseudo-elements-algorithm"></a></h3>
    <div class="algorithm" data-algorithm="create transition pseudo-elements">
@@ -2255,6 +2260,13 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
     <li><a href="#ref-for-map-exists">7.3. Perform an outgoing capture</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-list-iterate">
+   <a href="https://infra.spec.whatwg.org/#list-iterate">https://infra.spec.whatwg.org/#list-iterate</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-list-iterate">7.3. Perform an outgoing capture</a> <a href="#ref-for-list-iterate①">(2)</a>
+    <li><a href="#ref-for-list-iterate②">7.5. Capture the image</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-map-iterate">
    <a href="https://infra.spec.whatwg.org/#map-iterate">https://infra.spec.whatwg.org/#map-iterate</a><b>Referenced in:</b>
    <ul>
@@ -2304,6 +2316,12 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
    <a href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#type-selector">https://andreubotella.com/csswg-auto-build/test/selectors-4/#type-selector</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-type-selector">4. Pseudo-elements</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-document-timeline">
+   <a href="https://andreubotella.com/csswg-auto-build/test/web-animations-1/#document-timeline">https://andreubotella.com/csswg-auto-build/test/web-animations-1/#document-timeline</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-document-timeline">7.6. Update transition DOM</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-aborterror">
@@ -2523,6 +2541,7 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
      <li><span class="dfn-paneled" id="term-for-list-contain">contain</span>
      <li><span class="dfn-paneled" id="term-for-iteration-continue">continue</span>
      <li><span class="dfn-paneled" id="term-for-map-exists">exist</span>
+     <li><span class="dfn-paneled" id="term-for-list-iterate">for each <small>(for list)</small></span>
      <li><span class="dfn-paneled" id="term-for-map-iterate">for each <small>(for map)</small></span>
      <li><span class="dfn-paneled" id="term-for-ordered-map">map</span>
      <li><span class="dfn-paneled" id="term-for-ordered-set">set</span>
@@ -2539,6 +2558,11 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
      <li><span class="dfn-paneled" id="term-for-originating-element">originating element</span>
      <li><span class="dfn-paneled" id="term-for-pseudo-element">pseudo-element</span>
      <li><span class="dfn-paneled" id="term-for-type-selector">type selector</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WEB-ANIMATIONS-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-document-timeline">document timeline</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -2606,6 +2630,8 @@ do not respond to hit-testing (as if they had pointer-events: none) until <var>i
    <dd>Tantek Çelik; et al. <a href="https://andreubotella.com/csswg-auto-build/test/selectors-3/"><cite>Selectors Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/selectors-3/">https://andreubotella.com/csswg-auto-build/test/selectors-3/</a>
    <dt id="biblio-selectors-4">[SELECTORS-4]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/selectors/"><cite>Selectors Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/selectors/">https://andreubotella.com/csswg-auto-build/test/selectors/</a>
+   <dt id="biblio-web-animations-1">[WEB-ANIMATIONS-1]
+   <dd>Brian Birtles; et al. <a href="https://andreubotella.com/csswg-auto-build/test/web-animations-1/"><cite>Web Animations</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/web-animations-1/">https://andreubotella.com/csswg-auto-build/test/web-animations-1/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -2683,18 +2709,11 @@ the new version. <a class="issue-return" href="#issue-f6dfdcaa" title="Jump to s
    <div class="issue"> There needs to be a definition/link for "remove". <a class="issue-return" href="#issue-80506344" title="Jump to section">↵</a></div>
    <div class="issue"> There needs to be a definition/link for "associated". <a class="issue-return" href="#issue-cc250ace" title="Jump to section">↵</a></div>
    <div class="issue"> Refactor this so the algorithm takes a set of elements that will be captured. This centralizes the logic for deciding if an element should be included or not. <a class="issue-return" href="#issue-2bfbc0f2" title="Jump to section">↵</a></div>
-   <div class="issue"> Define what active animation means here. <a class="issue-return" href="#issue-9b6c2555" title="Jump to section">↵</a></div>
-   <div class="issue"> There needs to be a definition/link for "active animation". <a class="issue-return" href="#issue-7108de0e" title="Jump to section">↵</a></div>
    <div class="issue"> There needs to be a definition/link for "remove". <a class="issue-return" href="#issue-80506344①" title="Jump to section">↵</a></div>
    <div class="issue"> There needs to be a definition/link for "associated". <a class="issue-return" href="#issue-cc250ace①" title="Jump to section">↵</a></div>
    <div class="issue"> Also clarify updating the animation based on new bounds/transform to
 get c0 continuity. <a class="issue-return" href="#issue-70e412c9" title="Jump to section">↵</a></div>
    <div class="issue"> Define the algorithm used to clip the snapshot when it exceeds max size. <a class="issue-return" href="#issue-c9dce14f" title="Jump to section">↵</a></div>
-   <div class="issue"> How are keyframes scoped to user-agent origin? We could decide
-        scope based on whether `animation-name` in the computed style
-        came from a developer or UA stylesheet. <a class="issue-return" href="#issue-6e67cab9" title="Jump to section">↵</a></div>
-   <div class="issue"> We should retarget the animation if computed properties for
-        incoming elements change. <a class="issue-return" href="#issue-7115bd7f" title="Jump to section">↵</a></div>
    <div class="issue"> "tag" should be defined/linked. <a class="issue-return" href="#issue-e6797087" title="Jump to section">↵</a></div>
    <div class="issue"> This should be better defined.
     I’m not sure if pseudo-elements have defined ways to modify their DOM. <a class="issue-return" href="#issue-cd5827ed" title="Jump to section">↵</a></div>

@@ -3,7 +3,7 @@ Title: CSS Values and Units Module Level 4
 Group: CSSWG
 Shortname: css-values
 Level: 4
-Status: WD
+Status: ED
 Work Status: Refining
 ED: https://drafts.csswg.org/css-values-4/
 TR: https://www.w3.org/TR/css-values-4/
@@ -19,15 +19,18 @@ Ignored Terms: <spacing-limit>, containing block, property
 Ignored Vars: Cn+1, n
 Inline Github Issues: no
 Default Highlight: css
+Include Can I Use Panels: yes
 </pre>
 <pre class='link-defaults'>
 spec: css-backgrounds-3; type: type; text: <position>
 spec: css2; type: property; text: border-collapse
 spec: css-color-4; type: value; text: currentcolor
 spec: css-color-4; type: type; text: <color>
+spec: css-shapes-1; type: function; text: rect();
 spec: css-sizing-3; type: property;
 	text: min-width
 	text: box-sizing
+spec: cssom-1; type:dfn; text:owner node; for:CSSStyleSheet;
 spec: selectors-4; type: type; text: <q-name>
 spec: infra; type: dfn; text: string;
 </pre>
@@ -88,38 +91,43 @@ Component Value Types</h3>
 
 	Component value types are designated in several ways:
 
-	<ol>
-		<li>
-			<a href="#keywords">keyword</a> values (such as <css>auto</css>, ''disc'', etc.),
-			which appear literally, without quotes (e.g. <code>auto</code>)
+	1. <a href="#keywords">Keyword</a> values (such as <css>auto</css>, ''disc'', etc.),
+		which appear literally, without quotes (e.g. <code>auto</code>).
 
-		<li>
-			basic data types, which appear between <css>&lt;</css> and <css>></css>
-			(e.g., <<length>>, <<percentage>>, etc.).
-			For <a>numeric data types</a>,
-			this type notation can annotate any range restrictions
-			using the [[#numeric-ranges|bracketed range notation]] described below.
+	2. Basic data types,
+		which appear between <css>&lt;</css> and <css>></css>
+		(e.g., <<length>>, <<percentage>>, etc.).
+		For <a>numeric data types</a>,
+		this type notation can annotate any range restrictions
+		using the [[#numeric-ranges|bracketed range notation]] described below.
 
-		<li>
-			types that have the same range of values as a property bearing the same name
-			(e.g., <<'border-width'>>, <<'background-attachment'>>, etc.).
-			In this case, the type name is the property name (complete with quotes) between the brackets.
-			Such a type does <em>not</em> include <a href="#common-keywords">CSS-wide keywords</a> such as ''inherit'',
-			and also does not include any top-level <a href="#mult-comma">comma-separated-list multiplier</a>
-			(i.e. if a property named <css>pairing</css> is defined as <css>[ <<custom-ident>> <<integer>>? ]#</css>,
-			then <css>&lt;\'pairing'></css> is equivalent to <css>[ <<custom-ident>> <<integer>>? ]</css>,
-			not <css>[ <<custom-ident>> <<integer>>? ]#</css>).
+	3. Property value ranges,
+		which represent the same pattern of values as a property bearing the same name.
+		These are written as the property name,
+		surrounded by single quotes,
+		between <css>&lt;</css> and <css>></css>,
+		e.g., <<'border-width'>>, <<'background-attachment'>>, etc.
 
-		<li>
-			non-terminals that do not share the same name as a property.
-			In this case, the non-terminal name appears between <css>&lt;</css> and <css>></css>,
-			as in <<spacing-limit>>.
-			Notice the distinction between <<border-width>> and <<'border-width'>>:
-			the latter is defined as the value of the 'border-width' property,
-			the former requires an explicit expansion elsewhere.
-			The definition of a non-terminal is typically located near its first appearance in the specification.
-	</ol>
+		These types <em>do not</em> include <a href="#common-keywords">CSS-wide keywords</a> such as ''inherit'',
+		and also <em>do not</em> include any top-level <a href="#mult-comma">comma-separated-list multiplier</a>
+		(i.e. if a property named <css>pairing</css> is defined as <css>[ <<custom-ident>> <<integer>>? ]#</css>,
+		then <css>&lt;\'pairing'></css> is equivalent to <css>[ <<custom-ident>> <<integer>>? ]</css>,
+		not <css>[ <<custom-ident>> <<integer>>? ]#</css>).
 
+	4. Functional notations and their arguments.
+		These are written as the function's name,
+		followed by an empty parentheses pair,
+		between <css>&lt;</css> and <css>></css>,
+		e.g. <<calc()>>.
+
+	5. Other non-terminals.
+		These are written as the name of the non-terminal
+		between <css>&lt;</css> and <css>></css>,
+		as in <<spacing-limit>>.
+		Notice the distinction between <<border-width>> and <<'border-width'>>:
+		the latter represents the grammar of the 'border-width' property,
+		the former requires an explicit expansion elsewhere.
+		The definition of a non-terminal is typically located near its first appearance in the specification.
 
 	Some property value definitions also include the slash (/),
 	the comma (,),
@@ -174,6 +182,7 @@ Component Value Types</h3>
 	as the sole component of their property value.
 	For readability these are not listed explicitly in the property value syntax definitions.
 	For example, the full value definition of 'border-color'
+	under [[CSS-CASCADE-3|CSS Cascading and Inheritance Level 3]]
 	is <code>&lt;color>{1,4} | inherit | initial | unset</code>
 	(even though it is listed as <code>&lt;color>{1,4}</code>).
 
@@ -273,7 +282,7 @@ Component Value Multipliers</h3>
 	but in complex grammars this can push the number of brackets beyond readability.)
 
 	For repeated component values (indicated by <css>*</css>, <css>+</css>, or <css>#</css>),
-	UAs must support at least 20 repetitions of the component.
+	[=UAs=] must support at least 20 repetitions of the component.
 	If a property value contains more than the supported number of repetitions,
 	the declaration must be ignored as if it were invalid.
 
@@ -510,12 +519,18 @@ Representing Interpolated Values: the ''mix()'' notation</h3>
 
 	A ''mix()'' notation is invalid if either its <<start-value>> or <<end-value>>
 	is invalid if substituted in its place,
+	if it is not the sole value of the property,
 	or if the property using it is [=not animatable=].
 
-	ISSUE(6700):
-	Define more precisely where mix() is allowed.
-	Is it a top-level functional notation only?
-	Or can it be nested more deeply in the grammar somehow?
+	<div class="example">
+		For example, the following declarations are invalid,
+		and will be ignored:
+		<pre>
+			color: mix(90% ; #invalid ; #F00);
+			background: url(ocean) mix(10% ; blue ; yellow);
+			display: mix(0% ; inline ; block);
+		</pre>
+	</div>
 
 	Progress values below ''0%'' and above ''100%'' are valid;
 	they represent interpolation beyond the range represented
@@ -609,12 +624,8 @@ CSS-wide keywords: ''initial'', ''inherit'' and ''unset''</h4>
 	As defined <a href="#component-types">above</a>,
 	all properties accept the <dfn export>CSS-wide keywords</dfn>,
 	which represent value computations common to all CSS properties.
-
-	The ''initial'' keyword represents the value specified as the property's initial value.
-	The ''inherit'' keyword represents the computed value of the property on the element's parent.
-	The ''unset'' keyword acts as either ''inherit'' or ''initial'',
-	depending on whether the property is inherited or not.
-	All of these keywords are normatively defined in the Cascade module. [[!CSS3CASCADE]]
+	These keywords are normatively defined in
+	the <a href="https://www.w3.org/TR/css-cascade/#defaulting-keywords">CSS Cascading and Inheritance Module</a>.
 
 	<wpt>
 	css/css-multicol/multicol-inherit-002.xht
@@ -628,7 +639,7 @@ CSS-wide keywords: ''initial'', ''inherit'' and ''unset''</h4>
 	<!-- Make it easier to add CSS-wide keywords by defining a grammar production. -->
 
 <h3 id='custom-idents'>
-Author-defined Identifiers: the <<custom-ident>> type</h3>
+Unprefixed Author-defined Identifiers: the <<custom-ident>> type</h3>
 
 	Some properties accept arbitrary author-defined identifiers as a component value.
 	This generic data type is denoted by <dfn id="identifier-value">&lt;custom-ident></dfn>,
@@ -659,17 +670,18 @@ Author-defined Identifiers: the <<custom-ident>> type</h3>
 	</div>
 
 	Note: When designing grammars with <<custom-ident>>,
-	the <<custom-ident>> should always be "positionally unambiguous",
+	the <<custom-ident>> should always be “positionally unambiguous”,
 	so that it's impossible to conflict with any keyword values in the property.
+	Such conflicts can alternatively be avoided by using <<dashed-ident>>.
 
 <h3 id='dashed-idents'>
-<em>Explicitly</em> Author-defined Identifiers: the <<dashed-ident>> type</h3>
+Prefixed Author-defined Identifiers: the <<dashed-ident>> type</h3>
 
 	Some contexts accept <em>both</em> author-defined identifiers
 	<em>and</em> CSS-defined identifiers.
 	If not handled carefully,
 	this can result in difficulties adding new CSS-defined values;
-	UAs have to study existing usage
+	[=UAs=] have to study existing usage
 	and gamble that there are sufficiently few author-defined identifiers in use
 	matching the new CSS-defined one,
 	so giving the new value a special CSS-defined meaning
@@ -810,12 +822,12 @@ Quoted Strings: the <<string>> type</h3>
 <h3 id="urls">
 Resource Locators: the <<url>> type</h3>
 
-	The <<url>> type
+	The <<url>> type,
+	written with the <dfn>url()</dfn> and <dfn>src()</dfn> functions,
 	represents a <l spec=url>[=/URL=]</l>,
 	which is a pointer to a resource.
 
-	Typically, a <<url>> is written with the <dfn>url()</dfn>
-	or <dfn>src()</dfn> <a>functional notations</a>:
+	The syntax of <<url>> is:
 
 	<pre class="prod">
 		<dfn id="url-value">&lt;url></dfn> = url( <<string>> <<url-modifier>>* ) |
@@ -914,7 +926,7 @@ Relative URLs</h4>
 	When a <<url>> appears in the computed value of a property,
 	it is resolved to an absolute URL,
 	as described in the preceding paragraph.
-	The computed value of a URL that the UA cannot resolve to an absolute URL is the specified value.
+	The computed value of a URL that the [=UA=] cannot resolve to an absolute URL is the specified value.
 
 	<div class="example">
 		For example, suppose the following rule:
@@ -939,15 +951,36 @@ Fragment URLs</h5>
 	To work around some common eccentricities in browser URL handling,
 	CSS has special behavior for fragment-only urls.
 
-	If a ''url()''’s value starts with a U+0023 NUMBER SIGN (<code>#</code>) character,
+	If a <<url>>'s value starts with a U+0023 NUMBER SIGN (<code>#</code>) character,
 	parse it as per normal for URLs,
-	but additionally set the <dfn export for="url()">local url flag</dfn> of the ''url()''.
+	but additionally set the <dfn export for="url()">local url flag</dfn> of the <<url>>.
 
-	When matching a ''url()'' with the <a>local url flag</a> set,
+	When matching a <<url>> with the <a>local url flag</a> set,
 	ignore everything but the URL's fragment,
-	and resolve that fragment against the current document that relative URLs are resolved against.
+	and resolve that fragment against the [=node tree=]
+	of the stylesheet's [=CSSStyleSheet/owner node=].
 	This reference must always be treated as same-document
 	(rather than cross-document).
+
+	ISSUE(3320): This relative URL resolution behavior is under discussion.
+
+	Note: This means that such fragments will resolve
+	against the contents of the current document
+	(and in consideration of shadow DOM, only within the stylesheet's associated [=node tree=]),
+	regardless of what base URL relative URLs outside of CSS resolve against.
+
+	<div class="example">
+		In the following example,
+		<code>#anchor</code> will resolve against <code>http://example.com/</code>
+		whereas <code>#image</code> will resolve against the elements in the HTML document itself:
+
+		<xmp highlight=html>
+			<!DOCTYPE html>
+			<base href="http://example.com/">
+			...
+			<a href="#anchor" style="background-image: url(#image)">link</a>
+		</xmp>
+	</div>
 
 	When <a href="https://www.w3.org/TR/cssom-1/#serializing-css-values">serializing</a>
 	a ''url()'' with the <a>local url flag</a> set,
@@ -976,10 +1009,18 @@ Fragment URLs</h5>
 <h4 id="url-empty">
 Empty URLs</h4>
 
-	If the value of the ''url()'' is the empty string
+	If the value of the <<url>> is the empty string
 	(like ''url("")'' or ''url()''),
 	the url must resolve to an invalid resource
 	(similar to what the url ''about:invalid'' does).
+
+	Its computed value is ''url("")'' or ''src("")'',
+	whichever was specified,
+	and it must serialize as such.
+
+	<wpt>
+	css/css-values/urls/empty.html
+	</wpt>
 
 	Note: This matches the behavior of empty urls for embedded resources elsewhere in the web platform,
 	and avoids excess traffic re-requesting the stylesheet or host document
@@ -992,7 +1033,7 @@ Empty URLs</h4>
 <h4 id='url-modifiers'>
 URL Modifiers</h4>
 
-	The ''url()'' function supports specifying additional <dfn>&lt;url-modifier></dfn>s,
+	<<url>>s support specifying additional <dfn>&lt;url-modifier></dfn>s,
 	which change the meaning or the interpretation of the URL somehow.
 	A <<url-modifier>> is either an <<ident>> or a <a>functional notation</a>.
 
@@ -1014,8 +1055,6 @@ URL Processing Model</h4>
 		stream:
 
 		1. Let |environmentSettings| be |sheet|'s [=relevant settings object=].
-
-		2. Let |global| be |environmentSettings|'s [=environment settings object/global object=].
 
 		3. Let |documentBase| be |environmentSettings|'s [=API base URL=].
 
@@ -1043,8 +1082,11 @@ URL Processing Model</h4>
 
 		11. [=/Fetch|fetching=] |req|, with [=fetch/processresponseconsumebody=] set to
 			|processResponse|.
-
 	</div>
+
+	Note: Resources loaded through CSS style sheets
+	are cached and cleared the same as any other resources
+	linked from the document.
 
 <h2 id="numeric-types">
 Numeric Data Types</h2>
@@ -1097,7 +1139,7 @@ Range Restrictions and Range Definition Notation</h3>
 	indicating a closed range
 	between (and including) <var>min</var> and <var>max</var>.
 	For example, <<integer [0,10]>> indicates an integer between ''0'' and ''10'', inclusive,
-	while <<length [0, 100px]>> indicates a length between ''0px'' and ''100px''
+	while <<angle [0, 180deg]>> indicates an angle between ''0deg'' and ''180deg''
 	(expressed in any unit).
 
 	Note: CSS values generally do not allow open ranges;
@@ -1105,7 +1147,7 @@ Range Restrictions and Range Definition Notation</h3>
 
 	CSS theoretically supports infinite precision and infinite ranges for all value types;
 	however in reality implementations have finite capacity.
-	UAs should support reasonably useful ranges and precisions.
+	[=UAs=] should support reasonably useful ranges and precisions.
 	Range extremes that are ideally unlimited
 	are indicated using &infin; or &minus;&infin; as appropriate.
 	For example, <<length [0, &infin;]>> indicates a non-negative length.
@@ -1118,7 +1160,7 @@ Range Restrictions and Range Definition Notation</h3>
 	Values of &minus;&infin; or &infin; must be written without units,
 	even if the value type uses units.
 	Values of ''0'' <em>can</em> be written without units,
-	even if the value type doesn't allow "unitless zeroes"
+	even if the value type doesn't allow “unitless zeroes”
 	(such as <<time>>).
 
 	Note: At the time of writing,
@@ -1697,7 +1739,7 @@ Font-relative Lengths: the ''em'', ''rem'', ''ex'', ''rex'', ''cap'', ''rcap'', 
 				will be 20% greater than the computed font size inherited by <code>h1</code> elements.
 			</div>
 
-		<dt><dfn id="rem" lt="rem">rem unit</dfn>
+		<dt><dfn id="rem" lt="rem" caniuse="rem">rem unit</dfn>
 		<dd>
 			Equal to the computed value of the ''em'' unit on the root element.
 
@@ -1713,7 +1755,7 @@ Font-relative Lengths: the ''em'', ''rem'', ''ex'', ''rex'', ''cap'', ''rcap'', 
 			The x-height of a font can be found in different ways.
 			Some fonts contain reliable metrics for the x-height.
 			If reliable font metrics are not available,
-			UAs may determine the x-height from the height of a lowercase glyph.
+			[=UAs=] may determine the x-height from the height of a lowercase glyph.
 			One possible heuristic is to look at
 			how far the glyph for the lowercase "o" extends below the baseline,
 			and subtract that value from the top of its bounding box.
@@ -1752,7 +1794,7 @@ Font-relative Lengths: the ''em'', ''rem'', ''ex'', ''rex'', ''cap'', ''rcap'', 
 			The cap-height of a font can be found in different ways.
 			Some fonts contain reliable metrics for the cap-height.
 			If reliable font metrics are not available,
-			UAs may determine the cap-height from the height of an uppercase glyph.
+			[=UAs=] may determine the cap-height from the height of an uppercase glyph.
 			One possible heuristic is to look at
 			how far the glyph for the uppercase “O” extends below the baseline,
 			and subtract that value from the top of its bounding box.
@@ -1763,7 +1805,7 @@ Font-relative Lengths: the ''em'', ''rem'', ''ex'', ''rex'', ''cap'', ''rcap'', 
 		<dd>
 			Equal to the value of the ''cap'' unit on the root element.
 
-		<dt><dfn id="ch" lt="ch">ch unit</dfn>
+		<dt><dfn id="ch" lt="ch" caniuse="ch-unit">ch unit</dfn>
 		<dd>
 			Represents the typical <a>advance measure</a> of European alphanumeric characters,
 			and measured as the used <a>advance measure</a> of the “0” (ZERO, U+0030) glyph
@@ -1886,7 +1928,12 @@ Font-relative Lengths: the ''em'', ''rem'', ''ex'', ''rex'', ''cap'', ''rcap'', 
 	to the initial values of the 'font' and 'line-height' properties.
 	Similarly, when specified in a document with no root element,
 	the [=root font-relative lengths=] are resolved
-	assuming the initial values of the 'font' and 'line-height' properties..
+	assuming the initial values of the 'font' and 'line-height' properties.
+
+	Note: Font-relative units such as ''ch'' and ''ic'' can trigger font downloads,
+	if a required font is not yet loaded.
+
+	The [=font-relative lengths=] are calculated in the absence of shaping.
 
 	Some user-agents allow users to apply additional restrictions to font sizes in a document,
 	such as setting minimum font sizes to ensure readability.
@@ -1906,6 +1953,10 @@ Font-relative Lengths: the ''em'', ''rem'', ''ex'', ''rex'', ''cap'', ''rcap'', 
 	too many pages expect these units to be exact multiples of the specified 'font-size',
 	rather than the <em>actual</em> font-size after applying user preferences.
 
+	Some user-agents apply restrictions to the 'line-height' values on form controls.
+	These must have no effect on the ''lh'' and ''rlh'' units.
+	The effect on their descendants, however, is undefined.
+
 <!--
 ██     ██ ██      ██       ██ ████████ ████████  ██████
 ██     ██ ██  ██  ██      ██  ██          ██    ██    ██
@@ -1916,7 +1967,7 @@ Font-relative Lengths: the ''em'', ''rem'', ''ex'', ''rex'', ''cap'', ''rcap'', 
    ███     ███  ███  ██       ████████    ██     ██████
 -->
 
-<h4 id="viewport-relative-lengths">
+<h4 id="viewport-relative-lengths" caniuse="viewport-units">
 Viewport-percentage Lengths: the ''*vw'', ''*vh'', ''*vi'', ''*vb'', ''*vmin'', ''*vmax'' units</h4>
 
 	The <dfn export>viewport-percentage lengths</dfn> are relative to the size of the
@@ -1938,7 +1989,7 @@ The Large, Small, and Dynamic Viewport Sizes</h5>
 		<dd>
 			The <dfn export>UA-default viewport-percentage units</dfn>
 			(''v*'')
-			are defined with respect to a UA-defined <dfn export>UA-default viewport size</dfn>,
+			are defined with respect to a [=UA=]-defined <dfn export>UA-default viewport size</dfn>,
 			which for any given document
 			should be equivalent to the [=large viewport size=],
 			[=small viewport size=],
@@ -1958,7 +2009,7 @@ The Large, Small, and Dynamic Viewport Sizes</h5>
 			(''lv*'')
 			are defined with respect to the <dfn export>large viewport size</dfn>:
 			the viewport sized assuming
-			any UA interfaces that are dynamically expanded and retracted
+			any [=UA=] interfaces that are dynamically expanded and retracted
 			to be retracted.
 			This allows authors to size content
 			such that it is guaranteed to fill the viewport,
@@ -1988,7 +2039,7 @@ The Large, Small, and Dynamic Viewport Sizes</h5>
 			(''sv*'')
 			are defined with respect to the <dfn export>small viewport size</dfn>:
 			the viewport sized assuming
-			any UA interfaces that are dynamically expanded and retracted
+			any [=UA=] interfaces that are dynamically expanded and retracted
 			to be expanded.
 			This allows authors to size content
 			such that it can fit within the viewport
@@ -2018,7 +2069,7 @@ The Large, Small, and Dynamic Viewport Sizes</h5>
 			(''dv*'')
 			are defined with respect to the <dfn export>dynamic viewport size</dfn>:
 			the viewport sized
-			with dynamic consideration of any UA interfaces
+			with dynamic consideration of any [=UA=] interfaces
 			that are dynamically expanded and retracted.
 			This allows authors to size content
 			such that it can exactly fit within the viewport
@@ -2275,12 +2326,12 @@ Absolute Lengths: the ''cm'', ''mm'', ''Q'', ''in'', ''pt'', ''pc'', ''px'' unit
 	and devices with unusual viewing distances,
 	it is recommended instead that the [=anchor unit=] be the [=pixel unit=].
 	For such devices it is recommended that the [=pixel unit=]
-	refer to the whole number of device pixels that best approximates the reference pixel.
+	refer to the whole number of [=device pixels=] that best approximates the reference pixel.
 
 	Note: If the [=anchor unit=] is the [=pixel unit=],
 	the [=physical units=] might not match their physical measurements.
 	Alternatively if the [=anchor unit=] is a [=physical unit=],
-	the [=pixel unit=] might not map to a whole number of device pixels.
+	the [=pixel unit=] might not map to a whole number of [=device pixels=].
 
 	Note: This definition of the [=pixel unit=] and the [=physical units=]
 	differs from the earlier editions of CSS1 and CSS2.
@@ -2304,7 +2355,7 @@ Absolute Lengths: the ''cm'', ''mm'', ''Q'', ''in'', ''pt'', ''pc'', ''px'' unit
 	css/CSS2/values/units-009.xht
 	</wpt>
 
-	The <dfn export>reference pixel</dfn> is the visual angle of one pixel on a device with a pixel density of 96dpi
+	The <dfn export>reference pixel</dfn> is the visual angle of one pixel on a device with a [=device pixel=] density of 96dpi
 	and a distance from the reader of an arm's length.
 	For a nominal arm's length of 28 inches,
 	the visual angle is therefore about 0.0213 degrees.
@@ -2356,6 +2407,15 @@ Absolute Lengths: the ''cm'', ''mm'', ''Q'', ''in'', ''pt'', ''pc'', ''px'' unit
 	<wpt>
 	css/css-values/absolute-length-units-001.html
 	</wpt>
+
+	A <dfn export>device pixel</dfn> is the smallest unit of area on the device output
+	capable of displaying its full range of colors.
+	For typical color screens, it's a square or somewhat rectangular region
+	containing a red, green, and blue subpixel.
+	Many non-traditional outputs exist that can blur this definition,
+	such as by displaying some colors at higher resolutions.
+	Such devices still expose some equivalent notion of "device pixel",
+	however.
 
 <h2 id="other-units">
 Other Quantities</h2>
@@ -2641,8 +2701,8 @@ Combination of <<image>></h4>
 	This has been disallowed generically because it creates parsing ambiguities
 	when combined with other length or percentage components in a property value.
 
-	The canonical order when serializing is
-	the horizontal component followed by the vertical component.
+<h4 id="position-parsing">
+Parsing <<position>></h4>
 
 	When specified in a grammar alongside other keywords, <<length>>s, or <<percentage>>s,
 	<<position>> is <em>greedily</em> parsed;
@@ -2660,6 +2720,33 @@ Combination of <<image>></h4>
 		will be parsed as a single-value <<position>>
 		followed by a <<length>>.
 	</div>
+
+<h4 id="position-serialization">
+Serializing <<position>></h4>
+
+	When serializing the [=specified value=] of a <<position>>:
+
+	<dl class=switch>
+		<dt>If only one component is specified:
+		<dd>
+			* The implied <a value spec="css-backgrounds-3">center</a> keyword is added,
+				and a 2-component value is serialized.
+
+		<dt>If two components are specified:
+		<dd>
+			* Keywords are serialized as keywords.
+			* <<length-percentage>>s are serialized as <<length-percentage>>s.
+			* Components are serialized horizontal first, then vertical.
+
+		<dt>If four components are specified:
+		<dd>
+			* Keywords and offsets are both serialized.
+			* Components are serialized horizontal first, then vertical.
+	</dl>
+
+	Note: [=Computed values=] are always serialized as two offsets (without keywords)
+	because the [=computed value=] does not preserve syntactic distinctions.
+
 
 <h4 id="combine-positions">
 Combination of <<position>></h4>
@@ -2728,7 +2815,7 @@ Functional Notations</h2>
  ██████  ██     ██ ████████  ██████    ███ ███
 -->
 
-<h2 id="math" oldids="calc-notation">
+<h2 id="math" oldids="calc-notation" caniuse="calc">
 Mathematical Expressions</h2>
 
 	The <dfn export lt="math function">math functions</dfn>
@@ -2887,6 +2974,12 @@ Comparison Functions: ''min()'', ''max()'', and ''clamp()''</h3>
 	favoring the min calculation if it conflicts with the max.
 	(That is, given ''clamp(MIN, VAL, MAX)'',
 	it represents exactly the same value as ''max(MIN, min(VAL, MAX))'').
+
+	For all three functions,
+	the argument [=calculations=] can resolve to any <<number>>, <<dimension>>, or <<percentage>>,
+	but must have the <em>same</em> [=determine the type of a calculation|type=],
+	or else the function is invalid;
+	the result will have the same [=CSSNumericValue/type=] as the arguments.
 
 	<div class="example">
 
@@ -3914,22 +4007,33 @@ Type Checking</h3>
 	[=Math functions=] themselves have [=CSSNumericValue/types=],
 	according to their contained [=calculations=]:
 
-	* The [=CSSNumericValue/type=] of a ''calc()'' or ''abs()'' expression
-		is the [=CSSNumericValue/type=] of its contained [=calculation=].
-	* The [=CSSNumericValue/type=] of a ''min()'', ''max()'', or ''clamp()'' expression
-		is the result of [=add two types|adding the types=]
+	: ''calc()''
+	: ''abs()''
+	:: The [=CSSNumericValue/type=] of its contained [=calculation=].
+
+	: ''min()''
+	: ''max()''
+	: ''clamp()''
+	: ''hypot()''
+	: ''round()''
+	: ''mod()''
+	: ''rem()''
+	:: The result of [=add two types|adding the types=]
 		of its comma-separated [=calculations=].
-	* The [=CSSNumericValue/type=] of a ''sign()'' expression
-		is «[ "number" → 1 ]».
-	* The [=CSSNumericValue/type=] of a ''sin()'', ''cos()'', or ''tan()'' expression
-		is «[ "number" → 1 ]».
-	* The [=CSSNumericValue/type=] of an ''asin()'', ''acos()'', ''atan()'', or ''atan2()'' expression
-		is «[ "angle" → 1 ]».
-	* The [=CSSNumericValue/type=] of a ''pow()'', ''sqrt()'', ''log()'', or ''exp()'' expression
-		is «[ "number" → 1 ]».
-	* The [=CSSNumericValue/type=] of a ''hypot()'', ''round()'', ''mod()'', or ''rem()'' expression
-		is the result of [=add two types|adding the types=]
-		of its comma-separated [=calculations=].
+
+	: ''sign()''
+	: ''sin()''
+	: ''cos()''
+	: ''tan()''
+	: ''asin()''
+	: ''acos()''
+	: ''atan()''
+	: ''atan2()''
+	: ''pow()''
+	: ''sqrt()''
+	: ''log()''
+	: ''exp()''
+	:: «[ ]» (empty map).
 
 	For each of the above,
 	if the [=CSSNumericValue/type=] is failure,
@@ -4702,9 +4806,51 @@ Appendix A: Recommended Minimum Ranges and Precision of Computed Values</h2>
 		</span>
 -->
 
+<h2 id="linked-properties">
+Appendix A: Coordinating List-Valued Properties</h2>
+
+	Some list-valued properties have coordinated effects:
+	each item in their value list applies to a distinct effect,
+	and corresponding entries in each property's list
+	all refer to the same effect.
+	Often the coordinating values can also be specified together
+	as a single entry in a list-valued [=shorthand property=].
+
+	A typical example is the list-valued 'background-*' properties,
+	which can specify <a href="https://www.w3.org/TR/css-backgrounds-3/#layering">multiple background image layers</a>.
+	For each property controlling how the image is sized, tiled, placed, etc.,
+	the <var>N</var>th item in its list describes some effect that applies
+	to the <var>N</var>th background image.
+
+	A <dfn export lt="coordinating list property | coordinating list property group">coordinating list property group</dfn> creates
+	a <dfn export>coordinated value list</dfn>,
+	which has, for each entry,
+	a value from each property in the group;
+	these are used together to define a single effect,
+	such as a background image layer
+	or an animation.
+	The [=coordinated value list=] is assembled as follows:
+
+	* The length of the [=coordinated value list=] is determined by
+		the number of items specified in one particular [=coordinating list property=],
+		the <dfn export>coordinating list base property</dfn>.
+		(In the case of backgrounds, this is the 'background-image' property.)
+
+	* The <var>N</var>th value of the [=coordinated value list=] is constructed
+		by collecting the <var>N</var>th [=use value=] of each [=coordinating list property=]
+
+	* If a [=coordinating list property=] has too many values specified,
+		excess values at the end of its list are not [=used value|used=].
+
+	* If a [=coordinating list property=] has too few values specified,
+		its value list is repeated to add more [=used values=].
+
+	* The [=computed values=] of the [=coordinating list properties=]
+		are not affected by such truncation or repetition.
+
 
 <h2 id='iana'>
-Appendix A: IANA Considerations</h2>
+Appendix B: IANA Considerations</h2>
 
 <h3 id='about-invalid'>
 Registration for the <code>about:invalid</code> URL scheme</h3>
@@ -4733,7 +4879,7 @@ Registration for the <code>about:invalid</code> URL scheme</h3>
 	</table>
 
 <h2 id="deprecated-quirky-length">
-Appendix B: Quirky Lengths</h2>
+Appendix C: Quirky Lengths</h2>
 
 	When CSS is being parsed in [=quirks mode=],
 	<dfn type><<quirky-length>></dfn> is a type of <<length>>
@@ -4827,14 +4973,36 @@ Recent Changes</h3>
 
 	(This is a subset of [[#additions-L3]].)
 
-	Substantial changes since
+	Substantial changes since <a href="https://www.w3.org/TR/2021/WD-css-values-4-20211216/">16 December 2021 WD</a>:
 
 	<ul>
-		<li>Switch censoring of ''NaN'' that escapes a [=math function=] from infinity to zero.
+		<li>Changed resolution of a ''url()'' with the [=local url flag=]
+			to reference the current [=node tree=] (regardless of document base URL modifications).
+			(<a href="https://github.com/w3c/csswg-drafts/issues/3320">Issue 3320</a>)
+		<li>Switched censoring of ''NaN'' that escapes a [=math function=] from infinity to zero.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/7067">Issue 7067</a>)
+		<li>Added [[#linked-properties]] to allow this property pattern to be easily referenced.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/7164">Issue 7164</a>)
+		<li>Restricted ''mix()'' to be the sole value of a declaration.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/6700">Issue 6700</a>)
 		<li>Updated to match latest Fetch terminology.
 			(<a href="https://github.com/whatwg/fetch/pull/1413">Fetch PR 1413</a>,
 			 <a href="https://github.com/w3c/csswg-drafts/pull/7160">CSS PR 7160</a>)
+		<li>Clarified that the [=font-relative lengths=] are calculated without text shaping.
+		<li>Defined serialization of empty urls to be <code>url("")</code>.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/6447">Issue 6447</a>)
+		<li>Defined serialization of <<position>> [=specified values=].
+			(<a href="https://github.com/w3c/csswg-drafts/issues/2274">Issue 2274</a>)
+		<li>Fixed definition of [=numbers=] to allow decimals in combination with scientific notation,
+			as originally intended and as defined in [[CSS-SYNTAX-3]].
+			(<a href="https://github.com/w3c/csswg-drafts/issues/7248">Issue 7248</a>)
+		<li>Corrected various functions to return an empty map
+			for their [=CSSNumericValue/type=] instead of «[ "number" → 1 ]».
+			(<a href="https://github.com/w3c/csswg-drafts/issues/7486">Issue 7486</a>)
+		<li>Clarified effect of special UA restrictions on 'line-height' on ''lh'' and ''rlh''.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/3257">Issue 3257</a>)
+		<li>Defined <code>&lt;function()></code> notation to refer to functional notations.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/5728">Issue 5728</a>)
 	</ul>
 
 	Substantial changes since <a href="https://www.w3.org/TR/2021/WD-css-values-4-20211016/">16 October 2021 WD</a>:
@@ -4942,17 +5110,37 @@ Additions Since Level 3</h3>
 		<li>A non-integer in a calc() automatically rounds to the nearest integer
 			when used where an <<integer>> is required.
 		<li>Defined [[#calc-serialize|serialization]] of [=math functions=].
+		<li>Added a genericized definition of [=coordinating list property groups=],
+			to make it easier to reference the coordinating behavior of the 'background' properties.
 	</ul>
 
-<h2 class="no-num" id="sec-pri">
-Security and Privacy Considerations</h2>
+<h2 class="no-num" id="security">
+Security Considerations</h2>
 
-	This specification mostly just defines units that are common to CSS specifications,
-	and which present no security concerns.
+	This specification presents no new security considerations.
 
-	Note: Does URL handling have a security concern?  Probably.
+	This specification defines the ''url()'' and ''src()'' functions (<<url>>),
+	which allow CSS to make network requests.
+	Depending on what features they are used in,
+	these can potentially expose whether or not the user has access to resources on a network,
+	and expose information about their contents
+	(such as the rules within a style sheet, the size of an image, the metrics of a font).
+	They can also allow exfiltrating data via URL.
+
+<h2 class="no-num" id="privacy">
+Privacy Considerations</h2>
 
 	This specification defines units that expose the user's screen size
-	and default font size,
-	but both are trivially observable from JS,
-	so they do not constitute a new privacy risk.
+	(the [=viewport-percentage lengths=]),
+	default font size,
+	and potentially some information about
+	which fonts are available on the user's system
+	(the [=font-relative lengths=]).
+
+	This specification defines the ''url()'' and ''src()'' functions (<<url>>),
+	which allow CSS to make network requests.
+	Depending on what features they are used in,
+	these can potentially expose whether or not the user has access to resources on a network,
+	and expose information about their contents
+	(such as the rules within a style sheet, the size of an image, the metrics of a font).
+	They can also allow exfiltrating data via URL.
