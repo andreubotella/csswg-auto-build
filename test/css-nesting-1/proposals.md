@@ -82,6 +82,7 @@ Arguments for each of the above options:
 - Like the (2.X) set, syntax is same as Sass/etc-style except for selectors starting with a type selector.
 - Like (1), can theoretically mix properties and rules again, but the data model will still have to act as if all properties as coming first.
 - No `@nest` rule needed
+- In the future we could theoretically relax the syntax further, if we find a way to parse desecendant element selectors properly without infinite lookahead
 
 <td>
 
@@ -101,6 +102,7 @@ Arguments for each of the above options:
 <td>
 
 - Nesting that is not nested
+- No nesting in inline styles or other CSSStyleDeclaration contexts
 - Requires another pair of brackets
 - Requires either noisy `@nest` everywhere or cryptic ASCII syntax
 - CSSOM with (arguably) a different structure than the syntax
@@ -143,9 +145,33 @@ If it were up to you, what syntax would you prefer for CSS Nesting?
 | mirisuzanne | 3          | 2.iii      | 4          |
 | romainmenke | 1          | 3          | 4          |
 | FremyCompany | 4.iii     | 1          | 3          |
-| dbaron | 3 [*](https://github.com/w3c/csswg-drafts/issues/7834#issuecomment-1283019419) | 1 | 2.iii [*](https://github.com/w3c/csswg-drafts/issues/7834#issuecomment-1283019419) |
-| alohci      | 3          | 1          | 4          |	
+| dbaron      | 3 [*](https://github.com/w3c/csswg-drafts/issues/7834#issuecomment-1283019419) | 4.iii | 1 |
+| alohci      | 3          | 1          | 4          |
+| svgeesus    | 3          | 2.iii      |            |
+| bramus      | 3          | 1          | 2.iii      |
+| jonathantneal | 3 [*](https://github.com/w3c/csswg-drafts/issues/7834#issuecomment-1283433494) | 1 | |
+| sesse       | 1          | 3          |            |
+| lilles      | 1          | 3          |            |
+| ydaniv      | 4.iii or 4.ii | 1       | 3          |
+| andruud     | 3          | 1          | 4          |
 
 ***Note:** It is not required to be a WG member to add your name to this list,
 only to have followed the [discussion](https://github.com/w3c/csswg-drafts/issues/7834)
 and considered the proposals (summarized above) carefully.*
+
+### Counts
+
+18 participants voted.
+
+| Proposal | Top choice votes | Runner-up votes | Third choice votes |
+|----------|------------------|-----------------|--------------------|
+| 1        | 5    | 7   | 1   |
+| 2 (all)  | 1    | 5   | 4   |
+| 2.i      | 0    | 0   | 1   |
+| 2.ii     | 0    | 2   | 1   |
+| 2.iii    | 1    | 4   | 2   |
+| 3        | 10   | 4   | 4   |
+| 4 (all)  | 3    | 2   | 5   |
+| 4.i      | 0    | 1   | 0   |
+| 4.ii     | 2    | 0   | 0   |
+| 4.iii    | 3    | 1   | 0   |

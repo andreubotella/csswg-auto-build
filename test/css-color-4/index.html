@@ -989,7 +989,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Color Module Level 4</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-19">19 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-20">20 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -8877,6 +8877,14 @@ Emilio Cobos Álvarez, Chris Bai, Amelia Bellamy-Royds, Lars Borg, Mike Bremford
     <h2 class="no-num heading settled" id="changes"><span class="content"> Changes</span><a class="self-link" href="#changes"></a></h2>
     <h3 class="heading settled" id="changes-from-20220705"><span class="content">Changes since the <a href="https://www.w3.org/TR/2022/CR-css-color-4-20220705/">Candidate Recommendation of 5 July 2022</a> </span><a class="self-link" href="#changes-from-20220705"></a></h3>
     <ul>
+     <li>Consistent capitalization of Oklab and Oklch
+     <li>Moved definitions of valid color, invalid color, out of gamut and in gamut to terminology section
+     <li>Fixed definition of "longer" hue interpolation
+     <li>Further clarified the concept of a host syntax
+     <li>Acessibility improvements for color swatches
+     <li>Made explicit that legacy forms do not support "none"
+     <li>Remove "none" from the hue production, as it is not allowed in legacy syntax
+     <li>Removed some dangling references to CMYK and CMYKOGV, moved to CSS Color5
      <li>Clarified how missing values in colors to be interpolated are carried forward
      <li>Updated syntax of xyz-params so they take numbers and percentage, to align with prose
      <li>Ensure all examples and figures have IDs, self-links
@@ -8898,295 +8906,295 @@ Emilio Cobos Álvarez, Chris Bai, Amelia Bellamy-Royds, Lars Borg, Mike Bremford
      <li>Added two new System colors: AccentColor and AccentColorText 
      <li>Described overall color space conversion steps in new section
      <li>Accounted for <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①①">none</a> alpha in premultiplication and un-premultiplication
-     <h3 class="heading settled" id="changes-from-20211215"><span class="content">Changes since the <a href="https://www.w3.org/TR/2021/WD-css-color-4-20211215/">Working Draft of 15 December 2021</a> </span><a class="self-link" href="#changes-from-20211215"></a></h3>
-     <ul>
-      <li>Made system colors fully resolve, but forbid their alteration in forced colors mode
-      <li>Removed forgiveness for incorrect number of parameters in color() function
-      <li>Changed serialization of CIE Lightness and OK Lightness to number rather than percentage.
-      <li>Marked deprecated system color equivalences as at-risk
-      <li>Added reference ranges to percentage values for CIE and OK L,a,b,C
-      <li>Noted that there is sample code for performing and undoing premultiplication, for both rectangular and polar color spaces.
-      <li>Added out of range clamping to the gamut mapping prose, as well as the pseudocode
-      <li>Added normative reference for ProPhoto RGB / ROMM
-      <li>Corrected sRGB and Display P3 black point value for reference surround
-      <li>Added normative reference for Display P3
-      <li>Avoided an infinite loop in gamut reduction, with colors whiter than white or darker than black
-      <li>Clarified serialization of the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①②">none</a> value
-      <li>Clarified the opt-in to interpolation in Oklab, for non-legacy colors
-      <li>Defined how premultiplication works, with the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①③">none</a> value
-      <li>Clarified that missing values in rgb serialize as 0
-      <li>Clarified the use of calc() with the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①④">none</a> value
-      <li>Typo, inconsistent casing on System Colors
-      <li>Added example of SelectedItem with SelectedItemText
-      <li>Explicitly noted the presence or absence of legacy colors
-      <li>Added normative reference for CIE XYZ
-      <li>Added normative reference for HWB and HSL
-      <li>Clarified that <a class="css" data-link-type="maybe" href="#funcdef-hwb" id="ref-for-funcdef-hwb①①">hwb()</a> is not a legacy syntax so does not support the older, comma-separated syntactic form
-      <li>Clarified that only legacy colors will gamut map, the others are unbounded
-      <li>Use distinct terms, spectrophotometer and spectroradiometer
-      <li>Assorted minor typos fixed, and grammatical improvements
-     </ul>
-     <h3 class="no-num heading settled" id="changes-from-20210601"><span class="content">Changes since the <a href="https://www.w3.org/TR/2021/WD-css-color-4-20210601/">Working Draft of 1 June 2021</a> </span><a class="self-link" href="#changes-from-20210601"></a></h3>
-     <ul>
-      <li>Added gamut mapping section and defined a CSS gamut mapping algorithm as chroma reduction in Oklch with local MINDE.
-      <li>Computed value of color(xyz ...) is color(xyz-d65 ...)
-      <li>Added srgb-linear to interpolation color spaces
-      <li>Updated Changes from Colors 3 section
-      <li>Added Resolving Oklab and Oklch values section
-      <li>Added srgb-linear color space
-      <li>Moved @color-profile and device-cmyk to level 5 per CSSWG resolution
-      <li>Defined interpolation color space
-      <li>Clarified that matrices are row-major and linked to the matrix multiplication library
-      <li>Split old Security &amp; Privacy section into separate sections
-      <li>Defined quirks-mode quirky hex colors
-      <li>Removed fallback colors from device-cmyk
-      <li>Host syntax that does not declare a default now uses Oklab by default
-      <li>Added sample code for deltaE OK
-      <li>Added sample conversion code for OKlab and Oklch
-      <li>Added oklab() and oklch() functions
-       <i>Added description of Oklab and Oklch</i> 
-      <li>Added description of CIE LCH deficiencies
-      <li>Allowed all components of a color to be "missing" via the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①⑤">none</a> keyword,
+    </ul>
+    <h3 class="heading settled" id="changes-from-20211215"><span class="content">Changes since the <a href="https://www.w3.org/TR/2021/WD-css-color-4-20211215/">Working Draft of 15 December 2021</a> </span><a class="self-link" href="#changes-from-20211215"></a></h3>
+    <ul>
+     <li>Made system colors fully resolve, but forbid their alteration in forced colors mode
+     <li>Removed forgiveness for incorrect number of parameters in color() function
+     <li>Changed serialization of CIE Lightness and OK Lightness to number rather than percentage.
+     <li>Marked deprecated system color equivalences as at-risk
+     <li>Added reference ranges to percentage values for CIE and OK L,a,b,C
+     <li>Noted that there is sample code for performing and undoing premultiplication, for both rectangular and polar color spaces.
+     <li>Added out of range clamping to the gamut mapping prose, as well as the pseudocode
+     <li>Added normative reference for ProPhoto RGB / ROMM
+     <li>Corrected sRGB and Display P3 black point value for reference surround
+     <li>Added normative reference for Display P3
+     <li>Avoided an infinite loop in gamut reduction, with colors whiter than white or darker than black
+     <li>Clarified serialization of the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①②">none</a> value
+     <li>Clarified the opt-in to interpolation in Oklab, for non-legacy colors
+     <li>Defined how premultiplication works, with the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①③">none</a> value
+     <li>Clarified that missing values in rgb serialize as 0
+     <li>Clarified the use of calc() with the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①④">none</a> value
+     <li>Typo, inconsistent casing on System Colors
+     <li>Added example of SelectedItem with SelectedItemText
+     <li>Explicitly noted the presence or absence of legacy colors
+     <li>Added normative reference for CIE XYZ
+     <li>Added normative reference for HWB and HSL
+     <li>Clarified that <a class="css" data-link-type="maybe" href="#funcdef-hwb" id="ref-for-funcdef-hwb①①">hwb()</a> is not a legacy syntax so does not support the older, comma-separated syntactic form
+     <li>Clarified that only legacy colors will gamut map, the others are unbounded
+     <li>Use distinct terms, spectrophotometer and spectroradiometer
+     <li>Assorted minor typos fixed, and grammatical improvements
+    </ul>
+    <h3 class="no-num heading settled" id="changes-from-20210601"><span class="content">Changes since the <a href="https://www.w3.org/TR/2021/WD-css-color-4-20210601/">Working Draft of 1 June 2021</a> </span><a class="self-link" href="#changes-from-20210601"></a></h3>
+    <ul>
+     <li>Added gamut mapping section and defined a CSS gamut mapping algorithm as chroma reduction in Oklch with local MINDE.
+     <li>Computed value of color(xyz ...) is color(xyz-d65 ...)
+     <li>Added srgb-linear to interpolation color spaces
+     <li>Updated Changes from Colors 3 section
+     <li>Added Resolving Oklab and Oklch values section
+     <li>Added srgb-linear color space
+     <li>Moved @color-profile and device-cmyk to level 5 per CSSWG resolution
+     <li>Defined interpolation color space
+     <li>Clarified that matrices are row-major and linked to the matrix multiplication library
+     <li>Split old Security &amp; Privacy section into separate sections
+     <li>Defined quirks-mode quirky hex colors
+     <li>Removed fallback colors from device-cmyk
+     <li>Host syntax that does not declare a default now uses Oklab by default
+     <li>Added sample code for deltaE OK
+     <li>Added sample conversion code for OKlab and Oklch
+     <li>Added oklab() and oklch() functions
+      <i>Added description of Oklab and Oklch</i> 
+     <li>Added description of CIE LCH deficiencies
+     <li>Allowed all components of a color to be "missing" via the <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①⑤">none</a> keyword,
 		defined when components are "powerless" and automatically become missing in some cases,
 		and fixed all references to "NaN" channels to use the "missing" concept.
-      <li>Defined explicit x,y whitepoint values, use consistently throughout
-      <li>Defined the term host syntax
-      <li>Defined context for resolving override-color colors
-      <li>Added a new pair of system colors
-      <li>Corrected HSL and HWB sample code
-      <li>Replaced table of HSL values with error-free version
-      <li>Added Lea Verou as co-editor by WG resolution
-      <li>Clarified that hue angle is unbounded
-      <li>MarkText example corrected
-      <li>Added diagrams, corrected examples
-      <li>Some editorial clarifications
-      <li>Minor typos corrected, markup corrections
-     </ul>
-     <h3 class="no-num heading settled" id="changes-from-20201112"><span class="content">Changes since the <a href="https://www.w3.org/TR/2020/WD-css-color-4-20201112/">Working Draft of 12 November 2020</a> </span><a class="self-link" href="#changes-from-20201112"></a></h3>
-     <ul>
-      <li>Noted indeterminate hue ssue on near-neutral Lab values converted to LCH
-      <li>Clarified which steps are linear combinations in RGB Lab interconversion
-      <li>Added components descriptor to @color-profile, for use in CSS Color 5
-      <li>All predefined RGB color spaces are defined over the extended range
-      <li>Clarified that there is no gamut mapping or gamut clipping step prior to color interpolation
-      <li>Clarified interpolation of legacy sRGB syntaxes
-      <li>Removed the lab option from <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①②">color()</a>
-      <li>List steps to interconvert between predefined color spaces
-      <li>Consistent use of the term color space (two words)
-      <li>Provided more guidance on selecting color space for mixing 
-      <li>Recalculated an example to increase precision
-      <li>Added hue interpolation example
-      <li>Simplified <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①③">color()</a> syntax by removing the fallback options
-      <li>Clarified the types of ICC profile that may be linked from @color-profile
-      <li>Support for the rare ICC Named Colors was removed
-      <li>Improved precsion of standard whitepoint chromaticities
-      <li>Removed a trademark from description of one predefined color space
-      <li>Rephrased interpolation to be more generic wrt to interpolation space
-      <li>Corrected Accessibility Considerations section
-      <li>Clarified that the color space argument for <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①④">color()</a> is mandatory, even for sRGB
-      <li>Clarified that currentColor is not restricted to sRGB
-      <li>Small correction to the sRGB to XYZ to sRGB matrices, improve round-tripping
-      <li>Clarified the rec2020 transfer function, citing the correct ITU Rec BT.2020-2 reference
-      <li>Correct fallback examples to use the correct syntax
-      <li>Don’t force non-legacy colors to interpolate in a gamma-encoded space
-      <li>Define premultiplied alpha interpolation
-      <li>Start to address interpolation to and from currentColor
-      <li>Define hue interpolation with NaN
-      <li>Generalize color interpolation
-      <li>Define interpolation to be in Lab, with override to LCG
-      <li>Corrections to hue interpolation
-      <li>Defined hue angle interpolation
-      <li>Added interpolation section
-      <li>Corrected syntax in some examples
-      <li>Clarify exactly which components are allowed percentages, in <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑤">color()</a>
-      <li>Change to serialize <a class="css" data-link-type="maybe" href="#funcdef-lch" id="ref-for-funcdef-lch①⓪">lch()</a> as itself rather than as <a class="css" data-link-type="maybe" href="#funcdef-lab" id="ref-for-funcdef-lab⑨">lab()</a>
-      <li>Minimum 10 bits per component precision for non-legacy sRGB in <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑥">color()</a>
-      <li>color space no longer optional in <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑦">color()</a> 
-      <li>Consistent minimum precision between lab() and color(lab)
-      <li>Clarified fallback procedure for the color() function – first valid in-gamut color, else first valid color which is then gamut mapped, else transparent black
-      <li>Clarified difference between opacity property and colors with opacity, notably for rendering overlapping text glyphs
-      <li>Added sample (but verified correct) code for ΔE2000
-      <li>Added definition of previously-undefined term chromaticity, with examples; define chromaticity diagram.
-      <li>Added explanation of color additivity, with examples
-      <li>Added source links to WPT tests
-      <li>Export definition of color, and valid color, for other specifications to reference
-      <li>Define minimum number of bits per component, for serialization
-      <li>Updated "applies to" definitions (CSS-wide change)
-      <li>Added image state (display referred or scene referred) for predefined color spaces
-      <li>Listed white point correlated color temperature (e.g. D65) alongside chromaticity coordinates, for clarity
-      <li>Clarified that rounding is towards +∞
-      <li>Correction of typos, markup corrections, link fixes
-     </ul>
-     <h3 class="no-num heading settled" id="changes-from-20191105"><span class="content">Changes since <a href="https://www.w3.org/TR/2019/WD-css-color-4-20191105/">Working Draft of
+     <li>Defined explicit x,y whitepoint values, use consistently throughout
+     <li>Defined the term host syntax
+     <li>Defined context for resolving override-color colors
+     <li>Added a new pair of system colors
+     <li>Corrected HSL and HWB sample code
+     <li>Replaced table of HSL values with error-free version
+     <li>Added Lea Verou as co-editor by WG resolution
+     <li>Clarified that hue angle is unbounded
+     <li>MarkText example corrected
+     <li>Added diagrams, corrected examples
+     <li>Some editorial clarifications
+     <li>Minor typos corrected, markup corrections
+    </ul>
+    <h3 class="no-num heading settled" id="changes-from-20201112"><span class="content">Changes since the <a href="https://www.w3.org/TR/2020/WD-css-color-4-20201112/">Working Draft of 12 November 2020</a> </span><a class="self-link" href="#changes-from-20201112"></a></h3>
+    <ul>
+     <li>Noted indeterminate hue ssue on near-neutral Lab values converted to LCH
+     <li>Clarified which steps are linear combinations in RGB Lab interconversion
+     <li>Added components descriptor to @color-profile, for use in CSS Color 5
+     <li>All predefined RGB color spaces are defined over the extended range
+     <li>Clarified that there is no gamut mapping or gamut clipping step prior to color interpolation
+     <li>Clarified interpolation of legacy sRGB syntaxes
+     <li>Removed the lab option from <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①②">color()</a>
+     <li>List steps to interconvert between predefined color spaces
+     <li>Consistent use of the term color space (two words)
+     <li>Provided more guidance on selecting color space for mixing 
+     <li>Recalculated an example to increase precision
+     <li>Added hue interpolation example
+     <li>Simplified <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①③">color()</a> syntax by removing the fallback options
+     <li>Clarified the types of ICC profile that may be linked from @color-profile
+     <li>Support for the rare ICC Named Colors was removed
+     <li>Improved precsion of standard whitepoint chromaticities
+     <li>Removed a trademark from description of one predefined color space
+     <li>Rephrased interpolation to be more generic wrt to interpolation space
+     <li>Corrected Accessibility Considerations section
+     <li>Clarified that the color space argument for <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①④">color()</a> is mandatory, even for sRGB
+     <li>Clarified that currentColor is not restricted to sRGB
+     <li>Small correction to the sRGB to XYZ to sRGB matrices, improve round-tripping
+     <li>Clarified the rec2020 transfer function, citing the correct ITU Rec BT.2020-2 reference
+     <li>Correct fallback examples to use the correct syntax
+     <li>Don’t force non-legacy colors to interpolate in a gamma-encoded space
+     <li>Define premultiplied alpha interpolation
+     <li>Start to address interpolation to and from currentColor
+     <li>Define hue interpolation with NaN
+     <li>Generalize color interpolation
+     <li>Define interpolation to be in Lab, with override to LCG
+     <li>Corrections to hue interpolation
+     <li>Defined hue angle interpolation
+     <li>Added interpolation section
+     <li>Corrected syntax in some examples
+     <li>Clarify exactly which components are allowed percentages, in <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑤">color()</a>
+     <li>Change to serialize <a class="css" data-link-type="maybe" href="#funcdef-lch" id="ref-for-funcdef-lch①⓪">lch()</a> as itself rather than as <a class="css" data-link-type="maybe" href="#funcdef-lab" id="ref-for-funcdef-lab⑨">lab()</a>
+     <li>Minimum 10 bits per component precision for non-legacy sRGB in <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑥">color()</a>
+     <li>color space no longer optional in <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑦">color()</a> 
+     <li>Consistent minimum precision between lab() and color(lab)
+     <li>Clarified fallback procedure for the color() function – first valid in-gamut color, else first valid color which is then gamut mapped, else transparent black
+     <li>Clarified difference between opacity property and colors with opacity, notably for rendering overlapping text glyphs
+     <li>Added sample (but verified correct) code for ΔE2000
+     <li>Added definition of previously-undefined term chromaticity, with examples; define chromaticity diagram.
+     <li>Added explanation of color additivity, with examples
+     <li>Added source links to WPT tests
+     <li>Export definition of color, and valid color, for other specifications to reference
+     <li>Define minimum number of bits per component, for serialization
+     <li>Updated "applies to" definitions (CSS-wide change)
+     <li>Added image state (display referred or scene referred) for predefined color spaces
+     <li>Listed white point correlated color temperature (e.g. D65) alongside chromaticity coordinates, for clarity
+     <li>Clarified that rounding is towards +∞
+     <li>Correction of typos, markup corrections, link fixes
+    </ul>
+    <h3 class="no-num heading settled" id="changes-from-20191105"><span class="content">Changes since <a href="https://www.w3.org/TR/2019/WD-css-color-4-20191105/">Working Draft of
 5 November 2019</a></span><a class="self-link" href="#changes-from-20191105"></a></h3>
-     <ul>
-      <li>Export some terms for use in other specifications
-      <li>Update requirement from WCAG 2.0 to 2.1
-      <li>Fully specify Unicode characters used for serialization
-      <li>Define serialization of special named colors
-      <li>Define serialization of device-cmyk()
-      <li>Define serialization of <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑧">color()</a>
-      <li>Fully define RGB serialization, in maximally web-compatible way
-      <li>Define serialization of Lab and LCH
-      <li>Fully define serialization of alpha values
-      <li>Consistency pass to avoid accidental RFC2119
-      <li>Add IDs to all the examples, to enable referencing
-      <li>Separate resolved color and serialized color sections
-      <li>(Security) ICC profiles have no executable code
-      <li>Define what out-of-range means for profiled colors
-      <li>Clarify out-of-range clamping
-      <li>Add examples of specified values
-      <li>Clarify computed values
-      <li>Resist fingerprinting, with mandatory mappings for deprecated system colors
-      <li>Added explanatory note on history and reason for standardizing X11 colors
-      <li>Correct hwb sample code
-      <li>Add table of DeltaE2000 values for MacBeth patches
-      <li>Add note on ICC profile Internet Media type
-      <li>Add reference to PNG sRGB chunk
-      <li>Clarify CMYK to Lab interconversion
-      <li>Clarify RGB to Lab interconversion
-      <li>More comparison of HSL vs. LCH
-      <li>More description for Rec BT.2020 color space
-      <li>Updated description of prophoto-rgb
-      <li>Removed duplicate "keywords" from Value Definitions section 
-      <li>Added an example of an invalid color
-      <li>Added example with multiple fallbacks
-      <li>Assorted typos and markup fixes
-      <li>Clarify handling for undeclared custom color spaces
-      <li>Clarify some examples and explanatory notes
-      <li>Handling for valid and invalid ICC profiles
-      <li>Define handling for images with explicit tagged color space
-      <li>Define color space for 4k, SDR video
-      <li>State that user contrast settings mst take precedence
-      <li>Clarify meaning of system colors outside for forced-color mode
-      <li>Update default style rules
-      <li>Add CIE XYZ color space to <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑨">color()</a>
-      <li>Greater clarity on hue angles, NaN explicitly allowed
-      <li>Improve section on system color pairings, require AA accessible contrast
-      <li>Warn of interaction between overlapping glyphs and the opacity property
-      <li>Correct grammar in color definition
-      <li>Improve description of Highlight/HighlightText
-      <li>Correct prophoto-rgb transfer function
-      <li>More precision for prophoto-rgb primaries
-      <li>Started to define "can’t be displayed"
-      <li>Removed paragraph about canvas surface
-      <li>Added the buttonborder, mark, and marktext system colors
-      <li>Added reverse conversion, sRGB to HWB
-      <li>Clarified polar spaces are cylindrical, not spherical
-      <li>Added an Accessibility Considerations section
-      <li>Started to describe chroma-reduction gamut mapping rather than per-component clipping
-      <li>Corrected white chromaticity for rec2020
-      <li>Made device-cmyk available by @color-profile; updated CMYK to color algorithm to only use naive conversion as a last resort
-      <li>Added print-oriented CMYK and KCMYOGV examples
-      <li>User-defined color spaces now dashed-ident, making predefined color spaces extensible without clashes
-      <li>Added lab option to the color() function
-      <li>Added normative reference for CIE Lab
-      <li>Clarified that prophoto-rgb uses <a data-link-type="dfn" href="#d50-whitepoint" id="ref-for-d50-whitepoint⑨">D50</a> whitepoint so does not require adaptation
-      <li>Clarified direction of increasing angle in LCH
-      <li>Clarified that color names are ASCII case insensitive
-      <li>Initial value of the "color" property is now CanvasText
-      <li>Removed confusing gray() function per CSS WG resolution
-      <li>Collect scattered definitions into new <a href="#terminology">Color terminology</a> section
-      <li>Add helpful figures and more examples
-      <li>Minor editorial clarifications, spell check, fixing typos, bikeshed markup fixes
-     </ul>
-     <h3 class="no-num heading settled" id="changes-from-20160705"><span class="content">Changes since <a href="http://www.w3.org/TR/2016/WD-css-color-4-20160705/">Working Draft of 05 July 2016</a></span><a class="self-link" href="#changes-from-20160705"></a></h3>
-     <ul>
-      <li>Changed Lightness in Lab and LCH to be a percentage, for CSS compatibility
-      <li>Clamping of color values clarified
-      <li>Percentage opacity is now allowed
-      <li>Define terms sRGB and linear-light sRGB, for use by other specs
-      <li>Add new list of CSS system colors; renaming Text to CanvasText
-      <li>Make system color keywords compute to themselves
-      <li>Add computed/used entry for system colors
-      <li>Rewrite intro to non-deprecated system colors to center their use around forced-colors mode rather than generic use
-      <li>Consistent hyphenation of predefined color spaces
-      <li>Restore text about non-opaque elements painting at layers even when not positioned
-      <li>Initial value of the "color" property is now black
-      <li>Clarify hue in LCH is modulo 360deg (change now reverted)
-      <li>Clarify allowed range of L in LCH and Lab, and meaning of L=100
-      <li>Update references for color spaces used in video
-      <li>Add prophoto-rgb predefined color space
-      <li>Correct black and white luminance levels for display-p3
-      <li>Clarify display-p3 transfer function
-      <li>Add a98-rgb color space, correct table of primary chromaticities
-      <li>Clarify that currentColor’s computed value is not the resolved color
-      <li>Update syntax is examples to conform to latest specification
-      <li>Remove the color-mod() function
-      <li>Drop the "media" from propdef tables
-      <li>Export, and consistently use, "transparent black" and "opaque black"
-      <li>Clarify calculated values such as percents
-      <li>Clarify required precision and rounding behavior for color channels
-      <li>Clarify "color" property has no effect on color font glyphs (unless specifically referenced, e.g. with currentColor)
-      <li>Clarify how color values are resolved
-      <li>Clarify that HSL, HWB and named colors resolve to sRGB
-      <li>Simplify conversion from device-cmyk to sRGB
-      <li>Describe previous, comma-using color syntaxes as "legacy"; change examples to commaless form
-      <li>Remove superfluous requirement that displayed colors be restricted to device gamut (like there was any other option!)
-      <li>Rename P3 to display-p3; avoid claiming this is DCI P3, as these are not the same
-      <li>Improved description of the parameters to the "color()" function
-      <li>Disallow predefined spaces from "@color-profile" identifier
-      <li>Add canonical order to "color", "color-adjust" and "opacity" property definitions
-      <li>Switch definition of alpha compositing from SVG11 to CSS Compositing
-      <li>Clarify sample conversion code is non-normative
-      <li>Add Security and Privacy Considerations
-      <li>Update several references to most current versions
-      <li>Convert inline issues to links to GitHub issues
-      <li>Minor editorial clarifications, formatting and markup improvements
-     </ul>
-     <h3 class="heading settled" id="changes-from-3"><span class="content"> Changes from Colors 3</span><a class="self-link" href="#changes-from-3"></a></h3>
-     <p>The primary change, compared to CSS Color 3,
+    <ul>
+     <li>Export some terms for use in other specifications
+     <li>Update requirement from WCAG 2.0 to 2.1
+     <li>Fully specify Unicode characters used for serialization
+     <li>Define serialization of special named colors
+     <li>Define serialization of device-cmyk()
+     <li>Define serialization of <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑧">color()</a>
+     <li>Fully define RGB serialization, in maximally web-compatible way
+     <li>Define serialization of Lab and LCH
+     <li>Fully define serialization of alpha values
+     <li>Consistency pass to avoid accidental RFC2119
+     <li>Add IDs to all the examples, to enable referencing
+     <li>Separate resolved color and serialized color sections
+     <li>(Security) ICC profiles have no executable code
+     <li>Define what out-of-range means for profiled colors
+     <li>Clarify out-of-range clamping
+     <li>Add examples of specified values
+     <li>Clarify computed values
+     <li>Resist fingerprinting, with mandatory mappings for deprecated system colors
+     <li>Added explanatory note on history and reason for standardizing X11 colors
+     <li>Correct hwb sample code
+     <li>Add table of DeltaE2000 values for MacBeth patches
+     <li>Add note on ICC profile Internet Media type
+     <li>Add reference to PNG sRGB chunk
+     <li>Clarify CMYK to Lab interconversion
+     <li>Clarify RGB to Lab interconversion
+     <li>More comparison of HSL vs. LCH
+     <li>More description for Rec BT.2020 color space
+     <li>Updated description of prophoto-rgb
+     <li>Removed duplicate "keywords" from Value Definitions section 
+     <li>Added an example of an invalid color
+     <li>Added example with multiple fallbacks
+     <li>Assorted typos and markup fixes
+     <li>Clarify handling for undeclared custom color spaces
+     <li>Clarify some examples and explanatory notes
+     <li>Handling for valid and invalid ICC profiles
+     <li>Define handling for images with explicit tagged color space
+     <li>Define color space for 4k, SDR video
+     <li>State that user contrast settings mst take precedence
+     <li>Clarify meaning of system colors outside for forced-color mode
+     <li>Update default style rules
+     <li>Add CIE XYZ color space to <a class="css" data-link-type="maybe" href="#funcdef-color" id="ref-for-funcdef-color①⑨">color()</a>
+     <li>Greater clarity on hue angles, NaN explicitly allowed
+     <li>Improve section on system color pairings, require AA accessible contrast
+     <li>Warn of interaction between overlapping glyphs and the opacity property
+     <li>Correct grammar in color definition
+     <li>Improve description of Highlight/HighlightText
+     <li>Correct prophoto-rgb transfer function
+     <li>More precision for prophoto-rgb primaries
+     <li>Started to define "can’t be displayed"
+     <li>Removed paragraph about canvas surface
+     <li>Added the buttonborder, mark, and marktext system colors
+     <li>Added reverse conversion, sRGB to HWB
+     <li>Clarified polar spaces are cylindrical, not spherical
+     <li>Added an Accessibility Considerations section
+     <li>Started to describe chroma-reduction gamut mapping rather than per-component clipping
+     <li>Corrected white chromaticity for rec2020
+     <li>Made device-cmyk available by @color-profile; updated CMYK to color algorithm to only use naive conversion as a last resort
+     <li>Added print-oriented CMYK and KCMYOGV examples
+     <li>User-defined color spaces now dashed-ident, making predefined color spaces extensible without clashes
+     <li>Added lab option to the color() function
+     <li>Added normative reference for CIE Lab
+     <li>Clarified that prophoto-rgb uses <a data-link-type="dfn" href="#d50-whitepoint" id="ref-for-d50-whitepoint⑨">D50</a> whitepoint so does not require adaptation
+     <li>Clarified direction of increasing angle in LCH
+     <li>Clarified that color names are ASCII case insensitive
+     <li>Initial value of the "color" property is now CanvasText
+     <li>Removed confusing gray() function per CSS WG resolution
+     <li>Collect scattered definitions into new <a href="#terminology">Color terminology</a> section
+     <li>Add helpful figures and more examples
+     <li>Minor editorial clarifications, spell check, fixing typos, bikeshed markup fixes
+    </ul>
+    <h3 class="no-num heading settled" id="changes-from-20160705"><span class="content">Changes since <a href="http://www.w3.org/TR/2016/WD-css-color-4-20160705/">Working Draft of 05 July 2016</a></span><a class="self-link" href="#changes-from-20160705"></a></h3>
+    <ul>
+     <li>Changed Lightness in Lab and LCH to be a percentage, for CSS compatibility
+     <li>Clamping of color values clarified
+     <li>Percentage opacity is now allowed
+     <li>Define terms sRGB and linear-light sRGB, for use by other specs
+     <li>Add new list of CSS system colors; renaming Text to CanvasText
+     <li>Make system color keywords compute to themselves
+     <li>Add computed/used entry for system colors
+     <li>Rewrite intro to non-deprecated system colors to center their use around forced-colors mode rather than generic use
+     <li>Consistent hyphenation of predefined color spaces
+     <li>Restore text about non-opaque elements painting at layers even when not positioned
+     <li>Initial value of the "color" property is now black
+     <li>Clarify hue in LCH is modulo 360deg (change now reverted)
+     <li>Clarify allowed range of L in LCH and Lab, and meaning of L=100
+     <li>Update references for color spaces used in video
+     <li>Add prophoto-rgb predefined color space
+     <li>Correct black and white luminance levels for display-p3
+     <li>Clarify display-p3 transfer function
+     <li>Add a98-rgb color space, correct table of primary chromaticities
+     <li>Clarify that currentColor’s computed value is not the resolved color
+     <li>Update syntax is examples to conform to latest specification
+     <li>Remove the color-mod() function
+     <li>Drop the "media" from propdef tables
+     <li>Export, and consistently use, "transparent black" and "opaque black"
+     <li>Clarify calculated values such as percents
+     <li>Clarify required precision and rounding behavior for color channels
+     <li>Clarify "color" property has no effect on color font glyphs (unless specifically referenced, e.g. with currentColor)
+     <li>Clarify how color values are resolved
+     <li>Clarify that HSL, HWB and named colors resolve to sRGB
+     <li>Simplify conversion from device-cmyk to sRGB
+     <li>Describe previous, comma-using color syntaxes as "legacy"; change examples to commaless form
+     <li>Remove superfluous requirement that displayed colors be restricted to device gamut (like there was any other option!)
+     <li>Rename P3 to display-p3; avoid claiming this is DCI P3, as these are not the same
+     <li>Improved description of the parameters to the "color()" function
+     <li>Disallow predefined spaces from "@color-profile" identifier
+     <li>Add canonical order to "color", "color-adjust" and "opacity" property definitions
+     <li>Switch definition of alpha compositing from SVG11 to CSS Compositing
+     <li>Clarify sample conversion code is non-normative
+     <li>Add Security and Privacy Considerations
+     <li>Update several references to most current versions
+     <li>Convert inline issues to links to GitHub issues
+     <li>Minor editorial clarifications, formatting and markup improvements
+    </ul>
+    <h3 class="heading settled" id="changes-from-3"><span class="content"> Changes from Colors 3</span><a class="self-link" href="#changes-from-3"></a></h3>
+    <p>The primary change, compared to CSS Color 3,
 	is that CSS colors are no longer restricted to the
 	narrow gamut of sRGB.</p>
-     <p>To support this, several brand new features have been added:</p>
-     <ol>
-      <li>predefined, wide color gamut RGB color spaces
-      <li><a class="css" data-link-type="maybe" href="#funcdef-lab" id="ref-for-funcdef-lab①⓪">lab()</a>, <a class="css" data-link-type="maybe" href="#funcdef-lch" id="ref-for-funcdef-lch①①">lch()</a>, <a class="css" data-link-type="maybe" href="#funcdef-oklab" id="ref-for-funcdef-oklab⑨">oklab()</a> and <a class="css" data-link-type="maybe" href="#funcdef-oklch" id="ref-for-funcdef-oklch⑧">oklch()</a> functions, for device-independent color 
-     </ol>
-     <p>Other technical changes:</p>
-     <ol>
-      <li>Serialization of <a class="production css" data-link-type="type" href="#typedef-color" id="ref-for-typedef-color②⓪" title="Expands to: aliceblue | antiquewhite | aqua | aquamarine | azure | beige | bisque | black | blanchedalmond | blue | blueviolet | brown | burlywood | cadetblue | chartreuse | chocolate | coral | cornflowerblue | cornsilk | crimson | currentcolor | cyan | darkblue | darkcyan | darkgoldenrod | darkgray | darkgreen | darkgrey | darkkhaki | darkmagenta | darkolivegreen | darkorange | darkorchid | darkred | darksalmon | darkseagreen | darkslateblue | darkslategray | darkslategrey | darkturquoise | darkviolet | deeppink | deepskyblue | dimgray | dimgrey | dodgerblue | firebrick | floralwhite | forestgreen | fuchsia | gainsboro | ghostwhite | gold | goldenrod | gray | green | greenyellow | grey | honeydew | hotpink | indianred | indigo | ivory | khaki | lavender | lavenderblush | lawngreen | lemonchiffon | lightblue | lightcoral | lightcyan | lightgoldenrodyellow | lightgray | lightgreen | lightgrey | lightpink | lightsalmon | lightseagreen | lightskyblue | lightslategray | lightslategrey | lightsteelblue | lightyellow | lime | limegreen | linen | magenta | maroon | mediumaquamarine | mediumblue | mediumorchid | mediumpurple | mediumseagreen | mediumslateblue | mediumspringgreen | mediumturquoise | mediumvioletred | midnightblue | mintcream | mistyrose | moccasin | navajowhite | navy | none | oldlace | olive | olivedrab | orange | orangered | orchid | palegoldenrod | palegreen | paleturquoise | palevioletred | papayawhip | peachpuff | peru | pink | plum | powderblue | purple | rebeccapurple | red | rosybrown | royalblue | saddlebrown | salmon | sandybrown | seagreen | seashell | sienna | silver | skyblue | slateblue | slategray | slategrey | snow | springgreen | steelblue | tan | teal | thistle | tomato | transparent | turquoise | violet | wheat | white | whitesmoke | yellow | yellowgreen">&lt;color></a> is now specified here, rather than in the CSS Object Model 
-      <li><a class="css" data-link-type="maybe" href="#funcdef-hwb" id="ref-for-funcdef-hwb①②">hwb()</a> function, for specifying sRGB colors in the HWB notation. 
-      <li>Addition of named color <a class="css" data-link-type="maybe" href="#valdef-color-rebeccapurple" id="ref-for-valdef-color-rebeccapurple">rebeccapurple</a>. 
-     </ol>
-     <p>In addition, there have been some syntactic changes:</p>
-     <ol>
-      <li><a class="css" data-link-type="maybe" href="#funcdef-rgb" id="ref-for-funcdef-rgb②⓪">rgb()</a> and <a class="css" data-link-type="maybe" href="#funcdef-rgba" id="ref-for-funcdef-rgba①⓪">rgba()</a> functions now accept <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value③①">&lt;number></a> rather than <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#integer-value" id="ref-for-integer-value②">&lt;integer></a>. 
-      <li><a class="css" data-link-type="maybe" href="#funcdef-hsl" id="ref-for-funcdef-hsl①⑨">hsl()</a> and <a class="css" data-link-type="maybe" href="#funcdef-hsla" id="ref-for-funcdef-hsla⑨">hsla()</a> functions now accept <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value" id="ref-for-angle-value①" title="Expands to: deg | grad | rad | turn">&lt;angle></a> as well as <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value③②">&lt;number></a> for hues. 
-      <li><a class="css" data-link-type="maybe" href="#funcdef-rgb" id="ref-for-funcdef-rgb②①">rgb()</a> and <a class="css" data-link-type="maybe" href="#funcdef-rgba" id="ref-for-funcdef-rgba①①">rgba()</a>, and <a class="css" data-link-type="maybe" href="#funcdef-hsl" id="ref-for-funcdef-hsl②⓪">hsl()</a> and <a class="css" data-link-type="maybe" href="#funcdef-hsla" id="ref-for-funcdef-hsla①⓪">hsla()</a> are now aliases of each other
+    <p>To support this, several brand new features have been added:</p>
+    <ol>
+     <li>predefined, wide color gamut RGB color spaces
+     <li><a class="css" data-link-type="maybe" href="#funcdef-lab" id="ref-for-funcdef-lab①⓪">lab()</a>, <a class="css" data-link-type="maybe" href="#funcdef-lch" id="ref-for-funcdef-lch①①">lch()</a>, <a class="css" data-link-type="maybe" href="#funcdef-oklab" id="ref-for-funcdef-oklab⑨">oklab()</a> and <a class="css" data-link-type="maybe" href="#funcdef-oklch" id="ref-for-funcdef-oklch⑧">oklch()</a> functions, for device-independent color 
+    </ol>
+    <p>Other technical changes:</p>
+    <ol>
+     <li>Serialization of <a class="production css" data-link-type="type" href="#typedef-color" id="ref-for-typedef-color②⓪" title="Expands to: aliceblue | antiquewhite | aqua | aquamarine | azure | beige | bisque | black | blanchedalmond | blue | blueviolet | brown | burlywood | cadetblue | chartreuse | chocolate | coral | cornflowerblue | cornsilk | crimson | currentcolor | cyan | darkblue | darkcyan | darkgoldenrod | darkgray | darkgreen | darkgrey | darkkhaki | darkmagenta | darkolivegreen | darkorange | darkorchid | darkred | darksalmon | darkseagreen | darkslateblue | darkslategray | darkslategrey | darkturquoise | darkviolet | deeppink | deepskyblue | dimgray | dimgrey | dodgerblue | firebrick | floralwhite | forestgreen | fuchsia | gainsboro | ghostwhite | gold | goldenrod | gray | green | greenyellow | grey | honeydew | hotpink | indianred | indigo | ivory | khaki | lavender | lavenderblush | lawngreen | lemonchiffon | lightblue | lightcoral | lightcyan | lightgoldenrodyellow | lightgray | lightgreen | lightgrey | lightpink | lightsalmon | lightseagreen | lightskyblue | lightslategray | lightslategrey | lightsteelblue | lightyellow | lime | limegreen | linen | magenta | maroon | mediumaquamarine | mediumblue | mediumorchid | mediumpurple | mediumseagreen | mediumslateblue | mediumspringgreen | mediumturquoise | mediumvioletred | midnightblue | mintcream | mistyrose | moccasin | navajowhite | navy | none | oldlace | olive | olivedrab | orange | orangered | orchid | palegoldenrod | palegreen | paleturquoise | palevioletred | papayawhip | peachpuff | peru | pink | plum | powderblue | purple | rebeccapurple | red | rosybrown | royalblue | saddlebrown | salmon | sandybrown | seagreen | seashell | sienna | silver | skyblue | slateblue | slategray | slategrey | snow | springgreen | steelblue | tan | teal | thistle | tomato | transparent | turquoise | violet | wheat | white | whitesmoke | yellow | yellowgreen">&lt;color></a> is now specified here, rather than in the CSS Object Model 
+     <li><a class="css" data-link-type="maybe" href="#funcdef-hwb" id="ref-for-funcdef-hwb①②">hwb()</a> function, for specifying sRGB colors in the HWB notation. 
+     <li>Addition of named color <a class="css" data-link-type="maybe" href="#valdef-color-rebeccapurple" id="ref-for-valdef-color-rebeccapurple">rebeccapurple</a>. 
+    </ol>
+    <p>In addition, there have been some syntactic changes:</p>
+    <ol>
+     <li><a class="css" data-link-type="maybe" href="#funcdef-rgb" id="ref-for-funcdef-rgb②⓪">rgb()</a> and <a class="css" data-link-type="maybe" href="#funcdef-rgba" id="ref-for-funcdef-rgba①⓪">rgba()</a> functions now accept <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value③①">&lt;number></a> rather than <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#integer-value" id="ref-for-integer-value②">&lt;integer></a>. 
+     <li><a class="css" data-link-type="maybe" href="#funcdef-hsl" id="ref-for-funcdef-hsl①⑨">hsl()</a> and <a class="css" data-link-type="maybe" href="#funcdef-hsla" id="ref-for-funcdef-hsla⑨">hsla()</a> functions now accept <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value" id="ref-for-angle-value①" title="Expands to: deg | grad | rad | turn">&lt;angle></a> as well as <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value③②">&lt;number></a> for hues. 
+     <li><a class="css" data-link-type="maybe" href="#funcdef-rgb" id="ref-for-funcdef-rgb②①">rgb()</a> and <a class="css" data-link-type="maybe" href="#funcdef-rgba" id="ref-for-funcdef-rgba①①">rgba()</a>, and <a class="css" data-link-type="maybe" href="#funcdef-hsl" id="ref-for-funcdef-hsl②⓪">hsl()</a> and <a class="css" data-link-type="maybe" href="#funcdef-hsla" id="ref-for-funcdef-hsla①⓪">hsla()</a> are now aliases of each other
 			(all of them have an optional alpha). 
-      <li><a class="css" data-link-type="maybe" href="#funcdef-rgb" id="ref-for-funcdef-rgb②②">rgb()</a>, <a class="css" data-link-type="maybe" href="#funcdef-rgba" id="ref-for-funcdef-rgba①②">rgba()</a>, <a class="css" data-link-type="maybe" href="#funcdef-hsl" id="ref-for-funcdef-hsl②①">hsl()</a>, and <a class="css" data-link-type="maybe" href="#funcdef-hsla" id="ref-for-funcdef-hsla①①">hsla()</a> have all gained a new syntax
+     <li><a class="css" data-link-type="maybe" href="#funcdef-rgb" id="ref-for-funcdef-rgb②②">rgb()</a>, <a class="css" data-link-type="maybe" href="#funcdef-rgba" id="ref-for-funcdef-rgba①②">rgba()</a>, <a class="css" data-link-type="maybe" href="#funcdef-hsl" id="ref-for-funcdef-hsl②①">hsl()</a>, and <a class="css" data-link-type="maybe" href="#funcdef-hsla" id="ref-for-funcdef-hsla①①">hsla()</a> have all gained a new syntax
 			consisting of space-separated arguments
 			and an optional slash-separated opacity.
 			All the color functions use this syntax form now,
 			in keeping with <a href="https://wiki.csswg.org/ideas/functional-notation#general-principles">CSS’s functional-notation design principles</a>. 
-      <li>All uses of <a class="production css" data-link-type="type" href="#typedef-alpha-value" id="ref-for-typedef-alpha-value②③">&lt;alpha-value></a> now accept <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value" id="ref-for-percentage-value③⓪">&lt;percentage></a> as well as <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value③③">&lt;number></a>. 
-      <li>4 and 8-digit hex colors have been added, to specify transparency. 
-      <li>The <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①⑥">none</a> value has been added, to represent powerless components. 
-     </ol>
-     <h2 class="heading settled" data-level="19" id="security"><span class="secno">19. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
-     <p>The system colors,
+     <li>All uses of <a class="production css" data-link-type="type" href="#typedef-alpha-value" id="ref-for-typedef-alpha-value②③">&lt;alpha-value></a> now accept <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value" id="ref-for-percentage-value③⓪">&lt;percentage></a> as well as <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value③③">&lt;number></a>. 
+     <li>4 and 8-digit hex colors have been added, to specify transparency. 
+     <li>The <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①⑥">none</a> value has been added, to represent powerless components. 
+    </ol>
+    <h2 class="heading settled" data-level="19" id="security"><span class="secno">19. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+    <p>The system colors,
 if they actually correspond to the user’s system colors,
 pose a security risk,
 as they make it easier for a malware site
 to create user interfaces that appear to be from the system.
 However, as several system colors are now defined to be "generic",
 this risk is believed to be mitigated.</p>
-     <h2 class="heading settled" data-level="20" id="privacy"><span class="secno">20. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
-     <p>This specification defines "system" colors,
+    <h2 class="heading settled" data-level="20" id="privacy"><span class="secno">20. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+    <p>This specification defines "system" colors,
 which theoretically can expose details of the user’s OS settings,
 which is a fingerprinting risk.</p>
-     <h2 class="heading settled" data-level="21" id="a11y-sec"><span class="secno">21. </span><span class="content">Accessibility Considerations</span><a class="self-link" href="#a11y-sec"></a></h2>
-     <p>This specification <a href="#accessibility">encourages authors to not use
+    <h2 class="heading settled" data-level="21" id="a11y-sec"><span class="secno">21. </span><span class="content">Accessibility Considerations</span><a class="self-link" href="#a11y-sec"></a></h2>
+    <p>This specification <a href="#accessibility">encourages authors to not use
 	color alone</a> as a distinguishing feature.</p>
-     <p>This specification <a href="#css-system-colors" id="ref-for-css-system-colors⑤">encourages browsers to ensure
+    <p>This specification <a href="#css-system-colors" id="ref-for-css-system-colors⑤">encourages browsers to ensure
 	adequate contrast for specific system color foreground/background pairs</a>.
 	A harder requirement with specific AA or AAA contrast ratios was considered,
 	but since browsers are often just passing along color choices made by the OS,
 	or selected by users (who may have particular requirements,
 	including lower contrast for people living with migraines or epileptic seizures), the CSSWG
 	was unable to require a specific contrast level.</p>
-    </ul>
    </div>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content"> Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>

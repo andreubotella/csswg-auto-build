@@ -941,7 +941,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Color Module Level 6</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-19">19 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-20">20 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1004,7 +1004,7 @@ on screen, on paper, etc.
    <ol class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li>
-     <a href="#colorcontrast"><span class="secno">2</span> <span class="content">Selecting the most contrasting color: the <span class="css">color-contrast()</span> function</span></a>
+     <a href="#colorcontrast"><span class="secno">2</span> <span class="content">Computing a sufficiently contrasting color: the <span class="css">contrast-color()</span> function</span></a>
      <ol class="toc">
       <li><a href="#luminance-contrast"><span class="secno">2.1</span> <span class="content"> Calculating luminance and WCAG 2.1 contrast </span></a>
       <li><a href="#winner"><span class="secno">2.2</span> <span class="content"> Finding the winning color </span></a>
@@ -1012,12 +1012,12 @@ on screen, on paper, etc.
     <li>
      <a href="#resolving-color-values"><span class="secno">3</span> <span class="content"> Resolving <span class="production">&lt;color></span> Values</span></a>
      <ol class="toc">
-      <li><a href="#resolving-contrast"><span class="secno">3.1</span> <span class="content">Resolving <span class="css">color-contrast()</span> values</span></a>
+      <li><a href="#resolving-contrast"><span class="secno">3.1</span> <span class="content">Resolving <span class="css">contrast-color()</span> values</span></a>
      </ol>
     <li>
      <a href="#serial"><span class="secno">4</span> <span class="content">Serialization</span></a>
      <ol class="toc">
-      <li><a href="#serial-color-contrast"><span class="secno">4.1</span> <span class="content">Serializing color-contrast()</span></a>
+      <li><a href="#serial-contrast-color"><span class="secno">4.1</span> <span class="content">Serializing contrast-color()</span></a>
      </ol>
     <li><a href="#security"><span class="secno">5</span> <span class="content">Security Considerations</span></a>
     <li><a href="#privacy"><span class="secno">6</span> <span class="content">Privacy Considerations</span></a>
@@ -1056,8 +1056,8 @@ on screen, on paper, etc.
   <main>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p><em>This section is not normative.</em></p>
-   <p>This module adds two one function: <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast">color-contrast()</a>.</p>
-   <h2 class="heading settled" data-level="2" id="colorcontrast"><span class="secno">2. </span><span class="content">Selecting the most contrasting color: the <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast①">color-contrast()</a> function</span><a class="self-link" href="#colorcontrast"></a></h2>
+   <p>This module adds two one function: <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color">contrast-color()</a>.</p>
+   <h2 class="heading settled" data-level="2" id="colorcontrast"><span class="secno">2. </span><span class="content">Computing a sufficiently contrasting color: the <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color①">contrast-color()</a> function</span><a class="self-link" href="#colorcontrast"></a></h2>
    <div class="mdn-anno wrapped after">
     <button class="mdn-anno-btn"><b class="less-than-two-engines-flag" title="This feature is in less than two current engines.">⚠</b><span>MDN</span></button>
     <div class="feature">
@@ -1074,20 +1074,31 @@ on screen, on paper, etc.
      </div>
     </div>
    </div>
-   <p>This function takes, firstly, a single color
-	(typically a background, but not necessarily),
-	secondly, a list of two or more colors,
-	and thirdly, an optional target <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">luminance contrast</a> <a data-link-type="biblio" href="#biblio-wcag21">[WCAG21]</a>.</p>
-   <p>It <a href="#winner">returns</a> the first color in the list
-	to meet or exceed the specified target contrast
-	or, if no target is given,
-	the color in the list with the greatest contrast.</p>
+   <p>The purpose of this function is to generate sufficiently contrasting colors from other colors,
+	without authors having to compute them manually.</p>
+   <p>Its syntax is:</p>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-contrast-color">contrast-color()</dfn> = contrast-color( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color">&lt;color></a> [ vs <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color①">&lt;color></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma" id="ref-for-mult-comma">#{2,}</a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> [ to <a class="production" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast">&lt;target-contrast></a>]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> )
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-target-contrast"><a class="production" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast①">&lt;target-contrast></a></dfn> = wcag2([<a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value">&lt;number></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one">|</a> [ aa <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> aaa ] <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all">&amp;&amp;</a> large<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt②">?</a> ])
+</pre>
+   <p>The only mandatory argument is the first color, which is the color to be contrasted,
+	typically (but not necessarily) a background color.</p>
+   <p>An optional list of color candidates is provided after a <span class="css">vs</span> keyword.
+	If no candidates are provided, the default candidates are used: <span class="css">white, black</span>.</p>
+   <p>An optional target <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">luminance contrast</a> <a data-link-type="biblio" href="#biblio-wcag21">[WCAG21]</a> is provided after a <span class="css">to</span> keyword.</p>
+   <p>If a target contrast is specified,
+	the <a href="#winner">returned color</a> is the first color candidate that meets or exceeds the target contrast.
+	If no target is given,
+	the color candidate with the greatest contrast is returned.
+	If multiple candidates have the same contrast,
+	the one that comes earliest in the list is returned.</p>
    <p>The single color is separated from the list
 	with the keyword <span class="css">vs</span> and the target contrast, if present, is separated from the list
 	with the keyword <span class="css">to</span>.</p>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-color-contrast">color-contrast()</dfn> = color-contrast( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color">&lt;color></a> vs <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color①">&lt;color></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma" id="ref-for-mult-comma">#{2,}</a>  [ to [<a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value">&lt;number></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one">|</a> AA <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> AA-large <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> AAA <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> AAA-large]]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> )
-</pre>
-   <p>The keyword <dfn class="dfn-paneled css" data-dfn-for="color-contrast()" data-dfn-type="value" data-export id="valdef-color-contrast-aa">AA</dfn> is equivalent to <span class="css">4.5</span>, <dfn class="dfn-paneled css" data-dfn-for="color-contrast()" data-dfn-type="value" data-export id="valdef-color-contrast-aa-large">AA-large</dfn> is equivalent to <span class="css">3</span>, <dfn class="dfn-paneled css" data-dfn-for="color-contrast()" data-dfn-type="value" data-export id="valdef-color-contrast-aaa">AAA</dfn> is equivalent to <span class="css">7</span>, and <dfn class="dfn-paneled css" data-dfn-for="color-contrast()" data-dfn-type="value" data-export id="valdef-color-contrast-aaa-large">AAA-large</dfn> is equivalent to <span class="css">4.5</span> .</p>
+   <p>The target contrast is specified by providing a function for the algorithm used
+	(currently only [WCAG 2.1](#luminance-contrast) is supported )
+	with the contrast ratio as the argument.</p>
+   <p>For <span class="css">wcag2()</span>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa" id="ref-for-valdef-color-contrast-aa">aa</a> is equivalent to <span class="css">4.5</span>, <span class="css">aa large</span> (or <span class="css">large aa</span>) is equivalent to <span class="css">3</span>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aaa" id="ref-for-valdef-color-contrast-aaa">aaa</a> is equivalent to <span class="css">7</span>,
+	and <span class="css">aaa large</span> (or <span class="css">large aaa</span>) is equivalent to <span class="css">4.5</span>.</p>
    <h3 class="heading settled" data-level="2.1" id="luminance-contrast"><span class="secno">2.1. </span><span class="content"> Calculating luminance and WCAG 2.1 contrast </span><a class="self-link" href="#luminance-contrast"></a></h3>
    <p>For each color in the list,
 	the CIE Luminance (Y) is calculated,
@@ -1119,9 +1130,9 @@ on screen, on paper, etc.
 	If no target is specified,
 	it selects the first color with the highest contrast
 	to the single color.</p>
-   <div class="example" id="example-edf25143">
-    <a class="self-link" href="#example-edf25143"></a> 
-<pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->wheat vs tan<c- p>,</c-> sienna<c- p>,</c-> <c- nf>var</c-><c- p>(</c->--myAccent<c- p>),</c-> #d2691e<c- p>)</c-></pre>
+   <div class="example" id="example-dd3be8f1">
+    <a class="self-link" href="#example-dd3be8f1"></a> 
+<pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c->wheat vs tan<c- p>,</c-> sienna<c- p>,</c-> <c- nf>var</c-><c- p>(</c->--myAccent<c- p>),</c-> #d2691e<c- p>)</c-></pre>
     <p>The calculation is as follows:</p>
     <ul>
      <li data-md>
@@ -1140,9 +1151,9 @@ on screen, on paper, etc.
     </ul>
      The highest contrast ratio is <strong>5.081</strong> so var(--myAccent) wins 
    </div>
-   <div class="example" id="example-f2ef44d0">
-    <a class="self-link" href="#example-f2ef44d0"></a> 
-<pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->wheat vs bisque<c- p>,</c-> darkgoldenrod<c- p>,</c-> olive<c- p>,</c-> sienna<c- p>,</c-> darkgreen<c- p>,</c-> maroon to AA<c- p>)</c-></pre>
+   <div class="example" id="example-8bf4854e">
+    <a class="self-link" href="#example-8bf4854e"></a> 
+<pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c->wheat vs bisque<c- p>,</c-> darkgoldenrod<c- p>,</c-> olive<c- p>,</c-> sienna<c- p>,</c-> darkgreen<c- p>,</c-> maroon to <c- nf>wcag2</c-><c- p>(</c->aa<c- p>))</c-></pre>
     <p>The calculation is as follows:</p>
     <ul>
      <li data-md>
@@ -1162,9 +1173,9 @@ on screen, on paper, etc.
     </ul>
     <p>The first color in the list which meets the desired contrast ratio of 4.5 is <span class="swatch" style="--color: darkgreen"></span> darkgreen.</p>
    </div>
-   <div class="example" id="example-4b5bb101">
-    <a class="self-link" href="#example-4b5bb101"></a> 
-<pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->wheat vs bisque<c- p>,</c-> darkgoldenrod<c- p>,</c-> olive<c- p>,</c-> sienna<c- p>,</c-> darkgreen<c- p>,</c-> maroon to <c- m>5.8</c-><c- p>)</c-></pre>
+   <div class="example" id="example-1b85cf8c">
+    <a class="self-link" href="#example-1b85cf8c"></a> 
+<pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c->wheat vs bisque<c- p>,</c-> darkgoldenrod<c- p>,</c-> olive<c- p>,</c-> sienna<c- p>,</c-> darkgreen<c- p>,</c-> maroon to <c- nf>wcag2</c-><c- p>(</c-><c- m>5.8</c-><c- p>))</c-></pre>
     <p>The calculation is as follows:</p>
     <ul>
      <li data-md>
@@ -1172,10 +1183,10 @@ on screen, on paper, etc.
     </ul>
     <p>The first color in the list which meets the desired contrast ratio of 5.8 is <span class="swatch" style="--color: maroon"></span> maroon.</p>
    </div>
-   <p>The colors in the list (after the keyword vs) are tested sequentially,
+   <p>The candidate colors are tested sequentially,
 	from left to right;
 	a color is the temporary winner
-	if it has  the highest contrast of all those tested so far.</p>
+	if it has the highest contrast of all those tested so far.</p>
    <p>List traversal is terminated once the target contrast has been met or exceeded.</p>
    <p>Once the end of the list is reached, if there is no target contrast,
 	the current temporary winner is the overall winner.
@@ -1186,9 +1197,9 @@ on screen, on paper, etc.
 	and the end of the list is reached without meeting that target,
 	either <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white">white</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-black" id="ref-for-valdef-color-black">black</a> is returned,
 	whichever has the higher contrast.</p>
-   <div class="example" id="example-a3127473">
-    <a class="self-link" href="#example-a3127473"></a> 
-<pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->wheat vs bisque<c- p>,</c-> darkgoldenrod<c- p>,</c-> olive to AA<c- p>)</c-></pre>
+   <div class="example" id="example-ee4da5fa">
+    <a class="self-link" href="#example-ee4da5fa"></a> 
+<pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c->wheat vs bisque<c- p>,</c-> darkgoldenrod<c- p>,</c-> olive to <c- nf>wcag2</c-><c- p>(</c->AA<c- p>))</c-></pre>
     <p>The calculation is as follows:</p>
     <ul>
      <li data-md>
@@ -1199,12 +1210,12 @@ on screen, on paper, etc.
 		is returned as the contrast (15.982)
 		is higher than that of white (1.314).</p>
    </div>
-   <div class="example" id="example-586d0f27">
-    <a class="self-link" href="#example-586d0f27"></a> 
+   <div class="example" id="example-9045274a">
+    <a class="self-link" href="#example-9045274a"></a> 
 <pre class="lang-css highlight">foo <c- p>{</c->
   <c- k>--bg</c-><c- p>:</c-> <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>50</c-><c- k>%</c-> <c- m>80</c-><c- k>%</c-><c- p>);</c->
   <c- k>--purple-in-hsl</c-><c- p>:</c-> <c- nf>hsl</c-><c- p>(</c-><c- m>300</c-> <c- m>100</c-><c- k>%</c-> <c- m>25</c-><c- k>%</c-><c- p>);</c->
-  <c- k>color</c-><c- p>:</c-> <c- nf>color-contrast</c-><c- p>(</c-><c- nf>var</c-><c- p>(</c->--bg<c- p>)</c-> vs <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>83</c-><c- k>%</c-> <c- m>23</c-><c- k>%</c-><c- p>),</c-> purple<c- p>,</c-> <c- nf>var</c-><c- p>(</c->--purple-in-hsl<c- p>));</c->
+  <c- k>color</c-><c- p>:</c-> <c- nf>contrast-color</c-><c- p>(</c-><c- nf>var</c-><c- p>(</c->--bg<c- p>)</c-> vs <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>83</c-><c- k>%</c-> <c- m>23</c-><c- k>%</c-><c- p>),</c-> purple<c- p>,</c-> <c- nf>var</c-><c- p>(</c->--purple-in-hsl<c- p>));</c->
   <c- p>}</c->
 </pre>
     <p>The calculation is as follows:</p>
@@ -1222,38 +1233,38 @@ on screen, on paper, etc.
 		6.08409 is very close to 6.08889).</p>
    </div>
    <h2 class="heading settled" data-level="3" id="resolving-color-values"><span class="secno">3. </span><span class="content"> Resolving <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color②">&lt;color></a> Values</span><a class="self-link" href="#resolving-color-values"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="resolving-contrast"><span class="secno">3.1. </span><span class="content">Resolving <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast②">color-contrast()</a> values</span><a class="self-link" href="#resolving-contrast"></a></h3>
+   <h3 class="heading settled" data-level="3.1" id="resolving-contrast"><span class="secno">3.1. </span><span class="content">Resolving <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color②">contrast-color()</a> values</span><a class="self-link" href="#resolving-contrast"></a></h3>
    <p>If all <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color③">&lt;color></a> parameters resolve
 		to the corresponding colors in their respective color spaces,
 		the computed value is the winning color
 		resolved according to <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> § 14 Resolving &lt;color> Values</a>.
 		Otherwise (if <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor">currentColor</a> was used in the function),
-		the computed  value is the <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast③">color-contrast()</a> function
+		the computed  value is the <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color③">contrast-color()</a> function
 		with each <span class="production" id="ref-for-typedef-color④">&lt;color></span> parameter resolved according to <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> § 14 Resolving &lt;color> Values</a>,
-		and the keywords <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aa" id="ref-for-valdef-color-contrast-aa">AA</a>, <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aa-large" id="ref-for-valdef-color-contrast-aa-large">AA-large</a>, <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aaa" id="ref-for-valdef-color-contrast-aaa">AAA</a>, <a class="css" data-link-type="maybe" href="#valdef-color-contrast-aaa-large" id="ref-for-valdef-color-contrast-aaa-large">AAA-large</a> replaced with their corresponding numeric value,
+		and the keywords <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa" id="ref-for-valdef-color-contrast-aa①">AA</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa-large" id="ref-for-valdef-color-contrast-aa-large">AA-large</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aaa" id="ref-for-valdef-color-contrast-aaa①">AAA</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aaa-large" id="ref-for-valdef-color-contrast-aaa-large">AAA-large</a> replaced with their corresponding numeric value,
 		thus preserving inheritance into child elements.</p>
-   <div class="example" id="example-d4a5e670">
-    <a class="self-link" href="#example-d4a5e670"></a> For example, given the value 
-<pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c-><c- nf>rgb</c-><c- p>(</c-><c- m>179</c-> <c- m>213</c-> <c- m>230</c-><c- p>)</c-> vs cadetblue<c- p>,</c-> <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>83</c-><c- k>%</c-> <c- m>23</c-><c- k>%</c-><c- p>)</c-> to AA<c- p>)</c->
+   <div class="example" id="example-73ad1c6e">
+    <a class="self-link" href="#example-73ad1c6e"></a> For example, given the value 
+<pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c-><c- nf>rgb</c-><c- p>(</c-><c- m>179</c-> <c- m>213</c-> <c- m>230</c-><c- p>)</c-> vs cadetblue<c- p>,</c-> <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>83</c-><c- k>%</c-> <c- m>23</c-><c- k>%</c-><c- p>)</c-> to <c- nf>wcag2</c-><c- p>(</c->AA<c- p>))</c->
 </pre>
-    <p>the contrast with cadetblue is <strong>1.97</strong> while the contrast with hsl(200 83% 23%) is <strong>6.09</strong> which exceeds 4.5, the value for <a class="property css" data-link-type="property">AA</a>;
+    <p>the contrast with cadetblue is <strong>1.97</strong> while the contrast with hsl(200 83% 23%) is <strong>6.09</strong> which exceeds 4.5, the value for <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa" id="ref-for-valdef-color-contrast-aa②">AA</a>;
 			so it has the computed value of the resolved hsl function:</p>
 <pre class="lang-css highlight"><c- nf>rgb</c-><c- p>(</c-><c- m>10</c-> <c- m>75</c-> <c- m>107</c-><c- p>)</c->
 </pre>
    </div>
-   <div class="example" id="example-881d74ee">
-    <a class="self-link" href="#example-881d74ee"></a> 
+   <div class="example" id="example-9fd6e0cb">
+    <a class="self-link" href="#example-9fd6e0cb"></a> 
     <p>For example, given a current color value of <span class="swatch" style="--color: rgb(179 213 230)"></span> rgb(179 213 230),
 			the value</p>
-<pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->currentColor vs <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>83</c-><c- k>%</c-> <c- m>23</c-><c- k>%</c-><c- p>),</c-> purple to AA<c- p>)</c->
+<pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c->currentColor vs <c- nf>hsl</c-><c- p>(</c-><c- m>200</c-> <c- m>83</c-><c- k>%</c-> <c- m>23</c-><c- k>%</c-><c- p>),</c-> purple to <c- nf>wcag2</c-><c- p>(</c->AA<c- p>))</c->
 </pre>
     <p>has the computed value</p>
-<pre class="lang-css highlight"><c- nf>color-contrast</c-><c- p>(</c->currentColor vs <c- nf>rgb</c-><c- p>(</c-><c- m>10</c-> <c- m>75</c-> <c- m>107</c-><c- p>),</c-> <c- nf>rgb</c-><c- p>(</c-><c- m>128</c-> <c- m>0</c-> <c- m>128</c-><c- p>)</c-> to <c- m>4.5</c-><c- p>)</c->
+<pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c->currentColor vs <c- nf>rgb</c-><c- p>(</c-><c- m>10</c-> <c- m>75</c-> <c- m>107</c-><c- p>),</c-> <c- nf>rgb</c-><c- p>(</c-><c- m>128</c-> <c- m>0</c-> <c- m>128</c-><c- p>)</c-> to <c- nf>wcag2</c-><c- p>(</c-><c- m>4.5</c-><c- p>))</c->
 </pre>
    </div>
    <h2 class="heading settled" data-level="4" id="serial"><span class="secno">4. </span><span class="content">Serialization</span><a class="self-link" href="#serial"></a></h2>
    <p>This section extends <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> § 15 Serializing &lt;color> Values</a> to add serialization of the
-results of the <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast④">color-contrast()</a> function.</p>
+results of the <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color④">contrast-color()</a> function.</p>
    <p>In this section, the strings used in the specification and the corresponding characters are as follows.</p>
    <table class="data">
     <tbody>
@@ -1283,8 +1294,8 @@ and there shall be no thousands separator.</p>
 if the alpha of the result is exactly 1,
 it is omitted from the serialization;
 an implicit value of 1 (fully opaque) is the default.</p>
-   <h3 class="heading settled" data-level="4.1" id="serial-color-contrast"><span class="secno">4.1. </span><span class="content">Serializing color-contrast()</span><a class="self-link" href="#serial-color-contrast"></a></h3>
-   <p>The serialization of the result of a <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast⑤">color-contrast()</a> function
+   <h3 class="heading settled" data-level="4.1" id="serial-contrast-color"><span class="secno">4.1. </span><span class="content">Serializing contrast-color()</span><a class="self-link" href="#serial-contrast-color"></a></h3>
+   <p>The serialization of the result of a <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color⑤">contrast-color()</a> function
 is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color⑤">&lt;color></a>,
 as defined in <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> § 15 Serializing &lt;color> Values</a>.
 The form used
@@ -1292,13 +1303,13 @@ is the same as that used to specify
 the winning color.</p>
    <p>The <em>minimum</em> precision for round-tripping
 is the same as that specified in <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> § 15 Serializing &lt;color> Values</a>.</p>
-   <div class="example" id="example-5c74a843">
-    <a class="self-link" href="#example-5c74a843"></a> The winner of this contrast choice 
-<pre>color-contrast(wheat vs olive, sienna, maroon)</pre>
+   <div class="example" id="example-e54f713f">
+    <a class="self-link" href="#example-e54f713f"></a> The winner of this contrast choice 
+<pre>contrast-color(wheat vs olive, sienna, maroon)</pre>
     <p>is maroon,
 	so the result is serialized as <span class="swatch" style="--color: maroon"></span> "rgb(128 0 0)".</p>
     <p>While the winner of</p>
-<pre>color-contrast(wheat vs color(prophoto-rgb 0.4 0.4 0.2), color(display-p3 0.45 0.08 0.05))</pre>
+<pre>contrast-color(wheat vs color(prophoto-rgb 0.4 0.4 0.2), color(display-p3 0.45 0.08 0.05))</pre>
     <p>is color(display-p3 0.45 0.08 0.05),
 	so the result is serialized as <span class="swatch" style="--color: rgb(49.277% 0.414% 0.524%)"></span> "color(display-p3 0.45 0.08 0.05)".</p>
    </div>
@@ -1313,7 +1324,7 @@ write stylesheets which conform
 to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4.3 Contrast (Minimum)</a>.</p>
    <h2 class="heading settled" data-level="8" id="changes"><span class="secno">8. </span><span class="content">Changes</span><a class="self-link" href="#changes"></a></h2>
    <h3 class="heading settled" data-level="8.1" id="changes-from-5"><span class="secno">8.1. </span><span class="content"> Changes from Colors 5</span><a class="self-link" href="#changes-from-5"></a></h3>
-   <p>The new <a class="css" data-link-type="maybe" href="#funcdef-color-contrast" id="ref-for-funcdef-color-contrast⑥">color-contrast()</a> function allows one of a list of colors to be chosen,
+   <p>The new <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color⑥">contrast-color()</a> function allows one of a list of colors to be chosen,
 		based on the WCAG 2.1 contrast with a specified color.</p>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content"> Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -1410,20 +1421,17 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#valdef-color-contrast-aa">AA</a><span>, in § 2</span>
-   <li><a href="#valdef-color-contrast-aaa">AAA</a><span>, in § 2</span>
-   <li><a href="#valdef-color-contrast-aaa-large">AAA-large</a><span>, in § 2</span>
-   <li><a href="#valdef-color-contrast-aa-large">AA-large</a><span>, in § 2</span>
-   <li><a href="#funcdef-color-contrast">color-contrast()</a><span>, in § 2</span>
+   <li><a href="#funcdef-contrast-color">contrast-color()</a><span>, in § 2</span>
+   <li><a href="#typedef-target-contrast">&lt;target-contrast></a><span>, in § 2</span>
   </ul>
   <aside class="dfn-panel" data-for="term-for-typedef-color">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color">https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-typedef-color">2. Selecting the most contrasting color: the color-contrast() function</a> <a href="#ref-for-typedef-color①">(2)</a>
+    <li><a href="#ref-for-typedef-color">2. Computing a sufficiently contrasting color: the contrast-color() function</a> <a href="#ref-for-typedef-color①">(2)</a>
     <li><a href="#ref-for-typedef-color②">3. 
 	Resolving &lt;color> Values</a>
-    <li><a href="#ref-for-typedef-color③">3.1. Resolving color-contrast() values</a> <a href="#ref-for-typedef-color④">(2)</a>
-    <li><a href="#ref-for-typedef-color⑤">4.1. Serializing color-contrast()</a>
+    <li><a href="#ref-for-typedef-color③">3.1. Resolving contrast-color() values</a> <a href="#ref-for-typedef-color④">(2)</a>
+    <li><a href="#ref-for-typedef-color⑤">4.1. Serializing contrast-color()</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-valdef-color-black">
@@ -1436,7 +1444,7 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
   <aside class="dfn-panel" data-for="term-for-valdef-color-currentcolor">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor">https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-color-currentcolor">3.1. Resolving color-contrast() values</a>
+    <li><a href="#ref-for-valdef-color-currentcolor">3.1. Resolving contrast-color() values</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-d65-whitepoint">
@@ -1453,28 +1461,60 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
 	Finding the winning color </a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-color-contrast-aa">
+   <a href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa">https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-color-contrast-aa">2. Computing a sufficiently contrasting color: the contrast-color() function</a>
+    <li><a href="#ref-for-valdef-color-contrast-aa①">3.1. Resolving contrast-color() values</a> <a href="#ref-for-valdef-color-contrast-aa②">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-color-contrast-aa-large">
+   <a href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa-large">https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aa-large</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-color-contrast-aa-large">3.1. Resolving contrast-color() values</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-color-contrast-aaa">
+   <a href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aaa">https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aaa</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-color-contrast-aaa">2. Computing a sufficiently contrasting color: the contrast-color() function</a>
+    <li><a href="#ref-for-valdef-color-contrast-aaa①">3.1. Resolving contrast-color() values</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-color-contrast-aaa-large">
+   <a href="https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aaa-large">https://andreubotella.com/csswg-auto-build/test/css-color-6/#valdef-color-contrast-aaa-large</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-color-contrast-aaa-large">3.1. Resolving contrast-color() values</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-mult-comma">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma">https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-mult-comma">2. Selecting the most contrasting color: the color-contrast() function</a>
+    <li><a href="#ref-for-mult-comma">2. Computing a sufficiently contrasting color: the contrast-color() function</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-comb-all">
+   <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all">https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-comb-all">2. Computing a sufficiently contrasting color: the contrast-color() function</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-number-value">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value">https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-number-value">2. Selecting the most contrasting color: the color-contrast() function</a>
+    <li><a href="#ref-for-number-value">2. Computing a sufficiently contrasting color: the contrast-color() function</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-mult-opt">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt">https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-mult-opt">2. Selecting the most contrasting color: the color-contrast() function</a>
+    <li><a href="#ref-for-mult-opt">2. Computing a sufficiently contrasting color: the contrast-color() function</a> <a href="#ref-for-mult-opt①">(2)</a> <a href="#ref-for-mult-opt②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-comb-one">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one">https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-comb-one">2. Selecting the most contrasting color: the color-contrast() function</a> <a href="#ref-for-comb-one①">(2)</a> <a href="#ref-for-comb-one②">(3)</a> <a href="#ref-for-comb-one③">(4)</a>
+    <li><a href="#ref-for-comb-one">2. Computing a sufficiently contrasting color: the contrast-color() function</a> <a href="#ref-for-comb-one①">(2)</a>
    </ul>
   </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1489,9 +1529,18 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
      <li><span class="dfn-paneled" id="term-for-valdef-color-white">white</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[CSS-COLOR-6]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-valdef-color-contrast-aa">aa</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-color-contrast-aa-large">aa-large</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-color-contrast-aaa">aaa</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-color-contrast-aaa-large">aaa-large</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-mult-comma">#</span>
+     <li><span class="dfn-paneled" id="term-for-comb-all">&amp;&amp;</span>
      <li><span class="dfn-paneled" id="term-for-number-value">&lt;number></span>
      <li><span class="dfn-paneled" id="term-for-mult-opt">?</span>
      <li><span class="dfn-paneled" id="term-for-comb-one">|</span>
@@ -1502,6 +1551,8 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
   <dl>
    <dt id="biblio-css-color-4">[CSS-COLOR-4]
    <dd>CSS Color Module Level 4 URL: <a href="https://www.w3.org/TR/css-color-4/">https://www.w3.org/TR/css-color-4/</a>
+   <dt id="biblio-css-color-6">[CSS-COLOR-6]
+   <dd>CSS Color Module Level 6 URL: <a href="https://drafts.csswg.org/css-color-6/">https://drafts.csswg.org/css-color-6/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/">https://andreubotella.com/csswg-auto-build/test/css-values-4/</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -1514,40 +1565,22 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
    <dt id="biblio-css-color-5">[CSS-COLOR-5]
    <dd>Chris Lilley; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-color-5/"><cite>CSS Color Module Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-color-5/">https://andreubotella.com/csswg-auto-build/test/css-color-5/</a>
   </dl>
-  <aside class="dfn-panel" data-for="funcdef-color-contrast">
-   <b><a href="#funcdef-color-contrast">#funcdef-color-contrast</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="funcdef-contrast-color">
+   <b><a href="#funcdef-contrast-color">#funcdef-contrast-color</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-funcdef-color-contrast">1. Introduction</a>
-    <li><a href="#ref-for-funcdef-color-contrast①">2. Selecting the most contrasting color: the color-contrast() function</a>
-    <li><a href="#ref-for-funcdef-color-contrast②">3.1. Resolving color-contrast() values</a> <a href="#ref-for-funcdef-color-contrast③">(2)</a>
-    <li><a href="#ref-for-funcdef-color-contrast④">4. Serialization</a>
-    <li><a href="#ref-for-funcdef-color-contrast⑤">4.1. Serializing color-contrast()</a>
-    <li><a href="#ref-for-funcdef-color-contrast⑥">8.1. 
+    <li><a href="#ref-for-funcdef-contrast-color">1. Introduction</a>
+    <li><a href="#ref-for-funcdef-contrast-color①">2. Computing a sufficiently contrasting color: the contrast-color() function</a>
+    <li><a href="#ref-for-funcdef-contrast-color②">3.1. Resolving contrast-color() values</a> <a href="#ref-for-funcdef-contrast-color③">(2)</a>
+    <li><a href="#ref-for-funcdef-contrast-color④">4. Serialization</a>
+    <li><a href="#ref-for-funcdef-contrast-color⑤">4.1. Serializing contrast-color()</a>
+    <li><a href="#ref-for-funcdef-contrast-color⑥">8.1. 
 	Changes from Colors 5</a>
    </ul>
   </aside>
-  <aside class="dfn-panel" data-for="valdef-color-contrast-aa">
-   <b><a href="#valdef-color-contrast-aa">#valdef-color-contrast-aa</a></b><b>Referenced in:</b>
+  <aside class="dfn-panel" data-for="typedef-target-contrast">
+   <b><a href="#typedef-target-contrast">#typedef-target-contrast</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-valdef-color-contrast-aa">3.1. Resolving color-contrast() values</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="valdef-color-contrast-aa-large">
-   <b><a href="#valdef-color-contrast-aa-large">#valdef-color-contrast-aa-large</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-color-contrast-aa-large">3.1. Resolving color-contrast() values</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="valdef-color-contrast-aaa">
-   <b><a href="#valdef-color-contrast-aaa">#valdef-color-contrast-aaa</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-color-contrast-aaa">3.1. Resolving color-contrast() values</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="valdef-color-contrast-aaa-large">
-   <b><a href="#valdef-color-contrast-aaa-large">#valdef-color-contrast-aaa-large</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-color-contrast-aaa-large">3.1. Resolving color-contrast() values</a>
+    <li><a href="#ref-for-typedef-target-contrast">2. Computing a sufficiently contrasting color: the contrast-color() function</a> <a href="#ref-for-typedef-target-contrast①">(2)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
