@@ -724,7 +724,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Anchor Positioning</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-20">20 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-21">21 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1049,9 +1049,11 @@ return that element.</p>
 that satisfies the following conditions:</p>
       <ul>
        <li data-md>
-        <p><var>el</var> and <var>query el</var> have the same <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root">root</a>.</p>
-       <li data-md>
         <p><var>el</var> is an <a data-link-type="dfn" href="#anchor-element" id="ref-for-anchor-element⑧">anchor element</a> with an <a data-link-type="dfn" href="#anchor-name" id="ref-for-anchor-name②">anchor name</a> of <var>name</var>.</p>
+       <li data-md>
+        <p><var>el</var>’s <a data-link-type="dfn" href="#anchor-name" id="ref-for-anchor-name③">anchor name</a> and <var>name</var> are both associated with the same <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree" id="ref-for-concept-tree">tree</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root">root</a>.</p>
+        <p class="note" role="note"><span>Note:</span> The <a data-link-type="dfn" href="#anchor-name" id="ref-for-anchor-name④">anchor name</a> is a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#css-tree-scoped-name" id="ref-for-css-tree-scoped-name①">tree-scoped name</a>,
+while <var>name</var> is a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①">tree-scoped reference</a>.</p>
        <li data-md>
         <p>Either <var>el</var> is a descendant of <var>query el</var>’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#containing-block" id="ref-for-containing-block⑥">containing block</a>,
 or <var>query el</var>’s <span id="ref-for-containing-block⑦">containing block</span> is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#initial-containing-block" id="ref-for-initial-containing-block">initial containing block</a></p>
@@ -1061,8 +1063,9 @@ or <var>query el</var>’s <span id="ref-for-containing-block⑦">containing blo
         <p>If <var>el</var> has a different <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#containing-block" id="ref-for-containing-block⑨">containing block</a> from <var>query el</var>,
 the last <span id="ref-for-containing-block①⓪">containing block</span> in <var>el</var>’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#containing-block-chain" id="ref-for-containing-block-chain">containing block chain</a> before reaching <var>query el</var>’s <span id="ref-for-containing-block①①">containing block</span> is not <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-position-3/#absolute-position" id="ref-for-absolute-position⑥">absolutely positioned</a></p>
       </ul>
+      <p>If no element satisfies these conditions,
+return nothing.</p>
     </ol>
-    <p class="note" role="note"><span>Note:</span> There might not be any such element.</p>
     <p class="note" role="note"><span>Note:</span> The general rule captured by these conditions
 	is that <var>el</var> must be fully laid out
 	before <var>query el</var> is laid out.
@@ -1073,13 +1076,16 @@ the last <span id="ref-for-containing-block①⓪">containing block</span> in <v
 	into just what’s relevant for this purpose,
 	ensuring there is no possibly circularity
 	in anchor positioning.</p>
-    <p class="note" role="note"><span>Note:</span> Anchor names are scoped to the tree the anchor element is in;
-	if the querying element is in a different <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree">shadow tree</a>,
-	they won’t find each other. <a data-link-type="dfn" href="#implicit-anchor-element" id="ref-for-implicit-anchor-element②">Implicit anchor elements</a> aren’t necessarily limited in the same way,
-	but that might vary depending on the feature assigning the implicit anchor element.</p>
+    <p class="note" role="note"><span>Note:</span> An <a class="property css" data-link-type="property" href="#propdef-anchor-name" id="ref-for-propdef-anchor-name①">anchor-name</a> defined by styles in one <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree">shadow tree</a> won’t be seen by <a data-link-type="dfn" href="#anchor-function" id="ref-for-anchor-function①">anchor functions</a> in styles in a different <span id="ref-for-concept-shadow-tree①">shadow tree</span>,
+	preserving encapsulation.
+	However, <em>elements</em> in different <span id="ref-for-concept-shadow-tree②">shadow trees</span> can still anchor to each other,
+	so long as both the <span class="property" id="ref-for-propdef-anchor-name②">anchor-name</span> and <span id="ref-for-anchor-function②">anchor function</span> come from styles in the same tree,
+	such as by using <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shadow-parts-1/#selectordef-part" id="ref-for-selectordef-part">::part()</a> to style an element inside a shadow.
+	(<a data-link-type="dfn" href="#implicit-anchor-element" id="ref-for-implicit-anchor-element②">Implicit anchor elements</a> also aren’t intrinsically limited to a single tree,
+	but the details of that will depend on the API assigning them.)</p>
    </div>
    <p>An element can also have an <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="implicit-anchor-element">implicit anchor element</dfn>,
-used when an <a data-link-type="dfn" href="#anchor-function" id="ref-for-anchor-function①">anchor function</a> doesn’t specify an explicit <a data-link-type="dfn" href="#anchor-name" id="ref-for-anchor-name③">anchor name</a>.</p>
+used when an <a data-link-type="dfn" href="#anchor-function" id="ref-for-anchor-function③">anchor function</a> doesn’t specify an explicit <a data-link-type="dfn" href="#anchor-name" id="ref-for-anchor-name⑤">anchor name</a>.</p>
    <p class="note" role="note"><span>Note:</span> The Popup API, for example,
 defines an <a data-link-type="dfn" href="#implicit-anchor-element" id="ref-for-implicit-anchor-element③">implicit anchor element</a> for a popup—<wbr>the element that the popup is attached to.</p>
    <p class="note" role="note"><span>Note:</span> An element can have only one implicit anchor element.
@@ -1107,7 +1113,7 @@ it’s used in an <a data-link-type="dfn" href="https://andreubotella.com/csswg-
 the function is being used in a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#sizing-property" id="ref-for-sizing-property①">sizing property</a>.</p>
     <li data-md>
      <p>There is a <a data-link-type="dfn" href="#target-anchor-element" id="ref-for-target-anchor-element⑥">target anchor element</a> for the element
-and the <a data-link-type="dfn" href="#anchor-name" id="ref-for-anchor-name④">anchor name</a> specified in the function.</p>
+and the <a data-link-type="dfn" href="#anchor-name" id="ref-for-anchor-name⑥">anchor name</a> specified in the function.</p>
    </ul>
    <p class="note" role="note"><span>Note:</span> As specified in the definition of <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①④">anchor()</a>,
 an <a data-link-type="dfn" href="#valid-anchor-query" id="ref-for-valid-anchor-query④">invalid anchor query</a> causes the function to resolve to its fallback value instead.</p>
@@ -1632,13 +1638,20 @@ This limit must be <em>at least</em> five.</p>
   <aside class="dfn-panel" data-for="term-for-css-tree-scoped-name">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#css-tree-scoped-name">https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#css-tree-scoped-name</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-css-tree-scoped-name">2.3. Determining The Anchor: the anchor-name property</a>
+    <li><a href="#ref-for-css-tree-scoped-name">2.3. Determining The Anchor: the anchor-name property</a> <a href="#ref-for-css-tree-scoped-name①">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-css-tree-scoped-reference">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#css-tree-scoped-reference">https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#css-tree-scoped-reference</a><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-css-tree-scoped-reference">2.1. Anchor-based Positioning: the anchor() function</a>
+    <li><a href="#ref-for-css-tree-scoped-reference①">2.3. Determining The Anchor: the anchor-name property</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-selectordef-part">
+   <a href="https://andreubotella.com/csswg-auto-build/test/css-shadow-parts-1/#selectordef-part">https://andreubotella.com/csswg-auto-build/test/css-shadow-parts-1/#selectordef-part</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-selectordef-part">2.3. Determining The Anchor: the anchor-name property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-sizing-property">
@@ -1742,7 +1755,13 @@ This limit must be <em>at least</em> five.</p>
   <aside class="dfn-panel" data-for="term-for-concept-shadow-tree">
    <a href="https://dom.spec.whatwg.org/#concept-shadow-tree">https://dom.spec.whatwg.org/#concept-shadow-tree</a><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-concept-shadow-tree">2.3. Determining The Anchor: the anchor-name property</a>
+    <li><a href="#ref-for-concept-shadow-tree">2.3. Determining The Anchor: the anchor-name property</a> <a href="#ref-for-concept-shadow-tree①">(2)</a> <a href="#ref-for-concept-shadow-tree②">(3)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="term-for-concept-tree">
+   <a href="https://dom.spec.whatwg.org/#concept-tree">https://dom.spec.whatwg.org/#concept-tree</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-concept-tree">2.3. Determining The Anchor: the anchor-name property</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="term-for-the-input-element">
@@ -1814,6 +1833,11 @@ This limit must be <em>at least</em> five.</p>
      <li><span class="dfn-paneled" id="term-for-css-tree-scoped-reference">tree-scoped reference</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[CSS-SHADOW-PARTS-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="term-for-selectordef-part">::part()</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-SIZING-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="term-for-sizing-property">sizing property</span>
@@ -1847,6 +1871,7 @@ This limit must be <em>at least</em> five.</p>
     <ul>
      <li><span class="dfn-paneled" id="term-for-concept-tree-root">root</span>
      <li><span class="dfn-paneled" id="term-for-concept-shadow-tree">shadow tree</span>
+     <li><span class="dfn-paneled" id="term-for-concept-tree">tree</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -1895,6 +1920,8 @@ This limit must be <em>at least</em> five.</p>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-css-shadow-parts-1">[CSS-SHADOW-PARTS-1]
+   <dd>Tab Atkins Jr.; Fergal Daly. <a href="https://andreubotella.com/csswg-auto-build/test/css-shadow-parts/"><cite>CSS Shadow Parts</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-shadow-parts/">https://andreubotella.com/csswg-auto-build/test/css-shadow-parts/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
   </dl>
@@ -1914,7 +1941,7 @@ This limit must be <em>at least</em> five.</p>
       <th scope="col">Com­puted value
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-anchor-name" id="ref-for-propdef-anchor-name①">anchor-name</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-anchor-name" id="ref-for-propdef-anchor-name③">anchor-name</a>
       <td>none | &lt;dashed-ident>
       <td>none
       <td>all elements that generate a principal box
@@ -2010,7 +2037,7 @@ to <a class="property css" data-link-type="property" href="#propdef-position-fal
   <aside class="dfn-panel" data-for="anchor-function">
    <b><a href="#anchor-function">#anchor-function</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-anchor-function">2.3. Determining The Anchor: the anchor-name property</a> <a href="#ref-for-anchor-function①">(2)</a>
+    <li><a href="#ref-for-anchor-function">2.3. Determining The Anchor: the anchor-name property</a> <a href="#ref-for-anchor-function①">(2)</a> <a href="#ref-for-anchor-function②">(3)</a> <a href="#ref-for-anchor-function③">(4)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="funcdef-anchor">
@@ -2107,7 +2134,7 @@ to <a class="property css" data-link-type="property" href="#propdef-position-fal
   <aside class="dfn-panel" data-for="propdef-anchor-name">
    <b><a href="#propdef-anchor-name">#propdef-anchor-name</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-propdef-anchor-name">2.3. Determining The Anchor: the anchor-name property</a>
+    <li><a href="#ref-for-propdef-anchor-name">2.3. Determining The Anchor: the anchor-name property</a> <a href="#ref-for-propdef-anchor-name①">(2)</a> <a href="#ref-for-propdef-anchor-name②">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="anchor-element">
@@ -2125,8 +2152,8 @@ to <a class="property css" data-link-type="property" href="#propdef-position-fal
    <b><a href="#anchor-name">#anchor-name</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-anchor-name">2.1. Anchor-based Positioning: the anchor() function</a>
-    <li><a href="#ref-for-anchor-name①">2.3. Determining The Anchor: the anchor-name property</a> <a href="#ref-for-anchor-name②">(2)</a> <a href="#ref-for-anchor-name③">(3)</a>
-    <li><a href="#ref-for-anchor-name④">2.4. Anchor Queries</a>
+    <li><a href="#ref-for-anchor-name①">2.3. Determining The Anchor: the anchor-name property</a> <a href="#ref-for-anchor-name②">(2)</a> <a href="#ref-for-anchor-name③">(3)</a> <a href="#ref-for-anchor-name④">(4)</a> <a href="#ref-for-anchor-name⑤">(5)</a>
+    <li><a href="#ref-for-anchor-name⑥">2.4. Anchor Queries</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="target-anchor-element">

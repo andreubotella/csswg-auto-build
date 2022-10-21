@@ -989,7 +989,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Color Module Level 4</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-20">20 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-21">21 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -5809,13 +5809,10 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
     </ul>
    </details>
    <p>The first argument specifies the CIE Lightness.
-	This is typically a number between <span class="css">0%</span> (representing black)
+	This is a number between <span class="css">0%</span> (representing black)
 	and <span class="css">100%</span> (representing white),
-	However, CIE Lightness <em>can</em> exceed this range on some systems,
-	with extra-bright whites using a lightness up to <span class="css">400</span>.
 	Values less than <span class="css">0%</span> must be clamped to <span class="css">0%</span> at computed-value time;
-	values greater than <span class="css">100%</span> are permitted (for forwards compatibility with High Dynamic Range (HDR),
-	and must not be clamped.</p>
+	values greater than <span class="css">100%</span> are clamped to <span class="css">100%</span>.</p>
    <p>The second and third arguments are the distances along the "a" and "b" axes
 	in the Lab color space,
 	as described in the previous section.
@@ -5827,8 +5824,7 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
 	separated by a slash,
 	representing the <a data-link-type="dfn" href="#alpha-channel" id="ref-for-alpha-channel①">alpha component</a>.</p>
    <p>If the lightness of a Lab color is <span class="css">0%</span>,
-	both the a and b components are <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①①">powerless</a>.</p>
-   <p class="issue" id="issue-e05ac5c3"><a class="self-link" href="#issue-e05ac5c3"></a> Unsure about when/if a and b become powerless for Lab whites.</p>
+	or <span class="css">100%</span> both the a and b components are <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①①">powerless</a> and the color represents black, or white, respectively.</p>
    <div class="example" id="ex-lab-samples">
     <a class="self-link" href="#ex-lab-samples"></a> 
 <pre class="lang-css highlight"><span class="swatch" style="--color: rgb(49.06% 13.87% 15.9%)"></span> <c- nf>lab</c-><c- p>(</c-><c- m>29.2345</c-><c- k>%</c-> <c- m>39.3825</c-> <c- m>20.0664</c-><c- p>);</c->
@@ -5891,8 +5887,8 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
    <p>If the chroma of an LCH color is <span class="css">0%</span>,
 	the hue component is <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①②">powerless</a>.
 	If the lightness of an LCH color is <span class="css">0%</span>,
+	or <span class="css">100%</span>, 
 	both the hue and chroma components are <span id="ref-for-powerless-color-component①③">powerless</span>.</p>
-   <p class="issue" id="issue-1813c844"><a class="self-link" href="#issue-1813c844"></a> Unsure about when/if hue and chroma become powerless for LCH whites.</p>
    <div class="example" id="ex-lch-samples">
     <a class="self-link" href="#ex-lch-samples"></a> 
 <pre class="lang-css highlight"><span class="swatch" style="--color: rgb(49.06% 13.87% 15.9%)"></span> <c- nf>lch</c-><c- p>(</c-><c- m>29.2345</c-><c- k>%</c-> <c- m>44.2</c-> <c- m>27</c-><c- p>);</c->
@@ -5937,12 +5933,10 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
     </ul>
    </details>
    <p>The first argument specifies the Oklab Lightness.
-	This is typically a number between <span class="css">0%</span> (representing black)
+	This is a number between <span class="css">0%</span> (representing black)
 	and <span class="css">100%</span> (representing white).</p>
    <p>Values less than <span class="css">0%</span> must be clamped to <span class="css">0%</span> at computed-value time;
-	values greater than <span class="css">100%</span> are permitted
-	for forwards compatibility,
-	and must not be clamped.</p>
+	values greater than <span class="css">100%</span> are clamped to <span class="css">100%</span>.</p>
    <p>The second and third arguments are the distances along
 	the "a" and "b" axes
 	in the Oklab color space,
@@ -5955,7 +5949,8 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
 	separated by a slash,
 	representing the <a data-link-type="dfn" href="#alpha-channel" id="ref-for-alpha-channel③">alpha component</a>.</p>
    <p>If the lightness of an Oklab color is <span class="css">0%</span>,
-	both the a and b components are <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①④">powerless</a>.</p>
+	or <span class="css">100%</span>,
+	both the a and b components are <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①④">powerless</a> and the color represents black, or white, respectively.</p>
    <div class="example" id="ex-oklab-samples">
     <a class="self-link" href="#ex-oklab-samples"></a> 
 <pre class="lang-css highlight"><span class="swatch" style="--color: rgb(49.06% 13.87% 15.9%)"></span> <c- nf>oklab</c-><c- p>(</c-><c- m>40.101</c-><c- k>%</c-> <c- m>0.1147</c-> <c- m>0.0453</c-><c- p>);</c->
@@ -6016,6 +6011,7 @@ any achromatic color will have a <span id="ref-for-powerless-color-component①"
    <p>If the chroma of an Oklch color is <span class="css">0%</span>,
 		the hue component is <a data-link-type="dfn" href="#powerless-color-component" id="ref-for-powerless-color-component①⑤">powerless</a>.
 		If the lightness of an Oklch color is <span class="css">0%</span>,
+		or <span class="css">100%</span>,
 		both the hue and chroma components are <span id="ref-for-powerless-color-component①⑥">powerless</span>.</p>
    <div class="example" id="ex-oklch-samples">
     <a class="self-link" href="#ex-oklch-samples"></a> 
@@ -8877,6 +8873,8 @@ Emilio Cobos Álvarez, Chris Bai, Amelia Bellamy-Royds, Lars Borg, Mike Bremford
     <h2 class="no-num heading settled" id="changes"><span class="content"> Changes</span><a class="self-link" href="#changes"></a></h2>
     <h3 class="heading settled" id="changes-from-20220705"><span class="content">Changes since the <a href="https://www.w3.org/TR/2022/CR-css-color-4-20220705/">Candidate Recommendation of 5 July 2022</a> </span><a class="self-link" href="#changes-from-20220705"></a></h3>
     <ul>
+     <li>Clarified a,b and C,h powerless at L=100% representing white.
+     <li>Removed handwavy mention of L=400 which applies to hdr-CIELAB not CIE Lab
      <li>Consistent capitalization of Oklab and Oklch
      <li>Moved definitions of valid color, invalid color, out of gamut and in gamut to terminology section
      <li>Fixed definition of "longer" hue interpolation
@@ -10257,8 +10255,6 @@ Transparency: the opacity property</a>
   </div>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Unsure about when/if a and b become powerless for Lab whites. <a class="issue-return" href="#issue-e05ac5c3" title="Jump to section">↵</a></div>
-   <div class="issue"> Unsure about when/if hue and chroma become powerless for LCH whites. <a class="issue-return" href="#issue-1813c844" title="Jump to section">↵</a></div>
    <div class="issue"> Computed value needs to be able to represent
 	combinations of <a class="css" data-link-type="maybe" href="#valdef-color-currentcolor">currentColor</a> and an actual color.
 	Consider the value of <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-text-decor-4/#propdef-text-emphasis-color">text-emphasis-color</a> in <code class="highlight">div <c- p>{</c-> <c- k>text-emphasis</c-><c- p>:</c-> circle<c- p>;</c-> <c- k>transition</c-><c- p>:</c-> all <c- m>2</c-><c- k>s</c-><c- p>;</c-> <c- p>}</c-><br> div:hover <c- p>{</c-> <c- k>text-emphasis-color</c-><c- p>:</c-> lime<c- p>;</c-> <c- p>}</c-><br> em <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c-></code> See <a href="https://github.com/w3c/csswg-drafts/issues/445">Issue 445</a>. <a class="issue-return" href="#issue-7fabb422" title="Jump to section">↵</a></div>
