@@ -6,7 +6,7 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version b0de3432c, updated Thu Oct 13 09:16:59 2022 -0700" name="generator">
+  <meta content="Bikeshed version afdea9b3f, updated Fri Oct 21 14:30:36 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-cascade-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
 <style>/* style-autolinks */
@@ -687,6 +687,14 @@ a.self-link:hover {
 .heading > a.self-link {
     font-size: 83%;
 }
+.example > a.self-link,
+.note > a.self-link,
+.issue > a.self-link {
+    /* These blocks are overflow:auto, so positioning outside
+       doesn't work. */
+    left: auto;
+    right: 0;
+}
 li > a.self-link {
     left: calc(-1 * (3.5rem - 26px) - 2em);
 }
@@ -1120,7 +1128,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Cascading and Inheritance Level 5</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-21">21 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-22">22 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1568,8 +1576,8 @@ the type is treated as <code>text/css</code>.</p>
 			both for string arguments and property accessors:
 			requests for the old property name
 			transparently transfer to the new property name instead. 
-     <div class="example" id="example-5dd1d5a6"><a class="self-link" href="#example-5dd1d5a6"></a> For example, if <span class="css">old-name</span> is a <a data-link-type="dfn" href="#legacy-name-alias" id="ref-for-legacy-name-alias">legacy name alias</a> for <span class="css">new-name</span>, <code class="highlight">getComputedStyle<c- p>(</c->el<c- p>).</c->oldName</code> will return the computed style of the <code class="highlight">newName</code> property,
-				and <code class="highlight">el<c- p>.</c->style<c- p>.</c->setPropertyValue<c- p>(</c-><c- u>"old-name"</c-><c- p>,</c-> <c- u>"value"</c-><c- p>)</c-></code> will set the <span class="css">new-name</span> property to <code class="highlight"><c- u>"value"</c-></code>. </div>
+     <div class="example" id="example-519bf7b3"><a class="self-link" href="#example-519bf7b3"></a> For example, if <span class="css">old-name</span> is a <a data-link-type="dfn" href="#legacy-name-alias" id="ref-for-legacy-name-alias">legacy name alias</a> for <span class="css">new-name</span>, <code class="highlight">getComputedStyle<c- p>(</c->el<c- p>).</c->oldName</code> will return the computed style of the <code class="highlight">newName</code> property,
+				and <code class="highlight">el<c- p>.</c->style<c- p>.</c->setProperty<c- p>(</c-><c- u>"old-name"</c-><c- p>,</c-> <c- u>"value"</c-><c- p>)</c-></code> will set the <span class="css">new-name</span> property to <code class="highlight"><c- u>"value"</c-></code>. </div>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="legacy shorthand" id="legacy-shorthand">legacy shorthands</dfn> 
     <dd>
       When the old property has a distinct syntax from the new property,
@@ -3031,22 +3039,22 @@ potentially allowing sensitive data to be inferred from the computed styles they
   <aside class="caniuse-status wrapped" data-deco data-dfn-id="all-shorthand">
    <input class="caniuse-panel-btn" type="button" value="CanIUse">
    <p class="support"><b>Support:</b><span class="android yes"><span>Android Browser</span><span>4.4.3+</span></span><span class="baidu yes"><span>Baidu Browser</span><span>13.18+</span></span><span class="bb no"><span>Blackberry Browser</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>37+</span></span><span class="and_chr yes"><span>Chrome for Android</span><span>106+</span></span><span class="edge yes"><span>Edge</span><span>79+</span></span><span class="firefox yes"><span>Firefox</span><span>27+</span></span><span class="and_ff yes"><span>Firefox for Android</span><span>105+</span></span><span class="ie no"><span>IE</span><span>None</span></span><span class="ie_mob no"><span>IE Mobile</span><span>None</span></span><span class="kaios yes"><span>KaiOS Browser</span><span>2.5+</span></span><span class="opera yes"><span>Opera</span><span>24+</span></span><span class="op_mini no"><span>Opera Mini</span><span>None</span></span><span class="op_mob yes"><span>Opera Mobile</span><span>64+</span></span><span class="and_qq yes"><span>QQ Browser</span><span>13.1+</span></span><span class="safari yes"><span>Safari</span><span>9.1+</span></span><span class="ios_saf yes"><span>Safari on iOS</span><span>9.3+</span></span><span class="samsung yes"><span>Samsung Internet</span><span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span><span>13.4+</span></span></p>
-   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-all">caniuse.com</a> as of 2022-10-19</p>
+   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-all">caniuse.com</a> as of 2022-10-21</p>
   </aside>
   <aside class="caniuse-status wrapped" data-deco data-dfn-id="initial">
    <input class="caniuse-panel-btn" type="button" value="CanIUse">
    <p class="support"><b>Support:</b><span class="android yes"><span>Android Browser</span><span>2.3+</span></span><span class="baidu yes"><span>Baidu Browser</span><span>13.18+</span></span><span class="bb yes"><span>Blackberry Browser</span><span>7+</span></span><span class="chrome yes"><span>Chrome</span><span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span><span>106+</span></span><span class="edge yes"><span>Edge</span><span>12+</span></span><span class="firefox yes"><span>Firefox</span><span>19+</span></span><span class="and_ff yes"><span>Firefox for Android</span><span>105+</span></span><span class="ie no"><span>IE</span><span>None</span></span><span class="ie_mob no"><span>IE Mobile</span><span>None</span></span><span class="kaios yes"><span>KaiOS Browser</span><span>2.5+</span></span><span class="opera yes"><span>Opera</span><span>15+</span></span><span class="op_mini no"><span>Opera Mini</span><span>None</span></span><span class="op_mob yes"><span>Opera Mobile</span><span>64+</span></span><span class="and_qq yes"><span>QQ Browser</span><span>13.1+</span></span><span class="safari yes"><span>Safari</span><span>3.2+</span></span><span class="ios_saf yes"><span>Safari on iOS</span><span>4.0+</span></span><span class="samsung yes"><span>Samsung Internet</span><span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span><span>13.4+</span></span></p>
-   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-initial-value">caniuse.com</a> as of 2022-10-19</p>
+   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-initial-value">caniuse.com</a> as of 2022-10-21</p>
   </aside>
   <aside class="caniuse-status wrapped" data-deco data-dfn-id="inherit-initial">
    <input class="caniuse-panel-btn" type="button" value="CanIUse">
    <p class="support"><b>Support:</b><span class="android yes"><span>Android Browser</span><span>106+</span></span><span class="baidu yes"><span>Baidu Browser</span><span>13.18+</span></span><span class="bb no"><span>Blackberry Browser</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>41+</span></span><span class="and_chr yes"><span>Chrome for Android</span><span>106+</span></span><span class="edge yes"><span>Edge</span><span>13+</span></span><span class="firefox yes"><span>Firefox</span><span>27+</span></span><span class="and_ff yes"><span>Firefox for Android</span><span>105+</span></span><span class="ie no"><span>IE</span><span>None</span></span><span class="ie_mob no"><span>IE Mobile</span><span>None</span></span><span class="kaios yes"><span>KaiOS Browser</span><span>2.5+</span></span><span class="opera yes"><span>Opera</span><span>28+</span></span><span class="op_mini no"><span>Opera Mini</span><span>None</span></span><span class="op_mob yes"><span>Opera Mobile</span><span>64+</span></span><span class="and_qq yes"><span>QQ Browser</span><span>13.1+</span></span><span class="safari yes"><span>Safari</span><span>9.1+</span></span><span class="ios_saf yes"><span>Safari on iOS</span><span>9.3+</span></span><span class="samsung yes"><span>Samsung Internet</span><span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span><span>13.4+</span></span></p>
-   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-unset-value">caniuse.com</a> as of 2022-10-19</p>
+   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-unset-value">caniuse.com</a> as of 2022-10-21</p>
   </aside>
   <aside class="caniuse-status wrapped" data-deco data-dfn-id="default">
    <input class="caniuse-panel-btn" type="button" value="CanIUse">
    <p class="support"><b>Support:</b><span class="android yes"><span>Android Browser</span><span>106+</span></span><span class="baidu yes"><span>Baidu Browser</span><span>13.18+</span></span><span class="bb no"><span>Blackberry Browser</span><span>None</span></span><span class="chrome yes"><span>Chrome</span><span>84+</span></span><span class="and_chr yes"><span>Chrome for Android</span><span>106+</span></span><span class="edge yes"><span>Edge</span><span>84+</span></span><span class="firefox yes"><span>Firefox</span><span>67+</span></span><span class="and_ff yes"><span>Firefox for Android</span><span>105+</span></span><span class="ie no"><span>IE</span><span>None</span></span><span class="ie_mob no"><span>IE Mobile</span><span>None</span></span><span class="kaios no"><span>KaiOS Browser</span><span>None</span></span><span class="opera yes"><span>Opera</span><span>73+</span></span><span class="op_mini no"><span>Opera Mini</span><span>None</span></span><span class="op_mob yes"><span>Opera Mobile</span><span>64+</span></span><span class="and_qq no"><span>QQ Browser</span><span>None</span></span><span class="safari yes"><span>Safari</span><span>9.1+</span></span><span class="ios_saf yes"><span>Safari on iOS</span><span>9.3+</span></span><span class="samsung yes"><span>Samsung Internet</span><span>14.0+</span></span><span class="and_uc no"><span>UC Browser for Android</span><span>None</span></span></p>
-   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-revert-value">caniuse.com</a> as of 2022-10-19</p>
+   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=css-revert-value">caniuse.com</a> as of 2022-10-21</p>
   </aside>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
@@ -4431,7 +4439,7 @@ The CSSLayerStatementRule interface</a>
    <dt id="biblio-css-fonts-5">[CSS-FONTS-5]
    <dd>Myles Maxfield; Chris Lilley. <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-5/"><cite>CSS Fonts Module Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-5/">https://andreubotella.com/csswg-auto-build/test/css-fonts-5/</a>
    <dt id="biblio-css-pseudo-4">[CSS-PSEUDO-4]
-   <dd>CSS Pseudo-Elements Module Level 4 URL: <a href="https://www.w3.org/TR/css-pseudo-4/">https://www.w3.org/TR/css-pseudo-4/</a>
+   <dd>Daniel Glazman; Elika Etemad; Alan Stearns. <a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/"><cite>CSS Pseudo-Elements Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/">https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/</a>
    <dt id="biblio-css-scoping-1">[CSS-SCOPING-1]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-scoping/"><cite>CSS Scoping Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-scoping/">https://andreubotella.com/csswg-auto-build/test/css-scoping/</a>
    <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
@@ -4474,7 +4482,7 @@ The CSSLayerStatementRule interface</a>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-align/"><cite>CSS Box Alignment Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-align/">https://andreubotella.com/csswg-auto-build/test/css-align/</a>
    <dt id="biblio-css-break-3">[CSS-BREAK-3]
-   <dd>CSS Fragmentation Module Level 3 URL: <a href="https://www.w3.org/TR/css-break-3/">https://www.w3.org/TR/css-break-3/</a>
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-break/"><cite>CSS Fragmentation Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-break/">https://andreubotella.com/csswg-auto-build/test/css-break/</a>
    <dt id="biblio-css-cascade-4">[CSS-CASCADE-4]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-4/"><cite>CSS Cascading and Inheritance Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-4/">https://andreubotella.com/csswg-auto-build/test/css-cascade-4/</a>
    <dt id="biblio-css-contain-2">[CSS-CONTAIN-2]
@@ -4499,8 +4507,6 @@ The CSSLayerStatementRule interface</a>
    <dd>Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-variables/"><cite>CSS Custom Properties for Cascading Variables Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-variables/">https://andreubotella.com/csswg-auto-build/test/css-variables/</a>
    <dt id="biblio-css-writing-modes-4">[CSS-WRITING-MODES-4]
    <dd>Elika Etemad; Koji Ishii. <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/</a>
-   <dt id="biblio-cssom-1">[CSSOM-1]
-   <dd>CSS Object Model Level 1 URL: <a href="https://www.w3.org/TR/cssom-1/">https://www.w3.org/TR/cssom-1/</a>
    <dt id="biblio-svg11">[SVG11]
    <dd>Erik Dahlström; et al. <a href="https://www.w3.org/TR/SVG11/"><cite>Scalable Vector Graphics (SVG) 1.1 (Second Edition)</cite></a>. 16 August 2011. REC. URL: <a href="https://www.w3.org/TR/SVG11/">https://www.w3.org/TR/SVG11/</a>
   </dl>

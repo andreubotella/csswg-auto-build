@@ -6,7 +6,7 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="Bikeshed version b0de3432c, updated Thu Oct 13 09:16:59 2022 -0700" name="generator">
+  <meta content="Bikeshed version afdea9b3f, updated Fri Oct 21 14:30:36 2022 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
   <link href="style.css" rel="stylesheet">
@@ -519,6 +519,14 @@ a.self-link:hover {
 .heading > a.self-link {
     font-size: 83%;
 }
+.example > a.self-link,
+.note > a.self-link,
+.issue > a.self-link {
+    /* These blocks are overflow:auto, so positioning outside
+       doesn't work. */
+    left: auto;
+    right: 0;
+}
 li > a.self-link {
     left: calc(-1 * (3.5rem - 26px) - 2em);
 }
@@ -941,7 +949,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">CSS Color Module Level 6</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-21">21 October 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2022-10-22">22 October 2022</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1017,6 +1025,7 @@ on screen, on paper, etc.
        <a href="#contrast-algorithms"><span class="secno">2.2</span> <span class="content"> Contrast algorithms </span></a>
        <ol class="toc">
         <li><a href="#luminance-contrast"><span class="secno">2.2.1</span> <span class="content"> WCAG 2.1: the <span class="css">wcag2</span> keyword and <span class="css">wcag2()</span> function </span></a>
+        <li><a href="#contrast-transparency"><span class="secno">2.2.2</span> <span class="content"> Contrasting Semi-transparent Colors</span></a>
        </ol>
      </ol>
     <li>
@@ -1104,7 +1113,7 @@ on screen, on paper, etc.
 	as text against a list of <a data-link-type="dfn" href="#contrast-color-candidates" id="ref-for-contrast-color-candidates">candidate</a> background colors (<dfn class="css" data-dfn-for="contrast-color()" data-dfn-type="value" data-export id="valdef-contrast-color-text">text<a class="self-link" href="#valdef-contrast-color-text"></a></dfn>)
 	or as a background against a list of <span id="ref-for-contrast-color-candidates①">candidate</span> text colors.
 	(The effective contrast of a pair of colors depends on their usage.)</p>
-   <p class="issue" id="issue-6a7c7dda"><a class="self-link" href="#issue-6a7c7dda"></a> The keywords to specify whether the <a data-link-type="dfn" href="#contrast-base-color" id="ref-for-contrast-base-color①">base color</a> is a foreground or background are <abbr title="to be decided">TBD</abbr>.</p>
+   <p class="issue" id="issue-6a7c7dda"><a class="self-link" href="#issue-6a7c7dda"></a> The keywords to specify whether the <a data-link-type="dfn" href="#contrast-base-color" id="ref-for-contrast-base-color①">base color</a> is a foreground or background are <abbr title="to be decided">TBD</abbr>. <a href="https://github.com/w3c/csswg-drafts/issues/7359">[Issue #7359]</a></p>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-target-contrast"><a class="production css" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast③">&lt;target-contrast></a></dfn> argument specifies the contrast algorithm(s) to use.
 	If no <a data-link-type="dfn" href="#contrast-color-candidates" id="ref-for-contrast-color-candidates②">color candidates</a> have been provided, <a class="production css" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast④">&lt;target-contrast></a> may be omitted,
 	in which case a UA-chosen algorithm is used.</p>
@@ -1266,6 +1275,30 @@ on screen, on paper, etc.
       <p>the contrast is (0.92781 + 0.05) / (0.03568 + 0.05) = <b>11.4123</b></p>
     </ul>
    </div>
+   <h4 class="heading settled" data-level="2.2.2" id="contrast-transparency"><span class="secno">2.2.2. </span><span class="content"> Contrasting Semi-transparent Colors</span><a class="self-link" href="#contrast-transparency"></a></h4>
+   <p>This section applies only to contrast algorithms that require their inputs to be opaque colors.</p>
+   <p>When calculating the contrast of a pair of colors:</p>
+   <ol>
+    <li data-md>
+     <p>The background color is first blended over an opaque canvas color
+using simple alpha compositing (see <a href="https://drafts.fxtf.org/compositing-1/#simplealphacompositing"><cite>Compositing 1</cite> § 5.1 Simple alpha compositing</a>)
+to find an opaque background color.</p>
+     <div class="issue" id="issue-c8b8a00f">
+      <a class="self-link" href="#issue-c8b8a00f"></a> <a href="https://github.com/w3c/csswg-drafts/issues/7358">#7358</a> Find a good opaque canvas color for this computation.
+Candidates are: 
+      <ul>
+       <li data-md>
+        <p>the foreground color with alpha = 1</p>
+       <li data-md>
+        <p>the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-system-color-canvas" id="ref-for-valdef-system-color-canvas">canvas</a> system color</p>
+       <li data-md>
+        <p>some other color calculated to minimize the contrast for the algorithm used</p>
+      </ul>
+     </div>
+    <li data-md>
+     <p>The foreground color is then blended over this opaque background color
+to find an opaque foreground color.</p>
+   </ol>
    <h2 class="heading settled" data-level="3" id="resolving-color-values"><span class="secno">3. </span><span class="content"> Resolving <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color⑤">&lt;color></a> Values</span><a class="self-link" href="#resolving-color-values"></a></h2>
    <h3 class="heading settled" data-level="3.1" id="resolving-contrast"><span class="secno">3.1. </span><span class="content">Resolving <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color④">contrast-color()</a> values</span><a class="self-link" href="#resolving-contrast"></a></h3>
    <p>If all <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#typedef-color" id="ref-for-typedef-color⑥">&lt;color></a> parameters resolve
@@ -1449,6 +1482,13 @@ to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4
 If there is a target contrast</a> <a href="#ref-for-valdef-color-black②">(2)</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-valdef-system-color-canvas">
+   <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-system-color-canvas">https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-system-color-canvas</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-valdef-system-color-canvas">2.2.2. 
+Contrasting Semi-transparent Colors</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-valdef-color-currentcolor">
    <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor">https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor</a><b>Referenced in:</b>
    <ul>
@@ -1558,6 +1598,7 @@ If there is a target contrast</a> <a href="#ref-for-valdef-color-white②">(2)</
     <ul>
      <li><span class="dfn-paneled" id="term-for-typedef-color">&lt;color></span>
      <li><span class="dfn-paneled" id="term-for-valdef-color-black">black</span>
+     <li><span class="dfn-paneled" id="term-for-valdef-system-color-canvas">canvas</span>
      <li><span class="dfn-paneled" id="term-for-valdef-color-currentcolor">currentcolor</span>
      <li><span class="dfn-paneled" id="term-for-d65-whitepoint">d65 whitepoint</span>
      <li><span class="dfn-paneled" id="term-for-used-color">used color</span>
@@ -1589,10 +1630,12 @@ If there is a target contrast</a> <a href="#ref-for-valdef-color-white②">(2)</
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-compositing-1">[COMPOSITING-1]
+   <dd>Rik Cabanier; Nikos Andronikos. <a href="https://drafts.fxtf.org/compositing-1/"><cite>Compositing and Blending Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/compositing-1/">https://drafts.fxtf.org/compositing-1/</a>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/">https://andreubotella.com/csswg-auto-build/test/css-cascade-5/</a>
    <dt id="biblio-css-color-4">[CSS-COLOR-4]
-   <dd>CSS Color Module Level 4 URL: <a href="https://www.w3.org/TR/css-color-4/">https://www.w3.org/TR/css-color-4/</a>
+   <dd>Tab Atkins Jr.; Chris Lilley; Lea Verou. <a href="https://andreubotella.com/csswg-auto-build/test/css-color/"><cite>CSS Color Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-color/">https://andreubotella.com/csswg-auto-build/test/css-color/</a>
    <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
    <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/">https://andreubotella.com/csswg-auto-build/test/css-syntax/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
@@ -1611,11 +1654,24 @@ If there is a target contrast</a> <a href="#ref-for-valdef-color-white②">(2)</
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> The keywords to specify whether the <a data-link-type="dfn" href="#contrast-base-color">base color</a> is a foreground or background are <abbr title="to be decided">TBD</abbr>. <a class="issue-return" href="#issue-6a7c7dda" title="Jump to section">↵</a></div>
+   <div class="issue"> The keywords to specify whether the <a data-link-type="dfn" href="#contrast-base-color">base color</a> is a foreground or background are <abbr title="to be decided">TBD</abbr>. <a href="https://github.com/w3c/csswg-drafts/issues/7359">[Issue #7359]</a> <a class="issue-return" href="#issue-6a7c7dda" title="Jump to section">↵</a></div>
    <div class="issue"> Currently only <a href="#luminance-contrast">WCAG 2.1</a> is supported,
 	however this algorithm is known to have problems,
 	particularly on dark backgrounds.
 	Future revisions of this module will likely introduce additional contrast algorithms. <a class="issue-return" href="#issue-b57775e7" title="Jump to section">↵</a></div>
+   <div class="issue">
+     <a href="https://github.com/w3c/csswg-drafts/issues/7358">#7358</a> Find a good opaque canvas color for this computation.
+Candidates are: 
+    <ul>
+     <li data-md>
+      <p>the foreground color with alpha = 1</p>
+     <li data-md>
+      <p>the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-system-color-canvas">canvas</a> system color</p>
+     <li data-md>
+      <p>some other color calculated to minimize the contrast for the algorithm used</p>
+    </ul>
+     <a class="issue-return" href="#issue-c8b8a00f" title="Jump to section">↵</a>
+   </div>
   </div>
   <aside class="dfn-panel" data-for="funcdef-contrast-color">
    <b><a href="#funcdef-contrast-color">#funcdef-contrast-color</a></b><b>Referenced in:</b>
