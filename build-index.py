@@ -124,8 +124,9 @@ def create_symlink(shortname, spec_folder):
     if spec_folder in timestamps:
         timestamps[shortname] = timestamps[spec_folder]
 
+    shortname_folder = os.path.join("./output/test", shortname)
     try:
-        os.symlink(spec_folder, shortname)
+        os.symlink(spec_folder, shortname_folder)
     except OSError:
         pass
 
@@ -202,7 +203,7 @@ for shortname, specgroup in specgroups.items():
 
 
 with open('./output/test/timestamps.json', 'w') as f:
-    json.dump(dict(sorted(timestamps.items())), f, indent = 2)
+    json.dump(dict(sorted(timestamps.items())), f, indent=2)
 
 
 with open("./output/test/index.html", mode='w', encoding="UTF-8") as f:
