@@ -10,7 +10,7 @@ from bikeshed.config import scriptPath as bikeshedScriptPath
 # CSSWG specs linked to their mirror URL.
 
 ORIGINAL_BASE_URL = "https://drafts.csswg.org/"
-BASE_URL = "https://andreubotella.com/csswg-auto-build/test/"
+BASE_URL = "https://andreubotella.com/csswg-auto-build/"
 
 spec_data_folder = bikeshedScriptPath("spec-data")
 

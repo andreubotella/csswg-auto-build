@@ -124,7 +124,7 @@ def create_symlink(shortname, spec_folder):
     if spec_folder in timestamps:
         timestamps[shortname] = timestamps[spec_folder]
 
-    shortname_folder = os.path.join("./output/test", shortname)
+    shortname_folder = os.path.join("./output", shortname)
     try:
         os.symlink(spec_folder, shortname_folder)
     except OSError:
@@ -149,7 +149,7 @@ constants.setErrorLevel("nothing")
 specgroups = defaultdict(list)
 timestamps = defaultdict(list)
 
-for entry in os.scandir("./output/test"):
+for entry in os.scandir("./output"):
     if entry.is_dir(follow_symlinks=False):
         # Not actual specs, just examples.
         if entry.name in ["css-module"]:
@@ -202,10 +202,10 @@ for shortname, specgroup in specgroups.items():
             create_symlink("css", currentWorkDir)
 
 
-with open('./output/test/timestamps.json', 'w') as f:
+with open('./output/timestamps.json', 'w') as f:
     json.dump(dict(sorted(timestamps.items())), f, indent=2)
 
 
-with open("./output/test/index.html", mode='w', encoding="UTF-8") as f:
+with open("./output/index.html", mode='w', encoding="UTF-8") as f:
     template = jinja_env.get_template("index.html.j2")
     f.write(template.render(specgroups=specgroups))
