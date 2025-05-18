@@ -15,19 +15,21 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
-      - name: Setup Pipenv
-        run: pip3 install pipenv && pipenv update
-      - name: Update Bikeshed
-        run: pipenv run bikeshed update
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: 'pip'
+      - name: Intall Bikeshed
+        run: pip install bikeshed && bikeshed update
       - name: Configure Bikeshed spec data
-        run: pipenv run python ./configure-spec-data.py
+        run: python ./configure-spec-data.py
       - run: |
           cp -r csswg-drafts output
       - name: Compile
         run: |
           set -e
           for file in ./output/**/*.bs; do
-            pipenv run bikeshed -f spec "$file" "${file%.bs}.html"
+            bikeshed -f spec "$file" "${file%.bs}.html"
           done
       - name: Fix directory defaults
         # The default pages for directories are assumed to be Overview.html, but
