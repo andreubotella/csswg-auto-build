@@ -14,7 +14,7 @@ from collections import defaultdict
 
 from html.parser import HTMLParser
 
-from bikeshed import Spec, constants
+from bikeshed import Spec, messages
 
 import jinja2
 
@@ -144,7 +144,7 @@ CURRENT_WORK_EXCEPTIONS = {
 # ------------------------------------------------------------------------------
 
 
-constants.setErrorLevel("nothing")
+messages.state.dieOn = "nothing"
 
 specgroups = defaultdict(list)
 timestamps = defaultdict(list)
