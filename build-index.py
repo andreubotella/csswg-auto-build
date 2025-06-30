@@ -14,8 +14,6 @@ from collections import defaultdict
 
 from html.parser import HTMLParser
 
-from bikeshed import Spec, messages
-
 import jinja2
 
 jinja_env = jinja2.Environment(
@@ -72,35 +70,38 @@ def get_date_authored_timestamp_from_git(path):
 
 
 def get_bs_spec_metadata(folder_name, path):
-    spec = Spec(path)
-    spec.assembleDocument()
+    proc = subprocess.run(
+        ["bikeshed", "-f", "--silent", "debug", "--print-metadata", path],
+        capture_output = True, encoding = "utf_8")
+    metadata = json.loads(proc.stdout)
+    
+    if metadata["document"]["Level"][0] in ["", "none"]:
+        level = 0
+    else:
+        level = int(metadata["document"]["Level"][0])
 
-    level = int(spec.md.level) if spec.md.level else 0
-
-    if spec.md.shortname == "css-animations-2":
+    shortname = metadata["document"]["Shortname"][0]
+    if shortname == "css-animations-2":
         shortname = "css-animations"
-    elif spec.md.shortname == "css-gcpm-4":
+    elif shortname == "css-gcpm-4":
         shortname = "css-gcpm"
-    elif spec.md.shortname == "css-transitions-2":
+    elif shortname == "css-transitions-2":
         shortname = "css-transitions"
-    elif spec.md.shortname == "scroll-animations-1":
+    elif shortname == "scroll-animations-1":
         shortname = "scroll-animations"
     else:
         # Fix CSS snapshots (e.g. "css-2022")
-        snapshot_match = re.match(
-            "^css-(20[0-9]{2})$", spec.md.shortname)
+        snapshot_match = re.match("^css-(20[0-9]{2})$", shortname)
         if snapshot_match:
             shortname = "css-snapshot"
             level = int(snapshot_match.group(1))
-        else:
-            shortname = spec.md.shortname
 
     return {
         "timestamp": get_date_authored_timestamp_from_git(path),
         "shortname": shortname,
         "level": level,
-        "title": spec.md.title,
-        "workStatus": spec.md.workStatus
+        "title": metadata["document"]["Title"][0],
+        "workStatus": metadata["document"]["Work Status"][0].lower(),
     }
 
 
@@ -146,9 +147,6 @@ CURRENT_WORK_EXCEPTIONS = {
 }
 
 # ------------------------------------------------------------------------------
-
-
-messages.state.dieOn = "nothing"
 
 specgroups = defaultdict(list)
 timestamps = defaultdict(list)
