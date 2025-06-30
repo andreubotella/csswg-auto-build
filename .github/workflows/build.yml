@@ -23,22 +23,27 @@ jobs:
       - run: pip3 install bikeshed jinja2
       - name: Update Bikeshed
         run: bikeshed update
-      - name: Compile
+
+      - name: Build specs
         run: |
           set -e
-          for file in ./csswg-drafts/**/*.bs; do
-            bikeshed -f spec "$file" "${file%.bs}.html"
-          done
-      - name: Fix directory defaults
-        # The default pages for directories are assumed to be Overview.html, but
-        # that doesn't work for Github Pages. So we copy them as index.html.
-        run: |
-          set -e
-          for file in ./csswg-drafts/**/Overview.html; do
+          # Handle non-bikeshed specs.
+          for file in ./**/Overview.html; do
             cp "$file" "$(dirname "$file")/index.html"
           done
-      - name: Build index
+          # Handle bikeshed specs.
+          for file in ./**/Overview.bs; do
+            # We use `date` to build a YYYY-MM-DD date rather than using git's
+            # `--format=%as` because we want the date not to depend on the
+            # committer's timezone. We use UTC to avoid depending on the build
+            # runner's timezone as well.
+            TIMESTAMP="$(git log -1 --format=%at "$file")"
+            SHORT_DATE="$(date --date=@"$TIMESTAMP" --utc +%F)"
+            bikeshed -f spec "$file" "${file%Overview.bs}index.html" --md-date="$SHORT_DATE"
+          done
+      - name: Build index & symlinks
         run: python ./build-index.py
+
       - run: |
           mkdir output
           cp test-setup/templates/index.html output/index.html
@@ -53,6 +58,7 @@ jobs:
             folder_name="$(basename "$(dirname "$index")")"
             python ./test-setup/redirect.py "$folder_name"
           done
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         if: ${{ github.event_name == 'pull_request' }}
