@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-shapes-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="03f6b66e0a3c0b5bb1044b7d88aa6674e31c5129" name="revision">
+  <meta content="3af4db69ead6212b35a9988e055079f4b08ece48" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -1086,6 +1086,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dt class="editor">Editors:
       <dd class="editor p-author h-card vcard" data-editor-id="49885"><a class="p-name fn u-email email" href="mailto:ratan@microsoft.com">Rossen Atanassov</a> (<span class="p-org org">Microsoft Corporation</span>)
       <dd class="editor p-author h-card vcard" data-editor-id="46659"><a class="p-name fn u-email email" href="mailto:stearns@adobe.com">Alan Stearns</a> (<span class="p-org org">Adobe Systems, Inc.</span>)
+      <dd class="editor p-author h-card vcard" data-editor-id="121539"><span class="p-name fn">Noam Rosenthal</span> (<span class="p-org org">Google</span>)
       <dt>Suggest an Edit for this Spec:
       <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/css-shapes-2/Overview.bs">GitHub Editor</a>
      </dl>
@@ -1154,13 +1155,8 @@ Basic Shapes</span></a>
        <a href="#supported-basic-shapes"><span class="secno">4.1</span> <span class="content">
 Supported Shapes</span></a>
        <ol class="toc">
-        <li>
-         <a href="#shape-function"><span class="secno">4.1.1</span> <span class="content">
+        <li><a href="#shape-function"><span class="secno">4.1.1</span> <span class="content">
 The <span class="css">shape()</span> Function</span></a>
-         <ol class="toc">
-          <li><a href="#interpolating-shape"><span class="secno">4.1.1.1</span> <span class="content">
-Interpolating the <span class="css">shape()</span> Function</span></a>
-         </ol>
        </ol>
      </ol>
     <li><a href="#referencing-svg-shapes"><span class="secno">5</span> <span class="content">
@@ -1188,6 +1184,8 @@ The <span class="property">shape-margin</span> property</span></a>
       <li><a href="#shape-padding-property"><span class="secno">9.6</span> <span class="content">
 The <span class="property">shape-padding</span> Property</span></a>
      </ol>
+    <li><a href="#privacy"><span class="secno"></span> <span class="content">Privacy Considerations</span></a>
+    <li><a href="#security"><span class="secno"></span> <span class="content">Security Considerations</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a>
@@ -1216,7 +1214,6 @@ Non-experimental implementations</span></a>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
-      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
     <li><a href="#property-index"><span class="secno"></span> <span class="content">Property Index</span></a>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
@@ -1262,15 +1259,6 @@ to define arbitrary, non-rectangular float areas.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="content-area">content area</dfn>
     <dd data-md>
      <p>The <a data-link-type="dfn" href="#content-area" id="ref-for-content-area">content area</a> is normally used for layout of the inline flow content of a box.</p>
-    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="direction-agnostic-size">direction-agnostic size</dfn>
-    <dd data-md>
-     <p>The <a data-link-type="dfn" href="#direction-agnostic-size" id="ref-for-direction-agnostic-size">direction-agnostic size</a> of a box is equal to the length of the diagonal of the box,
-divided by sqrt(2).</p>
-     <p class="note" role="note"><span class="marker">Note:</span> This is a method of averaging the width and height of a box
-used by SVG in some cases,
-when a percentage of a box’s size is desired
-but the context doesn’t specifically favor the width or the height.
-For square boxes, this is the same as the width/height.</p>
    </dl>
    <h2 class="heading settled" data-level="3" id="shapes"><span class="secno">3. </span><span class="content">
 Shapes</span><a class="self-link" href="#shapes"></a></h2>
@@ -1289,254 +1277,10 @@ Supported Shapes</span><a class="self-link" href="#supported-basic-shapes"></a><
 	<a href="https://www.w3.org/TR/css-shapes/#basic-shape-functions">level 1</a>
 	sections.</p>
    <h4 class="heading settled" data-level="4.1.1" id="shape-function"><span class="secno">4.1.1. </span><span class="content">
-The <a class="css" data-link-type="maybe" href="#funcdef-shape" id="ref-for-funcdef-shape">shape()</a> Function</span><a class="self-link" href="#shape-function"></a></h4>
-   <p>While the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-path" id="ref-for-funcdef-basic-shape-path">path()</a> function allows reuse of the SVG path syntax
-	to define more arbitrary shapes than allowed by more specialized shape functions,
-	it requires writing a path as a single string
-	(which is not compatible with, for example, building a path piecemeal with <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-variables-2/#funcdef-var" id="ref-for-funcdef-var">var()</a>),
-	and inherits a number of limitations from SVG,
-	such as implicitly only allowing the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#px" id="ref-for-px">px</a> unit.</p>
-   <p>The <a class="css" data-link-type="maybe" href="#funcdef-shape" id="ref-for-funcdef-shape①">shape()</a> function defines a path in the same way,
-	but does so with more standard CSS syntax,
-	and allows the full range of CSS functionality,
-	such as additional units and math functions.</p>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-shape">shape()</dfn> = shape( <a class="production" data-link-type="property" href="https://svgwg.org/svg2-draft/painting.html#FillRuleProperty" id="ref-for-FillRuleProperty">&lt;'fill-rule'></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> from <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair">&lt;coordinate-pair></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma" id="ref-for-comb-comma">,</a> <a class="production" data-link-type="type" href="#typedef-shape-command" id="ref-for-typedef-shape-command">&lt;shape-command></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a>)
-</pre>
-   <p>The <a class="production css" data-link-type="property" href="https://svgwg.org/svg2-draft/painting.html#FillRuleProperty" id="ref-for-FillRuleProperty①">&lt;'fill-rule'></a> is interpreted identically to the same argument in <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-path" id="ref-for-funcdef-basic-shape-path①">path()</a>.</p>
-   <p>The rest of the arguments define a list of path data commands,
-	identical to that of an <a href="https://www.w3.org/TR/SVG11/paths.html#PathData">SVG Path</a>,
-	which the function represents.</p>
-   <p>The <span class="css">from <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①">&lt;coordinate-pair></a></span> represents the starting point for the first shape-command.
-	It adds an initial <a href="https://www.w3.org/TR/SVG/paths.html#PathDataMovetoCommands">absolute moveto</a>
-	to the list of path data commands,
-	with the <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②">&lt;coordinate-pair></a> measured from the top-left corner of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box" id="ref-for-basic-shape-reference-box">reference box</a>.</p>
-   <p>The sequence of <dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-shape-command"><a class="production css" data-link-type="type" href="#typedef-shape-command" id="ref-for-typedef-shape-command①">&lt;shape-command></a></dfn>s represent
-	further <a href="https://www.w3.org/TR/SVG11/paths.html#PathData">path data commands</a>.
-	Each command’s starting point is the previous command’s ending point.</p>
-<pre class="prod"><a class="production" data-link-type="type" href="#typedef-shape-command" id="ref-for-typedef-shape-command②">&lt;shape-command></a> = <a class="production" data-link-type="type" href="#typedef-shape-move-command" id="ref-for-typedef-shape-move-command">&lt;move-command></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production" data-link-type="type" href="#typedef-shape-line-command" id="ref-for-typedef-shape-line-command">&lt;line-command></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> <a class="production" data-link-type="type" href="#typedef-shape-hv-line-command" id="ref-for-typedef-shape-hv-line-command">&lt;hv-line-command></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one②">|</a>
-                  <a class="production" data-link-type="type" href="#typedef-shape-curve-command" id="ref-for-typedef-shape-curve-command">&lt;curve-command></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="production" data-link-type="type" href="#typedef-shape-smooth-command" id="ref-for-typedef-shape-smooth-command">&lt;smooth-command></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> <a class="production" data-link-type="type" href="#typedef-shape-arc-command" id="ref-for-typedef-shape-arc-command">&lt;arc-command></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> close
-<a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair③">&lt;coordinate-pair></a> = <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num" id="ref-for-mult-num">{2}</a>
-<a class="production" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to">&lt;by-to></a> = by <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> to
-<a class="production" data-link-type="type" href="#typedef-shape-move-command" id="ref-for-typedef-shape-move-command①">&lt;move-command></a> = move <a class="production" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to①">&lt;by-to></a> <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair④">&lt;coordinate-pair></a>
-<a class="production" data-link-type="type" href="#typedef-shape-line-command" id="ref-for-typedef-shape-line-command①">&lt;line-command></a> = line <a class="production" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to②">&lt;by-to></a> <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair⑤">&lt;coordinate-pair></a>
-<a class="production" data-link-type="type" href="#typedef-shape-hv-line-command" id="ref-for-typedef-shape-hv-line-command①">&lt;hv-line-command></a> = [hline <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑦">|</a> vline] <a class="production" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to③">&lt;by-to></a> <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage①">&lt;length-percentage></a>
-<a class="production" data-link-type="type" href="#typedef-shape-curve-command" id="ref-for-typedef-shape-curve-command①">&lt;curve-command></a> = curve <a class="production" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to④">&lt;by-to></a> <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair⑥">&lt;coordinate-pair></a> via <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair⑦">&lt;coordinate-pair></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a>
-<a class="production" data-link-type="type" href="#typedef-shape-smooth-command" id="ref-for-typedef-shape-smooth-command①">&lt;smooth-command></a> = smooth <a class="production" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to⑤">&lt;by-to></a> <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair⑧">&lt;coordinate-pair></a> [via <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair⑨">&lt;coordinate-pair></a>]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a>
-<a class="production" data-link-type="type" href="#typedef-shape-arc-command" id="ref-for-typedef-shape-arc-command①">&lt;arc-command></a> = arc <a class="production" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to⑥">&lt;by-to></a> <a class="production" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①⓪">&lt;coordinate-pair></a> of <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage②">&lt;length-percentage></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num-range" id="ref-for-mult-num-range①">{1,2}</a>
-                    [ <a class="production" data-link-type="type" href="#typedef-shape-arc-sweep" id="ref-for-typedef-shape-arc-sweep">&lt;arc-sweep></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any" id="ref-for-comb-any">||</a> <a class="production" data-link-type="type" href="#typedef-shape-arc-size" id="ref-for-typedef-shape-arc-size">&lt;arc-size></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> rotate <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value" id="ref-for-angle-value">&lt;angle></a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt②">?</a>
-<a class="production" data-link-type="type" href="#typedef-shape-arc-sweep" id="ref-for-typedef-shape-arc-sweep①">&lt;arc-sweep></a> = cw <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> ccw
-<a class="production" data-link-type="type" href="#typedef-shape-arc-size" id="ref-for-typedef-shape-arc-size①">&lt;arc-size></a> = large <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> small
-</pre>
-   <dl>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-coordinate-pair"><a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①①">&lt;coordinate-pair></a></dfn> = <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage③">&lt;length-percentage></a>{2}
-		
-    <dd>Defines a pair of coordinates,
-			representing a rightward and downward offset, respectively,
-			from a specified reference point.
-			Percentages are resolved against the width or height, respectively,
-			of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box" id="ref-for-basic-shape-reference-box①">reference box</a>.
-
-		
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-by-to"><a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to⑦">&lt;by-to></a></dfn> = <dfn class="dfn-paneled css" data-dfn-for="shape(), <by-to>" data-dfn-type="value" data-export id="valdef-shape-by">by</dfn> | <dfn class="dfn-paneled css" data-dfn-for="shape(), <by-to>" data-dfn-type="value" data-export id="valdef-shape-to">to</dfn>
-		
-    <dd>
-     
-			Every command can be specified in "absolute" or "relative" coordinates,
-			determined by their <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to⑧">&lt;by-to></a> component.
-			<a class="css" data-link-type="maybe" href="#valdef-shape-to" id="ref-for-valdef-shape-to">to</a> indicates that any <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①②">&lt;coordinate-pair></a>s in the command
-			are relative to the top-left corner of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box" id="ref-for-basic-shape-reference-box②">reference box</a>,
-			while <a class="css" data-link-type="maybe" href="#valdef-shape-by" id="ref-for-valdef-shape-by">by</a> indicates that the <span class="production" id="ref-for-typedef-shape-coordinate-pair①③">&lt;coordinate-pair></span>s
-			are relative to the command’s starting point.
-
-
-     <p class="note" role="note"><span class="marker">Note:</span> In either case, <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value" id="ref-for-percentage-value">&lt;percentage></a> values in <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①④">&lt;coordinate-pair></a>s
-			are always computed relative to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box" id="ref-for-basic-shape-reference-box③">reference box’s</a> size.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-move-command"><a class="production css" data-link-type="type" href="#typedef-shape-move-command" id="ref-for-typedef-shape-move-command②">&lt;move-command></a></dfn> = <dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-move">move</dfn> <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to⑨">&lt;by-to></a> <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①⑤">&lt;coordinate-pair></a>
-		
-    <dd>
-     
-			Adds a <a href="https://www.w3.org/TR/SVG/paths.html#PathDataMovetoCommands">moveto</a> command
-			to the list of path data commands,
-			with an ending point specified by the <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①⑥">&lt;coordinate-pair></a>.
-
-
-     <p>This draws nothing,
-			and merely "moves the pen" for the next command.</p>
-     <p class="note" role="note"><span class="marker">Note:</span> This starts a new subpath,
-			for the purpose of the <a class="css" data-link-type="maybe" href="#valdef-shape-close" id="ref-for-valdef-shape-close">close</a> command.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-line-command"><a class="production css" data-link-type="type" href="#typedef-shape-line-command" id="ref-for-typedef-shape-line-command②">&lt;line-command></a></dfn> = <dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-line">line</dfn> <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to①⓪">&lt;by-to></a> <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①⑦">&lt;coordinate-pair></a>
-		
-    <dd>
-     
-			Adds a <a href="https://www.w3.org/TR/SVG/paths.html#PathDataLinetoCommands">lineto</a> command
-			to the list of path data commands,
-			with an ending point specified by the <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①⑧">&lt;coordinate-pair></a>.
-
-
-     <p>This draws a straight line from the command’s starting point to its ending point.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-hv-line-command"><a class="production css" data-link-type="type" href="#typedef-shape-hv-line-command" id="ref-for-typedef-shape-hv-line-command②">&lt;hv-line-command></a></dfn> = [<dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-hline">hline</dfn> | <dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-vline">vline</dfn>] <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to①①">&lt;by-to></a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage④">&lt;length-percentage></a>
-		
-    <dd>
-     
-			Adds a horizontal (for <a class="css" data-link-type="maybe" href="#valdef-shape-hline" id="ref-for-valdef-shape-hline">hline</a>) or vertical (for <a class="css" data-link-type="maybe" href="#valdef-shape-vline" id="ref-for-valdef-shape-vline">vline</a>)
-			<a href="https://www.w3.org/TR/SVG/paths.html#PathDataLinetoCommands">lineto</a> command
-			to the list of path data commands.
-
-
-     <p>This is equivalent to a <a class="css" data-link-type="maybe" href="#valdef-shape-line" id="ref-for-valdef-shape-line">line</a> command
-			with the <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage⑤">&lt;length-percentage></a> given as the horizontal or vertical component, respectively,
-			of the <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair①⑨">&lt;coordinate-pair></a>,
-			and the other component specified appropriately to make the line horizontal or vertical.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-curve-command"><a class="production css" data-link-type="type" href="#typedef-shape-curve-command" id="ref-for-typedef-shape-curve-command②">&lt;curve-command></a></dfn> = <dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-curve">curve</dfn> <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to①②">&lt;by-to></a> <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②⓪">&lt;coordinate-pair></a> via <span class="production" id="ref-for-typedef-shape-coordinate-pair②①">&lt;coordinate-pair></span>{1,2}
-		
-    <dd>
-     
-			Adds a Bézier curve command to the list of path data commands,
-			ending at the point specified by the first <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②②">&lt;coordinate-pair></a>.
-
-
-     <p>The <span class="css">via</span> component specifies control points for the curve:
-			if a single <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②③">&lt;coordinate-pair></a> is provided,
-			the command specifies a <a href="https://www.w3.org/TR/SVG/paths.html#PathDataQuadraticBezierCommands">quadratic curve</a>;
-			if two <span class="production" id="ref-for-typedef-shape-coordinate-pair②④">&lt;coordinate-pair></span>s are provided,
-			it specifies a <a href="https://www.w3.org/TR/SVG/paths.html#PathDataCubicBezierCommands">cubic curve</a>.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-smooth-command"><a class="production css" data-link-type="type" href="#typedef-shape-smooth-command" id="ref-for-typedef-shape-smooth-command②">&lt;smooth-command></a></dfn> = <dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-smooth">smooth</dfn> <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to①③">&lt;by-to></a> <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②⑤">&lt;coordinate-pair></a> [via <span class="production" id="ref-for-typedef-shape-coordinate-pair②⑥">&lt;coordinate-pair></span>]?
-		
-    <dd>
-     
-			Adds a smooth Bézier curve command to the list of path data commands,
-			ending at the point specified by the first <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②⑦">&lt;coordinate-pair></a>.
-
-
-     <p>The <span class="css">via</span> component specifies control points for the curve:
-			if it’s omitted,
-			the command specifies a <a href="https://www.w3.org/TR/SVG/paths.html#PathDataQuadraticBezierCommands">smooth quadratic curve</a>;
-			if it’s provided,
-			if specifies a <a href="https://www.w3.org/TR/SVG/paths.html#PathDataCubicBezierCommands">smooth cubic curve</a>.</p>
-     <p class="note" role="note"><span class="marker">Note:</span> A <a class="css" data-link-type="maybe" href="#valdef-shape-smooth" id="ref-for-valdef-shape-smooth">smooth</a> command is equivalent to a <a class="css" data-link-type="maybe" href="#valdef-shape-curve" id="ref-for-valdef-shape-curve">curve</a> command
-			with the first control point automatically specified
-			as the reflection of the previous curve’s second control point
-			around the starting point,
-			or as the starting point if the previous path data command wasn’t a curve.
-			This ensures G1 continuity with the previous command,
-			so the curve appears to smoothly continue from the previous command,
-			rather than possibly making a sudden direction change.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-arc-command"><a class="production css" data-link-type="type" href="#typedef-shape-arc-command" id="ref-for-typedef-shape-arc-command②">&lt;arc-command></a></dfn> = <dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-arc">arc</dfn> <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to①④">&lt;by-to></a> <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②⑧">&lt;coordinate-pair></a> of <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage⑥">&lt;length-percentage></a>{1,2} [ <a class="production css" data-link-type="type" href="#typedef-shape-arc-sweep" id="ref-for-typedef-shape-arc-sweep②">&lt;arc-sweep></a> || <a class="production css" data-link-type="type" href="#typedef-shape-arc-size" id="ref-for-typedef-shape-arc-size②">&lt;arc-size></a> || rotate <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value" id="ref-for-angle-value①">&lt;angle></a> ]
-		
-    <dd>
-     
-			Add an <a href="https://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands">elliptical arc</a> command
-			to the list of path data commands,
-			ending at the point specified by the <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair②⑨">&lt;coordinate-pair></a>.
-
-
-     <p>The <span class="css">of</span> component specifies the size of the ellipse that the arc is taken from.
-			The first <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage⑦">&lt;length-percentage></a> provides the horizontal radius of the ellipse
-			and the second provides the vertical radius.
-			Like for <a class="production css" data-link-type="type" href="#typedef-shape-coordinate-pair" id="ref-for-typedef-shape-coordinate-pair③⓪">&lt;coordinate-pair></a>s,
-			<a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value" id="ref-for-percentage-value①">&lt;percentage></a> values are resolved against the width or height of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box" id="ref-for-basic-shape-reference-box④">reference box</a>,
-			as appropriate.</p>
-     <p>If only one <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage⑧">&lt;length-percentage></a> is provided,
-			both radiuses use the provided value.
-			In that case, <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value" id="ref-for-percentage-value②">&lt;percentage></a> values are resolved against the <a data-link-type="dfn" href="#direction-agnostic-size" id="ref-for-direction-agnostic-size①">direction-agnostic size</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box" id="ref-for-basic-shape-reference-box⑤">reference box</a>
-			(similar to the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-circle" id="ref-for-funcdef-basic-shape-circle">circle()</a> function).</p>
-     <div class="note" role="note">
-      
-				Note that SVG has <a href="https://svgwg.org/svg2-draft/paths.html#ArcOutOfRangeParameters">some specific error-handling for the ellipse radiuses</a>:
-
-
-      <ul>
-       <li data-md>
-        <p>if the endpoint is the same as the starting point, the command does nothing</p>
-       <li data-md>
-        <p>if either radius is zero, the command is equivalent to a <a class="production css" data-link-type="type" href="#typedef-shape-line-command" id="ref-for-typedef-shape-line-command③">&lt;line-command></a> to the ending point</p>
-       <li data-md>
-        <p>if either radius is negative, its absolute value is used instead</p>
-       <li data-md>
-        <p>if the radiuses don’t describe an ellipse large enough
-to intersect both the starting point and ending point
-(after rotation by the specified <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value" id="ref-for-angle-value②">&lt;angle></a>),
-they are scaled up uniformly until the ellipse is just large enough to reach.</p>
-      </ul>
-     </div>
-     <p>The ellipse described by the specified radiuses defaults to being axis-aligned,
-			but can be rotated by specifying an <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value" id="ref-for-angle-value③">&lt;angle></a>.
-			Similar to the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-transforms-1/#funcdef-transform-rotate" id="ref-for-funcdef-transform-rotate">rotate()</a> transform function,
-			positive angles specify a clockwise rotation,
-			and negative angles specify a counterclockwise rotation.
-			If omitted, this defaults to <span class="css">0deg</span>.</p>
-     <p>The ending point, radiuses, and angle,
-			taken together,
-			usually define two possible ellipses
-			that intersect the starting point and ending point,
-			and each ellipse can be traced in either direction,
-			for a total of four possible arcs.
-			The <a class="production css" data-link-type="type" href="#typedef-shape-arc-sweep" id="ref-for-typedef-shape-arc-sweep③">&lt;arc-sweep></a> and <a class="production css" data-link-type="type" href="#typedef-shape-arc-size" id="ref-for-typedef-shape-arc-size③">&lt;arc-size></a> components specify which of these arcs is desired:</p>
-     <ul>
-      <li data-md>
-       <p><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-arc-sweep"><a class="production css" data-link-type="type" href="#typedef-shape-arc-sweep" id="ref-for-typedef-shape-arc-sweep④">&lt;arc-sweep></a></dfn> can be <dfn class="dfn-paneled css" data-dfn-for="shape(), arc" data-dfn-type="value" data-export id="valdef-shape-cw">cw</dfn> or <dfn class="dfn-paneled css" data-dfn-for="shape(), arc" data-dfn-type="value" data-export id="valdef-shape-ccw">ccw</dfn>,
-indicating that the arc that is traced around the ellipse clockwise or counter-clockwise from the center, respectively,
-must be chosen.
-If omitted, this defaults to <a class="css" data-link-type="maybe" href="#valdef-shape-ccw" id="ref-for-valdef-shape-ccw">ccw</a>.</p>
-       <p class="note" role="note"><span class="marker">Note:</span> In the SVG arc command, <a class="css" data-link-type="maybe" href="#valdef-shape-cw" id="ref-for-valdef-shape-cw">cw</a> corresponds to the value 1 for the sweep flag, and <a class="css" data-link-type="maybe" href="#valdef-shape-ccw" id="ref-for-valdef-shape-ccw①">ccw</a> to the value 0.</p>
-      <li data-md>
-       <p><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="type" data-export id="typedef-shape-arc-size"><a class="production css" data-link-type="type" href="#typedef-shape-arc-size" id="ref-for-typedef-shape-arc-size④">&lt;arc-size></a></dfn> can be <dfn class="dfn-paneled css" data-dfn-for="shape(), arc" data-dfn-type="value" data-export id="valdef-shape-large">large</dfn> or <dfn class="dfn-paneled css" data-dfn-for="shape(), arc" data-dfn-type="value" data-export id="valdef-shape-small">small</dfn>,
-indicating that the larger or smaller, respectively, of the two possible arcs
-must be chosen.
-If omitted, this defaults to <a class="css" data-link-type="maybe" href="#valdef-shape-small" id="ref-for-valdef-shape-small">small</a>.</p>
-       <p class="note" role="note"><span class="marker">Note:</span> In the SVG arc command, <a class="css" data-link-type="maybe" href="#valdef-shape-large" id="ref-for-valdef-shape-large">large</a> corresponds to the value 1 for the large flag, and <a class="css" data-link-type="maybe" href="#valdef-shape-small" id="ref-for-valdef-shape-small①">small</a> to the 0.</p>
-       <p class="note" role="note"><span class="marker">Note:</span> If the starting and ending points are on exactly opposite sides of the ellipse,
-both possible arcs are the same size,
-but also there is only one possible ellipse.
-In this case, the <a class="production css" data-link-type="type" href="#typedef-shape-arc-sweep" id="ref-for-typedef-shape-arc-sweep⑤">&lt;arc-sweep></a> distinguishes which of the two possible arcs will be chosen,
-and <a class="production css" data-link-type="type" href="#typedef-shape-arc-size" id="ref-for-typedef-shape-arc-size⑤">&lt;arc-size></a> has no effect.</p>
-     </ul>
-     <figure>
-      
-				<img src="images/four-arcs.svg">
-				
-      <figcaption>
-					A depiction of the two possible ellipses,
-					and four possible arcs,
-					that can be chosen between.
-				</figcaption>
-     </figure>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape()" data-dfn-type="value" data-export id="valdef-shape-close">close</dfn>
-		
-    <dd>
-     
-			Adds a <a href="https://www.w3.org/TR/SVG/paths.html#PathDataClosePathCommand">closepath</a> command
-			to the list of path data commands.
-
-
-     <p class="note" role="note"><span class="marker">Note:</span> This is similar to a <a class="css" data-link-type="maybe" href="#valdef-shape-line" id="ref-for-valdef-shape-line①">line</a> command
-			with its ending point set to the starting point of the subpath.
-			When specifying a raw shape, they’re identical,
-			but if the path is stroked,
-			the ending point of the <a class="css" data-link-type="maybe" href="#valdef-shape-close" id="ref-for-valdef-shape-close①">close</a> command is smoothly joined
-			with the start of the subpath,
-			which affects how line-joins and line-caps are rendered.</p>
-   </dl>
-   <h5 class="heading settled" data-level="4.1.1.1" id="interpolating-shape"><span class="secno">4.1.1.1. </span><span class="content">
-Interpolating the <a class="css" data-link-type="maybe" href="#funcdef-shape" id="ref-for-funcdef-shape②">shape()</a> Function</span><a class="self-link" href="#interpolating-shape"></a></h5>
-   <p><a class="css" data-link-type="maybe" href="#funcdef-shape" id="ref-for-funcdef-shape③">shape()</a> and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-path" id="ref-for-funcdef-basic-shape-path②">path()</a> functions can be <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#interpolation" id="ref-for-interpolation">interpolated</a> with each other
-	if their associated list of path data commands is the same length
-	and has the same commands, in order.
-	If the starting and ending values are both <span class="css" id="ref-for-funcdef-basic-shape-path③">path()</span> functions,
-	the interpolated value is a <span class="css" id="ref-for-funcdef-basic-shape-path④">path()</span> function;
-	otherwise it’s a <span class="css" id="ref-for-funcdef-shape④">shape()</span> function.
-	In either case,
-	the interpolated value must represent the same list of path data commands,
-	with each command having its numerical components interpolated between the corresponding components of the starting and ending list.</p>
-   <p>For this purpose, commands are "the same" if they use the same command keyword,
-	and use the same <a class="production css" data-link-type="type" href="#typedef-shape-by-to" id="ref-for-typedef-shape-by-to①⑤">&lt;by-to></a> keyword.
-	For <a class="css" data-link-type="maybe" href="#valdef-shape-curve" id="ref-for-valdef-shape-curve①">curve</a> and <a class="css" data-link-type="maybe" href="#valdef-shape-smooth" id="ref-for-valdef-shape-smooth①">smooth</a>, they also must have the same number of control points.</p>
-   <p>If an <a class="css" data-link-type="maybe" href="#valdef-shape-arc" id="ref-for-valdef-shape-arc">arc</a> command has different <a class="production css" data-link-type="type" href="#typedef-shape-arc-sweep" id="ref-for-typedef-shape-arc-sweep⑥">&lt;arc-sweep></a> between its starting and ending list,
-	then the interpolated result uses <a class="css" data-link-type="maybe" href="#valdef-shape-cw" id="ref-for-valdef-shape-cw①">cw</a> for any progress value between 0 and 1.
-	If it has different <a class="production css" data-link-type="type" href="#typedef-shape-arc-size" id="ref-for-typedef-shape-arc-size⑥">&lt;arc-size></a> keywords,
-	then the interpolated result uses <a class="css" data-link-type="maybe" href="#valdef-shape-large" id="ref-for-valdef-shape-large①">large</a> for any progress value between 0 and 1.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> The <a class="css" data-link-type="maybe" href="#valdef-shape-arc" id="ref-for-valdef-shape-arc①">arc</a> keyword interpolation rules
-	are meant to match existing SVG <code><a data-link-type="element" href="https://svgwg.org/specs/paths/#elementdef-path" id="ref-for-elementdef-path">path</a></code> interpolation rules.</p>
+The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-shape" id="ref-for-funcdef-basic-shape-shape">shape()</a> Function</span><a class="self-link" href="#shape-function"></a></h4>
+   <p>Add the final
+	<a href="https://drafts.csswg.org/css-shapes-1/#shape-function">level 1</a>
+	section.</p>
    <h2 class="heading settled" data-level="5" id="referencing-svg-shapes"><span class="secno">5. </span><span class="content">
 Referencing SVG shapes</span><a class="self-link" href="#referencing-svg-shapes"></a></h2>
    <p>An SVG shape can be referenced using the <code>url()</code> syntax.
@@ -1585,9 +1329,9 @@ Shapes from Image</span><a class="self-link" href="#shapes-from-image"></a></h2>
    <h2 class="heading settled" data-level="7" id="fetching-external-shapes"><span class="secno">7. </span><span class="content">
 Fetching external shapes</span><a class="self-link" href="#fetching-external-shapes"></a></h2>
    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="fetch-an-external-resource-for-a-shape">fetch an external resource for a shape</dfn>, either an SVG or an image, given a
-	<code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstylerule" id="ref-for-cssstylerule">CSSStyleRule</a></code> <var>rule</var>,
-		<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#fetch-a-style-resource" id="ref-for-fetch-a-style-resource">fetch a style resource</a> given <var>rule</var>’s URL,
-		with stylesheet being <var>rule</var>’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#concept-css-rule-parent-css-style-sheet" id="ref-for-concept-css-rule-parent-css-style-sheet">parent CSS style sheet</a>,
+		<u class="link-error" data-lt="CSS style declaration" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;css style declaration&apos;.">CSS style declaration</u> <var>declaration</var>,
+		<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#fetch-a-style-resource" id="ref-for-fetch-a-style-resource">fetch a style resource</a> given a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value" id="ref-for-url-value">&lt;url></a> value,
+		with ruleOrDeclaration being <var>declaration</var>,
 		destination "image",
 		CORS mode "cors",
 		and processResponse being the following steps given <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response" id="ref-for-concept-response">response</a> <var>res</var> and null, failure or
@@ -1660,7 +1404,7 @@ The <a class="property css" data-link-type="property" href="#propdef-shape-insid
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-shape-inside">shape-inside</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> outside-shape <span id="ref-for-comb-one①①">|</span> [ <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape" id="ref-for-typedef-basic-shape">&lt;basic-shape></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any" id="ref-for-comb-any②">||</a> shape-box ] <span id="ref-for-comb-one①②">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-images-3/#typedef-image" id="ref-for-typedef-image">&lt;image></a> <span id="ref-for-comb-one①③">|</span> display	
+      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one">|</a> outside-shape <span id="ref-for-comb-one①">|</span> [ <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape" id="ref-for-typedef-basic-shape">&lt;basic-shape></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any" id="ref-for-comb-any">||</a> shape-box ] <span id="ref-for-comb-one②">|</span> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-images-3/#typedef-image" id="ref-for-typedef-image">&lt;image></a> <span id="ref-for-comb-one③">|</span> display	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto	
@@ -1675,7 +1419,7 @@ The <a class="property css" data-link-type="property" href="#propdef-shape-insid
       <td>n/a	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>computed lengths for <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape" id="ref-for-typedef-basic-shape①">&lt;basic-shape></a>, the absolute URL for <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value" id="ref-for-url-value">&lt;url></a>, otherwise as specified	
+      <td>computed lengths for <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape" id="ref-for-typedef-basic-shape①">&lt;basic-shape></a>, the absolute URL for <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value" id="ref-for-url-value①">&lt;url></a>, otherwise as specified	
      <tr>
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar	
@@ -1704,10 +1448,10 @@ The <a class="property css" data-link-type="property" href="#propdef-shape-insid
     <dd>
 			The shape is computed based
 			on the values of one of
-			<a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-inset" id="ref-for-funcdef-basic-shape-inset">inset()</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-circle" id="ref-for-funcdef-basic-shape-circle①">circle()</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-ellipse" id="ref-for-funcdef-basic-shape-ellipse">ellipse()</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-polygon" id="ref-for-funcdef-basic-shape-polygon">polygon()</a>.
+			the <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape" id="ref-for-typedef-basic-shape④">&lt;basic-shape></a> functions.
 
 		
-    <dt><dfn class="dfn-paneled css" data-dfn-for="shape-inside" data-dfn-type="value" data-export id="valdef-shape-inside-url"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value" id="ref-for-url-value①">&lt;url></a></dfn>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="shape-inside" data-dfn-type="value" data-export id="valdef-shape-inside-url"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value" id="ref-for-url-value②">&lt;url></a></dfn>
 		
     <dd>
      
@@ -1797,10 +1541,10 @@ The <a class="property css" data-link-type="property" href="#propdef-shape-paddi
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-shape-padding">shape-padding</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#length-value" id="ref-for-length-value">&lt;length></a>	
+      <td class="prod"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage [0,∞]></a>	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>none	
+      <td>0	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
       <td>block-level elements	
@@ -1809,10 +1553,10 @@ The <a class="property css" data-link-type="property" href="#propdef-shape-paddi
       <td>no	
      <tr>
       <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>n/a	
+      <td>refer to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size" id="ref-for-inline-size">inline size</a> of the containing block	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>the absolute length	
+      <td>computed <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage①">&lt;length-percentage></a> value	
      <tr>
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar	
@@ -1820,6 +1564,12 @@ The <a class="property css" data-link-type="property" href="#propdef-shape-paddi
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>by computed value	
    </table>
+   <dl>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="shape-padding" data-dfn-type="value" data-export id="valdef-shape-padding-length-percentage-0"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage②">&lt;length-percentage [0,∞]></a></dfn>
+    <dd>
+			Sets the padding of the shape to the specified value.
+	
+   </dl>
    <div class="example" id="example-62c84309">
     <a class="self-link" href="#example-62c84309"></a>
 		
@@ -1838,6 +1588,10 @@ The <a class="property css" data-link-type="property" href="#propdef-shape-paddi
 	inside the element it applies to
 	while the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#propdef-shape-margin" id="ref-for-propdef-shape-margin③">shape-margin</a> property only affects layout of content
 	outside the element.</p>
+   <h2 class="no-num heading settled" id="privacy"><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+   <p>No new privacy considerations have been reported on this specification.</p>
+   <h2 class="no-num heading settled" id="security"><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+   <p>No new security considerations have been reported on this specification.</p>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">
 Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -1975,44 +1729,18 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#valdef-shape-arc">arc</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-arc-command">&lt;arc-command></a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-arc-size">&lt;arc-size></a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-arc-sweep">&lt;arc-sweep></a><span>, in § 4.1.1</span>
    <li><a href="#valdef-shape-inside-auto">auto</a><span>, in § 9.2</span>
    <li><a href="#valdef-shape-inside-basic-shape">&lt;basic-shape></a><span>, in § 9.2</span>
-   <li><a href="#valdef-shape-by">by</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-by-to">&lt;by-to></a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-ccw">ccw</a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-close">close</a><span>, in § 4.1.1</span>
    <li><a href="#content-area">content area</a><span>, in § 2</span>
-   <li><a href="#typedef-shape-coordinate-pair">&lt;coordinate-pair></a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-curve">curve</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-curve-command">&lt;curve-command></a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-cw">cw</a><span>, in § 4.1.1</span>
-   <li><a href="#direction-agnostic-size">direction-agnostic size</a><span>, in § 2</span>
    <li><a href="#valdef-shape-inside-display">display</a><span>, in § 9.2</span>
    <li><a href="#exclusion-area">exclusion area</a><span>, in § 2</span>
    <li><a href="#fetch-an-external-resource-for-a-shape">fetch an external resource for a shape</a><span>, in § 7</span>
    <li><a href="#float-area">float area</a><span>, in § 2</span>
-   <li><a href="#valdef-shape-hline">hline</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-hv-line-command">&lt;hv-line-command></a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-large">large</a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-line">line</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-line-command">&lt;line-command></a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-move">move</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-move-command">&lt;move-command></a><span>, in § 4.1.1</span>
+   <li><a href="#valdef-shape-padding-length-percentage-0">&lt;length-percentage [0,∞]></a><span>, in § 9.6</span>
    <li><a href="#valdef-shape-inside-outside-shape">outside-shape</a><span>, in § 9.2</span>
-   <li><a href="#funcdef-shape">shape()</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-command">&lt;shape-command></a><span>, in § 4.1.1</span>
    <li><a href="#propdef-shape-inside">shape-inside</a><span>, in § 9.2</span>
    <li><a href="#propdef-shape-padding">shape-padding</a><span>, in § 9.6</span>
-   <li><a href="#valdef-shape-small">small</a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-smooth">smooth</a><span>, in § 4.1.1</span>
-   <li><a href="#typedef-shape-smooth-command">&lt;smooth-command></a><span>, in § 4.1.1</span>
-   <li><a href="#valdef-shape-to">to</a><span>, in § 4.1.1</span>
    <li><a href="#valdef-shape-inside-url">&lt;url></a><span>, in § 9.2</span>
-   <li><a href="#valdef-shape-vline">vline</a><span>, in § 4.1.1</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
@@ -2041,44 +1769,24 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS-SHAPES]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="ca334d40">&lt;basic-shape></span>
-     <li><span class="dfn-paneled" id="67393c8c">circle()</span>
-     <li><span class="dfn-paneled" id="e27e8b4a">ellipse()</span>
-     <li><span class="dfn-paneled" id="28fb0c5f">inset()</span>
-     <li><span class="dfn-paneled" id="2bdf49e3">path()</span>
-     <li><span class="dfn-paneled" id="5e150f45">polygon()</span>
-     <li><span class="dfn-paneled" id="1ae585f8">reference box</span>
+     <li><span class="dfn-paneled" id="14efbd1e">shape()</span>
      <li><span class="dfn-paneled" id="a7641e3b">shape-margin</span>
      <li><span class="dfn-paneled" id="8f9cb144">shape-outside</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-TRANSFORMS-1]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="ed6944b8">rotate()</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="ee310036">#</span>
-     <li><span class="dfn-paneled" id="3c77fbd0">,</span>
-     <li><span class="dfn-paneled" id="b33d29b3">&lt;angle></span>
      <li><span class="dfn-paneled" id="9a017547">&lt;length-percentage></span>
-     <li><span class="dfn-paneled" id="af5d24db">&lt;length></span>
-     <li><span class="dfn-paneled" id="6041451f">&lt;percentage></span>
      <li><span class="dfn-paneled" id="614abc9f">&lt;url></span>
-     <li><span class="dfn-paneled" id="e5365b83">?</span>
      <li><span class="dfn-paneled" id="9ecf6b7b">CSS-wide keywords</span>
      <li><span class="dfn-paneled" id="f1b2c93e">fetch a style resource</span>
-     <li><span class="dfn-paneled" id="a2932f14">interpolate</span>
-     <li><span class="dfn-paneled" id="2352c551">px</span>
-     <li><span class="dfn-paneled" id="7203cb09">{A,B}</span>
-     <li><span class="dfn-paneled" id="ff510b2f">{A}</span>
      <li><span class="dfn-paneled" id="7936a36b">|</span>
      <li><span class="dfn-paneled" id="12c99e51">||</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-VARIABLES-2]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-WRITING-MODES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="13e8ec26">var()</span>
+     <li><span class="dfn-paneled" id="224aeb29">inline size</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS3-EXCLUSIONS]</a> defines the following terms:
@@ -2086,25 +1794,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="ea1aa3ca">wrapping context</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSSOM-1]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="96376572">CSSStyleRule</span>
-     <li><span class="dfn-paneled" id="db9e353e">parent CSS style sheet</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="ee7bba09">response</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[SVG-PATHS]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="415188f5">path</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[SVG2]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="30e2c09c">fill-rule</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2120,31 +1812,20 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://andreubotella.com/csswg-auto-build/test/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-images-3/">https://andreubotella.com/csswg-auto-build/test/css-images-3/</a>
    <dt id="biblio-css-shapes">[CSS-SHAPES]
    <dd>Alan Stearns; Rossen Atanassov; Noam Rosenthal. <a href="https://andreubotella.com/csswg-auto-build/test/css-shapes/"><cite>CSS Shapes Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-shapes/">https://andreubotella.com/csswg-auto-build/test/css-shapes/</a>
-   <dt id="biblio-css-transforms-1">[CSS-TRANSFORMS-1]
-   <dd>Simon Fraser; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-transforms/"><cite>CSS Transforms Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-transforms/">https://andreubotella.com/csswg-auto-build/test/css-transforms/</a>
    <dt id="biblio-css-values-3">[CSS-VALUES-3]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/"><cite>CSS Values and Units Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/">https://andreubotella.com/csswg-auto-build/test/css-values-3/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/">https://andreubotella.com/csswg-auto-build/test/css-values-4/</a>
-   <dt id="biblio-css-variables-2">[CSS-VARIABLES-2]
-   <dd><a href="https://andreubotella.com/csswg-auto-build/test/css-variables-2/"><cite>CSS Custom Properties for Cascading Variables Module Level 2</cite></a>. Editor's Draft. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-variables-2/">https://andreubotella.com/csswg-auto-build/test/css-variables-2/</a>
+   <dt id="biblio-css-writing-modes-4">[CSS-WRITING-MODES-4]
+   <dd>Elika Etemad; Koji Ishii. <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/</a>
    <dt id="biblio-css2">[CSS2]
    <dd>Bert Bos; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css2/">https://andreubotella.com/csswg-auto-build/test/css2/</a>
    <dt id="biblio-css3-exclusions">[CSS3-EXCLUSIONS]
    <dd>Rossen Atanassov; Vincent Hardy; Alan Stearns. <a href="https://andreubotella.com/csswg-auto-build/test/css-exclusions/"><cite>CSS Exclusions Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-exclusions/">https://andreubotella.com/csswg-auto-build/test/css-exclusions/</a>
-   <dt id="biblio-cssom-1">[CSSOM-1]
-   <dd>Daniel Glazman; Emilio Cobos Álvarez. <a href="https://andreubotella.com/csswg-auto-build/test/cssom/"><cite>CSS Object Model (CSSOM)</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/cssom/">https://andreubotella.com/csswg-auto-build/test/cssom/</a>
    <dt id="biblio-fetch">[FETCH]
    <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/"><cite>Fetch Standard</cite></a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
-   <dt id="biblio-svg2">[SVG2]
-   <dd>Amelia Bellamy-Royds; et al. <a href="https://svgwg.org/svg2-draft/"><cite>Scalable Vector Graphics (SVG) 2</cite></a>. URL: <a href="https://svgwg.org/svg2-draft/">https://svgwg.org/svg2-draft/</a>
-  </dl>
-  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
-  <dl>
-   <dt id="biblio-svg-paths">[SVG-PATHS]
-   <dd>Cyril Concolato; Cameron McCormack; Doug Schepers. <a href="https://svgwg.org/specs/paths/"><cite>SVG Paths</cite></a>. URL: <a href="https://svgwg.org/specs/paths/">https://svgwg.org/specs/paths/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -2173,14 +1854,14 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>computed lengths for &lt;basic-shape>, the absolute URL for &lt;url>, otherwise as specified
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-shape-padding" id="ref-for-propdef-shape-padding⑧">shape-padding</a>
-      <td>&lt;length>
-      <td>none
+      <td>&lt;length-percentage [0,∞]>
+      <td>0
       <td>block-level elements
       <td>no
-      <td>n/a
+      <td>refer to the inline size of the containing block
       <td>by computed value
       <td>per grammar
-      <td>the absolute length
+      <td>computed &lt;length-percentage> value
    </table>
   </div>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
@@ -2475,82 +2156,36 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"12c99e51": {"dfnID":"12c99e51","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-comb-any\u2461"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any"},
-"13e8ec26": {"dfnID":"13e8ec26","dfnText":"var()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-var"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-variables-2/#funcdef-var"},
-"1ae585f8": {"dfnID":"1ae585f8","dfnText":"reference box","external":true,"refSections":[{"refs":[{"id":"ref-for-basic-shape-reference-box"},{"id":"ref-for-basic-shape-reference-box\u2460"},{"id":"ref-for-basic-shape-reference-box\u2461"},{"id":"ref-for-basic-shape-reference-box\u2462"},{"id":"ref-for-basic-shape-reference-box\u2463"},{"id":"ref-for-basic-shape-reference-box\u2464"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box"},
+"12c99e51": {"dfnID":"12c99e51","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any"},
+"14efbd1e": {"dfnID":"14efbd1e","dfnText":"shape()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-basic-shape-shape"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-shape"},
 "218b93ec": {"dfnID":"218b93ec","dfnText":"margin box","external":true,"refSections":[{"refs":[{"id":"ref-for-margin-box"}],"title":"2. \nTerminology"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-box-4/#margin-box"},
-"2352c551": {"dfnID":"2352c551","dfnText":"px","external":true,"refSections":[{"refs":[{"id":"ref-for-px"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#px"},
-"28fb0c5f": {"dfnID":"28fb0c5f","dfnText":"inset()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-basic-shape-inset"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-inset"},
-"2bdf49e3": {"dfnID":"2bdf49e3","dfnText":"path()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-basic-shape-path"},{"id":"ref-for-funcdef-basic-shape-path\u2460"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-funcdef-basic-shape-path\u2461"},{"id":"ref-for-funcdef-basic-shape-path\u2462"},{"id":"ref-for-funcdef-basic-shape-path\u2463"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-path"},
-"30e2c09c": {"dfnID":"30e2c09c","dfnText":"fill-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-FillRuleProperty"},{"id":"ref-for-FillRuleProperty\u2460"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://svgwg.org/svg2-draft/painting.html#FillRuleProperty"},
-"3c77fbd0": {"dfnID":"3c77fbd0","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma"},
-"415188f5": {"dfnID":"415188f5","dfnText":"path","external":true,"refSections":[{"refs":[{"id":"ref-for-elementdef-path"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"https://svgwg.org/specs/paths/#elementdef-path"},
+"224aeb29": {"dfnID":"224aeb29","dfnText":"inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-size"}],"title":"9.6. \nThe shape-padding Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size"},
 "4c8c9f70": {"dfnID":"4c8c9f70","dfnText":"table","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-table"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-display-3/#valdef-display-table"},
 "50b455a3": {"dfnID":"50b455a3","dfnText":"<image>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-image"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-images-3/#typedef-image"},
-"5e150f45": {"dfnID":"5e150f45","dfnText":"polygon()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-basic-shape-polygon"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-polygon"},
-"6041451f": {"dfnID":"6041451f","dfnText":"<percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-percentage-value"},{"id":"ref-for-percentage-value\u2460"},{"id":"ref-for-percentage-value\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value"},
-"614abc9f": {"dfnID":"614abc9f","dfnText":"<url>","external":true,"refSections":[{"refs":[{"id":"ref-for-url-value"},{"id":"ref-for-url-value\u2460"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value"},
+"614abc9f": {"dfnID":"614abc9f","dfnText":"<url>","external":true,"refSections":[{"refs":[{"id":"ref-for-url-value"}],"title":"7. \nFetching external shapes"},{"refs":[{"id":"ref-for-url-value\u2460"},{"id":"ref-for-url-value\u2461"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value"},
 "649eec52": {"dfnID":"649eec52","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display"},
-"67393c8c": {"dfnID":"67393c8c","dfnText":"circle()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-basic-shape-circle"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-funcdef-basic-shape-circle\u2460"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-circle"},
-"7203cb09": {"dfnID":"7203cb09","dfnText":"{A,B}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num-range"},{"id":"ref-for-mult-num-range\u2460"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num-range"},
-"7936a36b": {"dfnID":"7936a36b","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"},{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one"},
+"7936a36b": {"dfnID":"7936a36b","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one"},
 "8f9cb144": {"dfnID":"8f9cb144","dfnText":"shape-outside","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-shape-outside"},{"id":"ref-for-propdef-shape-outside\u2460"}],"title":"2. \nTerminology"},{"refs":[{"id":"ref-for-propdef-shape-outside\u2461"},{"id":"ref-for-propdef-shape-outside\u2462"}],"title":"9. \nDeclaring Shapes"},{"refs":[{"id":"ref-for-propdef-shape-outside\u2463"}],"title":"9.1. \nThe shape-outside Property"},{"refs":[{"id":"ref-for-propdef-shape-outside\u2464"}],"title":"9.3. \nThe shape-image-threshold Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#propdef-shape-outside"},
-"96376572": {"dfnID":"96376572","dfnText":"CSSStyleRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssstylerule"}],"title":"7. \nFetching external shapes"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstylerule"},
-"9a017547": {"dfnID":"9a017547","dfnText":"<length-percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-length-percentage"},{"id":"ref-for-typedef-length-percentage\u2460"},{"id":"ref-for-typedef-length-percentage\u2461"},{"id":"ref-for-typedef-length-percentage\u2462"},{"id":"ref-for-typedef-length-percentage\u2463"},{"id":"ref-for-typedef-length-percentage\u2464"},{"id":"ref-for-typedef-length-percentage\u2465"},{"id":"ref-for-typedef-length-percentage\u2466"},{"id":"ref-for-typedef-length-percentage\u2467"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage"},
+"9a017547": {"dfnID":"9a017547","dfnText":"<length-percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-length-percentage"},{"id":"ref-for-typedef-length-percentage\u2460"},{"id":"ref-for-typedef-length-percentage\u2461"}],"title":"9.6. \nThe shape-padding Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage"},
 "9ba5bc9e": {"dfnID":"9ba5bc9e","dfnText":"border box","external":true,"refSections":[{"refs":[{"id":"ref-for-border-box"}],"title":"2. \nTerminology"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-box-4/#border-box"},
 "9ecf6b7b": {"dfnID":"9ecf6b7b","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"1.1. \nValue Definitions"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-wide-keywords"},
-"a2932f14": {"dfnID":"a2932f14","dfnText":"interpolate","external":true,"refSections":[{"refs":[{"id":"ref-for-interpolation"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#interpolation"},
 "a7641e3b": {"dfnID":"a7641e3b","dfnText":"shape-margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-shape-margin"},{"id":"ref-for-propdef-shape-margin\u2460"}],"title":"9. \nDeclaring Shapes"},{"refs":[{"id":"ref-for-propdef-shape-margin\u2461"}],"title":"9.5. \nThe shape-margin property"},{"refs":[{"id":"ref-for-propdef-shape-margin\u2462"}],"title":"9.6. \nThe shape-padding Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#propdef-shape-margin"},
-"af5d24db": {"dfnID":"af5d24db","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"}],"title":"9.6. \nThe shape-padding Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#length-value"},
-"b33d29b3": {"dfnID":"b33d29b3","dfnText":"<angle>","external":true,"refSections":[{"refs":[{"id":"ref-for-angle-value"},{"id":"ref-for-angle-value\u2460"},{"id":"ref-for-angle-value\u2461"},{"id":"ref-for-angle-value\u2462"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value"},
-"ca334d40": {"dfnID":"ca334d40","dfnText":"<basic-shape>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-basic-shape"},{"id":"ref-for-typedef-basic-shape\u2460"},{"id":"ref-for-typedef-basic-shape\u2461"},{"id":"ref-for-typedef-basic-shape\u2462"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape"},
+"ca334d40": {"dfnID":"ca334d40","dfnText":"<basic-shape>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-basic-shape"},{"id":"ref-for-typedef-basic-shape\u2460"},{"id":"ref-for-typedef-basic-shape\u2461"},{"id":"ref-for-typedef-basic-shape\u2462"},{"id":"ref-for-typedef-basic-shape\u2463"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape"},
 "content-area": {"dfnID":"content-area","dfnText":"content area","external":false,"refSections":[{"refs":[{"id":"ref-for-content-area"}],"title":"2. \nTerminology"}],"url":"#content-area"},
-"db9e353e": {"dfnID":"db9e353e","dfnText":"parent CSS style sheet","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-css-rule-parent-css-style-sheet"}],"title":"7. \nFetching external shapes"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#concept-css-rule-parent-css-style-sheet"},
-"direction-agnostic-size": {"dfnID":"direction-agnostic-size","dfnText":"direction-agnostic size","external":false,"refSections":[{"refs":[{"id":"ref-for-direction-agnostic-size"}],"title":"2. \nTerminology"},{"refs":[{"id":"ref-for-direction-agnostic-size\u2460"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#direction-agnostic-size"},
-"e27e8b4a": {"dfnID":"e27e8b4a","dfnText":"ellipse()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-basic-shape-ellipse"}],"title":"9.2. \nThe shape-inside Property"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-ellipse"},
-"e5365b83": {"dfnID":"e5365b83","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"},{"id":"ref-for-mult-opt\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt"},
 "ea1aa3ca": {"dfnID":"ea1aa3ca","dfnText":"wrapping context","external":true,"refSections":[{"refs":[{"id":"ref-for-wrapping-context"}],"title":"9. \nDeclaring Shapes"}],"url":"https://www.w3.org/TR/css3-exclusions/#wrapping-context"},
-"ed6944b8": {"dfnID":"ed6944b8","dfnText":"rotate()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-transform-rotate"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-transforms-1/#funcdef-transform-rotate"},
-"ee310036": {"dfnID":"ee310036","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma"},
 "ee7bba09": {"dfnID":"ee7bba09","dfnText":"response","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-response"}],"title":"7. \nFetching external shapes"}],"url":"https://fetch.spec.whatwg.org/#concept-response"},
 "exclusion-area": {"dfnID":"exclusion-area","dfnText":"exclusion area","external":false,"refSections":[{"refs":[{"id":"ref-for-exclusion-area"},{"id":"ref-for-exclusion-area\u2460"},{"id":"ref-for-exclusion-area\u2461"}],"title":"2. \nTerminology"},{"refs":[{"id":"ref-for-exclusion-area\u2462"}],"title":"3. \nShapes"},{"refs":[{"id":"ref-for-exclusion-area\u2463"},{"id":"ref-for-exclusion-area\u2464"}],"title":"9. \nDeclaring Shapes"}],"url":"#exclusion-area"},
 "f1b2c93e": {"dfnID":"f1b2c93e","dfnText":"fetch a style resource","external":true,"refSections":[{"refs":[{"id":"ref-for-fetch-a-style-resource"}],"title":"7. \nFetching external shapes"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#fetch-a-style-resource"},
 "fetch-an-external-resource-for-a-shape": {"dfnID":"fetch-an-external-resource-for-a-shape","dfnText":"fetch an external resource for a shape","external":false,"refSections":[],"url":"#fetch-an-external-resource-for-a-shape"},
-"ff510b2f": {"dfnID":"ff510b2f","dfnText":"{A}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num"}],"title":"4.1.1. \nThe shape() Function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num"},
 "float-area": {"dfnID":"float-area","dfnText":"float area","external":false,"refSections":[{"refs":[{"id":"ref-for-float-area"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-float-area\u2460"}],"title":"3. \nShapes"},{"refs":[{"id":"ref-for-float-area\u2461"}],"title":"9. \nDeclaring Shapes"}],"url":"#float-area"},
-"funcdef-shape": {"dfnID":"funcdef-shape","dfnText":"shape()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-shape"},{"id":"ref-for-funcdef-shape\u2460"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-funcdef-shape\u2461"},{"id":"ref-for-funcdef-shape\u2462"},{"id":"ref-for-funcdef-shape\u2463"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#funcdef-shape"},
 "propdef-shape-inside": {"dfnID":"propdef-shape-inside","dfnText":"shape-inside","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-shape-inside"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-shape-inside\u2460"}],"title":"2. \nTerminology"},{"refs":[{"id":"ref-for-propdef-shape-inside\u2461"},{"id":"ref-for-propdef-shape-inside\u2462"},{"id":"ref-for-propdef-shape-inside\u2463"}],"title":"9. \nDeclaring Shapes"},{"refs":[{"id":"ref-for-propdef-shape-inside\u2464"},{"id":"ref-for-propdef-shape-inside\u2465"},{"id":"ref-for-propdef-shape-inside\u2466"},{"id":"ref-for-propdef-shape-inside\u2467"},{"id":"ref-for-propdef-shape-inside\u2468"},{"id":"ref-for-propdef-shape-inside\u2460\u24ea"}],"title":"9.2. \nThe shape-inside Property"},{"refs":[{"id":"ref-for-propdef-shape-inside\u2460\u2460"}],"title":"9.3. \nThe shape-image-threshold Property"},{"refs":[{"id":"ref-for-propdef-shape-inside\u2460\u2461"}],"title":"9.6. \nThe shape-padding Property"}],"url":"#propdef-shape-inside"},
 "propdef-shape-padding": {"dfnID":"propdef-shape-padding","dfnText":"shape-padding","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-shape-padding"},{"id":"ref-for-propdef-shape-padding\u2460"}],"title":"9. \nDeclaring Shapes"},{"refs":[{"id":"ref-for-propdef-shape-padding\u2461"},{"id":"ref-for-propdef-shape-padding\u2462"}],"title":"9.2. \nThe shape-inside Property"},{"refs":[{"id":"ref-for-propdef-shape-padding\u2463"},{"id":"ref-for-propdef-shape-padding\u2464"},{"id":"ref-for-propdef-shape-padding\u2465"},{"id":"ref-for-propdef-shape-padding\u2466"}],"title":"9.6. \nThe shape-padding Property"}],"url":"#propdef-shape-padding"},
-"typedef-shape-arc-command": {"dfnID":"typedef-shape-arc-command","dfnText":"<arc-command>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-arc-command"},{"id":"ref-for-typedef-shape-arc-command\u2460"},{"id":"ref-for-typedef-shape-arc-command\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-arc-command"},
-"typedef-shape-arc-size": {"dfnID":"typedef-shape-arc-size","dfnText":"<arc-size>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-arc-size"},{"id":"ref-for-typedef-shape-arc-size\u2460"},{"id":"ref-for-typedef-shape-arc-size\u2461"},{"id":"ref-for-typedef-shape-arc-size\u2462"},{"id":"ref-for-typedef-shape-arc-size\u2463"},{"id":"ref-for-typedef-shape-arc-size\u2464"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-typedef-shape-arc-size\u2465"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#typedef-shape-arc-size"},
-"typedef-shape-arc-sweep": {"dfnID":"typedef-shape-arc-sweep","dfnText":"<arc-sweep>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-arc-sweep"},{"id":"ref-for-typedef-shape-arc-sweep\u2460"},{"id":"ref-for-typedef-shape-arc-sweep\u2461"},{"id":"ref-for-typedef-shape-arc-sweep\u2462"},{"id":"ref-for-typedef-shape-arc-sweep\u2463"},{"id":"ref-for-typedef-shape-arc-sweep\u2464"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-typedef-shape-arc-sweep\u2465"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#typedef-shape-arc-sweep"},
-"typedef-shape-by-to": {"dfnID":"typedef-shape-by-to","dfnText":"<by-to>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-by-to"},{"id":"ref-for-typedef-shape-by-to\u2460"},{"id":"ref-for-typedef-shape-by-to\u2461"},{"id":"ref-for-typedef-shape-by-to\u2462"},{"id":"ref-for-typedef-shape-by-to\u2463"},{"id":"ref-for-typedef-shape-by-to\u2464"},{"id":"ref-for-typedef-shape-by-to\u2465"},{"id":"ref-for-typedef-shape-by-to\u2466"},{"id":"ref-for-typedef-shape-by-to\u2467"},{"id":"ref-for-typedef-shape-by-to\u2468"},{"id":"ref-for-typedef-shape-by-to\u2460\u24ea"},{"id":"ref-for-typedef-shape-by-to\u2460\u2460"},{"id":"ref-for-typedef-shape-by-to\u2460\u2461"},{"id":"ref-for-typedef-shape-by-to\u2460\u2462"},{"id":"ref-for-typedef-shape-by-to\u2460\u2463"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-typedef-shape-by-to\u2460\u2464"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#typedef-shape-by-to"},
-"typedef-shape-command": {"dfnID":"typedef-shape-command","dfnText":"<shape-command>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-command"},{"id":"ref-for-typedef-shape-command\u2460"},{"id":"ref-for-typedef-shape-command\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-command"},
-"typedef-shape-coordinate-pair": {"dfnID":"typedef-shape-coordinate-pair","dfnText":"<coordinate-pair>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-coordinate-pair"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461"},{"id":"ref-for-typedef-shape-coordinate-pair\u2462"},{"id":"ref-for-typedef-shape-coordinate-pair\u2463"},{"id":"ref-for-typedef-shape-coordinate-pair\u2464"},{"id":"ref-for-typedef-shape-coordinate-pair\u2465"},{"id":"ref-for-typedef-shape-coordinate-pair\u2466"},{"id":"ref-for-typedef-shape-coordinate-pair\u2467"},{"id":"ref-for-typedef-shape-coordinate-pair\u2468"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u24ea"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2460"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2461"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2462"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2463"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2464"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2465"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2466"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2467"},{"id":"ref-for-typedef-shape-coordinate-pair\u2460\u2468"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u24ea"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2460"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2461"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2462"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2463"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2464"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2465"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2466"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2467"},{"id":"ref-for-typedef-shape-coordinate-pair\u2461\u2468"},{"id":"ref-for-typedef-shape-coordinate-pair\u2462\u24ea"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-coordinate-pair"},
-"typedef-shape-curve-command": {"dfnID":"typedef-shape-curve-command","dfnText":"<curve-command>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-curve-command"},{"id":"ref-for-typedef-shape-curve-command\u2460"},{"id":"ref-for-typedef-shape-curve-command\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-curve-command"},
-"typedef-shape-hv-line-command": {"dfnID":"typedef-shape-hv-line-command","dfnText":"<hv-line-command>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-hv-line-command"},{"id":"ref-for-typedef-shape-hv-line-command\u2460"},{"id":"ref-for-typedef-shape-hv-line-command\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-hv-line-command"},
-"typedef-shape-line-command": {"dfnID":"typedef-shape-line-command","dfnText":"<line-command>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-line-command"},{"id":"ref-for-typedef-shape-line-command\u2460"},{"id":"ref-for-typedef-shape-line-command\u2461"},{"id":"ref-for-typedef-shape-line-command\u2462"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-line-command"},
-"typedef-shape-move-command": {"dfnID":"typedef-shape-move-command","dfnText":"<move-command>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-move-command"},{"id":"ref-for-typedef-shape-move-command\u2460"},{"id":"ref-for-typedef-shape-move-command\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-move-command"},
-"typedef-shape-smooth-command": {"dfnID":"typedef-shape-smooth-command","dfnText":"<smooth-command>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-shape-smooth-command"},{"id":"ref-for-typedef-shape-smooth-command\u2460"},{"id":"ref-for-typedef-shape-smooth-command\u2461"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#typedef-shape-smooth-command"},
-"valdef-shape-arc": {"dfnID":"valdef-shape-arc","dfnText":"arc","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-arc"},{"id":"ref-for-valdef-shape-arc\u2460"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#valdef-shape-arc"},
-"valdef-shape-by": {"dfnID":"valdef-shape-by","dfnText":"by","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-by"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-by"},
-"valdef-shape-ccw": {"dfnID":"valdef-shape-ccw","dfnText":"ccw","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-ccw"},{"id":"ref-for-valdef-shape-ccw\u2460"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-ccw"},
-"valdef-shape-close": {"dfnID":"valdef-shape-close","dfnText":"close","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-close"},{"id":"ref-for-valdef-shape-close\u2460"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-close"},
-"valdef-shape-curve": {"dfnID":"valdef-shape-curve","dfnText":"curve","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-curve"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-valdef-shape-curve\u2460"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#valdef-shape-curve"},
-"valdef-shape-cw": {"dfnID":"valdef-shape-cw","dfnText":"cw","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-cw"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-valdef-shape-cw\u2460"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#valdef-shape-cw"},
-"valdef-shape-hline": {"dfnID":"valdef-shape-hline","dfnText":"hline","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-hline"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-hline"},
 "valdef-shape-inside-auto": {"dfnID":"valdef-shape-inside-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-inside-auto"}],"title":"9.2. \nThe shape-inside Property"}],"url":"#valdef-shape-inside-auto"},
 "valdef-shape-inside-basic-shape": {"dfnID":"valdef-shape-inside-basic-shape","dfnText":"<basic-shape>","external":false,"refSections":[],"url":"#valdef-shape-inside-basic-shape"},
 "valdef-shape-inside-display": {"dfnID":"valdef-shape-inside-display","dfnText":"display","external":false,"refSections":[],"url":"#valdef-shape-inside-display"},
 "valdef-shape-inside-outside-shape": {"dfnID":"valdef-shape-inside-outside-shape","dfnText":"outside-shape","external":false,"refSections":[],"url":"#valdef-shape-inside-outside-shape"},
 "valdef-shape-inside-url": {"dfnID":"valdef-shape-inside-url","dfnText":"<url>","external":false,"refSections":[],"url":"#valdef-shape-inside-url"},
-"valdef-shape-large": {"dfnID":"valdef-shape-large","dfnText":"large","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-large"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-valdef-shape-large\u2460"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#valdef-shape-large"},
-"valdef-shape-line": {"dfnID":"valdef-shape-line","dfnText":"line","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-line"},{"id":"ref-for-valdef-shape-line\u2460"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-line"},
-"valdef-shape-move": {"dfnID":"valdef-shape-move","dfnText":"move","external":false,"refSections":[],"url":"#valdef-shape-move"},
-"valdef-shape-small": {"dfnID":"valdef-shape-small","dfnText":"small","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-small"},{"id":"ref-for-valdef-shape-small\u2460"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-small"},
-"valdef-shape-smooth": {"dfnID":"valdef-shape-smooth","dfnText":"smooth","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-smooth"}],"title":"4.1.1. \nThe shape() Function"},{"refs":[{"id":"ref-for-valdef-shape-smooth\u2460"}],"title":"4.1.1.1. \nInterpolating the shape() Function"}],"url":"#valdef-shape-smooth"},
-"valdef-shape-to": {"dfnID":"valdef-shape-to","dfnText":"to","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-to"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-to"},
-"valdef-shape-vline": {"dfnID":"valdef-shape-vline","dfnText":"vline","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-shape-vline"}],"title":"4.1.1. \nThe shape() Function"}],"url":"#valdef-shape-vline"},
+"valdef-shape-padding-length-percentage-0": {"dfnID":"valdef-shape-padding-length-percentage-0","dfnText":"<length-percentage [0,\u221e]>","external":false,"refSections":[],"url":"#valdef-shape-padding-length-percentage-0"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -2939,10 +2574,7 @@ function genLinkingSyntaxes(dfn) {
 "use strict";
 {
 let linkTitleData = {
-"#typedef-shape-by-to": "Expands to: by | to",
 "https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape": "Expands to: equivalent path",
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value": "Expands to: deg | grad | rad | turn",
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#length-value": "Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw",
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value": "Expands to: local url flag",
 };
 
@@ -3019,74 +2651,28 @@ window.addEventListener("resize", repositionAnnoPanels);
 {
 let refsData = {
 "#content-area": {"displayText":"content area","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"content area","type":"dfn","url":"#content-area"},
-"#direction-agnostic-size": {"displayText":"direction-agnostic size","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"direction-agnostic size","type":"dfn","url":"#direction-agnostic-size"},
 "#exclusion-area": {"displayText":"exclusion area","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"exclusion area","type":"dfn","url":"#exclusion-area"},
 "#float-area": {"displayText":"float area","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"float area","type":"dfn","url":"#float-area"},
-"#funcdef-shape": {"displayText":"shape()","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"shape()","type":"function","url":"#funcdef-shape"},
 "#propdef-shape-inside": {"displayText":"shape-inside","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"shape-inside","type":"property","url":"#propdef-shape-inside"},
 "#propdef-shape-padding": {"displayText":"shape-padding","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"shape-padding","type":"property","url":"#propdef-shape-padding"},
-"#typedef-shape-arc-command": {"displayText":"<arc-command>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<arc-command>","type":"type","url":"#typedef-shape-arc-command"},
-"#typedef-shape-arc-size": {"displayText":"<arc-size>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<arc-size>","type":"type","url":"#typedef-shape-arc-size"},
-"#typedef-shape-arc-sweep": {"displayText":"<arc-sweep>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<arc-sweep>","type":"type","url":"#typedef-shape-arc-sweep"},
-"#typedef-shape-by-to": {"displayText":"<by-to>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<by-to>","type":"type","url":"#typedef-shape-by-to"},
-"#typedef-shape-command": {"displayText":"<shape-command>","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<shape-command>","type":"type","url":"#typedef-shape-command"},
-"#typedef-shape-coordinate-pair": {"displayText":"<coordinate-pair>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<coordinate-pair>","type":"type","url":"#typedef-shape-coordinate-pair"},
-"#typedef-shape-curve-command": {"displayText":"<curve-command>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<curve-command>","type":"type","url":"#typedef-shape-curve-command"},
-"#typedef-shape-hv-line-command": {"displayText":"<hv-line-command>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<hv-line-command>","type":"type","url":"#typedef-shape-hv-line-command"},
-"#typedef-shape-line-command": {"displayText":"<line-command>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<line-command>","type":"type","url":"#typedef-shape-line-command"},
-"#typedef-shape-move-command": {"displayText":"<move-command>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<move-command>","type":"type","url":"#typedef-shape-move-command"},
-"#typedef-shape-smooth-command": {"displayText":"<smooth-command>","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"<smooth-command>","type":"type","url":"#typedef-shape-smooth-command"},
-"#valdef-shape-arc": {"displayText":"arc","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"arc","type":"value","url":"#valdef-shape-arc"},
-"#valdef-shape-by": {"displayText":"by","export":true,"for_":["<by-to>","shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"by","type":"value","url":"#valdef-shape-by"},
-"#valdef-shape-ccw": {"displayText":"ccw","export":true,"for_":["arc","shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"ccw","type":"value","url":"#valdef-shape-ccw"},
-"#valdef-shape-close": {"displayText":"close","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"close","type":"value","url":"#valdef-shape-close"},
-"#valdef-shape-curve": {"displayText":"curve","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"curve","type":"value","url":"#valdef-shape-curve"},
-"#valdef-shape-cw": {"displayText":"cw","export":true,"for_":["arc","shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"cw","type":"value","url":"#valdef-shape-cw"},
-"#valdef-shape-hline": {"displayText":"hline","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"hline","type":"value","url":"#valdef-shape-hline"},
 "#valdef-shape-inside-auto": {"displayText":"auto","export":true,"for_":["shape-inside"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"auto","type":"value","url":"#valdef-shape-inside-auto"},
-"#valdef-shape-large": {"displayText":"large","export":true,"for_":["arc","shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"large","type":"value","url":"#valdef-shape-large"},
-"#valdef-shape-line": {"displayText":"line","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"line","type":"value","url":"#valdef-shape-line"},
-"#valdef-shape-small": {"displayText":"small","export":true,"for_":["arc","shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"small","type":"value","url":"#valdef-shape-small"},
-"#valdef-shape-smooth": {"displayText":"smooth","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"smooth","type":"value","url":"#valdef-shape-smooth"},
-"#valdef-shape-to": {"displayText":"to","export":true,"for_":["<by-to>","shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"to","type":"value","url":"#valdef-shape-to"},
-"#valdef-shape-vline": {"displayText":"vline","export":true,"for_":["shape()"],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"local","text":"vline","type":"value","url":"#valdef-shape-vline"},
 "https://andreubotella.com/csswg-auto-build/test/css-box-4/#border-box": {"displayText":"border box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-box","spec":"css-box-4","status":"current","text":"border box","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-box-4/#border-box"},
 "https://andreubotella.com/csswg-auto-build/test/css-box-4/#margin-box": {"displayText":"margin box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-box","spec":"css-box-4","status":"current","text":"margin box","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-box-4/#margin-box"},
 "https://andreubotella.com/csswg-auto-build/test/css-display-3/#valdef-display-table": {"displayText":"table","export":true,"for_":["display","<display-inside>"],"level":"3","normative":true,"shortname":"css-display","spec":"css-display-3","status":"current","text":"table","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-display-3/#valdef-display-table"},
 "https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display": {"displayText":"display","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"display","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display"},
 "https://andreubotella.com/csswg-auto-build/test/css-images-3/#typedef-image": {"displayText":"<image>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-images","spec":"css-images-3","status":"current","text":"<image>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-images-3/#typedef-image"},
-"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box": {"displayText":"reference box","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"reference box","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#basic-shape-reference-box"},
-"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-circle": {"displayText":"circle()","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"circle()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-circle"},
-"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-ellipse": {"displayText":"ellipse()","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"ellipse()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-ellipse"},
-"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-inset": {"displayText":"inset()","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"inset()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-inset"},
-"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-path": {"displayText":"path()","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"path()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-path"},
-"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-polygon": {"displayText":"polygon()","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"polygon()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-polygon"},
+"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-shape": {"displayText":"shape()","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"shape()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#funcdef-basic-shape-shape"},
 "https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#propdef-shape-margin": {"displayText":"shape-margin","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"shape-margin","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#propdef-shape-margin"},
 "https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#propdef-shape-outside": {"displayText":"shape-outside","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"shape-outside","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#propdef-shape-outside"},
 "https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape": {"displayText":"<basic-shape>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"<basic-shape>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-shapes-1/#typedef-basic-shape"},
-"https://andreubotella.com/csswg-auto-build/test/css-transforms-1/#funcdef-transform-rotate": {"displayText":"rotate()","export":true,"for_":["transform"],"level":"1","normative":true,"shortname":"css-transforms","spec":"css-transforms-1","status":"current","text":"rotate()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-transforms-1/#funcdef-transform-rotate"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value": {"displayText":"<angle>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<angle>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#angle-value"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any": {"displayText":"||","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"||","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-any"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma": {"displayText":",","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":",","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-wide-keywords": {"displayText":"CSS-wide keywords","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"css-wide keywords","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-wide-keywords"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#fetch-a-style-resource": {"displayText":"fetch a style resource","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"fetch a style resource","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#fetch-a-style-resource"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#interpolation": {"displayText":"interpolate","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"interpolate","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#interpolation"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#length-value": {"displayText":"<length>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<length>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#length-value"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma": {"displayText":"#","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"#","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num": {"displayText":"{A}","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"{a}","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num-range": {"displayText":"{A,B}","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"{a,b}","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-num-range"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt": {"displayText":"?","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"?","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value": {"displayText":"<percentage>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<percentage>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#percentage-value"},
-"https://andreubotella.com/csswg-auto-build/test/css-values-4/#px": {"displayText":"px","export":true,"for_":["<length>"],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"px","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#px"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage": {"displayText":"<length-percentage>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<length-percentage>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#typedef-length-percentage"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value": {"displayText":"<url>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<url>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#url-value"},
-"https://andreubotella.com/csswg-auto-build/test/css-variables-2/#funcdef-var": {"displayText":"var()","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-variables","spec":"css-variables-2","status":"current","text":"var()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-variables-2/#funcdef-var"},
-"https://andreubotella.com/csswg-auto-build/test/cssom-1/#concept-css-rule-parent-css-style-sheet": {"displayText":"parent CSS style sheet","export":false,"for_":["CSSRule"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"parent css style sheet","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#concept-css-rule-parent-css-style-sheet"},
-"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstylerule": {"displayText":"CSSStyleRule","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"CSSStyleRule","type":"interface","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstylerule"},
+"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size": {"displayText":"inline size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"inline size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size"},
 "https://fetch.spec.whatwg.org/#concept-response": {"displayText":"response","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"response","type":"dfn","url":"https://fetch.spec.whatwg.org/#concept-response"},
-"https://svgwg.org/specs/paths/#elementdef-path": {"displayText":"path","export":true,"for_":[],"level":"1","normative":true,"shortname":"svg-paths","spec":"svg-paths","status":"current","text":"path","type":"element","url":"https://svgwg.org/specs/paths/#elementdef-path"},
-"https://svgwg.org/svg2-draft/painting.html#FillRuleProperty": {"displayText":"fill-rule","export":true,"for_":[],"level":"2","normative":true,"shortname":"svg","spec":"svg2","status":"current","text":"fill-rule","type":"property","url":"https://svgwg.org/svg2-draft/painting.html#FillRuleProperty"},
 "https://www.w3.org/TR/css3-exclusions/#wrapping-context": {"displayText":"wrapping context","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-exclusions","spec":"css3-exclusions","status":"snapshot","text":"wrapping context","type":"dfn","url":"https://www.w3.org/TR/css3-exclusions/#wrapping-context"},
 };
 

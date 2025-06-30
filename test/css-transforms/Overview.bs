@@ -138,7 +138,7 @@ Terminology {#terminology}
 
 When used in this specification, terms have the meanings assigned in this section.
 
-<div data-export>
+<div export>
     : <dfn>transformable element</dfn>
     :: A transformable element is an element in one of these categories:
         * all elements whose layout is governed by the CSS box model except for non-replaced inline boxes, table-column boxes, and table-column-group boxes [[!CSS2]],
@@ -162,7 +162,7 @@ When used in this specification, terms have the meanings assigned in this sectio
     : <dfn>2D matrix</dfn>
     ::  A 3x2 transformation matrix, or a 4x4 matrix where the items m<sub>31</sub>, m<sub>32</sub>, m<sub>13</sub>, m<sub>23</sub>, m<sub>43</sub>, m<sub>14</sub>, m<sub>24</sub>, m<sub>34</sub> are equal to ''0'' and m<sub>33</sub>, m<sub>44</sub> are equal to ''1''.
 
-    : <dfn>identity transform function</dfn>
+    : <dfn lt="identity transform function|identity transform">identity transform function</dfn>
     :: A <a href="#transform-functions">transform function</a> that is equivalent to a identity 4x4 matrix (see <a href="#mathematical-description">Mathematical Description of Transform Functions</a>). Examples for identity transform functions are ''translate(0)'', ''translateX(0)'', ''translateY(0)'', ''scale(1)'', ''scaleX(1)'', ''scaleY(1)'', ''rotate(0)'', ''skew(0, 0)'', ''skewX(0)'', ''skewY(0)'' and ''matrix(1, 0, 0, 1, 0, 0)''.
 
     : <dfn>post-multiply</dfn>
@@ -203,7 +203,7 @@ div {
 }
 </code></pre>
 
-  The 'transform-origin' property is set to ''0 0'' and can be omitted. The [=transformation matrix=] <i>TM</i> gets computed by post-multying the <<translate()>>, <<scale()>> and <<rotate()>> <<transform-function>>s.
+  The 'transform-origin' property is set to ''0 0'' and can be omitted. The [=transformation matrix=] <i>TM</i> gets computed by post-multiplying the <<translate()>>, <<scale()>> and <<rotate()>> <<transform-function>>s.
 
   <img src="images/tm.png" alt="TM = \begin{bmatrix} 1 & 0 & 0 & -10 \\ 0 & 1 & 0 & -20 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \cdot \begin{bmatrix} 2 & 0 & 0 & 0 \\ 0 & 2 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \cdot \begin{bmatrix} cos(45) & -sin(45) & 0 & 0 \\ sin(45) & cos(45) & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}" width="627">
 </div>
@@ -359,10 +359,16 @@ versus
 </code></pre>
 </div>
 
-<a href="https://www.w3.org/TR/css-backgrounds-3/#valdef-background-attachment-fixed">Fixed backgrounds</a> on the root element are affected by any transform specified for that element. For all other elements that are effected by a transform (i.e. have a transform applied to them, or to any of their ancestor elements), a value of ''fixed'' for the 'background-attachment' property is treated as if it had a value of ''background-attachment/scroll''. The computed value of 'background-attachment' is not affected.
+When the background of an element is propagated to the canvas
+(see [[css-backgrounds-3#root-background]] and [[css-backgrounds-3#body-background]]),
+that background is not affected by any transform specified for that element or for the root element.
 
-Note: If the root element is transformed, the transformation applies to the entire canvas, including any background specified for the root element.  Since <a href="https://www.w3.org/TR/css-backgrounds-3/#special-backgrounds">the background painting area for the root element</a> is the entire canvas, which is infinite, the transformation might cause parts of the background that were originally off-screen to appear. For example, if the root element's background were repeating dots, and a transformation of ''scale(0.5)'' were specified on the root element, the dots would shrink to half their size, but there will be four times as many, so they still cover the whole viewport.
-
+For elements that are effected by a transform
+(i.e. have a transform applied to them, or to any of their ancestor elements)
+and do not have their background propagated to the canvas,
+a value of ''fixed'' for the 'background-attachment' property
+is treated as if it had a value of ''background-attachment/scroll''.
+The computed value of 'background-attachment' is not affected.
 
 The 'transform' Property {#transform-property}
 ==============================================
@@ -412,7 +418,7 @@ The 'transform-origin' Property {#transform-origin-property}
 
 <pre class='propdef'>
 Name: transform-origin
-Value: &nbsp;&nbsp;[ left | center | right | top | bottom | <<length-percentage>> ]<br> | <br>&nbsp;&nbsp;[ left | center | right | <<length-percentage>> ]<br>&nbsp;&nbsp;[ top | center | bottom | <<length-percentage>> ] <<length>>?<br> |<br>&nbsp;&nbsp;[[ center | left | right ] && [ center | top | bottom ]] <<length>>?
+Value: &nbsp;&nbsp;[ left | center | right | top | bottom | <<length-percentage>> ]<br> | <br>&nbsp;&nbsp;[ left | center | right | <<length-percentage>> ]<br>&nbsp;&nbsp;[ top | center | bottom | <<length-percentage>> ] <<length>>?<br> |<br>&nbsp;&nbsp;[ [ center | left | right ] && [ center | top | bottom ] ] <<length>>?
 Initial: 50% 50%
 Applies to: [=transformable elements=]
 Inherited: no
@@ -767,7 +773,7 @@ matrix
   <dd><pre>
 transform
 | transform comma-wsp? transforms
-  </dd></pre>
+  </pre></dd>
   <dd>
     <pre class='railroad'>
     Choice:
@@ -1448,6 +1454,7 @@ At this point there are no information about potential privacy or security conce
 * Relax syntax of <a element-attr for>transform</a> attribute: Do not require commas between <<transform-list>> items.
 * Simplified grammar of transform functions. (No normative impact.)
 * Remove animation support of 'transform' from <a element>animate</a> and <a element>set</a> elements.
+* State that transforms do not transform backgrounds that are propagated to the canvas, and clarify some other interactions with background propagation.
 * Editorial changes.
 
 <h3 class="no-num" id="WD20181130">Since the <a href="https://www.w3.org/TR/2018/WD-css-transforms-1-20181130/">30 November 2018 Working Draft</a></h3>

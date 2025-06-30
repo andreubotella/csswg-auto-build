@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-scroll-anchoring-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="03f6b66e0a3c0b5bb1044b7d88aa6674e31c5129" name="revision">
+  <meta content="3af4db69ead6212b35a9988e055079f4b08ece48" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -1175,16 +1175,18 @@ following criteria:</p>
     <li data-md>
      <p>None of the ancestors of <var>C</var> up to <var>S</var> are in an <a data-link-type="dfn" href="#excluded-subtree" id="ref-for-excluded-subtree①">excluded subtree</a></p>
    </ul>
-   <p>Some elements are considered to be <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="anchor-priority-candidates">priority candidates</dfn> for anchor selection:</p>
+   <p>Some elements are considered to be
+<dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="priority candidate" data-lt="anchor priority candidate" id="anchor-priority-candidates">anchor priority candidates</dfn> 
+for anchor selection:</p>
    <ol>
     <li data-md>
      <p>The <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-anchor" id="ref-for-dom-anchor">DOM anchor</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#focused-area-of-the-document" id="ref-for-focused-area-of-the-document">focused area of the document</a>, if such an anchor
-  is text editable (<a data-link-type="dfn" href="https://w3c.github.io/editing/docs/execCommand/index.html#editable" id="ref-for-editable">editable</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#editing-host" id="ref-for-editing-host">editing host</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-mutable" id="ref-for-concept-fe-mutable">mutable</a> <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element" id="ref-for-the-textarea-element">textarea</a></code>, or
-  <span id="ref-for-concept-fe-mutable①">mutable</span> <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/input.html#the-input-element" id="ref-for-the-input-element">input</a></code> with a type that allows text entry).</p>
+is text editable (<a data-link-type="dfn" href="https://w3c.github.io/editing/docs/execCommand/index.html#editable" id="ref-for-editable">editable</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#editing-host" id="ref-for-editing-host">editing host</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#concept-fe-mutable" id="ref-for-concept-fe-mutable">mutable</a> <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element" id="ref-for-the-textarea-element">textarea</a></code>, or
+<span id="ref-for-concept-fe-mutable①">mutable</span> <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/input.html#the-input-element" id="ref-for-the-input-element">input</a></code> with a type that allows text entry).</p>
     <li data-md>
      <p>An element containing the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/interaction.html#fip-active-match" id="ref-for-fip-active-match">active match</a> of the
-  find-in-page user-agent algorithm. If the match spans multiple elements, then
-  consider only the first such element.</p>
+find-in-page user-agent algorithm. If the match spans multiple elements, then
+consider only the first such element.</p>
    </ol>
    <p>Note that if the <a data-link-type="dfn" href="#anchor-priority-candidates" id="ref-for-anchor-priority-candidates">priority candidate</a> is a non-<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#atomic-inline" id="ref-for-atomic-inline②">atomic inline</a>
 element, then instead consider its nearest ancestor element that is not a
@@ -1202,11 +1204,13 @@ whose computed value of the <a class="property css" data-link-type="property" hr
 then do not select an anchor node for <var>S</var>.</p>
      <li data-md>
       <p>Otherwise, for each <a data-link-type="dfn" href="#anchor-priority-candidates" id="ref-for-anchor-priority-candidates①">priority candidate</a> <var>PC</var> in order specified,
-check if <var>PC</var> is a <a data-link-type="dfn" href="#anchor-viable-candidate" id="ref-for-anchor-viable-candidate">viable candidate</a> in <var>S</var>. If so, select it as an
-anchor node and terminate.</p>
+check if <var>PC</var> is a <a data-link-type="dfn" href="#anchor-viable-candidate" id="ref-for-anchor-viable-candidate">viable candidate</a> in <var>S</var>.
+If so, perform the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination">candidate examination algorithm</a> for <var>PC</var> in <var>S</var> and terminate.</p>
+      <p class="note" role="note"><span class="marker">Note:</span> Since the priority candidate itself is checked to be viable, the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination①">candidate examination algorithm</a>
+is guaranteed to select at least the candidate node itself.</p>
      <li data-md>
       <p>Otherwise, for each DOM child <var>N</var> of the element or document associated with <var>S</var>,
-perform the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination">candidate examination algorithm</a> for <var>N</var> in <var>S</var>,
+perform the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination②">candidate examination algorithm</a> for <var>N</var> in <var>S</var>,
 and terminate if it selects an anchor node.</p>
     </ol>
    </div>
@@ -1229,13 +1233,13 @@ select <var>N</var> as the anchor node.</p>
       <ol>
        <li data-md>
         <p>For each DOM child <var>C</var> of <var>N</var>,
-perform the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination①">candidate examination algorithm</a> for <var>C</var> in <var>S</var>,
+perform the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination③">candidate examination algorithm</a> for <var>C</var> in <var>S</var>,
 and terminate if it selects an anchor node.</p>
        <li data-md>
         <p>For each absolutely-positioned element <var>A</var>
 whose <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#containing-block" id="ref-for-containing-block">containing block</a> is <var>N</var>,
 but whose DOM parent is not <var>N</var>,
-perform the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination②">candidate examination algorithm</a> for <var>A</var> in <var>S</var>,
+perform the <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination④">candidate examination algorithm</a> for <var>A</var> in <var>S</var>,
 and terminate if it selects an anchor node.</p>
        <li data-md>
         <p>Select <var>N</var> as the anchor node.
@@ -1430,6 +1434,8 @@ Changes Since the Feb 11 2020 Working Draft</span><a class="self-link" href="#ch
      <p>Added definitions of <a data-link-type="dfn" href="#anchor-viable-candidate" id="ref-for-anchor-viable-candidate①">viable candidate</a> and <a data-link-type="dfn" href="#anchor-priority-candidates" id="ref-for-anchor-priority-candidates②">priority candidate</a>.</p>
     <li data-md>
      <p>Clarified interaction between scroll anchoring and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-scroll-snap-1/#scroll-snap" id="ref-for-scroll-snap①">scroll snapping</a>.</p>
+    <li data-md>
+     <p>Added a step to run <a data-link-type="dfn" href="#candidate-examination" id="ref-for-candidate-examination⑤">candidate examination algorithm</a> on viable priority candidates.</p>
    </ul>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">
@@ -1570,6 +1576,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <ul class="index">
    <li><a href="#scroll-anchoring-anchor-node">anchor node</a><span>, in § 2</span>
    <li><a href="#anchoring-algorithm">anchor node selection algorithm</a><span>, in § 2.1</span>
+   <li><a href="#anchor-priority-candidates">anchor priority candidate</a><span>, in § 2.1</span>
    <li><a href="#valdef-overflow-anchor-auto">auto</a><span>, in § 3</span>
    <li><a href="#candidate-examination">candidate examination algorithm</a><span>, in § 2.1</span>
    <li><a href="#excluded-subtree">excluded subtree</a><span>, in § 2.1</span>
@@ -1578,7 +1585,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#valdef-overflow-anchor-none">none</a><span>, in § 3</span>
    <li><a href="#propdef-overflow-anchor">overflow-anchor</a><span>, in § 3</span>
    <li><a href="#partially-visible">partially visible</a><span>, in § 2.1</span>
-   <li><a href="#anchor-priority-candidates">priority candidates</a><span>, in § 2.1</span>
+   <li><a href="#anchor-priority-candidates">priority candidate</a><span>, in § 2.1</span>
    <li><a href="#scroll-anchoring-bounding-rect">scroll anchoring bounding rect</a><span>, in § 2.1</span>
    <li><a href="#suppression-trigger">suppression trigger</a><span>, in § 2.2.2</span>
    <li><a href="#suppression-window">suppression window</a><span>, in § 2.2.1</span>
@@ -1984,14 +1991,14 @@ let dfnPanelData = {
 "9f4cc044": {"dfnID":"9f4cc044","dfnText":"active match","external":true,"refSections":[{"refs":[{"id":"ref-for-fip-active-match"}],"title":"2.1. \nAnchor Node Selection"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#fip-active-match"},
 "9f86e3ec": {"dfnID":"9f86e3ec","dfnText":"none","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-none"}],"title":"2.1. \nAnchor Node Selection"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#valdef-display-none"},
 "af537e3f": {"dfnID":"af537e3f","dfnText":"absolute","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-position-absolute"}],"title":"2.1. \nAnchor Node Selection"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-position-3/#valdef-position-absolute"},
-"anchor-priority-candidates": {"dfnID":"anchor-priority-candidates","dfnText":"priority candidates","external":false,"refSections":[{"refs":[{"id":"ref-for-anchor-priority-candidates"},{"id":"ref-for-anchor-priority-candidates\u2460"}],"title":"2.1. \nAnchor Node Selection"},{"refs":[{"id":"ref-for-anchor-priority-candidates\u2461"}],"title":"\nChanges Since the Feb 11 2020 Working Draft"}],"url":"#anchor-priority-candidates"},
+"anchor-priority-candidates": {"dfnID":"anchor-priority-candidates","dfnText":"anchor priority candidates","external":false,"refSections":[{"refs":[{"id":"ref-for-anchor-priority-candidates"},{"id":"ref-for-anchor-priority-candidates\u2460"}],"title":"2.1. \nAnchor Node Selection"},{"refs":[{"id":"ref-for-anchor-priority-candidates\u2461"}],"title":"\nChanges Since the Feb 11 2020 Working Draft"}],"url":"#anchor-priority-candidates"},
 "anchor-viable-candidate": {"dfnID":"anchor-viable-candidate","dfnText":"viable candidate","external":false,"refSections":[{"refs":[{"id":"ref-for-anchor-viable-candidate"}],"title":"2.1. \nAnchor Node Selection"},{"refs":[{"id":"ref-for-anchor-viable-candidate\u2460"}],"title":"\nChanges Since the Feb 11 2020 Working Draft"}],"url":"#anchor-viable-candidate"},
 "anchoring-algorithm": {"dfnID":"anchoring-algorithm","dfnText":"anchor node selection algorithm","external":false,"refSections":[{"refs":[{"id":"ref-for-anchoring-algorithm"},{"id":"ref-for-anchoring-algorithm\u2460"}],"title":"3. \nExclusion API"}],"url":"#anchoring-algorithm"},
 "bb2078c9": {"dfnID":"bb2078c9","dfnText":"optimal viewing region","external":true,"refSections":[{"refs":[{"id":"ref-for-optimal-viewing-region"},{"id":"ref-for-optimal-viewing-region\u2460"},{"id":"ref-for-optimal-viewing-region\u2461"}],"title":"2.1. \nAnchor Node Selection"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-scroll-snap-1/#optimal-viewing-region"},
 "c0ebe169": {"dfnID":"c0ebe169","dfnText":"margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-margin"}],"title":"2.2.2. \nSuppression Triggers"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-box-4/#propdef-margin"},
 "c2715a01": {"dfnID":"c2715a01","dfnText":"scroll snap","external":true,"refSections":[{"refs":[{"id":"ref-for-scroll-snap"}],"title":"2. \nDescription"},{"refs":[{"id":"ref-for-scroll-snap\u2460"}],"title":"\nChanges Since the Feb 11 2020 Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-scroll-snap-1/#scroll-snap"},
 "c4f8acac": {"dfnID":"c4f8acac","dfnText":"content area","external":true,"refSections":[{"refs":[{"id":"ref-for-content-area"}],"title":"2.1. \nAnchor Node Selection"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-box-4/#content-area"},
-"candidate-examination": {"dfnID":"candidate-examination","dfnText":"candidate examination algorithm","external":false,"refSections":[{"refs":[{"id":"ref-for-candidate-examination"},{"id":"ref-for-candidate-examination\u2460"},{"id":"ref-for-candidate-examination\u2461"}],"title":"2.1. \nAnchor Node Selection"}],"url":"#candidate-examination"},
+"candidate-examination": {"dfnID":"candidate-examination","dfnText":"candidate examination algorithm","external":false,"refSections":[{"refs":[{"id":"ref-for-candidate-examination"},{"id":"ref-for-candidate-examination\u2460"},{"id":"ref-for-candidate-examination\u2461"},{"id":"ref-for-candidate-examination\u2462"},{"id":"ref-for-candidate-examination\u2463"}],"title":"2.1. \nAnchor Node Selection"},{"refs":[{"id":"ref-for-candidate-examination\u2464"}],"title":"\nChanges Since the Feb 11 2020 Working Draft"}],"url":"#candidate-examination"},
 "d40269d5": {"dfnID":"d40269d5","dfnText":"padding","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-padding"}],"title":"2.2.2. \nSuppression Triggers"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-box-4/#propdef-padding"},
 "d7d642a2": {"dfnID":"d7d642a2","dfnText":"input","external":true,"refSections":[{"refs":[{"id":"ref-for-the-input-element"}],"title":"2.1. \nAnchor Node Selection"}],"url":"https://html.spec.whatwg.org/multipage/input.html#the-input-element"},
 "d978b5c4": {"dfnID":"d978b5c4","dfnText":"min-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-min-width"}],"title":"2.2.2. \nSuppression Triggers"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-min-width"},
@@ -2457,7 +2464,7 @@ window.addEventListener("resize", repositionAnnoPanels);
 "use strict";
 {
 let refsData = {
-"#anchor-priority-candidates": {"displayText":"priority candidates","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-anchoring","spec":"css-scroll-anchoring-1","status":"local","text":"priority candidates","type":"dfn","url":"#anchor-priority-candidates"},
+"#anchor-priority-candidates": {"displayText":"priority candidate","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-anchoring","spec":"css-scroll-anchoring-1","status":"local","text":"priority candidate","type":"dfn","url":"#anchor-priority-candidates"},
 "#anchor-viable-candidate": {"displayText":"viable candidate","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-anchoring","spec":"css-scroll-anchoring-1","status":"local","text":"viable candidate","type":"dfn","url":"#anchor-viable-candidate"},
 "#anchoring-algorithm": {"displayText":"anchor node selection algorithm","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-anchoring","spec":"css-scroll-anchoring-1","status":"local","text":"anchor node selection algorithm","type":"dfn","url":"#anchoring-algorithm"},
 "#candidate-examination": {"displayText":"candidate examination algorithm","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-anchoring","spec":"css-scroll-anchoring-1","status":"local","text":"candidate examination algorithm","type":"dfn","url":"#candidate-examination"},

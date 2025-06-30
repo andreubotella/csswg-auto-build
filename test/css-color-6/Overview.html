@@ -6,9 +6,9 @@
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
-  <link href="https://www.w3.org/TR/css-color-5/" rel="canonical">
+  <link href="https://www.w3.org/TR/css-color-6/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="03f6b66e0a3c0b5bb1044b7d88aa6674e31c5129" name="revision">
+  <meta content="3af4db69ead6212b35a9988e055079f4b08ece48" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -1063,9 +1063,9 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://drafts.csswg.org/css-color-5/">https://drafts.csswg.org/css-color-5/</a>
+      <dd><a class="u-url" href="https://drafts.csswg.org/css-color-6/">https://drafts.csswg.org/css-color-6/</a>
       <dt>Latest published version:
-      <dd><a href="https://www.w3.org/TR/css-color-5/">https://www.w3.org/TR/css-color-5/</a>
+      <dd><a href="https://www.w3.org/TR/css-color-6/">https://www.w3.org/TR/css-color-6/</a>
       <dt>Feedback:
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-color-6">CSSWG Issues Repository</a>
       <dd><a href="#issues-index">Inline In Spec</a>
@@ -1078,6 +1078,8 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/css-color-6/Overview.bs">GitHub Editor</a>
       <dt>Delta Spec:
       <dd>yes
+      <dt>Test Suite:
+      <dd class="wpt-overview"><a href="https://wpt.fyi/results/css/css-color/">https://wpt.fyi/results/css/css-color/</a>
      </dl>
     </div>
    </details>
@@ -1101,7 +1103,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>This module extends CSS Color <a data-link-type="biblio" href="#biblio-css-color-5" title="CSS Color Module Level 5">[css-color-5]</a> to add contrast calculation.</p>
+   <p>This module extends CSS Color <a data-link-type="biblio" href="#biblio-css-color-5" title="CSS Color Module Level 5">[css-color-5]</a> to add automatic selection of contrasting colors.</p>
    
 
 
@@ -1163,24 +1165,27 @@ If no target contrast is specified</span></a>
 Contrasting Semi-transparent Colors</span></a>
        </ol>
      </ol>
+    <li><a href="#color-layers"><span class="secno">3</span> <span class="content">Layering Multiple Colors: the <span class="css">color-layers()</span> function</span></a>
     <li>
-     <a href="#resolving-color-values"><span class="secno">3</span> <span class="content">
+     <a href="#resolving-color-values"><span class="secno">4</span> <span class="content">
 	Resolving <span class="production">&lt;color></span> Values</span></a>
      <ol class="toc">
-      <li><a href="#resolving-contrast"><span class="secno">3.1</span> <span class="content">Resolving <span class="css">contrast-color()</span> values</span></a>
+      <li><a href="#resolving-contrast"><span class="secno">4.1</span> <span class="content">Resolving <span class="css">contrast-color()</span> values</span></a>
+      <li><a href="#resolving-layers"><span class="secno">4.2</span> <span class="content">Resolving <span class="css">color-layers()</span> values</span></a>
      </ol>
     <li>
-     <a href="#serial"><span class="secno">4</span> <span class="content">Serialization</span></a>
+     <a href="#serial"><span class="secno">5</span> <span class="content">Serialization</span></a>
      <ol class="toc">
-      <li><a href="#serial-contrast-color"><span class="secno">4.1</span> <span class="content">Serializing contrast-color()</span></a>
+      <li><a href="#serial-contrast-color"><span class="secno">5.1</span> <span class="content">Serializing contrast-color()</span></a>
+      <li><a href="#serial-color-layers"><span class="secno">5.2</span> <span class="content">Serializing color-layers()</span></a>
      </ol>
-    <li><a href="#security"><span class="secno">5</span> <span class="content">Security Considerations</span></a>
-    <li><a href="#privacy"><span class="secno">6</span> <span class="content">Privacy Considerations</span></a>
-    <li><a href="#a11y"><span class="secno">7</span> <span class="content">Accessibility Considerations</span></a>
+    <li><a href="#security"><span class="secno">6</span> <span class="content">Security Considerations</span></a>
+    <li><a href="#privacy"><span class="secno">7</span> <span class="content">Privacy Considerations</span></a>
+    <li><a href="#a11y"><span class="secno">8</span> <span class="content">Accessibility Considerations</span></a>
     <li>
-     <a href="#changes"><span class="secno">8</span> <span class="content">Changes</span></a>
+     <a href="#changes"><span class="secno">9</span> <span class="content">Changes</span></a>
      <ol class="toc">
-      <li><a href="#changes-from-5"><span class="secno">8.1</span> <span class="content">
+      <li><a href="#changes-from-5"><span class="secno">9.1</span> <span class="content">
 	Changes from Colors 5</span></a>
      </ol>
     <li>
@@ -1218,8 +1223,8 @@ Non-experimental implementations</span></a>
   <main>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p><em>This section is not normative.</em></p>
-   <p>This module adds a new <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color">&lt;color></a> function:
-	<a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color">contrast-color()</a>.</p>
+   <p>This module adds a\two new <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color">&lt;color></a> functions:
+	<a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color">contrast-color()</a> and <a class="css" data-link-type="maybe" href="#funcdef-color-layers" id="ref-for-funcdef-color-layers">color-layers()</a>.</p>
    <h2 class="heading settled" data-level="2" id="colorcontrast"><span class="secno">2. </span><span class="content">Computing a Contrasting Color: the <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color①">contrast-color()</a> function</span><a class="self-link" href="#colorcontrast"></a></h2>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="function" data-export id="funcdef-contrast-color">contrast-color()</dfn> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#functional-notation" id="ref-for-functional-notation">functional notation</a>
 	identifies a sufficiently contrasting color
@@ -1228,9 +1233,17 @@ Non-experimental implementations</span></a>
    <p>Its syntax is:</p>
 <pre class="prod"><a class="production" data-link-type="function" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color②">&lt;contrast-color()></a> = contrast-color(
   [ [ <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color①">&lt;color></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all">&amp;&amp;</a> [ tbd-fg <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one">|</a> tbd-bg ] <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all①">&amp;&amp;</a> <a class="production" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast">&lt;target-contrast></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> ] <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①">|</a>
-    [ <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color②">&lt;color></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all②">&amp;&amp;</a> [ tbd-fg <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> tbd-bg ] <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all③">&amp;&amp;</a> <a class="production" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast①">&lt;target-contrast></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma" id="ref-for-comb-comma">,</a> <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color③">&lt;color></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a> ] )
+    [ <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color②">&lt;color></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all②">&amp;&amp;</a> [ tbd-fg <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> tbd-bg ] <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all③">&amp;&amp;</a> <a class="production" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast①">&lt;target-contrast></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma" id="ref-for-comb-comma">,</a> <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color③">&lt;color></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a> ] ] )
 <a class="production" data-link-type="type" href="#typedef-target-contrast" id="ref-for-typedef-target-contrast②">&lt;target-contrast></a> = <a class="production" data-link-type="type" href="#typedef-wcag2" id="ref-for-typedef-wcag2">&lt;wcag2></a>
 </pre>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-computed-contrast-color-function.html" title="css/css-color/parsing/color-computed-contrast-color-function.html">color-computed-contrast-color-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-computed-contrast-color-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-computed-contrast-color-function.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-invalid-contrast-color-function.html" title="css/css-color/parsing/color-invalid-contrast-color-function.html">color-invalid-contrast-color-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-invalid-contrast-color-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-invalid-contrast-color-function.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-valid-contrast-color-function.html" title="css/css-color/parsing/color-valid-contrast-color-function.html">color-valid-contrast-color-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-valid-contrast-color-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-valid-contrast-color-function.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <p>The only mandatory argument is the <dfn class="dfn-paneled" data-dfn-type="dfn" data-local-lt="base color" data-lt="contrast base color" data-noexport id="contrast-base-color">base color</dfn>
 	against which the contrast is computed.
 	This is typically (but not necessarily) a background color.</p>
@@ -1386,7 +1399,7 @@ If no target contrast is specified</span><a class="self-link" href="#contrast-co
    <p>The <dfn class="dfn-paneled css" data-dfn-for="contrast-color()" data-dfn-type="value" data-export id="valdef-contrast-color-wcag2">wcag2</dfn> keyword and <dfn class="dfn-paneled css" data-dfn-for="contrast-color()" data-dfn-type="function" data-export id="funcdef-contrast-color-wcag2">wcag2()</dfn> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#functional-notation" id="ref-for-functional-notation②">functional notations</a>
 	indicate use of the <a data-link-type="biblio" href="#biblio-wcag21" title="Web Content Accessibility Guidelines (WCAG) 2.1">[WCAG21]</a> <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">luminance contrast</a> algorithm.
 	Their syntax is:</p>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-wcag2"><a class="production" data-link-type="type" href="#typedef-wcag2" id="ref-for-typedef-wcag2①">&lt;wcag2></a></dfn> =  wcag <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> wcag2([<a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value">&lt;number></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> [ aa <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> aaa ] <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all④">&amp;&amp;</a> large<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> ])
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-wcag2"><a class="production" data-link-type="type" href="#typedef-wcag2" id="ref-for-typedef-wcag2①">&lt;wcag2></a></dfn> =  wcag2 <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> wcag2([<a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value" id="ref-for-number-value">&lt;number></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> [ aa <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> aaa ] <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all" id="ref-for-comb-all④">&amp;&amp;</a> large<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> ])
 </pre>
    <p>Its <a data-link-type="dfn" href="#target-contrast-level" id="ref-for-target-contrast-level③">target contrast level</a> keywords map as follows:</p>
    <ul>
@@ -1435,8 +1448,8 @@ using simple alpha compositing (see <a href="https://drafts.fxtf.org/compositing
 to find an opaque background color.</p>
      <div class="issue" id="issue-c8b8a00f">
       <a class="self-link" href="#issue-c8b8a00f"></a>
-<a href="https://github.com/w3c/csswg-drafts/issues/7358">#7358</a> Find a good opaque canvas color for this computation.
-Candidates are:
+	<a href="https://github.com/w3c/csswg-drafts/issues/7358">#7358</a> Find a good opaque canvas color for this computation.
+	Candidates are:
 
       <ul>
        <li data-md>
@@ -1451,10 +1464,49 @@ Candidates are:
      <p>The foreground color is then blended over this opaque background color
 to find an opaque foreground color.</p>
    </ol>
-   <h2 class="heading settled" data-level="3" id="resolving-color-values"><span class="secno">3. </span><span class="content">
-	Resolving <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑤">&lt;color></a> Values</span><a class="self-link" href="#resolving-color-values"></a></h2>
-   <h3 class="heading settled" data-level="3.1" id="resolving-contrast"><span class="secno">3.1. </span><span class="content">Resolving <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color④">contrast-color()</a> values</span><a class="self-link" href="#resolving-contrast"></a></h3>
-   <p>If all <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑥">&lt;color></a> parameters resolve
+   <h2 class="heading settled" data-level="3" id="color-layers"><span class="secno">3. </span><span class="content">Layering Multiple Colors: the <a class="css" data-link-type="maybe" href="#funcdef-color-layers" id="ref-for-funcdef-color-layers①">color-layers()</a> function</span><a class="self-link" href="#color-layers"></a></h2>
+   <p>The <dfn class="dfn-paneled css" data-dfn-type="function" data-export id="funcdef-color-layers">color-layers()</dfn> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#functional-notation" id="ref-for-functional-notation③">functional notation</a>
+	takes an optional <a class="production css" data-link-type="type" href="https://drafts.fxtf.org/compositing-2/#ltblendmodegt" id="ref-for-ltblendmodegt">&lt;blend-mode></a> 
+	followed by a list of two or more
+	<a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑤">&lt;color></a> layers.</p>
+   <p>Its syntax is:</p>
+<pre class="prod"><a class="production" data-link-type="function" href="#funcdef-color-layers" id="ref-for-funcdef-color-layers②">&lt;color-layers()></a> = color-layers([ <a class="production" data-link-type="type" href="https://drafts.fxtf.org/compositing-2/#ltblendmodegt" id="ref-for-ltblendmodegt①">&lt;blend-mode></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma" id="ref-for-comb-comma①">,</a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt②">?</a> <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑥">&lt;color></a><a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma" id="ref-for-mult-comma①">#</a> )
+</pre>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/color-layers-no-blend-mode.html" title="css/css-color/color-layers-no-blend-mode.html">color-layers-no-blend-mode.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/color-layers-no-blend-mode.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/color-layers-no-blend-mode.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-invalid-color-layers-function.html" title="css/css-color/parsing/color-invalid-color-layers-function.html">color-invalid-color-layers-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-invalid-color-layers-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-invalid-color-layers-function.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-valid-color-layers-function.html" title="css/css-color/parsing/color-valid-color-layers-function.html">color-valid-color-layers-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-valid-color-layers-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-valid-color-layers-function.html"><small>(source)</small></a>
+    </ul>
+   </details>
+   <p>It returns a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑦">&lt;color></a> which is
+	the result of compositing these layers,
+	using the <a href="https://drafts.fxtf.org/compositing-1/#porterduffcompositingoperators_srcover"><cite>Compositing 1</cite> § 9.1.4 Source Over</a>
+	compositing operator and the specified
+	<a class="production css" data-link-type="type" href="https://drafts.fxtf.org/compositing-2/#ltblendmodegt" id="ref-for-ltblendmodegt②">&lt;blend-mode></a>.</p>
+   <p>If no <a class="production css" data-link-type="type" href="https://drafts.fxtf.org/compositing-2/#ltblendmodegt" id="ref-for-ltblendmodegt③">&lt;blend-mode></a> is given,
+	<a class="css" data-link-type="maybe" href="https://drafts.fxtf.org/compositing-1/#valdef-blend-mode-normal" id="ref-for-valdef-blend-mode-normal">normal</a> blend-mode is used.</p>
+   <div class="example" id="example-f91e1779"><a class="self-link" href="#example-f91e1779"></a>
+		@@Add simple example with normal blend mode 
+		and two colors, the first of which has non-unity alpha
+	</div>
+   <div class="example" id="example-718e3871"><a class="self-link" href="#example-718e3871"></a>
+		@@Add simple example with normal blend mode 
+		and three colors, the first two of which have non-unity alpha
+	</div>
+   <div class="example" id="example-13f81fe9"><a class="self-link" href="#example-13f81fe9"></a>
+		@@Add simple example with normal blend mode 
+		and two colors, both of which have non-unity alpha
+	</div>
+   <div class="example" id="example-d3ce739f"><a class="self-link" href="#example-d3ce739f"></a>
+		@@Add example with overlay blend mode 
+		and two colors, the first of which has non-unity alpha
+	</div>
+   <h2 class="heading settled" data-level="4" id="resolving-color-values"><span class="secno">4. </span><span class="content">
+	Resolving <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑧">&lt;color></a> Values</span><a class="self-link" href="#resolving-color-values"></a></h2>
+   <h3 class="heading settled" data-level="4.1" id="resolving-contrast"><span class="secno">4.1. </span><span class="content">Resolving <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color④">contrast-color()</a> values</span><a class="self-link" href="#resolving-contrast"></a></h3>
+   <p>If all <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑨">&lt;color></a> parameters resolve
 		to the corresponding colors in their respective color spaces,
 		the computed value is the winning color
 		resolved according to <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> §  14. Resolving &lt;color> Values</a>.
@@ -1490,31 +1542,46 @@ to find an opaque foreground color.</p>
 <pre class="lang-css highlight"><c- nf>contrast-color</c-><c- p>(</c->currentColor tbd-bg <c- nf>wcag2</c-><c- p>(</c-><c- m>4.5</c-><c- p>),</c-> <c- nf>rgb</c-><c- p>(</c-><c- m>10</c-> <c- m>75</c-> <c- m>107</c-><c- p>),</c-> <c- nf>rgb</c-><c- p>(</c-><c- m>128</c-> <c- m>0</c-> <c- m>128</c-><c- p>))</c->
 </pre>
    </div>
-   <h2 class="heading settled" data-level="4" id="serial"><span class="secno">4. </span><span class="content">Serialization</span><a class="self-link" href="#serial"></a></h2>
+   <h3 class="heading settled" data-level="4.2" id="resolving-layers"><span class="secno">4.2. </span><span class="content">Resolving <a class="css" data-link-type="maybe" href="#funcdef-color-layers" id="ref-for-funcdef-color-layers③">color-layers()</a> values</span><a class="self-link" href="#resolving-layers"></a></h3>
+   <p>If all <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color①⓪">&lt;color></a> parameters resolve
+		to the corresponding colors in their respective color spaces,
+		the computed value is the composited color
+		resolved according to <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#resolving-color-values"><cite>CSS Color 4</cite> §  14. Resolving &lt;color> Values</a>.
+		Otherwise (if <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor" id="ref-for-valdef-color-currentcolor①">currentColor</a> was used in the function),
+		the computed  value is the <a class="css" data-link-type="maybe" href="#funcdef-color-layers" id="ref-for-funcdef-color-layers④">color-layers()</a> function
+		with an explicit <a class="production css" data-link-type="type" href="https://drafts.fxtf.org/compositing-2/#ltblendmodegt" id="ref-for-ltblendmodegt④">&lt;blend-mode></a> and
+		with each component <u class="link-error" data-lt="computed" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;computed&apos; that are marked for export.
+  (Possible specs this could be from: wgsl)">computed value</u>,
+		thus preserving inheritance into child elements.</p>
+   <h2 class="heading settled" data-level="5" id="serial"><span class="secno">5. </span><span class="content">Serialization</span><a class="self-link" href="#serial"></a></h2>
    <p>This section extends <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#serializing-color-values"><cite>CSS Color 4</cite> §  15. Serializing &lt;color> Values</a>
 to add serialization of the
 results of the
 <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color⑥">contrast-color()</a> function.</p>
-   <h3 class="heading settled" data-level="4.1" id="serial-contrast-color"><span class="secno">4.1. </span><span class="content">Serializing contrast-color()</span><a class="self-link" href="#serial-contrast-color"></a></h3>
-   <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#specified-value" id="ref-for-specified-value">specified value</a> of the <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color⑦">contrast-color()</a> function
+   <h3 class="heading settled" data-level="5.1" id="serial-contrast-color"><span class="secno">5.1. </span><span class="content">Serializing contrast-color()</span><a class="self-link" href="#serial-contrast-color"></a></h3>
+   <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#declared-value" id="ref-for-declared-value">declared value</a> of the <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color⑦">contrast-color()</a> function
 is serialized with each keyword value as specified
 and each component in canonical order.</p>
    <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#resolved-value" id="ref-for-resolved-value">resolved value</a> of the <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color⑧">contrast-color()</a> function
-is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#used-color" id="ref-for-used-color">used color</a> serialized the same as any other <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color⑦">&lt;color></a>.</p>
-   <h2 class="heading settled" data-level="5" id="security"><span class="secno">5. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#used-color" id="ref-for-used-color">used color</a> serialized the same as any other <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color" id="ref-for-typedef-color①①">&lt;color></a>.</p>
+   <h3 class="heading settled" data-level="5.2" id="serial-color-layers"><span class="secno">5.2. </span><span class="content">Serializing color-layers()</span><a class="self-link" href="#serial-color-layers"></a></h3>
+   <p>@@TODO</p>
+   <h2 class="heading settled" data-level="6" id="security"><span class="secno">6. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
    <p>No new security considerations have been reported on this specification.</p>
-   <h2 class="heading settled" data-level="6" id="privacy"><span class="secno">6. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+   <h2 class="heading settled" data-level="7" id="privacy"><span class="secno">7. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <p>No new privacy considerations have been reported on this specification.</p>
-   <h2 class="heading settled" data-level="7" id="a11y"><span class="secno">7. </span><span class="content">Accessibility Considerations</span><a class="self-link" href="#a11y"></a></h2>
+   <h2 class="heading settled" data-level="8" id="a11y"><span class="secno">8. </span><span class="content">Accessibility Considerations</span><a class="self-link" href="#a11y"></a></h2>
    <p>This specification introduces a new feature
 to help stylesheet authors
 write stylesheets which conform
 to WCAG 2.1 <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">section 1.4.3 Contrast (Minimum)</a>.</p>
-   <h2 class="heading settled" data-level="8" id="changes"><span class="secno">8. </span><span class="content">Changes</span><a class="self-link" href="#changes"></a></h2>
-   <h3 class="heading settled" data-level="8.1" id="changes-from-5"><span class="secno">8.1. </span><span class="content">
+   <h2 class="heading settled" data-level="9" id="changes"><span class="secno">9. </span><span class="content">Changes</span><a class="self-link" href="#changes"></a></h2>
+   <h3 class="heading settled" data-level="9.1" id="changes-from-5"><span class="secno">9.1. </span><span class="content">
 	Changes from Colors 5</span><a class="self-link" href="#changes-from-5"></a></h3>
    <p>The new <a class="css" data-link-type="maybe" href="#funcdef-contrast-color" id="ref-for-funcdef-contrast-color⑨">contrast-color()</a> function allows one of a list of colors to be chosen,
-		based on the WCAG 2.1 contrast with a specified color.</p>
+		based on the WCAG 2.1 contrast with a specified color.
+		The new <a class="css" data-link-type="maybe" href="#funcdef-color-layers" id="ref-for-funcdef-color-layers⑤">color-layers()</a> function returns the result of compositing
+		two or more colors, using a given blend mode.</p>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">
 Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -1654,6 +1721,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <ul class="index">
    <li><a href="#contrast-base-color">base color</a><span>, in § 2</span>
    <li><a href="#contrast-color-candidates">color candidates</a><span>, in § 2</span>
+   <li><a href="#funcdef-color-layers">color-layers()</a><span>, in § 3</span>
    <li><a href="#contrast-base-color">contrast base color</a><span>, in § 2</span>
    <li><a href="#funcdef-contrast-color">contrast-color()</a><span>, in § 2</span>
    <li><a href="#contrast-color-candidates">contrast color candidates</a><span>, in § 2</span>
@@ -1667,9 +1735,19 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
+    <a data-link-type="biblio">[COMPOSITING-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="60024331">normal</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[COMPOSITING-2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="dfd5b357">&lt;blend-mode></span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="5c5fb8a1">specified value</span>
+     <li><span class="dfn-paneled" id="8326af4a">declared value</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-COLOR-4]</a> defines the following terms:
@@ -1713,6 +1791,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <dl>
    <dt id="biblio-compositing-1">[COMPOSITING-1]
    <dd>Chris Harrelson. <a href="https://drafts.fxtf.org/compositing-1/"><cite>Compositing and Blending Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/compositing-1/">https://drafts.fxtf.org/compositing-1/</a>
+   <dt id="biblio-compositing-2">[COMPOSITING-2]
+   <dd><a href="https://drafts.fxtf.org/compositing-2/"><cite>Compositing and Blending Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/">https://andreubotella.com/csswg-auto-build/test/css-cascade-5/</a>
    <dt id="biblio-css-color-4">[CSS-COLOR-4]
@@ -1739,8 +1819,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 	Future revisions of this module will likely introduce additional contrast algorithms. <a class="issue-return" href="#issue-b57775e7" title="Jump to section">↵</a></div>
    <div class="issue">
     
-<a href="https://github.com/w3c/csswg-drafts/issues/7358">#7358</a> Find a good opaque canvas color for this computation.
-Candidates are:
+	<a href="https://github.com/w3c/csswg-drafts/issues/7358">#7358</a> Find a good opaque canvas color for this computation.
+	Candidates are:
 
     <ul>
      <li data-md>
@@ -1970,25 +2050,28 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "0336ca92": {"dfnID":"0336ca92","dfnText":"canvas","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-canvas"}],"title":"2.2.2. \nContrasting Semi-transparent Colors"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-canvas"},
-"0abff053": {"dfnID":"0abff053","dfnText":"used color","external":true,"refSections":[{"refs":[{"id":"ref-for-used-color"}],"title":"4.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#used-color"},
-"3c77fbd0": {"dfnID":"3c77fbd0","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma"},
-"5c5fb8a1": {"dfnID":"5c5fb8a1","dfnText":"specified value","external":true,"refSections":[{"refs":[{"id":"ref-for-specified-value"}],"title":"4.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#specified-value"},
-"6919cf08": {"dfnID":"6919cf08","dfnText":"functional notation","external":true,"refSections":[{"refs":[{"id":"ref-for-functional-notation"},{"id":"ref-for-functional-notation\u2460"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-functional-notation\u2461"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#functional-notation"},
+"0abff053": {"dfnID":"0abff053","dfnText":"used color","external":true,"refSections":[{"refs":[{"id":"ref-for-used-color"}],"title":"5.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#used-color"},
+"3c77fbd0": {"dfnID":"3c77fbd0","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-comb-comma\u2460"}],"title":"3. Layering Multiple Colors: the color-layers() function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma"},
+"60024331": {"dfnID":"60024331","dfnText":"normal","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-blend-mode-normal"}],"title":"3. Layering Multiple Colors: the color-layers() function"}],"url":"https://drafts.fxtf.org/compositing-1/#valdef-blend-mode-normal"},
+"6919cf08": {"dfnID":"6919cf08","dfnText":"functional notation","external":true,"refSections":[{"refs":[{"id":"ref-for-functional-notation"},{"id":"ref-for-functional-notation\u2460"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-functional-notation\u2461"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"},{"refs":[{"id":"ref-for-functional-notation\u2462"}],"title":"3. Layering Multiple Colors: the color-layers() function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#functional-notation"},
 "755c15ee": {"dfnID":"755c15ee","dfnText":"white","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-white"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-valdef-color-white\u2460"},{"id":"ref-for-valdef-color-white\u2461"},{"id":"ref-for-valdef-color-white\u2462"}],"title":"2.1.1. \nIf there is a target contrast"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-white"},
 "7936a36b": {"dfnID":"7936a36b","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one"},
-"7ed990a8": {"dfnID":"7ed990a8","dfnText":"resolved value","external":true,"refSections":[{"refs":[{"id":"ref-for-resolved-value"}],"title":"4.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#resolved-value"},
+"7ed990a8": {"dfnID":"7ed990a8","dfnText":"resolved value","external":true,"refSections":[{"refs":[{"id":"ref-for-resolved-value"}],"title":"5.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#resolved-value"},
+"8326af4a": {"dfnID":"8326af4a","dfnText":"declared value","external":true,"refSections":[{"refs":[{"id":"ref-for-declared-value"}],"title":"5.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#declared-value"},
 "963cb3d8": {"dfnID":"963cb3d8","dfnText":"&&","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-all"},{"id":"ref-for-comb-all\u2460"},{"id":"ref-for-comb-all\u2461"},{"id":"ref-for-comb-all\u2462"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-comb-all\u2463"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-all"},
 "975cb88c": {"dfnID":"975cb88c","dfnText":"black","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-black"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-valdef-color-black\u2460"},{"id":"ref-for-valdef-color-black\u2461"}],"title":"2.1.1. \nIf there is a target contrast"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-black"},
 "ae39fdbb": {"dfnID":"ae39fdbb","dfnText":"<number>","external":true,"refSections":[{"refs":[{"id":"ref-for-number-value"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value"},
-"c33abc63": {"dfnID":"c33abc63","dfnText":"<color>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-color"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-typedef-color\u2460"},{"id":"ref-for-typedef-color\u2461"},{"id":"ref-for-typedef-color\u2462"},{"id":"ref-for-typedef-color\u2463"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-typedef-color\u2464"}],"title":"3. \n\tResolving <color> Values"},{"refs":[{"id":"ref-for-typedef-color\u2465"}],"title":"3.1. Resolving contrast-color() values"},{"refs":[{"id":"ref-for-typedef-color\u2466"}],"title":"4.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color"},
+"c33abc63": {"dfnID":"c33abc63","dfnText":"<color>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-color"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-typedef-color\u2460"},{"id":"ref-for-typedef-color\u2461"},{"id":"ref-for-typedef-color\u2462"},{"id":"ref-for-typedef-color\u2463"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-typedef-color\u2464"},{"id":"ref-for-typedef-color\u2465"},{"id":"ref-for-typedef-color\u2466"}],"title":"3. Layering Multiple Colors: the color-layers() function"},{"refs":[{"id":"ref-for-typedef-color\u2467"}],"title":"4. \n\tResolving <color> Values"},{"refs":[{"id":"ref-for-typedef-color\u2468"}],"title":"4.1. Resolving contrast-color() values"},{"refs":[{"id":"ref-for-typedef-color\u2460\u24ea"}],"title":"4.2. Resolving color-layers() values"},{"refs":[{"id":"ref-for-typedef-color\u2460\u2460"}],"title":"5.1. Serializing contrast-color()"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-5/#typedef-color"},
 "cc09456e": {"dfnID":"cc09456e","dfnText":"invalid","external":true,"refSections":[{"refs":[{"id":"ref-for-css-invalid"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#css-invalid"},
 "contrast-base-color": {"dfnID":"contrast-base-color","dfnText":"base color","external":false,"refSections":[{"refs":[{"id":"ref-for-contrast-base-color"},{"id":"ref-for-contrast-base-color\u2460"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-contrast-base-color\u2461"},{"id":"ref-for-contrast-base-color\u2462"}],"title":"2.1.1. \nIf there is a target contrast"},{"refs":[{"id":"ref-for-contrast-base-color\u2463"}],"title":"2.1.2. \nIf no target contrast is specified"},{"refs":[{"id":"ref-for-contrast-base-color\u2464"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"#contrast-base-color"},
 "contrast-color-candidates": {"dfnID":"contrast-color-candidates","dfnText":"color candidates","external":false,"refSections":[{"refs":[{"id":"ref-for-contrast-color-candidates"},{"id":"ref-for-contrast-color-candidates\u2460"},{"id":"ref-for-contrast-color-candidates\u2461"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"}],"url":"#contrast-color-candidates"},
-"d9af2db6": {"dfnID":"d9af2db6","dfnText":"currentcolor","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-currentcolor"}],"title":"3.1. Resolving contrast-color() values"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor"},
-"e5365b83": {"dfnID":"e5365b83","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-mult-opt\u2460"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt"},
-"ee310036": {"dfnID":"ee310036","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma"},
+"d9af2db6": {"dfnID":"d9af2db6","dfnText":"currentcolor","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-currentcolor"}],"title":"4.1. Resolving contrast-color() values"},{"refs":[{"id":"ref-for-valdef-color-currentcolor\u2460"}],"title":"4.2. Resolving color-layers() values"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-currentcolor"},
+"dfd5b357": {"dfnID":"dfd5b357","dfnText":"<blend-mode>","external":true,"refSections":[{"refs":[{"id":"ref-for-ltblendmodegt"},{"id":"ref-for-ltblendmodegt\u2460"},{"id":"ref-for-ltblendmodegt\u2461"},{"id":"ref-for-ltblendmodegt\u2462"}],"title":"3. Layering Multiple Colors: the color-layers() function"},{"refs":[{"id":"ref-for-ltblendmodegt\u2463"}],"title":"4.2. Resolving color-layers() values"}],"url":"https://drafts.fxtf.org/compositing-2/#ltblendmodegt"},
+"e5365b83": {"dfnID":"e5365b83","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-mult-opt\u2460"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"},{"refs":[{"id":"ref-for-mult-opt\u2461"}],"title":"3. Layering Multiple Colors: the color-layers() function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt"},
+"ee310036": {"dfnID":"ee310036","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-mult-comma\u2460"}],"title":"3. Layering Multiple Colors: the color-layers() function"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma"},
 "fcc8eb07": {"dfnID":"fcc8eb07","dfnText":"wheat","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-wheat"}],"title":"2.1.1. \nIf there is a target contrast"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-wheat"},
-"funcdef-contrast-color": {"dfnID":"funcdef-contrast-color","dfnText":"contrast-color()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-contrast-color"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2460"},{"id":"ref-for-funcdef-contrast-color\u2461"},{"id":"ref-for-funcdef-contrast-color\u2462"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2463"},{"id":"ref-for-funcdef-contrast-color\u2464"}],"title":"3.1. Resolving contrast-color() values"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2465"}],"title":"4. Serialization"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2466"},{"id":"ref-for-funcdef-contrast-color\u2467"}],"title":"4.1. Serializing contrast-color()"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2468"}],"title":"8.1. \n\tChanges from Colors 5"}],"url":"#funcdef-contrast-color"},
+"funcdef-color-layers": {"dfnID":"funcdef-color-layers","dfnText":"color-layers()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-color-layers"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-funcdef-color-layers\u2460"},{"id":"ref-for-funcdef-color-layers\u2461"}],"title":"3. Layering Multiple Colors: the color-layers() function"},{"refs":[{"id":"ref-for-funcdef-color-layers\u2462"},{"id":"ref-for-funcdef-color-layers\u2463"}],"title":"4.2. Resolving color-layers() values"},{"refs":[{"id":"ref-for-funcdef-color-layers\u2464"}],"title":"9.1. \n\tChanges from Colors 5"}],"url":"#funcdef-color-layers"},
+"funcdef-contrast-color": {"dfnID":"funcdef-contrast-color","dfnText":"contrast-color()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-contrast-color"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2460"},{"id":"ref-for-funcdef-contrast-color\u2461"},{"id":"ref-for-funcdef-contrast-color\u2462"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2463"},{"id":"ref-for-funcdef-contrast-color\u2464"}],"title":"4.1. Resolving contrast-color() values"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2465"}],"title":"5. Serialization"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2466"},{"id":"ref-for-funcdef-contrast-color\u2467"}],"title":"5.1. Serializing contrast-color()"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2468"}],"title":"9.1. \n\tChanges from Colors 5"}],"url":"#funcdef-contrast-color"},
 "funcdef-contrast-color-wcag2": {"dfnID":"funcdef-contrast-color-wcag2","dfnText":"wcag2()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-contrast-color-wcag2"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"#funcdef-contrast-color-wcag2"},
 "target-contrast-level": {"dfnID":"target-contrast-level","dfnText":"target contrast level","external":false,"refSections":[{"refs":[{"id":"ref-for-target-contrast-level"},{"id":"ref-for-target-contrast-level\u2460"},{"id":"ref-for-target-contrast-level\u2461"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-target-contrast-level\u2462"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"#target-contrast-level"},
 "typedef-target-contrast": {"dfnID":"typedef-target-contrast","dfnText":"<target-contrast>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-target-contrast"},{"id":"ref-for-typedef-target-contrast\u2460"},{"id":"ref-for-typedef-target-contrast\u2461"},{"id":"ref-for-typedef-target-contrast\u2462"},{"id":"ref-for-typedef-target-contrast\u2463"},{"id":"ref-for-typedef-target-contrast\u2464"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"}],"url":"#typedef-target-contrast"},
@@ -2379,6 +2462,24 @@ function genLinkingSyntaxes(dfn) {
 }
 }
 </script>
+<script>/* Boilerplate: script-link-titles */
+"use strict";
+{
+let linkTitleData = {
+"https://drafts.fxtf.org/compositing-2/#ltblendmodegt": "Expands to: color | color-burn | color-dodge | darken | difference | exclusion | hard-light | hue | lighten | luminosity | multiply | normal | overlay | saturation | screen | soft-light",
+};
+
+function setTypeTitles() {
+	for(let el of document.querySelectorAll("a[href]")) {
+		if(el.href in linkTitleData && !el.hasAttribute("title")) {
+			el.setAttribute("title", linkTitleData[el.href]);
+		}
+	}
+}
+
+document.addEventListener("DOMContentLoaded", setTypeTitles);
+}
+</script>
 <script>/* Boilerplate: script-position-annos */
 "use strict";
 {
@@ -2442,13 +2543,14 @@ window.addEventListener("resize", repositionAnnoPanels);
 let refsData = {
 "#contrast-base-color": {"displayText":"base color","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"base color","type":"dfn","url":"#contrast-base-color"},
 "#contrast-color-candidates": {"displayText":"color candidates","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"color candidates","type":"dfn","url":"#contrast-color-candidates"},
+"#funcdef-color-layers": {"displayText":"color-layers()","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"color-layers()","type":"function","url":"#funcdef-color-layers"},
 "#funcdef-contrast-color": {"displayText":"contrast-color()","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"contrast-color()","type":"function","url":"#funcdef-contrast-color"},
 "#funcdef-contrast-color-wcag2": {"displayText":"wcag2()","export":true,"for_":["contrast-color()"],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"wcag2()","type":"function","url":"#funcdef-contrast-color-wcag2"},
 "#target-contrast-level": {"displayText":"target contrast level","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"target contrast level","type":"dfn","url":"#target-contrast-level"},
 "#typedef-target-contrast": {"displayText":"<target-contrast>","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"<target-contrast>","type":"type","url":"#typedef-target-contrast"},
 "#typedef-wcag2": {"displayText":"<wcag2>","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"<wcag2>","type":"type","url":"#typedef-wcag2"},
 "#valdef-contrast-color-wcag2": {"displayText":"wcag2","export":true,"for_":["contrast-color()"],"level":"6","normative":true,"shortname":"css-color","spec":"css-color-6","status":"local","text":"wcag2","type":"value","url":"#valdef-contrast-color-wcag2"},
-"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#specified-value": {"displayText":"specified value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"specified value","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#specified-value"},
+"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#declared-value": {"displayText":"declared value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"declared value","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#declared-value"},
 "https://andreubotella.com/csswg-auto-build/test/css-color-4/#used-color": {"displayText":"used color","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"used color","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#used-color"},
 "https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-black": {"displayText":"black","export":true,"for_":["<color>","<named-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"black","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-black"},
 "https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-canvas": {"displayText":"canvas","export":true,"for_":["<color>","<system-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"canvas","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-canvas"},
@@ -2465,6 +2567,8 @@ let refsData = {
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt": {"displayText":"?","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"?","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value": {"displayText":"<number>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<number>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#number-value"},
 "https://andreubotella.com/csswg-auto-build/test/cssom-1/#resolved-value": {"displayText":"resolved value","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"resolved value","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#resolved-value"},
+"https://drafts.fxtf.org/compositing-1/#valdef-blend-mode-normal": {"displayText":"normal","export":true,"for_":["<blend-mode>"],"level":"1","normative":true,"shortname":"compositing","spec":"compositing-1","status":"current","text":"normal","type":"value","url":"https://drafts.fxtf.org/compositing-1/#valdef-blend-mode-normal"},
+"https://drafts.fxtf.org/compositing-2/#ltblendmodegt": {"displayText":"<blend-mode>","export":true,"for_":[],"level":"2","normative":true,"shortname":"compositing","spec":"compositing-2","status":"current","text":"<blend-mode>","type":"type","url":"https://drafts.fxtf.org/compositing-2/#ltblendmodegt"},
 };
 
 function mkRefHint(link, ref) {
@@ -2666,5 +2770,119 @@ window.addEventListener("resize", () => {
     // Hide any open ref hint.
     hideAllRefHints();
 });
+}
+</script>
+<script>/* Boilerplate: script-wpt */
+"use strict";
+{
+let wptData = {
+"paths": ["/css/css-color/"],
+};
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+    if(wptData.paths.length == 0) return;
+
+    const runsUrl = "https://wpt.fyi/api/runs?label=master&label=stable&max-count=1&product=chrome&product=firefox&product=safari&product=edge";
+    const runs = await (await fetch(runsUrl)).json();
+
+    let testResults = [];
+    for(const pathPrefix of wptData.paths) {
+        const pathResults = await (await fetch("https://wpt.fyi/api/search", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+            },
+            body: JSON.stringify({
+                "run_ids": runs.map(x=>x.id),
+                "query": {"path": pathPrefix},
+            })
+        })).json();
+        testResults = testResults.concat(pathResults.results);
+    }
+
+    const browsers = runs.map(x=>({name:x.browser_name, version:x.browser_version, passes:0, total: 0}));
+    const resultsFromPath = new Map(testResults.map(result=>{
+        const testPath = result.test;
+        const passes = result.legacy_status.map(x=>[x.passes, x.total]);
+        return [testPath, passes];
+    }));
+    const seenTests = new Set();
+    document.querySelectorAll(".wpt-name").forEach(nameEl=>{
+        const passData = resultsFromPath.get("/" + nameEl.getAttribute("title"));
+        if(!passData) {
+            console.log("Couldn't find test in results:", nameEl);
+            return
+        }
+        const numTests = passData[0][1];
+        if(numTests > 1) {
+            nameEl.insertAdjacentElement("beforeend",
+                mk.small({}, ` (${numTests} tests)`));
+        }
+        if(passData == undefined) return;
+        const resultsEl = mk.span({"class":"wpt-results"},
+            ...passData.map((p,i) => mk.span(
+            {
+                "title": `${browsers[i].name} ${p[0]}/${p[1]}`,
+                "class": "wpt-result",
+                "style": `background: conic-gradient(forestgreen ${p[0]/p[1]*360}deg, darkred 0deg);`,
+            })),
+        );
+        nameEl.insertAdjacentElement("afterend", resultsEl);
+
+        // Only update the summary pass/total count if we haven't seen this
+        // test before, to support authors listing the same test multiple times
+        // in a spec.
+        if (!seenTests.has(nameEl.getAttribute("title"))) {
+            seenTests.add(nameEl.getAttribute("title"));
+            passData.forEach((p,i) => {
+                browsers[i].passes += p[0];
+                browsers[i].total += p[1];
+            });
+        }
+    });
+    const overview = document.querySelector(".wpt-overview");
+    if(overview) {
+        overview.appendChild(mk.ul({}, ...browsers.map(formatWptResult)));
+        document.head.appendChild(mk.style({},
+            `.wpt-overview ul { display: flex; flex-flow: row wrap; gap: .2em; justify-content: start; list-style: none; padding: 0; margin: 0;}
+             .wpt-overview li { padding: .25em 1em; color: black; text-align: center; }
+             .wpt-overview img { height: 1.5em; height: max(1.5em, 32px); background: transparent; }
+             .wpt-overview .browser { font-weight: bold; }
+             .wpt-overview .passes-none { background: #e57373; }
+             .wpt-overview .passes-hardly { background: #ffb74d; }
+             .wpt-overview .passes-a-few { background: #ffd54f; }
+             .wpt-overview .passes-half { background: #fff176; }
+             .wpt-overview .passes-lots { background: #dce775; }
+             .wpt-overview .passes-most { background: #aed581; }
+             .wpt-overview .passes-all { background: #81c784; }`));
+    }
+});
+
+function formatWptResult({name, version, passes, total}) {
+    const passRate = passes/total;
+    let passClass = "";
+    if(passRate == 0)      passClass = "passes-none";
+    else if(passRate < .2) passClass = "passes-hardly";
+    else if(passRate < .4) passClass = "passes-a-few";
+    else if(passRate < .6) passClass = "passes-half";
+    else if(passRate < .8) passClass = "passes-lots";
+    else if(passRate < 1)  passClass = "passes-most";
+    else                   passClass = "passes-all";
+
+    name = name[0].toUpperCase() + name.slice(1);
+    const shortVersion = /^\d+/.exec(version);
+    const icon = []
+
+    if(name == "Chrome") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/chrome_64x64.png"}));
+    if(name == "Edge") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/edge_64x64.png"}));
+    if(name == "Safari") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/safari_64x64.png"}));
+    if(name == "Firefox") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/firefox_64x64.png"}));
+
+    return mk.li({"class":passClass},
+        mk.nobr({'class':'browser'}, ...icon, ` ${name} ${shortVersion}`),
+        mk.br(),
+        mk.nobr({'class':'pass-rate'}, `${passes}/${total}`)
+    );
+}
 }
 </script>

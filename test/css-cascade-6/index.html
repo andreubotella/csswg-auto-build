@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-cascade-6/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="03f6b66e0a3c0b5bb1044b7d88aa6674e31c5129" name="revision">
+  <meta content="3af4db69ead6212b35a9988e055079f4b08ece48" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -453,6 +453,11 @@ figcaption:not(.no-marker)::before {
         background-color: transparent;
         outline: transparent;
     }
+}
+</style>
+<style>/* Boilerplate: style-idl-highlighting */
+pre.idl.highlight {
+    background: var(--borderedblock-bg, var(--def-bg));
 }
 </style>
 <style>/* Boilerplate: style-issues */
@@ -1065,11 +1070,13 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dd><a class="u-url" href="https://drafts.csswg.org/css-cascade-6/">https://drafts.csswg.org/css-cascade-6/</a>
       <dt>Latest published version:
       <dd><a href="https://www.w3.org/TR/css-cascade-6/">https://www.w3.org/TR/css-cascade-6/</a>
+      <dt>Previous Versions:
+      <dd><a href="https://www.w3.org/TR/2021/WD-css-cascade-6-20211221/" rel="prev">https://www.w3.org/TR/2021/WD-css-cascade-6-20211221/</a>
       <dt>Feedback:
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-cascade-6">CSSWG Issues Repository</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editors:
-      <dd class="editor p-author h-card vcard" data-editor-id="35400"><a class="p-name fn u-url url" href="http://fantasai.inkedblade.net/contact">Elika J. Etemad / fantasai</a> (<span class="p-org org">Invited Expert</span>)
+      <dd class="editor p-author h-card vcard" data-editor-id="35400"><a class="p-name fn u-url url" href="http://fantasai.inkedblade.net/contact">Elika J. Etemad / fantasai</a> (<span class="p-org org">Apple</span>)
       <dd class="editor p-author h-card vcard" data-editor-id="117151"><a class="p-name fn u-url url" href="http://miriamsuzanne.com/contact">Miriam E. Suzanne</a> (<span class="p-org org">Invited Expert</span>)
       <dd class="editor p-author h-card vcard" data-editor-id="42199"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)
       <dt>Suggest an Edit for this Spec:
@@ -1085,7 +1092,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This CSS module describes how to collate style rules and assign values to all properties on all elements. By way of cascading and inheritance, values are propagated for all properties on all elements.</p>
-   <p>New in this level is <a href="#scoped-styles">§ 2.5 Scoped Styles</a>.</p>
+   <p>New in this level is <a href="#scoped-styles">§ 2.5 Scoping Styles: the @scope rule</a>.</p>
    
 
 
@@ -1143,36 +1150,52 @@ Layer Ordering</span></a>
        </ol>
       <li>
        <a href="#scoped-styles"><span class="secno">2.5</span> <span class="content">
-Scoped Styles</span></a>
-       <ol class="toc">
-        <li><a href="#scope-atrule"><span class="secno">2.5.1</span> <span class="content">
 Scoping Styles: the <span class="css">@scope</span> rule</span></a>
-        <li><a href="#scope-combinator"><span class="secno">2.5.2</span> <span class="content">
-Scoped Descendant Combinator</span></a>
-        <li><a href="#selector-scoping"><span class="secno">2.5.3</span> <span class="content">
-Selector Scoping Notation</span></a>
+       <ol class="toc">
+        <li><a href="#scope-effects"><span class="secno">2.5.1</span> <span class="content">
+Effects of <span class="css">@scope</span></span></a>
+        <li><a href="#scope-syntax"><span class="secno">2.5.2</span> <span class="content">
+Syntax of <span class="css">@scope</span></span></a>
+        <li><a href="#scoped-rules"><span class="secno">2.5.3</span> <span class="content">
+Scoped Style Rules</span></a>
+        <li><a href="#scope-limits"><span class="secno">2.5.4</span> <span class="content">
+Identifying Scoping Roots and Limits</span></a>
+        <li><a href="#scope-scope"><span class="secno">2.5.5</span> <span class="content">
+Scope Nesting</span></a>
+        <li><a href="#scoped-declarations"><span class="secno">2.5.6</span> <span class="content">
+Scoped Declarations </span></a>
        </ol>
       <li><a href="#preshint"><span class="secno">2.6</span> <span class="content">
 Precedence of Non-CSS Presentational Hints</span></a>
      </ol>
     <li>
-     <a href="#changes"><span class="secno">3</span> <span class="content">
+     <a href="#cssom"><span class="secno">3</span> <span class="content">CSSOM</span></a>
+     <ol class="toc">
+      <li><a href="#the-cssscoperule-interface"><span class="secno">3.1</span> <span class="content">
+The <code>CSSScopeRule</code> interface</span></a>
+     </ol>
+    <li>
+     <a href="#changes"><span class="secno">4</span> <span class="content">
 Changes</span></a>
      <ol class="toc">
-      <li><a href="#changes-2022-08"><span class="secno">3.1</span> <span class="content">
+      <li><a href="#changes-since-2023-03"><span class="secno">4.1</span> <span class="content">
+Changes since the 21 March 2023 Working Draft</span></a>
+      <li><a href="#changes-2022-08"><span class="secno">4.2</span> <span class="content">
 Changes since the 21 December 2021 First Public Working Draft</span></a>
-      <li><a href="#additions-l5"><span class="secno">3.2</span> <span class="content">
+      <li><a href="#additions-l5"><span class="secno">4.3</span> <span class="content">
 Additions Since Level 5</span></a>
-      <li><a href="#additions-l4"><span class="secno">3.3</span> <span class="content">
+      <li><a href="#additions-l4"><span class="secno">4.4</span> <span class="content">
 Additions Since Level 4</span></a>
-      <li><a href="#additions-l3"><span class="secno">3.4</span> <span class="content">
+      <li><a href="#additions-l3"><span class="secno">4.5</span> <span class="content">
 Additions Since Level 3</span></a>
-      <li><a href="#changes-2"><span class="secno">3.5</span> <span class="content">
+      <li><a href="#changes-2"><span class="secno">4.6</span> <span class="content">
 Additions Since Level 2</span></a>
      </ol>
     <li><a href="#acknowledgments"><span class="secno"></span> <span class="content">Acknowledgments</span></a>
-    <li><a href="#priv-sec"><span class="secno"></span> <span class="content">
-Privacy and Security Considerations</span></a>
+    <li><a href="#privacy"><span class="secno">5</span> <span class="content">
+Privacy Considerations</span></a>
+    <li><a href="#security"><span class="secno">6</span> <span class="content">
+Security Considerations</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a>
@@ -1203,6 +1226,7 @@ Non-experimental implementations</span></a>
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
       <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
+    <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
@@ -1306,44 +1330,31 @@ Cascade Sorting Order</span><a class="self-link" href="#cascade-sort"></a></h3>
 			and for <a data-link-type="dfn" href="#important" id="ref-for-important⑧">important</a> rules the declaration whose <span id="ref-for-cascade-layers②">cascade layer</span> is earliest wins.</p>
      <p class="note" role="note"><span class="marker">Note:</span> This follows the same logic used for precedence of <a data-link-type="dfn" href="#normal" id="ref-for-normal⑦">normal</a> and <a data-link-type="dfn" href="#important" id="ref-for-important⑨">important</a> <a data-link-type="dfn" href="#origin" id="ref-for-origin⑤">origins</a>,
 			thus the <span class="css">!important</span> flag maintains the same “override” purpose in both settings.</p>
-    <dt id="cascade-proximity-strong"><a class="self-link" href="#cascade-proximity-strong"></a><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="strong-scoping-proximity">Strong Scoping Proximity</dfn>
-		
-    <dd>
-     
-			If two declarations both have elements
-			selected by scoped descendant relationships
-			applying <a data-link-type="dfn" href="#strong-scoping-proximity" id="ref-for-strong-scoping-proximity">strong scoping proximity</a>,
-			then the declaration with the fewest generational hops
-			between the ancestor/descendant element pair wins.
-
-
-     <p>If multiple such pairs are represented,
-			their <a data-link-type="dfn" href="#strong-scoping-proximity" id="ref-for-strong-scoping-proximity①">strong scoping proximity</a> weights are compared
-			from innermost scoping relationship to outermost scoping relationship
-			(with any missing pairs weighted as infinity).</p>
     <dt id="cascade-specificity"><a class="self-link" href="#cascade-specificity"></a>Specificity
 		
     <dd>
-			The <a href="https://www.w3.org/TR/selectors/#specificity">Selectors module</a> <a data-link-type="biblio" href="#biblio-select" title="Selectors Level 3">[SELECT]</a> describes how to compute the specificity of a selector.
-			Each declaration has the same specificity as the style rule it appears in.
-			The declaration with the highest specificity wins.
+     
+			The <a href="https://www.w3.org/TR/selectors/#specificity">Selectors module</a> <a data-link-type="biblio" href="#biblio-select" title="Selectors Level 3">[SELECT]</a>
+			describes how to compute the specificity of a selector.
 
-		
-    <dt id="cascade-proximity-weak"><a class="self-link" href="#cascade-proximity-weak"></a><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="weak-scoping-proximity">Weak Scoping Proximity</dfn>
+
+     <p>When comparing declarations from two style rules,
+			the declaration belonging to
+			the style rule with the highest specificity wins.</p>
+    <dt id="cascade-proximity"><a class="self-link" href="#cascade-proximity"></a><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="scope-proximity">Scope Proximity</dfn>
 		
     <dd>
-     
-			If two declarations both have elements
-			selected by scoped descendant relationships
-			applying <a data-link-type="dfn" href="#weak-scoping-proximity" id="ref-for-weak-scoping-proximity">weak scoping proximity</a>,
-			then the declaration with the fewest generational hops
-			between the ancestor/descendant element pair wins.
+			When comparing declarations that appear in style rules
+			with different <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root">scoping roots</a>,
+			then the declaration with the fewest
+			generational or sibling-element hops
+			between the <span id="ref-for-scoping-root①">scoping root</span> and the
+			<a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules">scoped style rule</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject">subject</a> wins.
+			For this purpose,
+			style rules without a <span id="ref-for-scoping-root②">scoping root</span>
+			are considered to have infinite proximity hops.
 
-
-     <p>If multiple such pairs are represented,
-			their <a data-link-type="dfn" href="#weak-scoping-proximity" id="ref-for-weak-scoping-proximity①">weak scoping proximity</a> weights are compared
-			from innermost scoping relationship to outermost scoping relationship
-			(with any missing pairs weighted as infinity).</p>
+		
     <dt id="cascade-order"><a class="self-link" href="#cascade-order"></a>Order of Appearance
 		
     <dd>
@@ -1369,7 +1380,6 @@ Cascade Sorting Order</span><a class="self-link" href="#cascade-sort"></a></h3>
 			
      </ul>
    </dl>
-   <p class="issue" id="issue-b4ed8d84"><a class="self-link" href="#issue-b4ed8d84"></a> Does <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="scope-proximity">scope proximity</dfn> belong above or below specificity in the cascade? <a href="https://github.com/w3c/csswg-drafts/issues/6790">[Issue #6790]</a></p>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="output-of-the-cascade">output of the cascade</dfn>
 	is a (potentially empty) sorted list of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#declared-value" id="ref-for-declared-value①">declared values</a> for each property on each element.</p>
    <h3 class="heading settled" data-level="2.2" id="cascading-origins"><span class="secno">2.2. </span><span class="content">
@@ -1387,63 +1397,71 @@ Cascade Layers</span><a class="self-link" href="#layering"></a></h3>
    <h4 class="heading settled" data-level="2.4.1" id="layer-ordering"><span class="secno">2.4.1. </span><span class="content">
 Layer Ordering</span><a class="self-link" href="#layer-ordering"></a></h4>
    <p class="issue" id="issue-d41d8cd9③"><a class="self-link" href="#issue-d41d8cd9③"></a> <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#layer-ordering"><cite>CSS Cascading 5</cite> § 6.4.3 Layer Ordering</a></p>
-   <h3 class="heading settled" data-level="2.5" id="scoped-styles"><span class="secno">2.5. </span><span class="content">
-Scoped Styles</span><a class="self-link" href="#scoped-styles"></a></h3>
+   <h3 class="heading settled" data-level="2.5" id="scoped-styles"><span class="secno">2.5. </span><span class="bs-old-id" id="scope-atrule"></span><span class="content">
+Scoping Styles: the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope">@scope</a> rule</span><a class="self-link" href="#scoped-styles"></a></h3>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="scope">scope</dfn> is a subtree or fragment of a document,
 	which can be used by selectors for more targeted matching.
-	<a data-link-type="dfn" href="#scope" id="ref-for-scope">Scopes</a> are described in CSS through a combination of two selector lists:</p>
+	A <a data-link-type="dfn" href="#scope" id="ref-for-scope">scope</a> is formed by determining:</p>
    <ul>
     <li data-md>
-     <p>The <dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-scope-start"><a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start">&lt;scope-start></a></dfn> is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-forgiving-selector-list" id="ref-for-typedef-forgiving-selector-list">&lt;forgiving-selector-list></a>.
-Each element matched by <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①">&lt;scope-start></a> is a <u class="link-error" data-lt="scoping element" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;scoping element&apos;.">scoping element</u>,
-creating a scope with itself as the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root">scoping root</a>.</p>
+     <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root③">scoping root</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#boundary-point-node" id="ref-for-boundary-point-node">node</a>,
+which acts as the upper bound of the scope,
+and optionally:</p>
     <li data-md>
-     <p>The <dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-scope-end"><a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end">&lt;scope-end></a></dfn> is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-forgiving-selector-list" id="ref-for-typedef-forgiving-selector-list①">&lt;forgiving-selector-list></a>
-that is <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector" id="ref-for-scoped-selector">scoped</a> by the <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start②">&lt;scope-start></a> selector,
-with the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①">scoping roots</a> as <u class="link-error" data-lt=":scope elements" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;:scope elements&apos;.">:scope elements</u>.
-Each element matched by <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end①">&lt;scope-end></a> is a <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit">scoping limit</a>.
-The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="scoping-limit">scoping limit</dfn> elements define the lower bounds of a scope,
-so that <span id="ref-for-scoped-selector①">scoped selectors</span> are not able to match
-any <span id="ref-for-scoping-limit①">scoping limit</span> elements,
-or any elements nested within them.</p>
+     <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="scoping-limit">scoping limit</dfn> elements,
+which act as the lower bounds.</p>
    </ul>
-   <p>Each resulting <a data-link-type="dfn" href="#scope" id="ref-for-scope①">scope</a> includes a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root②">scoping root</a> and all its descendants,
-	up to any <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit②">scoping limit</a> elements. <span id="ref-for-scoping-limit③">Scoping limit</span> elements and
-	their descendants are not included in the <span id="ref-for-scope②">scope</span>.</p>
+   <p>An element is <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="in-scope">in scope</dfn> if:</p>
+   <ul>
+    <li data-md>
+     <p>It is an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-inclusive-descendant" id="ref-for-concept-tree-inclusive-descendant">inclusive descendant</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root④">scoping root</a>, and</p>
+    <li data-md>
+     <p>It is not an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-inclusive-descendant" id="ref-for-concept-tree-inclusive-descendant①">inclusive descendant</a> of a <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit">scoping limit</a>.</p>
+   </ul>
    <p class="note" role="note"><span class="marker">Note:</span> In contrast to <a href="https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#shadow-dom">Shadow Encapsulation</a>,
 	which describes a persistent one-to-one relationship in the DOM
-	between a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#element-shadow-host" id="ref-for-element-shadow-host">shadow host</a> and its nested <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree①">shadow tree</a>,
-	multiple overlapping <a data-link-type="dfn" href="#scope" id="ref-for-scope③">scopes</a> can be defined in relation to the same elements.</p>
-   <div class="example" id="example-40f46a5e">
-    <a class="self-link" href="#example-40f46a5e"></a>
+	between a <a data-link-type="dfn" href="https://www.w3.org/TR/css-scoping-1/#shadow-host" id="ref-for-shadow-host">shadow host</a> and its nested <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree①">shadow tree</a>,
+	multiple overlapping <a data-link-type="dfn" href="#scope" id="ref-for-scope①">scopes</a> can be defined in relation to the same elements.</p>
+   <p>Scoped styles are described in CSS using
+	the <dfn class="dfn-paneled css" data-dfn-type="at-rule" data-export id="at-ruledef-scope">@scope</dfn> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#block-at-rule" id="ref-for-block-at-rule">block at-rule</a>,
+	which declares a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑤">scoping root</a> and optional <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit①">scoping limits</a>
+	associated with a set of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule" id="ref-for-style-rule">style rules</a>.</p>
+   <div class="example" id="example-f310c4e4">
+    <a class="self-link" href="#example-f310c4e4"></a>
 		For example,
 		an author might have wide-reaching color-scheme scopes,
 		which overlap more narrowly-scoped design patterns
-		such as a media object:
+		such as a media object.
+		The selectors in the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①">@scope</a> rule
+		establish <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑥">scoping root</a> and optional <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit②">scoping limit</a> elements,
+		while the nested selectors only match elements
+		that are <a data-link-type="dfn" href="#in-scope" id="ref-for-in-scope">in a resulting scope</a>:
 
 		
-<pre class="lang-css highlight"><c- n>@scope</c-> <c- p>(</c->.light-scheme<c- p>)</c-> <c- p>{</c->
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->.light-scheme<c- p>)</c-> <c- p>{</c->
+  <c- c>/* Only match links inside a light-scheme */</c->
   a <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkmagenta<c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
 
 <c- n>@scope</c-> <c- p>(</c->.dark-scheme<c- p>)</c-> <c- p>{</c->
+  <c- c>/* Only match links inside a dark-scheme */</c->
   a <c- p>{</c-> <c- k>color</c-><c- p>:</c-> plum<c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
 
 <c- n>@scope</c-> <c- p>(</c->.media-object<c- p>)</c-> <c- p>{</c->
-  .media-image <c- p>{</c-> <c- k>border-radius</c-><c- p>:</c-> <c- m>50</c-><c- k>%</c-><c- p>;</c-> <c- p>}</c->
-  .media-content <c- p>{</c-> <c- k>padding</c-><c- p>:</c-> <c- m>1</c-><c- k>em</c-><c- p>;</c-> <c- p>}</c->
+  <c- c>/* Only match author images inside a media-object */</c->
+  .author-image <c- p>{</c-> <c- k>border-radius</c-><c- p>:</c-> <c- m>50</c-><c- k>%</c-><c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
 </pre>
    </div>
    <div class="example" id="example-b0418ef2">
     <a class="self-link" href="#example-b0418ef2"></a>
-		By providing <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit④">scoping limits</a>,
+		By providing <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit③">scoping limits</a>,
 		an author can limit matching more deeply nested descendants.
 		For example:
 
 		
-<pre class="lang-css highlight"><c- n>@scope</c-> <c- p>(</c->.media-object<c- p>)</c-> to <c- p>(</c->.content > *<c- p>)</c-> <c- p>{</c->
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->.media-object<c- p>)</c-> to <c- p>(</c->.content > *<c- p>)</c-> <c- p>{</c->
   img <c- p>{</c-> <c- k>border-radius</c-><c- p>:</c-> <c- m>50</c-><c- k>%</c-><c- p>;</c-> <c- p>}</c->
   .content <c- p>{</c-> <c- k>padding</c-><c- p>:</c-> <c- m>1</c-><c- k>em</c-><c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
@@ -1453,71 +1471,51 @@ or any elements nested within them.</p>
 		and including all descendants up to
 		any intervening children of the <span class="css">.content</span> class.</p>
    </div>
-   <p class="issue" id="issue-acd126a1"><a class="self-link" href="#issue-acd126a1"></a> Should scoping limits be added to the definition of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector" id="ref-for-scoped-selector②">scoped selectors</a>?</p>
-   <div class="example" id="example-132cb7e9">
-    <a class="self-link" href="#example-132cb7e9"></a>
-		<a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑤">Scoping limits</a> can use the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo">:scope</a> pseudo-class
-		to require a specific relationship to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root③">scoping root</a>:
-
-		
-<pre class="lang-css highlight"><c- c>/* .content is only a limit when it is a direct child of the :scope */</c->
-<c- n>@scope</c-> <c- p>(</c->.media-object<c- p>)</c-> to <c- p>(</c->:scope > .content<c- p>)</c-> <c- p>{</c-> ... <c- p>}</c->
-</pre>
-    <p><a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑥">Scoping limits</a> can also reference elements outside their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root④">scoping root</a>
-		by using <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo①">:scope</a>.
-		For example:</p>
-<pre class="lang-css highlight"><c- c>/* .content is only a limit when the :scope is inside .sidebar */</c->
-<c- n>@scope</c-> <c- p>(</c->.media-object<c- p>)</c-> to <c- p>(</c->.sidebar :scope .content<c- p>)</c-> <c- p>{</c-> ... <c- p>}</c->
-</pre>
-   </div>
-   <h4 class="heading settled" data-level="2.5.1" id="scope-atrule"><span class="secno">2.5.1. </span><span class="content">
-Scoping Styles: the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope">@scope</a> rule</span><a class="self-link" href="#scope-atrule"></a></h4>
-   <p>The <dfn class="dfn-paneled css" data-dfn-type="at-rule" data-export id="at-ruledef-scope">@scope</dfn> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#block-at-rule" id="ref-for-block-at-rule">block at-rule</a>
-	allows authors to scope style rules in CSS,
-	with the application of <a data-link-type="dfn" href="#weak-scoping-proximity" id="ref-for-weak-scoping-proximity②">weak scoping proximity</a>
-	between the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑤">scoping root</a> and the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject">subject</a> of each style rule.</p>
-   <p class="issue" id="issue-fa1297bb"><a class="self-link" href="#issue-fa1297bb"></a> Should <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①">@scope</a> use strong or weak scoping proximity?
-	<a data-link-type="dfn" href="#strong-scoping-proximity" id="ref-for-strong-scoping-proximity②">Strong scoping proximity</a> causes declarations to be weighted more strongly
-	by scope proximity than by their selector’s specificity.
-	<a data-link-type="dfn" href="#weak-scoping-proximity" id="ref-for-weak-scoping-proximity③">Weak scoping proximity</a> causes declarations of the same specificity
-	to be weighted by proximity to their scoping root
-	before falling back to source ordering,
-	but declarations of higher specificity win over more tightly-scoped declarations.
-	The Working Group currently leans towards weak proximity,
-	and recommends that as a starting point for prototypes. <a href="https://github.com/w3c/csswg-drafts/issues/6790">[Issue #6790]</a></p>
-   <p>The syntax of the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②">@scope</a> rule is:</p>
-<pre class="prod">@scope (<a class="production" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start③">&lt;scope-start></a>) [to (<a class="production" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end②">&lt;scope-end></a>)]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt" id="ref-for-mult-opt">?</a> {
-  <a class="production" data-link-type="type" href="https://www.w3.org/TR/css-syntax-3/#typedef-stylesheet" id="ref-for-typedef-stylesheet">&lt;stylesheet></a>
-}
-</pre>
+   <p class="issue" id="issue-acd126a1"><a class="self-link" href="#issue-acd126a1"></a> Should scoping limits be added to the definition of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector" id="ref-for-scoped-selector">scoped selectors</a>?</p>
+   <h4 class="heading settled" data-level="2.5.1" id="scope-effects"><span class="secno">2.5.1. </span><span class="content">
+Effects of <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②">@scope</a></span><a class="self-link" href="#scope-effects"></a></h4>
    <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope③">@scope</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#at-rule" id="ref-for-at-rule">at-rule</a> has three primary effects
-	on the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule" id="ref-for-style-rule">style rules</a> in its <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-syntax-3/#typedef-stylesheet" id="ref-for-typedef-stylesheet①">&lt;stylesheet></a>:</p>
+	on the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule" id="ref-for-style-rule①">style rules</a> it contains:</p>
    <ul>
     <li data-md>
-     <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector" id="ref-for-scoped-selector③">Selectors are scoped</a> to the given <a data-link-type="dfn" href="#scope" id="ref-for-scope④">scope</a>,
-with the <u class="link-error" data-lt=":scope element" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;:scope element&apos;.">:scope element</u> being the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑥">scoping root</a>.</p>
+     <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule" id="ref-for-style-rule②">style rules</a> in an <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope④">@scope</a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-rule-list" id="ref-for-typedef-rule-list">&lt;rule-list></a>
+are <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules①">scoped style rules</a>.</p>
     <li data-md>
-     <p>Selectors are given the added specificity of
-the most specific <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#complex" id="ref-for-complex">complex selector</a> in the <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start④">&lt;scope-start></a> argument.</p>
-     <p class="note" role="note"><span class="marker">Note:</span> This is designed to match the behavior of the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#matches-pseudo" id="ref-for-matches-pseudo">:is()</a> selector.</p>
+     <p>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo">:scope</a> selector is defined to match
+the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope⑤">@scope</a> rule’s <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑦">scoping root</a>,
+including the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#featureless" id="ref-for-featureless">featureless</a> <a data-link-type="dfn" href="https://www.w3.org/TR/css-scoping-1/#shadow-host" id="ref-for-shadow-host①">shadow host</a>
+when that host is the <span id="ref-for-scoping-root⑧">scoping root</span>.
+The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-">&amp;</a> selector is defined to represent
+the selector representing the <span id="ref-for-scoping-root⑨">scoping root</span>
+(the <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start">&lt;scope-start></a> selector),
+or else <span class="css" id="ref-for-scope-pseudo①">:scope</span> if no selector was specified.</p>
     <li data-md>
      <p>The <a data-link-type="dfn" href="#cascade" id="ref-for-cascade">cascade</a> prioritizes declarations
-with a <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity">more proximate</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑦">scoping root</a>,
-regardless of specificity or source order.</p>
+with a <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity">more proximate</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①⓪">scoping root</a>,
+regardless of specificity or order of appearance
+by applying <span id="ref-for-scope-proximity①">scope proximity</span>
+between the <span id="ref-for-scoping-root①①">scoping root</span> and the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject①">subject</a>
+of each <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules②">scoped style rule</a>.</p>
    </ul>
-   <div class="example" id="example-3ce03b63">
-    <a class="self-link" href="#example-3ce03b63"></a>
-		The following selectors have the same specificity (1,0,1):
+   <p class="note" role="note"><span class="marker">Note:</span> Unlike <a href="https://www.w3.org/TR/css-nesting/">Nesting</a>,
+	selectors within an <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope⑥">@scope</a> rule
+	do not acquire the specificity of any parent selector(s) in the <span class="css" id="ref-for-at-ruledef-scope⑦">@scope</span> prelude.</p>
+   <div class="example" id="example-47f85a12">
+    <a class="self-link" href="#example-47f85a12"></a>
+		The following selectors have the same specificity (0,0,1):
 
 		
-<pre class="lang-css highlight"><c- n>@scope</c-> <c- p>(</c->#hero<c- p>)</c-> <c- p>{</c->
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->#hero<c- p>)</c-> <c- p>{</c->
   img <c- p>{</c-> <c- k>border-radius</c-><c- p>:</c-> <c- m>50</c-><c- k>%</c-><c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
 
-#hero img <c- p>{</c-> <c- k>border-radius</c-><c- p>:</c-> <c- m>50</c-><c- k>%</c-><c- p>;</c-> <c- p>}</c->
+<c- nf>:where</c-><c- p>(</c->#hero<c- p>)</c-> img <c- p>{</c-> <c- k>border-radius</c-><c- p>:</c-> <c- m>50</c-><c- k>%</c-><c- p>;</c-> <c- p>}</c->
 </pre>
-    <p>But because <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element" id="ref-for-the-img-element">img</a></code> is scoped,
-		it is weighted more strongly in the cascade.</p>
+    <p>The additional specificity of the <span class="css">#hero</span> selector
+		is not applied to the specificity of the scoped selector.
+		However, since one <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element" id="ref-for-the-img-element">img</a></code> selector is scoped,
+		that selector is weighted more strongly in the cascade
+		with the application of <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity②">scope proximity</a>.</p>
    </div>
    <div class="example" id="example-463550a5">
     <a class="self-link" href="#example-463550a5"></a>
@@ -1543,7 +1541,7 @@ regardless of specificity or source order.</p>
 </pre>
     <p>Those custom scope attributes are then
 		appended to every single selector in CSS:</p>
-<pre class="lang-css highlight">p<c- p>[</c->data-scope~=<c- s>'main-component'</c-><c- p>]</c-> <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
+<pre class="highlight">p<c- p>[</c->data-scope~=<c- s>'main-component'</c-><c- p>]</c-> <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
 p<c- p>[</c->data-scope~=<c- s>'sub-component'</c-><c- p>]</c-> <c- p>{</c-> <c- k>color</c-><c- p>:</c-> blue<c- p>;</c-> <c- p>}</c->
 
 <c- c>/* both sections are part of the outer scope */</c->
@@ -1552,10 +1550,10 @@ section<c- p>[</c->data-scope~=<c- s>'main-component'</c-><c- p>]</c-> <c- p>{</
 <c- c>/* the inner section is also part of the inner scope */</c->
 section<c- p>[</c->data-scope~=<c- s>'sub-component'</c-><c- p>]</c-> <c- p>{</c-> <c- k>color</c-><c- p>:</c-> ghostwhite<c- p>;</c-> <c- p>}</c->
 </pre>
-    <p>Using the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope④">@scope</a> rule,
+    <p>Using the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope⑧">@scope</a> rule,
 		authors and tools can replicate similar behavior
 		with the unique attribute or class
-		applied only to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑧">scoping roots</a>:</p>
+		applied only to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①②">scoping roots</a>:</p>
 <pre class="lang-html highlight"><c- p>&lt;</c-><c- f>section</c-> <c- e>data-scope</c-><c- o>=</c-><c- s>"main-component"</c-><c- p>></c->
   <c- p>&lt;</c-><c- f>p</c-><c- p>></c->...<c- p>&lt;</c-><c- f>p</c-><c- p>></c->
   <c- p>&lt;</c-><c- f>section</c-> <c- e>data-scope</c-><c- o>=</c-><c- s>"sub-component"</c-><c- p>></c->
@@ -1568,7 +1566,7 @@ section<c- p>[</c->data-scope~=<c- s>'sub-component'</c-><c- p>]</c-> <c- p>{</c
 		Elements matched by a lower boundary selector
 		are excluded from the resulting scope,
 		which allows authors to create non-overlapping scopes by default:</p>
-<pre class="lang-css highlight"><c- n>@scope</c-> <c- p>([</c->data-scope=<c- s>'main-component'</c-><c- p>])</c-> to <c- p>([</c->data-scope<c- p>])</c-> <c- p>{</c->
+<pre class="highlight"><c- n>@scope</c-> <c- p>([</c->data-scope=<c- s>'main-component'</c-><c- p>])</c-> to <c- p>([</c->data-scope<c- p>])</c-> <c- p>{</c->
   p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
 
   <c- c>/* only the outer section is part of the outer scope */</c->
@@ -1585,7 +1583,7 @@ section<c- p>[</c->data-scope~=<c- s>'sub-component'</c-><c- p>]</c-> <c- p>{</c
     <p>However, authors can use the child combinator
 		and universal selector to create scope boundaries that overlap,
 		such that the inner scope root is part of both scopes:</p>
-<pre class="lang-css highlight"><c- n>@scope</c-> <c- p>([</c->data-scope=<c- s>'main-component'</c-><c- p>])</c-> to <c- p>([</c->data-scope<c- p>]</c-> > *<c- p>)</c-> <c- p>{</c->
+<pre class="highlight"><c- n>@scope</c-> <c- p>([</c->data-scope=<c- s>'main-component'</c-><c- p>])</c-> to <c- p>([</c->data-scope<c- p>]</c-> > *<c- p>)</c-> <c- p>{</c->
   p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
 
   <c- c>/* both sections are part of the outer scope */</c->
@@ -1593,142 +1591,362 @@ section<c- p>[</c->data-scope~=<c- s>'sub-component'</c-><c- p>]</c-> <c- p>{</c
 <c- p>}</c->
 </pre>
    </div>
-   <p><a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope⑤">@scope</a> rules can be nested.
+   <h4 class="heading settled" data-level="2.5.2" id="scope-syntax"><span class="secno">2.5.2. </span><span class="content">
+Syntax of <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope⑨">@scope</a></span><a class="self-link" href="#scope-syntax"></a></h4>
+   <p>The syntax of the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①⓪">@scope</a> rule is:</p>
+<pre class="def prod">@scope [(<a class="production" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①">&lt;scope-start></a>)]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt" id="ref-for-mult-opt">?</a> [to (<a class="production" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end">&lt;scope-end></a>)]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt" id="ref-for-mult-opt①">?</a> {
+  <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-block-contents" id="ref-for-typedef-block-contents">&lt;block-contents></a>
+}
+</pre>
+   <p>where:</p>
+   <ul>
+    <li data-md>
+     <p><dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-scope-start"><a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start②">&lt;scope-start></a></dfn> is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-selector-list" id="ref-for-typedef-selector-list">&lt;selector-list></a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector" id="ref-for-selector">selector</a>
+used to identify the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①③">scoping root</a>(s).</p>
+    <li data-md>
+     <p><dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-scope-end"><a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end①">&lt;scope-end></a></dfn> is a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-selector-list" id="ref-for-typedef-selector-list①">&lt;selector-list></a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector" id="ref-for-selector①">selector</a>
+used to identify any <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit④">scoping limits</a>.</p>
+    <li data-md>
+     <p>the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#qualified-rule" id="ref-for-qualified-rule">qualified rules</a> within <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-block-contents" id="ref-for-typedef-block-contents①">&lt;block-contents></a>,
+as well as any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#nested-declarations-rule%E2%91%A0" id="ref-for-nested-declarations-rule%E2%91%A0">nested declarations rules</a>
+produced by <a href="#scoped-declarations">scoped declarations</a>,
+represents the <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules③">scoped style rules</a>.</p>
+   </ul>
+   <p><a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/selector.html#x22" id="ref-for-x22">Pseudo-elements</a> cannot be <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①④">scoping roots</a> or <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑤">scoping limits</a>;
+	they are invalid both within <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start③">&lt;scope-start></a> and <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end②">&lt;scope-end></a>.</p>
+   <h4 class="heading settled" data-level="2.5.3" id="scoped-rules"><span class="secno">2.5.3. </span><span class="content">
+Scoped Style Rules</span><a class="self-link" href="#scoped-rules"></a></h4>
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="scoped-style-rules">Scoped style rules</dfn> differ from non-scoped rules
+	in the following ways:</p>
+   <ul>
+    <li data-md>
+     <p>Their selectors can only match elements that are <a data-link-type="dfn" href="#in-scope" id="ref-for-in-scope①">in scope</a>.
+(This only applies to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject②">subject</a>;
+the rest of the selector can match unrestricted.)</p>
+    <li data-md>
+     <p>They accept a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-relative-selector-list" id="ref-for-typedef-relative-selector-list">&lt;relative-selector-list></a> as their prelude
+(rather than just a <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-selector-list" id="ref-for-typedef-selector-list②">&lt;selector-list></a>).
+Such <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#relative-selector" id="ref-for-relative-selector">relative selectors</a>
+are relative to <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo②">:scope</a>.</p>
+    <li data-md>
+     <p>Any selector in the <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-relative-selector-list" id="ref-for-typedef-relative-selector-list①">&lt;relative-selector-list></a>
+that does not start with a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-combinator" id="ref-for-selector-combinator">combinator</a>
+but does <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#contain-the-nesting-selector" id="ref-for-contain-the-nesting-selector">contain the nesting selector</a> or the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo③">:scope</a> selector,
+is interpreted as a non-<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#relative-selector" id="ref-for-relative-selector①">relative selector</a>
+(but the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject③">subject</a> must still be <a data-link-type="dfn" href="#in-scope" id="ref-for-in-scope②">in scope</a> to match).</p>
+   </ul>
+   <div class="example" id="example-66991251">
+    <a class="self-link" href="#example-66991251"></a>
+		By default, selectors in a <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules④">scoped style rule</a>
+		are <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#relative-selector" id="ref-for-relative-selector②">relative selectors</a>,
+		with the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①⑤">scoping root</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator" id="ref-for-descendant-combinator">descendant combinator</a>
+		implied at the start.
+		The following selectors will match the same elements:
+
+		
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->#my-component<c- p>)</c-> <c- p>{</c->
+  p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+  :scope p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+<c- p>}</c->
+</pre>
+    <p>Authors can adjust the implied relationship
+		by adding an explicit combinator:</p>
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->#my-component<c- p>)</c-> <c- p>{</c->
+  > p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+  :scope > p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+<c- p>}</c->
+</pre>
+    <p>Authors can also target or explicitly position
+		the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①⑥">scoping root</a> in a selector
+		by including either <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo④">:scope</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-①">&amp;</a> in a given selector:</p>
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->#my-component<c- p>)</c-> <c- p>{</c->
+  :scope <c- p>{</c-> <c- k>border</c-><c- p>:</c-> thin solid<c- p>;</c-> <c- p>}</c->
+  &amp; <c- p>{</c-> <c- k>border</c-><c- p>:</c-> thin solid<c- p>;</c-> <c- p>}</c->
+
+  main :scope p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+  main &amp; p <c- p>{</c-> <c- k>color</c-><c- p>:</c-> green<c- p>;</c-> <c- p>}</c->
+<c- p>}</c->
+</pre>
+    <p>While the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo⑤">:scope</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-②">&amp;</a> selectors
+		can both refer to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①⑦">scoping root</a>,
+		they have otherwise different meanings in this context:</p>
+    <dl>
+     <dt data-md>Differences in selector matching
+     <dd data-md>
+      <p>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo⑥">:scope</a> selector will only match the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①⑧">scoping root</a> itself,
+while the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-③">&amp;</a> selector is able to match any element
+that is matched by the <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start④">&lt;scope-start></a> selector list.</p>
+     <dt data-md>Differences in selector specificity
+     <dd data-md>
+      <p>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo⑦">:scope</a> selector has a specificity
+equal to other pseudo-classes,
+while the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-④">&amp;</a> selector has the specificity
+equal to the most specific selector in <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start⑤">&lt;scope-start></a>.</p>
+    </dl>
+   </div>
+   <h4 class="heading settled" data-level="2.5.4" id="scope-limits"><span class="secno">2.5.4. </span><span class="content">
+Identifying Scoping Roots and Limits</span><a class="self-link" href="#scope-limits"></a></h4>
+   <p>A <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①①">@scope</a> rule produces one or more <a data-link-type="dfn" href="#scope" id="ref-for-scope②">scopes</a> as follows:</p>
+   <dl>
+    <dt data-md>Finding the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①⑨">scoping root</a>(s)
+    <dd data-md>
+     <p>For each element matched by <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start⑥">&lt;scope-start></a>,
+create a <a data-link-type="dfn" href="#scope" id="ref-for-scope③">scope</a> using that element as the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root②⓪">scoping root</a>.
+If no <span class="production" id="ref-for-typedef-scope-start⑦">&lt;scope-start></span> is specified,
+the <span id="ref-for-scoping-root②①">scoping root</span> is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#parent-element" id="ref-for-parent-element">parent element</a> of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-owner-node" id="ref-for-cssstyledeclaration-owner-node">owner node</a>
+of the stylesheet where the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①②">@scope</a> rule is defined.
+(If no such element exists
+and the containing <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree">node tree</a> is a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree②">shadow tree</a>,
+then the <span id="ref-for-scoping-root②②">scoping root</span> is the <a data-link-type="dfn" href="https://www.w3.org/TR/css-scoping-1/#shadow-host" id="ref-for-shadow-host②">shadow host</a>.
+Otherwise,
+the <span id="ref-for-scoping-root②③">scoping root</span> is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root">root</a> of the containing <span id="ref-for-concept-node-tree①">node tree</span>.)
+Any <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo⑧">:scope</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-⑤">&amp;</a> selectors in <span class="production" id="ref-for-typedef-scope-start⑧">&lt;scope-start></span>
+are interpreted as defined for its outer context.</p>
+    <dt data-md>Finding any <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑥">scoping limits</a>
+    <dd data-md>
+     <p>For each <a data-link-type="dfn" href="#scope" id="ref-for-scope④">scope</a> created by a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root②④">scoping root</a>,
+its <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑦">scoping limits</a> are set to all elements
+that are <a data-link-type="dfn" href="#in-scope" id="ref-for-in-scope③">in scope</a> and that match <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end③">&lt;scope-end></a>,
+interpreting <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo⑨">:scope</a> and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-⑥">&amp;</a>
+exactly as in <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules⑤">scoped style rules</a>.</p>
+   </dl>
+   <div class="example" id="example-52419898">
+    <a class="self-link" href="#example-52419898"></a>
+		Authors can establish local scoping
+		for <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/semantics.html#the-style-element" id="ref-for-the-style-element">style</a></code> elements by leaving out the <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start⑨">&lt;scope-start></a> selector.
+		For example:
+
+		
+<pre class="lang-html highlight"><c- p>&lt;</c-><c- f>div</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>style</c-><c- p>></c->
+    <c- p>@</c-><c- k>scope</c-> <c- p>{</c->
+      <c- f>p</c-> <c- p>{</c-> <c- k>color</c-><c- p>:</c-> <c- kc>red</c-><c- p>;</c-> <c- p>}</c->
+    <c- p>}</c->
+  <c- p>&lt;/</c-><c- f>style</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->this is red<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>p</c-><c- p>></c->not red<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+</pre>
+    <p>That would be equivalent to:</p>
+<pre class="lang-html highlight"><c- p>&lt;</c-><c- f>div</c-> <c- e>id</c-><c- o>=</c-><c- s>"foo"</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>style</c-><c- p>></c->
+    <c- p>@</c-><c- k>scope</c-> <c- o>(</c-><c- p>#</c-><c- nn>foo</c-><c- o>)</c-> <c- p>{</c->
+      <c- f>p</c-> <c- p>{</c-> <c- k>color</c-><c- p>:</c-> <c- kc>red</c-><c- p>;</c-> <c- p>}</c->
+    <c- p>}</c->
+  <c- p>&lt;/</c-><c- f>style</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->this is red<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>p</c-><c- p>></c->not red<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+</pre>
+   </div>
+   <div class="example" id="example-132cb7e9">
+    <a class="self-link" href="#example-132cb7e9"></a>
+		<a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑧">Scoping limits</a> can use the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo①⓪">:scope</a> pseudo-class
+		to require a specific relationship to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root②⑤">scoping root</a>:
+
+		
+<pre class="highlight"><c- c>/* .content is only a limit when it is a direct child of the :scope */</c->
+<c- n>@scope</c-> <c- p>(</c->.media-object<c- p>)</c-> to <c- p>(</c->:scope > .content<c- p>)</c-> <c- p>{</c-> ... <c- p>}</c->
+</pre>
+    <p><a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑨">Scoping limits</a> can also reference elements outside their <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root②⑥">scoping root</a>
+		by using <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo①①">:scope</a>.
+		For example:</p>
+<pre class="highlight"><c- c>/* .content is only a limit when the :scope is inside .sidebar */</c->
+<c- n>@scope</c-> <c- p>(</c->.media-object<c- p>)</c-> to <c- p>(</c->.sidebar :scope .content<c- p>)</c-> <c- p>{</c-> ... <c- p>}</c->
+</pre>
+   </div>
+   <h4 class="heading settled" data-level="2.5.5" id="scope-scope"><span class="secno">2.5.5. </span><span class="content">
+Scope Nesting</span><a class="self-link" href="#scope-scope"></a></h4>
+   <p><a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①③">@scope</a> rules can be nested.
 	In this case, just as with the nested style rules,
-	the selectors of the inner <span class="css" id="ref-for-at-ruledef-scope⑥">@scope</span>
-	(including those defining its <a data-link-type="dfn" href="#scope" id="ref-for-scope⑤">scope</a>)
-	are <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector" id="ref-for-scoped-selector④">scoped by</a>
+	the prelude selectors of the inner <span class="css" id="ref-for-at-ruledef-scope①④">@scope</span>
+	(those defining its <a data-link-type="dfn" href="#scope" id="ref-for-scope⑤">scope</a>)
+	are <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector" id="ref-for-scoped-selector①">scoped by</a>
 	the selectors of the outer one.</p>
-   <h4 class="heading settled" data-level="2.5.2" id="scope-combinator"><span class="secno">2.5.2. </span><span class="content">
-Scoped Descendant Combinator</span><a class="self-link" href="#scope-combinator"></a></h4>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="scoped-descendant-combinator">scoped descendant combinator</dfn>
-	describes a descendant relationship between two elements.
-	A selector of the form <span class="css">A >> B</span> represents
-	an element <code>B</code> that is an arbitrary descendant
-	of some ancestor element <code>A</code>.</p>
-   <p>This combinator differs from the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator" id="ref-for-descendant-combinator">descendant combinator</a>
-	in that it applies <a data-link-type="dfn" href="#weak-scoping-proximity" id="ref-for-weak-scoping-proximity④">weak scoping proximity</a>
-	to the relationship between <span class="css">A</span> and <span class="css">B</span>.
-	It does not change the <u class="link-error" data-lt=":scope element" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;:scope element&apos;.">:scope element</u>.</p>
-   <p class="issue" id="issue-311fc45b"><a class="self-link" href="#issue-311fc45b"></a> Should the <a data-link-type="dfn" href="#scoped-descendant-combinator" id="ref-for-scoped-descendant-combinator">scoped descendant combinator</a>
-	use strong or weak scoping proximity?
-	Should it even exist?
-	It’s defined here to work the way many people expected
-	the regular <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator" id="ref-for-descendant-combinator①">descendant combinator</a> to work...</p>
-   <div class="example" id="example-de232c97">
-    <a class="self-link" href="#example-de232c97"></a>
-		This means that style rules using the <a data-link-type="dfn" href="#scoped-descendant-combinator" id="ref-for-scoped-descendant-combinator①">scoped descendant combinator</a>
-		are sorted by specificity just like the regular <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator" id="ref-for-descendant-combinator②">descendant combinator</a>,
-		except that when their specificities are equal
-		the more tightly-scoped declaration wins.
-
-
-    <p>In this example
-		the <code>&lt;a></code> element’s color will be determined
-		by the nearest ancestor with either
-		a <span class="css">light-scheme</span> or <span class="css">dark-scheme</span> class.
-		(If the descendant selector had been used,
-		its color would always be <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-plum" id="ref-for-valdef-color-plum">plum</a>,
-		because it is later in the source order.)</p>
-<pre>.light-scheme >> a { color: darkmagenta; }
-.dark-scheme >> a { color: plum; }
-</pre>
-    <p>However if the <code>&lt;a></code> element has a <span class="css">light-scheme</span>
-		ancestor and is focused,
-		its color will be <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-teal" id="ref-for-valdef-color-teal">teal</a>
-		even if it has a nearer <span class="css">dark-scheme</span> ancestor,
-		because there is no equivalent <span class="css">dark-scheme</span> rule.</p>
-<pre>.light-scheme >> a:focus { color: teal; }
-</pre>
-   </div>
-   <p class="note" role="note"><span class="marker">Note:</span> Most simple scoping relationships can be represented with this syntax,
-	rather than the more complex <a data-link-type="dfn" href="#selector-scoping-notation" id="ref-for-selector-scoping-notation">selector scoping notation</a> defined below.</p>
-   <h4 class="heading settled" data-level="2.5.3" id="selector-scoping"><span class="secno">2.5.3. </span><span class="content">
-Selector Scoping Notation</span><a class="self-link" href="#selector-scoping"></a></h4>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="selector-scoping-notation">selector scoping notation</dfn>
-	allows <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector" id="ref-for-selector">selectors</a> to be scoped
-	to a subtree of the document,
-	and allows the possibility of excluding nested subtrees.
-	It is prepended to the selector or selector list,
-	and its syntax is as follows:</p>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-selector-scope"><a class="production" data-link-type="type" href="#typedef-selector-scope" id="ref-for-typedef-selector-scope">&lt;selector-scope></a></dfn> = ( <a class="production" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start⑤">&lt;scope-start></a> [/ <a class="production" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end③">&lt;scope-end></a>]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt" id="ref-for-mult-opt①">?</a> )
-</pre>
-   <p>If, after parsing, <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start⑥">&lt;scope-start></a> is an empty list,
-	the selector is valid but matches nothing.
-	Otherwise, the selector matches any element
-	that is within the <a data-link-type="dfn" href="#scope" id="ref-for-scope⑥">scope</a> described
-	by the given <span class="production" id="ref-for-typedef-scope-start⑦">&lt;scope-start></span> and <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end④">&lt;scope-end></a> selectors.</p>
-   <div class="note" role="note">
-    
-		The purpose of the <a data-link-type="dfn" href="#selector-scoping-notation" id="ref-for-selector-scoping-notation①">selector scoping notation</a>
-		is to allow adding <a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑦">scoping limits</a> to a selector:
+   <p class="note" role="note"><span class="marker">Note:</span> The resulting <a data-link-type="dfn" href="#scope" id="ref-for-scope⑥">scope</a>
+	for further nested <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules⑥">scoped style rules</a>
+	is practically constrained by both
+	the outer and inner <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①⑤">@scope</a> rules,
+	but the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root②⑦">scoping root</a> is defined
+	by the innermost <span class="css" id="ref-for-at-ruledef-scope①⑥">@scope</span>.
+	Since <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity③">scope proximity</a> is measured
+	between a <span id="ref-for-scoped-style-rules⑦">scoped style rule</span> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject④">subject</a>
+	and <span id="ref-for-scoping-root②⑧">scoping root</span>,
+	only the innermost <span class="css" id="ref-for-at-ruledef-scope①⑦">@scope</span> matters
+	for determining <span id="ref-for-scope-proximity④">scope proximity</span> of <a href="#scope-scope">nested @scope rules</a>.</p>
+   <p class="issue" id="issue-a2203bb7"><a class="self-link" href="#issue-a2203bb7"></a> Should the scope proximity calculation be impacted by nesting scopes? <a href="https://github.com/w3c/csswg-drafts/issues/10795">[Issue #10795]</a></p>
+   <div class="example" id="example-49f2905a">
+    <a class="self-link" href="#example-49f2905a"></a>
+		When nesting <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope①⑧">@scope</a> rules inside other <span class="css" id="ref-for-at-ruledef-scope①⑨">@scope</span> rules,
+		or inside other selectors,
+		the <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①⓪">&lt;scope-start></a> selector is
+		<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#relative-selector" id="ref-for-relative-selector③">relative to</a> the nesting context,
+		while the <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end④">&lt;scope-end></a> and any <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules⑧">scoped style rules</a>
+		are <span id="ref-for-relative-selector④">relative to</span> the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root②⑨">scoping root</a>
+		For example, the following code:
 
 		
-<pre class="lang-css highlight"><c- p>(</c->.post / .comments<c- p>)</c-> .title <c- p>{</c-> <c- k>font-size</c-><c- p>:</c-> <c- m>2</c-><c- k>em</c-><c- p>;</c-> <c- p>}</c->
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->.parent-scope<c- p>)</c-> <c- p>{</c->
+  <c- n>@scope</c-> <c- p>(</c->:scope > .child-scope<c- p>)</c-> to <c- p>(</c->:scope .limit<c- p>)</c-> <c- p>{</c->
+    :scope .content <c- p>{</c->
+      <c- k>color</c-><c- p>:</c-> red<c- p>;</c->
+    <c- p>}</c->
+  <c- p>}</c->
+<c- p>}</c->
 </pre>
-    <p>Without any such lower limits,
-		the <a data-link-type="dfn" href="#selector-scoping-notation" id="ref-for-selector-scoping-notation②">selector scoping notation</a> is similar to existing descendant selectors,
-		except that the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root⑨">scoping root</a> can be matched
-		by the selector as well.</p>
+    <p>is equivalent to:</p>
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->.parent-scope > .child-scope<c- p>)</c-> to <c- p>(</c->.parent-scope > .child-scope .limit<c- p>)</c-> <c- p>{</c->
+  .parent-scope > .child-scope .content <c- p>{</c->
+    <c- k>color</c-><c- p>:</c-> red<c- p>;</c->
+  <c- p>}</c->
+<c- p>}</c->
+</pre>
    </div>
-   <p>The specificity of
-	the most specific <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#complex" id="ref-for-complex①">complex selector</a> in <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start⑧">&lt;scope-start></a>
-	is added to the specificity of each such scoped selector.
-	The specificity of the <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end⑤">&lt;scope-end></a> is ignored.
-	The <a data-link-type="dfn" href="#selector-scoping-notation" id="ref-for-selector-scoping-notation③">selector scoping notation</a> also applies <a data-link-type="dfn" href="#weak-scoping-proximity" id="ref-for-weak-scoping-proximity⑤">weak scoping proximity</a>
-	between the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root①⓪">scoping root</a> and the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject①">subject</a> of the scoped selector.</p>
-   <p class="issue" id="issue-8c513c1f"><a class="self-link" href="#issue-8c513c1f"></a> Should this have the same <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity①">scope proximity</a> weighting as <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope⑦">@scope</a>
-	or different <span id="ref-for-scope-proximity②">scope proximity</span> weighting
-	(or no <span id="ref-for-scope-proximity③">scope proximity</span> weighting)?</p>
-   <div class="example" id="example-d6cf406e">
-    <a class="self-link" href="#example-d6cf406e"></a>
-		For example,
-		these three selectors will all select the same elements,
-		with the same specificity:
-
+   <p>Global name-defining <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#at-rule" id="ref-for-at-rule①">at-rules</a>
+	such as <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes">@keyframes</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule">@font-face</a> or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-layer" id="ref-for-at-ruledef-layer">@layer</a>
+	that are defined inside <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②⓪">@scope</a> are valid,
+	but are not scoped or otherwise affected
+	by the enclosing <span class="css" id="ref-for-at-ruledef-scope②①">@scope</span> rule.
+	However, any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule" id="ref-for-style-rule③">style rules</a> contained by such rules
+	(e.g. within <span class="css" id="ref-for-at-ruledef-layer①">@layer</span>)
+	are <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules⑨">scoped</a>.</p>
+   <h4 class="heading settled" data-level="2.5.6" id="scoped-declarations"><span class="secno">2.5.6. </span><span class="content">
+Scoped Declarations </span><a class="self-link" href="#scoped-declarations"></a></h4>
+   <p><a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-declarations" id="ref-for-cssstyledeclaration-declarations④">Declarations</a> may be used directly
+	with the body of a <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②②">@scope</a> rule.
+	Contiguous runs of <span id="ref-for-cssstyledeclaration-declarations⑤">declarations</span>
+	are wrapped in <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#nested-declarations-rule%E2%91%A0" id="ref-for-nested-declarations-rule%E2%91%A0①">nested declarations rules</a>,
+	which match the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root③⓪">scoping root</a>
+	with zero <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity" id="ref-for-specificity">specificity</a>.</p>
+   <div class="example" id="example-10a88995">
+    <a class="self-link" href="#example-10a88995"></a>
 		
-<pre class="lang-css highlight"><c- p>(</c->.ancestor<c- p>)</c-> .child                <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkmagenta<c- p>;</c-> <c- p>}</c->
-.child<c- nf>:is</c-><c- p>(</c->.ancestor<c- p>,</c-> .ancestor *<c- p>)</c-> <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkmagenta<c- p>;</c-> <c- p>}</c->
-.ancestor.child<c- p>,</c-> .ancestor .child <c- p>{</c-> <c- k>color</c-><c- p>:</c-> darkmagenta<c- p>;</c-> <c- p>}</c->
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->.foo<c- p>)</c-> <c- p>{</c->
+  <c- k>border</c-><c- p>:</c-> <c- m>1</c-><c- k>px</c-> solid black<c- p>;</c->
+<c- p>}</c->
 </pre>
-    <p>However the first rule will win,
-		because it also applies <a data-link-type="dfn" href="#weak-scoping-proximity" id="ref-for-weak-scoping-proximity⑥">weak scoping proximity</a>.</p>
+    <p>is equivalent to:</p>
+<pre class="highlight"><c- n>@scope</c-> <c- p>(</c->.foo<c- p>)</c-> <c- p>{</c->
+  <c- nf>:where</c-><c- p>(</c->:scope<c- p>)</c-> <c- p>{</c->
+    <c- k>border</c-><c- p>:</c-> <c- m>1</c-><c- k>px</c-> solid black<c- p>;</c->
+  <c- p>}</c->
+<c- p>}</c->
+</pre>
    </div>
-   <p class="issue" id="issue-bf826bc4"><a class="self-link" href="#issue-bf826bc4"></a> How does this interact with <a data-link-type="biblio" href="#biblio-css-nesting-1" title="CSS Nesting Module">[CSS-NESTING-1]</a>?</p>
-   <p class="issue" id="issue-d581e234"><a class="self-link" href="#issue-d581e234"></a> This notation was added in order to allow scoping limits
-	to be applied within <code>querySelector()</code>.
-	Is this something we want to have?</p>
+   <p>Just like for <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule" id="ref-for-style-rule④">style rules</a>,
+	<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-declarations" id="ref-for-cssstyledeclaration-declarations⑥">declarations</a> and child <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#css-rule" id="ref-for-css-rule">rules</a>
+	may be <a href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#mixing">mixed</a>
+	within <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②③">@scope</a>.</p>
    <h3 class="heading settled" data-level="2.6" id="preshint"><span class="secno">2.6. </span><span class="content">
 Precedence of Non-CSS Presentational Hints</span><a class="self-link" href="#preshint"></a></h3>
    <p class="issue" id="issue-d41d8cd9④"><a class="self-link" href="#issue-d41d8cd9④"></a> <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#layering"><cite>CSS Cascading 5</cite> § 6.4 Cascade Layers</a></p>
-   <h2 class="heading settled" data-level="3" id="changes"><span class="secno">3. </span><span class="content">
+   <h2 class="heading settled" data-level="3" id="cssom"><span class="secno">3. </span><span class="content">CSSOM</span><a class="self-link" href="#cssom"></a></h2>
+   <h3 class="heading settled" data-level="3.1" id="the-cssscoperule-interface"><span class="secno">3.1. </span><span class="content">
+The <code>CSSScopeRule</code> interface</span><a class="self-link" href="#the-cssscoperule-interface"></a></h3>
+   <p>The <code class="idl"><a data-link-type="idl" href="#cssscoperule" id="ref-for-cssscoperule">CSSScopeRule</a></code> interface represents the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②④">@scope</a> rule:</p>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="cssscoperule"><code><c- g>CSSScopeRule</c-></code></dfn> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssgroupingrule" id="ref-for-cssgroupingrule"><c- n>CSSGroupingRule</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssomstring" id="ref-for-cssomstring"><c- n>CSSOMString</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="CSSScopeRule" data-dfn-type="attribute" data-export data-readonly data-type="CSSOMString?" id="dom-cssscoperule-start"><code><c- g>start</c-></code></dfn>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssomstring" id="ref-for-cssomstring①"><c- n>CSSOMString</c-></a>? <dfn class="dfn-paneled idl-code" data-dfn-for="CSSScopeRule" data-dfn-type="attribute" data-export data-readonly data-type="CSSOMString?" id="dom-cssscoperule-end"><code><c- g>end</c-></code></dfn>;
+};
+</pre>
+   <dl class="idl-attributes">
+    <dt><code>start</code> of type <code>CSSOMString</code>
+		
+    <dd>The <code>start</code> attribute
+		returns the result of serializing the <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①①">&lt;scope-start></a> of the rule
+		(without the enclosing parentheses),
+		or null if there is no <span class="production" id="ref-for-typedef-scope-start①②">&lt;scope-start></span>.
+
+		
+    <dt><code>end</code> of type <code>CSSOMString</code>
+		
+    <dd>The <code>end</code> attribute
+		returns the result of serializing the <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end⑤">&lt;scope-end></a> of the rule
+		(without the enclosing parentheses),
+		or null if there is no <span class="production" id="ref-for-typedef-scope-end⑥">&lt;scope-end></span>.
+	
+   </dl>
+   <h2 class="heading settled" data-level="4" id="changes"><span class="secno">4. </span><span class="content">
 Changes</span><a class="self-link" href="#changes"></a></h2>
    <p>This appendix is <em>informative</em>.</p>
-   <h3 class="heading settled" data-level="3.1" id="changes-2022-08"><span class="secno">3.1. </span><span class="content">
+   <h3 class="heading settled" data-level="4.1" id="changes-since-2023-03"><span class="secno">4.1. </span><span class="content">
+Changes since the 21 March 2023 Working Draft</span><a class="self-link" href="#changes-since-2023-03"></a></h3>
+   <p>Significant changes since the
+	<a href="https://www.w3.org/TR/2023/WD-css-cascade-6-20230321/">21 March 2023 Working Draft</a> include:</p>
+   <ul>
+    <li data-md>
+     <p>Allowed <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-declarations" id="ref-for-cssstyledeclaration-declarations⑦">declarations</a> directly within <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②⑤">@scope</a>.
+(<a href="https://github.com/w3c/csswg-drafts/issues/10389">Issue 10389</a>)</p>
+    <li data-md>
+     <p>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo①②">:scope</a> selector can match the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#featureless" id="ref-for-featureless①">featureless</a> <a data-link-type="dfn" href="https://www.w3.org/TR/css-scoping-1/#shadow-host" id="ref-for-shadow-host③">shadow host</a> when
+that host is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root③①">scoping root</a> element.
+(<a href="https://github.com/w3c/csswg-drafts/issues/9025">Issue 9025</a>)</p>
+    <li data-md>
+     <p><span class="css"><a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①③">&lt;scope-start></a></span> and <span class="css"><a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end⑦">&lt;scope-end></a></span> selectors are unforgiving.
+(<a href="https://github.com/w3c/csswg-drafts/issues/10042">Issue 10042</a>)</p>
+    <li data-md>
+     <p>A <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②⑥">@scope</a> rule without <span class="css"><a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①④">&lt;scope-start></a></span> scopes to the
+<a data-link-type="dfn" href="https://www.w3.org/TR/css-scoping-1/#shadow-host" id="ref-for-shadow-host④">shadow host</a> instead of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-root" id="ref-for-concept-shadow-root">shadow root</a>.
+(<a href="https://github.com/w3c/csswg-drafts/issues/9178">Issue 9178</a>)</p>
+    <li data-md>
+     <p>Clarified that <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity⑤">scope proximity</a> is a single measurement of the steps
+between a single <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root" id="ref-for-scoping-root③②">scoping root</a> and <a data-link-type="dfn" href="#scoped-style-rules" id="ref-for-scoped-style-rules①⓪">scoped style rule</a> <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject" id="ref-for-selector-subject⑤">subject</a>
+(<a href="https://github.com/w3c/csswg-drafts/issues/10795">Issue 10795</a>
+has been opened to discuss this futher).</p>
+    <li data-md>
+     <p>Removed strong scope proximity.
+(<a href="https://github.com/w3c/csswg-drafts/issues/6790">Issue 6790</a>)</p>
+    <li data-md>
+     <p>Removed the scoped descendant combinator (deferred).
+(<a href="https://github.com/w3c/csswg-drafts/issues/8628">Issue 8628</a>)</p>
+    <li data-md>
+     <p>Added the <code class="idl"><a data-link-type="idl" href="#cssscoperule" id="ref-for-cssscoperule①">CSSScopeRule</a></code> interface.
+(<a href="https://github.com/w3c/csswg-drafts/issues/8626">Issue 8626</a>)</p>
+   </ul>
+   <h3 class="heading settled" data-level="4.2" id="changes-2022-08"><span class="secno">4.2. </span><span class="content">
 Changes since the 21 December 2021 First Public Working Draft</span><a class="self-link" href="#changes-2022-08"></a></h3>
    <p>Significant changes since the
 	<a href="https://www.w3.org/TR/2021/WD-css-cascade-6-20211221/">21 December 2021 First Public Working Draft</a> include:</p>
    <ul>
     <li data-md>
-     <p><a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit⑧">Scoping limit</a> elements are excluded from the resulting <a data-link-type="dfn" href="#scope" id="ref-for-scope⑦">scope</a>.
+     <p>Clarified <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②⑦">@scope</a> effects on nested <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo" id="ref-for-scope-pseudo①③">:scope</a> and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-" id="ref-for-selectordef-⑦">&amp;</a> selectors.
+(<a href="https://github.com/w3c/csswg-drafts/issues/8377">Issue 8377</a>)</p>
+    <li data-md>
+     <p>Removed <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②⑧">@scope</a> prelude from specificity calculation.
+(<a href="https://github.com/w3c/csswg-drafts/issues/8500">Issue 8500</a>)</p>
+    <li data-md>
+     <p>Specified how name-defining <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#at-rule" id="ref-for-at-rule②">at-rules</a> behave in <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope②⑨">@scope</a>.
+(<a href="https://github.com/w3c/csswg-drafts/issues/6895">Issue 6895</a>)</p>
+    <li data-md>
+     <p>Added implicit scopes by making <span class="css"><a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①⑤">&lt;scope-start></a></span> optional.
+(<a href="https://github.com/w3c/csswg-drafts/issues/6606">Issue 6606</a>)</p>
+    <li data-md>
+     <p>Disallowed <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/selector.html#x22" id="ref-for-x22①">pseudo-elements</a> in the <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope③⓪">@scope</a> prelude.
+(<a href="https://github.com/w3c/csswg-drafts/issues/7382">Issue 7382</a>)</p>
+    <li data-md>
+     <p>Removed selector scoping notation.
+(<a href="https://github.com/w3c/csswg-drafts/issues/7709">Issue 7709</a>)</p>
+    <li data-md>
+     <p><a data-link-type="dfn" href="#scoping-limit" id="ref-for-scoping-limit①⓪">Scoping limit</a> elements are excluded from the resulting <a data-link-type="dfn" href="#scope" id="ref-for-scope⑦">scope</a>.
 (<a href="https://github.com/w3c/csswg-drafts/issues/6577">Issue 6577</a>)</p>
    </ul>
-   <h3 class="heading settled" data-level="3.2" id="additions-l5"><span class="secno">3.2. </span><span class="content">
+   <h3 class="heading settled" data-level="4.3" id="additions-l5"><span class="secno">4.3. </span><span class="content">
 Additions Since Level 5</span><a class="self-link" href="#additions-l5"></a></h3>
    <p>The following features have been added since
 	<a href="https://www.w3.org/TR/css-cascade-5/">Level 5</a>:</p>
    <ul>
     <li data-md>
      <p>The definition of a <a data-link-type="dfn" href="#scope" id="ref-for-scope⑧">scope</a>,
-as described by a combination of <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start⑨">&lt;scope-start></a> and <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end⑥">&lt;scope-end></a> selectors.</p>
+as described by a combination of <a class="production css" data-link-type="type" href="#typedef-scope-start" id="ref-for-typedef-scope-start①⑥">&lt;scope-start></a> and <a class="production css" data-link-type="type" href="#typedef-scope-end" id="ref-for-typedef-scope-end⑧">&lt;scope-end></a> selectors.</p>
     <li data-md>
      <p>The in-scope (<span class="css">:in()</span>) pseudo-class for selecting with lower-boundaries</p>
     <li data-md>
-     <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope⑧">@scope</a> rule for creating scoped stylesheets</p>
+     <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-scope" id="ref-for-at-ruledef-scope③①">@scope</a> rule for creating scoped stylesheets</p>
     <li data-md>
-     <p>The definition of <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity④">scope proximity</a> in the cascade</p>
+     <p>The definition of <a data-link-type="dfn" href="#scope-proximity" id="ref-for-scope-proximity⑥">scope proximity</a> in the cascade</p>
    </ul>
-   <h3 class="heading settled" data-level="3.3" id="additions-l4"><span class="secno">3.3. </span><span class="content">
+   <h3 class="heading settled" data-level="4.4" id="additions-l4"><span class="secno">4.4. </span><span class="content">
 Additions Since Level 4</span><a class="self-link" href="#additions-l4"></a></h3>
    <p>The following features have been added since
 	<a href="https://www.w3.org/TR/css-cascade-4/">Level 4</a>:</p>
@@ -1738,13 +1956,13 @@ Additions Since Level 4</span><a class="self-link" href="#additions-l4"></a></h3
 (and defined style attributes as a distinct step of the <span id="ref-for-cascade②">cascade</span> sort criteria
 so that they interact appropriately).</p>
     <li data-md>
-     <p>Introduced the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-layer" id="ref-for-at-ruledef-layer">@layer</a> rule for defining cascade layers.</p>
+     <p>Introduced the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-layer" id="ref-for-at-ruledef-layer②">@layer</a> rule for defining cascade layers.</p>
     <li data-md>
      <p>Added <span class="css">layer</span>/<span class="css">layer()</span> option to <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-import" id="ref-for-at-ruledef-import②">@import</a> definition.</p>
     <li data-md>
      <p>Introduced the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer">revert-layer</a> keyword for rolling back values to previous layers.</p>
    </ul>
-   <h3 class="heading settled" data-level="3.4" id="additions-l3"><span class="secno">3.4. </span><span class="content">
+   <h3 class="heading settled" data-level="4.5" id="additions-l3"><span class="secno">4.5. </span><span class="content">
 Additions Since Level 3</span><a class="self-link" href="#additions-l3"></a></h3>
    <p>The following features have been added since
 	<a href="https://www.w3.org/TR/css-cascade-3/">Level 3</a>:</p>
@@ -1759,7 +1977,7 @@ to accommodate Shadow DOM. <a data-link-type="biblio" href="#biblio-dom" title="
     <li data-md>
      <p>Defined the property two aliasing mechanisms CSS uses to support legacy syntaxes. See <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-4/#aliasing"><cite>CSS Cascading 4</cite> § 3.1 Property Aliasing</a>.</p>
    </ul>
-   <h3 class="heading settled" data-level="3.5" id="changes-2"><span class="secno">3.5. </span><span class="content">
+   <h3 class="heading settled" data-level="4.6" id="changes-2"><span class="secno">4.6. </span><span class="content">
 Additions Since Level 2</span><a class="self-link" href="#changes-2"></a></h3>
    <p>The following features have been added since
 	<a href="http://www.w3.org/TR/CSS2/cascade.html">Level 2</a>:</p>
@@ -1787,17 +2005,21 @@ Additions Since Level 2</span><a class="self-link" href="#changes-2"></a></h3>
 	Lea Verou,
 	and Boris Zbarsky
 	contributed to this specification.</p>
-   <h2 class="no-num heading settled" id="priv-sec"><span class="content">
-Privacy and Security Considerations</span><a class="self-link" href="#priv-sec"></a></h2>
+   <h2 class="heading settled" data-level="5" id="privacy"><span class="secno">5. </span><span class="content">
+Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+   <ul>
+    <li data-md>
+     <p>User preferences and UA defaults expressed via application of style rules
+are exposed by the cascade process,
+and can be inferred from the computed styles they apply to a document.</p>
+   </ul>
+   <h2 class="heading settled" data-level="6" id="security"><span class="secno">6. </span><span class="content">
+Security Considerations</span><a class="self-link" href="#security"></a></h2>
    <ul>
     <li data-md>
      <p>The cascade process does not distinguish between same-origin and cross-origin stylesheets,
 enabling the content of cross-origin stylesheets to be inferred
 from the computed styles they apply to a document.</p>
-    <li data-md>
-     <p>User preferences and UA defaults expressed via application of style rules
-are exposed by the cascade process,
-and can be inferred from the computed styles they apply to a document.</p>
     <li data-md>
      <p>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-import" id="ref-for-at-ruledef-import④">@import</a> rule does not apply the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#cors-protocol" id="ref-for-cors-protocol">CORS protocol</a> to loading cross-origin stylesheets,
 instead allowing them to be freely imported and applied.</p>
@@ -1949,26 +2171,31 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#cascade">cascade</a><span>, in § 2</span>
    <li><a href="#origin">cascade origin</a><span>, in § 2.2</span>
    <li><a href="#encapsulation-contexts">context</a><span>, in § 2.1</span>
+   <li><a href="#cssscoperule">CSSScopeRule</a><span>, in § 3.1</span>
    <li><a href="#encapsulation-contexts">encapsulation contexts</a><span>, in § 2.1</span>
+   <li><a href="#dom-cssscoperule-end">end</a><span>, in § 3.1</span>
    <li><a href="#important">importance</a><span>, in § 2.3</span>
    <li><a href="#important">important</a><span>, in § 2.3</span>
+   <li><a href="#in-scope">in scope</a><span>, in § 2.5</span>
    <li><a href="#normal">normal</a><span>, in § 2.3</span>
    <li><a href="#origin">origin</a><span>, in § 2.2</span>
    <li><a href="#output-of-the-cascade">output of the cascade</a><span>, in § 2.1</span>
-   <li><a href="#at-ruledef-scope">@scope</a><span>, in § 2.5.1</span>
+   <li><a href="#at-ruledef-scope">@scope</a><span>, in § 2.5</span>
    <li><a href="#scope">scope</a><span>, in § 2.5</span>
-   <li><a href="#scoped-descendant-combinator">scoped descendant combinator</a><span>, in § 2.5.2</span>
-   <li><a href="#typedef-scope-end">&lt;scope-end></a><span>, in § 2.5</span>
-   <li><a href="#scope-proximity">scope proximity</a><span>, in § 2.1</span>
-   <li><a href="#typedef-scope-start">&lt;scope-start></a><span>, in § 2.5</span>
+   <li><a href="#scoped-style-rules">Scoped style rules</a><span>, in § 2.5.3</span>
+   <li><a href="#typedef-scope-end">&lt;scope-end></a><span>, in § 2.5.2</span>
+   <li><a href="#scope-proximity">Scope Proximity</a><span>, in § 2.1</span>
+   <li><a href="#typedef-scope-start">&lt;scope-start></a><span>, in § 2.5.2</span>
    <li><a href="#scoping-limit">scoping limit</a><span>, in § 2.5</span>
-   <li><a href="#typedef-selector-scope">&lt;selector-scope></a><span>, in § 2.5.3</span>
-   <li><a href="#selector-scoping-notation">selector scoping notation</a><span>, in § 2.5.3</span>
-   <li><a href="#strong-scoping-proximity">Strong Scoping Proximity</a><span>, in § 2.1</span>
-   <li><a href="#weak-scoping-proximity">Weak Scoping Proximity</a><span>, in § 2.1</span>
+   <li><a href="#dom-cssscoperule-start">start</a><span>, in § 3.1</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
+   <li>
+    <a data-link-type="biblio">[CSS-ANIMATIONS-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="6329a743">@keyframes</span>
+    </ul>
    <li>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
@@ -1987,28 +2214,38 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="8a90789f">user-agent origin</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-COLOR-4]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="25184e77">plum</span>
-     <li><span class="dfn-paneled" id="d3df8a7e">teal</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[CSS-CONDITIONAL-5]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="3c7e8170">supports()</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[CSS-FONTS-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="4f22bd22">@font-face</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-NESTING-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="602a57fb">&amp;</span>
+     <li><span class="dfn-paneled" id="ad2e5ee8">contain the nesting selector</span>
+     <li><span class="dfn-paneled" id="ed267f22">nested declarations rule</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-SCOPING-1]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="ce2e3c84">shadow host</span>
      <li><span class="dfn-paneled" id="897dfd76">tree context</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-SYNTAX-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="7ef4dcc3">&lt;stylesheet></span>
+     <li><span class="dfn-paneled" id="0052f811">&lt;block-contents></span>
+     <li><span class="dfn-paneled" id="1744dc6c">&lt;rule-list></span>
      <li><span class="dfn-paneled" id="77446697">at-rule</span>
      <li><span class="dfn-paneled" id="d0acb58b">block at-rule</span>
      <li><span class="dfn-paneled" id="127d768f">declaration</span>
+     <li><span class="dfn-paneled" id="c76091f9">qualified rule</span>
+     <li><span class="dfn-paneled" id="0e5530f1">rule</span>
      <li><span class="dfn-paneled" id="bf1cee09">style rule</span>
     </ul>
    <li>
@@ -2017,14 +2254,27 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="96660f33">?</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[CSS2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="7b82c9e5">pseudo-elements</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSSOM-1]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="9f4352fe">CSSGroupingRule</span>
+     <li><span class="dfn-paneled" id="04b23c8e">CSSOMString</span>
      <li><span class="dfn-paneled" id="23e0fbb6">declarations</span>
+     <li><span class="dfn-paneled" id="9cf8580f">owner node</span>
     </ul>
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="58a8f724">shadow host</span>
+     <li><span class="dfn-paneled" id="f9d909f7">inclusive descendant</span>
+     <li><span class="dfn-paneled" id="d462b34f">node</span>
+     <li><span class="dfn-paneled" id="c7d8d91b">node tree</span>
+     <li><span class="dfn-paneled" id="5afeceea">parent element</span>
+     <li><span class="dfn-paneled" id="f7960529">root</span>
+     <li><span class="dfn-paneled" id="3fcc582f">shadow root</span>
      <li><span class="dfn-paneled" id="19f9e9df">shadow tree</span>
      <li><span class="dfn-paneled" id="fefa5851">shadow-including tree order</span>
     </ul>
@@ -2037,19 +2287,28 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="f0811ff8">img</span>
+     <li><span class="dfn-paneled" id="ba920583">style</span>
     </ul>
    <li>
     <a data-link-type="biblio">[SELECTORS-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="67089067">:is()</span>
      <li><span class="dfn-paneled" id="30312cf8">:scope</span>
-     <li><span class="dfn-paneled" id="5285aebf">&lt;forgiving-selector-list></span>
-     <li><span class="dfn-paneled" id="e8732b9a">complex selector</span>
+     <li><span class="dfn-paneled" id="662addbf">&lt;relative-selector-list></span>
+     <li><span class="dfn-paneled" id="b20df17a">&lt;selector-list></span>
+     <li><span class="dfn-paneled" id="937c4867">combinator</span>
      <li><span class="dfn-paneled" id="8d71278c">descendant combinator</span>
+     <li><span class="dfn-paneled" id="105e8915">featureless</span>
+     <li><span class="dfn-paneled" id="5183d406">relative selector</span>
      <li><span class="dfn-paneled" id="f136f2ad">scoped selector</span>
      <li><span class="dfn-paneled" id="12fd96c5">scoping root</span>
      <li><span class="dfn-paneled" id="81c11cfb">selector</span>
+     <li><span class="dfn-paneled" id="25535517">specificity</span>
      <li><span class="dfn-paneled" id="46e0f703">subject</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="889e932f">Exposed</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2063,6 +2322,10 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/">https://andreubotella.com/csswg-auto-build/test/css-cascade-5/</a>
    <dt id="biblio-css-conditional-5">[CSS-CONDITIONAL-5]
    <dd>Chris Lilley; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-conditional-5/"><cite>CSS Conditional Rules Module Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-conditional-5/">https://andreubotella.com/csswg-auto-build/test/css-conditional-5/</a>
+   <dt id="biblio-css-fonts-5">[CSS-FONTS-5]
+   <dd>Chris Lilley. <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-5/"><cite>CSS Fonts Module Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-5/">https://andreubotella.com/csswg-auto-build/test/css-fonts-5/</a>
+   <dt id="biblio-css-nesting-1">[CSS-NESTING-1]
+   <dd>Tab Atkins Jr.; Adam Argyle. <a href="https://andreubotella.com/csswg-auto-build/test/css-nesting/"><cite>CSS Nesting Module</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-nesting/">https://andreubotella.com/csswg-auto-build/test/css-nesting/</a>
    <dt id="biblio-css-scoping-1">[CSS-SCOPING-1]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-scoping/"><cite>CSS Scoping Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-scoping/">https://andreubotella.com/csswg-auto-build/test/css-scoping/</a>
    <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
@@ -2071,6 +2334,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>David Baron; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-transitions/"><cite>CSS Transitions</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-transitions/">https://andreubotella.com/csswg-auto-build/test/css-transitions/</a>
    <dt id="biblio-css-values-3">[CSS-VALUES-3]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/"><cite>CSS Values and Units Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/">https://andreubotella.com/csswg-auto-build/test/css-values-3/</a>
+   <dt id="biblio-css2">[CSS2]
+   <dd>Bert Bos; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css2/">https://andreubotella.com/csswg-auto-build/test/css2/</a>
    <dt id="biblio-cssom-1">[CSSOM-1]
    <dd>Daniel Glazman; Emilio Cobos Álvarez. <a href="https://andreubotella.com/csswg-auto-build/test/cssom/"><cite>CSS Object Model (CSSOM)</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/cssom/">https://andreubotella.com/csswg-auto-build/test/cssom/</a>
    <dt id="biblio-cssstyleattr">[CSSSTYLEATTR]
@@ -2085,49 +2350,34 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Tantek Çelik; et al. <a href="https://andreubotella.com/csswg-auto-build/test/selectors-3/"><cite>Selectors Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/selectors-3/">https://andreubotella.com/csswg-auto-build/test/selectors-3/</a>
    <dt id="biblio-selectors-4">[SELECTORS-4]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/selectors/"><cite>Selectors Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/selectors/">https://andreubotella.com/csswg-auto-build/test/selectors/</a>
+   <dt id="biblio-webidl">[WEBIDL]
+   <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
-   <dt id="biblio-css-color-4">[CSS-COLOR-4]
-   <dd>Chris Lilley; Tab Atkins Jr.; Lea Verou. <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/"><cite>CSS Color Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/">https://andreubotella.com/csswg-auto-build/test/css-color-4/</a>
-   <dt id="biblio-css-nesting-1">[CSS-NESTING-1]
-   <dd>Tab Atkins Jr.; Adam Argyle. <a href="https://andreubotella.com/csswg-auto-build/test/css-nesting/"><cite>CSS Nesting Module</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-nesting/">https://andreubotella.com/csswg-auto-build/test/css-nesting/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
   </dl>
+  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<c- b>interface</c-> <a href="#cssscoperule"><code><c- g>CSSScopeRule</c-></code></a> : <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssgroupingrule"><c- n>CSSGroupingRule</c-></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssomstring"><c- n>CSSOMString</c-></a>? <a data-readonly data-type="CSSOMString?" href="#dom-cssscoperule-start"><code><c- g>start</c-></code></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssomstring"><c- n>CSSOMString</c-></a>? <a data-readonly data-type="CSSOMString?" href="#dom-cssscoperule-end"><code><c- g>end</c-></code></a>;
+};
+
+</pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> This is a diff spec over <a href="https://www.w3.org/TR/css-cascade-5/">CSS Cascading and Inheritance Level 5</a>.
 	It is currently an Exploratory Working Draft:
 	if you are implementing anything, please use Level 5 as a reference.
 	We will merge the Level 5 text into this draft once it reaches CR. <a class="issue-return" href="#issue-a783701e" title="Jump to section">↵</a></div>
-   <div class="issue"> Does <span>scope proximity</span> belong above or below specificity in the cascade? <a href="https://github.com/w3c/csswg-drafts/issues/6790">[Issue #6790]</a> <a class="issue-return" href="#issue-b4ed8d84" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascading-origins"><cite>CSS Cascading 5</cite> § 6.2 Cascading Origins</a> <a class="issue-return" href="#issue-d41d8cd9" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#importance"><cite>CSS Cascading 5</cite> § 6.3 Important Declarations: the !important annotation</a> <a class="issue-return" href="#issue-d41d8cd9①" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#layering"><cite>CSS Cascading 5</cite> § 6.4 Cascade Layers</a> <a class="issue-return" href="#issue-d41d8cd9②" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#layer-ordering"><cite>CSS Cascading 5</cite> § 6.4.3 Layer Ordering</a> <a class="issue-return" href="#issue-d41d8cd9③" title="Jump to section">↵</a></div>
    <div class="issue"> Should scoping limits be added to the definition of <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector">scoped selectors</a>? <a class="issue-return" href="#issue-acd126a1" title="Jump to section">↵</a></div>
-   <div class="issue"> Should <a class="css" data-link-type="maybe" href="#at-ruledef-scope">@scope</a> use strong or weak scoping proximity?
-	<a data-link-type="dfn" href="#strong-scoping-proximity">Strong scoping proximity</a> causes declarations to be weighted more strongly
-	by scope proximity than by their selector’s specificity.
-	<a data-link-type="dfn" href="#weak-scoping-proximity">Weak scoping proximity</a> causes declarations of the same specificity
-	to be weighted by proximity to their scoping root
-	before falling back to source ordering,
-	but declarations of higher specificity win over more tightly-scoped declarations.
-	The Working Group currently leans towards weak proximity,
-	and recommends that as a starting point for prototypes. <a href="https://github.com/w3c/csswg-drafts/issues/6790">[Issue #6790]</a> <a class="issue-return" href="#issue-fa1297bb" title="Jump to section">↵</a></div>
-   <div class="issue"> Should the <a data-link-type="dfn" href="#scoped-descendant-combinator">scoped descendant combinator</a>
-	use strong or weak scoping proximity?
-	Should it even exist?
-	It’s defined here to work the way many people expected
-	the regular <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator">descendant combinator</a> to work... <a class="issue-return" href="#issue-311fc45b" title="Jump to section">↵</a></div>
-   <div class="issue"> Should this have the same <a data-link-type="dfn" href="#scope-proximity">scope proximity</a> weighting as <a class="css" data-link-type="maybe" href="#at-ruledef-scope">@scope</a>
-	or different <span>scope proximity</span> weighting
-	(or no <span>scope proximity</span> weighting)? <a class="issue-return" href="#issue-8c513c1f" title="Jump to section">↵</a></div>
-   <div class="issue"> How does this interact with <a data-link-type="biblio" href="#biblio-css-nesting-1" title="CSS Nesting Module">[CSS-NESTING-1]</a>? <a class="issue-return" href="#issue-bf826bc4" title="Jump to section">↵</a></div>
-   <div class="issue"> This notation was added in order to allow scoping limits
-	to be applied within <code>querySelector()</code>.
-	Is this something we want to have? <a class="issue-return" href="#issue-d581e234" title="Jump to section">↵</a></div>
+   <div class="issue"> Should the scope proximity calculation be impacted by nesting scopes? <a href="https://github.com/w3c/csswg-drafts/issues/10795">[Issue #10795]</a> <a class="issue-return" href="#issue-a2203bb7" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#layering"><cite>CSS Cascading 5</cite> § 6.4 Cascade Layers</a> <a class="issue-return" href="#issue-d41d8cd9④" title="Jump to section">↵</a></div>
   </div>
   <details class="mdn-anno unpositioned" data-anno-for="all-shorthand">
@@ -2410,61 +2660,82 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"00acc5d8": {"dfnID":"00acc5d8","dfnText":"unset","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-unset"}],"title":"3.5. \nAdditions Since Level 2"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-unset"},
-"014223c6": {"dfnID":"014223c6","dfnText":"initial","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-initial"}],"title":"3.5. \nAdditions Since Level 2"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-initial"},
+"0052f811": {"dfnID":"0052f811","dfnText":"<block-contents>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-block-contents"},{"id":"ref-for-typedef-block-contents\u2460"}],"title":"2.5.2. \nSyntax of @scope"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-block-contents"},
+"00acc5d8": {"dfnID":"00acc5d8","dfnText":"unset","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-unset"}],"title":"4.6. \nAdditions Since Level 2"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-unset"},
+"014223c6": {"dfnID":"014223c6","dfnText":"initial","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-initial"}],"title":"4.6. \nAdditions Since Level 2"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-initial"},
+"04b23c8e": {"dfnID":"04b23c8e","dfnText":"CSSOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-cssomstring"},{"id":"ref-for-cssomstring\u2460"}],"title":"3.1. \nThe CSSScopeRule interface"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssomstring"},
+"0e5530f1": {"dfnID":"0e5530f1","dfnText":"rule","external":true,"refSections":[{"refs":[{"id":"ref-for-css-rule"}],"title":"2.5.6. \nScoped Declarations "}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#css-rule"},
+"105e8915": {"dfnID":"105e8915","dfnText":"featureless","external":true,"refSections":[{"refs":[{"id":"ref-for-featureless"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-featureless\u2460"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#featureless"},
 "127d768f": {"dfnID":"127d768f","dfnText":"declaration","external":true,"refSections":[{"refs":[{"id":"ref-for-declaration"}],"title":"2. \nCascading"},{"refs":[{"id":"ref-for-declaration\u2460"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#declaration"},
-"12fd96c5": {"dfnID":"12fd96c5","dfnText":"scoping root","external":true,"refSections":[{"refs":[{"id":"ref-for-scoping-root"},{"id":"ref-for-scoping-root\u2460"},{"id":"ref-for-scoping-root\u2461"},{"id":"ref-for-scoping-root\u2462"},{"id":"ref-for-scoping-root\u2463"}],"title":"2.5. \nScoped Styles"},{"refs":[{"id":"ref-for-scoping-root\u2464"},{"id":"ref-for-scoping-root\u2465"},{"id":"ref-for-scoping-root\u2466"},{"id":"ref-for-scoping-root\u2467"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-scoping-root\u2468"},{"id":"ref-for-scoping-root\u2460\u24ea"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root"},
+"12fd96c5": {"dfnID":"12fd96c5","dfnText":"scoping root","external":true,"refSections":[{"refs":[{"id":"ref-for-scoping-root"},{"id":"ref-for-scoping-root\u2460"},{"id":"ref-for-scoping-root\u2461"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-scoping-root\u2462"},{"id":"ref-for-scoping-root\u2463"},{"id":"ref-for-scoping-root\u2464"},{"id":"ref-for-scoping-root\u2465"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-scoping-root\u2466"},{"id":"ref-for-scoping-root\u2467"},{"id":"ref-for-scoping-root\u2468"},{"id":"ref-for-scoping-root\u2460\u24ea"},{"id":"ref-for-scoping-root\u2460\u2460"},{"id":"ref-for-scoping-root\u2460\u2461"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-scoping-root\u2460\u2462"},{"id":"ref-for-scoping-root\u2460\u2463"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-scoping-root\u2460\u2464"},{"id":"ref-for-scoping-root\u2460\u2465"},{"id":"ref-for-scoping-root\u2460\u2466"},{"id":"ref-for-scoping-root\u2460\u2467"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-scoping-root\u2460\u2468"},{"id":"ref-for-scoping-root\u2461\u24ea"},{"id":"ref-for-scoping-root\u2461\u2460"},{"id":"ref-for-scoping-root\u2461\u2461"},{"id":"ref-for-scoping-root\u2461\u2462"},{"id":"ref-for-scoping-root\u2461\u2463"},{"id":"ref-for-scoping-root\u2461\u2464"},{"id":"ref-for-scoping-root\u2461\u2465"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-scoping-root\u2461\u2466"},{"id":"ref-for-scoping-root\u2461\u2467"},{"id":"ref-for-scoping-root\u2461\u2468"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-scoping-root\u2462\u24ea"}],"title":"2.5.6. \nScoped Declarations "},{"refs":[{"id":"ref-for-scoping-root\u2462\u2460"},{"id":"ref-for-scoping-root\u2462\u2461"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root"},
 "13af4503": {"dfnID":"13af4503","dfnText":"cascaded value","external":true,"refSections":[{"refs":[{"id":"ref-for-cascaded-value"}],"title":"2. \nCascading"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascaded-value"},
-"19f9e9df": {"dfnID":"19f9e9df","dfnText":"shadow tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-tree"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2460"}],"title":"2.5. \nScoped Styles"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
-"1ce82aae": {"dfnID":"1ce82aae","dfnText":"all","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-all"}],"title":"3.5. \nAdditions Since Level 2"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#propdef-all"},
-"23e0fbb6": {"dfnID":"23e0fbb6","dfnText":"declarations","external":true,"refSections":[{"refs":[{"id":"ref-for-cssstyledeclaration-declarations"},{"id":"ref-for-cssstyledeclaration-declarations\u2460"},{"id":"ref-for-cssstyledeclaration-declarations\u2461"},{"id":"ref-for-cssstyledeclaration-declarations\u2462"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-declarations"},
+"1744dc6c": {"dfnID":"1744dc6c","dfnText":"<rule-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-rule-list"}],"title":"2.5.1. \nEffects of @scope"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-rule-list"},
+"19f9e9df": {"dfnID":"19f9e9df","dfnText":"shadow tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-tree"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2460"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2461"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
+"1ce82aae": {"dfnID":"1ce82aae","dfnText":"all","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-all"}],"title":"4.6. \nAdditions Since Level 2"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#propdef-all"},
+"23e0fbb6": {"dfnID":"23e0fbb6","dfnText":"declarations","external":true,"refSections":[{"refs":[{"id":"ref-for-cssstyledeclaration-declarations"},{"id":"ref-for-cssstyledeclaration-declarations\u2460"},{"id":"ref-for-cssstyledeclaration-declarations\u2461"},{"id":"ref-for-cssstyledeclaration-declarations\u2462"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-cssstyledeclaration-declarations\u2463"},{"id":"ref-for-cssstyledeclaration-declarations\u2464"},{"id":"ref-for-cssstyledeclaration-declarations\u2465"}],"title":"2.5.6. \nScoped Declarations "},{"refs":[{"id":"ref-for-cssstyledeclaration-declarations\u2466"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-declarations"},
 "23f8b319": {"dfnID":"23f8b319","dfnText":"user origin","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-origin-user"},{"id":"ref-for-cascade-origin-user\u2460"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascade-origin-user"},
-"25184e77": {"dfnID":"25184e77","dfnText":"plum","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-plum"}],"title":"2.5.2. \nScoped Descendant Combinator"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-plum"},
-"30312cf8": {"dfnID":"30312cf8","dfnText":":scope","external":true,"refSections":[{"refs":[{"id":"ref-for-scope-pseudo"},{"id":"ref-for-scope-pseudo\u2460"}],"title":"2.5. \nScoped Styles"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo"},
-"3040890a": {"dfnID":"3040890a","dfnText":"revert","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-revert"}],"title":"3.4. \nAdditions Since Level 3"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert"},
-"3c7e8170": {"dfnID":"3c7e8170","dfnText":"supports()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-supports"}],"title":"3.4. \nAdditions Since Level 3"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-conditional-5/#funcdef-supports"},
-"40776474": {"dfnID":"40776474","dfnText":"@import","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-import"},{"id":"ref-for-at-ruledef-import\u2460"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461"}],"title":"3.3. \nAdditions Since Level 4"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462"}],"title":"3.4. \nAdditions Since Level 3"},{"refs":[{"id":"ref-for-at-ruledef-import\u2463"},{"id":"ref-for-at-ruledef-import\u2464"}],"title":"\nPrivacy and Security Considerations"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-import"},
-"46e0f703": {"dfnID":"46e0f703","dfnText":"subject","external":true,"refSections":[{"refs":[{"id":"ref-for-selector-subject"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-selector-subject\u2460"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject"},
+"25535517": {"dfnID":"25535517","dfnText":"specificity","external":true,"refSections":[{"refs":[{"id":"ref-for-specificity"}],"title":"2.5.6. \nScoped Declarations "}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity"},
+"30312cf8": {"dfnID":"30312cf8","dfnText":":scope","external":true,"refSections":[{"refs":[{"id":"ref-for-scope-pseudo"},{"id":"ref-for-scope-pseudo\u2460"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-scope-pseudo\u2461"},{"id":"ref-for-scope-pseudo\u2462"},{"id":"ref-for-scope-pseudo\u2463"},{"id":"ref-for-scope-pseudo\u2464"},{"id":"ref-for-scope-pseudo\u2465"},{"id":"ref-for-scope-pseudo\u2466"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-scope-pseudo\u2467"},{"id":"ref-for-scope-pseudo\u2468"},{"id":"ref-for-scope-pseudo\u2460\u24ea"},{"id":"ref-for-scope-pseudo\u2460\u2460"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-scope-pseudo\u2460\u2461"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"},{"refs":[{"id":"ref-for-scope-pseudo\u2460\u2462"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo"},
+"3040890a": {"dfnID":"3040890a","dfnText":"revert","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-revert"}],"title":"4.5. \nAdditions Since Level 3"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert"},
+"3c7e8170": {"dfnID":"3c7e8170","dfnText":"supports()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-supports"}],"title":"4.5. \nAdditions Since Level 3"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-conditional-5/#funcdef-supports"},
+"3fcc582f": {"dfnID":"3fcc582f","dfnText":"shadow root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-root"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-root"},
+"40776474": {"dfnID":"40776474","dfnText":"@import","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-import"},{"id":"ref-for-at-ruledef-import\u2460"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461"}],"title":"4.4. \nAdditions Since Level 4"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462"}],"title":"4.5. \nAdditions Since Level 3"},{"refs":[{"id":"ref-for-at-ruledef-import\u2463"},{"id":"ref-for-at-ruledef-import\u2464"}],"title":"6. \nSecurity Considerations"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-import"},
+"46e0f703": {"dfnID":"46e0f703","dfnText":"subject","external":true,"refSections":[{"refs":[{"id":"ref-for-selector-subject"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-selector-subject\u2460"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-selector-subject\u2461"},{"id":"ref-for-selector-subject\u2462"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-selector-subject\u2463"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-selector-subject\u2464"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject"},
+"4f22bd22": {"dfnID":"4f22bd22","dfnText":"@font-face","external":true,"refSections":[{"refs":[{"id":"ref-for-at-font-face-rule"}],"title":"2.5.5. \nScope Nesting"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-fonts-5/#at-font-face-rule"},
 "503b593d": {"dfnID":"503b593d","dfnText":"author origin","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-origin-author"},{"id":"ref-for-cascade-origin-author\u2460"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascade-origin-author"},
-"5285aebf": {"dfnID":"5285aebf","dfnText":"<forgiving-selector-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-forgiving-selector-list"},{"id":"ref-for-typedef-forgiving-selector-list\u2460"}],"title":"2.5. \nScoped Styles"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-forgiving-selector-list"},
-"58a8f724": {"dfnID":"58a8f724","dfnText":"shadow host","external":true,"refSections":[{"refs":[{"id":"ref-for-element-shadow-host"}],"title":"2.5. \nScoped Styles"}],"url":"https://dom.spec.whatwg.org/#element-shadow-host"},
-"67089067": {"dfnID":"67089067","dfnText":":is()","external":true,"refSections":[{"refs":[{"id":"ref-for-matches-pseudo"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#matches-pseudo"},
-"77446697": {"dfnID":"77446697","dfnText":"at-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-at-rule"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#at-rule"},
-"7ef4dcc3": {"dfnID":"7ef4dcc3","dfnText":"<stylesheet>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-stylesheet"},{"id":"ref-for-typedef-stylesheet\u2460"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"https://www.w3.org/TR/css-syntax-3/#typedef-stylesheet"},
-"81c11cfb": {"dfnID":"81c11cfb","dfnText":"selector","external":true,"refSections":[{"refs":[{"id":"ref-for-selector"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector"},
+"5183d406": {"dfnID":"5183d406","dfnText":"relative selector","external":true,"refSections":[{"refs":[{"id":"ref-for-relative-selector"},{"id":"ref-for-relative-selector\u2460"},{"id":"ref-for-relative-selector\u2461"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-relative-selector\u2462"},{"id":"ref-for-relative-selector\u2463"}],"title":"2.5.5. \nScope Nesting"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#relative-selector"},
+"5afeceea": {"dfnID":"5afeceea","dfnText":"parent element","external":true,"refSections":[{"refs":[{"id":"ref-for-parent-element"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"}],"url":"https://dom.spec.whatwg.org/#parent-element"},
+"602a57fb": {"dfnID":"602a57fb","dfnText":"&","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-selectordef-\u2460"},{"id":"ref-for-selectordef-\u2461"},{"id":"ref-for-selectordef-\u2462"},{"id":"ref-for-selectordef-\u2463"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-selectordef-\u2464"},{"id":"ref-for-selectordef-\u2465"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-selectordef-\u2466"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-"},
+"6329a743": {"dfnID":"6329a743","dfnText":"@keyframes","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-keyframes"}],"title":"2.5.5. \nScope Nesting"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-animations-1/#at-ruledef-keyframes"},
+"662addbf": {"dfnID":"662addbf","dfnText":"<relative-selector-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-relative-selector-list"},{"id":"ref-for-typedef-relative-selector-list\u2460"}],"title":"2.5.3. \nScoped Style Rules"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-relative-selector-list"},
+"77446697": {"dfnID":"77446697","dfnText":"at-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-at-rule"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-at-rule\u2460"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-at-rule\u2461"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#at-rule"},
+"7b82c9e5": {"dfnID":"7b82c9e5","dfnText":"pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-x22"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-x22\u2460"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"}],"url":"https://www.w3.org/TR/CSS2/selector.html#x22"},
+"81c11cfb": {"dfnID":"81c11cfb","dfnText":"selector","external":true,"refSections":[{"refs":[{"id":"ref-for-selector"},{"id":"ref-for-selector\u2460"}],"title":"2.5.2. \nSyntax of @scope"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector"},
 "8326af4a": {"dfnID":"8326af4a","dfnText":"declared value","external":true,"refSections":[{"refs":[{"id":"ref-for-declared-value"}],"title":"2. \nCascading"},{"refs":[{"id":"ref-for-declared-value\u2460"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#declared-value"},
+"889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"3.1. \nThe CSSScopeRule interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "897dfd76": {"dfnID":"897dfd76","dfnText":"tree context","external":true,"refSections":[{"refs":[{"id":"ref-for-tree-context"},{"id":"ref-for-tree-context\u2460"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#tree-context"},
 "8a90789f": {"dfnID":"8a90789f","dfnText":"user-agent origin","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-origin-ua"},{"id":"ref-for-cascade-origin-ua\u2460"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascade-origin-ua"},
-"8d71278c": {"dfnID":"8d71278c","dfnText":"descendant combinator","external":true,"refSections":[{"refs":[{"id":"ref-for-descendant-combinator"},{"id":"ref-for-descendant-combinator\u2460"},{"id":"ref-for-descendant-combinator\u2461"}],"title":"2.5.2. \nScoped Descendant Combinator"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator"},
-"96660f33": {"dfnID":"96660f33","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-mult-opt\u2460"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt"},
-"a2a30ba8": {"dfnID":"a2a30ba8","dfnText":"CORS protocol","external":true,"refSections":[{"refs":[{"id":"ref-for-cors-protocol"}],"title":"\nPrivacy and Security Considerations"}],"url":"https://fetch.spec.whatwg.org/#cors-protocol"},
-"ac5b945e": {"dfnID":"ac5b945e","dfnText":"@layer","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-layer"}],"title":"3.3. \nAdditions Since Level 4"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-layer"},
-"at-ruledef-scope": {"dfnID":"at-ruledef-scope","dfnText":"@scope","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-scope"},{"id":"ref-for-at-ruledef-scope\u2460"},{"id":"ref-for-at-ruledef-scope\u2461"},{"id":"ref-for-at-ruledef-scope\u2462"},{"id":"ref-for-at-ruledef-scope\u2463"},{"id":"ref-for-at-ruledef-scope\u2464"},{"id":"ref-for-at-ruledef-scope\u2465"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2466"}],"title":"2.5.3. \nSelector Scoping Notation"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2467"}],"title":"3.2. \nAdditions Since Level 5"}],"url":"#at-ruledef-scope"},
-"bf1cee09": {"dfnID":"bf1cee09","dfnText":"style rule","external":true,"refSections":[{"refs":[{"id":"ref-for-style-rule"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule"},
-"cascade": {"dfnID":"cascade","dfnText":"cascade","external":false,"refSections":[{"refs":[{"id":"ref-for-cascade"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-cascade\u2460"},{"id":"ref-for-cascade\u2461"}],"title":"3.3. \nAdditions Since Level 4"},{"refs":[{"id":"ref-for-cascade\u2462"}],"title":"3.4. \nAdditions Since Level 3"},{"refs":[{"id":"ref-for-cascade\u2463"}],"title":"3.5. \nAdditions Since Level 2"}],"url":"#cascade"},
-"cebc3928": {"dfnID":"cebc3928","dfnText":"revert-layer","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-revert-layer"}],"title":"3.3. \nAdditions Since Level 4"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert-layer"},
-"d0acb58b": {"dfnID":"d0acb58b","dfnText":"block at-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-block-at-rule"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#block-at-rule"},
-"d3df8a7e": {"dfnID":"d3df8a7e","dfnText":"teal","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-teal"}],"title":"2.5.2. \nScoped Descendant Combinator"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-teal"},
-"d693f82c": {"dfnID":"d693f82c","dfnText":"cascade layers","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-layers"},{"id":"ref-for-cascade-layers\u2460"},{"id":"ref-for-cascade-layers\u2461"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-cascade-layers\u2462"}],"title":"3.3. \nAdditions Since Level 4"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascade-layers"},
-"e8732b9a": {"dfnID":"e8732b9a","dfnText":"complex selector","external":true,"refSections":[{"refs":[{"id":"ref-for-complex"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-complex\u2460"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#complex"},
-"encapsulation-contexts": {"dfnID":"encapsulation-contexts","dfnText":"encapsulation contexts","external":false,"refSections":[{"refs":[{"id":"ref-for-encapsulation-contexts"},{"id":"ref-for-encapsulation-contexts\u2460"},{"id":"ref-for-encapsulation-contexts\u2461"},{"id":"ref-for-encapsulation-contexts\u2462"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-encapsulation-contexts\u2463"}],"title":"3.4. \nAdditions Since Level 3"}],"url":"#encapsulation-contexts"},
-"f0811ff8": {"dfnID":"f0811ff8","dfnText":"img","external":true,"refSections":[{"refs":[{"id":"ref-for-the-img-element"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
-"f136f2ad": {"dfnID":"f136f2ad","dfnText":"scoped selector","external":true,"refSections":[{"refs":[{"id":"ref-for-scoped-selector"},{"id":"ref-for-scoped-selector\u2460"},{"id":"ref-for-scoped-selector\u2461"}],"title":"2.5. \nScoped Styles"},{"refs":[{"id":"ref-for-scoped-selector\u2462"},{"id":"ref-for-scoped-selector\u2463"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector"},
+"8d71278c": {"dfnID":"8d71278c","dfnText":"descendant combinator","external":true,"refSections":[{"refs":[{"id":"ref-for-descendant-combinator"}],"title":"2.5.3. \nScoped Style Rules"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator"},
+"937c4867": {"dfnID":"937c4867","dfnText":"combinator","external":true,"refSections":[{"refs":[{"id":"ref-for-selector-combinator"}],"title":"2.5.3. \nScoped Style Rules"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-combinator"},
+"96660f33": {"dfnID":"96660f33","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"}],"title":"2.5.2. \nSyntax of @scope"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt"},
+"9cf8580f": {"dfnID":"9cf8580f","dfnText":"owner node","external":true,"refSections":[{"refs":[{"id":"ref-for-cssstyledeclaration-owner-node"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-owner-node"},
+"9f4352fe": {"dfnID":"9f4352fe","dfnText":"CSSGroupingRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssgroupingrule"}],"title":"3.1. \nThe CSSScopeRule interface"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssgroupingrule"},
+"a2a30ba8": {"dfnID":"a2a30ba8","dfnText":"CORS protocol","external":true,"refSections":[{"refs":[{"id":"ref-for-cors-protocol"}],"title":"6. \nSecurity Considerations"}],"url":"https://fetch.spec.whatwg.org/#cors-protocol"},
+"ac5b945e": {"dfnID":"ac5b945e","dfnText":"@layer","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-layer"},{"id":"ref-for-at-ruledef-layer\u2460"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2461"}],"title":"4.4. \nAdditions Since Level 4"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-layer"},
+"ad2e5ee8": {"dfnID":"ad2e5ee8","dfnText":"contain the nesting selector","external":true,"refSections":[{"refs":[{"id":"ref-for-contain-the-nesting-selector"}],"title":"2.5.3. \nScoped Style Rules"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#contain-the-nesting-selector"},
+"at-ruledef-scope": {"dfnID":"at-ruledef-scope","dfnText":"@scope","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-scope"},{"id":"ref-for-at-ruledef-scope\u2460"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2461"},{"id":"ref-for-at-ruledef-scope\u2462"},{"id":"ref-for-at-ruledef-scope\u2463"},{"id":"ref-for-at-ruledef-scope\u2464"},{"id":"ref-for-at-ruledef-scope\u2465"},{"id":"ref-for-at-ruledef-scope\u2466"},{"id":"ref-for-at-ruledef-scope\u2467"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2468"},{"id":"ref-for-at-ruledef-scope\u2460\u24ea"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2460\u2460"},{"id":"ref-for-at-ruledef-scope\u2460\u2461"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2460\u2462"},{"id":"ref-for-at-ruledef-scope\u2460\u2463"},{"id":"ref-for-at-ruledef-scope\u2460\u2464"},{"id":"ref-for-at-ruledef-scope\u2460\u2465"},{"id":"ref-for-at-ruledef-scope\u2460\u2466"},{"id":"ref-for-at-ruledef-scope\u2460\u2467"},{"id":"ref-for-at-ruledef-scope\u2460\u2468"},{"id":"ref-for-at-ruledef-scope\u2461\u24ea"},{"id":"ref-for-at-ruledef-scope\u2461\u2460"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2461\u2461"},{"id":"ref-for-at-ruledef-scope\u2461\u2462"}],"title":"2.5.6. \nScoped Declarations "},{"refs":[{"id":"ref-for-at-ruledef-scope\u2461\u2463"}],"title":"3.1. \nThe CSSScopeRule interface"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2461\u2464"},{"id":"ref-for-at-ruledef-scope\u2461\u2465"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2461\u2466"},{"id":"ref-for-at-ruledef-scope\u2461\u2467"},{"id":"ref-for-at-ruledef-scope\u2461\u2468"},{"id":"ref-for-at-ruledef-scope\u2462\u24ea"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2462\u2460"}],"title":"4.3. \nAdditions Since Level 5"}],"url":"#at-ruledef-scope"},
+"b20df17a": {"dfnID":"b20df17a","dfnText":"<selector-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-selector-list"},{"id":"ref-for-typedef-selector-list\u2460"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-typedef-selector-list\u2461"}],"title":"2.5.3. \nScoped Style Rules"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-selector-list"},
+"ba920583": {"dfnID":"ba920583","dfnText":"style","external":true,"refSections":[{"refs":[{"id":"ref-for-the-style-element"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"}],"url":"https://html.spec.whatwg.org/multipage/semantics.html#the-style-element"},
+"bf1cee09": {"dfnID":"bf1cee09","dfnText":"style rule","external":true,"refSections":[{"refs":[{"id":"ref-for-style-rule"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-style-rule\u2460"},{"id":"ref-for-style-rule\u2461"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-style-rule\u2462"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-style-rule\u2463"}],"title":"2.5.6. \nScoped Declarations "}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule"},
+"c76091f9": {"dfnID":"c76091f9","dfnText":"qualified rule","external":true,"refSections":[{"refs":[{"id":"ref-for-qualified-rule"}],"title":"2.5.2. \nSyntax of @scope"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#qualified-rule"},
+"c7d8d91b": {"dfnID":"c7d8d91b","dfnText":"node tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-node-tree"},{"id":"ref-for-concept-node-tree\u2460"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"}],"url":"https://dom.spec.whatwg.org/#concept-node-tree"},
+"cascade": {"dfnID":"cascade","dfnText":"cascade","external":false,"refSections":[{"refs":[{"id":"ref-for-cascade"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-cascade\u2460"},{"id":"ref-for-cascade\u2461"}],"title":"4.4. \nAdditions Since Level 4"},{"refs":[{"id":"ref-for-cascade\u2462"}],"title":"4.5. \nAdditions Since Level 3"},{"refs":[{"id":"ref-for-cascade\u2463"}],"title":"4.6. \nAdditions Since Level 2"}],"url":"#cascade"},
+"ce2e3c84": {"dfnID":"ce2e3c84","dfnText":"shadow host","external":true,"refSections":[{"refs":[{"id":"ref-for-shadow-host"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-shadow-host\u2460"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-shadow-host\u2461"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-shadow-host\u2462"},{"id":"ref-for-shadow-host\u2463"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"https://www.w3.org/TR/css-scoping-1/#shadow-host"},
+"cebc3928": {"dfnID":"cebc3928","dfnText":"revert-layer","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-all-revert-layer"}],"title":"4.4. \nAdditions Since Level 4"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert-layer"},
+"cssscoperule": {"dfnID":"cssscoperule","dfnText":"CSSScopeRule","external":false,"refSections":[{"refs":[{"id":"ref-for-cssscoperule"}],"title":"3.1. \nThe CSSScopeRule interface"},{"refs":[{"id":"ref-for-cssscoperule\u2460"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"#cssscoperule"},
+"d0acb58b": {"dfnID":"d0acb58b","dfnText":"block at-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-block-at-rule"}],"title":"2.5. \nScoping Styles: the @scope rule"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#block-at-rule"},
+"d462b34f": {"dfnID":"d462b34f","dfnText":"node","external":true,"refSections":[{"refs":[{"id":"ref-for-boundary-point-node"}],"title":"2.5. \nScoping Styles: the @scope rule"}],"url":"https://dom.spec.whatwg.org/#boundary-point-node"},
+"d693f82c": {"dfnID":"d693f82c","dfnText":"cascade layers","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-layers"},{"id":"ref-for-cascade-layers\u2460"},{"id":"ref-for-cascade-layers\u2461"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-cascade-layers\u2462"}],"title":"4.4. \nAdditions Since Level 4"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascade-layers"},
+"dom-cssscoperule-end": {"dfnID":"dom-cssscoperule-end","dfnText":"end","external":false,"refSections":[],"url":"#dom-cssscoperule-end"},
+"dom-cssscoperule-start": {"dfnID":"dom-cssscoperule-start","dfnText":"start","external":false,"refSections":[],"url":"#dom-cssscoperule-start"},
+"ed267f22": {"dfnID":"ed267f22","dfnText":"nested declarations rule","external":true,"refSections":[{"refs":[{"id":"ref-for-nested-declarations-rule%E2%91%A0"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-nested-declarations-rule%E2%91%A0\u2460"}],"title":"2.5.6. \nScoped Declarations "}],"url":"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#nested-declarations-rule%E2%91%A0"},
+"encapsulation-contexts": {"dfnID":"encapsulation-contexts","dfnText":"encapsulation contexts","external":false,"refSections":[{"refs":[{"id":"ref-for-encapsulation-contexts"},{"id":"ref-for-encapsulation-contexts\u2460"},{"id":"ref-for-encapsulation-contexts\u2461"},{"id":"ref-for-encapsulation-contexts\u2462"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-encapsulation-contexts\u2463"}],"title":"4.5. \nAdditions Since Level 3"}],"url":"#encapsulation-contexts"},
+"f0811ff8": {"dfnID":"f0811ff8","dfnText":"img","external":true,"refSections":[{"refs":[{"id":"ref-for-the-img-element"}],"title":"2.5.1. \nEffects of @scope"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
+"f136f2ad": {"dfnID":"f136f2ad","dfnText":"scoped selector","external":true,"refSections":[{"refs":[{"id":"ref-for-scoped-selector"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-scoped-selector\u2460"}],"title":"2.5.5. \nScope Nesting"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector"},
+"f7960529": {"dfnID":"f7960529","dfnText":"root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-root"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"}],"url":"https://dom.spec.whatwg.org/#concept-tree-root"},
+"f9d909f7": {"dfnID":"f9d909f7","dfnText":"inclusive descendant","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-inclusive-descendant"},{"id":"ref-for-concept-tree-inclusive-descendant\u2460"}],"title":"2.5. \nScoping Styles: the @scope rule"}],"url":"https://dom.spec.whatwg.org/#concept-tree-inclusive-descendant"},
 "fefa5851": {"dfnID":"fefa5851","dfnText":"shadow-including tree order","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-including-tree-order"}],"title":"2.1. \nCascade Sorting Order"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-including-tree-order"},
 "important": {"dfnID":"important","dfnText":"important","external":false,"refSections":[{"refs":[{"id":"ref-for-important"},{"id":"ref-for-important\u2460"},{"id":"ref-for-important\u2461"},{"id":"ref-for-important\u2462"},{"id":"ref-for-important\u2463"},{"id":"ref-for-important\u2464"},{"id":"ref-for-important\u2465"},{"id":"ref-for-important\u2466"},{"id":"ref-for-important\u2467"},{"id":"ref-for-important\u2468"}],"title":"2.1. \nCascade Sorting Order"}],"url":"#important"},
+"in-scope": {"dfnID":"in-scope","dfnText":"in scope","external":false,"refSections":[{"refs":[{"id":"ref-for-in-scope"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-in-scope\u2460"},{"id":"ref-for-in-scope\u2461"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-in-scope\u2462"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"}],"url":"#in-scope"},
 "normal": {"dfnID":"normal","dfnText":"normal","external":false,"refSections":[{"refs":[{"id":"ref-for-normal"},{"id":"ref-for-normal\u2460"},{"id":"ref-for-normal\u2461"},{"id":"ref-for-normal\u2462"},{"id":"ref-for-normal\u2463"},{"id":"ref-for-normal\u2464"},{"id":"ref-for-normal\u2465"},{"id":"ref-for-normal\u2466"}],"title":"2.1. \nCascade Sorting Order"}],"url":"#normal"},
 "origin": {"dfnID":"origin","dfnText":"cascade origin","external":false,"refSections":[{"refs":[{"id":"ref-for-origin"},{"id":"ref-for-origin\u2460"},{"id":"ref-for-origin\u2461"},{"id":"ref-for-origin\u2462"},{"id":"ref-for-origin\u2463"},{"id":"ref-for-origin\u2464"}],"title":"2.1. \nCascade Sorting Order"}],"url":"#origin"},
 "output-of-the-cascade": {"dfnID":"output-of-the-cascade","dfnText":"output of the cascade","external":false,"refSections":[],"url":"#output-of-the-cascade"},
-"scope": {"dfnID":"scope","dfnText":"scope","external":false,"refSections":[{"refs":[{"id":"ref-for-scope"},{"id":"ref-for-scope\u2460"},{"id":"ref-for-scope\u2461"},{"id":"ref-for-scope\u2462"}],"title":"2.5. \nScoped Styles"},{"refs":[{"id":"ref-for-scope\u2463"},{"id":"ref-for-scope\u2464"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-scope\u2465"}],"title":"2.5.3. \nSelector Scoping Notation"},{"refs":[{"id":"ref-for-scope\u2466"}],"title":"3.1. \nChanges since the 21 December 2021 First Public Working Draft"},{"refs":[{"id":"ref-for-scope\u2467"}],"title":"3.2. \nAdditions Since Level 5"}],"url":"#scope"},
-"scope-proximity": {"dfnID":"scope-proximity","dfnText":"scope proximity","external":false,"refSections":[{"refs":[{"id":"ref-for-scope-proximity"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-scope-proximity\u2460"},{"id":"ref-for-scope-proximity\u2461"},{"id":"ref-for-scope-proximity\u2462"}],"title":"2.5.3. \nSelector Scoping Notation"},{"refs":[{"id":"ref-for-scope-proximity\u2463"}],"title":"3.2. \nAdditions Since Level 5"}],"url":"#scope-proximity"},
-"scoped-descendant-combinator": {"dfnID":"scoped-descendant-combinator","dfnText":"scoped descendant combinator","external":false,"refSections":[{"refs":[{"id":"ref-for-scoped-descendant-combinator"},{"id":"ref-for-scoped-descendant-combinator\u2460"}],"title":"2.5.2. \nScoped Descendant Combinator"}],"url":"#scoped-descendant-combinator"},
-"scoping-limit": {"dfnID":"scoping-limit","dfnText":"scoping limit","external":false,"refSections":[{"refs":[{"id":"ref-for-scoping-limit"},{"id":"ref-for-scoping-limit\u2460"},{"id":"ref-for-scoping-limit\u2461"},{"id":"ref-for-scoping-limit\u2462"},{"id":"ref-for-scoping-limit\u2463"},{"id":"ref-for-scoping-limit\u2464"},{"id":"ref-for-scoping-limit\u2465"}],"title":"2.5. \nScoped Styles"},{"refs":[{"id":"ref-for-scoping-limit\u2466"}],"title":"2.5.3. \nSelector Scoping Notation"},{"refs":[{"id":"ref-for-scoping-limit\u2467"}],"title":"3.1. \nChanges since the 21 December 2021 First Public Working Draft"}],"url":"#scoping-limit"},
-"selector-scoping-notation": {"dfnID":"selector-scoping-notation","dfnText":"selector scoping notation","external":false,"refSections":[{"refs":[{"id":"ref-for-selector-scoping-notation"}],"title":"2.5.2. \nScoped Descendant Combinator"},{"refs":[{"id":"ref-for-selector-scoping-notation\u2460"},{"id":"ref-for-selector-scoping-notation\u2461"},{"id":"ref-for-selector-scoping-notation\u2462"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"#selector-scoping-notation"},
-"strong-scoping-proximity": {"dfnID":"strong-scoping-proximity","dfnText":"Strong Scoping Proximity","external":false,"refSections":[{"refs":[{"id":"ref-for-strong-scoping-proximity"},{"id":"ref-for-strong-scoping-proximity\u2460"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-strong-scoping-proximity\u2461"}],"title":"2.5.1. \nScoping Styles: the @scope rule"}],"url":"#strong-scoping-proximity"},
-"typedef-scope-end": {"dfnID":"typedef-scope-end","dfnText":"<scope-end>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-end"},{"id":"ref-for-typedef-scope-end\u2460"}],"title":"2.5. \nScoped Styles"},{"refs":[{"id":"ref-for-typedef-scope-end\u2461"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-typedef-scope-end\u2462"},{"id":"ref-for-typedef-scope-end\u2463"},{"id":"ref-for-typedef-scope-end\u2464"}],"title":"2.5.3. \nSelector Scoping Notation"},{"refs":[{"id":"ref-for-typedef-scope-end\u2465"}],"title":"3.2. \nAdditions Since Level 5"}],"url":"#typedef-scope-end"},
-"typedef-scope-start": {"dfnID":"typedef-scope-start","dfnText":"<scope-start>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-start"},{"id":"ref-for-typedef-scope-start\u2460"},{"id":"ref-for-typedef-scope-start\u2461"}],"title":"2.5. \nScoped Styles"},{"refs":[{"id":"ref-for-typedef-scope-start\u2462"},{"id":"ref-for-typedef-scope-start\u2463"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-typedef-scope-start\u2464"},{"id":"ref-for-typedef-scope-start\u2465"},{"id":"ref-for-typedef-scope-start\u2466"},{"id":"ref-for-typedef-scope-start\u2467"}],"title":"2.5.3. \nSelector Scoping Notation"},{"refs":[{"id":"ref-for-typedef-scope-start\u2468"}],"title":"3.2. \nAdditions Since Level 5"}],"url":"#typedef-scope-start"},
-"typedef-selector-scope": {"dfnID":"typedef-selector-scope","dfnText":"<selector-scope>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-selector-scope"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"#typedef-selector-scope"},
-"weak-scoping-proximity": {"dfnID":"weak-scoping-proximity","dfnText":"Weak Scoping Proximity","external":false,"refSections":[{"refs":[{"id":"ref-for-weak-scoping-proximity"},{"id":"ref-for-weak-scoping-proximity\u2460"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-weak-scoping-proximity\u2461"},{"id":"ref-for-weak-scoping-proximity\u2462"}],"title":"2.5.1. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-weak-scoping-proximity\u2463"}],"title":"2.5.2. \nScoped Descendant Combinator"},{"refs":[{"id":"ref-for-weak-scoping-proximity\u2464"},{"id":"ref-for-weak-scoping-proximity\u2465"}],"title":"2.5.3. \nSelector Scoping Notation"}],"url":"#weak-scoping-proximity"},
+"scope": {"dfnID":"scope","dfnText":"scope","external":false,"refSections":[{"refs":[{"id":"ref-for-scope"},{"id":"ref-for-scope\u2460"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-scope\u2461"},{"id":"ref-for-scope\u2462"},{"id":"ref-for-scope\u2463"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-scope\u2464"},{"id":"ref-for-scope\u2465"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-scope\u2466"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"},{"refs":[{"id":"ref-for-scope\u2467"}],"title":"4.3. \nAdditions Since Level 5"}],"url":"#scope"},
+"scope-proximity": {"dfnID":"scope-proximity","dfnText":"Scope Proximity","external":false,"refSections":[{"refs":[{"id":"ref-for-scope-proximity"},{"id":"ref-for-scope-proximity\u2460"},{"id":"ref-for-scope-proximity\u2461"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-scope-proximity\u2462"},{"id":"ref-for-scope-proximity\u2463"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-scope-proximity\u2464"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"},{"refs":[{"id":"ref-for-scope-proximity\u2465"}],"title":"4.3. \nAdditions Since Level 5"}],"url":"#scope-proximity"},
+"scoped-style-rules": {"dfnID":"scoped-style-rules","dfnText":"Scoped style rules","external":false,"refSections":[{"refs":[{"id":"ref-for-scoped-style-rules"}],"title":"2.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-scoped-style-rules\u2460"},{"id":"ref-for-scoped-style-rules\u2461"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-scoped-style-rules\u2462"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-scoped-style-rules\u2463"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-scoped-style-rules\u2464"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-scoped-style-rules\u2465"},{"id":"ref-for-scoped-style-rules\u2466"},{"id":"ref-for-scoped-style-rules\u2467"},{"id":"ref-for-scoped-style-rules\u2468"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-scoped-style-rules\u2460\u24ea"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"}],"url":"#scoped-style-rules"},
+"scoping-limit": {"dfnID":"scoping-limit","dfnText":"scoping limit","external":false,"refSections":[{"refs":[{"id":"ref-for-scoping-limit"},{"id":"ref-for-scoping-limit\u2460"},{"id":"ref-for-scoping-limit\u2461"},{"id":"ref-for-scoping-limit\u2462"}],"title":"2.5. \nScoping Styles: the @scope rule"},{"refs":[{"id":"ref-for-scoping-limit\u2463"},{"id":"ref-for-scoping-limit\u2464"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-scoping-limit\u2465"},{"id":"ref-for-scoping-limit\u2466"},{"id":"ref-for-scoping-limit\u2467"},{"id":"ref-for-scoping-limit\u2468"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-scoping-limit\u2460\u24ea"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"}],"url":"#scoping-limit"},
+"typedef-scope-end": {"dfnID":"typedef-scope-end","dfnText":"<scope-end>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-end"},{"id":"ref-for-typedef-scope-end\u2460"},{"id":"ref-for-typedef-scope-end\u2461"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-typedef-scope-end\u2462"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-typedef-scope-end\u2463"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-typedef-scope-end\u2464"},{"id":"ref-for-typedef-scope-end\u2465"}],"title":"3.1. \nThe CSSScopeRule interface"},{"refs":[{"id":"ref-for-typedef-scope-end\u2466"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"},{"refs":[{"id":"ref-for-typedef-scope-end\u2467"}],"title":"4.3. \nAdditions Since Level 5"}],"url":"#typedef-scope-end"},
+"typedef-scope-start": {"dfnID":"typedef-scope-start","dfnText":"<scope-start>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-start"}],"title":"2.5.1. \nEffects of @scope"},{"refs":[{"id":"ref-for-typedef-scope-start\u2460"},{"id":"ref-for-typedef-scope-start\u2461"},{"id":"ref-for-typedef-scope-start\u2462"}],"title":"2.5.2. \nSyntax of @scope"},{"refs":[{"id":"ref-for-typedef-scope-start\u2463"},{"id":"ref-for-typedef-scope-start\u2464"}],"title":"2.5.3. \nScoped Style Rules"},{"refs":[{"id":"ref-for-typedef-scope-start\u2465"},{"id":"ref-for-typedef-scope-start\u2466"},{"id":"ref-for-typedef-scope-start\u2467"},{"id":"ref-for-typedef-scope-start\u2468"}],"title":"2.5.4. \nIdentifying Scoping Roots and Limits"},{"refs":[{"id":"ref-for-typedef-scope-start\u2460\u24ea"}],"title":"2.5.5. \nScope Nesting"},{"refs":[{"id":"ref-for-typedef-scope-start\u2460\u2460"},{"id":"ref-for-typedef-scope-start\u2460\u2461"}],"title":"3.1. \nThe CSSScopeRule interface"},{"refs":[{"id":"ref-for-typedef-scope-start\u2460\u2462"},{"id":"ref-for-typedef-scope-start\u2460\u2463"}],"title":"4.1. \nChanges since the 21 March 2023 Working Draft"},{"refs":[{"id":"ref-for-typedef-scope-start\u2460\u2464"}],"title":"4.2. \nChanges since the 21 December 2021 First Public Working Draft"},{"refs":[{"id":"ref-for-typedef-scope-start\u2460\u2465"}],"title":"4.3. \nAdditions Since Level 5"}],"url":"#typedef-scope-start"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -2912,20 +3183,19 @@ window.addEventListener("resize", repositionAnnoPanels);
 let refsData = {
 "#at-ruledef-scope": {"displayText":"@scope","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"@scope","type":"at-rule","url":"#at-ruledef-scope"},
 "#cascade": {"displayText":"cascade","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"cascade","type":"dfn","url":"#cascade"},
+"#cssscoperule": {"displayText":"CSSScopeRule","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"CSSScopeRule","type":"interface","url":"#cssscoperule"},
 "#encapsulation-contexts": {"displayText":"encapsulation contexts","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"encapsulation contexts","type":"dfn","url":"#encapsulation-contexts"},
 "#important": {"displayText":"important","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"important","type":"dfn","url":"#important"},
+"#in-scope": {"displayText":"in scope","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"in scope","type":"dfn","url":"#in-scope"},
 "#normal": {"displayText":"normal","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"normal","type":"dfn","url":"#normal"},
 "#origin": {"displayText":"origin","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"origin","type":"dfn","url":"#origin"},
 "#scope": {"displayText":"scope","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"scope","type":"dfn","url":"#scope"},
 "#scope-proximity": {"displayText":"scope proximity","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"scope proximity","type":"dfn","url":"#scope-proximity"},
-"#scoped-descendant-combinator": {"displayText":"scoped descendant combinator","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"scoped descendant combinator","type":"dfn","url":"#scoped-descendant-combinator"},
+"#scoped-style-rules": {"displayText":"scoped style rules","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"scoped style rules","type":"dfn","url":"#scoped-style-rules"},
 "#scoping-limit": {"displayText":"scoping limit","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"scoping limit","type":"dfn","url":"#scoping-limit"},
-"#selector-scoping-notation": {"displayText":"selector scoping notation","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"selector scoping notation","type":"dfn","url":"#selector-scoping-notation"},
-"#strong-scoping-proximity": {"displayText":"strong scoping proximity","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"strong scoping proximity","type":"dfn","url":"#strong-scoping-proximity"},
 "#typedef-scope-end": {"displayText":"<scope-end>","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"<scope-end>","type":"type","url":"#typedef-scope-end"},
 "#typedef-scope-start": {"displayText":"<scope-start>","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"<scope-start>","type":"type","url":"#typedef-scope-start"},
-"#typedef-selector-scope": {"displayText":"<selector-scope>","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"<selector-scope>","type":"type","url":"#typedef-selector-scope"},
-"#weak-scoping-proximity": {"displayText":"weak scoping proximity","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"local","text":"weak scoping proximity","type":"dfn","url":"#weak-scoping-proximity"},
+"https://andreubotella.com/csswg-auto-build/test/css-animations-1/#at-ruledef-keyframes": {"displayText":"@keyframes","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-animations","spec":"css-animations-1","status":"current","text":"@keyframes","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-animations-1/#at-ruledef-keyframes"},
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-import": {"displayText":"@import","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"@import","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-import"},
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-layer": {"displayText":"@layer","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"@layer","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#at-ruledef-layer"},
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascade-layers": {"displayText":"cascade layers","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"cascade layers","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#cascade-layers"},
@@ -2939,31 +3209,51 @@ let refsData = {
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert": {"displayText":"revert","export":true,"for_":["all"],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"revert","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert"},
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert-layer": {"displayText":"revert-layer","export":true,"for_":["all"],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"revert-layer","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-revert-layer"},
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-unset": {"displayText":"unset","export":true,"for_":["all"],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"unset","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#valdef-all-unset"},
-"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-plum": {"displayText":"plum","export":true,"for_":["<color>","<named-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"plum","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-plum"},
-"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-teal": {"displayText":"teal","export":true,"for_":["<color>","<named-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"teal","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#valdef-color-teal"},
 "https://andreubotella.com/csswg-auto-build/test/css-conditional-5/#funcdef-supports": {"displayText":"supports()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"supports()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-conditional-5/#funcdef-supports"},
+"https://andreubotella.com/csswg-auto-build/test/css-fonts-5/#at-font-face-rule": {"displayText":"@font-face","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-fonts","spec":"css-fonts-5","status":"current","text":"@font-face","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-fonts-5/#at-font-face-rule"},
+"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#contain-the-nesting-selector": {"displayText":"contain the nesting selector","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-nesting","spec":"css-nesting-1","status":"current","text":"contain the nesting selector","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#contain-the-nesting-selector"},
+"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#nested-declarations-rule%E2%91%A0": {"displayText":"nested declarations rule","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-nesting","spec":"css-nesting-1","status":"current","text":"nested declarations rule","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#nested-declarations-rule%E2%91%A0"},
+"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-": {"displayText":"&","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-nesting","spec":"css-nesting-1","status":"current","text":"&","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/css-nesting-1/#selectordef-"},
 "https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#tree-context": {"displayText":"tree context","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"current","text":"tree context","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-scoping-1/#tree-context"},
 "https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#at-rule": {"displayText":"at-rule","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"at-rule","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#at-rule"},
 "https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#block-at-rule": {"displayText":"block at-rule","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"block at-rule","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#block-at-rule"},
+"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#css-rule": {"displayText":"rule","export":true,"for_":["CSS"],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"rule","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#css-rule"},
 "https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#declaration": {"displayText":"declaration","export":true,"for_":["CSS"],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"declaration","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#declaration"},
+"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#qualified-rule": {"displayText":"qualified rule","export":true,"for_":["CSS"],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"qualified rule","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#qualified-rule"},
 "https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule": {"displayText":"style rule","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"style rule","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule"},
+"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-block-contents": {"displayText":"<block-contents>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<block-contents>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-block-contents"},
+"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-rule-list": {"displayText":"<rule-list>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<rule-list>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-rule-list"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt": {"displayText":"?","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-values","spec":"css-values-3","status":"current","text":"?","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-3/#mult-opt"},
+"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssgroupingrule": {"displayText":"CSSGroupingRule","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"CSSGroupingRule","type":"interface","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssgroupingrule"},
+"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssomstring": {"displayText":"CSSOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"CSSOMString","type":"interface","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssomstring"},
 "https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-declarations": {"displayText":"declarations","export":true,"for_":["CSSStyleDeclaration"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"declarations","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-declarations"},
-"https://andreubotella.com/csswg-auto-build/test/selectors-4/#complex": {"displayText":"complex selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"complex selector","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#complex"},
+"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-owner-node": {"displayText":"owner node","export":true,"for_":["CSSStyleDeclaration"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"owner node","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#cssstyledeclaration-owner-node"},
 "https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator": {"displayText":"descendant combinator","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"descendant combinator","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#descendant-combinator"},
-"https://andreubotella.com/csswg-auto-build/test/selectors-4/#matches-pseudo": {"displayText":":is()","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":":is()","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#matches-pseudo"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#featureless": {"displayText":"featureless","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"featureless","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#featureless"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#relative-selector": {"displayText":"relative selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"relative selector","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#relative-selector"},
 "https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo": {"displayText":":scope","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":":scope","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scope-pseudo"},
 "https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector": {"displayText":"scoped selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"scoped selector","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoped-selector"},
 "https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root": {"displayText":"scoping root","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"scoping root","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#scoping-root"},
 "https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector": {"displayText":"selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"selector","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-combinator": {"displayText":"combinator","export":true,"for_":["selector"],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"combinator","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-combinator"},
 "https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject": {"displayText":"subject","export":true,"for_":["selector"],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"subject","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#selector-subject"},
-"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-forgiving-selector-list": {"displayText":"<forgiving-selector-list>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"<forgiving-selector-list>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-forgiving-selector-list"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity": {"displayText":"specificity","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"specificity","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-relative-selector-list": {"displayText":"<relative-selector-list>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"<relative-selector-list>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-relative-selector-list"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-selector-list": {"displayText":"<selector-list>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"<selector-list>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#typedef-selector-list"},
+"https://dom.spec.whatwg.org/#boundary-point-node": {"displayText":"node","export":true,"for_":["boundary point"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"node","type":"dfn","url":"https://dom.spec.whatwg.org/#boundary-point-node"},
+"https://dom.spec.whatwg.org/#concept-node-tree": {"displayText":"node tree","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"node tree","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-node-tree"},
 "https://dom.spec.whatwg.org/#concept-shadow-including-tree-order": {"displayText":"shadow-including tree order","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow-including tree order","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-shadow-including-tree-order"},
+"https://dom.spec.whatwg.org/#concept-shadow-root": {"displayText":"shadow root","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow root","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-shadow-root"},
 "https://dom.spec.whatwg.org/#concept-shadow-tree": {"displayText":"shadow tree","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow tree","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
-"https://dom.spec.whatwg.org/#element-shadow-host": {"displayText":"shadow host","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow host","type":"dfn","url":"https://dom.spec.whatwg.org/#element-shadow-host"},
+"https://dom.spec.whatwg.org/#concept-tree-inclusive-descendant": {"displayText":"inclusive descendant","export":true,"for_":["tree"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"inclusive descendant","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-tree-inclusive-descendant"},
+"https://dom.spec.whatwg.org/#concept-tree-root": {"displayText":"root","export":true,"for_":["tree"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"root","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-tree-root"},
+"https://dom.spec.whatwg.org/#parent-element": {"displayText":"parent element","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"parent element","type":"dfn","url":"https://dom.spec.whatwg.org/#parent-element"},
 "https://fetch.spec.whatwg.org/#cors-protocol": {"displayText":"CORS protocol","export":true,"for_":[],"level":"1","normative":true,"shortname":"fetch","spec":"fetch","status":"current","text":"cors protocol","type":"dfn","url":"https://fetch.spec.whatwg.org/#cors-protocol"},
 "https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element": {"displayText":"img","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"img","type":"element","url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
-"https://www.w3.org/TR/css-syntax-3/#typedef-stylesheet": {"displayText":"<stylesheet>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"snapshot","text":"<stylesheet>","type":"type","url":"https://www.w3.org/TR/css-syntax-3/#typedef-stylesheet"},
+"https://html.spec.whatwg.org/multipage/semantics.html#the-style-element": {"displayText":"style","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"style","type":"element","url":"https://html.spec.whatwg.org/multipage/semantics.html#the-style-element"},
+"https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
+"https://www.w3.org/TR/CSS2/selector.html#x22": {"displayText":"pseudo-elements","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"pseudo-elements","type":"dfn","url":"https://www.w3.org/TR/CSS2/selector.html#x22"},
+"https://www.w3.org/TR/css-scoping-1/#shadow-host": {"displayText":"shadow host","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"snapshot","text":"shadow host","type":"dfn","url":"https://www.w3.org/TR/css-scoping-1/#shadow-host"},
 };
 
 function mkRefHint(link, ref) {
