@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+  pull_request:
+
 jobs:
   build:
     name: Build
@@ -13,32 +15,31 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
-      - name: Setup Pipenv
-        run: pip3 install pipenv && pipenv update
+      - run: pip3 install bikeshed jinja2
       - name: Update Bikeshed
-        run: pipenv run bikeshed update
+        run: bikeshed update
       - name: Configure Bikeshed spec data
-        run: pipenv run python ./configure-spec-data.py
-      - run: |
-          mkdir output
-          cp test-setup/templates/index.html output/index.html
-          cp -r csswg-drafts output/test
+        run: python ./configure-spec-data.py
       - name: Compile
         run: |
           set -e
-          for file in ./output/test/**/*.bs; do
-            pipenv run bikeshed -f spec "$file" "${file%.bs}.html"
+          for file in ./csswg-drafts/**/*.bs; do
+            bikeshed -f spec "$file" "${file%.bs}.html"
           done
       - name: Fix directory defaults
         # The default pages for directories are assumed to be Overview.html, but
         # that doesn't work for Github Pages. So we copy them as index.html.
         run: |
           set -e
-          for file in ./output/test/**/Overview.html; do
+          for file in ./csswg-drafts/**/Overview.html; do
             cp "$file" "$(dirname "$file")/index.html"
           done
       - name: Build index
-        run: pipenv run python ./build-index.py
+        run: python ./build-index.py
+      - run: |
+          mkdir output
+          cp test-setup/templates/index.html output/index.html
+          cp -r csswg-drafts output/test
       - run: rm -rf ./output/test/.git{,attributes,ignore}
       - name: Build redirects to the official mirror
         run: |
@@ -47,10 +48,16 @@ jobs:
           set -e
           for index in ./output/test/*/index.html; do
             folder_name="$(basename "$(dirname "$index")")"
-            pipenv run python ./test-setup/redirect.py "$folder_name"
+            python ./test-setup/redirect.py "$folder_name"
           done
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          path: ./output
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           exclude_assets: ".github"

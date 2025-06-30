@@ -14,12 +14,12 @@ from collections import defaultdict
 
 from html.parser import HTMLParser
 
-from bikeshed import Spec, constants
+from bikeshed import Spec, messages
 
 import jinja2
 
 jinja_env = jinja2.Environment(
-    loader=jinja2.PackageLoader("build-index", "templates"),
+    loader=jinja2.FileSystemLoader("templates"),
     autoescape=jinja2.select_autoescape(),
     trim_blocks=True,
     lstrip_blocks=True
@@ -62,8 +62,12 @@ def title_from_html(file):
 
 def get_date_authored_timestamp_from_git(path):
     source = os.path.realpath(path)
-    proc = subprocess.run(["git", "log", "-1", "--format=%at", source],
-                          capture_output=True, encoding="utf_8")
+    proc = subprocess.run(
+        ["git", "log", "-1", "--format=%at", source],
+        cwd="csswg-drafts",
+        capture_output=True,
+        encoding="utf_8",
+    )
     return int(proc.stdout.splitlines()[-1])
 
 
@@ -124,7 +128,7 @@ def create_symlink(shortname, spec_folder):
     if spec_folder in timestamps:
         timestamps[shortname] = timestamps[spec_folder]
 
-    shortname_folder = os.path.join("./output/test", shortname)
+    shortname_folder = os.path.join("./csswg-drafts", shortname)
     try:
         os.symlink(spec_folder, shortname_folder)
     except OSError:
@@ -144,12 +148,12 @@ CURRENT_WORK_EXCEPTIONS = {
 # ------------------------------------------------------------------------------
 
 
-constants.setErrorLevel("nothing")
+messages.state.dieOn = "nothing"
 
 specgroups = defaultdict(list)
 timestamps = defaultdict(list)
 
-for entry in os.scandir("./output/test"):
+for entry in os.scandir("./csswg-drafts"):
     if entry.is_dir(follow_symlinks=False):
         # Not actual specs, just examples.
         if entry.name in ["css-module"]:
@@ -202,10 +206,10 @@ for shortname, specgroup in specgroups.items():
             create_symlink("css", currentWorkDir)
 
 
-with open('./output/test/timestamps.json', 'w') as f:
+with open('./csswg-drafts/timestamps.json', 'w') as f:
     json.dump(dict(sorted(timestamps.items())), f, indent=2)
 
 
-with open("./output/test/index.html", mode='w', encoding="UTF-8") as f:
+with open("./csswg-drafts/index.html", mode='w', encoding="UTF-8") as f:
     template = jinja_env.get_template("index.html.j2")
     f.write(template.render(specgroups=specgroups))
