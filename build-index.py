@@ -131,13 +131,16 @@ def create_symlink(shortname, spec_folder):
 
 
 CURRENT_WORK_EXCEPTIONS = {
-    #"css-conditional": 5,
-    #"css-easing": 2,
-    #"css-grid": 2,
+    "css-box": 3,
+    "css-conditional": 5,
+    "css-display": 4,
+    "css-easing": 2,
+    "css-grid": 2,
+    "css-overflow": 4,
     "css-snapshot": None,  # always choose the latest spec
-    #"css-values": 4,
-    #"css-writing-modes": 4,
-    #"web-animations": 2
+    "css-values": 4,
+    "css-writing-modes": 4,
+    "web-animations": 2
 }
 
 # ------------------------------------------------------------------------------
