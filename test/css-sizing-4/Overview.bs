@@ -10,10 +10,11 @@ TR: https://www.w3.org/TR/css-sizing-4/
 Issue Tracking: CSSWG GitHub https://github.com/w3c/csswg-drafts/issues
 Previous Version: https://www.w3.org/TR/2021/WD-css-sizing-4-20210520/
 Editor: Tab Atkins, Google, http://xanthir.com/contact/, w3cid 42199
-Editor: Elika J. Etemad / fantasai, Invited Expert, http://fantasai.inkedblade.net/contact, w3cid 35400
+Editor: Elika J. Etemad / fantasai, Apple, http://fantasai.inkedblade.net/contact, w3cid 35400
 Editor: Jen Simmons, Apple, http://jensimmons.com/, w3cid 52801
 Abstract: This module extends the CSS sizing properties with keywords that represent content-based "intrinsic" sizes and context-based "extrinsic" sizes, allowing CSS to more easily describe boxes that fit their content or fit into a particular layout context. This is a delta spec over CSS Sizing Level 3.
 Ignored Terms: block-level box
+Test Suite: https://wpt.fyi/results/css/css-sizing
 </pre>
 
 <pre class='link-defaults'>
@@ -26,6 +27,7 @@ spec:css2; type: property
 	text: max-height
 spec:css-align-3; type:value; text:stretch
 spec:css-logical-1; type:property; text:block-size
+spec:css-values-5; type:function; text:calc-size()
 </pre>
 
 
@@ -63,14 +65,15 @@ Value Definitions</h3>
 	also accept the <a>CSS-wide keywords</a> as their property value.
 	For readability they have not been repeated explicitly.
 
-<!--
-████████ ████████ ████████  ██     ██  ██████
-   ██    ██       ██     ██ ███   ███ ██    ██
-   ██    ██       ██     ██ ████ ████ ██
-   ██    ██████   ████████  ██ ███ ██  ██████
-   ██    ██       ██   ██   ██     ██       ██
-   ██    ██       ██    ██  ██     ██ ██    ██
-   ██    ████████ ██     ██ ██     ██  ██████
+<!-- Big Text: terms
+
+█████▌ █████▌ ████▌  █     █  ███▌ 
+  █▌   █▌     █▌  █▌ ██   ██ █▌  █▌
+  █▌   █▌     █▌  █▌ █▌█ █▐█ █▌    
+  █▌   ████   ████▌  █▌ █ ▐█  ███▌ 
+  █▌   █▌     █▌▐█   █▌   ▐█     █▌
+  █▌   █▌     █▌ ▐█  █▌   ▐█ █▌  █▌
+  █▌   █████▌ █▌  █▌ █▌   ▐█  ███▌ 
 -->
 
 <h2 id="terms">
@@ -91,14 +94,15 @@ Issue: [[css-sizing-3#terms]]
     (and in fact, non-replaced elements typically do not).
 -->
 
-<!--
-████████  ████████   ███████  ████████  ████████  ████████ ████████  ██████
-██     ██ ██     ██ ██     ██ ██     ██ ██     ██ ██       ██       ██    ██
-██     ██ ██     ██ ██     ██ ██     ██ ██     ██ ██       ██       ██
-████████  ████████  ██     ██ ████████  ██     ██ ██████   ██████    ██████
-██        ██   ██   ██     ██ ██        ██     ██ ██       ██             ██
-██        ██    ██  ██     ██ ██        ██     ██ ██       ██       ██    ██
-██        ██     ██  ███████  ██        ████████  ████████ ██        ██████
+<!-- Big Text: propdefs
+
+████▌  ████▌   ███▌  ████▌  ████▌  █████▌ █████▌  ███▌ 
+█▌  █▌ █▌  █▌ █▌  █▌ █▌  █▌ █▌  █▌ █▌     █▌     █▌  █▌
+█▌  █▌ █▌  █▌ █▌  █▌ █▌  █▌ █▌  █▌ █▌     █▌     █▌    
+████▌  ████▌  █▌  █▌ ████▌  █▌  █▌ ████   ████    ███▌ 
+█▌     █▌▐█   █▌  █▌ █▌     █▌  █▌ █▌     █▌         █▌
+█▌     █▌ ▐█  █▌  █▌ █▌     █▌  █▌ █▌     █▌     █▌  █▌
+█▌     █▌  █▌  ███▌  █▌     ████▌  █████▌ █▌      ███▌ 
 -->
 
 <h2 id="specifying-sizes" oldids='size-keywords'>
@@ -115,7 +119,7 @@ ISSUE(820): Add shorthands.
 New Sizing Values: the ''stretch'', ''fit-content'', and ''contain'' keywords</h3>
 
 	<pre class="propdef partial">
-	Name: width, height, inline-size, block-size, min-width, min-height, min-inline-size, min-block-size, max-width, max-height, max-inline-size, max-block-size
+	Name: width, height, min-width, min-height, max-width, max-height
 	New Values: stretch | fit-content | contain
 	</pre>
 
@@ -143,14 +147,19 @@ New Sizing Values: the ''stretch'', ''fit-content'', and ''contain'' keywords</h
 			applies [=stretch-fit sizing=].
 	</dl>
 
-<!--
-   ███     ██████  ████████  ████████  ██████  ████████         ████████     ███    ████████ ████  ███████
-  ██ ██   ██    ██ ██     ██ ██       ██    ██    ██            ██     ██   ██ ██      ██     ██  ██     ██
- ██   ██  ██       ██     ██ ██       ██          ██            ██     ██  ██   ██     ██     ██  ██     ██
-██     ██  ██████  ████████  ██████   ██          ██    ███████ ████████  ██     ██    ██     ██  ██     ██
-█████████       ██ ██        ██       ██          ██            ██   ██   █████████    ██     ██  ██     ██
-██     ██ ██    ██ ██        ██       ██    ██    ██            ██    ██  ██     ██    ██     ██  ██     ██
-██     ██  ██████  ██        ████████  ██████     ██            ██     ██ ██     ██    ██    ████  ███████
+	Note: These new values add to the set of values
+	that the definition of <<calc-size()>>
+	refers to as "allowed in the context".
+
+<!-- Big Text: aspect-r
+
+ ███▌   ███▌  ████▌  █████▌  ███▌  █████▌       ████▌ 
+▐█ ▐█  █▌  █▌ █▌  █▌ █▌     █▌  █▌   █▌         █▌  █▌
+█▌  █▌ █▌     █▌  █▌ █▌     █▌       █▌         █▌  █▌
+█▌  █▌  ███▌  ████▌  ████   █▌       █▌   ████▌ ████▌ 
+█████▌     █▌ █▌     █▌     █▌       █▌         █▌▐█  
+█▌  █▌ █▌  █▌ █▌     █▌     █▌  █▌   █▌         █▌ ▐█ 
+█▌  █▌  ███▌  █▌     █████▌  ███▌    █▌         █▌  █▌
 -->
 
 <h2 id="ratios">
@@ -213,7 +222,7 @@ Preferred Aspect Ratios: the 'aspect-ratio' property</h3>
 
 		<dt><dfn>auto && <<ratio>></dfn>
 		<dd>
-			If both ''auto'' and a <<ratio>> are specified together,
+			If both ''aspect-ratio/auto'' and a <<ratio>> are specified together,
 			the [=preferred aspect ratio=] is the specified ratio
 			of ''<var>width</var> / <var>height</var>''
 			unless it is a [=replaced element=] with a [=natural aspect ratio=],
@@ -330,7 +339,7 @@ Effects of Preferred Aspect Ratio on Automatic Sizes</h3>
 <h4 id="aspect-ratio-margin-collapse">
 Margin-collapsing</h4>
 
-	For the purpose of margin collapsing ([[css2/box#collapsing-margins]]),
+	For the purpose of margin collapsing ([[css2#collapsing-margins]]),
 	if the [=block axis=] is the [=ratio-dependent axis=],
 	it is not considered to have a [=computed value|computed=] 'block-size' of ''height/auto''.
 
@@ -485,7 +494,7 @@ Min/Max Size Transfers</h3>
 
 		In this next example,
 		the percentage height of the item cannot be resolved and [=behaves as auto=]
-		(see [[CSS2/visudet#the-height-property]]).
+		(see [[CSS2#the-height-property]]).
 		Since both axes now have an [=automatic size=],
 		the height becomes the [=ratio-dependent axis=].
 		Calculating the [=intrinsic size contributions=] of the box
@@ -497,14 +506,15 @@ Min/Max Size Transfers</h3>
 
 	ISSUE(6071): This section might not be written correctly.
 
-<!--
-████ ██    ██ ████████ ████████  ████ ██    ██  ██████  ████  ██████
- ██  ███   ██    ██    ██     ██  ██  ███   ██ ██    ██  ██  ██    ██
- ██  ████  ██    ██    ██     ██  ██  ████  ██ ██        ██  ██
- ██  ██ ██ ██    ██    ████████   ██  ██ ██ ██  ██████   ██  ██
- ██  ██  ████    ██    ██   ██    ██  ██  ████       ██  ██  ██
- ██  ██   ███    ██    ██    ██   ██  ██   ███ ██    ██  ██  ██    ██
-████ ██    ██    ██    ██     ██ ████ ██    ██  ██████  ████  ██████
+<!-- Big Text: intrinsic
+
+████ █    █▌ █████▌ ████▌  ████ █    █▌  ███▌  ████  ███▌ 
+ ▐▌  █▌   █▌   █▌   █▌  █▌  ▐▌  █▌   █▌ █▌  █▌  ▐▌  █▌  █▌
+ ▐▌  ██▌  █▌   █▌   █▌  █▌  ▐▌  ██▌  █▌ █▌      ▐▌  █▌    
+ ▐▌  █▌▐█ █▌   █▌   ████▌   ▐▌  █▌▐█ █▌  ███▌   ▐▌  █▌    
+ ▐▌  █▌  ██▌   █▌   █▌▐█    ▐▌  █▌  ██▌     █▌  ▐▌  █▌    
+ ▐▌  █▌   █▌   █▌   █▌ ▐█   ▐▌  █▌   █▌ █▌  █▌  ▐▌  █▌  █▌
+████ █▌   ▐▌   █▌   █▌  █▌ ████ █▌   ▐▌  ███▌  ████  ███▌ 
 -->
 
 <h2 id='intrinsic'>
@@ -520,9 +530,10 @@ Overriding Contained Intrinsic Sizes: the 'contain-intrinsic-*' properties</h3>
 
 	<pre class=propdef>
 	Name: contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size
-	Value: none | <<length>> | auto <<length>>
+	Value: auto? [ none | <<length [0,∞]>> ]
 	Initial: none
 	Inherited: no
+	Logical property group: contain-intrinsic-size
 	Applies to: elements with [=size containment=]
 	Computed value: as specified, with <<length>> values computed
 	Percentages: n/a
@@ -542,28 +553,26 @@ Overriding Contained Intrinsic Sizes: the 'contain-intrinsic-*' properties</h3>
 	would still size according to the specified grid,
 	usually ending up with a larger content size than specified.
 
-	Values are defined as:
-
 	<dl dfn-type=value dfn-for="contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size, contain-intrinsic-size">
-		: <dfn>none</dfn>
-		:: The corresponding axis does not have an [=explicit intrinsic inner size=].
-
-		: <dfn><<length>></dfn>
-		:: The corresponding axis has an [=explicit intrinsic inner size=] of the specified <<length>>.
-
-		: <dfn>auto <<length>></dfn>
-		:: If the element has a [=last remembered size=]
+		: <dfn>auto</dfn>? [ <dfn>none</dfn> | <<length>> ]
+		:: If ''contain-intrinsic-size/auto'' is specified
+			and the element has a [=last remembered size=]
 			and is currently [=skipping its contents=],
-			its [=explicit intrinsic inner size=]
-			is the [=last remembered size=].
-
+			its [=explicit intrinsic inner size=] in the corresponding axis
+			is the [=last remembered size=] in that axis.
+			
 			Note: This occurs, for example,
 			when an element with ''content-visibility: auto''
 			is off-screen.
 
 			Otherwise,
-			its [=explicit intrinsic inner size=]
-			is the specified <<length>>.
+			the corresponding axis either doesn't have an [=explicit intrinsic inner size=]
+			(if ''contain-intrinsic-size/none'' is specified)
+			or has an [=explicit intrinsic inner size=] of the specified <<length>>.
+
+			<wpt pathprefix="css/css-contain/">
+			content-visibility/content-visibility-058.html
+			</wpt>
 	</dl>
 
 	If an element has an [=explicit intrinsic inner size=] in an axis,
@@ -591,7 +600,7 @@ Overriding Contained Intrinsic Sizes: the 'contain-intrinsic-*' properties</h3>
 
 	<pre class="propdef shorthand">
 	Name: contain-intrinsic-size
-	Value: [ none | <<length>> | auto <<length>> ]{1,2}
+	Value: [ auto? [ none | <<length>> ] ]{1,2}
 	</pre>
 
 	'contain-intrinsic-size' is a shorthand property
@@ -614,7 +623,7 @@ Last Remembered Size</h4>
 	even slightly,
 	it can cause unsightly scrollbars or accidentally-hidden content.
 
-	The ''contain-intrinsic-size: auto'' value allows a middle-ground:
+	The ''contain-intrinsic-size/auto'' keyword of ''contain-intrinsic-size'' allows a middle-ground:
 	if an element is ever <em>not</em> [=size containment|size-contained=],
 	this value causes the element to remember its size
 	(calculated as normal by layout);
@@ -629,7 +638,7 @@ Last Remembered Size</h4>
 		The [=last remembered size=] of an element is determined by:
 
 		* At the time that {{ResizeObserver}} events are determined and delivered,
-			if an element has ''contain-intrinsic-size: auto'',
+			if an element has a ''contain-intrinsic-size/auto'' keyword in ''contain-intrinsic-size'' property,
 			is capable of being a {{ResizeObserver}} target,
 			but does not have [=size containment=],
 			record the current inner dimensions of its [=principal box=]
@@ -637,12 +646,12 @@ Last Remembered Size</h4>
 
 		* At the time that {{ResizeObserver}} events are determined and delivered,
 			if an element has a [=last remembered size=]
-			but does <em>not</em> have ''contain-intrinsic-size: auto'',
+			but does <em>not</em> have ''contain-intrinsic-size/auto'' keyword in ''contain-intrinsic-size'' property,
 			remove its [=last remembered size=].
 
 		Note: The [=last remembered size=] is state attached to the <em>element</em>,
 		not any particular box generated by the element.
-		So long as the element retains ''contain-intrinsic-size: auto'',
+		So long as the element retains ''contain-intrinsic-size/auto'' keyword in ''contain-intrinsic-size'' property,
 		it will remember its [=last remembered size=]
 		even across changes such as going to/from ''display: none''.
 	</div>
@@ -724,14 +733,15 @@ Interaction With ''overflow: auto''</h4>
 	</div>
 
 
-<!--
- ██████   ███████  ██    ██ ████████ ████████  ████ ████████   ██████
-██    ██ ██     ██ ███   ██    ██    ██     ██  ██  ██     ██ ██    ██
-██       ██     ██ ████  ██    ██    ██     ██  ██  ██     ██ ██
-██       ██     ██ ██ ██ ██    ██    ████████   ██  ████████   ██████
-██       ██     ██ ██  ████    ██    ██   ██    ██  ██     ██       ██
-██    ██ ██     ██ ██   ███    ██    ██    ██   ██  ██     ██ ██    ██
- ██████   ███████  ██    ██    ██    ██     ██ ████ ████████   ██████
+<!-- Big Text: contribs
+
+ ███▌   ███▌  █    █▌ █████▌ ████▌  ████ ████▌   ███▌ 
+█▌  █▌ █▌  █▌ █▌   █▌   █▌   █▌  █▌  ▐▌  █▌  █▌ █▌  █▌
+█▌     █▌  █▌ ██▌  █▌   █▌   █▌  █▌  ▐▌  █▌  █▌ █▌    
+█▌     █▌  █▌ █▌▐█ █▌   █▌   ████▌   ▐▌  █████   ███▌ 
+█▌     █▌  █▌ █▌  ██▌   █▌   █▌▐█    ▐▌  █▌  █▌     █▌
+█▌  █▌ █▌  █▌ █▌   █▌   █▌   █▌ ▐█   ▐▌  █▌  █▌ █▌  █▌
+ ███▌   ███▌  █▌   ▐▌   █▌   █▌  █▌ ████ ████▌   ███▌ 
 -->
 
 <h3 id="intrinsic-contribution">
@@ -803,14 +813,15 @@ Zeroing Min-Content Size Contributions: the 'min-intrinsic-sizing' property</h3>
 	''width/min-content'', ''width/max-content'', and ''width/fit-content'' values
 	of the [=sizing properties=].
 
-<!--
-████████ ██     ██ ████████ ████████  ████ ██    ██  ██████  ████  ██████
-██        ██   ██     ██    ██     ██  ██  ███   ██ ██    ██  ██  ██    ██
-██         ██ ██      ██    ██     ██  ██  ████  ██ ██        ██  ██
-██████      ███       ██    ████████   ██  ██ ██ ██  ██████   ██  ██
-██         ██ ██      ██    ██   ██    ██  ██  ████       ██  ██  ██
-██        ██   ██     ██    ██    ██   ██  ██   ███ ██    ██  ██  ██    ██
-████████ ██     ██    ██    ██     ██ ████ ██    ██  ██████  ████  ██████
+<!-- Big Text: extrinsic
+
+█████▌ █     █ █████▌ ████▌  ████ █    █▌  ███▌  ████  ███▌ 
+█▌      █   █    █▌   █▌  █▌  ▐▌  █▌   █▌ █▌  █▌  ▐▌  █▌  █▌
+█▌       █ █     █▌   █▌  █▌  ▐▌  ██▌  █▌ █▌      ▐▌  █▌    
+████      █      █▌   ████▌   ▐▌  █▌▐█ █▌  ███▌   ▐▌  █▌    
+█▌       █ █     █▌   █▌▐█    ▐▌  █▌  ██▌     █▌  ▐▌  █▌    
+█▌      █   █    █▌   █▌ ▐█   ▐▌  █▌   █▌ █▌  █▌  ▐▌  █▌  █▌
+█████▌ █     █   █▌   █▌  █▌ ████ █▌   ▐▌  ███▌  ████  ███▌ 
 -->
 
 <h2 id='extrinsic'>
@@ -823,68 +834,90 @@ Stretch-fit Sizing: filling the containing block</h3>
 
 	Stretch-fit sizing tries to set the box’s used size
 	to the length necessary
-	to make its outer size as close to filling the [=containing block=] as possible
-	while still respecting the constraints imposed by min-height/min-width/max-height/max-width.
+	to make its [=principal box=]’s [=outer size=]
+	as close to filling the [=containing block=] as possible
+	while still respecting the constraints imposed by
+	'min-height'/'min-width'/'max-height'/'max-width'.
 
-	Formally, its behavior is the same as specifying an [=automatic size=]
-	together with a [=self-alignment property=] value of ''width/stretch''
-	(in the relevant axis),
-	except that the resulting box,
-	which can end up not exactly fitting its [=alignment container=],
-	can be subsequently aligned by its actual [=self-alignment property=] value.
+	: If used in an axis where the relevant [=self-alignment property=] applies to the element
+	::
+		Produces the same size that would be obtained
+		by the [=self-alignment property=] in that axis
+		being set to ''justify-self/stretch''
+		and all [=sizing properties=] and 'aspect-ratio'
+		being set to their initial values.
 
-	Additionally,
-	in [=formatting contexts=] and axes in which the relevant [=self-alignment property=] does not apply
-	(such as the block axis in Block Layout, or the main axis in Flex Layout),
-	in cases where a percentage size in that axis would resolve to a definite value,
-	a [=stretch-fit size=]
-	causes the box to attempt to fill its containing block--
-	behaving as ''100%''
-	but applying the resulting size to its margin box
-	instead of the box indicated by 'box-sizing'.
-	For this purpose, ''margin/auto'' margins are treated as zero,
-	and furthermore, for [=block-level boxes=] in particular,
-	if its block-start/block-end [=margin=]
-	would be adjoining to its parent's block-start/block-end [=margin=]
-	if its parent’s [=sizing properties=] all had their [=initial values=],
-	then its block-start/block-end [=margin=] is treated as zero.
+	: Otherwise, if used in an axis where percentage sizes can resolve to a [=definite=] value
+	::
+		Behaves as ''100%'',
+		except it sizes the [=margin box=]
+		regardless of the value of 'box-sizing'.
 
-	Note: Consequently, if neither ''align-self/stretch'' alignment applies
-	nor percentage sizing can resolve,
-	then the box will resolve to its [=automatic size=].
+		If this is a [=block axis=] size,
+		and the element is in a Block Layout [=formatting context=],
+		and the parent element does not have a [=block-start=] 'border' or 'padding'
+		and is not an [=independent formatting context=],
+		treat the element's [=block-start=] margin as zero
+		for the purpose of calculating this size.
+		Do the same for the [=block-end=] margin.
+
+		Note: This simulates the effect of margins collapsing with the parent's margin.
+		It doesn't actually suppress the margins,
+		so if anything prevents the element from actually collapsing with its parent,
+		the [=stretch-fit size=] might actually be too large
+		to fit in the parent perfectly.
+
+		<!--
+		Importantly, this *does* ensure that the stretch-fit size
+		doesn't depend on the presence or absence of other elements,
+		or the element's position among its siblings.
+		Multiple children with 'stretch' will all end up the same size.
+		-->
+
+	: Otherwise
+	::
+		In a [=preferred size property=],
+		[=behaves as auto=].
+		In a [=min size property=],
+		behaves as ''0''.
+		In a [=max size property=],
+		behaves as ''max-width/none''.
 
 	<div class="example">
 		For example, given the following HTML representing two [=block boxes=]:
-		<pre class=html>
-		  &lt;div class="outer">
-		    &lt;div class="inner">&lt;/div>
-		  &lt;/div>
-		</pre>
+
+		<xmp class=html>
+		  <div class="parent">
+		    <div class="child">text</div>
+		  </div>
+		</xmp>
 
 		In the following case,
-		the [=outer height=] of the inner box
-		will exactly match the height of the outer box (200px),
+		the [=outer height=] of the child box
+		will exactly match the height of the parent box (200px),
 		but its [=inner height=] will be 20px less, to account for its margins.
 
 		<pre>
-		  .outer { height: 200px; border: solid; }
-		  .inner { height: stretch; margin: 10px; }
+		  .parent { height: 200px; border: solid; }
+		  .child { height: stretch; margin: 10px; }
 		</pre>
 
-		In the following case,
-		the height of the inner box
-		will exactly match the height of the outer box (200px).
-		The top margins will collapse,
-		but the bottom margins do not collapse
-		(because the bottom margin of a box is not adjoining
-		to the bottom margin of a parent with a non-''height/auto'' height,
-		see [[CSS2/box#collapsing-margins]]),
-		and therefore the inner box’s bottom margin will be truncated.
+		On the other hand,
+		in this case we can assume that the child's margins will collapse with the parent,
+		so the inner box will be ''200px'' tall,
+		exactly filling the parent.
 
 		<pre>
 		  .outer { height: 200px; margin: 0; }
 		  .inner { height: stretch; margin: 10px; }
 		</pre>
+
+		(The top margins will in fact collapse,
+		but the bottom margins do not collapse,
+		because the bottom margin of a box is not adjoining
+		to the bottom margin of a parent with a non-''height/auto'' height,
+		see [[CSS2#collapsing-margins]].
+		Luckily, an overflowing bottom margin doesn't have any visible effect.)
 	</div>
 
 	<div class="example">
@@ -893,15 +926,15 @@ Stretch-fit Sizing: filling the containing block</h3>
 		(due to the 10px margin):
 
 		<pre class=html>
-		  &lt;div class="outer">
-		    &lt;div class="inner">text&lt;/div>
+		  &lt;div class="parent">
+		    &lt;div class="child">text&lt;/div>
 		  &lt;/div>
 		  some more text
 		</pre>
 
 		<pre>
-			.outer { float: left; margin: 0; }
-			.inner { width: stretch; margin: 10px; }
+			.parent { float: left; margin: 0; }
+			.child { width: stretch; margin: 10px; }
 		</pre>
 	</div>
 
@@ -912,8 +945,8 @@ Stretch-fit Sizing: filling the containing block</h3>
 		so ''height: stretch'' [=behaves as auto=] as well.
 
 		<pre>
-		  .outer { height: auto; margin: 0; }
-		  .inner { height: stretch; margin: 10px; }
+		  .parent { height: auto; margin: 0; }
+		  .child { height: stretch; margin: 10px; }
 		</pre>
 	</div>
 
@@ -990,6 +1023,7 @@ Recent Changes</h3>
 	* Fixed some errors in the [[#aspect-ratio-size-transfers]] section,
 		aligning the behavior to not conflict with behavior defined by CSS2 / CSS Flex Layout / etc.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/6071">Issue 6071</a>)
+	* Added ''contain-intrinsic-size: auto none'' syntax.
 
 	Significant changes since the <a href="https://www.w3.org/TR/2020/WD-css-sizing-4-20200526/">26 May 2020 First Public Working Draft</a> include:
 
@@ -1038,7 +1072,7 @@ Recent Changes</h3>
 	* Define that 'aspect-ratio' inhibits margin self-collapsing
 		(<a href="https://github.com/w3c/csswg-drafts/issues/5328">Issue 5328</a>)
 		<blockquote>
-			<p>For the purpose of margin collapsing ([[css2/box#collapsing-margins]]),
+			<p>For the purpose of margin collapsing ([[css2#collapsing-margins]]),
 			if the [=block axis=] is the [=ratio-dependent axis=],
 			it is not considered to have a [=computed value|computed=] 'block-size' of ''height/auto''.
 		</blockquote>

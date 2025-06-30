@@ -1238,14 +1238,15 @@ Possible extra rowspan handling
 			grid-column: 2;
 			width: auto;
 			margin-right: 1rem;
+			border-bottom: 3px solid transparent;
+			margin-bottom: -3px;
 		}
 		#toc .content:hover,
 		#toc .content:focus {
 			background: rgba(75%, 75%, 75%, .25);
 			background: var(--a-hover-bg);
-			border-bottom: 3px solid #054572;
-			border-bottom: 3px solid var(--toclink-underline);
-			margin-bottom: -3px;
+			border-bottom-color: #054572;
+			border-bottom-color: var(--toclink-underline);
 		}
 		#toc li li li .content {
 			margin-left: 1rem;
@@ -1487,9 +1488,10 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version afdea9b3f, updated Fri Oct 21 14:30:36 2022 -0700" name="generator">
-<style>/* style-autolinks */
-
+  <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
+  <meta content="2009f4d01df701a0fadeeb24c5ca468d07890e77" name="revision">
+  <meta content="dark light" name="color-scheme">
+<style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
     font-size: inherit;
@@ -1549,9 +1551,17 @@ pre .property::before, pre .property::after {
 
 [data-link-type=biblio] {
     white-space: pre;
-}</style>
-<style>/* style-colors */
+}
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --selflink-text: black;
+        --selflink-bg: silver;
+        --selflink-hover-text: white;
+    }
+}
+</style>
+<style>/* Boilerplate: style-colors */
 /* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
 :root {
     color-scheme: light dark;
@@ -1658,158 +1668,7 @@ pre .property::before, pre .property::after {
     --outdated-shadow: red;
 
     --editedrec-bg: darkorange;
-}</style>
-<style>/* style-counters */
-
-body {
-    counter-reset: example figure issue;
 }
-.issue {
-    counter-increment: issue;
-}
-.issue:not(.no-marker)::before {
-    content: "Issue " counter(issue);
-}
-
-.example {
-    counter-increment: example;
-}
-.example:not(.no-marker)::before {
-    content: "Example " counter(example);
-}
-.invalid.example:not(.no-marker)::before,
-.illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
-}
-
-figcaption {
-    counter-increment: figure;
-}
-figcaption:not(.no-marker)::before {
-    content: "Figure " counter(figure) " ";
-}</style>
-<style>/* style-dfn-panel */
-
-:root {
-    --dfnpanel-bg: #ddd;
-    --dfnpanel-text: var(--text);
-}
-.dfn-panel {
-    position: absolute;
-    z-index: 35;
-    height: auto;
-    width: -webkit-fit-content;
-    width: fit-content;
-    max-width: 300px;
-    max-height: 500px;
-    overflow: auto;
-    padding: 0.5em 0.75em;
-    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-    background: var(--dfnpanel-bg);
-    color: var(--dfnpanel-text);
-    border: outset 0.2em;
-}
-.dfn-panel:not(.on) { display: none; }
-.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-.dfn-panel > b { display: block; }
-.dfn-panel a { color: var(--dfnpanel-text); }
-.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-.dfn-panel > b + b { margin-top: 0.25em; }
-.dfn-panel ul { padding: 0; }
-.dfn-panel li { list-style: inside; }
-.dfn-panel.activated {
-    display: inline-block;
-    position: fixed;
-    left: .5em;
-    bottom: 2em;
-    margin: 0 auto;
-    max-width: calc(100vw - 1.5em - .4em - .5em);
-    max-height: 30vh;
-}
-
-.dfn-paneled { cursor: pointer; }
-</style>
-<style>/* style-issues */
-
-a[href].issue-return {
-    float: right;
-    float: inline-end;
-    color: var(--issueheading-text);
-    font-weight: bold;
-    text-decoration: none;
-}
-</style>
-<style>/* style-md-lists */
-
-/* This is a weird hack for me not yet following the commonmark spec
-   regarding paragraph and lists. */
-[data-md] > :first-child {
-    margin-top: 0;
-}
-[data-md] > :last-child {
-    margin-bottom: 0;
-}</style>
-<style>/* style-selflinks */
-
-:root {
-    --selflink-text: white;
-    --selflink-bg: gray;
-    --selflink-hover-text: black;
-}
-.heading, .issue, .note, .example, li, dt {
-    position: relative;
-}
-a.self-link {
-    position: absolute;
-    top: 0;
-    left: calc(-1 * (3.5rem - 26px));
-    width: calc(3.5rem - 26px);
-    height: 2em;
-    text-align: center;
-    border: none;
-    transition: opacity .2s;
-    opacity: .5;
-}
-a.self-link:hover {
-    opacity: 1;
-}
-.heading > a.self-link {
-    font-size: 83%;
-}
-.example > a.self-link,
-.note > a.self-link,
-.issue > a.self-link {
-    /* These blocks are overflow:auto, so positioning outside
-       doesn't work. */
-    left: auto;
-    right: 0;
-}
-li > a.self-link {
-    left: calc(-1 * (3.5rem - 26px) - 2em);
-}
-dfn > a.self-link {
-    top: auto;
-    left: auto;
-    opacity: 0;
-    width: 1.5em;
-    height: 1.5em;
-    background: var(--selflink-bg);
-    color: var(--selflink-text);
-    font-style: normal;
-    transition: opacity .2s, background-color .2s, color .2s;
-}
-dfn:hover > a.self-link {
-    opacity: 1;
-}
-dfn > a.self-link:hover {
-    color: var(--selflink-hover-text);
-}
-
-a.self-link::before            { content: "¶"; }
-.heading > a.self-link::before { content: "§"; }
-dfn > a.self-link::before      { content: "#"; }
-</style>
-<style>/* style-darkmode */
 
 @media (prefers-color-scheme: dark) {
     :root {
@@ -1922,49 +1781,309 @@ dfn > a.self-link::before      { content: "#"; }
        which is quite common in practice... */
     img { background: white; }
 }
-@media (prefers-color-scheme: dark) {
-    :root {
-        --selflink-text: black;
-        --selflink-bg: silver;
-        --selflink-hover-text: white;
-    }
+</style>
+<style>/* Boilerplate: style-counters */
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
 }
 
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}
+</style>
+<style>/* Boilerplate: style-dfn-panel */
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+    --dfnpanel-target-bg: #ffc;
+    --dfnpanel-target-outline: orange;
+}
 @media (prefers-color-scheme: dark) {
     :root {
         --dfnpanel-bg: #222;
         --dfnpanel-text: var(--text);
+        --dfnpanel-target-bg: #333;
+        --dfnpanel-target-outline: silver;
     }
-}</style>
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel a:focus {
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
+.dfn-panel li a {
+    max-width: calc(300px - 1.5em - 1em);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: 8px;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+    transition: left 1s ease-out, bottom 1s ease-out;
+}
+
+.dfn-panel .link-item:hover {
+    text-decoration: underline;
+}
+.dfn-panel .link-item .copy-icon {
+    opacity: 0;
+}
+.dfn-panel .link-item:hover .copy-icon,
+.dfn-panel .link-item .copy-icon:focus {
+    opacity: 1;
+}
+
+.dfn-panel .copy-icon {
+    display: inline-block;
+    margin-right: 0.5em;
+    width: 0.85em;
+    height: 1em;
+    border-radius: 3px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.dfn-panel .copy-icon .icon {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dfn-panel .copy-icon .icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background-color: #ccc;
+    opacity: 0.25;
+    transform: translate(3px, -3px);
+}
+
+.dfn-panel .copy-icon:active .icon::before {
+    opacity: 1;
+}
+
+.dfn-paneled[role="button"] { cursor: help; }
+
+.highlighted {
+    animation: target-fade 3s;
+}
+
+@keyframes target-fade {
+    from {
+        background-color: var(--dfnpanel-target-bg);
+        outline: 5px solid var(--dfnpanel-target-outline);
+    }
+    to {
+        color: var(--a-normal-text);
+        background-color: transparent;
+        outline: transparent;
+    }
+}
+</style>
+<style>/* Boilerplate: style-issues */
+a[href].issue-return {
+    float: right;
+    float: inline-end;
+    color: var(--issueheading-text);
+    font-weight: bold;
+    text-decoration: none;
+}
+</style>
+<style>/* Boilerplate: style-md-lists */
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}
+</style>
+<style>/* Boilerplate: style-ref-hints */
+:root {
+    --ref-hint-bg: #ddd;
+    --ref-hint-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ref-hint-bg: #222;
+        --ref-hint-text: var(--text);
+    }
+}
+
+.ref-hint {
+    display: inline-block;
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.5em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--ref-hint-bg);
+    color: var(--ref-hint-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+
+.ref-hint * { margin: 0; padding: 0; text-indent: 0; }
+
+.ref-hint ul { padding: 0 0 0 1em; list-style: none; }
+</style>
+<style>/* Boilerplate: style-selflinks */
+:root {
+    --selflink-text: white;
+    --selflink-bg: gray;
+    --selflink-hover-text: black;
+}
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+.example > a.self-link,
+.note > a.self-link,
+.issue > a.self-link {
+    /* These blocks are overflow:auto, so positioning outside
+       doesn't work. */
+    left: auto;
+    right: 0;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--selflink-bg);
+    color: var(--selflink-text);
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: var(--selflink-hover-text);
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref allcaps" id="title">[TITLE]</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">, <time class="dt-updated" datetime="2022-10-23">23 October 2022</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">,
+    <time class="dt-updated" datetime="2025-06-30">30 June 2025</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>Issue Tracking:
+     <dd><a href="https://github.com/w3c/csswg-drafts/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a> To the extent possible under law, the editors have waived all copyright
+   <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a>
+To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 23 October 2022,
-the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
-which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
-Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
+In addition, as of 30 June 2025,
+the editors have made this specification available under the
+<a href="https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
+which is available at https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0.
+Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document.
+</p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-    [ABSTRACT] 
+   
+
+[ABSTRACT]
+
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
-    <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
+    <li><a href="#conformance"><span class="secno"></span> <span class="content">
+    Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -1994,122 +2113,242 @@ Parts of this work may be from another specification document.  If so, those par
 	If the other axis does not have an <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size①">explicit intrinsic inner size</a>,
 	then its intrinsic sizes are determined normally,
 	without regard for the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size②">explicit intrinsic inner size</a> in the first axis.</p>
-   <h3 class="heading settled" id="replaced-intrinsic"><span class="content"> Intrinsic Sizes of Replaced Elements</span></h3>
-   <p> For replaced elements,
+   <h3 class="heading settled" id="replaced-intrinsic"><span class="content">
+Intrinsic Sizes of Replaced Elements</span></h3>
+   <p>
+		For replaced elements,
 		the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content" id="ref-for-min-content">min-content size</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content" id="ref-for-max-content">max-content size</a> are equivalent
 		and correspond to the appropriate dimension of the concrete object size returned by
-		the <a href="https://www.w3.org/TR/css3-images/#default-sizing">default sizing algorithm</a> <a data-link-type="biblio" href="#biblio-css3-images">[CSS3-IMAGES]</a> of the element,
-		calculated with an unconstrained specified size. </p>
+		the <a href="https://www.w3.org/TR/css3-images/#default-sizing">default sizing algorithm</a> <a data-link-type="biblio" href="#biblio-css3-images" title="CSS Images Module Level 3">[CSS3-IMAGES]</a>
+		of the element,
+		calculated with an unconstrained specified size.
+
+</p>
    <p>The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution">min-content contribution</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution">max-content contribution</a> in each axis
 	is the element’s specified outer size in that axis, if definite;
 	otherwise, they are the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content" id="ref-for-min-content①">min-content size</a>, as specified above,
 	plus the element’s margin/border/padding in that axis,
 	clamped by the element’s min and max size properties in that axis.</p>
-   <h3 class="heading settled" id="inline-intrinsic"><span class="content"> Intrinsic Sizes of Non-Replaced Inlines</span></h3>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size">min-content inline size</a> of an inline box
+   <h3 class="heading settled" id="inline-intrinsic"><span class="content">
+Intrinsic Sizes of Non-Replaced Inlines</span></h3>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size">min-content inline size</a> of an inline box
 		is the length of the largest unbreakable sequence of inline content.
 		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution①">min-content inline-size contribution</a> of an inline box
 		is its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size①">min-content inline size</a>,
 		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis">inline-axis</a> margin, border, and padding
-		adjacent to that sequence. </p>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size">max-content inline size</a> of an inline box
+		adjacent to that sequence.
+
+	</p>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size">max-content inline size</a> of an inline box
 		is the length of the largest sequence of inline content
 		on a single line
 		when only forced line breaks are taken.
 		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution①">max-content inline-size contribution</a> of an inline box
 		is its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size①">max-content inline size</a>,
 		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis①">inline-axis</a> margin, border, and padding
-		adjacent to that sequence. </p>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size" id="ref-for-min-content-block-size">min-content block size</a>, <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size" id="ref-for-max-content-block-size">max-content block size</a>, <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution②">min-content block-size contribution</a>, and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution②">max-content block-size contribution</a> of an inline box
+		adjacent to that sequence.
+
+	</p>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size" id="ref-for-min-content-block-size">min-content block size</a>, <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size" id="ref-for-max-content-block-size">max-content block size</a>, <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution②">min-content block-size contribution</a>, and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution②">max-content block-size contribution</a> of an inline box
 		are the distance from the head edge of the first line box
 		to the foot edge of the last line box
-		on which the inline appears. </p>
-   <h3 class="heading settled" id="block-intrinsic"><span class="content"> Intrinsic Sizes of Non-Replaced Blocks</span></h3>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size②">min-content inline size</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-container" id="ref-for-block-container">block container box</a> is the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution③">min-content inline-size contribution</a> of its in-flow or floated children. </p>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size②">max-content inline size</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-container" id="ref-for-block-container①">block container box</a> is the inline-size of the box after layout,
-		if all children are sized under a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-constraint" id="ref-for-max-content-constraint">max-content constraint</a>. </p>
-   <p> If the computed inline-size of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-level-box" id="ref-for-block-level-box">block-level box</a> is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content" id="ref-for-valdef-width-min-content">min-content</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content" id="ref-for-valdef-width-max-content">max-content</a>, or a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite" id="ref-for-definite">definite size</a>,
-		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution④">min-content inline-size contribution</a> is that size
+		on which the inline appears.
+
+</p>
+   <h3 class="heading settled" id="block-intrinsic"><span class="content">
+Intrinsic Sizes of Non-Replaced Blocks</span></h3>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size②">min-content inline size</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-container" id="ref-for-block-container">block container box</a>
+		is the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution③">min-content inline-size contribution</a>
+		of its in-flow or floated children.
+
+	</p>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size②">max-content inline size</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-container" id="ref-for-block-container①">block container box</a>
+		is the inline-size of the box after layout,
+		if all children are sized under a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-constraint" id="ref-for-max-content-constraint">max-content constraint</a>.
+	</p>
+   <p>
+		If the computed inline-size of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-level-box" id="ref-for-block-level-box">block-level box</a>
+		is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content" id="ref-for-valdef-width-min-content">min-content</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content" id="ref-for-valdef-width-max-content">max-content</a>, or a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite" id="ref-for-definite">definite size</a>,
+		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution④">min-content inline-size contribution</a>
+		is that size
 		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis②">inline-axis</a> margin, border, and padding.
 		Otherwise, if the computed inline-size of the block is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-fit-content" id="ref-for-valdef-width-fit-content">fit-content</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-auto" id="ref-for-valdef-width-auto">auto</a>, or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-stretch" id="ref-for-valdef-width-stretch">stretch</a>,
-		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑤">min-content inline-size contribution</a> is its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size③">min-content inline size</a> plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis③">inline-axis</a> margin, border, and padding. </p>
-   <p> If the computed inline-size of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-level-box" id="ref-for-block-level-box①">block-level box</a> is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content" id="ref-for-valdef-width-min-content①">min-content</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content" id="ref-for-valdef-width-max-content①">max-content</a>, or a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite" id="ref-for-definite①">definite size</a>,
-		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution③">max-content inline-size contribution</a> is that size
+		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑤">min-content inline-size contribution</a>
+		is its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size③">min-content inline size</a>
+		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis③">inline-axis</a> margin, border, and padding.
+
+	</p>
+   <p>
+		If the computed inline-size of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-level-box" id="ref-for-block-level-box①">block-level box</a>
+		is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content" id="ref-for-valdef-width-min-content①">min-content</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content" id="ref-for-valdef-width-max-content①">max-content</a>, or a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite" id="ref-for-definite①">definite size</a>,
+		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution③">max-content inline-size contribution</a>
+		is that size
 		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis④">inline-axis</a> margin, border, and padding.
 		Otherwise, if the computed inline-size of the block is <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-fit-content" id="ref-for-valdef-width-fit-content①">fit-content</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-auto" id="ref-for-valdef-width-auto①">auto</a>, or <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-stretch" id="ref-for-valdef-width-stretch①">stretch</a>,
-		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution④">max-content inline-size contribution</a> is its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size③">max-content inline size</a> plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis⑤">inline-axis</a> margin, border, and padding. </p>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size" id="ref-for-min-content-block-size①">min-content block size</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size" id="ref-for-max-content-block-size①">max-content block size</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-container" id="ref-for-block-container②">block container box</a> is the content block-size as defined
+		its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution④">max-content inline-size contribution</a>
+		is its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size③">max-content inline size</a>
+		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis⑤">inline-axis</a> margin, border, and padding.
+
+	</p>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size" id="ref-for-min-content-block-size①">min-content block size</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size" id="ref-for-max-content-block-size①">max-content block size</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-container" id="ref-for-block-container②">block container box</a>
+		is the content block-size as defined
 		(for horizontal writing modes)
-		in <a href="https://www.w3.org/TR/CSS2/visudet.html#normal-block">CSS2.1§10.6.3</a> and <a href="https://www.w3.org/TR/CSS2/tables.html#height-layout">CSS2.1§17.5.3</a> for elements with <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height: auto</a>,
-		and analogously for vertical writing modes. </p>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑥">min-content block-size contribution</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution⑤">max-content block-size contribution</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-level-box" id="ref-for-block-level-box②">block-level box</a> is the block-size of the block after layout,
-		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-axis" id="ref-for-block-axis">block-axis</a> margin, border, and padding. </p>
+		in <a href="https://www.w3.org/TR/CSS2/visudet.html#normal-block">CSS2.1§10.6.3</a>
+		and <a href="https://www.w3.org/TR/CSS2/tables.html#height-layout">CSS2.1§17.5.3</a>
+		for elements with <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height: auto</a>,
+		and analogously for vertical writing modes.
+
+	</p>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑥">min-content block-size contribution</a> and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution⑤">max-content block-size contribution</a> of a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-level-box" id="ref-for-block-level-box②">block-level box</a>
+		is the block-size of the block after layout,
+		plus any <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-axis" id="ref-for-block-axis">block-axis</a> margin, border, and padding.
+
+</p>
    <p class="issue" id="issue-ac962596"><a class="self-link" href="#issue-ac962596"></a> Need to handle floats.
-	See <a href="https://lists.w3.org/Archives/Public/www-style/2014Oct/0061.html">Greg’s issue</a> and <a href="https://lists.w3.org/Archives/Public/www-style/2014Nov/0085.html">dbaron’s response</a>.</p>
-   <h3 class="heading settled" id="table-intrinsic"><span class="content"> Intrinsic Sizes in Table Layout</span></h3>
-   <p class="issue" id="issue-fbee5e7e"><a class="self-link" href="#issue-fbee5e7e"></a> ¯\_(ツ)_/¯ </p>
-   <h3 class="heading settled" id="multicol-intrinsic"><span class="content"> Intrinsic Sizes in Multi-column Layout</span></h3>
-   <h4 class="heading settled" id="multicol-min-content"><span class="content"> Min-content Sizes in Multi-column Layout</span></h4>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size④">min-content inline size</a> of a multi-column container
-		with a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-width" id="ref-for-propdef-column-width">column-width</a> not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-width-auto" id="ref-for-valdef-column-width-auto">auto</a> is the smaller of
-		its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-width" id="ref-for-propdef-column-width①">column-width</a> and the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑦">min-content inline-size contribution</a> of its contents. </p>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size⑤">min-content inline size</a> of a multi-column container
-		with a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-width" id="ref-for-propdef-column-width②">column-width</a> of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-width-auto" id="ref-for-valdef-column-width-auto①">auto</a> is the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑧">min-content inline-size contribution</a> of its contents
-		multiplied by its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count" id="ref-for-propdef-column-count">column-count</a> (treating <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-count-auto" id="ref-for-valdef-column-count-auto">auto</a> as <span class="css">1</span>),
-		plus its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap">column-gap</a> multiplied by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count" id="ref-for-propdef-column-count①">column-count</a> minus 1. </p>
-   <h4 class="heading settled" id="multicol-max-content"><span class="content"> Max-content Sizes in Unconstrained-height Multi-column Layout</span></h4>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size④">max-content inline size</a> of a multi-column container
+	See <a href="https://lists.w3.org/Archives/Public/www-style/2014Oct/0061.html">Greg’s issue</a>
+	and <a href="https://lists.w3.org/Archives/Public/www-style/2014Nov/0085.html">dbaron’s response</a>.</p>
+   <h3 class="heading settled" id="table-intrinsic"><span class="content">
+Intrinsic Sizes in Table Layout</span></h3>
+   <p class="issue" id="issue-fbee5e7e"><a class="self-link" href="#issue-fbee5e7e"></a>
+		¯\_(ツ)_/¯
+
+
+
+</p>
+   <h3 class="heading settled" id="multicol-intrinsic"><span class="content">
+Intrinsic Sizes in Multi-column Layout</span></h3>
+   <h4 class="heading settled" id="multicol-min-content"><span class="content">
+Min-content Sizes in Multi-column Layout</span></h4>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size④">min-content inline size</a> of a multi-column container
+		with a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width" id="ref-for-propdef-column-width">column-width</a> not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-width-auto" id="ref-for-valdef-column-width-auto">auto</a>
+		is the smaller of
+		its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width" id="ref-for-propdef-column-width①">column-width</a>
+		and the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑦">min-content inline-size contribution</a> of its contents.
+
+	</p>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size⑤">min-content inline size</a> of a multi-column container
+		with a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width" id="ref-for-propdef-column-width②">column-width</a> of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-width-auto" id="ref-for-valdef-column-width-auto①">auto</a>
+		is the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑧">min-content inline-size contribution</a> of its contents
+		multiplied by its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count" id="ref-for-propdef-column-count">column-count</a>
+		(treating <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-count-auto" id="ref-for-valdef-column-count-auto">auto</a> as <span class="css">1</span>),
+		plus its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap">column-gap</a> multiplied by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count" id="ref-for-propdef-column-count①">column-count</a> minus 1.
+
+</p>
+   <h4 class="heading settled" id="multicol-max-content"><span class="content">
+Max-content Sizes in Unconstrained-height Multi-column Layout</span></h4>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size④">max-content inline size</a> of a multi-column container
 		with unrestrained column heights
-		and a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count" id="ref-for-propdef-column-count②">column-count</a> not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-count-auto" id="ref-for-valdef-column-count-auto①">auto</a> is its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count" id="ref-for-propdef-column-count③">column-count</a> multiplied by the larger of
-		its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-width" id="ref-for-propdef-column-width③">column-width</a> (treating <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-width-auto" id="ref-for-valdef-column-width-auto②">auto</a> as zero)
+		and a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count" id="ref-for-propdef-column-count②">column-count</a> not <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-count-auto" id="ref-for-valdef-column-count-auto①">auto</a>
+		is its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count" id="ref-for-propdef-column-count③">column-count</a>
+		multiplied by the larger of
+		its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width" id="ref-for-propdef-column-width③">column-width</a> (treating <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-width-auto" id="ref-for-valdef-column-width-auto②">auto</a> as zero)
 		and the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution" id="ref-for-min-content-contribution⑨">min-content inline-size contribution</a> of its contents,
-		plus its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap①">column-gap</a> multiplied by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count" id="ref-for-propdef-column-count④">column-count</a> minus 1. </p>
-   <p class="note" role="note"> Note that the contents of the multi-column container
+		plus its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap①">column-gap</a> multiplied by <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count" id="ref-for-propdef-column-count④">column-count</a> minus 1.
+
+	</p>
+   <p class="note" role="note">
+		Note that the contents of the multi-column container
 		can still grow to be wider and shorter
 		if the resulting column width is still smaller
-		than the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution⑥">max-content inline-size contribution</a> of its contents. </p>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size⑤">max-content inline size</a> of a multi-column container
+		than the largest <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution" id="ref-for-max-content-contribution⑥">max-content inline-size contribution</a> of its contents.
+
+	</p>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size⑤">max-content inline size</a> of a multi-column container
 		with unrestrained column heights
-		and a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count" id="ref-for-propdef-column-count⑤">column-count</a> of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-count-auto" id="ref-for-valdef-column-count-auto②">auto</a> is its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-width" id="ref-for-propdef-column-width④">column-width</a> multiplied by the number of columns obtained by taking all allowed column breaks <a data-link-type="biblio" href="#biblio-css3-break">[CSS3-BREAK]</a>,
-		plus its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap②">column-gap</a> multiplied by that same number of columns minus 1. </p>
-   <h4 class="heading settled" id="multicol-max-content-restrained"><span class="content"> Max-content Sizes in Constrained-height Multi-column Layout</span></h4>
-   <p> The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size⑥">max-content inline size</a> of a multi-column container
+		and a computed <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count" id="ref-for-propdef-column-count⑤">column-count</a> of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-count-auto" id="ref-for-valdef-column-count-auto②">auto</a>
+		is its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width" id="ref-for-propdef-column-width④">column-width</a>
+		multiplied by the number of columns obtained by taking all allowed column breaks <a data-link-type="biblio" href="#biblio-css3-break" title="CSS Fragmentation Module Level 3">[CSS3-BREAK]</a>,
+		plus its <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap②">column-gap</a> multiplied by that same number of columns minus 1.
+
+
+</p>
+   <h4 class="heading settled" id="multicol-max-content-restrained"><span class="content">
+Max-content Sizes in Constrained-height Multi-column Layout</span></h4>
+   <p>
+		The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size⑥">max-content inline size</a> of a multi-column container
 		with restrained-height columns (i.e. a specified <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a> or <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-max-height" id="ref-for-propdef-max-height">max-height</a>, or whichever properties map to the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-size" id="ref-for-block-size">block size</a> of the element)
 		is the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size" id="ref-for-inline-size">inline size</a> that would exactly include all of its columns.
-		It may be approximated by: </p>
+		It may be approximated by:
+
+	</p>
    <ul>
-    <li> Laying out the element with column-spanning elements given <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#propdef-display" id="ref-for-propdef-display">display: none</a>,
-			and taking a inline-size that includes all the columns. 
-    <li> Laying out all of the column-spanning elements into that resulting inline-size,
-			and taking the resulting block-size. 
-    <li> Subtracting that resulting block-size from the specified restraint,
+    <li>
+			Laying out the element with column-spanning elements given <a class="css" data-link-type="propdesc" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display" id="ref-for-propdef-display">display: none</a>,
+			and taking a inline-size that includes all the columns.
+
+		
+    <li>
+			Laying out all of the column-spanning elements into that resulting inline-size,
+			and taking the resulting block-size.
+
+		
+    <li>
+			Subtracting that resulting block-size from the specified restraint,
 			laying out the element without column-spanning elements again into this adjusted block-size,
-			and taking the inline-size of all its columns as its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size⑦">max-content inline size</a>. 
+			and taking the inline-size of all its columns as its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size" id="ref-for-max-content-inline-size⑦">max-content inline size</a>.
+	
    </ul>
-   <p> or by some more accurate method. </p>
-   <p class="note" role="note"> This approximation can result in some slack,
+   <p>
+		or by some more accurate method.
+
+	</p>
+   <p class="note" role="note">
+		This approximation can result in some slack,
 		but avoids overflow in the most common cases,
-		where the balanced height of the columns above spanning elements are approximately equal. </p>
-   <p class="note" role="note"> In the common case of no column-spanning elements,
+		where the balanced height of the columns above spanning elements are approximately equal.
+
+	</p>
+   <p class="note" role="note">
+		In the common case of no column-spanning elements,
 		this approximation collapses to simply doing a layout,
-		and measuring the resulting columns. </p>
+		and measuring the resulting columns.
+
+
+</p>
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span></h2>
-   <p> Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
+   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">
+    Conformance</span></h2>
+   <p>
+            Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology.
             The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
             in the normative parts of this document
             are to be interpreted as described in RFC 2119.
             However, for readability,
-            these words do not appear in all uppercase letters in this specification. </p>
-   <p> All of the text of this specification is normative
-            except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a> </p>
-   <p> Examples in this specification are introduced with the words “for example”
-            or are set apart from the normative text with <code>class="example"</code>, like this: </p>
-   <div class="example" id="example-example"><a class="self-link" href="#example-example"></a> This is an example of an informative example. </div>
-   <p> Informative notes begin with the word “Note”
-            and are set apart from the normative text with <code>class="note"</code>, like this: </p>
-   <p class="note" role="note"> Note, this is an informative note.</p>
+            these words do not appear in all uppercase letters in this specification.
+
+        </p>
+   <p>
+            All of the text of this specification is normative
+            except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a>
+
+        </p>
+   <p>
+            Examples in this specification are introduced with the words “for example”
+            or are set apart from the normative text with <code>class="example"</code>, like this:
+
+        </p>
+   <div class="example" id="example-example"><a class="self-link" href="#example-example"></a>
+            This is an example of an informative example.
+        </div>
+   <p>
+            Informative notes begin with the word “Note”
+            and are set apart from the normative text with <code>class="note"</code>, like this:
+
+        </p>
+   <p class="note" role="note">
+            Note, this is an informative note.</p>
   </div>
 <script>
 (function() {
@@ -2132,7 +2371,7 @@ Parts of this work may be from another specification document.  If so, those par
       on = !document.body.classList.contains('toc-sidebar');
     }
 
-    /* Don’t scroll to compensate for the ToC if we’re above it already. */
+    /* Don't scroll to compensate for the ToC if we're above it already. */
     var headY = 0;
     var head = document.querySelector('.head');
     if (head) {
@@ -2163,16 +2402,16 @@ Parts of this work may be from another specification document.  If so, those par
       }
       if (toggle.matches(':hover')) {
         /* Unfocus button when not using keyboard navigation,
-           because I don’t know where else to send the focus. */
+           because I don't know where else to send the focus. */
         toggle.blur();
       }
     }
   }
 
   function createSidebarToggle() {
-    /* Create the sidebar toggle in JS; it shouldn’t exist when JS is off. */
+    /* Create the sidebar toggle in JS; it shouldn't exist when JS is off. */
     var toggle = document.createElement('a');
-      /* This should probably be a button, but appearance isn’t standards-track.*/
+      /* This should probably be a button, but appearance isn't standards-track.*/
     toggle.id = 'toc-toggle';
     toggle.class = 'toc-toggle';
     toggle.href = '#toc';
@@ -2188,7 +2427,7 @@ Parts of this work may be from another specification document.  If so, those par
     toggle.addEventListener('click', toggler, false);
 
 
-    /* Get <nav id=toc-nav>, or make it if we don’t have one. */
+    /* Get <nav id=toc-nav>, or make it if we don't have one. */
     var tocNav = document.getElementById('toc-nav');
     if (!tocNav) {
       tocNav = document.createElement('p');
@@ -2196,7 +2435,7 @@ Parts of this work may be from another specification document.  If so, those par
       /* Prepend for better keyboard navigation */
       document.body.insertBefore(tocNav, document.body.firstChild);
     }
-    /* While we’re at it, make sure we have a Jump to Toc link. */
+    /* While we're at it, make sure we have a Jump to Toc link. */
     var tocJump = document.getElementById('toc-jump');
     if (!tocJump) {
       tocJump = document.createElement('a');
@@ -2224,7 +2463,7 @@ Parts of this work may be from another specification document.  If so, those par
     }, false);
   }
   else {
-    console.warn("Can’t find Table of Contents. Please use <nav id='toc'> around the ToC.");
+    console.warn("Can't find Table of Contents. Please use <nav id='toc'> around the ToC.");
   }
 
   /* Wrap tables in case they overflow */
@@ -2245,304 +2484,65 @@ Parts of this work may be from another specification document.  If so, those par
   <ul class="index">
    <li><a href="#intrinsic-size">intrinsic size</a><span>, in § Unnumbered section</span>
   </ul>
-  <aside class="dfn-panel" data-for="term-for-propdef-column-gap">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap">https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-propdef-column-gap"> Min-content Sizes in Multi-column Layout</a>
-    <li><a href="#ref-for-propdef-column-gap①"> Max-content Sizes in Unconstrained-height Multi-column Layout</a> <a href="#ref-for-propdef-column-gap②">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-block-container">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-container">https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-container</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-block-container"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-block-container①">(2)</a> <a href="#ref-for-block-container②">(3)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-block-level-box">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-level-box">https://andreubotella.com/csswg-auto-build/test/css-display-3/#block-level-box</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-block-level-box"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-block-level-box①">(2)</a> <a href="#ref-for-block-level-box②">(3)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-propdef-display">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-display-3/#propdef-display">https://andreubotella.com/csswg-auto-build/test/css-display-3/#propdef-display</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-propdef-display"> Max-content Sizes in Constrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-valdef-column-count-auto">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-count-auto">https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-count-auto</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-column-count-auto"> Min-content Sizes in Multi-column Layout</a>
-    <li><a href="#ref-for-valdef-column-count-auto①"> Max-content Sizes in Unconstrained-height Multi-column Layout</a> <a href="#ref-for-valdef-column-count-auto②">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-valdef-column-width-auto">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-width-auto">https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#valdef-column-width-auto</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-column-width-auto"> Min-content Sizes in Multi-column Layout</a> <a href="#ref-for-valdef-column-width-auto①">(2)</a>
-    <li><a href="#ref-for-valdef-column-width-auto②"> Max-content Sizes in Unconstrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-propdef-column-count">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count">https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-count</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-propdef-column-count"> Min-content Sizes in Multi-column Layout</a> <a href="#ref-for-propdef-column-count①">(2)</a>
-    <li><a href="#ref-for-propdef-column-count②"> Max-content Sizes in Unconstrained-height Multi-column Layout</a> <a href="#ref-for-propdef-column-count③">(2)</a> <a href="#ref-for-propdef-column-count④">(3)</a> <a href="#ref-for-propdef-column-count⑤">(4)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-propdef-column-width">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-width">https://andreubotella.com/csswg-auto-build/test/css-multicol-1/#propdef-column-width</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-propdef-column-width"> Min-content Sizes in Multi-column Layout</a> <a href="#ref-for-propdef-column-width①">(2)</a> <a href="#ref-for-propdef-column-width②">(3)</a>
-    <li><a href="#ref-for-propdef-column-width③"> Max-content Sizes in Unconstrained-height Multi-column Layout</a> <a href="#ref-for-propdef-column-width④">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-valdef-width-auto">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-auto">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-auto</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-width-auto"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-valdef-width-auto①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-definite">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-definite"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-definite①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-propdef-height">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-propdef-height"> Intrinsic Sizes of Non-Replaced Blocks</a>
-    <li><a href="#ref-for-propdef-height①"> Max-content Sizes in Constrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-valdef-width-max-content">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-width-max-content"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-valdef-width-max-content①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-max-content-block-size">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-max-content-block-size"> Intrinsic Sizes of Non-Replaced Inlines</a>
-    <li><a href="#ref-for-max-content-block-size①"> Intrinsic Sizes of Non-Replaced Blocks</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-max-content-contribution">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-max-content-contribution"> Intrinsic Sizes of Replaced Elements</a>
-    <li><a href="#ref-for-max-content-contribution①"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-max-content-contribution②">(2)</a>
-    <li><a href="#ref-for-max-content-contribution③"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-max-content-contribution④">(2)</a> <a href="#ref-for-max-content-contribution⑤">(3)</a>
-    <li><a href="#ref-for-max-content-contribution⑥"> Max-content Sizes in Unconstrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-max-content-constraint">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-constraint">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-constraint</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-max-content-constraint"> Intrinsic Sizes of Non-Replaced Blocks</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-max-content-contribution">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-max-content-contribution"> Intrinsic Sizes of Replaced Elements</a>
-    <li><a href="#ref-for-max-content-contribution①"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-max-content-contribution②">(2)</a>
-    <li><a href="#ref-for-max-content-contribution③"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-max-content-contribution④">(2)</a> <a href="#ref-for-max-content-contribution⑤">(3)</a>
-    <li><a href="#ref-for-max-content-contribution⑥"> Max-content Sizes in Unconstrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-max-content-inline-size">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-max-content-inline-size"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-max-content-inline-size①">(2)</a>
-    <li><a href="#ref-for-max-content-inline-size②"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-max-content-inline-size③">(2)</a>
-    <li><a href="#ref-for-max-content-inline-size④"> Max-content Sizes in Unconstrained-height Multi-column Layout</a> <a href="#ref-for-max-content-inline-size⑤">(2)</a>
-    <li><a href="#ref-for-max-content-inline-size⑥"> Max-content Sizes in Constrained-height Multi-column Layout</a> <a href="#ref-for-max-content-inline-size⑦">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-max-content-contribution">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-max-content-contribution"> Intrinsic Sizes of Replaced Elements</a>
-    <li><a href="#ref-for-max-content-contribution①"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-max-content-contribution②">(2)</a>
-    <li><a href="#ref-for-max-content-contribution③"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-max-content-contribution④">(2)</a> <a href="#ref-for-max-content-contribution⑤">(3)</a>
-    <li><a href="#ref-for-max-content-contribution⑥"> Max-content Sizes in Unconstrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-max-content">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-max-content"> Intrinsic Sizes of Replaced Elements</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-propdef-max-height">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-max-height">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-max-height</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-propdef-max-height"> Max-content Sizes in Constrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-valdef-width-min-content">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-width-min-content"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-valdef-width-min-content①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-min-content-block-size">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-min-content-block-size"> Intrinsic Sizes of Non-Replaced Inlines</a>
-    <li><a href="#ref-for-min-content-block-size①"> Intrinsic Sizes of Non-Replaced Blocks</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-min-content-contribution">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-min-content-contribution"> Intrinsic Sizes of Replaced Elements</a>
-    <li><a href="#ref-for-min-content-contribution①"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-min-content-contribution②">(2)</a>
-    <li><a href="#ref-for-min-content-contribution③"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-min-content-contribution④">(2)</a> <a href="#ref-for-min-content-contribution⑤">(3)</a> <a href="#ref-for-min-content-contribution⑥">(4)</a>
-    <li><a href="#ref-for-min-content-contribution⑦"> Min-content Sizes in Multi-column Layout</a> <a href="#ref-for-min-content-contribution⑧">(2)</a>
-    <li><a href="#ref-for-min-content-contribution⑨"> Max-content Sizes in Unconstrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-min-content-contribution">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-min-content-contribution"> Intrinsic Sizes of Replaced Elements</a>
-    <li><a href="#ref-for-min-content-contribution①"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-min-content-contribution②">(2)</a>
-    <li><a href="#ref-for-min-content-contribution③"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-min-content-contribution④">(2)</a> <a href="#ref-for-min-content-contribution⑤">(3)</a> <a href="#ref-for-min-content-contribution⑥">(4)</a>
-    <li><a href="#ref-for-min-content-contribution⑦"> Min-content Sizes in Multi-column Layout</a> <a href="#ref-for-min-content-contribution⑧">(2)</a>
-    <li><a href="#ref-for-min-content-contribution⑨"> Max-content Sizes in Unconstrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-min-content-inline-size">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-min-content-inline-size"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-min-content-inline-size①">(2)</a>
-    <li><a href="#ref-for-min-content-inline-size②"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-min-content-inline-size③">(2)</a>
-    <li><a href="#ref-for-min-content-inline-size④"> Min-content Sizes in Multi-column Layout</a> <a href="#ref-for-min-content-inline-size⑤">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-min-content-contribution">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-min-content-contribution"> Intrinsic Sizes of Replaced Elements</a>
-    <li><a href="#ref-for-min-content-contribution①"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-min-content-contribution②">(2)</a>
-    <li><a href="#ref-for-min-content-contribution③"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-min-content-contribution④">(2)</a> <a href="#ref-for-min-content-contribution⑤">(3)</a> <a href="#ref-for-min-content-contribution⑥">(4)</a>
-    <li><a href="#ref-for-min-content-contribution⑦"> Min-content Sizes in Multi-column Layout</a> <a href="#ref-for-min-content-contribution⑧">(2)</a>
-    <li><a href="#ref-for-min-content-contribution⑨"> Max-content Sizes in Unconstrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-min-content">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-min-content"> Intrinsic Sizes of Replaced Elements</a> <a href="#ref-for-min-content①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-explicit-intrinsic-inner-size">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#explicit-intrinsic-inner-size">https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#explicit-intrinsic-inner-size</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-explicit-intrinsic-inner-size">Unnamed section</a> <a href="#ref-for-explicit-intrinsic-inner-size①">(2)</a> <a href="#ref-for-explicit-intrinsic-inner-size②">(3)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-valdef-width-fit-content">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-fit-content">https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-fit-content</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-width-fit-content"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-valdef-width-fit-content①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-valdef-width-stretch">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-stretch">https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-stretch</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-valdef-width-stretch"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-valdef-width-stretch①">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-block-size">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-size">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-size</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-block-size"> Max-content Sizes in Constrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-block-axis">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-axis">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-axis</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-block-axis"> Intrinsic Sizes of Non-Replaced Blocks</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-inline-size">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-inline-size"> Max-content Sizes in Constrained-height Multi-column Layout</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="term-for-inline-axis">
-   <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis</a><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-inline-axis"> Intrinsic Sizes of Non-Replaced Inlines</a> <a href="#ref-for-inline-axis①">(2)</a>
-    <li><a href="#ref-for-inline-axis②"> Intrinsic Sizes of Non-Replaced Blocks</a> <a href="#ref-for-inline-axis③">(2)</a> <a href="#ref-for-inline-axis④">(3)</a> <a href="#ref-for-inline-axis⑤">(4)</a>
-   </ul>
-  </aside>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[CSS-ALIGN-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-propdef-column-gap">column-gap</span>
+     <li><span class="dfn-paneled" id="d34f4038">column-gap</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-DISPLAY-3]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-DISPLAY-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-block-container">block container box</span>
-     <li><span class="dfn-paneled" id="term-for-block-level-box">block-level box</span>
-     <li><span class="dfn-paneled" id="term-for-propdef-display">display</span>
+     <li><span class="dfn-paneled" id="dfd04887">block container box</span>
+     <li><span class="dfn-paneled" id="b1c1df73">block-level box</span>
+     <li><span class="dfn-paneled" id="649eec52">display</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-MULTICOL-1]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-MULTICOL-2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-valdef-column-count-auto">auto <small>(for column-count)</small></span>
-     <li><span class="dfn-paneled" id="term-for-valdef-column-width-auto">auto <small>(for column-width)</small></span>
-     <li><span class="dfn-paneled" id="term-for-propdef-column-count">column-count</span>
-     <li><span class="dfn-paneled" id="term-for-propdef-column-width">column-width</span>
+     <li><span class="dfn-paneled" id="084ac05e">auto <small>(for column-count)</small></span>
+     <li><span class="dfn-paneled" id="d26b3717">auto <small>(for column-width)</small></span>
+     <li><span class="dfn-paneled" id="00dc00b7">column-count</span>
+     <li><span class="dfn-paneled" id="e3462dc0">column-width</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-SIZING-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-valdef-width-auto">auto</span>
-     <li><span class="dfn-paneled" id="term-for-definite">definite size</span>
-     <li><span class="dfn-paneled" id="term-for-propdef-height">height</span>
-     <li><span class="dfn-paneled" id="term-for-valdef-width-max-content">max-content</span>
-     <li><span class="dfn-paneled" id="term-for-max-content-block-size">max-content block size</span>
-     <li><span class="dfn-paneled" id="term-for-max-content-contribution">max-content block-size contribution</span>
-     <li><span class="dfn-paneled" id="term-for-max-content-constraint">max-content constraint</span>
-     <li><span class="dfn-paneled" id="term-for-max-content-contribution①">max-content contribution</span>
-     <li><span class="dfn-paneled" id="term-for-max-content-inline-size">max-content inline size</span>
-     <li><span class="dfn-paneled" id="term-for-max-content-contribution②">max-content inline-size contribution</span>
-     <li><span class="dfn-paneled" id="term-for-max-content">max-content size</span>
-     <li><span class="dfn-paneled" id="term-for-propdef-max-height">max-height</span>
-     <li><span class="dfn-paneled" id="term-for-valdef-width-min-content">min-content</span>
-     <li><span class="dfn-paneled" id="term-for-min-content-block-size">min-content block size</span>
-     <li><span class="dfn-paneled" id="term-for-min-content-contribution">min-content block-size contribution</span>
-     <li><span class="dfn-paneled" id="term-for-min-content-contribution①">min-content contribution</span>
-     <li><span class="dfn-paneled" id="term-for-min-content-inline-size">min-content inline size</span>
-     <li><span class="dfn-paneled" id="term-for-min-content-contribution②">min-content inline-size contribution</span>
-     <li><span class="dfn-paneled" id="term-for-min-content">min-content size</span>
+     <li><span class="dfn-paneled" id="d89b468a">auto</span>
+     <li><span class="dfn-paneled" id="1e318107">definite size</span>
+     <li><span class="dfn-paneled" id="edaeeec8">height</span>
+     <li><span class="dfn-paneled" id="dd161893">max-content</span>
+     <li><span class="dfn-paneled" id="f92dc0aa">max-content block size</span>
+     <li><span class="dfn-paneled" id="9f62f83b">max-content block-size contribution</span>
+     <li><span class="dfn-paneled" id="abf5eb84">max-content constraint</span>
+     <li><span class="dfn-paneled" id="098f75ae">max-content contribution</span>
+     <li><span class="dfn-paneled" id="59d06967">max-content inline size</span>
+     <li><span class="dfn-paneled" id="51a0ead5">max-content inline-size contribution</span>
+     <li><span class="dfn-paneled" id="f2bd8994">max-content size</span>
+     <li><span class="dfn-paneled" id="6f9378fb">max-height</span>
+     <li><span class="dfn-paneled" id="e24e2bba">min-content</span>
+     <li><span class="dfn-paneled" id="3868ee98">min-content block size</span>
+     <li><span class="dfn-paneled" id="5991968b">min-content block-size contribution</span>
+     <li><span class="dfn-paneled" id="2bf6e449">min-content contribution</span>
+     <li><span class="dfn-paneled" id="1de9dbb2">min-content inline size</span>
+     <li><span class="dfn-paneled" id="560cb20f">min-content inline-size contribution</span>
+     <li><span class="dfn-paneled" id="3db30d4d">min-content size</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-SIZING-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-explicit-intrinsic-inner-size">explicit intrinsic inner size</span>
-     <li><span class="dfn-paneled" id="term-for-valdef-width-fit-content">fit-content</span>
-     <li><span class="dfn-paneled" id="term-for-valdef-width-stretch">stretch</span>
+     <li><span class="dfn-paneled" id="70b4c3ab">explicit intrinsic inner size</span>
+     <li><span class="dfn-paneled" id="aaf6e877">fit-content</span>
+     <li><span class="dfn-paneled" id="a541a766">stretch</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-WRITING-MODES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="term-for-block-size">block size</span>
-     <li><span class="dfn-paneled" id="term-for-block-axis">block-axis</span>
-     <li><span class="dfn-paneled" id="term-for-inline-size">inline size</span>
-     <li><span class="dfn-paneled" id="term-for-inline-axis">inline-axis</span>
+     <li><span class="dfn-paneled" id="c465b8aa">block size</span>
+     <li><span class="dfn-paneled" id="99f93162">block-axis</span>
+     <li><span class="dfn-paneled" id="224aeb29">inline size</span>
+     <li><span class="dfn-paneled" id="cf639e00">inline-axis</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span></h2>
@@ -2550,10 +2550,10 @@ Parts of this work may be from another specification document.  If so, those par
   <dl>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-align/"><cite>CSS Box Alignment Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-align/">https://andreubotella.com/csswg-auto-build/test/css-align/</a>
-   <dt id="biblio-css-display-3">[CSS-DISPLAY-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-display/"><cite>CSS Display Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-display/">https://andreubotella.com/csswg-auto-build/test/css-display/</a>
-   <dt id="biblio-css-multicol-1">[CSS-MULTICOL-1]
-   <dd>Florian Rivoal; Rachel Andrew. <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol/"><cite>CSS Multi-column Layout Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol/">https://andreubotella.com/csswg-auto-build/test/css-multicol/</a>
+   <dt id="biblio-css-display-4">[CSS-DISPLAY-4]
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-display/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-display/">https://andreubotella.com/csswg-auto-build/test/css-display/</a>
+   <dt id="biblio-css-multicol-2">[CSS-MULTICOL-2]
+   <dd>Florian Rivoal; Rachel Andrew. <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/"><cite>CSS Multi-column Layout Module Level 2</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol-2/">https://andreubotella.com/csswg-auto-build/test/css-multicol-2/</a>
    <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/</a>
    <dt id="biblio-css-sizing-4">[CSS-SIZING-4]
@@ -2574,68 +2574,869 @@ Parts of this work may be from another specification document.  If so, those par
   <div style="counter-reset:issue">
    <div class="issue"> <strong>Need to Sync This Section With Level 3 It is Super Out Of Date</strong> <a class="issue-return" href="#issue-05e1e44b" title="Jump to section">↵</a></div>
    <div class="issue"> Need to handle floats.
-	See <a href="https://lists.w3.org/Archives/Public/www-style/2014Oct/0061.html">Greg’s issue</a> and <a href="https://lists.w3.org/Archives/Public/www-style/2014Nov/0085.html">dbaron’s response</a>. <a class="issue-return" href="#issue-ac962596" title="Jump to section">↵</a></div>
-   <div class="issue"> ¯\_(ツ)_/¯ <a class="issue-return" href="#issue-fbee5e7e" title="Jump to section">↵</a></div>
+	See <a href="https://lists.w3.org/Archives/Public/www-style/2014Oct/0061.html">Greg’s issue</a>
+	and <a href="https://lists.w3.org/Archives/Public/www-style/2014Nov/0085.html">dbaron’s response</a>. <a class="issue-return" href="#issue-ac962596" title="Jump to section">↵</a></div>
+   <div class="issue">
+		¯\_(ツ)_/¯
+
+
+
+ <a class="issue-return" href="#issue-fbee5e7e" title="Jump to section">↵</a></div>
   </div>
-  <aside class="dfn-panel" data-for="intrinsic-size">
-   <b><a href="#intrinsic-size">#intrinsic-size</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-intrinsic-size">Unnamed section</a> <a href="#ref-for-intrinsic-size①">(2)</a>
-   </ul>
-  </aside>
-<script>/* script-dfn-panel */
+<script>/* Boilerplate: script-dom-helper */
+"use strict";
+function query(sel) { return document.querySelector(sel); }
 
-document.body.addEventListener("click", function(e) {
-    var queryAll = function(sel) { return [].slice.call(document.querySelectorAll(sel)); }
-    // Find the dfn element or panel, if any, that was clicked on.
-    var el = e.target;
-    var target;
-    var hitALink = false;
-    while(el.parentElement) {
-        if(el.tagName == "A") {
-            // Clicking on a link in a <dfn> shouldn't summon the panel
-            hitALink = true;
-        }
-        if(el.classList.contains("dfn-paneled")) {
-            target = "dfn";
-            break;
-        }
-        if(el.classList.contains("dfn-panel")) {
-            target = "dfn-panel";
-            break;
-        }
-        el = el.parentElement;
-    }
-    if(target != "dfn-panel") {
-        // Turn off any currently "on" or "activated" panels.
-        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(function(el){
-            el.classList.remove("on");
-            el.classList.remove("activated");
-        });
-    }
-    if(target == "dfn" && !hitALink) {
-        // open the panel
-        var dfnPanel = document.querySelector(".dfn-panel[data-for='" + el.id + "']");
-        if(dfnPanel) {
-            dfnPanel.classList.add("on");
-            var rect = el.getBoundingClientRect();
-            dfnPanel.style.left = window.scrollX + rect.right + 5 + "px";
-            dfnPanel.style.top = window.scrollY + rect.top + "px";
-            var panelRect = dfnPanel.getBoundingClientRect();
-            var panelWidth = panelRect.right - panelRect.left;
-            if(panelRect.right > document.body.scrollWidth && (rect.left - (panelWidth + 5)) > 0) {
-                // Reposition, because the panel is overflowing
-                dfnPanel.style.left = window.scrollX + rect.left - (panelWidth + 5) + "px";
-            }
-        } else {
-            console.log("Couldn't find .dfn-panel[data-for='" + el.id + "']");
-        }
-    } else if(target == "dfn-panel") {
-        // Switch it to "activated" state, which pins it.
-        el.classList.add("activated");
-        el.style.left = null;
-        el.style.top = null;
-    }
+function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
 
+function iter(obj) {
+	if(!obj) return [];
+	var it = obj[Symbol.iterator];
+	if(it) return it;
+	return Object.entries(obj);
+}
+
+function mk(tagname, attrs, ...children) {
+	const el = document.createElement(tagname);
+	for(const [k,v] of iter(attrs)) {
+		if(k.slice(0,3) == "_on") {
+			const eventName = k.slice(3);
+			el.addEventListener(eventName, v);
+		} else if(k[0] == "_") {
+			// property, not attribute
+			el[k.slice(1)] = v;
+		} else {
+			if(v === false || v == null) {
+        continue;
+      } else if(v === true) {
+        el.setAttribute(k, "");
+        continue;
+      } else {
+  			el.setAttribute(k, v);
+      }
+		}
+	}
+	append(el, children);
+	return el;
+}
+
+/* Create shortcuts for every known HTML element */
+[
+  "a",
+  "abbr",
+  "acronym",
+  "address",
+  "applet",
+  "area",
+  "article",
+  "aside",
+  "audio",
+  "b",
+  "base",
+  "basefont",
+  "bdo",
+  "big",
+  "blockquote",
+  "body",
+  "br",
+  "button",
+  "canvas",
+  "caption",
+  "center",
+  "cite",
+  "code",
+  "col",
+  "colgroup",
+  "datalist",
+  "dd",
+  "del",
+  "details",
+  "dfn",
+  "dialog",
+  "div",
+  "dl",
+  "dt",
+  "em",
+  "embed",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "font",
+  "footer",
+  "form",
+  "frame",
+  "frameset",
+  "head",
+  "header",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "hr",
+  "html",
+  "i",
+  "iframe",
+  "img",
+  "input",
+  "ins",
+  "kbd",
+  "label",
+  "legend",
+  "li",
+  "link",
+  "main",
+  "map",
+  "mark",
+  "meta",
+  "meter",
+  "nav",
+  "nobr",
+  "noscript",
+  "object",
+  "ol",
+  "optgroup",
+  "option",
+  "output",
+  "p",
+  "param",
+  "pre",
+  "progress",
+  "q",
+  "s",
+  "samp",
+  "script",
+  "section",
+  "select",
+  "small",
+  "source",
+  "span",
+  "strike",
+  "strong",
+  "style",
+  "sub",
+  "summary",
+  "sup",
+  "table",
+  "tbody",
+  "td",
+  "template",
+  "textarea",
+  "tfoot",
+  "th",
+  "thead",
+  "time",
+  "title",
+  "tr",
+  "u",
+  "ul",
+  "var",
+  "video",
+  "wbr",
+  "xmp",
+].forEach(tagname=>{
+	mk[tagname] = (...args) => mk(tagname, ...args);
 });
+
+function* nodesFromChildList(children) {
+	for(const child of children.flat(Infinity)) {
+		if(child instanceof Node) {
+			yield child;
+		} else {
+			yield new Text(child);
+		}
+	}
+}
+function append(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		if(el instanceof Node) el.appendChild(child);
+		else el.push(child);
+	}
+	return el;
+}
+
+function insertAfter(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		el.parentNode.insertBefore(child, el.nextSibling);
+	}
+	return el;
+}
+
+function clearContents(el) {
+	el.innerHTML = "";
+	return el;
+}
+
+function parseHTML(markup) {
+	if(markup.toLowerCase().trim().indexOf('<!doctype') === 0) {
+		const doc = document.implementation.createHTMLDocument("");
+		doc.documentElement.innerHTML = markup;
+		return doc;
+	} else {
+		const el = mk.template({});
+		el.innerHTML = markup;
+		return el.content;
+	}
+}</script>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+let dfnPanelData = {
+"00dc00b7": {"dfnID":"00dc00b7","dfnText":"column-count","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-count"},{"id":"ref-for-propdef-column-count\u2460"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-propdef-column-count\u2461"},{"id":"ref-for-propdef-column-count\u2462"},{"id":"ref-for-propdef-column-count\u2463"},{"id":"ref-for-propdef-column-count\u2464"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count"},
+"084ac05e": {"dfnID":"084ac05e","dfnText":"auto (for column-count)","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-column-count-auto"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-valdef-column-count-auto\u2460"},{"id":"ref-for-valdef-column-count-auto\u2461"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-count-auto"},
+"098f75ae": {"dfnID":"098f75ae","dfnText":"max-content contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content-contribution"}],"title":"\nIntrinsic Sizes of Replaced Elements"},{"refs":[{"id":"ref-for-max-content-contribution\u2460"},{"id":"ref-for-max-content-contribution\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-max-content-contribution\u2462"},{"id":"ref-for-max-content-contribution\u2463"},{"id":"ref-for-max-content-contribution\u2464"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-max-content-contribution\u2465"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution"},
+"1de9dbb2": {"dfnID":"1de9dbb2","dfnText":"min-content inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-inline-size"},{"id":"ref-for-min-content-inline-size\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-min-content-inline-size\u2461"},{"id":"ref-for-min-content-inline-size\u2462"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-min-content-inline-size\u2463"},{"id":"ref-for-min-content-inline-size\u2464"}],"title":"\nMin-content Sizes in Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size"},
+"1e318107": {"dfnID":"1e318107","dfnText":"definite size","external":true,"refSections":[{"refs":[{"id":"ref-for-definite"},{"id":"ref-for-definite\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite"},
+"224aeb29": {"dfnID":"224aeb29","dfnText":"inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-size"}],"title":"\nMax-content Sizes in Constrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size"},
+"2bf6e449": {"dfnID":"2bf6e449","dfnText":"min-content contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-contribution"}],"title":"\nIntrinsic Sizes of Replaced Elements"},{"refs":[{"id":"ref-for-min-content-contribution\u2460"},{"id":"ref-for-min-content-contribution\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-min-content-contribution\u2462"},{"id":"ref-for-min-content-contribution\u2463"},{"id":"ref-for-min-content-contribution\u2464"},{"id":"ref-for-min-content-contribution\u2465"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-min-content-contribution\u2466"},{"id":"ref-for-min-content-contribution\u2467"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-min-content-contribution\u2468"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution"},
+"3868ee98": {"dfnID":"3868ee98","dfnText":"min-content block size","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-block-size"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-min-content-block-size\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size"},
+"3db30d4d": {"dfnID":"3db30d4d","dfnText":"min-content size","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content"},{"id":"ref-for-min-content\u2460"}],"title":"\nIntrinsic Sizes of Replaced Elements"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content"},
+"51a0ead5": {"dfnID":"51a0ead5","dfnText":"max-content inline-size contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content-contribution"}],"title":"\nIntrinsic Sizes of Replaced Elements"},{"refs":[{"id":"ref-for-max-content-contribution\u2460"},{"id":"ref-for-max-content-contribution\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-max-content-contribution\u2462"},{"id":"ref-for-max-content-contribution\u2463"},{"id":"ref-for-max-content-contribution\u2464"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-max-content-contribution\u2465"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution"},
+"560cb20f": {"dfnID":"560cb20f","dfnText":"min-content inline-size contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-contribution"}],"title":"\nIntrinsic Sizes of Replaced Elements"},{"refs":[{"id":"ref-for-min-content-contribution\u2460"},{"id":"ref-for-min-content-contribution\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-min-content-contribution\u2462"},{"id":"ref-for-min-content-contribution\u2463"},{"id":"ref-for-min-content-contribution\u2464"},{"id":"ref-for-min-content-contribution\u2465"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-min-content-contribution\u2466"},{"id":"ref-for-min-content-contribution\u2467"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-min-content-contribution\u2468"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution"},
+"5991968b": {"dfnID":"5991968b","dfnText":"min-content block-size contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-contribution"}],"title":"\nIntrinsic Sizes of Replaced Elements"},{"refs":[{"id":"ref-for-min-content-contribution\u2460"},{"id":"ref-for-min-content-contribution\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-min-content-contribution\u2462"},{"id":"ref-for-min-content-contribution\u2463"},{"id":"ref-for-min-content-contribution\u2464"},{"id":"ref-for-min-content-contribution\u2465"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-min-content-contribution\u2466"},{"id":"ref-for-min-content-contribution\u2467"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-min-content-contribution\u2468"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution"},
+"59d06967": {"dfnID":"59d06967","dfnText":"max-content inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content-inline-size"},{"id":"ref-for-max-content-inline-size\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-max-content-inline-size\u2461"},{"id":"ref-for-max-content-inline-size\u2462"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-max-content-inline-size\u2463"},{"id":"ref-for-max-content-inline-size\u2464"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"},{"refs":[{"id":"ref-for-max-content-inline-size\u2465"},{"id":"ref-for-max-content-inline-size\u2466"}],"title":"\nMax-content Sizes in Constrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size"},
+"649eec52": {"dfnID":"649eec52","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"\nMax-content Sizes in Constrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display"},
+"6f9378fb": {"dfnID":"6f9378fb","dfnText":"max-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-max-height"}],"title":"\nMax-content Sizes in Constrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-max-height"},
+"70b4c3ab": {"dfnID":"70b4c3ab","dfnText":"explicit intrinsic inner size","external":true,"refSections":[{"refs":[{"id":"ref-for-explicit-intrinsic-inner-size"},{"id":"ref-for-explicit-intrinsic-inner-size\u2460"},{"id":"ref-for-explicit-intrinsic-inner-size\u2461"}],"title":"Unnamed section"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#explicit-intrinsic-inner-size"},
+"99f93162": {"dfnID":"99f93162","dfnText":"block-axis","external":true,"refSections":[{"refs":[{"id":"ref-for-block-axis"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-axis"},
+"9f62f83b": {"dfnID":"9f62f83b","dfnText":"max-content block-size contribution","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content-contribution"}],"title":"\nIntrinsic Sizes of Replaced Elements"},{"refs":[{"id":"ref-for-max-content-contribution\u2460"},{"id":"ref-for-max-content-contribution\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-max-content-contribution\u2462"},{"id":"ref-for-max-content-contribution\u2463"},{"id":"ref-for-max-content-contribution\u2464"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-max-content-contribution\u2465"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution"},
+"a541a766": {"dfnID":"a541a766","dfnText":"stretch","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-width-stretch"},{"id":"ref-for-valdef-width-stretch\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-stretch"},
+"aaf6e877": {"dfnID":"aaf6e877","dfnText":"fit-content","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-width-fit-content"},{"id":"ref-for-valdef-width-fit-content\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-fit-content"},
+"abf5eb84": {"dfnID":"abf5eb84","dfnText":"max-content constraint","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content-constraint"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-constraint"},
+"b1c1df73": {"dfnID":"b1c1df73","dfnText":"block-level box","external":true,"refSections":[{"refs":[{"id":"ref-for-block-level-box"},{"id":"ref-for-block-level-box\u2460"},{"id":"ref-for-block-level-box\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-level-box"},
+"c465b8aa": {"dfnID":"c465b8aa","dfnText":"block size","external":true,"refSections":[{"refs":[{"id":"ref-for-block-size"}],"title":"\nMax-content Sizes in Constrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-size"},
+"cf639e00": {"dfnID":"cf639e00","dfnText":"inline-axis","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-axis"},{"id":"ref-for-inline-axis\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-inline-axis\u2461"},{"id":"ref-for-inline-axis\u2462"},{"id":"ref-for-inline-axis\u2463"},{"id":"ref-for-inline-axis\u2464"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis"},
+"d26b3717": {"dfnID":"d26b3717","dfnText":"auto (for column-width)","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-column-width-auto"},{"id":"ref-for-valdef-column-width-auto\u2460"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-valdef-column-width-auto\u2461"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-width-auto"},
+"d34f4038": {"dfnID":"d34f4038","dfnText":"column-gap","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-gap"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-propdef-column-gap\u2460"},{"id":"ref-for-propdef-column-gap\u2461"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap"},
+"d89b468a": {"dfnID":"d89b468a","dfnText":"auto","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-width-auto"},{"id":"ref-for-valdef-width-auto\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-auto"},
+"dd161893": {"dfnID":"dd161893","dfnText":"max-content","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-width-max-content"},{"id":"ref-for-valdef-width-max-content\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content"},
+"dfd04887": {"dfnID":"dfd04887","dfnText":"block container box","external":true,"refSections":[{"refs":[{"id":"ref-for-block-container"},{"id":"ref-for-block-container\u2460"},{"id":"ref-for-block-container\u2461"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-container"},
+"e24e2bba": {"dfnID":"e24e2bba","dfnText":"min-content","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-width-min-content"},{"id":"ref-for-valdef-width-min-content\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content"},
+"e3462dc0": {"dfnID":"e3462dc0","dfnText":"column-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-width"},{"id":"ref-for-propdef-column-width\u2460"},{"id":"ref-for-propdef-column-width\u2461"}],"title":"\nMin-content Sizes in Multi-column Layout"},{"refs":[{"id":"ref-for-propdef-column-width\u2462"},{"id":"ref-for-propdef-column-width\u2463"}],"title":"\nMax-content Sizes in Unconstrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width"},
+"edaeeec8": {"dfnID":"edaeeec8","dfnText":"height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-height"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"},{"refs":[{"id":"ref-for-propdef-height\u2460"}],"title":"\nMax-content Sizes in Constrained-height Multi-column Layout"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height"},
+"f2bd8994": {"dfnID":"f2bd8994","dfnText":"max-content size","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content"}],"title":"\nIntrinsic Sizes of Replaced Elements"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content"},
+"f92dc0aa": {"dfnID":"f92dc0aa","dfnText":"max-content block size","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content-block-size"}],"title":"\nIntrinsic Sizes of Non-Replaced Inlines"},{"refs":[{"id":"ref-for-max-content-block-size\u2460"}],"title":"\nIntrinsic Sizes of Non-Replaced Blocks"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size"},
+"intrinsic-size": {"dfnID":"intrinsic-size","dfnText":"Intrinsic sizing","external":false,"refSections":[{"refs":[{"id":"ref-for-intrinsic-size"},{"id":"ref-for-intrinsic-size\u2460"}],"title":"Unnamed section"}],"url":"#intrinsic-size"},
+};
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    genAllDfnPanels();
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all dfn panels.
+        hideAllDfnPanels();
+    });
+});
+
+window.addEventListener("resize", () => {
+    // Pin any visible dfn panel
+    queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>positionDfnPanel(el));
+});
+
+function genAllDfnPanels() {
+    for(const panelData of Object.values(dfnPanelData)) {
+        const dfnID = panelData.dfnID;
+        const dfn = document.getElementById(dfnID);
+        if(!dfn) {
+            console.log(`Can't find dfn#${dfnID}.`, panelData);
+            continue;
+        }
+        dfn.panelData = panelData;
+        insertDfnPopupAction(dfn);
+    }
+}
+
+function genDfnPanel(dfn, { dfnID, url, dfnText, refSections, external }) {
+    const dfnPanel = mk.aside({
+        class: "dfn-panel on",
+        id: `infopanel-for-${dfnID}`,
+        "data-for": dfnID,
+        "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
+        },
+        mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+            `Info about the '${dfnText}' ${external?"external":""} reference.`),
+        mk.a({href:url, class:"dfn-link"}, url),
+        refSections.length == 0 ? [] :
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({ href: `#${ref.id}` },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        genLinkingSyntaxes(dfn),
+    );
+
+    dfnPanel.addEventListener('click', (event) => {
+        if (event.target.nodeName == 'A') {
+            scrollToTargetAndHighlight(event);
+            pinDfnPanel(dfnPanel);
+        }
+        event.stopPropagation();
+        refocusOnTarget(event);
+    });
+    dfnPanel.addEventListener('keydown', (event) => {
+        if(event.keyCode == 27) { // Escape key
+            hideDfnPanel({dfnPanel});
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+
+    dfnPanel.dfn = dfn;
+    dfn.dfnPanel = dfnPanel;
+    return dfnPanel;
+}
+
+
+
+function hideAllDfnPanels() {
+    // Delete the currently-active dfn panel.
+    queryAll(".dfn-panel").forEach(dfnPanel=>hideDfnPanel({dfnPanel}));
+}
+
+function showDfnPanel(dfn) {
+    hideAllDfnPanels(); // Only display one at a time.
+
+    dfn.setAttribute("aria-expanded", "true");
+
+    const dfnPanel = genDfnPanel(dfn, dfn.panelData);
+
+    // Give the dfn a unique tabindex, and then
+    // give all the tabbable panel bits successive indexes.
+    let tabIndex = 100;
+    dfn.tabIndex = tabIndex++;
+    const tabbable = dfnPanel.querySelectorAll(":is(a, button)");
+    for (const el of tabbable) {
+        el.tabIndex = tabIndex++;
+    }
+
+    append(document.body, dfnPanel);
+    positionDfnPanel(dfnPanel);
+}
+
+function positionDfnPanel(dfnPanel) {
+    const dfn = dfnPanel.dfn;
+    const dfnPos = getBounds(dfn);
+    dfnPanel.style.top = dfnPos.bottom + "px";
+    dfnPanel.style.left = dfnPos.left + "px";
+
+    const panelPos = dfnPanel.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, dfnPos.left - overflowAmount);
+        dfnPanel.style.left = newLeft + "px";
+    }
+}
+
+function pinDfnPanel(dfnPanel) {
+    // Switch it to "activated" state, which pins it.
+    dfnPanel.classList.add("activated");
+    dfnPanel.style.position = "fixed";
+    dfnPanel.style.left = null;
+    dfnPanel.style.top = null;
+}
+
+function hideDfnPanel({dfn, dfnPanel}) {
+    if(!dfnPanel) dfnPanel = dfn.dfnPanel;
+    if(!dfn) dfn = dfnPanel.dfn;
+    dfn.dfnPanel = undefined;
+    dfnPanel.dfn = undefined;
+    dfn.setAttribute("aria-expanded", "false");
+    dfn.tabIndex = undefined;
+    dfnPanel.remove()
+}
+
+function toggleDfnPanel(dfn) {
+    if(dfn.dfnPanel) {
+        hideDfnPanel(dfn);
+    } else {
+        showDfnPanel(dfn);
+    }
+}
+
+function insertDfnPopupAction(dfn) {
+    dfn.setAttribute('role', 'button');
+    dfn.setAttribute('aria-expanded', 'false')
+    dfn.tabIndex = 0;
+    dfn.classList.add('has-dfn-panel');
+    dfn.addEventListener('click', (event) => {
+        toggleDfnPanel(dfn);
+        event.stopPropagation();
+    });
+    dfn.addEventListener('keypress', (event) => {
+        const kc = event.keyCode;
+        // 32->Space, 13->Enter
+        if(kc == 32 || kc == 13) {
+            toggleDfnPanel(dfn);
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+}
+
+function refocusOnTarget(event) {
+    const target = event.target;
+    setTimeout(() => {
+        // Refocus on the event.target element.
+        // This is needed after browser scrolls to the destination.
+        target.focus();
+    });
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function scrollToTargetAndHighlight(event) {
+    let hash = event.target.hash;
+    if (hash) {
+        hash = decodeURIComponent(hash.substring(1));
+        const dest = document.getElementById(hash);
+        if (dest) {
+            dest.classList.add('highlighted');
+            setTimeout(() => dest.classList.remove('highlighted'), 1000);
+        }
+    }
+}
+
+// Functions, divided by link type, that wrap an autolink's
+// contents with the appropriate outer syntax.
+// Alternately, a string naming another type they format
+// the same as.
+function needsFor(type) {
+    switch(type) {
+        case "descriptor":
+        case "value":
+        case "element-attr":
+        case "attr-value":
+        case "element-state":
+        case "method":
+        case "constructor":
+        case "argument":
+        case "attribute":
+        case "const":
+        case "dict-member":
+        case "event":
+        case "enum-value":
+        case "stringifier":
+        case "serializer":
+        case "iterator":
+        case "maplike":
+        case "setlike":
+        case "state":
+        case "mode":
+        case "context":
+        case "facet": return true;
+
+        default: return false;
+    }
+}
+function refusesFor(type) {
+    switch(type) {
+        case "property":
+        case "element":
+        case "interface":
+        case "namespace":
+        case "callback":
+        case "dictionary":
+        case "enum":
+        case "exception":
+        case "typedef":
+        case "http-header":
+        case "permission": return true;
+
+        default: return false;
+    }
+}
+function linkFormatterFromType(type) {
+    switch(type) {
+        case 'scheme':
+        case 'permission':
+        case 'dfn': return (text) => `[=${text}=]`;
+
+        case 'abstract-op': return (text) => `[\$${text}\$]`;
+
+        case 'function':
+        case 'at-rule':
+        case 'selector':
+        case 'value': return (text) => `''${text}''`;
+
+        case 'http-header': return (text) => `[:${text}:]`;
+
+        case 'interface':
+        case 'constructor':
+        case 'method':
+        case 'argument':
+        case 'attribute':
+        case 'callback':
+        case 'dictionary':
+        case 'dict-member':
+        case 'enum':
+        case 'enum-value':
+        case 'exception':
+        case 'const':
+        case 'typedef':
+        case 'stringifier':
+        case 'serializer':
+        case 'iterator':
+        case 'maplike':
+        case 'setlike':
+        case 'extended-attribute':
+        case 'event':
+        case 'idl': return (text) => `{{${text}}}`;
+
+        case 'element-state':
+        case 'element-attr':
+        case 'attr-value':
+        case 'element': return (element) => `<{${element}}>`;
+
+        case 'grammar': return (text) => `${text} (within a <pre class=prod>)`;
+
+        case 'type': return (text)=> `<<${text}>>`;
+
+        case 'descriptor':
+        case 'property': return (text) => `'${text}'`;
+
+        default: return;
+    };
+};
+
+function genLinkingSyntaxes(dfn) {
+    if(dfn.tagName != "DFN") return;
+
+    const type = dfn.getAttribute('data-dfn-type');
+    if(!type) {
+        console.log(`<dfn> doesn't have a data-dfn-type:`, dfn);
+        return [];
+    }
+
+    // Return a function that wraps link text based on the type
+    const linkFormatter = linkFormatterFromType(type);
+    if(!linkFormatter) {
+        console.log(`<dfn> has an unknown data-dfn-type:`, dfn);
+        return [];
+    }
+
+    let ltAlts;
+    if(dfn.hasAttribute('data-lt')) {
+        ltAlts = dfn.getAttribute('data-lt')
+            .split("|")
+            .map(x=>x.trim());
+    } else {
+        ltAlts = [dfn.textContent.trim()];
+    }
+    if(type == "type") {
+        // lt of "<foo>", but "foo" is the interior;
+        // <<foo/bar>> is how you write it with a for,
+        // not <foo/<bar>> or whatever.
+        for(var i = 0; i < ltAlts.length; i++) {
+            const lt = ltAlts[i];
+            const match = /<(.*)>/.exec(lt);
+            if(match) { ltAlts[i] = match[1]; }
+        }
+    }
+
+    let forAlts;
+    if(dfn.hasAttribute('data-dfn-for')) {
+        forAlts = dfn.getAttribute('data-dfn-for')
+            .split(",")
+            .map(x=>x.trim());
+    } else {
+        forAlts = [''];
+    }
+
+    let linkingSyntaxes = [];
+    if(!needsFor(type)) {
+        for(const lt of ltAlts) {
+            linkingSyntaxes.push(linkFormatter(lt));
+        }
+    }
+    if(!refusesFor(type)) {
+        for(const f of forAlts) {
+            linkingSyntaxes.push(linkFormatter(`${f}/${ltAlts[0]}`))
+        }
+    }
+    return [
+        mk.b({}, 'Possible linking syntaxes:'),
+        mk.ul({},
+            ...linkingSyntaxes.map(link => {
+                const copyLink = async () =>
+                    await navigator.clipboard.writeText(link);
+                return mk.li({},
+                    mk.div({ class: 'link-item' },
+                        mk.button({
+                            class: 'copy-icon', title: 'Copy',
+                            type: 'button',
+                            _onclick: copyLink,
+                            tabindex: 0,
+                        }, mk.span({ class: 'icon' }) ),
+                        mk.span({}, link)
+                    )
+                );
+            })
+        )
+    ];
+}
+}
+</script>
+<script>/* Boilerplate: script-ref-hints */
+"use strict";
+{
+let refsData = {
+"#intrinsic-size": {"displayText":"intrinsic size","export":true,"for_":[],"level":"","normative":true,"shortname":"","spec":"","status":"local","text":"intrinsic size","type":"dfn","url":"#intrinsic-size"},
+"https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap": {"displayText":"column-gap","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"column-gap","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-align-3/#propdef-column-gap"},
+"https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-container": {"displayText":"block container box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"block container box","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-container"},
+"https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-level-box": {"displayText":"block-level box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"block-level box","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#block-level-box"},
+"https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display": {"displayText":"display","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"display","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display"},
+"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count": {"displayText":"column-count","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"current","text":"column-count","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-count"},
+"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width": {"displayText":"column-width","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"current","text":"column-width","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#propdef-column-width"},
+"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-count-auto": {"displayText":"auto","export":true,"for_":["column-count"],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"current","text":"auto","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-count-auto"},
+"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-width-auto": {"displayText":"auto","export":true,"for_":["column-width"],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"current","text":"auto","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-multicol-2/#valdef-column-width-auto"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite": {"displayText":"definite size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"definite size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#definite"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content": {"displayText":"max-content size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-content size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size": {"displayText":"max-content block size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-content block size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-block-size"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-constraint": {"displayText":"max-content constraint","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-content constraint","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-constraint"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution": {"displayText":"max-content contribution","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-content contribution","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-contribution"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size": {"displayText":"max-content inline size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-content inline size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#max-content-inline-size"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content": {"displayText":"min-content size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"min-content size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size": {"displayText":"min-content block size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"min-content block size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-block-size"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution": {"displayText":"min-content contribution","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"min-content contribution","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-contribution"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size": {"displayText":"min-content inline size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"min-content inline size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#min-content-inline-size"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height": {"displayText":"height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"height","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-max-height": {"displayText":"max-height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-height","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-max-height"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-auto": {"displayText":"auto","export":true,"for_":["width","height","min-width","min-height"],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"auto","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-auto"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content": {"displayText":"max-content","export":true,"for_":["width","min-width","max-width","height","min-height","max-height"],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-content","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content": {"displayText":"min-content","export":true,"for_":["width","min-width","max-width","height","min-height","max-height"],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"min-content","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#explicit-intrinsic-inner-size": {"displayText":"explicit intrinsic inner size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"current","text":"explicit intrinsic inner size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#explicit-intrinsic-inner-size"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-fit-content": {"displayText":"fit-content","export":true,"for_":["width","height","inline-size","block-size","min-width","min-height","min-inline-size","min-block-size","max-width","max-height","max-inline-size","max-block-size"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"current","text":"fit-content","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-fit-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-stretch": {"displayText":"stretch","export":true,"for_":["width","height","inline-size","block-size","min-width","min-height","min-inline-size","min-block-size","max-width","max-height","max-inline-size","max-block-size"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"current","text":"stretch","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#valdef-width-stretch"},
+"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-axis": {"displayText":"block-axis","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"block-axis","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-axis"},
+"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-size": {"displayText":"block size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"block size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#block-size"},
+"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis": {"displayText":"inline-axis","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"inline-axis","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-axis"},
+"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size": {"displayText":"inline size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"inline size","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/#inline-size"},
+};
+
+function mkRefHint(link, ref) {
+    const linkText = link.textContent;
+    let dfnTextElements = '';
+    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
+        // Give the original term if it's being displayed in a different way.
+        // But allow casing differences, they're insignificant.
+        dfnTextElements =
+            mk.li({},
+                mk.b({}, "Term: "),
+                mk.span({}, ref.displayText)
+            );
+    }
+    const forList = ref.for_;
+    let forListElements;
+    if(forList.length == 0) {
+        forListElements = [];
+    } else if(forList.length == 1) {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.span({}, forList[0]),
+        );
+    } else {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.ul({},
+                ...forList.map(forItem =>
+                    mk.li({},
+                        mk.span({}, forItem)
+                    ),
+                ),
+            ),
+        );
+    }
+    const url = ref.url;
+    const safeUrl = encodeURIComponent(url);
+    const hintPanel = mk.aside({
+        class: "ref-hint",
+        id: `ref-hint-for-${safeUrl}`,
+        "data-for": url,
+        "aria-labelled-by": `ref-hint-for-${safeUrl}`,
+    },
+        mk.ul({},
+            dfnTextElements,
+            mk.li({},
+                mk.b({}, "URL: "),
+                mk.a({ href: url, class: "ref" }, url),
+            ),
+            mk.li({},
+                mk.b({}, "Type: "),
+                mk.span({}, `${ref.type}`),
+            ),
+            mk.li({},
+                mk.b({}, "Spec: "),
+                mk.span({}, `${ref.spec ? ref.spec : ''}`),
+            ),
+            forListElements
+        ),
+    );
+    hintPanel.forLink = link;
+    setupRefHintEventListeners(link, hintPanel);
+    return hintPanel;
+}
+
+function hideAllRefHints() {
+    queryAll(".ref-hint").forEach(el=>hideRefHint(el));
+}
+
+function hideRefHint(refHint) {
+    const link = refHint.forLink;
+    link.setAttribute("aria-expanded", "false");
+    if(refHint.teardownEventListeners) {
+        refHint.teardownEventListeners();
+    }
+    refHint.remove();
+}
+
+function showRefHint(link) {
+    if(link.classList.contains("dfn-link")) return;
+    const url = link.getAttribute("href");
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
+    if(!ref) return;
+
+    hideAllRefHints(); // Only display one at this time.
+
+    const refHint = mkRefHint(link, ref);
+    append(document.body, refHint);
+    link.setAttribute("aria-expanded", "true");
+    positionRefHint(refHint);
+}
+
+function setupRefHintEventListeners(link, refHint) {
+    if (refHint.teardownEventListeners) return;
+    // Add event handlers to hide the refHint after the user moves away
+    // from both the link and refHint, if not hovering either within one second.
+    let timeout = null;
+    const startHidingRefHint = (event) => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            hideRefHint(refHint);
+        }, 1000);
+    }
+    const resetHidingRefHint = (event) => {
+        if (timeout) clearTimeout(timeout);
+        timeout = null;
+    };
+    link.addEventListener("mouseleave", startHidingRefHint);
+    link.addEventListener("mouseenter", resetHidingRefHint);
+    link.addEventListener("blur", startHidingRefHint);
+    link.addEventListener("focus", resetHidingRefHint);
+    refHint.addEventListener("mouseleave", startHidingRefHint);
+    refHint.addEventListener("mouseenter", resetHidingRefHint);
+    refHint.addEventListener("blur", startHidingRefHint);
+    refHint.addEventListener("focus", resetHidingRefHint);
+
+    refHint.teardownEventListeners = () => {
+        // remove event listeners
+        resetHidingRefHint();
+        link.removeEventListener("mouseleave", startHidingRefHint);
+        link.removeEventListener("mouseenter", resetHidingRefHint);
+        link.removeEventListener("blur", startHidingRefHint);
+        link.removeEventListener("focus", resetHidingRefHint);
+        refHint.removeEventListener("mouseleave", startHidingRefHint);
+        refHint.removeEventListener("mouseenter", resetHidingRefHint);
+        refHint.removeEventListener("blur", startHidingRefHint);
+        refHint.removeEventListener("focus", resetHidingRefHint);
+    };
+}
+
+function positionRefHint(refHint) {
+    const link = refHint.forLink;
+    const linkPos = getBounds(link);
+    refHint.style.top = linkPos.bottom + "px";
+    refHint.style.left = linkPos.left + "px";
+
+    const panelPos = refHint.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, linkPos.left - overflowAmount);
+        refHint.style.left = newLeft + "px";
+    }
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function showRefHintListener(e) {
+    // If the target isn't in a link (or is a link),
+    // just ignore it.
+    let link = e.target.closest("a");
+    if(!link) return;
+
+    // If the target is in a ref-hint panel
+    // (aka a link in the already-open one),
+    // also just ignore it.
+    if(link.closest(".ref-hint")) return;
+
+    // Otherwise, show the panel for the link.
+    showRefHint(link);
+}
+
+function hideAllHintsListener(e) {
+    // If the click is inside a ref-hint panel, ignore it.
+    if(e.target.closest(".ref-hint")) return;
+    // Otherwise, close all the current panels.
+    hideAllRefHints();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("mousedown", showRefHintListener);
+    document.body.addEventListener("focus", showRefHintListener);
+
+    document.body.addEventListener("click", hideAllHintsListener);
+});
+
+window.addEventListener("resize", () => {
+    // Hide any open ref hint.
+    hideAllRefHints();
+});
+}
 </script>

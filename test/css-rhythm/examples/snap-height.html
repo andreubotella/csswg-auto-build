@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<style>
+#example {
+  -webkit-columns: 5 20ch;
+  columns: 5 20ch;
+  font-size: 12pt;
+  line-height: 1.5;
+}
+#example h1 {
+  font-size: 38pt;
+  margin: 0 0 .2em 0;
+}
+#example h2 {
+  font-size: 19pt;
+}
+#example p {
+  margin: 0;
+}
+.line-height-step #example {
+  line-height: 1;
+  snap-height: 18pt;
+  line-height-step: 18pt;
+}
+.grid #example {
+  background-size: 100% 18pt;
+  background-image: linear-gradient(to bottom, #00bcd4 1px, transparent 1px);
+}
+.line-height-step #example > * {
+  margin: 0;
+}
+.line-height-step.use-inline-block #example > h2 {
+  display: inline-block;
+  width: 100%;
+  snap-height: 0;
+  line-height-step: 0;
+  line-height: 1.2;
+}
+
+/* UI */
+#panel {
+  background-color: #EEE;
+  border: thin solid black;
+  padding: .5em;
+  margin: .5em 0;
+}
+#control {
+  -webkit-user-select: none;
+  user-select: none;
+  display: none;
+}
+code {
+  border: thin solid black;
+  padding: 2px;
+}
+.has-line-height-step #prerequisite {
+  display: none;
+}
+.has-line-height-step #control {
+  display: block;
+}
+.if-line-height-step {
+  display: none;
+}
+.line-height-step .if-line-height-step {
+  display: initial;
+}
+.editable #example {
+  -webkit-user-modify: read-write;
+  -moz-user-modify: read-write;
+  user-modify: read-write;
+}
+</style>
+<body>
+<div id="panel">
+  <div id="prerequisite">
+    <p>
+      To experiment this <a href="https://drafts.csswg.org/css-snap-size/">CSS Snap Size</a> sample,
+      you need to:
+    <ol id="prerequisiteList">
+      <li>Go to <code>chrome://flags/#enable-experimental-web-platform-features</code> and
+        click <b>Enable</b>.
+      <li>Click <b>Relaunch</b> button at the bottom of the page.
+      <li>Open this page.
+    </ol>
+    <p>
+      Note that the Experimental Web Platform features is not recommended for daily use.
+      When you are done with the experiments,
+      please open the URL above,
+      click <b>Disable</b> and then <b>Relaunch</b>.
+    <p>
+      Alternatively, you can run your first instance of Chrome
+      with the <code>--enable-blink-features=CSSSnapSize</code> command line option.
+  </div>
+  <div id="control">
+    <label><input type="checkbox" value="line-height-step">Enable line-height-step</label>
+    <span class="if-line-height-step">
+      <label><input type="checkbox" value="use-inline-block">Use inline-block for h2</label>
+    </span>
+  </div>
+  <label><input type="checkbox" value="grid">Show grid</label>
+  <label><input type="checkbox" value="editable">Editable</label>
+</div>
+<div id="example" spellcheck="false">
+  <h1>Heading</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <h2>Heading</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <div><img src="1x1-green.png" width="30" height="30"></div>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <h2>A long long multi-line heading</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</div>
+<script>
+(function () {
+  var style = getComputedStyle(document.documentElement);
+  if ('lineHeightStep' in style || 'snapHeight' in style)
+    panel.classList.add('has-line-height-step')
+  Array.prototype.forEach.call(document.querySelectorAll("input[type=checkbox]"), function (e) {
+    e.addEventListener("click", onChange);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("code"), function (e) {
+    e.addEventListener("click", function () {
+      window.getSelection().selectAllChildren(e);
+      document.execCommand("copy");
+    });
+  });
+  var text = checkChrome([50, 0, 2656, 0]);
+  console.log(text);
+  if (text) {
+    var item = document.createElement("li");
+    item.innerHTML =  text;
+    prerequisiteList.insertBefore(item, prerequisiteList.firstElementChild);
+  }
+})();
+
+function onChange() {
+  document.documentElement.classList.toggle(event.target.value);
+  forceRelayout(example);
+}
+
+function forceRelayout(element) {
+  var saved = element.style.display;
+  example.style.display = 'none';
+  example.offsetTop;
+  example.style.display = saved;
+}
+
+function checkChrome(min) {
+  var minText = [
+    ["Chrome Beta", "https://www.google.com/chrome/browser/beta.html"],
+    ["Chrome Dev channel", "https://www.google.com/chrome/browser/desktop/index.html?extra=devchannel"],
+    ["Chrome Canary", "https://www.google.com/chrome/browser/canary.html"],
+  ].map(function (d) { return '<a href="' + d[1] + '">' + d[0] + '</a>'})
+  .join(" or ") + ", " + min.join(".") + " or later";
+  var chrome = /Chrome\/([\d.]+)/.exec(navigator.userAgent);
+  if (!chrome)
+    return "Open this page in " + minText + ".";
+  var version = chrome[1].split(".");
+  for (var i = 0; i < version.length; i++) {
+    var v = version[i], m = min[i];
+    if (v > m)
+      return null;
+    if (v < m)
+      break;
+  }
+  return "Update your Chrome to " + minText + " (yours is " + chrome[1] + ".)";
+}
+</script>
+</body>
