@@ -1,28 +1,15 @@
 <pre class='metadata'>
-Title: CSS Display Module Level 3
-Status: CR
-Prepare for TR: yes
-Date: 2023-03-30
-Deadline: 2023-05-30
-Status Text: A <a href="http://test.csswg.org/harness/results/css-display-3_dev/grouped/">preliminary implementation report</a> is available. Further tests will be added during the CR period.
-Work Status: Testing
-ED: https://drafts.csswg.org/css-display/
+Title: CSS Display Module Level 4
 Shortname: css-display
+Level: 4
+Status: FPWD
+Prepare for TR: yes
+Date: 2024-12-19
 Group: csswg
-Level: 3
-TR: https://www.w3.org/TR/css-display-3/
-Previous Version: https://www.w3.org/TR/2021/CRD-css-display-3-20210903/
-Previous Version: https://www.w3.org/TR/2020/CRD-css-display-3-20201218/
-Previous Version: https://www.w3.org/TR/2020/CR-css-display-3-20200519/
-Previous Version: https://www.w3.org/TR/2019/CR-css-display-3-20190711/
-Previous Version: https://www.w3.org/TR/2018/CR-css-display-3-20180828/
-Previous Version: https://www.w3.org/TR/2018/WD-css-display-3-20180809/
-Previous Version: https://www.w3.org/TR/2018/WD-css-display-3-20180420/
-Previous Version: https://www.w3.org/TR/2017/WD-css-display-3-20170720/
-Previous Version: https://www.w3.org/TR/2017/WD-css-display-3-20170126/
-Previous Version: https://www.w3.org/TR/2015/WD-css-display-3-20151015/
-Previous Version: https://www.w3.org/TR/2015/WD-css-display-3-20150721/
-Previous Version: https://www.w3.org/TR/2014/WD-css-display-3-20140911/
+Work Status: Testing
+Status Text: A <a href="http://test.csswg.org/harness/results/css-display-3_dev/grouped/">preliminary implementation report</a> is available. Further tests will be added during the CR period.
+ED: https://drafts.csswg.org/css-display-4/
+TR: https://www.w3.org/TR/css-display-4/
 Implementation Report: https://wpt.fyi/results/css/css-display?label=master&label=experimental&aligned
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/, w3cid 42199
 Editor: Elika J. Etemad / fantasai, Apple, http://fantasai.inkedblade.net/contact, w3cid 35400
@@ -34,11 +21,21 @@ At Risk: All multi-keyword values of 'display'
 </pre>
 <pre class="link-defaults">
 spec:css-align-3; type:value; text:stretch
+spec:css-backgrounds-3; type:property; text:border
 spec:css-break-3; type:dfn; text:fragment;
-spec:css2;
-	type:property; text:overflow;
+spec:css-cascade-5; type:dfn;
+	text:computed value
+	text:specified value
+spec:css-overflow-3;
+	type:property; text:overflow
+	type:dfn; text:overflow
+spec:css-position-3; type:property; text:position
+spec:css-speech-1; type:property; text:speak
+spec:dom; type:dfn; text:document tree
 spec: html;
-	type: dfn; text: rendered legend
+	type: dfn;
+		text: rendered legend
+		text: inert
 	type: element; text: a
 spec:css-pseudo-4; type:selector;
 	text: ::first-letter
@@ -46,6 +43,7 @@ spec:css-pseudo-4; type:selector;
 	text: ::before
 	text: ::after
 spec: svg2;
+	type: element; text: text
 	type:dfn;
 		text: container element
 		text: text content child element
@@ -54,6 +52,7 @@ spec: svg2;
 		text: rendered element
 		text: presentation attribute
 </pre>
+
 
 <style>
 .code-and-figure {
@@ -97,7 +96,7 @@ Introduction</h2>
 	Each <dfn id="box" oldids="css-box" export for=CSS>box</dfn> in the <a>box tree</a>
 	represents its corresponding [=CSS/element=] (or <a>pseudo-element</a>)
 	in space and/or time on the canvas,
-	while each <dfn oldids="css-text-run,text-run" export for=CSS>text sequence</dfn> in the <a>box tree</a>
+	while each <dfn export for=CSS>text sequence</dfn> in the <a>box tree</a>
 	likewise represents the corresponding contents of its <a>text nodes</a>.
 
 	To create the <a>box tree</a>,
@@ -163,7 +162,7 @@ Introduction</h2>
 	that is not provided by the boxes generated from the <a>element tree</a>.
 	For example, a <a href="https://www.w3.org/TR/CSS2/tables.html#table-display">table cell box</a>
 	requires a particular type of parent box (the <a href="https://www.w3.org/TR/CSS2/tables.html#table-display">table row box</a>),
-	and will generate an <a>anonymous</a> <a href="https://www.w3.org/TR/CSS2/tables.html#table-display">table row box</a> around itself
+	and will generate an [=CSS/anonymous=] <a href="https://www.w3.org/TR/CSS2/tables.html#table-display">table row box</a> around itself
 	if its parent is not a <a href="https://www.w3.org/TR/CSS2/tables.html#table-display">table row box</a>.
 	(See [[CSS2]] &sect; <a href="https://www.w3.org/TR/CSS2/tables.html#anonymous-boxes">17.2.1</a>.)
 	Unlike element-generated boxes, whose styles inherit strictly through the element tree,
@@ -241,7 +240,7 @@ Box Layout Modes: the 'display' property</h2>
 	Applies to: all elements
 	Inherited: no
 	Computed value: a pair of keywords representing the [=inner display type|inner=] and [=outer display type|outer=] display types plus optional ''list-item'' flag, or a <<display-internal>> or <<display-box>> keyword; see prose in a variety of specs for computation rules
-	Animation type:	not animatable
+	Animation type:	see [[#display-animation]]
 	</pre>
 
 	<p class=all-media>User agents are expected to support this property on all media, including non-visual ones.
@@ -280,10 +279,10 @@ Box Layout Modes: the 'display' property</h2>
 	<dfn>&lt;display-inside></dfn>   = flow | flow-root | table | flex | grid | ruby
 	<dfn>&lt;display-listitem></dfn> = <<display-outside>>? && [ flow | flow-root ]? && list-item
 	<dfn>&lt;display-internal></dfn> = table-row-group | table-header-group |
-	                     table-footer-group | table-row | table-cell |
-	                     table-column-group | table-column | table-caption |
-	                     ruby-base | ruby-text | ruby-base-container |
-	                     ruby-text-container
+						 table-footer-group | table-row | table-cell |
+						 table-column-group | table-column | table-caption |
+						 ruby-base | ruby-text | ruby-base-container |
+						 ruby-text-container
 	<dfn>&lt;display-box></dfn>      = contents | none
 	<dfn>&lt;display-legacy></dfn>   = inline-block | inline-table | inline-flex | inline-grid
 	</pre>
@@ -314,12 +313,12 @@ Box Layout Modes: the 'display' property</h2>
 				<td>''block''
 				<td>''block flow''
 				<td><a>block-level</a> <a>block container</a>
-				    <abbr title="also known as">aka</abbr> <a>block box</a>
+					<abbr title="also known as">aka</abbr> <a>block box</a>
 			<tr>
 				<td>''flow-root''
 				<td>''block flow-root''
 				<td><a>block-level</a> <a>block container</a>
-				    that establishes a new <a>block formatting context</a> (<a>BFC</a>)
+					that establishes a new <a>block formatting context</a> (<a>BFC</a>)
 			<tr>
 				<td>''inline''
 				<td>''inline flow''
@@ -328,7 +327,7 @@ Box Layout Modes: the 'display' property</h2>
 				<td>''inline-block''
 				<td>''inline flow-root''
 				<td><a>inline-level</a> <a>block container</a>
-				    <abbr title="also known as">aka</abbr> <dfn export lt="inline block | inline block box">inline block</dfn>
+					<abbr title="also known as">aka</abbr> <dfn export lt="inline block | inline block box">inline block</dfn>
 			<tr>
 				<td>''run-in''
 				<td>''run-in flow''
@@ -337,12 +336,12 @@ Box Layout Modes: the 'display' property</h2>
 				<td>''list-item''
 				<td>''block flow list-item''
 				<td><a>block box</a>
-				    with additional <a href="https://www.w3.org/TR/CSS2/generate.html#lists">marker box</a>
+					with additional <a href="https://www.w3.org/TR/CSS2/generate.html#lists">marker box</a>
 			<tr>
 				<td>''inline list-item''
 				<td>''inline flow list-item''
 				<td><a>inline box</a>
-				    with additional <a href="https://www.w3.org/TR/CSS2/generate.html#lists">marker box</a>
+					with additional <a href="https://www.w3.org/TR/CSS2/generate.html#lists">marker box</a>
 		<tbody title="Formatting Context Root Display Types">
 			<tr>
 				<td>''flex''
@@ -369,11 +368,11 @@ Box Layout Modes: the 'display' property</h2>
 				<td>''block ruby''
 				<td><a>block box</a> containing <a>ruby container</a>
 			<tr>
-				<td>''table''
+				<td>''display/table''
 				<td>''block table''
 				<td><a>block-level</a> <a>table wrapper box</a> containing <a>table grid box</a>
 			<tr>
-				<td>''inline-table''
+				<td>''display/inline-table''
 				<td>''inline table''
 				<td><a>inline-level</a> <a>table wrapper box</a> containing <a>table grid box</a>
 		<tbody title="Layout-internal display types">
@@ -459,7 +458,7 @@ Outer Display Roles for Flow Layout: the ''block'', ''inline'', and ''run-in'' k
 -->
 
 <h3 id="inner-model">
-Inner Display Layout Models: the ''flow'', ''flow-root'', ''table'', ''flex'', ''grid'', and ''ruby'' keywords</h3>
+Inner Display Layout Models: the ''flow'', ''flow-root'', ''display/table'', ''flex'', ''grid'', and ''ruby'' keywords</h3>
 
 	The <<display-inside>> keywords specify the element's <a>inner display type</a>,
 	which defines the type of formatting context that lays out its contents
@@ -544,9 +543,9 @@ Inner Display Layout Models: the ''flow'', ''flow-root'', ''table'', ''flex'', '
 <h3 id="list-items">
 Generating Marker Boxes: the ''list-item'' keyword</h3>
 
-	The <dfn value for="display, <display-listitem>">list-item</dfn> keyword
+	The <dfn value for="display, <display-list-item>">list-item</dfn> keyword
 	causes the element to generate a ''::marker'' pseudo-element [[!CSS-PSEUDO-4]]
-	with the content specified by its <l spec=css2>'list-style'</l> properties
+	with the content specified by its <l spec=css21>'list-style'</l> properties
 	(<a href="https://www.w3.org/TR/CSS2/generate.html#lists">CSS 2.1§12.5 Lists</a>) [[!CSS2]]
 	together with a principal box of the specified type for its own contents.
 
@@ -574,7 +573,7 @@ Generating Marker Boxes: the ''list-item'' keyword</h3>
 <h3 id="layout-specific-display">
 Layout-Internal Display Types: the ''table-*'' and ''ruby-*'' keywords</h3>
 
-	Some layout models, such as ''table'' and ''ruby'',
+	Some layout models, such as ''display/table'' and ''ruby'',
 	have a complex internal structure,
 	with several different roles that their children and descendants can fill.
 	This section defines those “<dfn export>layout-internal</dfn>” 'display' values,
@@ -604,7 +603,7 @@ Layout-Internal Display Types: the ''table-*'' and ''ruby-*'' keywords</h3>
 			which participates in a <a>table formatting context</a>.
 			See <a href="https://www.w3.org/TR/CSS2/tables.html#table-display">CSS2&sect;17.2</a> [[!CSS2]].
 
-			''table-cell'' boxes have a ''flow-root'' <a>inner display type</a>.
+			''display/table-cell'' boxes have a ''flow-root'' <a>inner display type</a>.
 
 		<dt><dfn>table-caption</dfn>
 		<dd>
@@ -612,7 +611,7 @@ Layout-Internal Display Types: the ''table-*'' and ''ruby-*'' keywords</h3>
 			which is a <a>block box</a> with special behavior with respect to table and table wrapper boxes.
 			See <a href="https://www.w3.org/TR/CSS2/tables.html#table-display">CSS2&sect;17.2</a> [[!CSS2]].
 
-			''table-caption'' boxes have a ''flow-root'' <a>inner display type</a>.
+			''display/table-caption'' boxes have a ''flow-root'' <a>inner display type</a>.
 		<dt>
 
 		<dt><dfn>ruby-base</dfn>, <dfn>ruby-text</dfn>, <dfn>ruby-base-container</dfn>, <dfn>ruby-text-container</dfn>
@@ -629,8 +628,8 @@ Layout-Internal Display Types: the ''table-*'' and ''ruby-*'' keywords</h3>
 	as defined by their respective specifications.
 
 	<div class='example'>
-		For example, Table Layout requires that a ''table-cell'' box
-		must have a ''table-row'' parent box.
+		For example, Table Layout requires that a ''display/table-cell'' box
+		must have a ''display/table-row'' parent box.
 
 		If it is misparented, like so:
 
@@ -872,6 +871,23 @@ The Root Element’s Principal Box</h3>
 	This box’s [=containing block=] is the [=initial containing block=].
 
 	Additionally, a 'display' of ''display/contents'' computes to ''block'' on the root element.
+
+<h3 id='display-animation'>
+Animating and Interpolating 'display'</h3>
+
+	In general,
+	the 'display' property’s [=animation type=] is [=discrete=].
+	However,
+	similar to interpolation of 'visibility'
+	(see [[web-animations-1#animating-visibility]]),
+	during interpolation between ''display/none''
+	and any other 'display' value,
+	<var ignore>p</var> values between 0 and 1
+	map to the non-''display/none'' value.
+	Additionally,
+	the element is <a href="https://html.spec.whatwg.org/multipage/interaction.html#inert">inert</a>
+	as long as its 'display' value would compute to ''display/none''
+	when ignoring the Transitions and Animations [=cascade origins=].
 
 <!--
 ██    ██  ███████  ██    ██ ████████
@@ -1147,6 +1163,294 @@ Reordering and Accessibility</h3>
 	A well-implemented spatial navigation feature would need to consider
 	all the layout features of CSS that modify spatial relationships.
 
+<h2 id='reading-flow'>
+Reading Order: the 'reading-flow' property</h2>
+
+A <dfn export>reading flow container</dfn> is a block, flex or grid container
+with a valid 'reading-flow' value other than ''normal''.
+
+The <dfn export>rendering-defined sibling reading flow</dfn> of a <a>reading flow container</a>
+is an ordered list of the children of the container.
+All children must render to an element and are considered siblings in the reading flow container.
+The order is determined by the 'reading-flow' property.
+
+ISSUE(9922): Should this property also apply to tables?
+
+
+	<pre class='propdef'>
+	Name: reading-flow
+	Value: normal | source-order | flex-visual | flex-flow | grid-rows | grid-columns | grid-order
+	Initial: normal
+	Applies to: block, flex and grid containers
+	Inherited: no
+	Computed value: as specified
+	Animation type: not animatable
+	</pre>
+
+	The 'reading-flow' property controls the order in which
+	elements are rendered to speech
+	or are navigated to when using (linear) sequential navigation methods.
+
+	It takes one keyword value. Values are defined as follows:
+
+	<dl dfn-for=reading-flow dfn-type=value>
+		<dt><dfn>normal</dfn>
+		<dd>
+			Follow the order of elements in the DOM.
+		<dt><dfn>source-order</dfn>
+		<dd>
+			Applies to grid, flex, and block layouts.
+			Creates a reading flow container,
+			and enables the use of the 'reading-order' property on direct children.
+			Other than respecting the 'reading-order' property,
+			follows the order of elements in the DOM.
+		<dt><dfn>flex-visual</dfn>
+		<dd>
+			Only takes effect on flex containers.
+			Follows the visual reading order of flex items,
+			taking the writing mode into account.
+			Therefore, a document in English, with ''flex-direction: row-reverse''
+			and ''reading-flow: flex-visual''
+			would have a reading order of left to right.
+		<dt><dfn>flex-flow</dfn>
+		<dd>
+			Only takes effect on flex containers.
+			Follows the 'flex-flow' direction.
+		<dt><dfn>grid-rows</dfn>
+		<dd>
+			Only takes effect on grid containers.
+			Follows the visual order of grid items by row,
+			taking the writing mode into account.
+		<dt><dfn>grid-columns</dfn>
+		<dd>
+			Only takes effect on grid containers.
+			Follows the visual order of grid items by column,
+			taking the writing mode into account.
+		<dt><dfn>grid-order</dfn>
+		<dd>
+			Only takes effect on grid containers.
+			Follows the [=order-modified document order=].
+			Therefore, as ''reading-flow/normal'' unless the 'order'
+			property has been used to change the order of items.
+	</dl>
+
+	<div class='example'>
+		In this example, there are three flex items displayed as a row,
+		with ''reading-flow: flex-visual''
+		and ''flex-direction: row-reverse''.
+		We are in English with a text direction of left to right.
+		The reading order of these items is therefore
+		"Item 3", "Item 2", "Item 1", reading from left to right.
+
+		<pre class="lang-markup">
+		&lt;div class="wrapper"&gt;
+			&lt;a href="#"&gt;Item 1&lt;/a&gt;
+			&lt;a href="#"&gt;Item 2&lt;/a&gt;
+			&lt;a href="#"&gt;Item 3&lt;/a&gt;
+		&lt;/div&gt;
+		</pre>
+
+		<pre class="lang-css">
+		.wrapper {
+			display: flex;
+			flex-direction: row-reverse;
+			reading-flow: flex-visual;
+		}
+		</pre>
+	</div>
+
+	<div class='example'>
+		In this example there are four grid items,
+		placed on a grid and displayed visually out of DOM order.
+		The 'reading-flow' property has a value of ''grid-rows'',
+		and the document is in English.
+		The reading order of these items is therefore
+		"Item 4", "Item 2", "Item 3", "Item 1".
+
+		<pre class="lang-markup">
+		&lt;div class="wrapper"&gt;
+			&lt;a class="a" href="#"&gt;Item 1&lt;/a&gt;
+			&lt;a class="b" href="#"&gt;Item 2&lt;/a&gt;
+			&lt;a class="c" href="#"&gt;Item 3&lt;/a&gt;
+			&lt;a class="d" href="#"&gt;Item 4&lt;/a&gt;
+		&lt;/div&gt;
+		</pre>
+
+		<pre class="lang-css">
+		.wrapper {
+			display: grid;
+			grid-template-columns: repeat(3, 150px);
+			grid-template-areas: "d b b"
+								 "c c a";
+			reading-flow: grid-rows;
+		}
+
+		.a { grid-area: a; }
+		.b { grid-area: b; }
+		.c { grid-area: c; }
+		.d { grid-area: d; }
+		</pre>
+	</div>
+
+	The 'reading-flow' property affects neither layout nor painting order
+	and therefore has no effect on rendering to the visual [=canvas=].
+
+	When using a 'flex-*' or 'grid-*' keyword value,
+	the 'order' property is taken into account.
+
+	<div class='example'>
+		In this example, there are three flex items displayed as a row,
+		with ''reading-flow: flex-flow''.
+		The third item in the DOM has <code>order=-1</code>.
+		The reading order of these items is therefore
+		"Item 3", "Item 1", "Item 2".
+
+		<pre class="lang-markup">
+		&lt;div class="wrapper"&gt;
+			&lt;a href="#"&gt;Item 1&lt;/a&gt;
+			&lt;a href="#"&gt;Item 2&lt;/a&gt;
+			&lt;a href="#"&gt;Item 3&lt;/a&gt;
+		&lt;/div&gt;
+		</pre>
+
+		<pre class="lang-css">
+		.wrapper a:nth-child(3) {
+			order: -1;
+		}
+
+		.wrapper {
+			display: flex;
+			reading-flow: flex-flow;
+		}
+		</pre>
+	</div>
+
+	<h3 id='reading-order'>
+	Overriding Reading Flow: the 'reading-order' property</h3>
+	<pre class='propdef'>
+	Name: reading-order
+	Value: <<integer>>
+	Initial: 0
+	Applies to: Direct block-level, grid item, or flex item children of a reading flow container.
+	Inherited: no
+	Computed value: specified integer
+	Animation type: by computed value type
+	</pre>
+	
+	The 'reading-order' property lets the author change where in the reading flow an item is visited, 
+	overriding the position set by the 'reading-flow' property on its parent.
+	It takes a single <dfn value for=reading-order><<integer>></dfn> value,
+	which specifies which ordinal group the item belongs to.
+	Sibling elements are ordered starting from the lowest numbered ordinal group and going up.
+
+	If the reading order of two items is equivalent, the 'reading-flow' property breaks the tie.
+
+	<div class='example'>
+		In this example there are six grid items,
+		the 'grid-auto-flow' property has a value of ''dense'',
+		therefore items may display out of source order.
+		The 'reading-order' property on the item with a class of 'top' is '-1'
+		Therefore Item 4 will be the first item in reading flow.
+		The remaining items will be visited in the order they display in rows,
+		as 'reading-flow' has a value of 'grid-rows'.
+
+		<pre class="lang-markup">
+		&lt;div class="wrapper"&gt;
+			&lt;a href="#"&gt;Item 1&lt;/a&gt;
+			&lt;a href="#"&gt;Item 2&lt;/a&gt;
+			&lt;a href="#"&gt;Item 3&lt;/a&gt;
+			&lt;a class="top" href="#"&gt;Item 4&lt;/a&gt;
+			&lt;a href="#"&gt;Item 5&lt;/a&gt;
+			&lt;a href="#"&gt;Item 6&lt;/a&gt;
+		&lt;/div&gt;
+		</pre>
+
+		<pre class="lang-css">
+		.wrapper {
+			display: grid;
+			grid-template-columns: repeat(3, 150px);
+			grid-auto-flow: dense;
+			reading-flow: grid-rows;
+		}
+
+		.top { reading-order: -1; }
+		</pre>
+	</div>
+
+	<div class='example'>
+		In this example there are five direct block-level children of a block container
+		where 'reading-flow' has a value of ''source-order''.
+		The third item has a 'reading-order' value of '-1'.
+		The reading flow visits the third item first, then the rest in source order.
+
+		<pre class="lang-markup">
+		&lt;div class="wrapper"&gt;
+			&lt;a href="#"&gt;Item 1&lt;/a&gt;
+			&lt;a href="#"&gt;Item 2&lt;/a&gt;
+			&lt;a href="#"&gt;Item 3&lt;/a&gt;
+			&lt;a href="#"&gt;Item 4&lt;/a&gt;
+			&lt;a href="#"&gt;Item 5&lt;/a&gt;
+		&lt;/div&gt;
+		</pre>
+
+		<pre class="lang-css">
+		.wrapper { reading-flow: source-order; }
+
+		.wrapper > a { display: block; }
+
+		.wrapper a:nth-child(3){ reading-order: -1; }
+		</pre>
+	</div>
+
+	Advisement: The source document should express
+	the underlying logical order of elements.
+	The 'reading-flow' and 'reading-order' properties exist for cases where a given document
+	can have multiple reading orders depending on layout changes,
+	e.g. in response to [=media queries=].
+	In such cases, the most common or most fundamental reading order
+	should be encoded in the source order
+	so that the document is sensical without CSS.
+
+	<details class="note">
+		<summary>Design Considerations and Background</summary>
+
+		Some of the considerations that went into the design
+		of 'reading-flow' are:
+
+		* There are clear use cases for disconnecting
+			the reading and navigation order from the box layout order,
+			the most fundamental of which is to make sure
+			the reading and navigation order matches the <strong>visual perception order</strong>
+			when it is not the same as the box layout order.
+			(Visual perception is non-linear, and is influenced by things like
+				the size, color contrast, and spacing of a visual element,
+				not just its spatial coordinates on the page.)
+		* It is a <a href="https://www.w3.org/TR/webarch/#pci">core principle of Web platform architecture</a>,
+			in order to allow content to be accessible to the widest possible audience
+			across devices that exist now and in the future,
+			for the underlying document to be sensical independent of CSS.
+			Therefore the underlying document order
+			should represent a logical ordering of its elements
+			regardless of its visual presentation.
+		* For components of a page that do not have a strong inherent order,
+			a document can have multiple visual presentations with different layouts,
+			all conveying the same semantic information.
+			It should be possible for all of these presentations to have good accessibility.
+		* Linear navigation, focus sequencing order, and screen-reader order
+			should always match, because there are users who use them together.
+		* Each component or hierarchical level of a page
+			can have different requirements for reordering,
+			so CSS reordering controls should not lend themselves
+			too easily to blanket use
+			(like 'box-sizing')
+			rather than tailored use
+			(like <a href="https://www.w3.org/TR/css-logical/">flow-relative vs. physical properties and values</a>).
+	</details>
+
+	ISSUE(7387): DOM needs a convenient reordering function
+	so that authors (even authors who don't usually write JS)
+	can easily perform source order reordering when necessary
+	instead of misusing 'order' or 'reading-flow'.
 
 <!--
 ██     ██ ████  ██████  ████ ████████
@@ -1163,7 +1467,7 @@ Invisibility: the 'visibility' property</h2>
 
 	<pre class="propdef">
 	Name: visibility
-	Value: visible | hidden | collapse
+	Value: visible | hidden | force-hidden | collapse
 	Initial: visible
 	Applies to: all elements
 	Inherited: yes
@@ -1188,6 +1492,13 @@ Invisibility: the 'visibility' property</h2>
 			Any boxes generated by the element are [=invisible=].
 			Descendants of the element can, however, be visible
 			if they have ''visibility: visible''.
+
+		<dt><dfn>force-hidden</dfn>
+		<dd>
+			Any boxes generated by the element
+			<em>and its descendants</em>
+			are [=invisible=]
+			(regardless of their 'visibility' value).
 
 		<dt><dfn>collapse</dfn>
 		<dd>
@@ -1297,12 +1608,12 @@ Run-In Layout</h2>
 		&lt;dl class='dict'>
 			&lt;dt>dictionary
 			&lt;dd>a book that lists the words of a language in alphabetical
-			    order and gives their meaning, or that gives the equivalent
-			    words in a different language.
+				order and gives their meaning, or that gives the equivalent
+				words in a different language.
 			&lt;dt>glossary
 			&lt;dd>an alphabetical list of terms or words found in or relating
-			    to a specific subject, text, or dialect, with explanations; a
-			    brief dictionary.
+				to a specific subject, text, or dialect, with explanations; a
+				brief dictionary.
 		&lt;/dl>
 		&lt;style>
 		.dict > dt {
@@ -1443,7 +1754,7 @@ Appendix A: Glossary</h2>
 		<dt><dfn lt="atomic inline|atomic inline box">atomic inline</dfn>
 		<dd>
 			An inline-level box that is replaced (such as an image)
-			or that establishes a new formatting context (such as an ''inline-block'' or ''inline-table'')
+			or that establishes a new formatting context (such as an ''inline-block'' or ''display/inline-table'')
 			and cannot split across lines
 			(as <a>inline boxes</a> and <a>ruby containers</a> can).
 
@@ -1567,13 +1878,9 @@ Appendix A: Glossary</h2>
 		<dt><dfn>initial containing block</dfn>
 		<dd>
 			The <a>containing block</a> of the [=root element=].
-			The [=initial containing block=] establishes a [=block formatting context=],
-			and takes the [=principal writing mode=] of the document
-			(see [[css-writing-modes-4#icb]]).
-			In [=continuous media=],
-			it has the dimensions of the [=small viewport size=]
-			and is anchored at the canvas origin.
-			In [=paged media=], see [[!CSS-PAGE-3]]
+			The [=initial containing block=] establishes a [=block formatting context=].
+			See <a href="https://www.w3.org/TR/CSS2/visudet.html#containing-block-details">CSS2.1&sect;10.1</a> for [=continuous media=];
+			and [[!CSS-PAGE-3]] for [=paged media=]
 			for its position and dimensions.
 
 		<dt><dfn>formatting context</dfn>
@@ -1637,9 +1944,9 @@ Appendix A: Glossary</h2>
 
 			Certain properties can force a box to
 			<dfn lt="establish an independent formatting context|
-			         establishes an independent formatting context|
-			         establishing an independent formatting context|
-			         established an independent formatting context">
+					 establishes an independent formatting context|
+					 establishing an independent formatting context|
+					 established an independent formatting context">
 				establish an independent formatting context</dfn>
 			in cases where it wouldn't ordinarily.
 			For example,
@@ -1876,7 +2183,7 @@ MathML Elements {#unbox-mathml}
 ██    ██ ██     ██ ██       ██    ██
 ██       ██     ██ ██       ██
  ██████  ████████  ██████   ██
-      ██ ██        ██       ██
+	  ██ ██        ██       ██
 ██    ██ ██        ██       ██    ██
  ██████  ██        ████████  ██████
 -->
@@ -1896,7 +2203,7 @@ Appendix C: Box Construction Guidelines for Spec Authors</h2>
 		can't directly contain <a>inline-level</a> content;
 		any boxes or text sequences generated within such an element
 		must be <a>blockified</a>
-		or wrapped in an <a>anonymous</a> <a>block container</a>.
+		or wrapped in an [=CSS/anonymous=] <a>block container</a>.
 	* Boxes which <a>inlinify</a> their contents
 		can't directly contain <a>block-level</a> boxes;
 		any boxes generated within such an element
@@ -1940,255 +2247,24 @@ Acknowledgments</h2>
 <h2 class=no-num id="changes">
 Changes</h2>
 
-<h3 id="changes-2020">
-Changes Since 2023 Candidate Recommendation Snapshot</h3>
+<h3 id="recent-changes">
+Recent Changes</h3>
 
-	<!-- A <a href="https://drafts.csswg.org/css-display-3/issues-cr-2023">Disposition of Comments</a>
-	since the <a href="https://www.w3.org/TR/2023/CR-css-display-3-20230330/">30 March 2023 Candidate Recommendation</a> is available. -->
+	Significant changes since the <a href="https://www.w3.org/TR/2024/WD-css-display-4-20241219/">19 December 2024 First Public Working Draft</a>:
 
-	Changes since the <a href="https://www.w3.org/TR/2023/CR-css-display-3-20230330/">30 March 2023 Candidate Recommendation Snapshot</a>
-	include:
+	* Added a new ''force-hidden'' value to 'visibility'.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/10182">Issue 10182</a>)
 
-	<ul>
-		<li id="change-icb-definition">
-			Inlined the CSS2.1 definition of the [=initial containing block=] for [=continuous media=],
-			cross-referenced its [=writing mode=] propagation as defined in [[CSS-WRITING-MODES-4]],
-			and clarified that it refers to the [=small viewport size=].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/6453">Issue 6453</a>)
-	</ul>
+<h3 id="changes-L3">
+Additions since Level 3</h3>
 
-<h3 id="changes-2020">
-Changes Since 2020 Candidate Recommendation</h3>
+	The following features were added since <a href="https://www.w3.org/TR/css-display-3/">CSS Display Module Level 3</a>:
 
-	A <a href="https://drafts.csswg.org/css-display-3/issues-cr-2020">Disposition of Comments</a>
-	since the <a href="https://www.w3.org/TR/2020/CR-css-display-3-20200519/">19 May 2020 Candidate Recommendation</a> is available.
-
-	Changes since the <a href="https://www.w3.org/TR/2020/CR-css-display-3-20200519/">19 May 2020 Candidate Recommendation</a>
-	include:
-
-	<ul>
-		<li id="change-text-run-sequence">
-			Renamed “text run” to “[=text sequence=]”.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/7768">Issue 7768</a>)
-		<li id="change-root-layout">
-			Defined [=root element=] and clarified its layout as a [=block-level=]
-			in [[#root]] and the definition of [=initial containing block=].
-			(<a href="https://github.com/w3c/csswg-drafts/pull/8095">PR 8095</a>,
-			 <a href="https://github.com/w3c/csswg-drafts/issues/7207">Issue 7207</a>,
-			 <a href="https://github.com/w3c/csswg-drafts/issues/6480">Issue 6480</a>,
-			 <a href="https://github.com/w3c/csswg-drafts/issues/7786">Issue 7786</a>)
-		<li id="change-move-order">
-			Pulled in the 'order' property definition from [[CSS-FLEXBOX-1]],
-			since it also applies to [=grid items=].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/5865">Issue 5865</a>)
-		<li id="change-import-visibility">
-			Imported the 'visibility' property definition from [[CSS2]]
-			and updated it to be more thorough and complete.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/6123">Issue 6123</a>)
-		<li id="change-internal-replaced">
-			Defined that [=replaced elements=] with a [=layout-internal=] 'display'
-			are treated as ''display: inline''.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/6000">Issue 6000</a>)
-		<li id="change-legacy-computation">
-			Clarified that the <<display-legacy>> values actually [=computed value|compute=]
-			to the same value as their two-keyword equivalents.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/5575">Issue 5575</a>)
-			<blockquote>
-				<dl>
-					<dt>inline-&hellip;
-					<dd>
-						<del>Behaves as</del> <ins>Computes to</ins> ''inline &hellip;''.
-				</dl>
-				<p class="note"><ins>Note: Although these keywords and their equivalents compute to the same value,
-				their [=specified values=] remain distinct.</ins>				<p class="note"><ins>Note: The {{Window/getComputedStyle()}} serialization rules
-				will always output these precomposed keywords
-				rather than the equivalent two-keyword pairs
-				due to the [[cssom#serializing-css-values|shortest, most backwards-compatible serialization principle]].</ins>			</blockquote>
-		<li id="change-blockification-computed">
-			Clarified that [=blockification=] and [=inlinification=] are [=computed value=] changes.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/6251">Issue 6251</a>)
-			<blockquote>
-				<p>Some layout effects require [=blockification=]
-				or [=inlinification=] of the box type,
-				which sets the box’s <ins>[=computed value|computed=]</ins> <a>outer display type</a>
-				to ''block'' or ''inline'' (respectively).
-			</blockquote>
-		<li id="change-block-layout-def">
-			Added definition for [=block layout=] to glossary, for convenience.
-		<li id="change-grid-refs">
-			Updated references to <a href="https://www.w3.org/TR/css-grid/">CSS Grid Layout</a>.
-		<li id="change-2020-editorial">
-			Various minor editorial clarifications and cross-linking improvements.
-	</ul>
-
-<h3 id="changes-2019">
-Changes Since 2019 Candidate Recommendation</h3>
-
-	Changes since the <a href="https://www.w3.org/TR/2019/CR-css-display-3-20190711/">11 July 2019 Candidate Recommendation</a>
-	include:
-
-	<ul>
-		<li id="change-containing-block">
-			Merged in additional prose from [[!CSS2]] into the definition of [=containing block=].
-		<li id="change-dom-ignore">
-			Clarified that, for the purpose of CSS, DOM nodes other than elements and text are ignored.
-			<blockquote>
-				<p><ins>(Some source documents start from more complex trees,
-				such as the DOM,
-				which can have comment nodes
-				and other types of things.
-				For the purposes of CSS,
-				all of these additional types of nodes are ignored,
-				as if they didn't exist.)</ins>
-			</blockquote>
-		<li id="change-abspos-glossary">
-			Improved/moved glossary definitions relating to [=absolute positioning=].
-	</ul>
-
-	Changes since the <a href="https://www.w3.org/TR/2018/CR-css-display-3-20180828/">28 August 2018 Candidate Recommendation</a>
-	include:
-
-	<ul>
-		<li id="change-parent">
-			Defined box tree parentage; see <a>parent box</a>.
-		<li id="change-abspos">
-			Added definition of <a>absolutely positioned</a> to the glossary;
-			<a href="https://www.w3.org/TR/CSS2/visuren.html#absolutely-positioned">copied from CSS2</a> for easier referencing.
-		<li id="change-bidi-fragment">
-			Added cross-references to various forms of fragmentation in [[#intro]].
-		<li id="change-table-grid-box">
-			Renamed “table box” to “table grid box” to more easily distinguish from “table wrapper box”.
-		<li id="change-body-propagation">
-			Added “unless otherwise specified” to root &rarr; initial containing block propagation,
-			since there are some regrettable special exceptions for the HTML <{body}> element.
-	</ul>
-
-<h3 id="changes-wd">
-Changes Prior to Candidate Recommendation Status</h3>
-
-	A <a href="https://drafts.csswg.org/css-display-3/issues-wd-2017">Disposition of Comments</a> is available.
-
-	Changes since the <a href="https://www.w3.org/TR/2018/WD-css-display-3-20180420/">20 April 2018 Working Draft</a> include:
-
-	<ul>
-		<li>
-			Elements with ''display: contents'' that behave as ''display: none'' now <em>compute to</em> ''display: none''.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/2755">Issue 2755</a>)
-		<li>
-			Distinguished “new” <a>formatting context</a> from <a>independent formatting context</a> since certain formatting contexts layer.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/2597">Issue 2597</a>,
-			<a href="https://github.com/w3c/csswg-drafts/issues/1457">Issue 1457</a>)
-		<li>
-			Defined that <a>block boxes</a> that establish an <a>independent formatting context</a>
-			have a used 'display' of ''flow-root'',
-			to provide an easier point of reference.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/1550">Issue 1550</a>)
-		<li>
-			Clarified that 'display' is not animatable (as opposed to discretely animatable).
-			(<a href="https://github.com/w3c/csswg-drafts/issues/2938">Issue 2938</a>)
-		<li>
-			Minor editorial fixes.
-	</ul>
-
-	Changes since the <a href="https://www.w3.org/TR/2017/WD-css-display-3-20170720/">20 July 2017 Working Draft</a> include:
-
-	* Tightened up rules for the <a>blockification</a> of ''display/inline-block'' / ''inline flow-root''
-		to ensure compatibility with CSS2.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1246">Issue 1246</a>)
-		Updated handling of ''run-in flow-root'' to match.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1715">Issue 1715</a>)
-	* Adjusted grammar of 'display' to list the ''display/list-item'' keyword last. This affects the expected serialization order.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1621">Issue 1621</a>)
-	* Added better definition of interaction between <a>block formatting contexts</a> and <a>inline formatting contexts</a> in block containers that establish inline formatting contexts.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1553">Issue 1553</a>)
-	* More clearly defined the way property values are reflected
-		between an element and its boxes (in the case of an element generating multiple boxes).
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1643">Issue 1643</a>)
-	* Clarified that empty text objects are ignored for CSS rendering.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1808">Issue 1808</a>)
-	* Clarified that 'display' has no effect on document semantics, since this is a common bug in UAs.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/2355">Issue 2355</a>)
-	* Fixed error in definition of 'display'’s <a>computed value</a>
-		(which is definitely not “as specified”, due to <a>blockification</a> and <a>inlinification</a> rules triggered by various properties).
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1716">Issue 1716</a>)
-	* Added definition for <a>document order</a>.
-	* Added missing SVG elements to <a href="#unbox">Appendix B</a>’s details on ''display: contents''
-		(<a href="https://github.com/w3c/csswg-drafts/issues/2118">Issue 2118</a>),
-		clarified effect of SVG attributes
-		(<a href="https://github.com/w3c/csswg-drafts/issues/2502">Issue 2502</a>),
-		and defined behavior for MathML
-		(<a href="https://github.com/w3c/csswg-drafts/issues/2167">Issue 2167</a>).
-	* Added some <a href="#box-guidelines">guidance</a> to future spec authors of anonymous box construction rules.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/1643">Issue 1643</a>)
-	* Pushed the section about “becoming a formatting context” back to <a href="https://www.w3.org/TR/css-contain-1/">CSS Containment</a> where it is used.
-	* Various minor wording fixes and clarifications.
-
-	Changes since the <a href="https://www.w3.org/TR/2017/WD-css-display-3-20170126/">26 January 2017 Working Draft</a> include:
-
-	* Remove <css>inline-list-item</css> value that is equivalent to ''inline list-item''.
-	* Added the notion of “<a>text nodes</a>” to the <a>element tree</a>,
-		and “[=text sequence|text runs=]” to the <a>box tree</a>
-		to define behavior in the context of ''display: contents''.
-		(<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-19">Issue 19</a>,
-		<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-32">Issue 32</a>)
-	* Defined that the root element is “in flow”.
-		(<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-3">Issue 3</a>)
-	* Defined interaction of ''::first-line''/''::first-letter'' and ''run-in''.
-		(<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-5">Issue 5</a>,
-		<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-42">Issue 42</a>)
-	* Clarified that block/inline/run-in only dictates behavior in <a>flow layout</a>; it is ignored in other contexts.
-	* Run-ins are a type of inline box, not just "like" an inline box.
-	* Fixed the lack of recursion in of run-in's box-tree munging.
-		(<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-45">Issue 45</a>)
-	* Added an appendix on how ''display: contents'' works on “unusual elements”.
-		(<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-8">Issue 8</a>,
-		<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-18">Issue 18</a>)
-	* Fix <a>blockification</a> and <a>inlinification</a> rules,
-		particularly handling of layout-internal types.
-		(<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-35">Issue 35</a>,
-		<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-57">Issue 57</a>)
-	* Clarified interaction of various box tree fixups.
-		(<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-38">Issue 38</a>,
-		<a href="https://drafts.csswg.org/css-display-3/issues-wd-2017#issue-48">Issue 48</a>)
-	* Added the definition of “becoming a formatting context”.
-	* Miscellaneous minor fixes and minor clarifications.
-
-	A <a href="https://drafts.csswg.org/css-display-3/issues-wd-2017">Disposition of Comments</a> is also available.
-
-	Changes since the <a href="https://www.w3.org/TR/2015/WD-css-display-3-20151015/">15 October 2015 Working Draft</a> include:
-
-	<ul>
-		<li>Deferred the <css>box-suppress/display-or-not</css> property to the next level of Display,
-		in order to provide time for further discussion of use cases.
-		<li>Specified the effects of ''display: contents'' on unusual elements such as replaced elements and form controls.
-		<li>Clarified that an element’s ''::before'' and ''::after'' pseudo-elements still exist if its own box is not generated due to ''display: contents''.
-		<li>Clarified that event bubbling is not affected by ''display: contents''.
-		<li>Clarified interaction of run-ins with out-of-flow elements and ''::first-letter''.
-		<li>Switched ''table-caption'' and ''table-cell'' to use ''flow-root'' as their <a>inner display type</a>, since they always form a formatting context root.
-		<li>Closed off remaining issues and added at-risk list.
-	</ul>
-
-	Changes since the <a href="https://www.w3.org/TR/2015/WD-css-display-3-20150721/">21 July 2015 Working Draft</a> include:
-
-	<ul>
-		<li>Added definitions for <a>in-flow</a> and <a>out-of-flow</a> to glossary.
-	</ul>
-
-	Changes since the <a href="https://www.w3.org/TR/2014/WD-css-display-3-20140911/">11 September 2014 Working Draft</a> include:
-
-	<ul>
-		<li>Removed <css>display-inside</css>, <css>display-outside</css>, and <css>display-extras</css> longhands,
-			in favor of just making 'display' multi-value.
-			(This was done to impose constraints on what can be combined.
-			Future levels of this specification may relax some or all of those restrictions
-			if they become unnecessary or unwanted.)
-		<li>Created the ''flow'' and ''flow-root'' <a>inner display types</a>
-			to better express flow layout <a>display types</a>
-			and to create an explicit switch for making an element a <a>BFC</a> root.
-			(This should eliminate the need for hacks
-			like ''::after { clear: both; }'' and ''overflow: hidden''
-			that are intended to accomplish this purpose.)
-	</ul>
+	* The 'reading-flow' property 
+		(<a href="https://github.com/w3c/csswg-drafts/issues/8589#issuecomment-1721504153">Issue 8589</a>)
+	* The 'reading-order' property (<a href="https://github.com/w3c/csswg-drafts/issues/11208#issuecomment-2625850559">Issue </a>)
+	* The ability to animate 'display'
+	* The ''force-hidden'' value of 'visibility'
 
 <h2 id="priv" class="no-num">
 Privacy Considerations</h2>
@@ -2200,61 +2276,3 @@ Security Considerations</h2>
 
 This specification introduces no new security considerations.
 
-<h3 class="no-num" id="security-privacy-self-review">
-Self-Review Questionnaire</h3>
-
-Per the <a href="https://www.w3.org/TR/security-privacy-questionnaire/#questions">
-Self-Review Questionnaire: Security and Privacy: Questions to Consider</a>
-
-<ol>
-	<li>Does this specification deal with personally-identifiable information?
-	<p>No.
-
-	<li>Does this specification deal with high-value data?
-	<p>No.
-
-	<li>Does this specification introduce new state for an origin that persists across browsing sessions?
-	<p>No.
-
-	<li>Does this specification expose persistent, cross-origin state to the web?
-	<p>No.
-
-	<li>Does this specification expose any other data to an origin that it doesn’t currently have access to?
-	<p>No.
-
-	<li>Does this specification enable new script execution/loading mechanisms?
-	<p>No.
-
-	<li>Does this specification allow an origin access to a user’s location?
-	<p>No.
-
-	<li>Does this specification allow an origin access to sensors on a user’s device?
-	<p>No.
-
-	<li>Does this specification allow an origin access to aspects of a user’s local computing environment?
-	<p>No.
-
-	<li>Does this specification allow an origin access to other devices?
-	<p>No.
-
-	<li>Does this specification allow an origin some measure of control over a user agent’s native UI?
-	<p>No.
-
-	<li>Does this specification expose temporary identifiers to the web?
-	<p>No.
-
-	<li>Does this specification distinguish between behavior in first-party and third-party contexts?
-	<p>No.
-
-	<li>How should this specification work in the context of a user agent’s "incognito" mode?
-	<p>No differently.
-
-	<li>Does this specification persist data to a user’s local device?
-	<p>No.
-
-	<li>Does this specification have a "Security Considerations" and "Privacy Considerations" section?
-	<p>Yes.
-
-	<li>Does this specification allow downgrading default security characteristics?
-	<p>No.
-</ol>
