@@ -81,14 +81,8 @@ def get_bs_spec_metadata(folder_name, path):
         level = int(metadata["document"]["Level"][0])
 
     shortname = metadata["document"]["Shortname"][0]
-    if shortname == "css-animations-2":
-        shortname = "css-animations"
-    elif shortname == "css-gcpm-4":
+    if shortname == "css-gcpm-4":
         shortname = "css-gcpm"
-    elif shortname == "css-transitions-2":
-        shortname = "css-transitions"
-    elif shortname == "scroll-animations-1":
-        shortname = "scroll-animations"
     else:
         # Fix CSS snapshots (e.g. "css-2022")
         snapshot_match = re.match("^css-(20[0-9]{2})$", shortname)
@@ -137,13 +131,13 @@ def create_symlink(shortname, spec_folder):
 
 
 CURRENT_WORK_EXCEPTIONS = {
-    "css-conditional": 5,
-    "css-easing": 2,
-    "css-grid": 2,
-    "css-snapshot": None,  # always choose the last spec
-    "css-values": 4,
-    "css-writing-modes": 4,
-    "web-animations": 2
+    #"css-conditional": 5,
+    #"css-easing": 2,
+    #"css-grid": 2,
+    "css-snapshot": None,  # always choose the latest spec
+    #"css-values": 4,
+    #"css-writing-modes": 4,
+    #"web-animations": 2
 }
 
 # ------------------------------------------------------------------------------
