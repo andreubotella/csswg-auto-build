@@ -7,11 +7,11 @@ Work Status: Testing
 Group: csswg
 ED: https://drafts.csswg.org/css-text-3/
 TR: https://www.w3.org/TR/css-text-3/
-Previous version: https://www.w3.org/TR/2023/CRD-css-text-3-20230903/
+Previous version: https://www.w3.org/TR/2021/CRD-css-text-3-20210422/
 Test Suite: http://test.csswg.org/suites/css3-text/nightly-unstable/
 !Test Coverage Analysis: <a href="https://drafts.csswg.org/css-text-3/test-coverage">https://drafts.csswg.org/css-text-3/test-coverage</a>
 Implementation Report: https://test.csswg.org/harness/results/css-text-3_dev/grouped/
-Editor: Elika J. Etemad / fantasai, Apple, http://fantasai.inkedblade.net/contact, w3cid 35400
+Editor: Elika J. Etemad / fantasai, Invited Expert, http://fantasai.inkedblade.net/contact, w3cid 35400
 Editor: Koji Ishii, Invited Expert, kojiishi@gluesoft.co.jp, w3cid 45369
 Editor: Florian Rivoal, Invited Expert, https://florian.rivoal.net, w3cid 43241
 Abstract: This CSS module defines properties for text manipulation and specifies their processing model. It covers line breaking, justification and alignment, white space handling, and text transformation.
@@ -25,9 +25,10 @@ At Risk: Trimming trailing Ogham space marks
 Ignored Vars: letter-spacing
 WPT Path Prefix: /css/css-text/
 </pre>
+
 <pre class=link-defaults>
-spec:css2; type:dfn; text:document language
-spec:css-ruby-1; type:dfn; text:ruby
+spec:css-display-3; type:property; text:display
+spec:css-fonts-4; type:property; text:font-feature-settings
 </pre>
 
 <style type="text/css">
@@ -122,7 +123,10 @@ Introduction</h2>
 		The test coverage information in this specification
 		covers <a href='https://github.com/web-platform-tests/wpt/tree/master/css/css-text/'>wpt/css/css-text/</a> and subdirectories,
 		as well as those tests in <a href='https://github.com/web-platform-tests/wpt/tree/master/css/CSS2/'>wpt/css/CSS2/</a> and subdirectories
-		that relate to this specification."></wpt>
+		that relate to this specification.
+
+		Missing tests:
+		* Throughout the spec, tests for <a href=https://github.com/w3c/csswg-drafts/issues/5303>distinguishing between applying to inlines and applying to text</a> should be added."></wpt>
 
 	This module describes the typesetting controls of CSS;
 	that is, the features of CSS that control the translation of
@@ -195,13 +199,6 @@ Introduction</h2>
 	crashtests/rendering-table-caption-with-negative-margins-crash.html
 	crashtests/white-space-pre-wrap-chash.html
 	crashtests/word-spacing-large-value.html
-	crashtests/eol-spaces-bidi-min-content-crash.html
-	crashtests/overflow-wrap-anywhere-crash.html
-	crashtests/text-indent-each-line-crash.html
-	overflow-wrap/crashtests/overflow-wrap-leading-floats-crash.html
-	text-autospace/crashtests/text-autospace-shape-cache-crash.html
-	text-indent/text-indent-ruby-crash.html
-	hyphens/hyphens-auto-wordbreak-breakall-crash.html
 	</wpt>
 
 <h3 id="placement">
@@ -273,7 +270,7 @@ Languages and Typesetting</h3>
 	Note: Authors can declare the [=content language=]
 	using the global <code>lang</code> attribute in HTML
 	or the universal <code>xml:lang</code> attribute in XML.
-	See the <a spec=html lt=language for="Node">rules for determining the content language of an HTML element</a>
+	See the <a spec=html lt=language>rules for determining the content language of an HTML element</a>
 	in <cite>HTML</cite>,
 	and the [[XML#sec-lang-tag|rules for determining the content language of an XML element]] in <cite>XML 1.0</cite>.
 	[[HTML]]
@@ -306,7 +303,7 @@ Languages and Typesetting</h3>
 		As another example Japanese (<code>ja</code>) is typically written
 		in a combination (<code>-Japn</code>) of Hiragana (<code>-Hira</code>),
 		Katakana (<code>-Kana</code>), and Kanji (<code>-Hani</code>).
-		However, it can also be “romanized” into Latin (<code>-Latn</code>)
+		However, it can also be ”romanized” into Latin (<code>-Latn</code>)
 		for special purposes like language-learning textbooks,
 		in which case it should be formatted more like English than Japanese.
 
@@ -496,10 +493,6 @@ Text Processing</h3>
 	shaping/shaping-arabic-diacritics-001.html
 	shaping/shaping-arabic-diacritics-002.html
 	white-space/full-width-leading-spaces-005.html
-	white-space/object-replacement-1.html
-	white-space/object-replacement-2.html
-	white-space/white-space-vs-joiners-001.html
-	white-space/white-space-vs-joiners-002.html
 	</wpt>
 
 	For the purpose of determining adjacency for text processing
@@ -528,7 +521,7 @@ Text Processing</h3>
 	overflow-wrap/overflow-wrap-anywhere-010.html
 	</wpt>
 
-	<wpt pathprefix="/css/CSS2/text/">
+	<wpt pathprefix="/css/CSS2/text"/>
 	white-space-processing-048.xht
 	white-space-processing-049.xht
 	</wpt>
@@ -542,7 +535,6 @@ Transforming Text</h2>
 
 		Missing tests:
 		* no test of Animation type.
-		* Applies to text
 
 		Possible additions:
 		* An automated test for plain text copy&amp;paste not applying transforms. Not clear such an <em>automated</em> test is possible, but it would be nice to have one if it were."></wpt>
@@ -595,13 +587,9 @@ Case Transforms: the 'text-transform' property</h3>
 	It has no effect on the underlying content,
 	and must not affect the content of a plain text copy &amp; paste operation.
 
-	<wpt>
-	text-transform/text-transform-upperlower-105.html
-	</wpt>
-
-	Advisement: Authors must not rely on 'text-transform' for semantic purposes;
-	rather the correct casing and semantics should be encoded
-	in the source document text and markup.
+	Note: The 'text-transform' property only affects the presentation layer;
+	correct casing for semantic purposes is expected to be represented
+	in the source document.
 
 	<wpt>
 	text-transform/text-transform-copy-paste-001-manual.html
@@ -646,8 +634,6 @@ Case Transforms: the 'text-transform' property</h3>
 			text-transform/text-transform-capitalize-030.html
 			text-transform/text-transform-capitalize-031.html
 			text-transform/text-transform-capitalize-032.xht
-			text-transform/text-transform-capitalize-034.html
-			text-transform/text-transform-capitalize-035.html
 			</wpt>
 
 			<wpt pathprefix="/css/CSS2/text/">
@@ -681,8 +667,6 @@ Case Transforms: the 'text-transform' property</h3>
 			text-transform/text-transform-upperlower-044.html
 			text-transform/text-transform-upperlower-101.html
 			text-transform/text-transform-upperlower-103.html
-			text-transform/text-transform-upperlower-106.html
-			text-transform/text-transform-uppercase-dynamic.html
 			</wpt>
 
 			<wpt pathprefix="/css/CSS2/text/">
@@ -775,7 +759,6 @@ Case Transforms: the 'text-transform' property</h3>
 			text-transform/text-transform-full-size-kana-005.html
 			text-transform/text-transform-full-size-kana-006.html
 			text-transform/text-transform-full-size-kana-007.html
-			text-transform/text-transform-full-size-kana-008.html
 			</wpt>
 	</dl>
 
@@ -854,8 +837,6 @@ Mapping Rules</h4>
 
 	<wpt>
 	text-transform/text-transform-capitalize-033.html
-	text-transform/text-transform-capitalize-034.html
-	text-transform/text-transform-capitalize-035.html
 	</wpt>
 
 	Note: Authors cannot depend on ''capitalize'' to follow
@@ -987,7 +968,8 @@ White Space and Wrapping: the 'white-space' property</h2>
 		particularly through tests for [[#white-space-processing]] and subsections.
 
 		Missing tests:
-		* No test of Animation type"></wpt>
+		* No test of Namimation type
+		* Intrinsic (min and max) sizing tests for normal and nowrap."></wpt>
 
 	<pre class="propdef">
 	Name: white-space
@@ -1019,7 +1001,6 @@ White Space and Wrapping: the 'white-space' property</h2>
 	white-space/ws-break-spaces-applies-to-013.html
 	white-space/ws-break-spaces-applies-to-014.html
 	white-space/ws-break-spaces-applies-to-015.html
-	white-space/white-space-applies-to-text-001.html
 	white-space/white-space-pre-031.html
 	white-space/white-space-pre-032.html
 	white-space/white-space-pre-034.html
@@ -1082,8 +1063,6 @@ White Space and Wrapping: the 'white-space' property</h2>
 			white-space/white-space-wrap-after-nowrap-001.html
 			line-break/line-break-anywhere-and-white-space-004.html
 			line-break/line-break-anywhere-and-white-space-005.html
-			white-space/white-space-applies-to-text-001.html
-			white-space/white-space-intrinsic-size-021.html
 			</wpt>
 
 			<wpt pathprefix="/css/CSS2/text/">
@@ -1117,8 +1096,6 @@ White Space and Wrapping: the 'white-space' property</h2>
 			</wpt>
 
 			<wpt>
-			white-space/white-space-zero-fontsize-001.html
-			white-space/white-space-zero-fontsize-002.html
 			white-space/white-space-pre-031.html
 			white-space/white-space-pre-032.html
 			white-space/white-space-pre-034.html
@@ -1133,10 +1110,8 @@ White Space and Wrapping: the 'white-space' property</h2>
 			white-space/white-space-intrinsic-size-015.html
 			white-space/white-space-intrinsic-size-016.html
 			white-space/white-space-intrinsic-size-018.html
-			white-space/white-space-intrinsic-size-021.html
 			white-space/pre-with-whitespace-crash.html
 			word-break/break-boundary-2-chars-002.html
-			white-space/white-space-applies-to-text-001.html
 			</wpt>
 
 		<dt><dfn>nowrap</dfn>
@@ -1152,8 +1127,6 @@ White Space and Wrapping: the 'white-space' property</h2>
 			overflow-wrap/overflow-wrap-anywhere-008.html
 			white-space/nowrap-wbr-and-space-crash.html
 			word-break/break-boundary-2-chars-002.html
-			white-space/white-space-applies-to-text-001.html
-			white-space/white-space-intrinsic-size-021.html
 			</wpt>
 
 			<wpt pathprefix="/css/CSS2/text/">
@@ -1240,8 +1213,6 @@ White Space and Wrapping: the 'white-space' property</h2>
 			white-space/white-space-intrinsic-size-013.html
 			white-space/white-space-intrinsic-size-014.html
 			white-space/white-space-intrinsic-size-017.html
-			white-space/white-space-intrinsic-size-021.html
-			white-space/white-space-applies-to-text-001.html
 			</wpt>
 
 		<dt><dfn>break-spaces</dfn>
@@ -1259,11 +1230,10 @@ White Space and Wrapping: the 'white-space' property</h2>
 					<wpt>
 					white-space/white-space-intrinsic-size-001.html
 					white-space/white-space-intrinsic-size-002.html
-					white-space/white-space-intrinsic-size-021.html
 					</wpt>
 
 				<li>
-					A [=soft wrap opportunity=] exists
+					A line breaking opportunity exists
 					after every [=preserved=] [=white space=] character
 					and after every [=other space separator=]
 					(including between adjacent spaces).
@@ -1281,10 +1251,8 @@ White Space and Wrapping: the 'white-space' property</h2>
 					white-space/break-spaces-008.html
 					white-space/break-spaces-009.html
 					white-space/break-spaces-010.html
-					white-space/break-spaces-011.html
 					white-space/break-spaces-051.html
 					white-space/break-spaces-052.html
-					white-space/break-spaces-with-word-break-001.html
 					white-space/white-space-pre-034.html
 					white-space/textarea-break-spaces-001.html
 					white-space/textarea-break-spaces-002.html
@@ -1427,10 +1395,8 @@ White Space and Wrapping: the 'white-space' property</h2>
 				white-space/white-space-pre-035.html
 				white-space/white-space-intrinsic-size-019.html
 				white-space/white-space-intrinsic-size-020.html
-				white-space/white-space-intrinsic-size-021.html
 				white-space/pre-line-br-with-whitespace-child-crash.html
 				white-space/pre-line-with-space-and-newline.html
-				white-space/white-space-applies-to-text-001.html
 				</wpt>
 	</dl>
 
@@ -1507,11 +1473,6 @@ White Space and Wrapping: the 'white-space' property</h2>
 				<td>Hang
 	</table>
 
-	<wpt>
-	white-space/trailing-space-and-text-alignment-002.html
-	white-space/trailing-space-and-text-alignment-rtl-002.html
-	</wpt>
-
 	See [[#white-space-processing|White Space Processing Rules]]
 	for details on how [=white space=] collapses.
 
@@ -1576,7 +1537,7 @@ White Space Processing &amp; Control Characters</h2>
 	which is then interpreted for rendering as specified by the 'white-space' property.
 
 	In the case of HTML,
-	[[html#newlines|newlines]] are [=normalize newlines|normalized=] to line feed characters (U+000A)
+	each [[html#newlines|newline sequence is normalized]] to a single line feed (U+000A)
 	for representation in the DOM,
 	so when an HTML document is represented as a DOM tree
 	each line feed (U+000A)
@@ -1763,11 +1724,6 @@ The White Space Processing Rules</h3>
 	white-space-processing-056.xht
 	</wpt>
 
-	<wpt>
-	white-space/display-contents-remove-whitespace-change.html
-	white-space/remove-slotted-with-whitespace-sibling.html
-	</wpt>
-
 	Note: The set of characters considered [=document white space=]
 	(part of the document content)
 	and those considered syntactic white space
@@ -1850,8 +1806,6 @@ Phase I: Collapsing and Transformation</h4>
 -->
 					white-space/white-space-normal-011.html
 					white-space/white-space-nowrap-011.html
-					line-breaking/segment-break-transformation-unremovable-3.html
-					line-breaking/segment-break-transformation-unremovable-4.html
 					</wpt>
 
 					<wpt pathprefix="/css/CSS2/text/">
@@ -1974,7 +1928,6 @@ Phase I: Collapsing and Transformation</h4>
 			white-space/break-spaces-before-first-ideographic-char-005.html
 			white-space/break-spaces-before-first-ideographic-char-006.html
 			white-space/break-spaces-before-first-ideographic-char-011.html
-			white-space/break-spaces-with-word-break-001.html
 			white-space/pre-wrap-008.html
 			white-space/pre-wrap-015.html
 			white-space/pre-wrap-016.html
@@ -2118,7 +2071,7 @@ Phase II: Trimming and Positioning</h4>
 			Otherwise, each [=preserved=] [=tab=] is rendered
 			as a horizontal shift that lines up
 			the start edge of the next glyph with the next [=tab stop=].
-			If this distance is less than ''0.5ch'',
+			If this distance is less than 0.5<a value class=no-quote>ch</a>,
 			then the subsequent [=tab stop=] is used instead.
 			<dfn lt="tab stop">Tab stops</dfn> occur at points
 			that are multiples of the [=tab size=]
@@ -2145,10 +2098,6 @@ Phase II: Trimming and Positioning</h4>
 			</wpt>
 
 			Note: See the Unicode <a href="http://unicode.org/reports/tr9/#L1">rules on how tabulation (U+0009) interacts with bidi</a>. [[UAX9]]
-
-			<wpt>
-			bidi/bidi-tab-001.html
-			</wpt>
 
 			<wpt>
 			white-space/tab-bidi-001.html
@@ -2241,10 +2190,6 @@ Phase II: Trimming and Positioning</h4>
 					text-transform/text-transform-fullwidth-008.html
 					white-space/white-space-intrinsic-size-019.html
 					white-space/white-space-intrinsic-size-020.html
-					white-space/trailing-space-and-text-alignment-001.html
-					white-space/trailing-space-and-text-alignment-005.html
-					white-space/trailing-space-and-text-alignment-rtl-001.html
-					white-space/trailing-space-and-text-alignment-rtl-005.html
 					</wpt>
 
 				<li>
@@ -2300,8 +2245,6 @@ Phase II: Trimming and Positioning</h4>
 					white-space/white-space-pre-wrap-trailing-spaces-015.html
 					white-space/white-space-intrinsic-size-003.html
 					white-space/white-space-intrinsic-size-004.html
-					white-space/white-space-intrinsic-size-005.html
-					white-space/white-space-intrinsic-size-006.html
 					white-space/pre-wrap-tab-005.html
 					white-space/pre-wrap-tab-006.html
 					white-space/trailing-other-space-separators-002.html
@@ -2314,38 +2257,6 @@ Phase II: Trimming and Positioning</h4>
 					white-space/white-space-intrinsic-size-017.html
 					white-space/eol-spaces-bidi-002.html
 					white-space/trailing-space-in-inline-box.html
-					white-space/trailing-space-and-text-alignment-003.html
-					white-space/trailing-space-and-text-alignment-rtl-003.html
-					white-space/white-space-pre-wrap-trailing-spaces-021.html
-					white-space/white-space-pre-wrap-trailing-spaces-022.html
-					white-space/white-space-pre-wrap-trailing-spaces-023.html
-					overflow-wrap/overflow-wrap-min-content-size-009.html
-					text-justify/text-justify-and-trailing-spaces-001.html
-					text-justify/text-justify-and-trailing-spaces-002.html
-					text-justify/text-justify-and-trailing-spaces-003.html
-					text-justify/text-justify-and-trailing-spaces-004.html
-					text-justify/text-justify-and-trailing-spaces-005.html
-					text-justify/text-justify-and-trailing-spaces-006.html
-					white-space/pre-wrap-align-center-001.html
-					white-space/pre-wrap-align-center-002.html
-					white-space/pre-wrap-align-center-003.html
-					white-space/pre-wrap-align-end-001.html
-					white-space/pre-wrap-align-end-002.html
-					white-space/pre-wrap-align-end-003.html
-					white-space/pre-wrap-align-left-001.html
-					white-space/pre-wrap-align-left-002.html
-					white-space/pre-wrap-align-left-003.html
-					white-space/pre-wrap-align-right-001.html
-					white-space/pre-wrap-align-right-002.html
-					white-space/pre-wrap-align-right-003.html
-					white-space/pre-wrap-align-start-001.html
-					white-space/pre-wrap-align-start-002.html
-					white-space/pre-wrap-align-start-003.html
-					white-space/white-space-pre-wrap-justify-001.html
-					white-space/white-space-pre-wrap-justify-002.html
-					white-space/white-space-pre-wrap-justify-003.html
-					white-space/white-space-pre-wrap-justify-004.html
-					white-space/eol-spaces-bidi-004.html
 					</wpt>
 
 					Note: [=Hanging=] the white space rather than collapsing it
@@ -2395,8 +2306,6 @@ Phase II: Trimming and Positioning</h4>
 					white-space/trailing-ideographic-space-break-spaces-006.html
 					white-space/trailing-ideographic-space-break-spaces-007.html
 					white-space/trailing-ideographic-space-break-spaces-008.html
-					white-space/trailing-space-and-text-alignment-004.html
-					white-space/trailing-space-and-text-alignment-rtl-004.html
 					</wpt>
 
 					Note: Such characters therefore take up space,
@@ -2537,11 +2446,6 @@ Segment Break Transformation Rules</h4>
 			immediately following another collapsible [=segment break=]
 			is removed.
 
-			<wpt>
-			line-breaking/segment-break-transformation-unremovable-2.html
-			line-breaking/segment-break-transformation-unremovable-4.html
-			</wpt>
-
 		<li>
 			Then any remaining [=segment break=]
 			is either transformed into a space (U+0020)
@@ -2549,97 +2453,13 @@ Segment Break Transformation Rules</h4>
 			depending on the context before and after the break.
 			The rules for this operation are UA-defined in this level.
 
-			<wpt>
-			line-breaking/segment-break-transformation-unremovable-1.html
-			line-breaking/segment-break-transformation-unremovable-2.html
-			line-breaking/segment-break-transformation-unremovable-3.html
-			line-breaking/segment-break-transformation-unremovable-4.html
-			</wpt>
-
-			<wpt hidden
-				title="
-					Tests for a proposed set of segment break transformations
-					which seem reasonable but have not (yet) been officially adopted">
-			white-space/seg-break-transformation-000.tentative.html
-			white-space/seg-break-transformation-001.tentative.html
-			white-space/seg-break-transformation-002.tentative.html
-			white-space/seg-break-transformation-003.tentative.html
-			white-space/seg-break-transformation-004.tentative.html
-			white-space/seg-break-transformation-005.tentative.html
-			white-space/seg-break-transformation-006.tentative.html
-			white-space/seg-break-transformation-007.tentative.html
-			white-space/seg-break-transformation-008.tentative.html
-			white-space/seg-break-transformation-009.tentative.html
-			white-space/seg-break-transformation-010.tentative.html
-			white-space/seg-break-transformation-011.tentative.html
-			white-space/seg-break-transformation-012.tentative.html
-			white-space/seg-break-transformation-014.tentative.html
-			white-space/seg-break-transformation-015.tentative.html
-			white-space/seg-break-transformation-016.tentative.html
-			white-space/seg-break-transformation-017.tentative.html
-			white-space/seg-break-transformation-018.tentative.html
-			white-space/seg-break-transformation-019.tentative.html
-			line-breaking/segment-break-transformation-removable-1.html
-			line-breaking/segment-break-transformation-removable-2.html
-			line-breaking/segment-break-transformation-removable-3.html
-			line-breaking/segment-break-transformation-removable-4.html
-			line-breaking/segment-break-transformation-rules-001.html
-			line-breaking/segment-break-transformation-rules-002.html
-			line-breaking/segment-break-transformation-rules-003.html
-			line-breaking/segment-break-transformation-rules-004.html
-			line-breaking/segment-break-transformation-rules-005.html
-			line-breaking/segment-break-transformation-rules-006.html
-			line-breaking/segment-break-transformation-rules-007.html
-			line-breaking/segment-break-transformation-rules-008.html
-			line-breaking/segment-break-transformation-rules-009.html
-			line-breaking/segment-break-transformation-rules-010.html
-			line-breaking/segment-break-transformation-rules-011.html
-			line-breaking/segment-break-transformation-rules-012.html
-			line-breaking/segment-break-transformation-rules-013.html
-			line-breaking/segment-break-transformation-rules-014.html
-			line-breaking/segment-break-transformation-rules-015.html
-			line-breaking/segment-break-transformation-rules-016.html
-			line-breaking/segment-break-transformation-rules-017.html
-			line-breaking/segment-break-transformation-rules-018.html
-			line-breaking/segment-break-transformation-rules-019.html
-			line-breaking/segment-break-transformation-rules-020.html
-			line-breaking/segment-break-transformation-rules-021.html
-			line-breaking/segment-break-transformation-rules-022.html
-			line-breaking/segment-break-transformation-rules-023.html
-			line-breaking/segment-break-transformation-rules-024.html
-			line-breaking/segment-break-transformation-rules-025.html
-			line-breaking/segment-break-transformation-rules-026.html
-			line-breaking/segment-break-transformation-rules-027.html
-			line-breaking/segment-break-transformation-rules-028.html
-			line-breaking/segment-break-transformation-rules-029.html
-			line-breaking/segment-break-transformation-rules-030.html
-			line-breaking/segment-break-transformation-rules-031.html
-			line-breaking/segment-break-transformation-rules-032.html
-			line-breaking/segment-break-transformation-rules-033.html
-			line-breaking/segment-break-transformation-rules-034.html
-			line-breaking/segment-break-transformation-rules-035.html
-			line-breaking/segment-break-transformation-rules-036.html
-			line-breaking/segment-break-transformation-rules-037.html
-			line-breaking/segment-break-transformation-rules-038.html
-			line-breaking/segment-break-transformation-rules-039.html
-			line-breaking/segment-break-transformation-rules-040.html
-			line-breaking/segment-break-transformation-rules-041.html
-			line-breaking/segment-break-transformation-rules-042.html
-			line-breaking/segment-break-transformation-rules-043.html
-			line-breaking/segment-break-transformation-rules-044.html
-			line-breaking/segment-break-transformation-rules-045.html
-			line-breaking/segment-break-transformation-rules-046.html
-			line-breaking/segment-break-transformation-rules-047.html
-			line-breaking/segment-break-transformation-rules-048.html
-			line-breaking/segment-break-transformation-rules-049.html
-			</wpt>
 <!-- CUT SEGMENT BREAK TRANSFORM
 			<wpt pathprefix="/css/css-text/line-breaking/">
 			segment-break-transformation-removable-2.html
 			segment-break-transformation-removable-4.html
 			</wpt>
 			<wpt>
-			white-space/seg-break-transformation-000.tentative.html
+			white-space/seg-break-transformation-000.html
 			</wpt>
 
 			<ul>
@@ -2649,10 +2469,10 @@ Segment Break Transformation Rules</h4>
 				is removed, leaving behind the zero-width space.
 
 				<wpt>
-				white-space/seg-break-transformation-016.tentative.html
-				white-space/seg-break-transformation-017.tentative.html
-				white-space/seg-break-transformation-018.tentative.html
-				white-space/seg-break-transformation-019.tentative.html
+				white-space/seg-break-transformation-016.html
+				white-space/seg-break-transformation-017.html
+				white-space/seg-break-transformation-018.html
+				white-space/seg-break-transformation-019.html
 				</wpt>
 
 				<wpt pathprefix="/css/css-text/line-breaking/">
@@ -2680,20 +2500,20 @@ Segment Break Transformation Rules</h4>
 				[[!UAX11]]
 
 				<wpt>
-				white-space/seg-break-transformation-001.tentative.html
-				white-space/seg-break-transformation-002.tentative.html
-				white-space/seg-break-transformation-003.tentative.html
-				white-space/seg-break-transformation-004.tentative.html
-				white-space/seg-break-transformation-005.tentative.html
-				white-space/seg-break-transformation-006.tentative.html
-				white-space/seg-break-transformation-007.tentative.html
-				white-space/seg-break-transformation-008.tentative.html
-				white-space/seg-break-transformation-009.tentative.html
-				white-space/seg-break-transformation-010.tentative.html
-				white-space/seg-break-transformation-011.tentative.html
-				white-space/seg-break-transformation-012.tentative.html
-				white-space/seg-break-transformation-014.tentative.html
-				white-space/seg-break-transformation-015.tentative.html
+				white-space/seg-break-transformation-001.html
+				white-space/seg-break-transformation-002.html
+				white-space/seg-break-transformation-003.html
+				white-space/seg-break-transformation-004.html
+				white-space/seg-break-transformation-005.html
+				white-space/seg-break-transformation-006.html
+				white-space/seg-break-transformation-007.html
+				white-space/seg-break-transformation-008.html
+				white-space/seg-break-transformation-009.html
+				white-space/seg-break-transformation-010.html
+				white-space/seg-break-transformation-011.html
+				white-space/seg-break-transformation-012.html
+				white-space/seg-break-transformation-014.html
+				white-space/seg-break-transformation-015.html
 				</wpt>
 
 				<wpt pathprefix="/css/css-text/line-breaking/">
@@ -2772,11 +2592,7 @@ Segment Break Transformation Rules</h4>
 				Otherwise, the [=segment break=] is converted to a space (U+0020).
 
 				<wpt>
-				white-space/seg-break-transformation-000.tentative.html
-				line-breaking/segment-break-transformation-unremovable-1.html
-				line-breaking/segment-break-transformation-unremovable-2.html
-				line-breaking/segment-break-transformation-unremovable-3.html
-				line-breaking/segment-break-transformation-unremovable-4.html
+				white-space/seg-break-transformation-000.html
 				</wpt>
 
 				<wpt pathprefix="/css/CSS2/text/">
@@ -2864,15 +2680,11 @@ CUT SEGMENT BREAK TRANSFORM -->
 <h3 id="tab-size-property" caniuse="css3-tabsize" oldids="tab-size">
 Tab Character Size: the 'tab-size' property</h3>
 
-	<wpt title="
-		This section has good test coverage.
-
-		Missing test:
-		* Applies to text"></wpt>
+	<wpt title="This section has good test coverage."></wpt>
 
 	<pre class="propdef">
 	Name: tab-size
-	Value: <<number [0,∞]>> | <<length [0,∞]>>
+	Value: <<number>> | <<length>>
 	Initial: 8
 	Applies to: text
 	Inherited: yes
@@ -2907,14 +2719,11 @@ Tab Character Size: the 'tab-size' property</h3>
 	tab-size/tab-size-integer-002.html
 	tab-size/tab-size-integer-003.html
 	tab-size/tab-size-integer-004.html
-	tab-size/tab-size-integer-005.html
 	tab-size/tab-size-length-001.html
 	tab-size/tab-size-length-002.html
 	tab-size/tab-size-percent-001.html
 	tab-size/tab-min-rendered-width-1.html
 	tab-size/tab-size-spacing-001.html
-	tab-size/tab-size-spacing-002.html
-	tab-size/tab-size-spacing-003.html
 	white-space/tab-stop-threshold-001.html
 	white-space/tab-stop-threshold-002.html
 	white-space/tab-stop-threshold-003.html
@@ -2922,8 +2731,6 @@ Tab Character Size: the 'tab-size' property</h3>
 	white-space/tab-stop-threshold-005.html
 	white-space/tab-stop-threshold-006.html
 	text-indent/text-indent-tab-positions-001.html
-	tab-size/tab-size-block-ancestor.html
-	white-space/white-space-zero-fontsize-002.html
 	</wpt>
 
 	<wpt pathprefix="/css/CSS2/text/">
@@ -2941,7 +2748,10 @@ Line Breaking and Word Boundaries</h2>
 
 		Can be a good section
 		to host tests for i18n requirements
-		not covered in detail by the spec."></wpt>
+		not covered in detail by the spec.
+
+		Possible additions:
+		* Basic line breaking tests for any language mentioned (Thai, Lao, Khmer, Javanese, Balinese, Yi…)"></wpt>
 
 	When inline-level content is laid out into lines, it is broken across line boxes.
 	Such a break is called a <dfn export>line break</dfn>.
@@ -2992,11 +2802,6 @@ Line Breaking and Word Boundaries</h2>
 	varies with the typesetting style.
 
 	<wpt>
-	line-breaking/line-breaking-023.html
-	line-breaking/line-breaking-024.html
-	line-breaking/line-breaking-025.html
-	line-breaking/line-breaking-026.html
-	line-breaking/line-breaking-027.html
 	i18n/css3-text-line-break-baspglwj-003.html
 	i18n/css3-text-line-break-baspglwj-004.html
 	i18n/css3-text-line-break-baspglwj-005.html
@@ -3255,24 +3060,6 @@ Line Breaking and Word Boundaries</h2>
 	i18n/css3-text-line-break-opclns-223.html
 	i18n/css3-text-line-break-opclns-225.html
 	i18n/css3-text-line-break-opclns-226.html
-	word-break/word-break-normal-002.html
-	word-break/word-break-normal-003.html
-	word-break/word-break-normal-bo-000.html
-	word-break/word-break-normal-en-000.html
-	word-break/word-break-normal-ethiopic.html
-	word-break/word-break-normal-hi-000.html
-	word-break/word-break-normal-ja-000.html
-	word-break/word-break-normal-ja-001.html
-	word-break/word-break-normal-ja-002.html
-	word-break/word-break-normal-ja-004.html
-	word-break/word-break-normal-km-000.html
-	word-break/word-break-normal-ko-000.html
-	word-break/word-break-normal-lo-000.html
-	word-break/word-break-normal-my-000.html
-	word-break/word-break-normal-tdd-000.html
-	word-break/word-break-normal-th-000.html
-	word-break/word-break-normal-th-001.html
-	word-break/word-break-normal-zh-000.html
 	</wpt>
 
 	While CSS does not fully define where [=soft wrap opportunities=] occur,
@@ -3312,15 +3099,6 @@ Line Breaking and Word Boundaries</h2>
 	Any guidance on additional appropriate references
 	would be much appreciated.
 
-	<wpt>
-	line-breaking/line-breaking-028.html
-	line-breaking/line-breaking-029.html
-	</wpt>
-
-	<wpt title="Generic line-breaking tests not particularly anchored to any specific spec language">
-	shaping/shaping_lig-001.html
-	</wpt>
-
 <h3 id="line-break-details">
 Line Breaking Details</h3>
 
@@ -3329,7 +3107,9 @@ Line Breaking Details</h3>
 
 		Missing tests:
 
+		* “Regardless of the white-space value […] the BK, NL […] classes […] must be honored”
 		* For soft wrap opportunities before the first or after the last character of a box, the break occurs immediately before/after the box (at its margin edge) rather than breaking the box between its content edge and the content.
+		* Test for <a href=https://github.com/w3c/csswg-drafts/issues/4284>https://github.com/w3c/csswg-drafts/issues/4284</a>
 
 		Untestable(?):
 
@@ -3355,13 +3135,9 @@ Line Breaking Details</h3>
 		<li>
 			Preserved segment breaks, and--
 			regardless of the 'white-space' value--
-			any Unicode character with the <code>BK</code> and <code>NL</code> line breaking class,
+			any Unicode character with the the <code>BK</code> and <code>NL</code> line breaking class,
 			must be treated as forced line breaks.
 			[[!UAX14]]
-
-			<wpt>
-			line-breaking/line-breaking-022.html
-			</wpt>
 
 			Note: The bidi implications of such [=forced line breaks=]
 			are defined by the <a href="https://www.unicode.org/reports/tr9/"><cite>Unicode Bidirectional Algorithm</cite></a>.
@@ -3422,7 +3198,7 @@ Line Breaking Details</h3>
 			The UA may use the width of the containing block, the text's language,
 			the 'line-break' value,
 			and other factors in assigning priorities:
-			CSS does not define prioritization of [=soft wrap opportunities=].
+			CSS does not define prioritization of line breaking opportunities.
 			Prioritization of [=word separators=] is not expected,
 			however,
 			if ''word-break: break-all'' is specified
@@ -3450,13 +3226,7 @@ Line Breaking Details</h3>
 			there is a [=soft wrap opportunity=]
 			before and after each replaced element or other [=atomic inline=],
 			even when adjacent to a character that would normally suppress them,
-			including U+00A0 NO-BREAK SPACE.
-			However,
-			with the exception of U+00A0 NO-BREAK SPACE,
-			there must be no [=soft wrap opportunity=]
-			between [=atomic inlines=] and adjacent characters
-			belonging to the Unicode GL, WJ, or ZWJ line breaking classes.
-			[[UAX14]]
+			such as U+00A0 NO-BREAK SPACE.
 
 			<wpt>
 			line-breaking/line-breaking-atomic-001.html
@@ -3468,24 +3238,6 @@ Line Breaking Details</h3>
 			line-breaking/line-breaking-atomic-007.html
 			line-breaking/line-breaking-atomic-008.html
 			line-breaking/line-breaking-atomic-009.html
-			line-breaking/line-breaking-atomic-010.html
-			line-breaking/line-breaking-atomic-011.html
-			line-breaking/line-breaking-atomic-012.html
-			line-breaking/line-breaking-atomic-013.html
-			line-breaking/line-breaking-atomic-014.html
-			line-breaking/line-breaking-atomic-015.html
-			line-breaking/line-breaking-atomic-016.html
-			line-breaking/line-breaking-atomic-017.html
-			line-breaking/line-breaking-atomic-018.html
-			line-breaking/line-breaking-atomic-019.html
-			line-breaking/line-breaking-atomic-020.html
-			line-breaking/line-breaking-atomic-021.html
-			line-breaking/line-breaking-atomic-022.html
-			line-breaking/line-breaking-atomic-023.html
-			line-breaking/line-breaking-atomic-024.html
-			line-breaking/line-breaking-atomic-025.html
-			line-breaking/line-breaking-atomic-026.html
-			line-breaking/line-breaking-atomic-027.html
 			line-breaking/line-breaking-replaced-001.html
 			line-breaking/line-breaking-replaced-002.html
 			line-breaking/line-breaking-replaced-003.html
@@ -3500,7 +3252,7 @@ Line Breaking Details</h3>
 			that disappear at the line break (e.g. U+0020 SPACE),
 			properties on the box directly containing that character
 			control the line breaking at that opportunity.
-			For [=soft wrap opportunities=] defined by the boundary between two characters or [=atomic inlines=],
+			For [=soft wrap opportunities=] defined by the boundary between two characters,
 			the 'white-space' property
 			on the nearest common ancestor of the two characters
 			controls breaking;
@@ -3518,18 +3270,9 @@ Line Breaking Details</h3>
 			line-breaking/line-breaking-ic-002.html
 			line-breaking/line-breaking-ic-003.html
 			white-space/white-space-wrap-after-nowrap-001.html
+			word-break/word-break-break-all-inline-010.html
+			overflow-wrap/overflow-wrap-anywhere-inline-003.html
 			word-break/break-boundary-2-chars-001.html
-
-			overflow-wrap/overflow-wrap-anywhere-inline-002.tentative.html
-			overflow-wrap/overflow-wrap-anywhere-inline-003.tentative.html
-			overflow-wrap/overflow-wrap-anywhere-inline-004.tentative.html
-			word-break/word-break-break-all-inline-004.tentative.html
-			word-break/word-break-break-all-inline-007.tentative.html
-			word-break/word-break-break-all-inline-010.tentative.html
-
-			line-breaking/line-breaking-030.html
-			line-breaking/line-breaking-031.html
-			line-breaking/line-breaking-032.html
 			</wpt>
 
 		<li>
@@ -3554,14 +3297,6 @@ Line Breaking Details</h3>
 			it must assume a [=soft wrap opportunity=]
 			between pairs of [=typographic letter units=] in that writing system.
 
-			<wpt>
-			line-breaking/line-breaking-023.html
-			line-breaking/line-breaking-024.html
-			line-breaking/line-breaking-025.html
-			line-breaking/line-breaking-026.html
-			line-breaking/line-breaking-027.html
-			</wpt>
-
 			Note: This provision is not triggered merely when
 			the UA fails to find a word boundary in a particular text run;
 			the text run may well be a single unbreakable word.
@@ -3578,7 +3313,6 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 		This section has partial test coverage.
 
 		Missing tests:
-		* Applies to text
 		* No test of Animation type.
 		* affects intrinsic sizing (tested for word-break:break-word)
 		* treating non-letter typographic character units belonging to the NU, AL, AI, or ID Unicode line breaking classes
@@ -3586,6 +3320,7 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 		* effect of word-break:keep-all on NU and AI classes
 		* Symbols that line-break the same way as letters of a particular category are affected the same way as those letters.
 		* does not suppress wbr
+		* Tests for <a href=https://github.com/w3c/csswg-drafts/issues/4765>https://github.com/w3c/csswg-drafts/issues/4765</a>
 		* More tests for “does not affect rules governing the soft wrap opportunities created around punctuation"></wpt>
 
 	<pre class="propdef">
@@ -3607,10 +3342,10 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 	word-break/word-break-break-all-inline-001.html
 	word-break/word-break-break-all-inline-002.html
 	word-break/word-break-break-all-inline-003.html
-	word-break/word-break-break-all-inline-004.tentative.html
+	word-break/word-break-break-all-inline-004.html
 	word-break/word-break-break-all-inline-005.html
 	word-break/word-break-break-all-inline-006.html
-	word-break/word-break-break-all-inline-007.tentative.html
+	word-break/word-break-break-all-inline-007.html
 	word-break/word-break-break-all-inline-009.html
 	word-break/word-break-break-all-062.html
 	word-break/word-break-keep-all-063.html
@@ -3637,10 +3372,26 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 	(See 'line-break' for controls affecting punctuation and small kana.)
 
 	<wpt>
+	word-break/word-break-break-all-010.html
+	word-break/word-break-break-all-020.html
 	word-break/word-break-keep-all-005.html
 	word-break/word-break-keep-all-006.html
 	word-break/word-break-keep-all-007.html
 	word-break/word-break-keep-all-008.html
+	word-break/word-break-break-all-012.html
+	word-break/word-break-break-all-013.html
+	word-break/word-break-break-all-015.html
+	word-break/word-break-break-all-016.html
+	word-break/word-break-break-all-019.html
+	word-break/word-break-break-all-020.html
+	word-break/word-break-break-all-023.html
+	word-break/word-break-break-all-024.html
+	word-break/word-break-break-all-025.html
+	word-break/word-break-break-all-026.html
+	word-break/word-break-break-all-027.html
+	word-break/word-break-break-all-028.html
+	word-break/word-break-break-all-inline-008.html
+	white-space/break-spaces-008.html
 	word-break/word-break-min-content-003.html
 	</wpt>
 
@@ -3710,9 +3461,6 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 			such breaks within words are not allowed.
 
 			<wpt>
-			word-break/word-break-normal-001.html
-			word-break/word-break-normal-002.html
-			word-break/word-break-normal-003.html
 			word-break/word-break-normal-ar-000.html
 			word-break/word-break-normal-bo-000.html
 			word-break/word-break-normal-en-000.html
@@ -3727,9 +3475,7 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 			word-break/word-break-normal-my-000.html
 			word-break/word-break-normal-tdd-000.html
 			word-break/word-break-normal-th-000.html
-			word-break/word-break-normal-th-001.html
 			word-break/word-break-normal-zh-000.html
-			word-break/word-break-normal-ethiopic.html
 			</wpt>
 
 		<dt><dfn>break-all</dfn>
@@ -3749,26 +3495,12 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 			Hyphenation is not applied.
 
 			<wpt>
-			line-break/line-break-loose-hyphens-002.html
-			line-break/line-break-normal-hyphens-002.html
-			line-break/line-break-strict-hyphens-002.html
-			overflow-wrap/overflow-wrap-anywhere-006.html
-			white-space/break-spaces-006.html
-			white-space/break-spaces-008.html
-			white-space/break-spaces-before-first-char-004.html
-			white-space/break-spaces-before-first-char-005.html
-			white-space/break-spaces-before-first-char-006.html
-			white-space/break-spaces-before-first-ideographic-char-004.html
-			white-space/break-spaces-before-first-ideographic-char-005.html
-			white-space/break-spaces-before-first-ideographic-char-006.html
-			word-break/break-boundary-2-chars-002.html
 			word-break/word-break-break-all-000.html
 			word-break/word-break-break-all-001.html
 			word-break/word-break-break-all-002.html
 			word-break/word-break-break-all-003.html
 			word-break/word-break-break-all-005.html
 			word-break/word-break-break-all-006.html
-			word-break/word-break-break-all-010.html
 			word-break/word-break-break-all-012.html
 			word-break/word-break-break-all-013.html
 			word-break/word-break-break-all-014.html
@@ -3790,17 +3522,29 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 			word-break/word-break-break-all-030.html
 			word-break/word-break-break-all-031.html
 			word-break/word-break-break-all-032.html
-			word-break/word-break-break-all-ethiopic.html
 			word-break/word-break-break-all-inline-001.html
 			word-break/word-break-break-all-inline-002.html
 			word-break/word-break-break-all-inline-003.html
-			word-break/word-break-break-all-inline-004.tentative.html
+			word-break/word-break-break-all-inline-004.html
 			word-break/word-break-break-all-inline-005.html
 			word-break/word-break-break-all-inline-006.html
-			word-break/word-break-break-all-inline-007.tentative.html
+			word-break/word-break-break-all-inline-007.html
 			word-break/word-break-break-all-inline-008.html
 			word-break/word-break-break-all-inline-009.html
-			word-break/word-break-break-all-inline-010.tentative.html
+			word-break/word-break-break-all-inline-010.html
+			white-space/break-spaces-006.html
+			white-space/break-spaces-008.html
+			white-space/break-spaces-before-first-char-004.html
+			white-space/break-spaces-before-first-char-005.html
+			white-space/break-spaces-before-first-char-006.html
+			white-space/break-spaces-before-first-ideographic-char-004.html
+			white-space/break-spaces-before-first-ideographic-char-005.html
+			white-space/break-spaces-before-first-ideographic-char-006.html
+			overflow-wrap/overflow-wrap-anywhere-006.html
+			line-break/line-break-loose-hyphens-002.html
+			line-break/line-break-normal-hyphens-002.html
+			line-break/line-break-strict-hyphens-002.html
+			word-break/break-boundary-2-chars-002.html
 			</wpt>
 
 			Note: This value does not affect
@@ -3811,7 +3555,6 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 			<wpt>
 			white-space/break-spaces-before-first-char-011.html
 			white-space/break-spaces-before-first-ideographic-char-011.html
-			word-break/word-break-break-all-ethiopic.html
 			</wpt>
 
 			Note: This option enables the other common behavior for Ethiopic.
@@ -3845,7 +3588,6 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 			word-break/word-break-keep-all-003.html
 			word-break/word-break-keep-all-009.html
 			word-break/word-break-keep-all-010.html
-			white-space/break-spaces-with-word-break-001.html
 			</wpt>
 
 			Note: This is the other common behavior for Korean
@@ -3993,7 +3735,6 @@ Breaking Rules for Letters: the 'word-break' property</h3>
 	white-space/break-spaces-with-ideographic-space-006.html
 	white-space/break-spaces-with-ideographic-space-008.html
 	white-space/break-spaces-with-ideographic-space-009.html
-	word-break/word-break-min-content-007.html
 	</wpt>
 
 <h3 id="line-break-property">
@@ -4004,6 +3745,7 @@ Line Breaking Strictness: the 'line-break' property</h3>
 
 		Missing tests:
 		* applies to text
+		* No test of Animation type.
 		* affects intrinsic sizing
 
 		Untestable(?):
@@ -4025,7 +3767,6 @@ Line Breaking Strictness: the 'line-break' property</h3>
 	parsing/line-break-valid.html
 	parsing/line-break-invalid.html
 	parsing/line-break-computed.html
-	animations/line-break-no-interpolation.html
 	</wpt>
 
 	This property specifies the strictness of line-breaking rules applied
@@ -4165,7 +3906,7 @@ Line Breaking Strictness: the 'line-break' property</h3>
 	and ''line-break/strict''
 	is up to the UA
 	and should follow language conventions.
-	However, for these three keywords, this specification does require that:
+	However, this specification does require that:
 
 	<ul>
 		<li>
@@ -4448,7 +4189,8 @@ Hyphenation: the 'hyphens' property</h3>
 	<wpt title="This section has partial test coverage.
 
 		Missing tests:
-		* Applies to text
+		* No test of Animation type.
+		* Affects intrinsic sizing
 		* “Automatic hyphenation opportunities within a word must be ignored if the word contains a conditional hyphen (shy or U+00AD), in favor of the conditional hyphen(s)”
 		* “However, if, even after breaking at such opportunities, a portion of that word is still too long to fit on one line, an automatic hyphenation opportunity may be used.”"></wpt>
 
@@ -4457,123 +4199,12 @@ Hyphenation: the 'hyphens' property</h3>
 	where they usually would not be allowed to break
 	to improve the layout of paragraphs,
 	typically splitting words at syllabic or morphemic boundaries
-	and often visually indicating the split
+	and visually indicating the split
 	(usually by inserting a hyphen, U+2010).
 	In some cases, hyphenation may also alter the spelling of a word.
 	Regardless, hyphenation is a rendering effect only:
 	it must have no effect on the underlying document content
 	or on text selection or searching.
-
-	<wpt>
-	hyphens/hyphens-character.html
-	hyphens/hyphens-vertical-001.html
-	hyphens/hyphens-vertical-002.html
-	</wpt>
-
-	<div class=example>
-		Hyphenation practices vary across languages,
-		and can involve not just inserting a hyphen before the line break,
-		but inserting a hyphen after the break (or both),
-		inserting a different character than U+2010,
-		or changing the spelling of the word.
-
-		<table class=data>
-		<thead>
-			<tr>
-				<th>Language
-				<th>Unbroken
-				<th>Before
-				<th>After
-		<tbody>
-			<tr lang=en>
-				<th>English
-				<td>Unbroken
-				<td>Un&#x2010;
-				<td>broken
-			<tr lang=nl>
-				<th lang=en>Dutch
-				<td>cafeetje
-				<td>café&#x2010;
-				<td>tje
-			<tr lang=hu>
-				<th lang=en>Hungarian
-				<td>Összeg
-				<td>Ösz&#x2010;
-				<td>szeg
-			<tr lang="zh-Latn-pinyin">
-				<th lang=en rowspan=2>Mandarin
-				<td>tú’àn
-				<td>tú&#x2010;
-				<td>àn
-			<tr lang="zh-Latn-pinyin">
-				<td>àizēng&#x2010;fēnmíng
-				<td>àizēng&#x2010;
-				<td>&#x2010;fēnmíng
-			<tr lang=ug>
-				<th lang=en>Uyghur
-				<td dir=rtl>
-					<img src="images/uyghur-unbroken.svg"
-					     height=304
-					     style="height: 1.5em; vertical-align: -13%"
-					     alt=" [isolated DAL + isolated ALEF + initial MEEM +
-					          medial YEH  + final DAL +
-					          isolated ALEF MAKSURA]">
-				<td dir=rtl>
-					<img src="images/uyghur-hyphenate-joined-before.svg"
-					     height=304
-					     style="height: 1.5em; vertical-align: -13%"
-					     alt="[isolated DAL + isolated ALEF + initial MEEM +
-					          final YEH + hyphen ]">
-				<td dir=rtl>
-					<img src="images/uyghur-hyphenate-joined-after.svg"
-					     height=304
-					     style="height: 1.5em; vertical-align: -13%"
-					     alt="[ isolated DAL + isolated ALEF MAKSURA]">
-			<tr lang=cr>
-				<th lang=en>Cree
-				<td>
-					<img src="images/cree.svg"
-					     height=524
-					     style="height: 1em; vertical-align: baseline;"
-					     alt="[ᑲᓯᑕᓂᐘᓂᓂᐠ]
-					          (CANADIAN SYLLABICS KA +
-					          CANADIAN SYLLABICS SI +
-					          CANADIAN SYLLABICS TA +
-					          CANADIAN SYLLABICS NI +
-					          CANADIAN SYLLABICS WEST-CREE WA +
-					          CANADIAN SYLLABICS NI +
-					          CANADIAN SYLLABICS NI +
-					          CANADIAN SYLLABICS FINAL GRAVE)">
-				<td>
-					<img src="images/cree-before.svg"
-					     height=524
-					     style="height: 1em; vertical-align: baseline;"
-					     alt="[ᑲᓯᑕᓂ᐀]
-					          (CANADIAN SYLLABICS KA +
-					          CANADIAN SYLLABICS SI +
-					          CANADIAN SYLLABICS TA +
-					          CANADIAN SYLLABICS NI +
-					          CANADIAN SYLLABICS HYPHEN)">
-				<td>
-					<img src="images/cree-after.svg"
-					     height=524
-					     style="height: 1em; vertical-align: baseline;"
-					     alt="[ᐘᓂᓂᐠ]
-					          (CANADIAN SYLLABICS WEST-CREE WA +
-					          CANADIAN SYLLABICS NI +
-					          CANADIAN SYLLABICS NI +
-					          CANADIAN SYLLABICS FINAL GRAVE)">
-		</table>
-	</div>
-
-	<wpt>
-	hyphens/i18n/hyphens-i18n-auto-001.html
-	hyphens/i18n/hyphens-i18n-auto-002.html
-	hyphens/i18n/hyphens-i18n-auto-003.html
-	hyphens/i18n/hyphens-i18n-auto-004.html
-	hyphens/i18n/hyphens-i18n-auto-005.html
-	hyphens/i18n/hyphens-i18n-auto-006.html
-	</wpt>
 
 	Hyphenation occurs
 	when the line breaks at a valid <dfn>hyphenation opportunity</dfn>,
@@ -4599,10 +4230,6 @@ Hyphenation: the 'hyphens' property</h3>
 
 	Hyphenation opportunities <em>are</em> considered when calculating
 	[=min-content size|min-content intrinsic sizes=].
-
-	<wpt>
-	hyphens/hyphens-auto-min-content.html
-	</wpt>
 
 	Note: This allows tables to hyphenate their contents
 	instead of overflowing their containing block,
@@ -4632,7 +4259,6 @@ Hyphenation: the 'hyphens' property</h3>
 	hyphens/hyphens-manual-inline-010.html
 	hyphens/hyphens-manual-inline-011.html
 	hyphens/hyphens-manual-inline-012.html
-	animations/hyphen-no-interpolation.html
 	</wpt>
 
 	This property controls whether [=hyphenation=] is allowed to create more
@@ -4657,16 +4283,12 @@ Hyphenation: the 'hyphens' property</h3>
 			hyphens/hyphens-none-013.html
 			hyphens/hyphens-none-014.html
 			hyphens/hyphens-none-015.html
-			hyphens/hyphens-none-shy-on-2nd-line-001.html
 			</wpt>
 
 		<dt><dfn>manual</dfn>
 		<dd>
 			Words are only hyphenated where there are characters inside the word
 			that explicitly suggest [=hyphenation opportunities=].
-			The UA must use the appropriate language-specific hyphenation character(s)
-			and should apply any appropriate spelling changes
-			just as for automatic hyphenation at the same point.
 
 			<wpt>
 			hyphens/hyphens-overflow-001.html
@@ -4679,12 +4301,6 @@ Hyphenation: the 'hyphens' property</h3>
 			hyphens/hyphens-shaping-002.html
 			hyphens/hyphens-span-001.html
 			hyphens/shy-styling-001.html
-			hyphens/i18n/hyphens-i18n-manual-001.html
-			hyphens/i18n/hyphens-i18n-manual-002.html
-			hyphens/i18n/hyphens-i18n-manual-003.html
-			hyphens/i18n/hyphens-i18n-manual-004.html
-			hyphens/i18n/hyphens-i18n-manual-005.html
-			hyphens/hyphens-vs-float-clearance-002.html
 			</wpt>
 
 			<div class="example">
@@ -4706,7 +4322,7 @@ Hyphenation: the 'hyphens' property</h3>
 			Words may be broken at [=hyphenation opportunities=]
 			determined automatically by a language-appropriate hyphenation resource
 			in addition to those indicated explicitly by a conditional hyphen.
-			Automatic [=hyphenation opportunities=] elsewhere within a word must be ignored
+			Automatic [=hyphenation opportunities=] within a word must be ignored
 			if the word contains a conditional hyphen
 			(&amp;shy; or U+00AD SOFT HYPHEN),
 			in favor of the conditional hyphen(s).
@@ -4730,7 +4346,6 @@ Hyphenation: the 'hyphens' property</h3>
 			hyphens/hyphens-auto-and-contenteditable-crash.html
 			hyphens/hyphens-auto-last-word-001.html
 			hyphens/hyphens-punctuation-001.html
-			hyphens/hyphens-vs-float-clearance-001.html
 			</wpt>
 	</dl>
 
@@ -4798,16 +4413,12 @@ Hyphenation: the 'hyphens' property</h3>
 	<div class="example">
 		For example, if the Uyghur word &ldquo;داميدى&rdquo;
 		were hyphenated, it would appear as
-		<img src="images/uyghur-hyphenate-joined.svg"
-		     height=608
-		     style="height: 3.5em; background: white;"
+		<img src="images/uyghur-hyphenate-joined.png"
 		     alt="[isolated DAL + isolated ALEF + initial MEEM +
 		          medial YEH + hyphen + line-break + final DAL +
 		          isolated ALEF MAKSURA]">
 		not as
-		<img src="images/uyghur-hyphenate-unjoined.svg"
-		     height=608
-		     style="height: 3.5em; background: white;"
+		<img src="images/uyghur-hyphenate-unjoined.png"
 		     alt="[isolated DAL + isolated ALEF + initial MEEM +
 		          final YEH + hyphen + line-break + isolated DAL +
 		          isolated ALEF MAKSURA]">
@@ -4821,7 +4432,6 @@ Overflow Wrapping: the 'overflow-wrap'/'word-wrap' property</h3>
 		This section has fairly good test coverage.
 
 		Missing tests:
-		* Applies to text
 		* No test of Animation type"></wpt>
 
 	<pre class="propdef">
@@ -4850,7 +4460,7 @@ Overflow Wrapping: the 'overflow-wrap'/'word-wrap' property</h3>
 	overflow-wrap/overflow-wrap-break-word-long-crash.html
 	overflow-wrap/overflow-wrap-break-word-white-space-crash.html
 	overflow-wrap/overflow-wrap-break-word-white-space-crash-002.html
-	overflow-wrap/overflow-wrap-anywhere-inline-002.tentative.html
+	overflow-wrap/overflow-wrap-anywhere-inline-002.html
 	</wpt>
 
 	This property specifies whether the UA may break
@@ -4904,9 +4514,9 @@ Overflow Wrapping: the 'overflow-wrap'/'word-wrap' property</h3>
 			overflow-wrap/overflow-wrap-anywhere-010.html
 			overflow-wrap/overflow-wrap-anywhere-011.html
 			overflow-wrap/overflow-wrap-anywhere-inline-001.html
-			overflow-wrap/overflow-wrap-anywhere-inline-002.tentative.html
-			overflow-wrap/overflow-wrap-anywhere-inline-003.tentative.html
-			overflow-wrap/overflow-wrap-anywhere-inline-004.tentative.html
+			overflow-wrap/overflow-wrap-anywhere-inline-002.html
+			overflow-wrap/overflow-wrap-anywhere-inline-003.html
+			overflow-wrap/overflow-wrap-anywhere-inline-004.html
 			overflow-wrap/overflow-wrap-anywhere-fit-content-001.html
 			overflow-wrap/overflow-wrap-min-content-size-005.html
 			overflow-wrap/overflow-wrap-min-content-size-007.html
@@ -4929,7 +4539,6 @@ Overflow Wrapping: the 'overflow-wrap'/'word-wrap' property</h3>
 			white-space/break-spaces-with-overflow-wrap-006.html
 			white-space/break-spaces-with-overflow-wrap-008.html
 			white-space/break-spaces-with-overflow-wrap-010.html
-			overflow-wrap/overflow-wrap-min-content-size-009.html
 			</wpt>
 
 		<dt><dfn>break-word</dfn>
@@ -5030,6 +4639,7 @@ Text Alignment: the 'text-align' shorthand</h3>
 
 		Missing tests:
 		* If (after justification, if any) the inline contents of a line box are too long to fit within it, then the contents are start-aligned: any content that doesn’t fit overflows the line box’s end edge.
+		* If the UA chooses to adjust the text, then it must ensure that tab stops continue to line up
 		* “Values other than justify-all or match-parent are assigned to text-align-all and reset text-align-last to auto.”, and being a shorthand in general"></wpt>
 
 	<pre class="propdef shorthand">
@@ -5047,7 +4657,6 @@ Text Alignment: the 'text-align' shorthand</h3>
 	parsing/text-align-valid.html
 	parsing/text-align-invalid.html
 	parsing/text-align-computed.html
-	text-align/text-align-webkit-match-parent.html
 	</wpt>
 
 	<wpt pathprefix="/css/CSS2/css1">
@@ -5182,10 +4791,6 @@ Text Alignment: the 'text-align' shorthand</h3>
 			text-align-inherit-001.xht
 			</wpt>
 
-			<wpt>
-			text-align/text-align-center-last-center.html
-			</wpt>
-
 		<dt><dfn>justify</dfn>
 		<dd>
 			Text is justified
@@ -5204,7 +4809,6 @@ Text Alignment: the 'text-align' shorthand</h3>
 			text-align/text-align-justify-005.html
 			text-align/text-align-justify-006.html
 			text-align/text-align-justify-shy-001.html
-			text-align/text-align-justify-bidi-control.html
 			</wpt>
 
 			<wpt pathprefix="/css/CSS2/text">
@@ -5246,36 +4850,26 @@ Text Alignment: the 'text-align' shorthand</h3>
 			except that an [=inherited value=] of
 			''text-align/start'' or ''text-align/end''
 			is interpreted against the parent’s
+			(or the [=initial containing block=]’s,
+			if there is no parent)
 			'direction' value
 			and results in a computed value of either
 			''text-align/left'' or ''text-align/right''.
-			Computes to ''text-align/start''
-			when specified on the [=root element=].
-			<!-- ideally it would compute against the root writing mode
-			     and inherit as `left` or `right` for consistency in descendants,
-			     but since this is complicated due to propagation
-			     and match-parent has basically no real use case on root,
-			     we're doing this instead because it's easy -->
-
-			<wpt>
-			text-align/text-align-match-parent-001.html
-			text-align/text-align-match-parent-002.html
-			text-align/text-align-match-parent-01.html
-			text-align/text-align-match-parent-02.html
-			text-align/text-align-match-parent-03.html
-			text-align/text-align-match-parent-04.html
-			text-align/text-align-match-parent-root-ltr.html
-			text-align/text-align-match-parent-root-rtl.html
-			text-align/text-align-match-parent-root-logical.html
-			</wpt>
-
 			When specified on the 'text-align' shorthand,
 			sets both 'text-align-all' and 'text-align-last' to ''text-align/match-parent''.
 
 			<wpt>
-			text-align/text-align-match-parent-05.html
+			text-align/text-align-008.html
 			</wpt>
 
+			<wpt pathprefix="/css/css-text/text-align/">
+			text-align-match-parent-01.html
+			text-align-match-parent-02.html
+			text-align-match-parent-03.html
+			text-align-match-parent-04.html
+			text-align-match-parent-root-ltr.html
+			text-align-match-parent-root-rtl.html
+			</wpt>
 	</dl>
 
 	A block of text
@@ -5302,13 +4896,9 @@ Text Alignment: the 'text-align' shorthand</h3>
 
 	<wpt pathprefix="/css/CSS2/text">
 	text-align-white-space-001.xht
+	text-align-white-space-003.xht
 	text-align-white-space-005.xht
-	</wpt>
-	<wpt>
-		text-align/text-align-justify-tabs-001.html
-		text-align/text-align-justify-tabs-002.html
-		text-align/text-align-justify-tabs-003.html
-		text-align/text-align-justify-tabs-004.html
+	text-align-white-space-007.xht
 	</wpt>
 
 	If (after justification, if any)
@@ -5355,15 +4945,7 @@ Default Text Alignment: the 'text-align-all' property</h3>
 <h3 id="text-align-last-property" caniuse="css-text-align-last" oldids="text-align-last">
 Last Line Alignment: the 'text-align-last' property</h3>
 
-	<wpt title="
-			This section has fairly good test coverage:
-			all value combinations for text-align / text-align-last are exercised,
-			except for text-align-last: match-parent (which is exercised, but in a more limited way).
-
-			Missing tests:
-			* tests for Animation type
-
-			"></wpt>
+	<wpt title="This section lacks tests."></wpt>
 
 	<pre class="propdef">
 	Name: text-align-last
@@ -5372,7 +4954,7 @@ Last Line Alignment: the 'text-align-last' property</h3>
 	Applies to: block containers
 	Inherited: yes
 	Canonical order: n/a
-	Computed value: keyword as specified, except for ''match-parent'' which computes as defined above
+	Computed value: specified keyword
 	Animation type: discrete
 	</pre>
 
@@ -5383,7 +4965,6 @@ Last Line Alignment: the 'text-align-last' property</h3>
 	parsing/text-align-last-computed.html
 	text-align/text-align-last-013.html
 	text-align/text-align-last-014.html
-	text-align/text-align-last-justify-br.html
 	</wpt>
 
 	This property describes how the last line of a block or a line
@@ -5413,37 +4994,6 @@ Last Line Alignment: the 'text-align-last' property</h3>
 	text-align/text-align-last-007.html
 	text-align/text-align-last-008.html
 	text-align/text-align-last-009.html
-	text-align/text-align-center-last-center.html
-	text-align/text-align-center-last-default.html
-	text-align/text-align-center-last-end.html
-	text-align/text-align-center-last-justify.html
-	text-align/text-align-center-last-start.html
-	text-align/text-align-default-last-default.html
-	text-align/text-align-end-last-center.html
-	text-align/text-align-end-last-default.html
-	text-align/text-align-end-last-end.html
-	text-align/text-align-end-last-justify.html
-	text-align/text-align-end-last-start.html
-	text-align/text-align-inline-end-crash.html
-	text-align/text-align-justify-last-center.html
-	text-align/text-align-justify-last-default.html
-	text-align/text-align-justify-last-end.html
-	text-align/text-align-justify-last-justify.html
-	text-align/text-align-justify-last-start.html
-	text-align/text-align-last-center.html
-	text-align/text-align-last-end.html
-	text-align/text-align-last-interpolation.html
-	text-align/text-align-last-justify-rtl.html
-	text-align/text-align-last-justify.html
-	text-align/text-align-last-simple.html
-	text-align/text-align-last-start.html
-	text-align/text-align-start-last-center.html
-	text-align/text-align-start-last-default.html
-	text-align/text-align-start-last-end.html
-	text-align/text-align-start-last-justify.html
-	text-align/text-align-start-last-start.html
-	text-align/text-align-match-parent-05.html
-	text-align/text-align-last-015.html
 	</wpt>
 
 <h3 id="text-justify-property" caniuse="css-text-justify" oldids="text-justify">
@@ -5455,8 +5005,9 @@ Justification Method: the 'text-justify' property</h3>
 		but the tests are minimal.
 		Not sure we can do better though.
 
-		Missing text:
-		* Applies to text
+		Missing tests:
+		* No test of Animation Type
+		* distribute <i>computes to</i> inter-character
 
 		Untestable(?):
 		* behavior of auto"></wpt>
@@ -5478,7 +5029,6 @@ Justification Method: the 'text-justify' property</h3>
 	parsing/text-justify-invalid.html
 	parsing/text-justify-computed.html
 	text-justify/text-justify-006.html
-	text-justify/text-justify-interpolation.html
 	</wpt>
 
 	This property selects the justification method
@@ -5603,7 +5153,6 @@ Justification Method: the 'text-justify' property</h3>
 
 			<wpt pathprefix="/css/css-text/text-justify/">
 			text-justify-inter-word-001.html
-			text-justify-word-separators.html
 			</wpt>
 
 			<figure id="fig-text-justify-interword">
@@ -5644,12 +5193,13 @@ Justification Method: the 'text-justify' property</h3>
 			UAs must also support the alternate keyword <dfn>distribute</dfn>
 			which must compute to ''inter-character'',
 			thus having the exact same meaning and behavior.
-			UAs may treat this as a [=legacy value alias=].
 
 			<wpt>
 			text-justify/text-justify-003.html
-			parsing/text-justify-computed-legacy.html
-			text-justify/text-justify-distribute-001.html
+			</wpt>
+
+			<wpt pathprefix="/css/css-text/text-justify/">
+			text-justify-distribute-001.html
 			</wpt>
 	</dl>
 
@@ -5768,7 +5318,7 @@ Handling Symbols and Punctuation</h4>
 		characters [[JLREQ]];
 		thus a UA might assign these characters to a “never” prioritization level.
 		As another example, certain full-width punctuation characters
-		(such as U+301A 〚 LEFT WHITE SQUARE BRACKET)
+		(such as U+301A [ LEFT WHITE SQUARE BRACKET)
 		are considered to contain a [=justification opportunity=] in Japanese.
 		The UA might therefore assign these characters to a higher prioritization
 		level than the opportunities between ideographic characters.
@@ -5910,8 +5460,9 @@ Word Spacing: the 'word-spacing' property</h3>
 		This section has limited test coverage.
 
 		Missing tests:
-		* Applies to text
 		* inherit lengths as absolute
+		* values may be negative
+		* computed / resolved value of normal
 		* should be applied half on each side of the character unless otherwise dictated by typographic tradition.
 		* doesn’t do anything between words defined by text analysis like in Thai, only on actual word separators
 		* works on  the Ethiopic word space (U+1361), the Aegean word separators (U+10100,U+10101), the Ugaritic word divider (U+1039F), and the Phoenician Word Separator (U+1091F).
@@ -5975,9 +5526,6 @@ Word Spacing: the 'word-spacing' property</h3>
 			<wpt pathprefix="/css/CSS2/text">
 			word-spacing-100.xht
 			</wpt>
-			<wpt>
-			word-spacing/word-spacing-computed-001.html
-			</wpt>
 
 		<dt><dfn>&lt;length&gt;</dfn>
 		<dd>
@@ -6034,9 +5582,6 @@ Word Spacing: the 'word-spacing' property</h3>
 			word-spacing-098.xht
 			word-spacing-099.xht
 			</wpt>
-			<wpt>
-			word-spacing/word-spacing-002.html
-			</wpt>
 	</dl>
 
 	Additional spacing is applied to each [=word separator=] left in the text
@@ -6053,11 +5598,8 @@ Word Spacing: the 'word-spacing' property</h3>
 	word-spacing-remove-space-005.xht
 	word-spacing-remove-space-006.xht
 	</wpt>
-	<wpt>
-	word-spacing/word-spacing-negative-value-001.html
-	</wpt>
 
-	<dfn export id="word-separator" lt="word-separator character | word separator">Word-separator characters</dfn>
+	<dfn id="word-separator" lt="word-separator character | word separator">Word-separator characters</dfn>
 	are [=typographic character units=]
 	whose primary purpose and general usage is to separate words.
 	In Unicode this includes
@@ -6100,10 +5642,10 @@ Tracking: the 'letter-spacing' property</h3>
 		This section has partial test coverage.
 
 		Missing tests:
-		* Applies to text
 		* Due to <a href=https://github.com/w3c/csswg-drafts/issues/1518>issue 1518</a>, some/many tests in this section should be converted from MUST to SHOULD.
 		* inherit lengths as absolute
 		* For legacy reasons, a computed letter-spacing of zero yields a resolved value (getComputedStyle() return value) of normal.
+		* When the effective spacing between two characters is not zero (due to either justification or a non-zero value of letter-spacing), user agents should not apply optional ligatures
 		* However, ligatures and other font features specified via the low-level font-feature-settings property take precedence over this rule"></wpt>
 
 	<pre class="propdef">
@@ -6132,7 +5674,6 @@ Tracking: the 'letter-spacing' property</h3>
 	letter-spacing/letter-spacing-201.html
 	letter-spacing/letter-spacing-203.html
 	letter-spacing/letter-spacing-206.html
-	letter-spacing/letter-spacing-end-of-line-002.html
 	</wpt>
 
 	<wpt pathprefix="/css/CSS2/css1">
@@ -6181,7 +5722,6 @@ Tracking: the 'letter-spacing' property</h3>
 	letter-spacing/letter-spacing-206.html
 	letter-spacing/letter-spacing-211.html
 	letter-spacing/letter-spacing-212.html
-	letter-spacing/letter-spacing-bengali-yaphala-001.html
 	</wpt>
 
 	<wpt pathprefix="/css/CSS2">
@@ -6292,8 +5832,6 @@ Tracking: the 'letter-spacing' property</h3>
 	Whether letter-spacing is applied at the end of a line is undefined in this level.
 
 	<wpt>
-	letter-spacing/letter-spacing-trim-start-001.html
-	letter-spacing/letter-spacing-trim-start-002.html
 	letter-spacing/letter-spacing-end-of-line-001.html
 	tab-size/tab-size-spacing-001.html
 	letter-spacing/letter-spacing-200.html
@@ -6403,7 +5941,7 @@ Tracking: the 'letter-spacing' property</h3>
 			<bdo dir=ltr>&lt;p>ab&lt;span>c&#x5d0;&lt;/span>&#x5d1;&#x5d2;&lt;/p></bdo>
 		</pre>
 
-		<p class="ls-ex">a&#x3000;b&#x3000;<span class="color-box">c</span>&#x3000;<span class="color-box">&#x5d0;</span>&#x3000;&#x5d1;&#x3000;&#x5d2;</p>
+		<p class="ls-ex">a&#x3000;b</span>&#x3000;<span class="color-box">c</span>&#x3000;<span class="color-box">&#x5d0;</span>&#x3000;&#x5d1;&#x3000;&#x5d2;</p>
 	</div>
 
 	Letter spacing ignores invisible zero-width formatting characters
@@ -6431,13 +5969,6 @@ Tracking: the 'letter-spacing' property</h3>
 	specified via the low-level 'font-feature-settings' property
 	take precedence over this rule.
 	See [[css-fonts-3#feature-precedence]].
-
-	<wpt>
-	letter-spacing/letter-spacing-ligatures-001.html
-	letter-spacing/letter-spacing-ligatures-002.html
-	letter-spacing/letter-spacing-ligatures-003.html
-	letter-spacing/letter-spacing-ligatures-004.html
-	</wpt>
 
 	<div class="example">
 		For example, if the word “filial” is letter-spaced,
@@ -6690,7 +6221,11 @@ Edge Effects</h2>
 First Line Indentation: the 'text-indent' property</h3>
 
 	<wpt title="
-		This section has adequate test coverage."></wpt>
+		This section has partial test coverage.
+
+		Missing tests:
+		* hanging keyword
+		* each-line keyword"></wpt>
 
 	<pre class="propdef">
 	Name: text-indent
@@ -6712,8 +6247,6 @@ First Line Indentation: the 'text-indent' property</h3>
 	animations/text-indent-interpolation.html
 	animations/text-indent-composition.html
 	text-indent/text-indent-long-line-crash.html
-	text-indent/anonymous-flex-item-001.html
-	text-indent/anonymous-grid-item-001.html
 	</wpt>
 
 	<wpt pathprefix="/css/CSS2/css1">
@@ -6761,12 +6294,6 @@ First Line Indentation: the 'text-indent' property</h3>
 	text-indent-rtl-001.xht
 	text-indent-rtl-002.xht
 	</wpt>
-	<wpt>
-	text-indent/text-indent-min-max-content-001.html
-	text-indent/text-indent-overflow.html
-	text-indent/text-indent-text-align-end.html
-	text-indent/below-float.html
-	</wpt>
 
 	Unless otherwise specified
 	by the ''each-line'' and/or ''text-indent/hanging'' keywords,
@@ -6780,10 +6307,6 @@ First Line Indentation: the 'text-indent' property</h3>
 	<wpt pathprefix="/css/CSS2/text/">
 	text-indent-014.xht
 	text-indent-wrap-001.xht
-	</wpt>
-
-	<wpt>
-	text-indent/text-indent-with-absolute-pos-child.html
 	</wpt>
 
 	Values have the following meanings:
@@ -6856,12 +6379,6 @@ First Line Indentation: the 'text-indent' property</h3>
 			text-indent-rtl-001.xht
 			text-indent-rtl-002.xht
 			</wpt>
-			<wpt>
-			text-indent/text-indent-length-001.html
-			text-indent/text-indent-length-002.html
-			text-indent/text-indent-overflow.html
-			text-indent/text-indent-text-align-end.html
-			</wpt>
 
 		<dt><dfn>&lt;percentage&gt;</dfn>
 		<dd>
@@ -6900,21 +6417,13 @@ First Line Indentation: the 'text-indent' property</h3>
 			(but not lines after a <a>soft wrap break</a>).
 
 			<!--
-				We could probably say "first formatted line" here and not be incorrect,
+				We could probably say "first formated line" here and not be incorrect,
 				but that would also be unnecessarily specific, so keep it simple.
 			-->
-
-			<wpt>
-			text-indent/text-indent-each-line-hanging.html
-			</wpt>
 
 		<dt><dfn>hanging</dfn>
 		<dd>
 			Inverts which lines are affected.
-
-			<wpt>
-			text-indent/text-indent-each-line-hanging.html
-			</wpt>
 	</dl>
 
 	<div class="example">
@@ -6977,7 +6486,7 @@ First Line Indentation: the 'text-indent' property</h3>
 	when specified on a block element, it will affect descendant
 	inline-block elements.
 	For this reason, it is often wise to specify ''text-indent: 0'' on
-	elements that are specified ''display: inline-block''.
+	elements that are specified ''display: inline-block''.</p>
 
 <h3 id="hanging">
 Hanging Glyphs</h3>
@@ -7000,9 +6509,6 @@ Hanging Glyphs</h3>
 
 	<wpt>
 	white-space/full-width-leading-spaces-004.html
-	white-space/white-space-intrinsic-size-005.html
-	white-space/white-space-intrinsic-size-006.html
-	overflow-wrap/overflow-wrap-min-content-size-009.html
 	</wpt>
 
 	A <dfn><a lt=hang>hanging</a> glyph</dfn>
@@ -7029,23 +6535,6 @@ Hanging Glyphs</h3>
 	hanging-punctuation/hanging-scrollable-001.html
 	white-space/white-space-intrinsic-size-019.html
 	white-space/white-space-intrinsic-size-020.html
-	hanging-punctuation/hanging-punctuation-block-bound-001.html
-	hanging-punctuation/hanging-punctuation-inline-bound-001.html
-	white-space/trailing-space-and-text-alignment-001.html
-	white-space/trailing-space-and-text-alignment-003.html
-	white-space/trailing-space-and-text-alignment-005.html
-	white-space/trailing-space-and-text-alignment-rtl-001.html
-	white-space/trailing-space-and-text-alignment-rtl-003.html
-	white-space/trailing-space-and-text-alignment-rtl-005.html
-	white-space/white-space-pre-wrap-trailing-spaces-021.html
-	white-space/white-space-pre-wrap-trailing-spaces-022.html
-	white-space/white-space-pre-wrap-trailing-spaces-023.html
-	text-justify/text-justify-and-trailing-spaces-001.html
-	text-justify/text-justify-and-trailing-spaces-002.html
-	text-justify/text-justify-and-trailing-spaces-003.html
-	text-justify/text-justify-and-trailing-spaces-004.html
-	text-justify/text-justify-and-trailing-spaces-005.html
-	text-justify/text-justify-and-trailing-spaces-006.html
 	</wpt>
 
 	In some cases, a glyph at the end of a line
@@ -7084,7 +6573,6 @@ Hanging Punctuation: the 'hanging-punctuation' property</h4>
 
 		Missing tests:
 		* No test of Animation type.
-		* Applies to text
 		* Affects intrinsic sizing
 		* each value has a test, and checks with some characters, but there isn’t a test for every relevant unicode character
 		* it is not considered when measuring the line’s contents for […] alignment
@@ -7117,7 +6605,7 @@ Hanging Punctuation: the 'hanging-punctuation' property</h4>
 	at the start or at the end of a line of text.
 
 	Note: If there is not sufficient padding on the
-	block container, 'hanging-punctuation' can trigger overflow.
+	block container, 'hanging-punctuation' can trigger overflow.</p>
 
 	Values have the following meanings:
 
@@ -7128,16 +6616,14 @@ Hanging Punctuation: the 'hanging-punctuation' property</h4>
 
 		<dt><dfn>first</dfn>
 		<dd>
-			An opening bracket, quote, or ideographic space at the start
-			of the [=first formatted line=]
+			An opening bracket or quote at the start
+			of the [[CSS2/selector#first-line-pseudo|first formatted line]]
 			of an element [=hangs=].
 			This applies to all characters in the Unicode categories Ps, Pf, Pi
-			plus the ASCII quote marks U+0027 ' APOSTROPHE and U+0022 " QUOTATION MARK
-			and the IDEOGRAPHIC SPACE U+3000.
+			plus the ASCII quote marks U+0027 ' APOSTROPHE and U+0022 " QUOTATION MARK.
 
 			<wpt>
 			hanging-punctuation/hanging-punctuation-first-001.xht
-			hanging-punctuation/hanging-punctuation-first-002.html
 			</wpt>
 
 		<dt><dfn>last</dfn>
@@ -7235,7 +6721,7 @@ Hanging Punctuation: the 'hanging-punctuation' property</h4>
 <h3 id="bidi-linebox">
 Bidirectionality and Line Boxes</h3>
 
-	<wpt title="This section mostly lacks tests."></wpt>
+	<wpt title="This section lacks tests."></wpt>
 
 	The <a spec=css-writing-modes-4>start</a>
 	and <a spec=css-writing-modes-4>end</a> sides of a line box
@@ -7267,11 +6753,6 @@ Bidirectionality and Line Boxes</h3>
 			has strong directionality,
 			the line box’s [=inline base direction=] is that direction.
 
-			<wpt>
-			bidi/bidi-lines-001.html
-			bidi/bidi-lines-002.html
-			</wpt>
-
 		<li>
 			If the [=line box=] is empty
 			(i.e. contains no [=atomic inlines=] or
@@ -7283,10 +6764,6 @@ Bidirectionality and Line Boxes</h3>
 			or, if this is the first line box in the containing block,
 			from the 'direction' property of the containing block.
 			(This can result in an RTL line box whose contents have an LTR base direction.)
-
-			<wpt>
-			bidi/bidi-lines-002.html
-			</wpt>
 	</ul>
 
 	<div class="example">
@@ -7319,7 +6796,7 @@ Bidirectionality and Line Boxes</h3>
 
 		<xmp highlight=html>
 			<para style="display: block; direction: rtl; unicode-bidi:plaintext">
-			“<quote style="unicode-bidi:plaintext">שלום!</quote>”, they said.
+			“<quote style="unicode-bidi:plaintext">שלום!</quote>”, he said.
 			</para>
 		</xmp>
 	</div>
@@ -7349,7 +6826,7 @@ Bidirectionality and Line Boxes</h3>
 Appendix A:
 Text Processing Order of Operations</h2>
 
-	<wpt title="Tests probably not needed for this section, as it is exercised through the rest of the specification."></wpt>
+	<wpt title="Tests probably not needed for this section, as it is excercised through the rest of the specificaiton."></wpt>
 
 	<em>This appendix is normative.</em>
 
@@ -7497,7 +6974,6 @@ Scripts and Spacing</h2>
 			between their letters for either justification or 'letter-spacing'.
 			The following [=Unicode scripts=] are included:
 			Arabic,
-			Hanifi Rohingya,
 			Mandaic,
 			Mongolian,
 			N’Ko,
@@ -7961,9 +7437,11 @@ Small Kana Mappings</h2>
 				<tr>
 					<td>&#x3096; U+3096
 					<td>&#x3051; U+3051
+				<!--
 				<tr>
-					<td>&#x1B132; U+1B132
-					<td>&#x3053; U+3053
+					<td>
+					<td>
+				-->
 
 				<!-- Consonant T (Hiragana) -->
 				<!--
@@ -8011,20 +7489,20 @@ Small Kana Mappings</h2>
 				<tr>
 					<td>&#x308E; U+308E
 					<td>&#x308F; U+308F
-				<tr>
-					<td>&#x1B150; U+1B150
-					<td>&#x3090; U+3090
 				<!--
 				<tr>
 					<td>
 					<td>
+				<tr>
+					<td>
+					<td>
+				<tr>
+					<td>
+					<td>
+				<tr>
+					<td>
+					<td>
 				-->
-				<tr>
-					<td>&#x1B151; U+1B151
-					<td>&#x3091; U+3091
-				<tr>
-					<td>&#x1B152; U+1B152
-					<td>&#x3092; U+3092
 
 			<tbody title="Katakana">
 				<!-- Vowels (Katakana) -->
@@ -8059,9 +7537,11 @@ Small Kana Mappings</h2>
 				<tr>
 					<td>&#x30F6; U+30F6
 					<td>&#x30B1; U+30B1
+				<!--
 				<tr>
-					<td>&#x1B155; U+1B155
-					<td>&#x30B3; U+30B3
+					<td>
+					<td>
+				-->
 
 				<!-- Consonant S (Katakana) -->
 				<!--
@@ -8206,24 +7686,20 @@ Small Kana Mappings</h2>
 				<tr>
 					<td>&#x30EE; U+30EE
 					<td>&#x30EF; U+30EF
-				<tr>
-					<td>&#x1B164; U+1B164
-					<td>&#x30F0; U+30F0
-				<tr>
-					<td>&#x1B165; U+1B165
-					<td>&#x30F1; U+30F1
 				<!--
 				<tr>
 					<td>
 					<td>
+				<tr>
+					<td>
+					<td>
+				<tr>
+					<td>
+					<td>
+				<tr>
+					<td>
+					<td>
 				-->
-				<tr>
-					<td>&#x1B166; U+1B166
-					<td>&#x30F2; U+30F2
-				<!-- Final N (Katakana) -->
-				<tr>
-					<td>&#x1B167; U+1B167
-					<td>&#x30F3; U+30F3
 
 			<tbody title="Half-width Katakana">
 				<!-- Vowels (hwid) -->
@@ -8295,22 +7771,16 @@ Small Kana Mappings</h2>
 	text-transform/text-transform-full-size-kana-005.html
 	text-transform/text-transform-full-size-kana-006.html
 	text-transform/text-transform-full-size-kana-007.html
-	text-transform/text-transform-full-size-kana-008.html
 	</wpt>
 
-<h2 id="priv" class="no-num">
-Privacy Considerations</h2>
-
-	<wpt title="Tests not needed for this section."></wpt>
-
-	This specification leaks the user’s installed hyphenation and line-breaking dictionaries.
-
-<h2 id="sec" class="no-num">
-Security Considerations</h2>
+<h2 id="priv-sec" class="no-num">
+Privacy and Security Considerations</h2>
 
 	<wpt title="Tests not needed for this section."></wpt>
 
 	This specification introduces no new security considerations.
+
+	This specification leaks the user’s installed hyphenation and line-breaking dictionaries.
 
 <h2 class="no-num" id="acknowledgements">
 Acknowledgements</h2>
@@ -8373,156 +7843,13 @@ Changes</h2>
 <h3 class="no-num" id="recent-changes">
 Recent Changes</h3>
 
-	The following normative changes have been made since
-	the <a href="https://www.w3.org/TR/2023/CRD-css-text-3-20230903/">September 2023 Candidate Recommendation Draft</a>:
-
-	* Corrected the Computed Value line for 'text-align-last'.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/7331">Issue 7331</a>)
-
-	* Disambiguate soft wrap opportunities around replaced elements.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/9964">Issue 9964</a>)
-
-		<blockquote>
-			For [=soft wrap opportunities=] defined by the boundary between two characters<ins> or [=atomic inlines=]</ins>,
-			the 'white-space' property
-			on the nearest common ancestor of the two characters
-			controls breaking;
-		</blockquote>
-
-		<wpt>
-		line-breaking/line-breaking-030.html
-		line-breaking/line-breaking-031.html
-		line-breaking/line-breaking-032.html
-		</wpt>
-
-	The following normative changes have been made since
-	the <a href="https://www.w3.org/TR/2023/CRD-css-text-3-20230213/">February 2023 Candidate Recommendation Draft</a>.
-	* Update [[#small-kana]] to Unicode 15.0.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/8442">Issue 8442</a>)
-
-		<wpt>
-		text-transform/text-transform-full-size-kana-008.html
-		</wpt>
-
-	* Non-tailorable Unicode line breaking controls other than NBSP
-		take precedence over our rule about atomic inlines.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/8972">Issue 8972</a>)
-		<blockquote>
-			For Web-compatibility
-			there is a [=soft wrap opportunity=]
-			before and after each replaced element or other [=atomic inline=],
-			even when adjacent to a character that would normally suppress them,
-			<del>such as</del><ins>including</ins> U+00A0 NO-BREAK SPACE.
-			<ins>
-			However,
-			with the exception of U+00A0 NO-BREAK SPACE,
-			there must be no [=soft wrap opportunity=]
-			between [=atomic inlines=] and adjacent characters
-			belonging to the Unicode GL, WJ, or ZWJ line breaking classes.
-			[[UAX14]]
-			</ins>
-		</blockquote>
-
-		<wpt>
-		line-breaking/line-breaking-atomic-003.html
-		line-breaking/line-breaking-atomic-004.html
-		line-breaking/line-breaking-atomic-005.html
-		line-breaking/line-breaking-atomic-006.html
-		line-breaking/line-breaking-replaced-002.html
-		line-breaking/line-breaking-replaced-003.html
-		line-breaking/line-breaking-atomic-010.html
-		line-breaking/line-breaking-atomic-011.html
-		line-breaking/line-breaking-atomic-012.html
-		line-breaking/line-breaking-atomic-013.html
-		line-breaking/line-breaking-atomic-014.html
-		line-breaking/line-breaking-atomic-015.html
-		line-breaking/line-breaking-atomic-016.html
-		line-breaking/line-breaking-atomic-017.html
-		line-breaking/line-breaking-atomic-018.html
-		line-breaking/line-breaking-atomic-019.html
-		line-breaking/line-breaking-atomic-020.html
-		line-breaking/line-breaking-atomic-021.html
-		line-breaking/line-breaking-atomic-022.html
-		line-breaking/line-breaking-atomic-023.html
-		line-breaking/line-breaking-atomic-024.html
-		line-breaking/line-breaking-atomic-025.html
-		line-breaking/line-breaking-atomic-026.html
-		line-breaking/line-breaking-atomic-027.html
-		</wpt>
+	<wpt title="Tests not needed for this section."></wpt>
 
 	The following normative changes have been made since
 	the <a href="https://www.w3.org/TR/2020/CR-css-text-3-20201222/">December 2020 Candidate Recommendation</a>.
 
-	* Allow ''hanging-punctuation: first'' to hang U+300 IDEOGRAPHIC SPACE
-		in order to accommodate plaintext indentation habits.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/2462">Issue 2462</a>)
-		<blockquote>
-			<dl>
-				<dt>first
-				<dd>
-				An opening bracket<ins>,</ins><del> or</del> quote<ins>, or ideographic space</ins> at the start
-				of the [=first formatted line=]
-				of an element [=hangs=].
-				This applies to all characters in the Unicode categories Ps, Pf, Pi
-				plus the ASCII quote marks U+0027 ' APOSTROPHE and U+0022 " QUOTATION MARK
-				plus the ASCII quote marks U+0027 ' APOSTROPHE and U+0022 " QUOTATION MARK
-				<ins>and the IDEOGRAPHIC SPACE U+3000</ins>.
-			</dl>
-		</blockquote>
-
-		<wpt>
-		hanging-punctuation/hanging-punctuation-first-002.html
-		</wpt>
-
-	* Define that ''distribute'' computes to ''inter-character'', rather than merely behave the same;
-		allow ''text-justify/distribute'' to be implemented as a [=legacy value alias=],
-		since this is easier for some engines and does not matter for compatibility.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/6156">Issue 6156</a>,
-		<a href="https://github.com/w3c/csswg-drafts/issues/7322">Issue 7322</a>)
-
-		<wpt>
-		parsing/text-justify-computed-legacy.html
-		</wpt>
-
-	* Clarify that language-specific hyphenation rules also apply to explicit [=hyphenation opportunities=].
-		(<a href="https://github.com/w3c/csswg-drafts/issues/5973">Issue 5973</a>)
-		<blockquote>
-			Words are only hyphenated where there are characters inside the word
-			that explicitly suggest [=hyphenation opportunities=].
-			<ins>The UA must use the appropriate language-specific hyphenation character(s)
-			and should apply any appropriate spelling changes
-			just as for automatic hyphenation at the same point.</ins>
-		</blockquote>
-
-		<wpt>
-		hyphens/i18n/hyphens-i18n-manual-001.html
-		hyphens/i18n/hyphens-i18n-manual-002.html
-		hyphens/i18n/hyphens-i18n-manual-003.html
-		hyphens/i18n/hyphens-i18n-manual-004.html
-		hyphens/i18n/hyphens-i18n-manual-005.html
-		</wpt>
-
-	* Define ''text-align/match-parent'' on the [=root element=] to compute to ''text-align/start''
-		instead of computing against the [=principal writing mode=].
-		(<a href="https://github.com/w3c/csswg-drafts/issues/6542">Issue 6542</a>)
-
-		<wpt>
-		text-align/text-align-match-parent-root-logical.html
-		</wpt>
-
-	* Make authoring advice regarding 'text-transform' a normative recommendation.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/8279">Issue 8279</a>)
-		<blockquote>
-			<p><del>Note: The 'text-transform' property only affects the presentation layer;
-			correct casing for semantic purposes is expected to be represented
-			in the source document.</del></p>
-			<p><ins>Advisement: Authors must not rely on 'text-transform' for semantic purposes;
-			rather the correct casing and semantics should be encoded
-			in the source document text and markup.</ins></p>
-		</blockquote>
-
-		<wpt title="This is an authoring requirement, tests not needed">
-		</wpt>
+	* Define that ''distribute'' computes to ''inter-character'', rather than merely behave the same.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/6156">Issue 6156</a>)
 
 	In addition there have been some minor editorial fixes.
 
@@ -8535,186 +7862,58 @@ Older Changes</h3>
 	covering all comments between 2013 and 2020.
 
 	<wpt hidden title="Tests for the next level(s) of this specification">
-	white-space/white-space-collapse-discard-001.xht
-	white-space/white-space-collapse-preserve-breaks-001.xht
-	white-space/white-space-trim-discard-inner-001.xht
+	white-space/text-space-collapse-discard-001.xht
+	white-space/text-space-collapse-preserve-breaks-001.xht
+	white-space/text-space-trim-trim-inner-001.xht
 
-	hyphens/hyphenate-character-001.html
-	hyphens/hyphenate-character-002.html
-	hyphens/hyphenate-character-003.html
-	hyphens/hyphenate-character-004.html
-	hyphens/hyphenate-character-005.html
-	hyphens/hyphenate-limit-chars-001.html
-	hyphens/hyphens-vertical-003.html
-	hyphens/hyphens-vertical-004.html
-
-	parsing/hyphenate-character-computed.html
-	parsing/hyphenate-character-invalid.html
-	parsing/hyphenate-character-valid.html
-	parsing/hyphenate-limit-chars-computed.html
-	parsing/hyphenate-limit-chars-invalid.html
-	parsing/hyphenate-limit-chars-valid.html
-	animations/hyphen-no-interpolation.html
-	parsing/text-group-align-invalid.html
-	parsing/text-group-align-valid.html
-	parsing/text-wrap-invalid.html
-	parsing/text-wrap-valid.html
-	word-spacing/word-spacing-001.html
-	text-group-align/text-group-align-center-vlr.html
-	text-group-align/text-group-align-center.html
-	text-group-align/text-group-align-end-vlr.html
-	text-group-align/text-group-align-end.html
-	text-group-align/text-group-align-left-vlr.html
-	text-group-align/text-group-align-left.html
-	text-group-align/text-group-align-right-vlr.html
-	text-group-align/text-group-align-right.html
-	text-group-align/text-group-align-start-vlr.html
-	text-group-align/text-group-align-start.html
-
-	word-break/auto-phrase/word-break-auto-phrase-intrinsic-001.html
-	word-break/auto-phrase/word-break-auto-phrase-overflow-001.html
-	word-break/auto-phrase/word-break-auto-phrase-wbr-nobr-001.html
-	word-break/auto-phrase/word-break-auto-phrase-wbr-nobr-002.html
-
-	white-space/text-wrap-balance-001.html
-	white-space/text-wrap-balance-002.html
-	white-space/text-wrap-balance-align-001.html
-	white-space/text-wrap-balance-dynamic-001.html
-	white-space/text-wrap-balance-line-clamp-001.html
-	white-space/text-wrap-balance-narrow-crash.html
-	white-space/text-wrap-balance-text-indent-001.html
-	crashtests/text-wrap-balance-float-crash.html
-	white-space/text-wrap-balance-005.html
-	white-space/text-wrap-balance-before-after-001.html
-	white-space/text-wrap-balance-before-after-002.html
-
-	parsing/white-space-shorthand-text-wrap.html
-	parsing/white-space-shorthand.html
-	parsing/white-space-collapse-computed.html
-	parsing/white-space-collapse-invalid.html
-	parsing/white-space-collapse-valid.html
-
-	parsing/text-autospace-computed.html
-	parsing/text-autospace-invalid.html
-	parsing/text-autospace-valid.html
-
-	text-stroke-width-subpixel.html
-
-	text-transform/math/text-transform-math-auto-001.html
-	text-transform/math/text-transform-math-auto-002.html
-
-	parsing/word-space-transform-computed.html
-	parsing/word-space-transform-invalid.html
-	parsing/word-space-transform-valid.html
-	text-autospace/text-autospace-001.html
-	text-spacing-trim/text-spacing-trim-combinations-001.html
-	word-break/auto-phrase/word-break-auto-phrase-001.html
-	word-break/auto-phrase/word-break-auto-phrase-002.html
-	word-break/auto-phrase/word-break-auto-phrase-003.html
-	word-break/auto-phrase/word-break-auto-phrase-004.html
-	word-break/auto-phrase/word-break-auto-phrase-005.html
-	word-break/auto-phrase/word-break-auto-phrase-006.html
-	word-break/auto-phrase/word-break-auto-phrase-007.html
-	word-break/auto-phrase/word-break-auto-phrase-008.html
-	word-break/auto-phrase/word-break-auto-phrase-009.html
-	word-break/auto-phrase/word-break-auto-phrase-fallback-001.html
-	word-break/auto-phrase/word-break-auto-phrase-fallback-002.html
-	word-break/auto-phrase/word-break-auto-phrase-fallback-003.html
-	word-break/word-break-manual-001.html
-	word-break/word-break-normal-002.html
-	word-break/word-break-normal-003.html
-	word-break/word-break-normal-th-001.html
-	word-space-transform/word-space-transform-001.html
-	word-space-transform/word-space-transform-002.html
-	word-space-transform/word-space-transform-003.html
-	word-space-transform/word-space-transform-004.html
-	word-space-transform/word-space-transform-005.html
-	word-space-transform/word-space-transform-006.html
-	word-space-transform/word-space-transform-007.html
-	word-space-transform/word-space-transform-008.html
-	word-space-transform/word-space-transform-009.html
-	word-space-transform/word-space-transform-010.html
-	word-space-transform/word-space-transform-011.html
-	word-space-transform/word-space-transform-012.html
-	word-space-transform/word-space-transform-013.html
-	word-space-transform/word-space-transform-014.html
-	word-space-transform/word-space-transform-015-manual.html
-	word-space-transform/word-space-transform-016.html
-	word-space-transform/word-space-transform-017.html
-	word-space-transform/word-space-transform-018.html
-	word-space-transform/word-space-transform-019.html
-	word-space-transform/word-space-transform-020.html
-	word-space-transform/word-space-transform-021.html
-	word-space-transform/word-space-transform-022.html
-	word-space-transform/word-space-transform-023.html
-	word-space-transform/word-space-transform-024.html
-	word-space-transform/word-space-transform-025.html
-	word-space-transform/word-space-transform-026.html
-	word-space-transform/word-space-transform-027.html
-	word-space-transform/word-space-transform-028.html
-	word-space-transform/word-space-transform-029.html
-	word-space-transform/word-space-transform-030.html
-
-	crashtests/text-wrap-balance-nested-blocks-crash.html
-	parsing/text-spacing-computed.html
-	parsing/text-spacing-invalid.html
-	parsing/text-spacing-trim-computed.html
-	parsing/text-spacing-trim-invalid.html
-	parsing/text-spacing-trim-valid.html
-	parsing/text-spacing-valid.html
-	text-autospace/text-autospace-break-001.html
-	text-autospace/text-autospace-dynamic-001.html
-	text-autospace/text-autospace-dynamic-text-001.html
-	text-autospace/text-autospace-dynamic-text-002.html
-	text-autospace/text-autospace-dynamic-text-003.html
-	text-autospace/text-autospace-dynamic-text-004.html
-	text-autospace/text-autospace-first-line-001.html
-	text-autospace/text-autospace-ligature-001.html
-	text-autospace/text-autospace-no-001.html
-	text-autospace/text-autospace-vertical-combine-001.html
-	text-autospace/text-autospace-vertical-upright-001.html
-	text-autospace/text-autospace-ideogram-alpha-001.html
-	text-spacing-trim/text-spacing-trim-001.html
-	text-spacing-trim/text-spacing-trim-colon-001.html
-	text-spacing-trim/text-spacing-trim-dot-001.html
-	text-spacing-trim/text-spacing-trim-dynamic-001.html
-	text-spacing-trim/text-spacing-trim-feature-001.html
-	text-spacing-trim/text-spacing-trim-narrow-001.html
-	text-spacing-trim/text-spacing-trim-quote-001.html
-	text-spacing-trim/text-spacing-trim-space-all-001.html
-	text-spacing-trim/text-spacing-trim-trim-all-001.html
-	white-space/text-wrap-balance-float-001.html
-	white-space/text-wrap-balance-float-002.html
-	white-space/text-wrap-balance-float-003.html
-	white-space/text-wrap-balance-float-004.html
-	white-space/text-wrap-balance-float-005.html
-
-	parsing/text-wrap-computed.html
-	parsing/text-wrap-mode-computed.html
-	parsing/text-wrap-mode-invalid.html
-	parsing/text-wrap-mode-valid.html
-	parsing/text-wrap-pretty.html
-	parsing/text-wrap-style-computed.html
-	parsing/text-wrap-style-invalid.html
-	parsing/text-wrap-style-valid.html
-	white-space/text-wrap-balance-overflow-001.html
-	white-space/text-wrap-balance-overflow-002.html
-	text-autospace/text-autospace-mixed-001.html
-	text-spacing-trim/text-spacing-trim-end-001.html
-	text-spacing-trim/text-spacing-trim-start-001.html
-	text-spacing-trim/text-spacing-trim-start-002.html
-	text-transform/math/text-transform-math-auto-003.html
-
-	white-space/text-wrap-balance-003.html
-	white-space/text-wrap-balance-004.html
-	white-space/text-wrap-balance-float-006.html
-	white-space/text-wrap-balance-right-to-left.html
-	white-space/text-wrap-balance-top-to-bottom.html
-	white-space/text-wrap-nowrap-001.html
-	text-spacing-trim/text-spacing-trim-span-001.html
-	text-spacing-trim/text-spacing-trim-subset-001.html
-	letter-spacing/letter-spacing-percent-001.html
-	word-spacing/word-spacing-percent-001.html
-
-	animations/hyphen-limit-chars-interpolation.html
+	word-boundary/word-boundary-001.html
+	word-boundary/word-boundary-002.html
+	word-boundary/word-boundary-003.html
+	word-boundary/word-boundary-004.html
+	word-boundary/word-boundary-005.html
+	word-boundary/word-boundary-006.html
+	word-boundary/word-boundary-007.html
+	word-boundary/word-boundary-008.html
+	word-boundary/word-boundary-009.html
+	word-boundary/word-boundary-010.html
+	word-boundary/word-boundary-011.html
+	word-boundary/word-boundary-012.html
+	word-boundary/word-boundary-013.html
+	word-boundary/word-boundary-014.html
+	word-boundary/word-boundary-015-manual.html
+	word-boundary/word-boundary-101.html
+	word-boundary/word-boundary-102.html
+	word-boundary/word-boundary-103.html
+	word-boundary/word-boundary-104.html
+	word-boundary/word-boundary-105.html
+	word-boundary/word-boundary-106.html
+	word-boundary/word-boundary-107.html
+	word-boundary/word-boundary-108.html
+	word-boundary/word-boundary-109.html
+	word-boundary/word-boundary-110.html
+	word-boundary/word-boundary-111.html
+	word-boundary/word-boundary-112.html
+	word-boundary/word-boundary-113.html
+	word-boundary/word-boundary-114.html
+	word-boundary/word-boundary-115.html
+	word-boundary/word-boundary-116.html
+	word-boundary/word-boundary-117.html
+	word-boundary/word-boundary-118.html
+	word-boundary/word-boundary-119.html
+	word-boundary/word-boundary-120.html
+	word-boundary/word-boundary-121.html
+	word-boundary/word-boundary-122.html
+	word-boundary/word-boundary-123.html
+	word-boundary/word-boundary-124.html
+	word-boundary/word-boundary-125.html
+	word-boundary/word-boundary-126.html
+	word-boundary/word-boundary-127.html
+	word-boundary/word-boundary-128.html
+	word-boundary/word-boundary-129.html
+	parsing/word-boundary-detection-computed.html
+	parsing/word-boundary-detection-invalid.html
+	parsing/word-boundary-detection-valid.html
+	parsing/word-boundary-expansion-computed.html
+	parsing/word-boundary-expansion-invalid.html
+	parsing/word-boundary-expansion-valid.html
 	</wpt>

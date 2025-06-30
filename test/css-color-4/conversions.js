@@ -20,7 +20,7 @@ function lin_sRGB(RGB) {
 		let sign = val < 0? -1 : 1;
 		let abs = Math.abs(val);
 
-		if (abs <= 0.04045) {
+		if (abs < 0.04045) {
 			return val / 12.92;
 		}
 
@@ -152,24 +152,24 @@ function gam_ProPhoto(RGB) {
 }
 
 function lin_ProPhoto_to_XYZ(rgb) {
-	// convert an array of linear-light prophoto-rgb values to CIE D50 XYZ
-	// matrix cannot be expressed in rational form, but is calculated to 64 bit accuracy
-	// see https://github.com/w3c/csswg-drafts/issues/7675
+	// convert an array of linear-light prophoto-rgb values to CIE XYZ
+	// using  D50 (so no chromatic adaptation needed afterwards)
+	// http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
 	var M = [
-		[ 0.79776664490064230,  0.13518129740053308,  0.03134773412839220 ],
-		[ 0.28807482881940130,  0.71183523424187300,  0.00008993693872564 ],
-		[ 0.00000000000000000,  0.00000000000000000,  0.82510460251046020 ]
+		[ 0.7977604896723027,  0.13518583717574031,  0.0313493495815248     ],
+		[ 0.2880711282292934,  0.7118432178101014,   0.00008565396060525902 ],
+		[ 0.0,                 0.0,                  0.8251046025104601     ]
 	];
 
 	return multiplyMatrices(M, rgb);
 }
 
 function XYZ_to_lin_ProPhoto(XYZ) {
-	// convert D50 XYZ to linear-light prophoto-rgb
+	// convert XYZ to linear-light prophoto-rgb
 	var M = [
-		[  1.34578688164715830, -0.25557208737979464, -0.05110186497554526 ],
-        [ -0.54463070512490190,  1.50824774284514680,  0.02052744743642139 ],
-        [  0.00000000000000000,  0.00000000000000000,  1.21196754563894520 ]
+	  	[  1.3457989731028281,  -0.25558010007997534,  -0.05110628506753401 ],
+	  	[ -0.5446224939028347,   1.5082327413132781,    0.02053603239147973 ],
+	  	[  0.0,                  0.0,                   1.2119675456389454  ]
 	];
 
 	return multiplyMatrices(M, XYZ);
@@ -305,12 +305,11 @@ function D65_to_D50(XYZ) {
 	// - convert from XYZ to retinal cone domain
 	// - scale components from one reference white to another
 	// - convert back to XYZ
-	// see https://github.com/LeaVerou/color.js/pull/354/files
-	
+	// http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html
 	var M =  [
-		[  1.0479297925449969,    0.022946870601609652,  -0.05019226628920524  ],
-		[  0.02962780877005599,   0.9904344267538799,    -0.017073799063418826 ],
-		[ -0.009243040646204504,  0.015055191490298152,   0.7518742814281371   ]
+		[  1.0479298208405488,    0.022946793341019088,  -0.05019222954313557 ],
+		[  0.029627815688159344,  0.990434484573249,     -0.01707382502938514 ],
+		[ -0.009243058152591178,  0.015055144896577895,   0.7518742899580008  ]
 	];
 
 	return multiplyMatrices(M, XYZ);
@@ -318,11 +317,10 @@ function D65_to_D50(XYZ) {
 
 function D50_to_D65(XYZ) {
 	// Bradford chromatic adaptation from D50 to D65
-	// See https://github.com/LeaVerou/color.js/pull/360/files
 	var M = [
-		[  0.955473421488075,    -0.02309845494876471,   0.06325924320057072  ],
-		[ -0.0283697093338637,    1.0099953980813041,    0.021041441191917323 ],
-		[  0.012314014864481998, -0.020507649298898964,  1.330365926242124    ]
+		[  0.9554734527042182,   -0.023098536874261423,  0.0632593086610217   ],
+		[ -0.028369706963208136,  1.0099954580058226,    0.021041398966943008 ],
+		[  0.012314001688319899, -0.020507696433477912,  1.3303659366080753   ]
 	];
 
 	return multiplyMatrices(M, XYZ);
@@ -374,19 +372,12 @@ function Lab_to_XYZ(Lab) {
 }
 
 function Lab_to_LCH(Lab) {
-	var epsilon = 0.0015;
-	var chroma = Math.sqrt(Math.pow(Lab[1], 2) + Math.pow(Lab[2], 2)); // Chroma
+	// Convert to polar form
 	var hue = Math.atan2(Lab[2], Lab[1]) * 180 / Math.PI;
-	if (hue < 0) {
-		hue = hue + 360;
-	}
-	if (chroma <= epsilon) {
-		hue = NaN;
-	}
 	return [
 		Lab[0], // L is still L
-		chroma, // Chroma
-		hue // Hue, in degrees [0 to 360)
+		Math.sqrt(Math.pow(Lab[1], 2) + Math.pow(Lab[2], 2)), // Chroma
+		hue >= 0 ? hue : hue + 360 // Hue, in degrees [0 to 360)
 	];
 }
 
@@ -404,26 +395,21 @@ function LCH_to_Lab(LCH) {
 
 // XYZ <-> LMS matrices recalculated for consistent reference white
 // see https://github.com/w3c/csswg-drafts/issues/6642#issuecomment-943521484
-// recalculated for 64bit precision
-// see https://github.com/color-js/color.js/pull/357
 
 function XYZ_to_OKLab(XYZ) {
 	// Given XYZ relative to D65, convert to OKLab
 	var XYZtoLMS = [
-		[ 0.8190224379967030, 0.3619062600528904, -0.1288737815209879 ],
-		[ 0.0329836539323885, 0.9292868615863434,  0.0361446663506424 ],
-		[ 0.0481771893596242, 0.2642395317527308,  0.6335478284694309 ]
+		[ 0.8190224432164319,    0.3619062562801221,   -0.12887378261216414  ],
+		[ 0.0329836671980271,    0.9292868468965546,     0.03614466816999844 ],
+		[ 0.048177199566046255,  0.26423952494422764,    0.6335478258136937  ]
 	];
 	var LMStoOKLab = [
-		[ 0.2104542683093140,  0.7936177747023054, -0.0040720430116193 ],
-		[ 1.9779985324311684, -2.4285922420485799,  0.4505937096174110 ],
-		[ 0.0259040424655478,  0.7827717124575296, -0.8086757549230774 ]
+		[  0.2104542553,   0.7936177850,  -0.0040720468 ],
+		[  1.9779984951,  -2.4285922050,   0.4505937099 ],
+		[  0.0259040371,   0.7827717662,  -0.8086757660 ]
 	];
 
 	var LMS = multiplyMatrices(XYZtoLMS, XYZ);
-	// JavaScript Math.cbrt returns a sign-matched cube root
-	// beware if porting to other languages
-	// especially if tempted to use a general power function
 	return multiplyMatrices(LMStoOKLab, LMS.map(c => Math.cbrt(c)));
 	// L in range [0,1]. For use in CSS, multiply by 100 and add a percent
 }
@@ -431,14 +417,14 @@ function XYZ_to_OKLab(XYZ) {
 function OKLab_to_XYZ(OKLab) {
 	// Given OKLab, convert to XYZ relative to D65
 	var LMStoXYZ =  [
-		[  1.2268798758459243, -0.5578149944602171,  0.2813910456659647 ],
-		[ -0.0405757452148008,  1.1122868032803170, -0.0717110580655164 ],
-		[ -0.0763729366746601, -0.4214933324022432,  1.5869240198367816 ]
+		[  1.2268798733741557,  -0.5578149965554813,   0.28139105017721583 ],
+		[ -0.04057576262431372,  1.1122868293970594,  -0.07171106666151701 ],
+		[ -0.07637294974672142, -0.4214933239627914,   1.5869240244272418  ]
 	];
 	var OKLabtoLMS = [
-		[ 1.0000000000000000,  0.3963377773761749,  0.2158037573099136 ],
-		[ 1.0000000000000000, -0.1055613458156586, -0.0638541728258133 ],
-		[ 1.0000000000000000, -0.0894841775298119, -1.2914855480194092 ]
+        [ 0.99999999845051981432,  0.39633779217376785678,   0.21580375806075880339  ],
+        [ 1.0000000088817607767,  -0.1055613423236563494,   -0.063854174771705903402 ],
+        [ 1.0000000546724109177,  -0.089484182094965759684, -1.2914855378640917399   ]
     ];
 
 	var LMSnl = multiplyMatrices(OKLabtoLMS, OKLab);
@@ -446,19 +432,11 @@ function OKLab_to_XYZ(OKLab) {
 }
 
 function OKLab_to_OKLCH(OKLab) {
-	var epsilon = 0.000004;
 	var hue = Math.atan2(OKLab[2], OKLab[1]) * 180 / Math.PI;
-	var chroma = Math.sqrt(OKLab[1] ** 2 + OKLab[2] ** 2);
-	if (hue < 0) {
-		hue = hue + 360;
-	}
-	if (chroma <= epsilon) {
-		hue = NaN;
-	}
 	return [
 		OKLab[0], // L is still L
-		chroma,
-		hue
+		Math.sqrt(OKLab[1] ** 2 + OKLab[2] ** 2), // Chroma
+		hue >= 0 ? hue : hue + 360 // Hue, in degrees [0 to 360)
 	];
 }
 

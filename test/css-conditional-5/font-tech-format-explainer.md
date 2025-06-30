@@ -43,7 +43,7 @@ that have evolved over the years (
 [history](https://github.com/w3c/csswg-drafts/blob/main/css-fonts-4/src-explainer.md#history-of-font-technologies).
 So the file signature or mime type for font files is not sufficient to identify
 whether a UA's font stack would support it. Instead it is necessary to
-distinguish what text layout (OpenType, AAT, Graphite) or rasterization
+distinguish what text layout (OpenType, AAT, Graphite) or rasterisation
 technologies (TrueType contours, variations, bitmap color font formats, vector
 color font formats etc.) are used by the respective font file.
 
@@ -79,7 +79,7 @@ discussed in this proposal.
 
 ## Proposed Syntax
 
-See "2. Extensions to the `@supports` rule" in [CSS Conditionals
+See "2. Extensions to the the `@supports` rule" in [CSS Conditionals
 5](https://www.w3.org/TR/css-conditional-5/#at-supports-ext).
 
 Examples:
@@ -90,7 +90,7 @@ By default, use a monochromatic icon font for icons. Only when font support for
 colored layers—such as in a COLRv0—font is available, upgrade to a COLRv0 font
 with multi-colored glyphs.
 
-Without feature detection, sending a COLRv0 font to a UA with an incompatible
+Without feature detection, sending a COLRv0 font to to a UA with an incompatible
 font stack will lead to unexpected and potentially illegible results. Detecting
 the feature allows progressive enhancement.
 
@@ -118,7 +118,7 @@ overrides is not needed.
 
 ```
 if (CSS.supports("font-tech(palettes)") {
-  // Load palette stylesheet here.
+  // Load palette styleheet here.
   if (CSS.supports("font-tech(color-COLRv1)")) {
     // Load COLRv1 font here.
   } else if (CSS.supports("font-tech(color-COLRv0)) {

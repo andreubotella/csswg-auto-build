@@ -1,10 +1,7 @@
-"""
-All the drafts are built by the build-specs workflow itself.
-This handles the rest of the work:
+"""Builds the CSSWG directory index.
 
-* creates a root page that just redirects to the draft server root listing.
-* creates symlinks for unlevelled urls, linking to the appropriate levelled folder
-* builds timestamps.json, which provides a bunch of metadata about the specs which is consumed by some W3C tooling.
+It also sets up redirects from shortnames to the current work spec, by building
+an index.html with a <meta refresh>.
 """
 
 import json
@@ -15,8 +12,19 @@ import sys
 import subprocess
 from collections import defaultdict
 
-import bikeshed
 from html.parser import HTMLParser
+
+from bikeshed import Spec, constants
+
+import jinja2
+
+jinja_env = jinja2.Environment(
+    loader=jinja2.PackageLoader("build-index", "templates"),
+    autoescape=jinja2.select_autoescape(),
+    trim_blocks=True,
+    lstrip_blocks=True
+)
+
 
 def title_from_html(file):
     class HTMLTitleParser(HTMLParser):
@@ -60,7 +68,7 @@ def get_date_authored_timestamp_from_git(path):
 
 
 def get_bs_spec_metadata(folder_name, path):
-    spec = bikeshed.Spec(path)
+    spec = Spec(path)
     spec.assembleDocument()
 
     level = int(spec.md.level) if spec.md.level else 0
@@ -135,7 +143,7 @@ CURRENT_WORK_EXCEPTIONS = {
 # ------------------------------------------------------------------------------
 
 
-bikeshed.messages.state.dieOn = "nothing"
+constants.setErrorLevel("nothing")
 
 specgroups = defaultdict(list)
 timestamps = defaultdict(list)
@@ -193,15 +201,8 @@ for shortname, specgroup in specgroups.items():
             create_symlink("css", currentWorkDir)
 
 with open('./timestamps.json', 'w') as f:
-    json.dump(timestamps, f, indent = 2, sort_keys=True)
+    json.dump(dict(sorted(timestamps.items())), f, indent = 2)
 
 with open("./index.html", mode='w', encoding="UTF-8") as f:
-    f.write("""
-<!doctype html>
-<meta charset=utf-8>
-<title>Redirecting to the Drafts listing...</title>
-<meta http-equiv=Refresh content="0; url='https://drafts.csswg.org'">
-<script>
-window.location.href = "https://drafts.csswg.org";
-</script>
-""")
+    template = jinja_env.get_template("index.html.j2")
+    f.write(template.render(specgroups=specgroups))

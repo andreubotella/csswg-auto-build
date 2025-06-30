@@ -7,10 +7,10 @@ Status: ED
 Work Status: Refining
 ED: https://drafts.csswg.org/css-align/
 TR: https://www.w3.org/TR/css-align-3/
-Editor: Elika J. Etemad / fantasai, Apple, http://fantasai.inkedblade.net/contact, w3cid 35400
+Editor: Elika J. Etemad / fantasai, Invited Expert, http://fantasai.inkedblade.net/contact, w3cid 35400
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/, w3cid 42199
 Abstract: This module contains the features of <a href="https://www.w3.org/TR/CSS/">CSS</a> relating to the alignment of boxes within their containers in the various CSS box layout models: block layout, table layout, flex layout, and grid layout. (The alignment of text and inline-level content is defined in [[CSS-TEXT-3]] and [[CSS-INLINE-3]].)
-Ignored Terms: table cell, stretch
+Ignored Terms: table cell, stretch, static position, static-position containing block, static positions
 At Risk: ''[ first | last ]? baseline''
 At Risk: the <<overflow-position>> keywords
 At Risk: the scrollable-area safety trigger into ''safe'' mode when no <<overflow-position>> is specified
@@ -29,6 +29,8 @@ spec:css-cascade-3; type:value; text:initial
 spec:css-display-3; type:property; text:display
 spec:css-flexbox-1; type:dfn;
 	text:flex line
+	text:static-position rectangle
+spec:css-fonts-3; type:dfn; text:first available font
 spec:css-grid-1; type:dfn;
 	text:collapsed gutter
 spec:css-inline-3; type:property;
@@ -301,7 +303,7 @@ Positional Alignment: the ''center'', ''start'', ''end'', ''self-start'', ''self
 			When used outside of a <a>flex formatting context</a>, this value behaves as ''start''.
 			That is, on boxes that are not <a>flex items</a>
 			(or pretending to be <a>flex items</a>,
-			such as when determining the [=static position=] of an absolutely-positioned box
+			such as when determining the static position of an absolutely-positioned box
 			that is a child of a <a>flex container</a>),
 			this value behaves as ''start'' when used in the <a>self-alignment properties</a>,
 			and on boxes that are not <a>flex containers</a>,
@@ -315,7 +317,7 @@ Positional Alignment: the ''center'', ''start'', ''end'', ''self-start'', ''self
 			When used outside of a <a>flex formatting context</a>, this value behaves as ''end''.
 			That is, on boxes that are not <a>flex items</a>
 			(or pretending to be <a>flex items</a>,
-			such as when determining the [=static position=] of an absolutely-positioned box
+			such as when determining the static position of an absolutely-positioned box
 			that is a child of a <a>flex container</a>),
 			this value behaves as ''end'' when used in the <a>self-alignment properties</a>,
 			and on boxes that are not <a>flex containers</a>,
@@ -400,7 +402,7 @@ Positional Alignment: the ''center'', ''start'', ''end'', ''self-start'', ''self
 			</figcaption>
 		</figure>
 
-		The ''justify-self/left'' and ''justify-self/right'' keywords
+		The ''<self-position>/left'' and ''<self-position>/right'' keywords
 		are absolute (not <a>flow-relative</a>).
 
 		<figure>
@@ -417,7 +419,7 @@ Positional Alignment: the ''center'', ''start'', ''end'', ''self-start'', ''self
 			     alt="Inline-axis 'right' alignment:
 			     Horizontal text is right-aligned, regardless of writing system.">
 			<figcaption>
-				''justify-self/left'' vs ''justify-self/right''
+				''<self-position>/left'' vs ''<self-position>/right''
 			</figcaption>
 		</figure>
 
@@ -478,7 +480,7 @@ Positional Alignment: the ''center'', ''start'', ''end'', ''self-start'', ''self
 		The behavior of the alignment keywords is analogous in <a>vertical writing modes</a>:
 		''<self-position>/start'' and ''<self-position>/end''
 		are relative to the start/end of the text in the relevant axis.
-		The ''justify-self/left'' and ''justify-self/right'' keywords
+		The ''<self-position>/left'' and ''<self-position>/right'' keywords
 		are interpreted as <a>line-left</a> and <a>line-right</a>,
 		relative to the “left” and “right” sides of LTR/RTL text.
 
@@ -517,7 +519,7 @@ Positional Alignment: the ''center'', ''start'', ''end'', ''self-start'', ''self
 			     alt="Inline-axis 'right' alignment in vertical-rl writing:
 			     Vertical text is bottom-aligned, regardless of writing system.">
 			<figcaption>
-				''justify-self/left'' vs ''justify-self/right''
+				''<self-position>/left'' vs ''<self-position>/right''
 			</figcaption>
 		</figure>
 
@@ -711,7 +713,7 @@ Distributed Alignment: the ''<content-distribution>/stretch'', ''space-between''
 				     alt="For example, given three items, all excess space is split in two and distributed: one half between the first two and one half between the last two items.">
 			</figure>
 
-			The default [=fallback alignment=] for this value is ''safe flex-start''.
+			The default [=fallback alignment=] for this value is ''flex-start''.
 			<span class='note'>(For layout modes other than flex layout, ''flex-start'' is identical to ''start''.)</span>
 
 		<dt><dfn>space-around</dfn>
@@ -762,28 +764,21 @@ Distributed Alignment: the ''<content-distribution>/stretch'', ''space-between''
 
 			The default [=fallback alignment=] for this value is ''flex-start''.
 			<span class='note'>(For layout modes other than flex layout, ''flex-start'' is identical to ''start''.)</span>
-
-			Note: This `align-content/stretch` definition applies to the [=content-distribution properties=];
-			the [=self-alignment properties=] 'justify-self'/'align-self' have their own ''justify-self/stretch'' value,
-			which can grow <em>or shrink</em> the [=alignment subject=]
-			to ensure it exactly fits the [=alignment container=].
 	</dl>
 
 	These values are represented with the <<content-distribution>> grammar term:
 
-	<pre class='prod'>
-	<dfn>&lt;content-distribution></dfn> = space-between | space-around | space-evenly | stretch
-	</pre>
+	<pre class='prod'><dfn>&lt;content-distribution></dfn> = space-between | space-around | space-evenly | stretch</pre>
 
 <h3 id='overflow-values'>
 Overflow Alignment: the ''safe'' and ''unsafe'' keywords and scroll safety limits</h3>
 
-	In some situations,
-	aligning exactly as specified
-	would cause the [=alignment subject=] to overflow its [=alignment container=],
-	possibly causing data loss.
-	For example, if the contents of a sidebar are unconditionally centered,
-	items large enough to overflow it might extend beyond the viewport's start edge,
+	When the <a>alignment subject</a> is larger than the <a>alignment container</a>,
+	it will overflow.
+	Some alignment modes, if honored in this situation,
+	may cause data loss:
+	for example, if the contents of a sidebar are centered,
+	when they overflow they may send part of their boxes past the viewport's start edge,
 	which can't be scrolled to.
 
 	<div class='example'>
@@ -812,42 +807,36 @@ Overflow Alignment: the ''safe'' and ''unsafe'' keywords and scroll safety limit
 			}
 			</style>
 			<div style="display:table; margin: 0 auto 1em;">
-				<div style="display:table-cell; padding-right: 70px;" class='cross-auto-figure'>
-					<div>
-						<div>About</div>
-						<div style="white-space: nowrap;">Authoritarianism</div>
-						<div>Blog</div>
-					</div>
-				</div>
-				<div style="display:table-cell; padding-left: 70px;" class='cross-auto-figure'>
+				<div style="display:table-cell; padding-right: 50px;" class='cross-auto-figure'>
 					<div>
 						<div>About</div>
 						<div style="white-space: nowrap; margin-left: -31px;">Authoritarianism</div>
 						<div>Blog</div>
 					</div>
 				</div>
+				<div style="display:table-cell; padding-left: 50px;" class='cross-auto-figure'>
+					<div>
+						<div>About</div>
+						<div style="white-space: nowrap;">Authoritarianism</div>
+						<div>Blog</div>
+					</div>
+				</div>
 			</div>
 			<figcaption>
-				An example of "safe" (on the left)
-				vs "unsafe" (on the right)
-				centering,
-				when the centered item is larger than its container.
+				The items in the figure on the left are all strictly centered,
+				even if the one that is too long to fit overflows on both sides,
+				while those in the figure on the right are centered unless they overflow,
+				in which case all the overflow goes off the end edge.
+				If the container was placed
+				against the left edge of the page,
+				the “safe” behavior would be more desirable,
+				as the long item would be fully readable,
+				rather than clipped by the left edge of the screen.
+				In other circumstances,
+				the “unsafe” centering behavior might be better,
+				as it correctly centers all the items.
 			</figcaption>
 		</figure>
-
-		The items in the figure on the left are centered unless they overflow,
-		in which case all the overflow goes off the end edge,
-		while those in the figure on the right are are all strictly centered,
-		even if the one that is too long to fit overflows on both sides.
-
-		If the container was placed
-		against the left edge of the page,
-		the “safe” behavior would be more desirable,
-		as the long item would be fully readable,
-		rather than clipped by the left edge of the screen.
-		In other circumstances,
-		the “unsafe” centering behavior might be better,
-		as it correctly centers all the items.
 	</div>
 
 	To control this situation,
@@ -873,89 +862,30 @@ Overflow Alignment: the ''safe'' and ''unsafe'' keywords and scroll safety limit
 		<dt>(no value specified)
 		<dd>
 			If the <a>overflow alignment</a> isn't explicitly specified,
-			the default <a>overflow alignment</a> is a blend of “safe” and “unsafe”.
-			See [[#auto-safety]] for details.
+			the default <a>overflow alignment</a> is a blend of “safe” and “unsafe”
+			in that an overflowing <a>alignment subject</a> is allowed to overflow its <a>alignment container</a>,
+			but if this would cause it to also overflow
+			the <a>scrollable overflow area</a> of its nearest ancestor <a>scroll container</a>
+			(thus extending into the “unscrollable” region),
+			then its overflow in that direction is limited
+			by biasing any remaining overflow to the opposite side.
+
+			Issue: It may not be Web-compatible to implement the “smart” default behavior
+			(though we hope so, and believe it to be likely),
+			so UAs should pass any feedback on this point to the WG.
+			UAs that have not implemented the “smart” default behavior
+			must behave as ''unsafe''.
 	</dl>
 
 
-<h4 id=auto-safety>
-Automatic Overflow Alignment Safety</h4>
-
-	If no [=overflow alignment=] mode is specified for a property,
-	the default behavior lies somewhere between ''safe'' and ''unsafe'',
-	and also varies by layout mode.
-
-<h5 id=auto-safety-scroll>
-Content Distribution for Scroll Containers</h5>
-
-	The default [=overflow alignment=] behavior
-	for [=content distribution=] on [=scroll containers=] is ''unsafe''.
-	Non-''justify-content/normal'' values of the [=content-distribution properties=] instead
-	alter the [=scrollable overflow area=] in order to allow access to the overflowing content.
-	See [[#overflow-scroll-position]].
-
-<h5 id=auto-safety-position>
-Self-Alignment for Absolutely Positioned Boxes</h5>
-
-	For [=absolutely positioned=] [=alignment subjects=]
-	whose relevant [=self-alignment property=] is not ''justify-self/normal'',
-	the default [=overflow alignment=] behavior is as follows:
-
-	<div algorithm="default overflow self-alignment for abspos">
-		1. If the [=alignment subject=] fits within the [=inset-modified containing block=],
-			align as specified to the extent possible
-			without overflowing the [=inset-modified containing block=].
-		2. Otherwise,
-			if the [=alignment subject=] fits within the |overflow limit rect|,
-			align the [=alignment subject=] such that
-			it fully covers the [=inset-modified containing block=]
-			and is otherwise aligned as specified to the extent possible
-			without overflowing the |overflow limit rect|.
-		3. Otherwise,
-			start-align the [=alignment subject=] within the |overflow limit rect|
-			(similar to ''align-self/safe'').
-
-		For this purpose, the |overflow limit rect| is the bounding rectangle
-		of the [=alignment subject's=] [=inset-modified containing block=]
-		and its [=original containing block=].
-	</div>
-
-	(For [=absolutely-positioned=] [=alignment subjects=] that fail the above condition,
-	see [[#auto-safety-default]].)
-
-	Note: These rules constrain the position of the box to minimize overflow
-	while honoring the specified alignment insofar as possible,
-	and ensuring continuous behavior as the sizes of the boxes change.
-
-<h5 id=auto-safety-default>
-All Other Alignment</h5>
-
-	For all other elements:
-
-	1. If the [=alignment subject=] overflows its [=alignment container=],
-		align as specified (''unsafe'').
-	2. If the [=alignment subject=] would overflow
-		the [=scrollable overflow area=] of its nearest ancestor [=scroll container=],
-		(thus extending into the “unscrollable” region),
-		then its overflow in that direction is limited
-		by biasing any remaining overflow to the opposite side.
-
-	Issue: It may not be Web-compatible to implement the “smart” default behavior
-	(though we hope so, and believe it to be likely),
-	so UAs should pass any feedback on this point to the WG.
-	UAs that have not implemented the “smart” default behavior
-	must behave as ''safe'' for 'align-content' on [=block containers=]
-	and ''unsafe'' otherwise.
-
-<!-- Big Text: *-content
-
-               ███▌   ███▌  █    █▌ █████▌ █████▌ █    █▌ █████▌
- █   █        █▌  █▌ █▌  █▌ █▌   █▌   █▌   █▌     █▌   █▌   █▌
-  █ █         █▌     █▌  █▌ ██▌  █▌   █▌   █▌     ██▌  █▌   █▌
-███████ ████▌ █▌     █▌  █▌ █▌▐█ █▌   █▌   ████   █▌▐█ █▌   █▌
-  █ █         █▌     █▌  █▌ █▌  ██▌   █▌   █▌     █▌  ██▌   █▌
- █   █        █▌  █▌ █▌  █▌ █▌   █▌   █▌   █▌     █▌   █▌   █▌
-               ███▌   ███▌  █▌   ▐▌   █▌   █████▌ █▌   ▐▌   █▌
+<!--
+                   ██████   ███████  ██    ██ ████████ ████████ ██    ██ ████████
+ ██   ██          ██    ██ ██     ██ ███   ██    ██    ██       ███   ██    ██
+  ██ ██           ██       ██     ██ ████  ██    ██    ██       ████  ██    ██
+█████████ ███████ ██       ██     ██ ██ ██ ██    ██    ██████   ██ ██ ██    ██
+  ██ ██           ██       ██     ██ ██  ████    ██    ██       ██  ████    ██
+ ██   ██          ██    ██ ██     ██ ██   ███    ██    ██       ██   ███    ██
+                   ██████   ███████  ██    ██    ██    ████████ ██    ██    ██
 -->
 
 <h2 id='content-distribution'>
@@ -1021,9 +951,6 @@ The 'justify-content' and 'align-content' Properties</h3>
 				The <a>block axis</a>.
 				If a <<content-distribution>> is specified
 				its <a>fallback alignment</a> is used instead.
-				If no <<overflow-position>> is specified,
-				and the [=block container=] is not a [=scroll container=],
-				then alignment is ''align-content/safe''.
 		<tr>
 			<th>'justify-content' Axis
 			<td>
@@ -1172,24 +1099,27 @@ Content-Distribution Shorthand: the 'place-content' property</h3>
 	in which case it is defaulted to ''start''.
 
 <h3 id="overflow-scroll-position">
-Alignment Overflow and Scroll Containers</h3>
+Overflow and Scroll Positions</h3>
 
 	When the <a>content-distribution properties</a> are set
 	on a <a>scroll container</a> with an overflowing <a>alignment subject</a>,
-	they reduce the clipping of the [=negative scrollable overflow region=]
-	just enough to ensure that <a>alignment subject</a> can be scrolled
-	into its ''align-content/start''-aligned position.
+	rather than shifting the layout positions of its content,
+	they instead change its <a>initial scroll position</a>
+	so that the initially-visible content
+	of the <a>scroll container</a>
+	satisfies the [[#alignment-values|expected alignment]]
+	of the <a>alignment subject</a> and <a>alignment container</a>.
+
+	Note: The presence of scrollbars can change the size of the [=scroll container’s=] content box,
+	and thus the size of the [=alignment container=]
+	and/or [=alignment subject=].
 
 	<div class='example'>
 		For example,
 		if a scrollable flex container is set to ''justify-content: flex-end''
 		(or ''justify-content: flex-start'' with ''flex-flow: row-reverse''),
-		its [=in-flow=] content will be initially positioned
-		to align the main-end edge of its content to the main-end edge of the flex container,
+		it will be initially displayed scrolled all the way to the main-end edge of its content,
 		and its content will appear to overflow its main-start edge.
-		However, the viewer will be able to scroll <em>up</em>
-		to view the overflowing [=in-flow=] content,
-		just as if ''justify-content: flex-start'' had been specified.
 	</div>
 
 	<figure>
@@ -1199,16 +1129,17 @@ Alignment Overflow and Scroll Containers</h3>
 		</figcaption>
 	</figure>
 
+	None of this changes how scroll coordinates are assigned:
+	the origin is still where it would be in a ''align-content/start''-aligned container,
+	it just might be initially positioned outside the <a>scrollport</a>.
+
 	Note: The <a>alignment subject</a> is not necessarily
 	identical to the <a>scrollable overflow area</a>:
-	content overflowing the <a>alignment subject</a>--
-	such as an [=out-of-flow=] box--
-	grows the <a>scrollable overflow area</a> but not the <a>alignment subject</a>.
-	Thus an ''align-content/end''-aligned <a>scroll container</a>
-	might not be initially scrolled all the way to the bottom,
-	and positioned content can still be clipped
-	if it is further into the [=negative scrollable overflow region=]
-	than the [=in-flow=] content forming the [=alignment subject=].
+	content overflowing the <a>alignment subject</a>,
+	such as an absolutely-positioned or out-of-flow element,
+	grows the <a>scrollable overflow area</a> but not the <a>alignment subject</a>,
+	thus an ''align-content/end''-aligned <a>scroll container</a>
+	might not be initially scrolled all the way to the bottom.
 
 	<figure>
 		<img src="images/scroll-align-overflow.jpg" alt="">
@@ -1220,10 +1151,6 @@ Alignment Overflow and Scroll Containers</h3>
 		</figcaption>
 	</figure>
 
-	Note: The presence of scrollbars can change
-	the size of the [=scroll container’s=] [=content box=]--
-	and thus the size of the [=alignment container=]
-	and/or [=alignment subject=].
 
 <h3 id="baseline-align-content">
 Baseline Content-Alignment</h3>
@@ -1354,7 +1281,7 @@ Self-Alignment: Aligning the Box Within Its Parent</h2>
 	</div>
 
 <h3 id='justify-self-property'>
-Inline-Axis (or Main-Axis) Self-Alignment: the 'justify-self' property</h3>
+Inline-Axis (or Main-Axis) Alignment: the 'justify-self' property</h3>
 
 	<pre class="propdef">
 	Name: justify-self
@@ -1434,9 +1361,7 @@ Inline-Axis (or Main-Axis) Self-Alignment: the 'justify-self' property</h3>
 		<tr>
 			<th>'justify-self' Axis
 			<td>
-				The block’s <a>containing block’s</a> <a>inline axis</a>, generally.
-				The [=static-position containing block=]’s [=inline axis=]
-				when determining the [=static position=].
+				The block’s <a>containing block’s</a> <a>inline axis</a>.
 		<tr>
 			<th><a>Alignment Container</a>
 			<td>
@@ -1454,7 +1379,7 @@ Inline-Axis (or Main-Axis) Self-Alignment: the 'justify-self' property</h3>
 			<th>''justify-self/normal'' Behavior
 			<td>
 				The box lays out according to the default rules for block layout
-				(see <a href="https://www.w3.org/TR/CSS2/visudet.html#Computing_widths_and_margins">CSS2.1&sect;10.3</a>).
+				(see [[CSS2#visudet]]).
 		<tr>
 			<th>Other Details
 			<td>
@@ -1494,8 +1419,7 @@ Inline-Axis (or Main-Axis) Self-Alignment: the 'justify-self' property</h3>
 				assuming the <a>writing mode</a> of the <a>containing block</a>.
 				If both inset properties in the relevant axis are ''left/auto'',
 				then use the box’s <a>static-position rectangle</a>
-				(i.e. set both insets to the box’s <a>static position</a>)
-				and assume the [=writing mode=] of the [=static-position containing block=].
+				(i.e. set both insets to the box’s <a>static position</a>).
 		<tr>
 			<th><a>Alignment Subject</a>
 			<td>
@@ -1504,9 +1428,15 @@ Inline-Axis (or Main-Axis) Self-Alignment: the 'justify-self' property</h3>
 		<tr>
 			<th>''justify-self/normal'' Behavior
 			<td>
-				Behaves as ''justify-self/stretch'' or ''justify-self/start'',
-				depending on the type of box.
-				See [[css-position-3#abspos-layout]].
+				* For replaced absolutely-positioned boxes, the ''justify-self/normal'' keyword behaves as ''start''.
+				* For all other absolutely-positioned boxes, ''justify-self/normal'' behaves as stretch.
+					Additionally, if neither inset in this axis is ''top/auto'',
+					but 'width' ('height', for <a>vertical writing modes</a>) is ''width/auto'',
+					''margin/auto'' margins are treated as zero.
+
+					(In non-''justify-self/normal'' cases, ''margin/auto'' margins are prioritized over the <a>self-alignment properties</a>, as usual.)
+
+				Note: This somewhat bizarre behavior is required for compatibility with the behavior specified in CSS 2.1.
 		<tr>
 			<th>Other Details
 			<td>
@@ -1574,7 +1504,7 @@ Inline-Axis (or Main-Axis) Self-Alignment: the 'justify-self' property</h3>
 	See [[!CSS-GRID-1]] for details.
 
 <h3 id='align-self-property'>
-Block-Axis (or Cross-Axis) Self-Alignment: the 'align-self' property</h3>
+Block-Axis (or Cross-Axis) Alignment: the 'align-self' property</h3>
 
 	<pre class="propdef">
 	Name: align-self
@@ -1646,9 +1576,7 @@ Block-Axis (or Cross-Axis) Self-Alignment: the 'align-self' property</h3>
 		<tr>
 			<th>'align-self' Axis
 			<td>
-				The box’s <a>containing block’s</a> <a>block axis</a>, generally.
-				The [=static-position containing block=]’s [=block axis=]
-				when determining the [=static position=].
+				The box’s <a>containing block’s</a> <a>block axis</a>.
 		<tr>
 			<th><a>Alignment Container</a>
 			<td>
@@ -1658,8 +1586,7 @@ Block-Axis (or Cross-Axis) Self-Alignment: the 'align-self' property</h3>
 				assuming the <a>writing mode</a> of the <a>containing block</a>.
 				If both inset properties in the relevant axis are ''left/auto'',
 				then use the box’s <a>static-position rectangle</a>
-				(i.e. set both insets to the box’s <a>static position</a>)
-				and assume the [=writing mode=] of the [=static-position containing block=].
+				(i.e. set both insets to the box’s <a>static position</a>).
 		<tr>
 			<th><a>Alignment Subject</a>
 			<td>
@@ -1668,9 +1595,15 @@ Block-Axis (or Cross-Axis) Self-Alignment: the 'align-self' property</h3>
 		<tr>
 			<th>''align-self/normal'' Behavior
 			<td>
-				Behaves as ''align-self/stretch'' or ''align-self/start'',
-				depending on the type of box.
-				See [[css-position-3#abspos-layout]].
+				* For replaced absolutely-positioned boxes, the ''align-self/normal'' keyword behaves as ''start''.
+				* For all other absolutely-positioned boxes, ''align-self/normal'' behaves as stretch.
+					Additionally, if neither inset in this axis is ''top/auto'',
+					but 'width' ('height', for <a>vertical writing modes</a>) is ''width/auto'',
+					''margin/auto'' margins are treated as zero.
+
+					(In non-''align-self/normal'' cases, ''margin/auto'' margins are prioritized over the <a>self-alignment properties</a>, as usual.)
+
+				Note: This somewhat bizarre behavior is required for compatibility with the behavior specified in CSS 2.1.
 		<tr>
 			<th>Other Details
 			<td>
@@ -1920,7 +1853,7 @@ Default Alignment</h2>
 	</div>
 
 <h3 id='justify-items-property'>
-Inline-Axis (or Main-Axis) Default Alignment: the 'justify-items' property</h3>
+Inline-Axis (or Main-Axis) Alignment: the 'justify-items' property</h3>
 
 	<pre class="propdef">
 	Name: justify-items
@@ -1957,7 +1890,7 @@ Inline-Axis (or Main-Axis) Default Alignment: the 'justify-items' property</h3>
 	Other values have no special handling and are merely referenced by 'justify-self'.
 
 <h3 id='align-items-property'>
-Block-Axis (or Cross-Axis) Default Alignment: the 'align-items' property</h3>
+Block-Axis (or Cross-Axis) Alignment: the 'align-items' property</h3>
 
 	<pre class="propdef">
 	Name: align-items
@@ -1977,7 +1910,7 @@ Block-Axis (or Cross-Axis) Default Alignment: the 'align-items' property</h3>
 	Values have no special handling and are merely referenced by 'align-self'.
 
 <h3 id='place-items-property'>
-Default Alignment Shorthand: the 'place-items' property</h3>
+Self-Alignment Shorthand: the 'place-items' property</h3>
 
 	<pre class="propdef">
 	Name: place-items
@@ -2011,18 +1944,18 @@ Default Alignment Shorthand: the 'place-items' property</h3>
 <h2 id='gaps'>
 Gaps Between Boxes</h2>
 
-	While 'margin' and 'padding' can be used to specify visual spacing around individual boxes,
-	it's sometimes more convenient to globally specify spacing
-	<em>between</em> adjacent boxes within a given layout context,
-	particularly when the spacing is different between sibling boxes
-	as opposed to between the first/last box and the container's edge.
+While 'margin' and 'padding' can be used to specify visual spacing around individual boxes,
+it's sometimes more convenient to globally specify spacing between adjacent boxes
+within a given layout context,
+particularly when the spacing is different between boxes
+as opposed to between the first/last box and the container's edge.
 
-	The 'gap' property,
-	and its 'row-gap' and 'column-gap' sub-properties,
-	provide this functionality for
-	<a href="http://www.w3.org/TR/css3-multicol/">multi-column</a>,
-	<a href="http://www.w3.org/TR/css-flexbox/">flex</a>,
-	and <a href="http://www.w3.org/TR/css-grid/">grid layout</a>.
+The 'gap' property,
+and its 'row-gap' and 'column-gap' sub-properties,
+provide this functionality for
+<a href="http://www.w3.org/TR/css3-multicol/">multi-column</a>,
+<a href="http://www.w3.org/TR/css-flexbox/">flex</a>,
+and <a href="http://www.w3.org/TR/css-grid/">grid layout</a>.
 
 <h3 id='column-row-gap'>
 Row and Column Gutters: the 'row-gap' and 'column-gap' properties</h3>
@@ -2078,10 +2011,9 @@ Row and Column Gutters: the 'row-gap' and 'column-gap' properties</h3>
 	<dl>
 		<dt id="gap-multicol"><a>multi-column containers</a>
 		<dd>
-			'column-gap' specifies the [=gutter=] between adjacent <a>column boxes</a>,
-			see [[CSS-MULTICOL-1]].
-			'row-gap' specifies the [=gutter=] between the rows of [=column boxes=] established by 'column-height',
-			see [[CSS-MULTICOL-2]].
+			'column-gap' specifies the [=gutter=] between adjacent <a>column boxes</a>.
+			See [[CSS-MULTICOL-1]] for details on how this affects the layout of multicol elements.
+			'row-gap' does not currently apply.
 
 		<dt id="gap-flex"><a>flex containers</a>
 		<dd>
@@ -2104,9 +2036,6 @@ Row and Column Gutters: the 'row-gap' and 'column-gap' properties</h3>
 			respectively.
 			See [[css-grid-1#gutters]] for precise details.
 	</dl>
-
-	In all cases, the [=gutter=] disappears when it coincides with
-	a [=fragmentation break=]. [[CSS-BREAK-3]]
 
 	Note: Table boxes do not use the 'gap' properties
 	to specify separation between their cells.
@@ -2185,11 +2114,14 @@ Legacy Gap Properties: the 'grid-row-gap', 'grid-column-gap', and 'grid-gap' pro
 	The Grid Layout module was originally written with its own set of [=gutter=] properties,
 	before all such properties were unified into the existing 'row-gap'/'column-gap' naming.
 	For compatibility with legacy content,
-	these grid-prefixed names must be supported as follows:
+	those legacy property names must be supported as aliases:
 
-	* <dfn property>grid-row-gap</dfn> as a [=legacy name alias=] of the 'row-gap' property
-	* <dfn property>grid-column-gap</dfn> as a [=legacy name alias=] of the 'column-gap' property
-	* <dfn property>grid-gap</dfn> as a [=legacy name alias=] of the 'gap' property
+	* <dfn property>grid-row-gap</dfn> must be treated as a shorthand for the 'row-gap' property
+	* <dfn property>grid-column-gap</dfn> must be treated as a shorthand for the 'column-gap' property
+	* <dfn property>grid-gap</dfn> must be treated as a shorthand for the 'gap' property
+
+	In all three cases, the legacy properties must take the same grammar as the property they are aliasing,
+	and just "forward" the value to their aliased property.
 
 <!--
 ████████     ███     ██████  ████████ ██       ████ ██    ██ ████████
@@ -2224,7 +2156,7 @@ Baseline Alignment Details</h2>
 	for more information on baselines and writing modes.
 
 <h3 id='baseline-export'>
-Determining the Baselines of a Box</h3>
+Determining the Baselines of a Box</h2>
 
 	Each box,
 	for a given axis,
@@ -2243,41 +2175,34 @@ Determining the Baselines of a Box</h3>
 	are determined differently based on the layout model, as follows:
 
 	<dl>
-		<dt>line box
-		<dd>
-			The first/last [=baseline set=] of a line box
-			is <a>generated</a> from the dominant baseline
-			and the font settings of its [=root inline box=].
-
 		<dt>block containers
 		<dd>
 			The first/last [=baseline set=] of a <a>block container</a>
-			is taken from the first/last in-flow line box in the block container
-			or the first/last in-flow block-level child in the block container
+			is <a>generated</a> from the dominant first/last baseline
+			of the first/last in-flow line box in the block container,
+			or is taken from the first/last in-flow block-level child in the block container
 			that contributes a set of first/last baselines,
 			whichever comes first/last.
 			If there is no such line box or child,
 			then the block container has no [=baseline set=].
 
 			However, for legacy reasons
-			if its 'baseline-source' is ''baseline-source/auto'' (the [=initial value=])
-			a [=block-level=] or [=inline-level=] [=block container=]
-			that is a [=scroll container=]
+			a [=block-level=] or [=inline-level=] [=scroll container=]
 			always has a [=last baseline set=],
 			whose baselines all correspond to its [=block-end=] [=margin edge=].
 
 		<dt>multi-column containers
 		<dd>
 			The first [=baseline set=] of a <a>multi-column container</a>
-			is the first [=baseline set=] of the [=column=] or [=multi-column spanner=]
-			with the highest ([=block-start=]&ndash;most) baseline
-			corresponding to the [=multi-column container=]'s [=alignment baseline=].
+			is <a>generated</a> from the dominant first baseline
+			of the first in-flow line box in the first column box,
+			or is taken from the first in-flow block-level child
+			that contributes a set of first baselines,
+			whichever comes first.
 			If there is no such line box or child,
 			then the multi-column container has no first [=baseline set=].
 
-			The last [=baseline set=] is analogous,
-			but uses the <em>last</em> [=baseline set=]
-			and <em>lowest</em> ([=block-end=]&ndash;most) baseline.
+			Multi-column containers have no last [=baseline set=].
 
 		<dt>tables
 		<dd>
@@ -2300,9 +2225,6 @@ Determining the Baselines of a Box</h3>
 			Otherwise, the first/last [=baseline set=] of the row
 			is <a>synthesized</a> from the lowest and highest content edges of the cells in the row.
 			[[!CSS2]]
-
-			Spanning cells participate only in the first/last row that they span
-			for the purpose of ''first baseline''/''last baseline''.
 
 		<dt>flex containers
 		<dd>
@@ -2341,12 +2263,9 @@ Determining the Baselines of a Box</h3>
 	* If the box establishing the <a>alignment context</a>
 		has a <a>block flow direction</a> that is orthogonal to the axis of the <a>alignment context</a>,
 		use its <a>writing mode</a>.
-	* Otherwise:
-		* If the box’s own [=writing mode=] is vertical,
-			assume ''horizontal-tb''.
-		* If the box’s own [=writing mode=] is horizontal,
-			assume ''vertical-lr'' if 'direction' is ''ltr''
-			and ''vertical-rl'' if 'direction' is ''rtl''.
+	* Otherwise, assume either ''horizontal-tb'' or ''vertical-lr'' 'writing-mode',
+		whichever is orthogonal to the box’s own 'writing-mode'.
+		<!-- This pairing is chosen because the most likely case for this situation is CJK. -->
 
 	For the purposes of finding the baselines of a box,
 	it and all its in-flow descendants with a scrolling mechanism (see the 'overflow' property)
@@ -2453,7 +2372,7 @@ Appendix A: Static Position Terminology</h2>
 	on an <a href="https://www.w3.org/TR/CSS2/visuren.html#absolutely-positioned">absolutely positioned box</a>,
 	CSS2 uses its <a>static position</a>
 	to resolve its size and position.
-	See <a href="https://www.w3.org/TR/CSS2/visudet.html#abs-non-replaced-width">CSS2.1&sect;10.3.7</a>.
+	See [[css2/#abs-non-replaced-width]].
 	The <a>box alignment properties</a> modify these calculations,
 	just as they do the sizing and positioning calculations in other layout modes.
 	These modifications refer to a <dfn>static-position rectangle</dfn>,
@@ -2514,67 +2433,8 @@ Appendix A: Static Position Terminology</h2>
 <h2 id="changes">
 Changes</h2>
 
-	Changes since the <a href="https://www.w3.org/TR/2023/WD-css-align-3-20230217/">17 February 2023 Working Draft</a> include:
-	<ul>
-		<li>Made [=block containers=] default to ''safe'' alignment.
-			See [[#auto-safety-default]].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/8992">Issue 8992</a>)
-		<li>Made [=absolutely positioned boxes=] default to using a “smart” safe alignment
-			that allows unsafe overflow of the [=inset-modified containing block=]
-			while maintaining safety within the [=original containing block=].
-			See [[#auto-safety-position]].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/10316">Issue 10316</a>,
-			 <a href="https://github.com/w3c/csswg-drafts/issues/9960">Issue 9960</a>)
-		<li>Make all the ''space-*'' keywords fallback to ''safe'' overflow.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/10154">Issue 10154</a>)
-		<li>Clearly define the interaction of overflowing [=content distribution=] and [=scroll containers=]
-			to not impact layout, but to only affect the extent of the [=scrollable overflow area=].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/4957">Issue 4957</a>)
-		<li>Only apply the special margin-edge baseline rule for [=scroll container=] [=block containers=]
-			when 'baseline-source' is its [=initial value=].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/8214">Issue 8214</a>)
-		<li>When synthesizing the baseline of an orthogonal-flow box,
-			make the assumed parallel [=writing mode=] sensitive to 'direction'.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/7775">Issue 7775</a>)
-			<blockquote>
-				<del><p>Otherwise,
-					assume either ''horizontal-tb'' or ''vertical-lr'' 'writing-mode',
-					whichever is orthogonal to the box’s own 'writing-mode'.</p></del>
-				<ins><p>Otherwise:</p>
-					<ul>
-						<li>If the box’s own [=writing mode=] is vertical,
-							assume ''horizontal-tb''.
-						<li>If the box’s own [=writing mode=] is horizontal,
-							assume ''vertical-lr'' if 'direction' is ''ltr''
-							and ''vertical-rl'' if 'direction' is ''rtl''.
-					</ul>
-				</ins>
-			</blockquote>
-		<li>Clarify that spanning cells only participate in the first/last row they span
-			when participating in first/last baseline alignment.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/7655">Issue 7655</a>)
-		<li>Define the 'grid-gap' properties as [=legacy name aliases=] of the 'gap' properties.
-			(<a href="https://github.com/w3c/csswg-drafts/issues/8014">Issue 8014</a>)
-		<li>Defer definition of ''align-self/normal'' alignment for [=absolutely positioned boxes=] to [[css-position-3]].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/11215">Issue 11215</a>,
-			 <a href="https://github.com/w3c/csswg-drafts/issues/11285">Issue 11285</a>)
-		<li>Changed sentence about applicability of 'row-gap' to [=multi-column containers=]
-			to indicate that it applies in [[CSS-MULTICOL-2]].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/11539#issuecomment-2628431667">Issue 11539</a>)
-		<li>Defined that [=gutters=] dissappear at [=fragmentation breaks=].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/11520">Issue 11520</a>)
-	</ul>
-
 	Changes since the <a href="https://www.w3.org/TR/2021/WD-css-align-3-20211224/">24 December 2021 Working Draft</a> include:
 	<ul>
-		<li>Define the baselines of a [=multi-column container=].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/7856">Issue 7856</a>,
-			 <a href="https://github.com/w3c/csswg-drafts/issues/7639">Issue 7639</a>)
-		<li>Use the [=writing mode=] of the [=static-position containing block=]
-			when determining the [=static position=].
-			(<a href="https://github.com/w3c/csswg-drafts/issues/7599">Issue 7599</a>,
-			 <a href="https://github.com/w3c/csswg-drafts/issues/7612">Issue 7612</a>;
-			 <a href="https://github.com/w3c/csswg-drafts/commit/29e253d0344d4a2bec47305a70cbcbfde669af7b">Changes</a>)
 		<li>Remove definition of special behavior for including padding in [=scrollable overflow=]
 			for non-''align-content/normal'' alignments
 			since this is now defined unconditionally in [[!CSS-OVERFLOW-3]].
@@ -2582,7 +2442,7 @@ Changes</h2>
 		<li>Minor clarifications:
 			* Define [=fallback alignment=] of a [=baseline-sharing group=]
 				as the shared [=fallback alignment=] of its individual items.
-			* Annotate <<length-percentage>> value definitions using [=CSS bracketed range notation=].
+			* Annotate <<length-percentage>> value definitions using [=bracketed range notation=].
 	</ul>
 
 	Changes since the <a href="https://www.w3.org/TR/2020/WD-css-align-3-20200421/">21 April 2020 Working Draft</a> include:

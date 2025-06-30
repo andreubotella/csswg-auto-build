@@ -14,7 +14,7 @@ Previous Version: https://www.w3.org/TR/2018/WD-selectors-4-20180201/
 Previous Version: https://www.w3.org/TR/2013/WD-selectors4-20130502/
 Previous Version: https://www.w3.org/TR/2012/WD-selectors4-20120823/
 Previous Version: https://www.w3.org/TR/2011/WD-selectors4-20110929/
-Editor: Elika J. Etemad / fantasai, Apple, http://fantasai.inkedblade.net/contact, w3cid 35400
+Editor: Elika J. Etemad / fantasai, Invited Expert, http://fantasai.inkedblade.net/contact, w3cid 35400
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/, w3cid 42199
 Former Editor: Tantek Çelik, http://www.tantek.com
 Former Editor: Daniel Glazman
@@ -24,26 +24,20 @@ Former Editor: John Williams
 Abstract: <a>Selectors</a> are patterns that match against elements in a tree, and as such form one of several technologies that can be used to select nodes in a document. Selectors have been optimized for use with HTML and XML, and are designed to be usable in performance-critical code. They are a core component of <abbr title="Cascading Style Sheets">CSS</abbr> (Cascading Style Sheets), which uses Selectors to bind style properties to elements in the document.
 Abstract: Selectors Level 4 describes the selectors that already exist in [[!SELECT]], and further introduces new selectors for CSS and other languages that may need them.
 At Risk: the column combinator
-At Risk: [=user action pseudo-classes=] applying to non-[=tree-abiding=] [=pseudo-elements=]
-At Risk: the '':blank'' pseudo-class
+At Risk: the '':read-write'' pseudo-class
+At Risk: the '':has()'' pseudo-class
 Ignored Terms: function token, Document, DocumentFragment, math, h1, shadow tree, querySelector(), quirks mode, button, a, span, object, p, div, q, area, link, label, input, html, em, li, ol, pre, CSS Value Definition Syntax
-Ignored Vars: identifier, i
+Ignored Vars: identifier, extended filtering, i
 </pre>
 <pre class=link-defaults>
 spec:css-values-4; type:dfn; text:identifier
 spec:css-display-3; type:property; text:display
-spec:css-display-4; type:property; text:visibility
 spec:css-pseudo-4; type:selector;
 	text: ::before
 	text: ::after
 	text: ::first-line
 	text: ::first-letter
-spec:dom; type:dfn; text:descendant
-spec:html; type:dfn; text:muted
 spec:html; type:element-attr; for:a; text:href
-spec:html; type:element;
-	text:meta
-	text:audio
 </pre>
 
 <style>
@@ -356,7 +350,7 @@ Selectors Overview</h2>
 			<tr>
 				<td><code>E:checked</code>
 				<td>a user interface element E that is checked/selected
-					(for instance a radio-button or checkbox)
+					 (for instance a radio-button or checkbox)
 				<td>[[#checked]]
 				<td>3
 			<tr>
@@ -530,7 +524,7 @@ Structure and Terminology</h3>
 
 	A <dfn id="compound" export>compound selector</dfn>
 	is a sequence of <a>simple selectors</a>
-	that are not separated by a <a for=selector>combinator</a>,
+	that are not separated by a <a>combinator</a>,
 	and represents a set of simultaneous conditions on a single element.
 	If it contains a <a>type selector</a> or <a>universal selector</a>,
 	that selector must come first in the sequence.
@@ -544,41 +538,6 @@ Structure and Terminology</h3>
 	no whitespace is allowed between the <a>simple selectors</a>
 	in a <a>compound selector</a>.
 
-	A <dfn id=pseudo-compound>pseudo-compound selector</dfn>
-	is a [=pseudo-element=] selector,
-	optionally followed by additional [=pseudo-class=] selectors,
-	and optionally preceded by a [=compound selector=]
-	or another [=pseudo-compound selector=],
-	without any [=selector/combinators=].
-	(A <a>pseudo-compound selector</a> is represented by <<pseudo-compound-selector>>
-	in the selectors <a href="#grammar">grammar</a>.)
-	A [=pseudo-element=] [=matches=] a [=pseudo-compound selector=]
-	when it has the specified pseudo-element name,
-	matches the additional conditions represented by any [=pseudo-classes=],
-	and has an [=originating element=]
-	represented by the adjacent preceding selector.
-	If there is no adjacent preceding selector,
-	the [=universal selector=] is assumed.
-	(For example, ''.foo ::before''
-	is equivalent to ''.foo *::before'',
-	and distinct from ''.foo::before''.)
-
-	<div class=example>
-		For example, in ''.foo::before:hover'',
-		the ''.foo'' is a [=compound selector=],
-		while the ''::before:hover'' is a [=pseudo-compound selector=].
-		However, in ''.foo::before::marker'',
-		''::before'' and ''::marker'' are separate [=pseudo-compound selectors=].
-	</div>
-
-	Note: A [=pseudo-compound selector=] <strong>is not</strong>
-	a [=compound selector=],
-	and can't be used in places that expect a [=compound selector=] only.
-	[=Pseudo-compound selectors=] act as if they carry a [=selector/combinator=] with themselves,
-	expressing their relationship with their [=originating element=],
-	just as the ''>'' combinator
-	expresses a relationship with a parent element.
-
 	A <dfn export for=selector>combinator</dfn>
 	is a condition of relationship between two elements
 	represented by the <a>compound selectors</a> on either side.
@@ -587,40 +546,31 @@ Structure and Terminology</h3>
 	the <a>child combinator</a> (U+003E, <code>></code>),
 	the <a>next-sibling combinator</a> (U+002B, <code>+</code>),
 	and the <a>subsequent-sibling combinator</a> (U+007E, <code>~</code>).
-	Two given elements are said to <a>match</a> a <a for=selector>combinator</a>
+	Two given elements are said to <a>match</a> a <a>combinator</a>
 	when the condition of relationship between these elements is true.
 
 	A <dfn id="complex" export>complex selector</dfn> is
 	a sequence of one or more <a>compound selectors</a>
-	and/or [=pseudo-compound selectors=],
-	with [=compound selectors=] separated by <a for=selector>combinators</a>.
+	separated by <a>combinators</a>.
 	It represents a set of simultaneous conditions
 	on a set of elements in the particular relationships
-	described by its <a for=selector>combinators</a>.
+	described by its <a>combinators</a>.
 	(Complex selectors are represented by <<complex-selector>>
 	in the selectors <a href="#grammar">grammar</a>.)
-	A given element or pseudo-element
-	is said to <a>match</a> a <a>complex selector</a>
-	when it matches the final [=compound selector|compound=]/[=pseudo-compound selector=] in the sequence,
-	and every preceding unit of the sequence also [=matches=]
-	an element or [=pseudo-element=],
-	with the correct relationship between consecutive units
-	as expressed by the combinators separating them
-	(or, for [=pseudo-compound selectors=],
-	the correct [=originating element=] relationship).
+	A given element is said to <a>match</a> a <a>complex selector</a>
+	when there exists a list of elements,
+	each matching a corresponding <a>compound selector</a> in the <a>complex selector</a>,
+	with each pair of elements consecutive in the list matching
+	the <a>combinator</a> between their corresponding <a>compound selectors</a>,
+	and with the last element being the given element.
 
-	<div class=example>
-		For example, ''.foo.bar'' matches an element
-		with both "foo" and "bar" classes.
-
-		''.ancestor > .foo.bar'' matches a subset of those elements:
-		only those whose parent element
-		(as indicated by the ''>'' combinator)
-		has the "ancestor" class.
-
-		''.foo.bar::before'' matches a ''::before'' pseudo-element,
-		whose [=originating element=] matches ''.foo.bar''.
-	</div>
+	Note: Thus, a selector consisting of a single <a>compound selector</a>
+	matches any element satisfying the requirements
+	of its constituent <a>simple selectors</a>.
+	Prepending another <a>compound selector</a> and a <a>combinator</a>
+	to a sequence imposes additional matching constraints,
+	such that the <a>subjects</a> of a <a>complex selector</a> are always
+	a subset of the elements represented by its last <a>compound selector</a>.
 
 	A <dfn export lt="list of simple selectors|list of compound selectors|list of complex selectors">list of simple/compound/complex selectors</dfn>
 	is a comma-separated list of
@@ -637,6 +587,8 @@ Structure and Terminology</h3>
 	A given element is said to <a>match</a> a <a>selector list</a>
 	when it matches any (at least one) of the <a>selectors</a>
 	in that <a>selector list</a>.
+
+	Issue: Pseudo-elements aren't handled here, and should be.
 
 <h3 id='data-model'>
 Data Model</h3>
@@ -657,6 +609,18 @@ Data Model</h3>
 		<li>Attributes, which are name-value pairs.
 	</ul>
 
+	While individual elements may lack any of the above features,
+	some elements are <dfn export>featureless</dfn>.
+	A <a>featureless</a> element does not match any selector at all,
+	except those it is explicitly defined to match.
+	If a given selector <em>is</em> allowed to match a <a>featureless</a> element,
+	it must do so while ignoring the default namespace. [[CSS3NAMESPACE]]
+
+	<div class='example'>
+		For example, the <a>shadow host</a> in a <a>shadow tree</a> is <a>featureless</a>,
+		and can't be matched by <em>any</em> <a>pseudo-class</a> except for '':host'' and '':host-context()''.)
+	</div>
+
 	Many of the selectors depend on the semantics of the <dfn export>document language</dfn>
 	(i.e. the language and semantics of the document tree)
 	and/or the semantics of the <dfn>host language</dfn>
@@ -667,75 +631,6 @@ Data Model</h3>
 	depends on the <a>host language</a> (e.g. CSS)
 	to define what a ''::first-line'' pseudo-element represents
 	and what it can do.
-
-<h4 id=featureless-elements>
-Featureless Elements</h4>
-
-	While individual elements may lack any of the above features,
-	some elements are <dfn export>featureless</dfn>.
-	A <a>featureless</a> element does not match <em>any selector at all</em>,
-	except:
-
-	* [=simple selectors=] it is explicitly defined to match
-	* [=compound selectors=],
-		if all contained [=simple selectors=]
-		are allowed to match it
-	* [=complex selectors=],
-		if the [=compound selector=] targeting the [=selector/subject=]
-		is allowed to match it
-	* [=selector lists=],
-		if at least one selector in the list
-		is allowed to match it
-	* [=logical combination pseudo-classes=],
-		if their argument selector is allowed to match it
-	* the '':has()'' pseudo-class,
-		if and only if the [=compound selector=] it's part of
-		contains at least one <em>other</em> [=simple selector=]
-		that's allowed to match it.
-
-	If a selector would otherwise match a [=featureless=] element,
-	except for the existence of the default namespace [[CSS-NAMESPACES-3]]
-	(because [=featureless=] elements do not have a namespace
-	unless otherwise defined),
-	the default namespace does not prevent the match.
-
-	<div class='example'>
-		For example, the [=shadow host=] in a [=shadow tree=] is [=featureless=],
-		and can't be matched by <em>any</em> [=pseudo-class=]
-		except for '':host'' and '':host-context()''
-		(or combinations including those,
-		such as '':is(:host, :root)'').
-
-		Logical combinations like '':not(.foo:host)''
-		will never match the host element
-		(even if it doesn't have a "foo" class),
-		because not all of the simple selectors in ''.foo:host''
-		are allowed to match the [=shadow host=].
-
-		Similarly, '':not(:host > .foo)'' will never match the [=shadow host=],
-		even tho the [=shadow host=] is indeed *not* a descendant of itself
-		and doesn't have the "foo" class,
-		because the subject of the complex selector argument (''.foo'')
-		isn't allowed to match the [=shadow host=].
-	</div>
-
-	<div class='example'>
-		In general, you can't match a [=featureless=] element
-		without explicitly using one of the [=simple selectors=]
-		it's allowed to match,
-		to avoid accidentally selecting one of these elements
-		(which are otherwise <em>intentionally</em> easy to not think about).
-		For example, ''*'' will never match a [=featureless=] element.
-
-		The rule for '':has()'', above, works similarly.
-		Even if a [=shadow host=] contains a ''.foo'' descendant,
-		'':has(.foo)'' will not match it,
-		because <em>the rest</em> of the compound selector
-		(empty)
-		doesn't contain a simple selector that can match the host.
-		You have to write '':host:has(.foo)'' in order to match the host element.
-	</div>
-
 
 <h3 id="scoping">
 Scoped Selectors</h3>
@@ -767,7 +662,7 @@ Relative Selectors</h3>
 	Certain contexts may accept <dfn lt="relative selector" local-lt="relative" export>relative selectors</dfn>,
 	which are a shorthand for selectors that represent elements relative to one or more
 	<dfn export local-lt="anchor element">relative selector anchor elements</dfn>.
-	Relative selectors begin with a <a for=selector>combinator</a>,
+	Relative selectors begin with a <a>combinator</a>,
 	with a selector representing the [=anchor element=]
 	implied at the start of the selector.
 	(If no combinator is present,
@@ -851,7 +746,7 @@ Pseudo-classes</h3>
 		which allow additional content to be inserted before or after the contents of any element.
 	</div>
 
-	Like <a>pseudo-classes</a>,
+	Like <a>pseudo-classes</a>
 	<a>pseudo-elements</a> do not appear in or modify the document source or document tree.
 	Accordingly, they also do not affect the interpretation of <a>structural pseudo-classes</a>
 	or other selectors pertaining to their <a>originating element</a> or its tree.
@@ -865,9 +760,7 @@ Syntax</h4>
 
 	The syntax of a <a>pseudo-element</a>
 	is "::" (two U+003A COLON characters)
-	followed by the name of the <a>pseudo-element</a> as an <a>identifier</a>,
-	and, in the case of a <dfn export id="functional-pseudo-element">functional pseudo-element</dfn>,
-	a pair of parentheses containing its arguments.
+	followed by the name of the <a>pseudo-element</a> as an <a>identifier</a>.
 	<a>Pseudo-element</a> names are <a>ASCII case-insensitive</a>.
 	No <a>white space</a> is allowed between the two colons, or between the colons and the name.
 
@@ -911,19 +804,15 @@ Binding to the Document Tree</h4>
 <h4 id="pseudo-element-states">
 Pseudo-classing Pseudo-elements</h4>
 
-	Certain [=pseudo-elements=] may be immediately followed
-	by any combination of certain [=pseudo-classes=],
+	A <a>pseudo-element</a> may be immediately followed
+	by any combination of the <a href="#useraction-pseudos">user action pseudo-classes</a>,
 	in which case the <a>pseudo-element</a> is represented only when it is in the corresponding state.
-	This specification allows any <a>pseudo-element</a> to be followed
-	by any combination of the [=logical combination pseudo-classes=]
-	and the [=user action pseudo-classes=].
-	Other specifications may allow additional [=pseudo-classes=]
-	to be attached to particular [=pseudo-elements=].
-	Combinations that are not explicitly allowed are [=invalid selectors=].
+	Whether these pseudo-classes can match on the <a>pseudo-element</a>
+	depends on the <a>pseudo-class</a> and <a>pseudo-element</a>’s definitions:
+	unless otherwise-specified, none of these <a>pseudo-classes</a>
+	will match on the <a>pseudo-element</a>.
 
-	Note: The [=logical combination pseudo-classes=]
-	pass any restrictions on validity of selectors at their position
-	to their arguments.
+	Issue: Clarify that '':not()'' and '':is()'' can be used when containing above-mentioned pseudos.
 
 	<div class="example">
 		For example, since the '':hover'' pseudo-class specifies
@@ -933,12 +822,19 @@ Pseudo-classing Pseudo-elements</h4>
 		define that '':focus'' can apply to ''::first-line'',
 		the selector ''::first-line:focus'' will never match anything.
 
+		Issue: Does ''::first-line:not(:focus)'' match anything?
+
 		Notice that ''::first-line:hover'' is very different from '':hover::first-line'',
 		which matches the first line of any originating element that is hovered!
 		For example, '':hover::first-line'' also matches the first line of a paragraph
 		when the second line of the paragraph is hovered,
 		whereas ''::first-line:hover'' only matches if the first line itself is hovered.
 	</div>
+
+	Note: Note that, unless otherwise specified in a future specification,
+	pseudo-classes other than the <a href="#useraction-pseudos">user action pseudo-classes</a>
+	are not valid when compounded to a pseudo-element;
+	so, for example, ''::before:first-child'' is an invalid selector.
 
 <h4 id="sub-pseudo-elements">
 Sub-pseudo-elements</h4>
@@ -971,13 +867,13 @@ Internal Structure</h4>
 	Some <a>pseudo-elements</a> are defined to have internal structure.
 	These <a>pseudo-elements</a> may be followed by child/descendant combinators
 	to express those relationships.
-	Selectors containing <a for=selector>combinators</a> after the pseudo-element
+	Selectors containing <a>combinators</a> after the pseudo-element
 	are otherwise invalid.
 
 	<div class="example">
 		For example, ''::first-letter + span'' and ''::first-letter em'' are invalid selectors.
-		However, if a new ''::shadow'' pseudo-element were defined to have internal structure,
-		''::shadow > p'' would be a valid selector.
+		However, since ''::shadow'' is defined to have internal structure,
+		''::shadow > p'' is a valid selector.
 	</div>
 
 	Note: A future specification may expand the capabilities of existing pseudo-elements,
@@ -987,10 +883,9 @@ Internal Structure</h4>
 	The children of such <a>pseudo-elements</a> can simultaneously be children of other elements, too.
 	However, at least in CSS, their rendering must be defined so as to maintain the tree-ness of the <a>box tree</a>.
 
-	<!--
 	<div class='example'>
 		For example,
-		the ''::slotted'' pseudo-element treats elements distributed to it as its children.
+		the ''::content'' pseudo-element treats elements distributed to it as its children.
 		This means that, given the following fragment:
 
 		<pre>
@@ -1002,14 +897,13 @@ Internal Structure</h4>
 		&lt;/div>
 		</pre>
 
-		the selectors ''div > span'' and ''div::shadow ::slotted > span'' select the same element via different paths.
+		the selectors ''div > span'' and ''div::shadow ::content > span'' select the same element via different paths.
 
 		However, when rendered,
 		the <code>&lt;span></code> element generates boxes as if it were the child of the <code>&lt;content></code> element,
 		rather than the <code>&lt;div></code> element,
 		so the tree structure of the <a>box tree</a> is maintained.
 	</div>
-	-->
 
 <h3 id="case-sensitive">
 Characters and case sensitivity</h3>
@@ -1094,22 +988,6 @@ Invalid Selectors and Error Handling</h3>
 <h2 id="logical-combination">
 Logical Combinations</h2>
 
-	Selector logic can be manipulated by
-	[=compound selector|compounding=] (logical AND),
-	[=selector lists=] (logical OR),
-	and the <dfn>logical combination pseudo-classes</dfn>
-	'':is()'', '':where()'', and '':not()''.
-	The [=logical combination pseudo-classes=]
-	are allowed anywhere that any other [=pseudo-classes=] are allowed,
-	but pass any restrictions to their arguments.
-	(For example, if only [=compound selectors=] are allowed,
-	then only [=compound selectors=] are valid within an '':is()''.)
-
-	Note: Since inside '':is()'' and '':where()''
-	invalid arguments are dropped without invaliding the [=pseudo-class=] itself,
-	selector arguments that are invalidated by contextual restrictions
-	likewise do not invalidate the '':is()'' pseudo-class itself.
-
 <h3 id="grouping">
 Selector Lists</h3>
 
@@ -1188,7 +1066,7 @@ The Matches-Any Pseudo-class: '':is()''</h3>
 	they are not valid within '':is()''.
 
 	Default namespace declarations do not affect the <a>compound selector</a>
-	representing the <a for=selector>subject</a> of any selector
+	representing the <a>subject</a> of any selector
 	within a '':is()'' pseudo-class,
 	unless that compound selector contains
 	an explicit <a>universal selector</a> or <a>type selector</a>.
@@ -1218,7 +1096,7 @@ The Matches-Any Pseudo-class: '':is()''</h3>
 The Negation (Matches-None) Pseudo-class: '':not()''</h3>
 
 	The negation pseudo-class, <dfn id='negation-pseudo'>:not()</dfn>,
-	is a functional pseudo-class taking a <<complex-real-selector-list>> as an argument.
+	is a functional pseudo-class taking a <a>selector list</a> as an argument.
 	It represents an element that is not represented by its argument.
 
 	Note: In Selectors Level 3,
@@ -1226,7 +1104,7 @@ The Negation (Matches-None) Pseudo-class: '':not()''</h3>
 
 	Note: The specificity of the '':not()'' pseudo-class
 	is replaced by the specificity of the most specific selector in its argument;
-	thus it has the exact behavior of '':not(:is(<var ignore>argument</var>))''.
+	thus it has the exact behavior of '':not(:is(<var>argument</var>))''.
 	See [[#specificity-rules]].
 
 	Pseudo-elements cannot be represented by the negation pseudo-class;
@@ -1250,7 +1128,7 @@ The Negation (Matches-None) Pseudo-class: '':not()''</h3>
 
 	As with '':is()'',
 	default namespace declarations do not affect the <a>compound selector</a>
-	representing the <a for=selector>subject</a> of any selector
+	representing the <a>subject</a> of any selector
 	within a '':not()'' pseudo-class,
 	unless that compound selector contains
 	an explicit <a>universal selector</a> or <a>type selector</a>.
@@ -1311,7 +1189,7 @@ The Specificity-adjustment Pseudo-class: '':where()''</h3>
 The Relational Pseudo-class: '':has()''</h3>
 
 	The relational pseudo-class, <dfn id='has-pseudo'>:has()</dfn>,
-	is a functional pseudo-class taking a <<relative-selector-list>> as an argument.
+	is a functional pseudo-class taking a <<forgiving-relative-selector-list>> as an argument.
 	It represents an element if any of the <a>relative selectors</a>
 	would match at least one element
 	when [=anchor element|anchored against=] this element.
@@ -1327,12 +1205,6 @@ The Relational Pseudo-class: '':has()''</h3>
 	Note: Pseudo-elements are generally excluded from '':has()'' because
 	many of them exist conditionally, based on the styling of their ancestors,
 	so allowing these to be queried by '':has()'' would introduce cycles.
-
-	Note: Since '':has()'' takes a <<relative-selector-list>>,
-	its arguments are <em>inherently</em> [=complex selectors=]
-	(because they start, perhaps implicitly, with a combinator).
-	This means '':has()'' cannot be used in contexts that don't allow complex selectors;
-	its arguments will be guaranteed to be invalid.
 
 	<div class='example'>
 		For example, the following selector matches only
@@ -1926,7 +1798,7 @@ ID selectors</h3>
 	In HTML all ID attributes are named <code>id</code>;
 	XML applications may name ID attributes differently,
 	but the same restriction applies.
-	Which attribute on an element is considered the “ID attribute” is defined by the document language.
+	Which attribute on an element is considered the “ID attribute“ is defined by the document language.
 
 	An <dfn export>ID selector</dfn> consists of a “number sign” (U+0023, <code>#</code>)
 	immediately followed by the ID value,
@@ -1958,7 +1830,7 @@ ID selectors</h3>
 	what the ID of an element is (though a UA may have namespace-specific
 	knowledge that allows it to determine which attribute is the ID
 	attribute for that namespace). If a style sheet author knows or
-	suspects that a UA may not know what the ID of an element is, they
+	suspects that a UA may not know what the ID of an element is, he
 	should use normal attribute selectors instead:
 	''[name=p371]'' instead of ''#p371''.
 
@@ -2032,7 +1904,6 @@ The Language Pseudo-class: '':lang()''</h3>
 		e.g. '':lang(\*-Latn)'' or '':lang("*-Latn")''.)
 
 	Note: The <a>content language</a> of an element is defined by the document language.
-
 	For example, in HTML [[HTML5]], the <a>content language</a> is determined
 	by a combination of the <code>lang</code> attribute,
 	information from <a element>meta</a> elements,
@@ -2040,25 +1911,13 @@ The Language Pseudo-class: '':lang()''</h3>
 	XML languages can use the <code>xml:lang</code> attribute
 	to indicate language information for an element. [[XML10]]
 
-	The element's <a>content language</a> matches a <a>language range</a> if
-	its <a>content language</a>, as represented in BCP 47 syntax,
-	matches the given <a>language range</a> in an <i>extended filtering</i>
-	operation per [[!RFC4647]] <cite>Matching of Language Tags</cite> (section 3.3.2).
-	Both the [=content language=] and the [=language range=]
-	must be <i>canonicalized</i>
-	and converted to <i>extlang form</i> as per section 4.5 of [[!RFC5646]]
-	prior to the <i>extended filtering</i> operation.
-	The matching is performed case-insensitively within the ASCII range.
-
+	An element's <a>content language</a> matches a <a>language range</a> if,
+	when represented in BCP 47 syntax [[BCP47]],
+	it matches that <a>language range</a> in an <var>extended filtering</var>
+	operation per [[RFC4647]] <cite>Matching of Language Tags</cite> (section 3.3.2).
+	The matching is performed [=ASCII case-insensitively=].
 	The <a>language range</a> does not need to be a valid language code to
 	perform this comparison.
-
-	For this purpose, a wildcard [=language range=] (<code>"*"</code>)
-	does not match elements whose language is not tagged (e.g. <code>lang=""</code>),
-	but does match elements whose language is tagged as undetermined (<code>lang=und</code>).
-	A [=language range=] consisting of an empty string
-	('':lang("")'')
-	matches (only) elements whose language is not tagged.
 
 	Note: It is recommended that documents and protocols
 	indicate language using codes from [[BCP47]] or its successor,
@@ -2140,11 +1999,10 @@ The Hyperlink Pseudo-class: '':any-link''</h3>
 <h3 id="link">
 The Link History Pseudo-classes: '':link'' and '':visited''</h3>
 
-	User agents commonly display unvisited [[#the-any-link-pseudo|hyperlinks]]
-	differently from previously visited ones.
-	Selectors provides the pseudo-classes
-	<dfn id='link-pseudo'>:link</dfn> and <dfn id='visited-pseudo'>:visited</dfn>
-	to distinguish them:
+	User agents commonly display unvisited <a href="#the-any-link-pseudo">hyperlinks</a> differently from
+	previously visited ones. Selectors
+	provides the pseudo-classes <dfn id='link-pseudo'>:link</dfn> and
+	<dfn id='visited-pseudo'>:visited</dfn> to distinguish them:
 
 	<ul>
 		<li>The '':link'' pseudo-class applies to links that have
@@ -2153,53 +2011,23 @@ The Link History Pseudo-classes: '':link'' and '':visited''</h3>
 		been visited by the user.
 	</ul>
 
+	After some amount of time, user agents may choose to return a
+	visited link to the (unvisited) '':link'' state.
+
 	The two states are mutually exclusive.
 
-	After some amount of time,
-	user agents may choose to return a visited link
-	to the (unvisited) '':link'' state.
-
-	The '':visited'' pseudo-class comes with obvious privacy implications--
-	letting random websites know what <em>other</em> websites you've visited
-	can be problematic for a number of reasons--
-	and so user agents <em>must</em> preserve user privacy
-	in their implementation of '':visited''.
-
-	<div class=note>
-		This specification intentionally does not specify
-		exactly how to preserve user privacy in this regard,
-		to allow for user agents to innovate in this space.
-		The following methods are suggested, however:
-
-		* Have '':visited'' never match,
-			so all links match '':link'' instead.
-		* Carefully track what history entries
-			could have been observed by a given origin on their own,
-			and only have links match '':visited''
-			if that visit would have been observable from the site's origin.
-			A possible specific approach for this
-			is described in [[#visited-privacy]].
-		* Allow links to match '':visited'' on any origin,
-			but carefully restrict what styles they can apply
-			and what information is returned by style-querying APIs
-			like {{getComputedStyle()}},
-			to prevent sites from observing
-			whether a link is styled with '':link'' or '':visited''.
-			(This is documented at <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Privacy_and_the_:visited_selector">MDN</a>,
-			and was the historical approach browsers took,
-			but is not perfect;
-			there are several ways for a hostile page
-			to still extract history information.)
-	</div>
-
 	<div class="example">
-		For example, the selector ''.footnote:visited''
-		would allow styling footnote links differently
-		if they've been previously followed,
-		allowing users of the page to know
-		they might not need to click the footnote again.
+		The following selector represents links carrying class
+		<code>footnote</code> and already visited:
+
+		<pre>.footnote:visited </pre>
 	</div>
 
+	Since it is possible for style sheet authors to abuse the :link and :visited pseudo-classes
+	to determine which sites a user has visited without the user's consent,
+	UAs may treat all links as unvisited links
+	or implement other measures to preserve the user's privacy
+	while rendering visited and unvisited links differently.
 
 <h3 id="the-local-link-pseudo">
 The Local Link Pseudo-class: '':local-link''</h3>
@@ -2278,7 +2106,7 @@ The Target Pseudo-class: '':target''</h3>
 The Target Container Pseudo-class: '':target-within''</h3>
 
 	The <dfn id='target-within-pseudo'>:target-within</dfn> pseudo-class
-	applies to any element to which the '':target'' pseudo-class applies
+	applies to any element to which the '':target'' pseudo class applies
 	as well as to any element whose descendant in the <a>flat tree</a>
 	(including non-element nodes, such as text nodes)
 	matches the conditions for matching '':target''.
@@ -2333,12 +2161,21 @@ User Action Pseudo-classes</h2>
 		Examples:
 
 		<pre>
-		a:hover   /* user hovers over the link */
-		a:focus   /* user focuses the link     */
-
-		a:focus:hover
-		/* user hovers over the link while it's focused */
+		a:link    /* unvisited links */
+		a:visited /* visited links */
+		a:hover   /* user hovers */
+		a:active  /* active links */
 		</pre>
+
+		An example of combining dynamic pseudo-classes:
+
+		<pre>
+		a:focus
+		a:focus:hover
+		</pre>
+
+		The last selector matches <a element>a</a> elements that are in
+		the pseudo-class :focus and in the pseudo-class :hover.
 	</div>
 
 	Note: The specifics of hit-testing,
@@ -2350,8 +2187,7 @@ User Action Pseudo-classes</h2>
 The Pointer Hover Pseudo-class: '':hover''</h3>
 
 	The <dfn id='hover-pseudo'>:hover</dfn> pseudo-class applies
-	while the user designates an element (or pseudo-element)
-	with a pointing device,
+	while the user designates an element with a pointing device,
 	but does not necessarily activate it.
 	For example, a visual user agent could apply this pseudo-class
 	when the cursor (mouse pointer) hovers over a box generated by the element.
@@ -2374,46 +2210,47 @@ The Pointer Hover Pseudo-class: '':hover''</h3>
 	it is possible for '':hover'' to apply
 	to an element that is not underneath the pointing device.
 
+	The '':hover'' pseudo-class can apply to any pseudo-element.
+
 <h3 id="the-active-pseudo">
 The Activation Pseudo-class: '':active''</h3>
 
-	The <dfn id='active-pseudo'>:active</dfn> pseudo-class
-	applies while an element is being “activated” by the user,
-	as defined by the host language;
-	for example, while a hyperlink is being triggered.
+	The <dfn id='active-pseudo'>:active</dfn> pseudo-class applies while an element
+	is being activated by the user. For example, between the times the
+	user presses the mouse button and releases it. On systems with more
+	than one mouse button, '':active'' applies only to the
+	primary or primary activation button (typically the "left" mouse
+	button), and any aliases thereof.
 
-	In addition, the '':active'' pseudo-class applies
-	while any generated box of <em>any</em> element (or pseudo-element)
-	is being actively indicated by a pointing device (in the “down” state),
-	e.g. between the time the user presses the primary mouse button and releases it,
-	or while a finger is pressing on a touchscreen.
-
-	Note: [[HTML5]] defines
-	<a href="https://html.spec.whatwg.org/multipage/semantics-other.html#selector-active">
-	specific conditions for HTML elements to be activated
-	</a>.
+	There may be document-language or implementation-specific limits on
+	which elements can become '':active''.
+	For example, [[HTML5]] defines a <a href="https://html.spec.whatwg.org/multipage/semantics-other.html#selector-active">list of activatable elements</a>.
 
 	An element also matches '':active''
 	if one of its descendants in the <a>flat tree</a>
 	(including non-element nodes, such as text nodes)
 	matches the above conditions.
 
+	Document languages may define additional ways in which an element can match '':active''.
+
+	Note: An element can be both '':visited'' and '':active''
+	(or '':link'' and '':active'').
 
 <h3 id="the-focus-pseudo">
 The Input Focus Pseudo-class: '':focus''</h3>
 
 	The <dfn id='focus-pseudo'>:focus</dfn> pseudo-class applies
-	while an element (or pseudo-element) has the focus
-	(accepts keyboard or other forms of input).
+	while an element has the focus
+	(accepts keyboard or mouse events, or other forms of input).
 
 	There may be document language or implementation specific limits on
 	which elements can acquire '':focus''.
 	For example, [[HTML]] defines a list of <a href="https://html.spec.whatwg.org/multipage/interaction.html#focusable-area">focusable areas</a>.
 
 	Document languages may define additional ways in which an element can match '':focus'',
-	except that the '':focus'' pseudo-class must not automatically propagate to the parent element--
+	except that the '':focus'' pseudo class must not automatically propagate to the parent element--
 	see '':focus-within'' if matching on the parent is desired.
-	('':focus'' may still apply to the parent element
+	(It may still apply to the parent element
 	if made to propagate due to other mechanisms,
 	but not merely due to being the parent.)
 
@@ -2431,7 +2268,7 @@ The Focus-Indicated Pseudo-class: '':focus-visible''</h3>
 	(such as by drawing a “focus ring”),
 	instead using a variety of heuristics
 	to visibly indicate the focus only when it would be most helpful to the user.
-	The <dfn id="focus-visible-pseudo">:focus-visible</dfn> [=pseudo-class=] matches a focused element (or pseudo-element)
+	The <dfn id="focus-visible-pseudo">:focus-visible</dfn> [=pseudo-class=] matches a focused element
 	in these situations only,
 	allowing authors to change the appearance of the focus indicator
 	without changing <em>when</em> a focus indicator appears.
@@ -2487,28 +2324,23 @@ The Focus-Indicated Pseudo-class: '':focus-visible''</h3>
 			don't [=indicate focus=].
 		* If the previously-focused element [=indicated focus=],
 			and a script causes focus to move elsewhere,
-			[=indicate focus=] on the newly focused element.
+			the newly focused element should [=indicate focus=].
 
 			Conversely, if the previously-focused element did not [=indicate focus=],
 			and a script causes focus to move elsewhere,
-			don't [=indicate focus=] on the newly focused element.
-		* If a newly-displayed element automatically gains focus
-			(such as an action button in a freshly opened dialog),
-			that element should [=indicate focus=].
+			the newly focused element should also not [=indicate focus=].
 	</div>
 
-	User agents should also use '':focus-visible'' to specify the default focus style,
-	so that authors using '':focus-visible'' will not also need to disable
-	the default '':focus'' style.
+User agents should also use '':focus-visible'' to specify the default focus style,
+so that authors using '':focus-visible'' will not also need to disable
+the default '':focus'' style.
 
 <h3 id="the-focus-within-pseudo">
 The Focus Container Pseudo-class: '':focus-within''</h3>
 
 	The <dfn id='focus-within-pseudo'>:focus-within</dfn> pseudo-class
-	applies to any element (or pseudo-element)
-	for which the '':focus'' pseudo-class applies,
-	as well as to an element (or pseudo-element)
-	whose descendant in the <a>flat tree</a>
+	applies to any element for which the '':focus'' pseudo class applies
+	as well as to an element whose descendant in the <a>flat tree</a>
 	(including non-element nodes, such as text nodes)
 	matches the conditions for matching '':focus''.
 
@@ -2535,12 +2367,12 @@ The Current-element Pseudo-class: '':current''</h3>
 	The <dfn id='current-pseudo'>:current</dfn> pseudo-class represents the
 	element, or an ancestor of the element, that is currently being displayed.
 
-	Its alternate form <dfn>:current()</dfn> 
-	takes a list of <a>compound selectors</a> as its argument: 
-	it represents the '':current'' element that matches the argument 
-	or, if that does not match, 
-	the innermost ancestor of the '':current'' element that does. 
-	(If neither the '':current'' element nor its ancestors match the argument, then the selector does not represent anything.)
+	Its alternate form <dfn>:current()</dfn>, like '':is()'',
+	takes a list of <a>compound selectors</a> as its argument: it represents the
+	'':current'' element that matches the argument or, if that does
+	not match, the innermost ancestor of the '':current'' element
+	that does. (If neither the '':current'' element nor its ancestors
+	match the argument, then the selector does not represent anything.)
 
 	<div class="example">
 		For example, the following rule will highlight whichever paragraph
@@ -2630,59 +2462,17 @@ Media Loading State: the '':buffering'' and '':stalled'' pseudo-classes</h3>
 Sound State: the '':muted'' and '':volume-locked'' pseudo-classes</h3>
 
 	The <dfn>:muted</dfn> pseudo-class represents
-	an element that is capable of making sound,
-	but is currently “muted“ (forced silent).
+	an element capable of making sound
+	when that element is “muted“ (forced silent).
 	(For the <{audio}> and <{video}> elements of HTML, see [=muted=]. [[HTML]])
 
 	The <dfn>:volume-locked</dfn> pseudo-class represents
-	an element that is capable of making sound,
-	and currently has its volume "locked"
-	by the UA or the user,
-	so the page author cannot change it.
-	(For the <{audio}> and <{video}> elements of HTML,
-	see the algorithm for setting the element's [=HTMLMediaElement/effective media volume=]. [[HTML]])
+	an element capable of making sound
+	when programmatically changing the element’s volume
+	does not change the element's [=HTMLMediaElement/effective media volume=].
 
 <h2 id="display-state-pseudos">
 Element Display State Pseudo-classes</h2>
-
-<h3 id="open-state">
-Collapse State: the '':open'' pseudo-class</h3>
-
-	The <dfn>:open</dfn> pseudo-class represents an element
-	that has both “open” and “closed” states,
-	and which is currently in the “open” state.
-
-	Exactly what “open” and “closed” mean is host-language specific,
-	but exemplified by elements such as
-	HTML's <{details}>, <{select}>, <{dialog}>, and <{input}> elements,
-	all of which can be toggled “open” to display more content
-	(or any content at all, in the case of <{dialog}>).
-
-	Note: Being “open” or “closed” is a semantic state.
-	An element not currently being displayed
-	(for example, one that has ''visibility: collapse'',
-	or belongs to a ''display: none'' subtree)
-	can still be “open” and will match '':open''.
-
-	Note: A ":closed" pseudo-class might be added in the future
-	once the full set of things that support '':open'' is known.
-
-<h3 id="popover-open-state">
-Popover State: the '':popover-open'' pseudo-class</h3>
-
-	The <dfn>:popover-open</dfn> pseudo-class represents an element
-	that has both “popover-showing” and “popover-hidden” states
-	and which is currently in the “popover-showing” state.
-
-	Note: This is distinct from '':open'' because
-	an element can have element-specific open and closed states
-	and also have separate popover-showing and popover-hidden states
-	associated with being a popover.
-
-	Exactly what “popover-showing” and “popover-hidden” states
-	mean is host-language specific,
-	but is exemplified by the presence of the HTML <{html-global/popover}> attribute
-	and the associated <a>popover visibility state</a>.
 
 <h3 id="modal-state">
 Modal (Exclusive Interaction) State: the '':modal'' pseudo-class</h3>
@@ -2774,8 +2564,9 @@ The Placeholder-shown Pseudo-class: '':placeholder-shown''</h4>
 
 	<div class="example">
 		For example, according to the semantics of [[HTML]]
-		the <{input/placeholder}> attribute on the <{input}> and <{textarea}> elements
-		provide placeholder text.
+		the <{input/placeholder}> attribute on the <{input}> element
+		provide placeholder text,
+		as does the first <{option}> element of a <{select}> under certain conditions.
 		The '':placeholder-shown'' class thus applies
 		whenever such placeholder text is shown.
 	</div>
@@ -2852,25 +2643,15 @@ The Empty-Value Pseudo-class: '':blank''</h4>
 	applies to user-input elements whose input value is empty
 	(consists of the empty string or otherwise null input).
 
-	<div class="note">
-		Roughly speaking, if a human looked at a printout of the form
-		and would say it’s blank,
-		it matches '':blank''.
-
-		A rule of thumb for interpreting '':blank'' on form controls is:
-
-		* If the control always submits,
-			and would do so with an empty string, it matches '':blank''.
-			(Such as HTML’s <code>&lt;input type=text></code> when its value is empty.)
-		* If it sometimes submits, and is set to not submit, it matches '':blank''.
-			(Such as HTML’s <code>&lt;input type=checkbox></code> when not checked.)
-		* If it's an “action button”
-			(rather than a “toggle button” that represents a state)
-			such as <code>&lt;button></code>, <code>&lt;input type=submit></code>, etc.,
-			it never matches '':blank''.
-
-		Host languages can specify more precise rules
-		for when form controls match '':blank''.
+	<div class="example">
+		Examples of '':blank'' user-input elements would be
+		a <{textarea}> element whose contents are empty,
+		or an <{input}> field whose value is empty.
+		Note that the value under consideration here is the value
+		that would be submitted
+		(see <a href="https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#a-form-control's-value">A form control’s value</a> in [[HTML]]),
+		which in HTML does not necessarily correspond to the value
+		of the element’s <{input/value}> attribute.
 	</div>
 
 	Note: This selector is at-risk.
@@ -2925,36 +2706,29 @@ The User-interaction Pseudo-classes: '':user-valid'' and '':user-invalid''</h4>
 	and the <dfn id="user-valid-pseudo">:user-valid</dfn> pseudo-classes
 	represent an element with incorrect or correct input, respectively,
 	but only <em>after</em> the user has significantly interacted with it.
-	Their purpose is to help the user identify mistakes in their input.
 
-	These pseudo-classes must at least match their respective elements
-	after the user has attempted to submit the form
-	and before the user has interacted again with the input element
-	or reset the form.
-	They may also match at other times,
+	The '':user-invalid'' pseudo-class
+	must match an '':invalid'', '':out-of-range'', or
+	blank-but-'':required'' elements between the time the user has attempted
+	to submit the form and before the user has interacted again with the
+	form element.
+
+	The '':user-valid'' pseudo-class must match a '':valid'' element between the
+	time the user has attempted to submit the form and before the user has
+	interacted again with the form element.
+
+	User-agents may allow them to match such elements at other times,
 	as would be appropriate for highlighting an error to the user.
-	For example, '':user-invalid''
-	could start matching an '':invalid'' input element
-	once the user has changed its value
-	and focus has moved to another element;
-	or stop matching only after
+	For example, a UA may choose to have '':user-invalid'' match an
+	'':invalid'' element once the user has typed some text into it and
+	changed the focus to another element, and to stop matching only after
 	the user has successfully corrected the input.
 
-	Host languages may define more precise matching rules
-	or defer to platform conventions;
-	otherwise the exact behavior is UA-defined.
-	Regardless,
-	the '':user-invalid'' pseudo-class must only match '':invalid'' elements;
-	and the '':user-valid'' pseudo-class must only match '':valid'' elements.
-	See the <a spec=html lt=":user-invalid" selector>HTML specification</a>
-	for the specific rules pertaining to HTML elements. [[!HTML]]
-
 	<div class='example'>
-		For example, the <{input}> element in the following document fragment
+		For example, the input in the following document fragment
 		would match '':invalid'' as soon as the page is loaded
-		(because the <{input}>'s initial value violates its max constraint)
-		but it won't match '':user-invalid''
-		until the user significantly interacts with the input field
+		(because it the initial value violates the max-constraint),
+		but it won't match '':user-invalid'' until the user significantly interacts with the element,
 		or attempts to submit the form it's part of.
 
 		<pre>
@@ -2968,10 +2742,16 @@ The User-interaction Pseudo-classes: '':user-valid'' and '':user-invalid''</h4>
 		</pre>
 	</div>
 
+	Issue: Cross-check with <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/%3A-moz-ui-invalid">'':-moz-ui-invalid''</a>.
+
+	Issue: Evaluate proposed <a href="https://lists.w3.org/Archives/Public/www-style/2014Feb/0511.html">:dirty pseudo-class</a>
+
+	Issue: Clarify that this (and '':invalid''/'':valid'') can apply to form and fieldset elements.
+
 <h2 id="structural-pseudos">
 Tree-Structural pseudo-classes</h2>
 
-	Selectors introduces the concept of <dfn export id="structural-pseudo-classes">structural pseudo-classes</dfn>
+	Selectors introduces the concept of <dfn id="structural-pseudo-classes">structural pseudo-classes</dfn>
 	to permit selection based on extra information that lies in
 	the document tree but cannot be represented by other simple selectors or
 	combinators.
@@ -2992,8 +2772,8 @@ Tree-Structural pseudo-classes</h2>
 	the root of the document.
 
 	For example, in a DOM document,
-	the '':root'' pseudo-class matches the [=document element=].
-	In HTML, this will be the <{html}> element
+	the '':root'' pseudo-class matches the root element of the <a interface>Document</a> object.
+	In HTML, this would be the <a element>html</a> element
 	(unless scripting has been used to modify the document).
 
 <h3 id="the-empty-pseudo">
@@ -3018,7 +2798,7 @@ Tree-Structural pseudo-classes</h2>
 			&lt;p>&lt;/p>
 			&lt;p>
 			&lt;p> &lt;/p>
-			&lt;p> &lt;!-- comment -->&lt;/p>
+			&lt;p><!-- comment -->&lt;/p>
 		</pre>
 
 		''div:empty'' is not a valid representation of the <code>&lt;div></code> elements
@@ -3063,7 +2843,7 @@ Child-indexed Pseudo-classes</h3>
 	are among <var>An+B</var>th elements
 	from the list composed of
 	their <a>inclusive siblings</a> that match the <a>selector list</a> <var>S</var>,
-	which is a <<complex-real-selector-list>>.
+	which is a <<complex-selector-list>> [=parsed as a forgiving selector list=].
 	If <var>S</var> is omitted,
 	it defaults to ''*|*''.
 
@@ -3160,7 +2940,7 @@ Child-indexed Pseudo-classes</h3>
 	from the list composed of
 	their <a>inclusive siblings</a> that match the <a>selector list</a> <var>S</var>,
 	counting backwards from the end.
-	<var>S</var> is <<complex-real-selector-list>>.
+	<var>S</var> is <<complex-selector-list>> [=parsed as a forgiving selector list=].
 	If <var>S</var> is omitted,
 	it defaults to ''*|*''.
 
@@ -3604,7 +3384,7 @@ Calculating a selector's specificity</h2>
 			in its <a>selector list</a> argument.
 		<li>
 			Analogously, the specificity of an '':nth-child()'' or '':nth-last-child()'' selector
-			is the specificity of the pseudo-class itself (counting as one pseudo-class selector)
+			is the specificity of the pseudo class itself (counting as one pseudo-class selector)
 			plus the specificity of
 			the most specific <a>complex selector</a>
 			in its <a>selector list</a> argument (if any).
@@ -3620,7 +3400,7 @@ Calculating a selector's specificity</h2>
 				a specificity of (1,0,0)--
 				like an ID selector (''#foo'')--
 				when matched against any of
-				<code>&lt;em></code>, <code>&lt;p id=foo></code>, or <code>&lt;em id=foo></code>.
+ 				<code>&lt;em></code>, <code>&lt;p id=foo></code>, or <code>&lt;em id=foo></code>.
 			<li>
 				''.qux:where(em, #foo#bar#baz)'' has
 				a specificity of (0,1,0):
@@ -3687,35 +3467,31 @@ Grammar</h2>
 	<dfn>&lt;selector-list></dfn> = <<complex-selector-list>>
 
 	<dfn>&lt;complex-selector-list></dfn> = <<complex-selector>>#
-	<dfn>&lt;complex-real-selector-list></dfn> = <<complex-real-selector>>#
 
 	<dfn>&lt;compound-selector-list></dfn> = <<compound-selector>>#
 
 	<dfn>&lt;simple-selector-list></dfn> = <<simple-selector>>#
 
 	<dfn>&lt;relative-selector-list></dfn> = <<relative-selector>>#
-	<dfn>&lt;relative-real-selector-list></dfn> = <<relative-real-selector>>#
 
 
-	<dfn>&lt;complex-selector></dfn> = <<complex-selector-unit>> [ <<combinator>>? <<complex-selector-unit>> ]*
-	<dfn>&lt;complex-selector-unit></dfn> = [ <<compound-selector>>? <<pseudo-compound-selector>>* ]!
-	<dfn>&lt;complex-real-selector></dfn> = <<compound-selector>> [ <<combinator>>? <<compound-selector>> ]*
+	<dfn>&lt;complex-selector></dfn> = <<compound-selector>> [ <<combinator>>? <<compound-selector>> ]*
 
 	<dfn>&lt;relative-selector></dfn> = <<combinator>>? <<complex-selector>>
-	<dfn>&lt;relative-real-selector></dfn> = <<combinator>>? <<complex-real-selector>>
 
-	<dfn>&lt;compound-selector></dfn> = [ <<type-selector>>? <<subclass-selector>>* ]!
-	<dfn>&lt;pseudo-compound-selector></dfn> =  <<pseudo-element-selector>> <<pseudo-class-selector>>*
+	<dfn>&lt;compound-selector></dfn> = [ <<type-selector>>? <<subclass-selector>>*
+	                        [ <<pseudo-element-selector>> <<pseudo-class-selector>>* ]* ]!
 
 	<dfn>&lt;simple-selector></dfn> = <<type-selector>> | <<subclass-selector>>
 
 
 	<dfn>&lt;combinator></dfn> = '>' | '+' | '~' | [ '|' '|' ]
 
-	<dfn noexport>&lt;wq-name></dfn> = <<ns-prefix>>? <<ident-token>>
+	<dfn>&lt;type-selector></dfn> = <<wq-name>> | <<ns-prefix>>? '*'
+
 	<dfn noexport>&lt;ns-prefix></dfn> = [ <<ident-token>> | '*' ]? '|'
 
-	<dfn>&lt;type-selector></dfn> = <<wq-name>> | <<ns-prefix>>? '*'
+	<dfn noexport>&lt;wq-name></dfn> = <<ns-prefix>>? <<ident-token>>
 
 	<dfn noexport>&lt;subclass-selector></dfn> = <<id-selector>> | <<class-selector>> |
 	                      <<attribute-selector>> | <<pseudo-class-selector>>
@@ -3725,15 +3501,16 @@ Grammar</h2>
 	<dfn>&lt;class-selector></dfn> = '.' <<ident-token>>
 
 	<dfn>&lt;attribute-selector></dfn> = '[' <<wq-name>> ']' |
-	    '[' <<wq-name>> <<attr-matcher>> [ <<string-token>> | <<ident-token>> ] <<attr-modifier>>? ']'
+	                       '[' <<wq-name>> <<attr-matcher>> [ <<string-token>> | <<ident-token>> ] <<attr-modifier>>? ']'
+
 	<dfn noexport>&lt;attr-matcher></dfn> = [ '~' | '|' | '^' | '$' | '*' ]? '='
+
 	<dfn noexport>&lt;attr-modifier></dfn> = i | s
 
-	<dfn>&lt;pseudo-class-selector></dfn> = : <<ident-token>> |
-	                          : <<function-token>> <<any-value>> )
+	<dfn>&lt;pseudo-class-selector></dfn> = ':' <<ident-token>> |
+	                          ':' <<function-token>> <<any-value>> ')'
 
-	<dfn>&lt;pseudo-element-selector></dfn> = : <<pseudo-class-selector>> | <<legacy-pseudo-element-selector>>
-	<dfn>&lt;legacy-pseudo-element-selector></dfn> =  : [before | after | first-line | first-letter]
+	<dfn>&lt;pseudo-element-selector></dfn> = ':' <<pseudo-class-selector>>
 	</pre>
 
 	In interpreting the above grammar,
@@ -3743,9 +3520,8 @@ Grammar</h2>
 	<li id="white-space">
 		White space is forbidden:
 		* Between any of the top-level components of a <<compound-selector>>
-			or <<complex-selector-unit>>
 			(that is, forbidden between the <<type-selector>> and <<subclass-selector>>,
-			or between the <<pseudo-element-selector>> and <<pseudo-class-selector>>,
+			or between the <<subclass-selector>> and <<pseudo-element-selector>>,
 			etc).
 		* Between <em>any</em> of the components of a <<type-selector>>
 			or a <<class-selector>>.
@@ -3753,22 +3529,20 @@ Grammar</h2>
 			of a <<pseudo-element-selector>> or a <<pseudo-class-selector>>.
 		* Between <em>any</em> of the components of a <<wq-name>>.
 		* Between the components of an <<attr-matcher>>.
-		* Between the <<compound-selector>> or <<pseudo-compound-selector>>s
-			in a <<complex-selector-unit>>
 		* Between the components of a <<combinator>>.
 
 		Whitespace is <em>required</em>
-		between two <<complex-selector-unit>>s
+		between two <<compound-selector>>s
 		if the <<combinator>> between them is omitted.
 		(This indicates the descendant combinator is being used.)
+	<li id="single-colon-pseudos">
+		The four <a href="https://www.w3.org/TR/CSS2/selectors.html#pseudo-element-selectors">Level 2</a> <a>pseudo-elements</a>
+		(''::before'', ''::after'', ''::first-line'', and ''::first-letter'')
+		may, for legacy reasons,
+		be represented using the <<pseudo-class-selector>> grammar,
+		with only a single ":" character at their start.
 	<li>
 		In <<id-selector>>, the <<hash-token>>’s value must be an <a>identifier</a>.
-	<li>
-		The <<pseudo-class-selector>> production
-		excludes the <<legacy-pseudo-element-selector>> production.
-		(That is, '':before''/etc must never be parsed as a pseudo-class,
-		even if doing so would cause the selector to become valid
-		due to, for example, other simple selectors following it.)
 	</ul>
 
 	Note: A selector is also subject to a variety of more specific syntactic constraints,
@@ -3787,13 +3561,6 @@ Grammar</h2>
 	and the <a>tree-abiding pseudo-elements</a>
 	are allowed after the ''::slotted()'' pseudo-element.)
 
-	<p class=note id=single-colon-pseudos>
-		The four <a href="https://www.w3.org/TR/CSS2/selectors.html#pseudo-element-selectors">Level 2</a> <a>pseudo-elements</a>
-		(''::before'', ''::after'', ''::first-line'', and ''::first-letter'')
-		may, for legacy reasons,
-		be written with only a single ":" character at their front,
-		making them resemble a <<pseudo-class-selector>>.
-
 <h3 id='forgiving-selector'>
 <<forgiving-selector-list>> and <<forgiving-relative-selector-list>></h3>
 
@@ -3811,21 +3578,21 @@ Grammar</h2>
 	so the remaining selectors can still be used.
 
 	Note: Style rules still use the normal, unforgiving selector list behavior.
-	<<forgiving-selector-list>> is used in '':is()'' and '':where()'' only.
+	<<forgiving-selector-list>> is used in some functions,
+	like '':is()'',
+	which are similarly generic.
 	Although it does have some minor implications on specificity,
 	wrapping a style rule's selector in '':is()''
-	effectively "upgrades" it to become forgiving,
-	so long as it doesn't contain any pseudo-elements
-	(which aren't valid in '':is()'' or '':where()'').
+	effectively "upgrades" it to become forgiving.
 
 	Syntactically, <<forgiving-selector-list>> is equivalent to <code><<any-value>>?</code>.
 	It is then [=parsed as a forgiving selector list=]
 	to obtain its actual value.
 
 	<div algorithm>
-		To <dfn export>parse as a forgiving selector list</dfn> given an input |input|:
+		To <dfn export lt="parse as a forgiving selector list|parsed as a forgiving selector list|parsing as a forgiving selector list">parse as a forgiving selector list</dfn> given an input |input|:
 
-		1. [=Parse a list=] of <<complex-real-selector>>s from |input|,
+		1. [=Parse a list=] of <<complex-selector>>s from |input|,
 			and let |selector list| be the result.
 
 		3. Remove all failure items from |selector list|,
@@ -3835,19 +3602,9 @@ Grammar</h2>
 			(This might be empty.)
 	</div>
 
-	Any items in a <<forgiving-selector-list>> that are invalid
-	(whether explicitly, by using unknown selectors or syntax,
-	or merely contextually, using known syntax but in an invalid context)
-	must be treated as having zero specificity.
-
-	Note: <<forgiving-selector-list>> is intentionally used only in '':is()'' and '':where()'',
-	not in any other selector that takes a selector argument.
-	<!--
-	This is both for bugwards compat with jQuery
-	(https://github.com/w3c/csswg-drafts/issues/7676)
-	and general ease of learning which selector arguments are allowed to be forgiving and which aren't.
-	-->
-
+	<dfn><<forgiving-relative-selector-list>></dfn> is identical to <<forgiving-selector-list>>,
+	except it parses its components as <<relative-selector>>
+	rather than <<complex-selector>>.
 
 <h2 id='api-hooks'>
 API Hooks</h2>
@@ -3945,7 +3702,7 @@ Match a Selector Against an Element</h3>
 		complex selector, return success.
 
 		<li>Otherwise, consider all possible elements
-		that could be related to this element by the rightmost <a for=selector>combinator</a>.
+		that could be related to this element by the rightmost <a>combinator</a>.
 		If the operation of matching the selector consisting of this selector
 		with the rightmost compound selector and rightmost combinator removed
 		against any one of these elements returns success, then return success.
@@ -4159,17 +3916,14 @@ Appendix A: Guidance on Mapping Source Documents &amp; Data to an Element Tree</
 
 
 <h2 id="compat">
-Appendix B: Obsolete but Required <code>-webkit-</code> Parsing Quirks for Web Compat</h2>
+Appendix B: Obsolete but Required Parsing Quirks for Web Compat</h2>
 
 	<em>This appendix is normative.</em>
 
 	Due to legacy Web-compat constraints,
 	user agents expecting to parse Web documents must support the following features:
 
-	* '':-webkit-autofill'' must be treated as a [=legacy selector alias=] of '':autofill''.
-		<!-- expand this into a table or something if we add any more aliases -->
-
-	* All other [=pseudo-elements=] whose names begin with the string “-webkit-”
+	* All [=pseudo-elements=] whose names begin with the string “-webkit-”
 		(matched <a>ASCII case-insensitively</a>)
 		and that are not functional notations
 		must be treated as valid at parse time.
@@ -4234,107 +3988,6 @@ Appendix B: Obsolete but Required <code>-webkit-</code> Parsing Quirks for Web C
 			and all right-thinking web developers.
 		</details>
 
-<h2 id="visited-privacy">
-Appendix C: Example Privacy-Preserving '':visited'' Restrictions</h2>
-
-Previous attempts to protect user privacy in '':visited''
-involved <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Privacy_and_the_:visited_selector">complex restrictions and behaviors</a>
-to "lie" about whether the link match '':visited'' or '':link'',
-to reduce the chance that a hostile site
-could observe what unrelated sites a user had visited
-while still allowing '':visited'' to work in all cases
-and help the user know what links they'd already clicked.
-This is ultimately an arms race that can't be won;
-there are multiple documented ways to still extract a user's browsing history
-even with these mitigations.
-
-This section describes an approach first developed and documented at
-<a href="https://github.com/explainers-by-googlers/Partitioning-visited-links-history">https://github.com/explainers-by-googlers/Partitioning-visited-links-history</a>,
-that partitions a user's browsing history information,
-to allow '':visited'' to only match links
-corresponding to navigations that the site's origin could have observed on its own.
-With this, '':visited'' can be treated as a normal pseudo-class,
-without any of the complex mitigations described above,
-as it doesn't expose any information not already theoretically available to the site,
-while still preserving as much of the <em>usefulness</em> of '':visited'' as possible for the user.
-
-1. Let |visited history| be a [=/set=]
-	containing [=tuples=] of three pieces of information:
-	* a visited [=/URL=]
-	* an [=/origin=] for the site that started a navigation
-	* a [=/site=] for the top-level site containing the frame that started the navigation.
-		(This will often be the same as the previous,
-		but can differ if the user clicks a link in a iframe, for example.)
-
-2. Whenever a navigation is triggered <em>from within a page</em>--
-	e.g.,
-	from the user clicking a link,
-	or a script on the page initiating a navigation--
-	add an entry to |visited history|
-	recording the navigation's destination URL,
-	the origin of the page containing the link or script,
-	and the (schemeful) site of the top-level site containing that
-	page (which might be the same site as the previous origin).
-
-	Note: This allows a site to see '':visited'' information
-	for links that the user has clicked
-	from anywhere in that site's origin.
-	In other words, any <code>A -> B</code> navigation
-	where the site is A.
-
-	Additionally, add an entry to |visited history|
-	recording the destination's URL, the <em>destination's</em>
-	origin, and the <em>destination's</em> site. Do this only
-	for navigations from top-level frames or iframes which are
-	same-origin with their top-level frame.
-
-	Note: This allows for a site to see '':visited'' information about its own pages
-	(which is already observable by the site)
-	regardless of what site initiated the navigation to that page.
-	In other words, any <code>A -> B</code> navigation
-	where the site is B.
-
-	Note: Notably, direct navigations triggered by the <em>user agent's</em> UI,
-	such as typing into the address bar,
-	clicking on bookmarks,
-	or dragging a link from another program into the page,
-	<em>do not</em> add a |visited history| entry.
-	These can, of course,
-	still add to the browser's record of visited sites
-	that it uses for other purposes,
-	such as suggesting URLs as the user types into the URL bar.
-
-3. When determining if a link element should match '':link'' or '':visited'',
-	only allow it to match '':visited'' if
-	the link's destination,
-	the origin of the page containing the link,
-	and the top-level site containing the link
-	match a tuple in |visited history|.
-
-<div class=note>
-	The inclusion of both page origin and top-level site
-	prevents several possible privacy attacks,
-	such as:
-
-	* If history entries were <em>only</em> keyed by the starting site's URL,
-		a tracking site could be embedded in a hidden iframe on multiple sites
-		which triggers a navigation to a unique URL for a user on the first visit,
-		and then uses many such links on subsequent visits
-		to see which one had been visited,
-		effectively becoming a new "third-party cookie"
-		identifying the user across the web.
-		By keying the history entry with the top-level site,
-		this information can't be shared across different sites.
-
-	* If history entires were <em>only</em> keyed by the top-level site's URL,
-		a hostile iframe,
-		perhaps included in a page as part of an advertisement,
-		could observe what sites were visited from the top-level site.
-		By keying the history entry with the link's own site,
-		the top-level site's information can't "leak" into cross-origin iframes.
-</div>
-
-
 
 <h2 id="changes">
 Changes</h2>
@@ -4344,22 +3997,6 @@ Changes since the 7 May 2022 Working Draft</h3>
 
 	Significant changes since the <a href="https://www.w3.org/TR/2022/WD-selectors-4-20220507/">7 May 2022 Working Draft</a>:
 
-	* Marked '':blank'' as at-risk and removed the at-risk status from '':read-write'' and '':has()''
-	* Added '':open'' pseudo-class.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/7319">Issue 7319</a>,
-		<a href="https://github.com/w3c/csswg-drafts/issues/11039">Issue 11039</a>)
-	* Added '':popover-open'' pseudo-class.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/8637">Issue 8637</a>)
-	* Disallowed [=pseudo-elements=] from '':has()'' unless explicitly allowed
-		by the pseudo-element’s definition.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/7463">Issue 7463</a>)
-	* Disallowed nesting of '':has()''.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/7344">Issue 7344</a>)
-	* Made '':has()'' and the selector argument of '':nth-child()''/'':nth-last-child()''
-		no longer forgiving.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/7676">Issue 7676</a>)
-	* Defined matching of ''::lang("")'' and of elements not tagged with a language.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/6915">Issue 6915</a>)
 	* Untangled the concepts of "scoped" and "relative" selectors completely.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/6399">Issue 6399</a>)
 		* Removed "absolutize a selector" as well,
@@ -4367,10 +4004,6 @@ Changes since the 7 May 2022 Working Draft</h3>
 			in terms of the anchoring element.
 	* Reverted compound selector limitation on '':nth-child()''.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/3760">Issue 3760</a>)
-	* Defined '':-webkit-autofill'' [=legacy selector alias=].
-		(<a href="https://github.com/w3c/csswg-drafts/issues/7474">Issue 7474</a>)
-	* Moved the legacy single-colon pseudo-element syntax into the grammar itself.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/8122">Issue 8122</a>)
 
 <h3 id="changes-2018-11">
 Changes since the 21 November 2018 Working Draft</h3>
@@ -4446,12 +4079,12 @@ Changes since the 2 May 2013 Working Draft</h3>
 		<li>Added a zero-specificity '':matches()''-type pseudo-class, with name TBD.
 		<li>Replaced subject indicator (''!'') feature with '':has()''.
 		<li>Replaced the '':nth-match()'' and '':nth-last-match()'' selectors
-			with '':nth-child(&hellip; of <var>selector</var>)'' and '':nth-last-child(&hellip; of <var>selector</var>)''.
+		    with '':nth-child(&hellip; of <var>selector</var>)'' and '':nth-last-child(&hellip; of <var>selector</var>)''.
 		<li>Changed the <css>:active-drop-target</css>, <css>:valid-drop-target</css>, <css>:invalid-drop-target</css> with '':drop()''.
 		<li>Sketched out an empty-or-whitespace-only selector for discussion
 			(See <a href="https://github.com/w3c/csswg-drafts/issues/1967">open issue</a>.)
 		<li>Renamed '':user-error'' to '':user-invalid''.
-			(See <a href="https://www.w3.org/mid/CADhPm3v+WfeGQfBwwx8QBuiOjn2k38V_DcKW17Cm81VgZb1nbQ@mail.gmail.com">Discussion</a>)
+		    (See <a href="https://www.w3.org/mid/CADhPm3v+WfeGQfBwwx8QBuiOjn2k38V_DcKW17Cm81VgZb1nbQ@mail.gmail.com">Discussion</a>)
 		<li>Renamed '':nth-column()''/'':nth-last-column()'' to '':nth-col()''/'':nth-last-col()''
 			to avoid naming confusion with a potential ''::column'' pseudo-class.
 		<li>Changed the non-functional form of the <css>:local-link</css> pseudo-class to account for fragment URLs.
@@ -4499,7 +4132,7 @@ Changes since the 23 August 2012 Working Draft</h3>
 		<li>Improved definition of <a>specificity</a> to better handle <a>:matches()</a>.
 		<li>Updated grammar.
 		<li>Cleaned up definition of <<An+B>> notation.
-		<li>Added definition of <i>scope-relative</i> selectors, changed <i>scope-constrained</i> to scope-filtered for less confusion with scope-contained.
+		<li>Added definition of <a>scope-relative</a> selectors, changed <i>scope-constrained</i> to scope-filtered for less confusion with scope-contained.
 		<li>The '':local-link()'' pseudo-class now ignores trailing slashes.
 	</ul>
 
@@ -4555,23 +4188,16 @@ Acknowledgements</h2>
 	Jason Cranford Teague,
 	Lea Verou
 
+Privacy and Security Considerations {#priv-sec}
+==============================================
 
-	<h2 class=no-num id=privacy>Privacy Considerations</h2>
-
-	<ul>
-		<li>
-			The '':visited'' pseudo-class can expose information about which sites a user has previously visited,
-			if the UA is not careful to screen from scripting any information that would reveal
-			which elements match it.
-		<li>
-			The '':autofill'' pseudo-class can expose whether a user has interacted with this form before;
-			however the same information can be derived by observing how quickly the form is filled out.
-	</ul>
-
-	<h2 class=no-num id=security>Security Considerations</h2>
-	
-	The <a href="#privacy">Privacy Considerations</a>
-	could also be considered to affect Security.
-
-
-
+This specification introduces the following privacy and security considerations:
+<ul>
+	<li>
+		The '':visited'' pseudo-class can expose information about which sites a user has previously visited,
+		if the UA is not careful to screen from scripting any information that would reveal
+		which elements match it.
+	<li>
+		The '':autofill'' pseudo-class can expose whether a user has interacted with this form before;
+		however the same information can be derived by observing how quickly the form is filled out.
+</ul>

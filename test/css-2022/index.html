@@ -3,11 +3,14 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>CSS Snapshot 2022</title>
-  <meta content="NOTE-FPWD" name="w3c-status">
+  <meta content="ED" name="w3c-status">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
-  <link href="https://www.w3.org/TR/css-2022/" rel="canonical">
-  <meta content="2009f4d01df701a0fadeeb24c5ca468d07890e77" name="revision">
+  <link href="https://drafts.csswg.org/css-2022/" rel="canonical">
+  <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="03f6b66e0a3c0b5bb1044b7d88aa6674e31c5129" name="revision">
   <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -563,8 +566,143 @@ a.self-link::before            { content: "¶"; }
 .heading > a.self-link::before { content: "§"; }
 dfn > a.self-link::before      { content: "#"; }
 </style>
-  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-DNOTE" rel="stylesheet">
-  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
+<style>/* Boilerplate: style-wpt */
+:root {
+    --wpt-border: hsl(0, 0%, 60%);
+    --wpt-bg: hsl(0, 0%, 95%);
+    --wpt-text: var(--text);
+    --wptheading-text: hsl(0, 0%, 30%);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --wpt-border: hsl(0, 0%, 30%);
+        --wpt-bg: var(--borderedblock-bg);
+        --wpt-text: var(--text);
+        --wptheading-text: hsl(0, 0%, 60%);
+    }
+}
+.wpt-tests-block {
+    list-style: none;
+    border-left: .5em solid var(--wpt-border);
+    background: var(--wpt-bg);
+    color: var(--wpt-text);
+    margin: 1em auto;
+    padding: .5em;
+}
+.wpt-tests-block summary {
+    color: var(--wptheading-text);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.wpt-tests-block summary::marker{
+    color: var(--wpt-border);
+}
+.wpt-tests-block summary:hover::marker{
+    color: var(--wpt-text);
+}
+/*
+   The only content  of a wpt test block in its closed state is the <summary>,
+   which contains the word TESTS,
+   and that is absolutely positioned.
+   In that closed state, wpt test blocks are styled
+   to have a top margin whose height is exactly equal
+   to the height of the absolutely positioned <summary>,
+   and no other background/padding/margin/border.
+   The wpt test block elements will therefore allow the maring
+   of the previous/next block elements
+   to collapse through them;
+   if this combined margin would be larger than its own top margin,
+   it stays as is,
+   and therefore the pre-existing vertical rhythm of the document is undisturbed.
+   If that combined margin would be smaller, it is grown to that size.
+   This means that the wpt test block ensures
+   that there's always enough vertical space to insert the summary,
+   without adding more than is needed.
+*/
+.wpt-tests-block:not([open]){
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.75em;
+    line-height: 1;
+    position: relative;
+    margin: 1em 0 0;
+}
+.wpt-tests-block:not([open]) summary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*
+   It is possible that both the last child of a block element
+   and the block element itself
+   would be annotated with a <wpt> block each.
+   If the block element has a padding or a border,
+   that's fine, but otherwise
+   the bottom margin of the block and of its last child would collapse
+   and both <wpt> elements would overlap, being both placed there.
+   To avoid that, add 1px of padding to the <wpt> element annotating the last child
+   to prevent the bottom margin of the block and of its last child from collapsing
+   (and as much negative margin,
+   as wel only want to prevent margin collapsing,
+   but are not trying to actually take more space).
+*/
+.wpt-tests-block:not([open]):last-child {
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+}
+/*
+   Exception to the previous rule:
+   don't do that in non-last list items,
+   because it's not necessary,
+   and would therefore consume more space than strictly needed.
+   Lists must have list items as children, not <wpt> elements,
+   so a <wpt> element cannot be a sibling of a list item,
+   and the collision that the previous rule avoids cannot happen.
+*/
+li:not(:last-child) > .wpt-tests-block:not([open]):last-child,
+dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.wpt-tests-block:not([open]):not(:hover){
+    opacity: 0.5;
+}
+.wpt-tests-list {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr max-content auto auto;
+    grid-column-gap: .5em;
+}
+.wpt-tests-block hr:last-child {
+    display: none;
+}
+.wpt-test {
+    display: contents;
+}
+.wpt-test > a {
+    text-decoration: underline;
+    border: none;
+}
+.wpt-test > .wpt-name { grid-column: 1; }
+.wpt-test > .wpt-results { grid-column: 2; }
+.wpt-test > .wpt-live { grid-column: 3; }
+.wpt-test > .wpt-source { grid-column: 4; }
+
+.wpt-test > .wpt-results {
+    display: flex;
+    gap: .1em;
+}
+.wpt-test .wpt-result {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+}
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
@@ -572,25 +710,19 @@ dfn > a.self-link::before      { content: "#"; }
 </a>
 </p>
    <h1 class="p-name no-ref" id="title">CSS Snapshot 2022</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#DNOTE">W3C First Public Group Draft Note</a>,
-    <time class="dt-updated" datetime="2022-11-22">22 November 2022</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2025-06-30">30 June 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://www.w3.org/TR/2022/NOTE-FPWD-css-2022-20221122/">https://www.w3.org/TR/2022/NOTE-FPWD-css-2022-20221122/</a>
-      <dt>Latest published version:
-      <dd><a href="https://www.w3.org/TR/css-2022/">https://www.w3.org/TR/css-2022/</a>
-      <dt>Editor's Draft:
-      <dd><a href="https://drafts.csswg.org/css-2022/">https://drafts.csswg.org/css-2022/</a>
-      <dt>History:
-      <dd><a class="u-url" href="https://www.w3.org/standards/history/css-2022/">https://www.w3.org/standards/history/css-2022/</a>
-      <dt>Feedback:
+      <dd><a class="u-url" href="https://drafts.csswg.org/css-2022/">https://drafts.csswg.org/css-2022/</a>
+      <dt>Issue Tracking:
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-2022">CSSWG Issues Repository</a>
       <dt class="editor">Editors:
       <dd class="editor p-author h-card vcard" data-editor-id="42199"><a class="p-name fn u-url url" href="http://xanthir.com/">Tab Atkins Jr.</a> (<span class="p-org org">Google</span>)
-      <dd class="editor p-author h-card vcard" data-editor-id="35400"><a class="p-name fn u-url url" href="http://fantasai.inkedblade.net/contact">Elika J. Etemad / fantasai</a> (<span class="p-org org">Apple</span>)
+      <dd class="editor p-author h-card vcard" data-editor-id="35400"><a class="p-name fn u-url url" href="http://fantasai.inkedblade.net/contact">Elika J. Etemad / fantasai</a> (<span class="p-org org">Invited Expert</span>)
       <dd class="editor p-author h-card vcard" data-editor-id="43241"><a class="p-name fn u-url url" href="https://florian.rivoal.net">Florian Rivoal</a> (<span class="p-org org">Invited Expert</span>)
       <dt>Suggest an Edit for this Spec:
       <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/css-2022/Overview.bs">GitHub Editor</a>
@@ -598,7 +730,7 @@ dfn > a.self-link::before      { content: "#"; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2022 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
 </p>
    <hr title="Separator for header">
   </div>
@@ -619,10 +751,11 @@ on screen, on paper, etc.
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p><em>This section describes the status of this document at the time of its publication.
-	A list of current W3C publications
-	and the latest revision of this technical report
-	can be found in the <a href="https://www.w3.org/TR/">W3C standards and drafts index at https://www.w3.org/TR/.</a></em>
+   <p>
+	This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress.
 
 </p>
    <p>Please send feedback
@@ -638,23 +771,9 @@ on screen, on paper, etc.
 	<a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>.
 
 </p>
-   <p>This document was produced by a group operating under the
-	<a href="https://www.w3.org/policies/patent-policy/20200915/">W3C Patent Policy</a>.
-	W3C maintains a
-	<a href="https://www.w3.org/groups/wg/css/ipr" rel="disclosure">public list of any patent disclosures</a>
-	made in connection with the deliverables of the group;
-	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent which the individual believes
-	contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a>
-	must disclose the information in accordance with
-	<a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
-
-</p>
-   <p>Replace the above with this when publishing to TR:
-This document represents the state of CSS as of 2022.
-The CSS Working Group does not expect any further changes to this document:
-new snapshots will be published at
-<a href="https://www.w3.org/TR/CSS/">https://www.w3.org/TR/CSS/</a> as CSS advances.</p>
+   <p>This document is a work in progress,
+aimed at representing the state of CSS as of 2022.
+It should become a Working Group Note when completed.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -672,7 +791,7 @@ Background: The W3C Process and CSS</span></a>
      <a href="#module-classification"><span class="secno">2</span> <span class="content">
 Classification of CSS Specifications</span></a>
      <ol class="toc">
-      <li><a href="#css-official"><span class="secno">2.1</span> <span class="content">Cascading Style Sheets (CSS) — The Official Definition</span></a>
+      <li><a href="#css①"><span class="secno">2.1</span> <span class="content">Cascading Style Sheets (CSS) — The Official Definition</span></a>
       <li><a href="#fairly-stable"><span class="secno">2.2</span> <span class="content">
 Fairly Stable Modules with limited implementation experience</span></a>
       <li><a href="#rough-interop"><span class="secno">2.3</span> <span class="content">
@@ -764,7 +883,7 @@ What is CSS?</span><a class="self-link" href="#css-glossary"></a></h3>
 			on a variety of media.
 			CSS is used to describe the presentation of a <a data-link-type="dfn" href="#source-document" id="ref-for-source-document">source document</a>,
 			and usually does not change the underlying semantics
-			expressed by its <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/conform.html#doclanguage" id="ref-for-doclanguage">document language</a>.
+			expressed by its <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#document-language" id="ref-for-document-language">document language</a>.
 
 		
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="style-sheet">Style sheet</dfn>
@@ -781,7 +900,7 @@ What is CSS?</span><a class="self-link" href="#css-glossary"></a></h3>
     <dd>
 			The document to which one or more style sheets apply.
 			A source document’s structure and semantics are encoded
-			using a <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/conform.html#doclanguage" id="ref-for-doclanguage①">document language</a> (e.g., HTML, XHTML, or SVG).
+			using a <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#document-language" id="ref-for-document-language①">document language</a> (e.g., HTML, XHTML, or SVG).
 
 		
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="author">Author</dfn>
@@ -814,7 +933,7 @@ What is CSS?</span><a class="self-link" href="#css-glossary"></a></h3>
    <h3 class="heading settled" data-level="1.2" id="w3c-process"><span class="secno">1.2. </span><span class="content">
 Background: The W3C Process and CSS</span><a class="self-link" href="#w3c-process"></a></h3>
    <p><em>This section is non-normative.</em></p>
-   <p>In the <a href="https://www.w3.org/Consortium/Process/">W3C Process</a>,
+   <p>In the <a href="http://www.w3.org/Consortium/Process/">W3C Process</a>,
 	a Recommendation-track document passes through three levels of stability,
 	summarized below:</p>
    <dl>
@@ -871,8 +990,8 @@ Classification of CSS Specifications</span><a class="self-link" href="#module-cl
    <p><strong class="advisement">
 	A list of all CSS modules, stable and in-progress,
 	and their statuses
-	can be found at the <a href="https://www.w3.org/Style/CSS/current-work">CSS Current Work page</a>.</strong></p>
-   <h3 class="heading settled" data-level="2.1" id="css-official"><span class="secno">2.1. </span><span class="content">Cascading Style Sheets (CSS) — The Official Definition</span><a class="self-link" href="#css-official"></a></h3>
+	can be found at the <a href="http://www.w3.org/Style/CSS/current-work">CSS Current Work page</a>.</strong></p>
+   <h3 class="heading settled" data-level="2.1" id="css①"><span class="secno">2.1. </span><span class="content">Cascading Style Sheets (CSS) — The Official Definition</span><a class="self-link" href="#css①"></a></h3>
    <p>This profile includes only specifications that we consider stable
 	<em>and</em> for which we have enough implementation experience that we are sure of that stability.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This is not intended to be a CSS Desktop Browser Profile:
@@ -920,8 +1039,8 @@ Classification of CSS Specifications</span><a class="self-link" href="#module-cl
 		
     <dd>
 			Extends and supersedes CSS2§7.2,
-			updating the definition of <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-conditional-3/#at-ruledef-media" id="ref-for-at-ruledef-media">@media</a> rules to allow nesting
-			and introducing the <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-conditional-3/#at-ruledef-supports" id="ref-for-at-ruledef-supports">@supports</a> rule for feature-support queries.
+			updating the definition of <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-conditional-3/#at-ruledef-media" id="ref-for-at-ruledef-media">@media</a> rules to allow nesting
+			and introducing the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-conditional-3/#at-ruledef-supports" id="ref-for-at-ruledef-supports">@supports</a> rule for feature-support queries.
 
 		
     <dt><a href="https://www.w3.org/TR/selectors-3/">Selectors Level 3</a>
@@ -980,7 +1099,7 @@ Classification of CSS Specifications</span><a class="self-link" href="#module-cl
 			introducing an extended range of color spaces beyond sRGB,
 			extended color values,
 			and CSS Object Model extensions for color.
-			Also defines the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-color-4/#propdef-opacity" id="ref-for-propdef-opacity">opacity</a> property.
+			Also defines the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-color-4/#propdef-opacity" id="ref-for-propdef-opacity">opacity</a> property.
 
 		
     <dt><a href="https://www.w3.org/TR/css-backgrounds-3/">CSS Backgrounds and Borders Level 3</a>
@@ -1041,14 +1160,14 @@ Classification of CSS Specifications</span><a class="self-link" href="#module-cl
 		
     <dd>
 			Extends and supersedes CSS2§18.1 and CSS2§18.4,
-			defining <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-ui-4/#propdef-cursor" id="ref-for-propdef-cursor">cursor</a>, <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a>, and several new CSS features that also enhance the user interface.
+			defining <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-ui-4/#propdef-cursor" id="ref-for-propdef-cursor">cursor</a>, <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a>, and several new CSS features that also enhance the user interface.
 
 		
     <dt><a href="https://www.w3.org/TR/css-contain-1/">CSS Containment Module Level 1</a>
 		  <a data-link-type="biblio" href="#biblio-css-contain-1" title="CSS Containment Module Level 1">[CSS-CONTAIN-1]</a>
 		
     <dd>
-			Introduces the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-contain-2/#propdef-contain" id="ref-for-propdef-contain">contain</a> property,
+			Introduces the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-contain-2/#propdef-contain" id="ref-for-propdef-contain">contain</a> property,
 			which enforces the independent CSS processing of an element’s subtree
 			in order to enable heavy optimizations by user agents when used well.
 
@@ -1084,7 +1203,7 @@ Classification of CSS Specifications</span><a class="self-link" href="#module-cl
 		  <a data-link-type="biblio" href="#biblio-css-counter-styles-3" title="CSS Counter Styles Level 3">[CSS-COUNTER-STYLES-3]</a>
 		
     <dd>
-			Introduces the <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-counter-styles-3/#at-ruledef-counter-style" id="ref-for-at-ruledef-counter-style">@counter-style</a> rule,
+			Introduces the <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-counter-styles-3/#at-ruledef-counter-style" id="ref-for-at-ruledef-counter-style">@counter-style</a> rule,
 			which allows authors to define their own custom counter styles
 			for use with CSS list-marker and generated-content counters <a data-link-type="biblio" href="#biblio-css-lists-3" title="CSS Lists and Counters Module Level 3">[CSS-LISTS-3]</a>.
 			It also predefines a set of common counter styles,
@@ -1094,15 +1213,15 @@ Classification of CSS Specifications</span><a class="self-link" href="#module-cl
    <p class="note" role="note"><span class="marker">Note:</span> Although we don’t anticipate significant changes to the specifications that form this snapshot,
 	their inclusion does not mean they are frozen.
 	The Working Group will continue to address problems as they are found in these specs.
-	Implementers should monitor <a href="https://lists.w3.org/Archives/Public/www-style/">www-style</a>
-	and/or the <a href="https://www.w3.org/blog/CSS">CSS Working Group Blog</a>
+	Implementers should monitor <a href="http://lists.w3.org/Archives/Public/www-style/">www-style</a>
+	and/or the <a href="http://www.w3.org/blog/CSS">CSS Working Group Blog</a>
 	for any resulting changes, corrections, or clarifications.</p>
    <h3 class="heading settled" data-level="2.2" id="fairly-stable"><span class="secno">2.2. </span><span class="content">
 Fairly Stable Modules with limited implementation experience</span><a class="self-link" href="#fairly-stable"></a></h3>
    <p>The following modules have completed design work,
 	and are fairly stable,
 	but have not received much testing and implementation experience yet.
-	We hope to incorporate them into the <a href="#css-official">official definition of CSS</a> in a future snapshot.</p>
+	We hope to incorporate them into the <a href="#css" id="ref-for-css①">official definition of CSS</a> in a future snapshot.</p>
    <dl>
     <dt><a href="https://www.w3.org/TR/mediaqueries-4/">Media Queries Level 4</a>
 		  <a data-link-type="biblio" href="#biblio-mediaqueries-4" title="Media Queries Level 4">[MEDIAQUERIES-4]</a>
@@ -1120,7 +1239,7 @@ Fairly Stable Modules with limited implementation experience</span><a class="sel
 			Replaces CSS2§9.1.2, §9.2.1 (but not §9.2.1.1), §9.2.2 (but not §9.2.2.1), §9.2.3, and §9.2.4 (and lays the foundations for replacing §9.7),
 			defining how the CSS formatting box tree is generated
 			from the document element tree
-			and defining the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-display-4/#propdef-display" id="ref-for-propdef-display">display</a> property that controls it.
+			and defining the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display" id="ref-for-propdef-display">display</a> property that controls it.
 
 		
     <dt><a href="https://www.w3.org/TR/css-writing-modes-4/">CSS Writing Modes Level 4</a>
@@ -1160,7 +1279,7 @@ Fairly Stable Modules with limited implementation experience</span><a class="sel
 		  <a data-link-type="biblio" href="#biblio-css-text-3" title="CSS Text Module Level 3">[CSS-TEXT-3]</a>
 		
     <dd>
-			Extends and supersedes CSS2§16 excepting §16.3,
+			Extends and supersedes CSS2§16 excepting §16.2,
 			defining properties for text manipulation and specifying their processing model.
 			It covers line breaking, justification and alignment, white space handling, and text transformation.
 
@@ -1211,7 +1330,7 @@ Modules with Rough Interoperability</span><a class="self-link" href="#rough-inte
    <p>Although the following modules have been widely deployed with <a data-link-type="dfn" href="#rough-interoperability" id="ref-for-rough-interoperability">rough interoperability</a>,
 	their details are not fully worked out or sufficiently well-specified
 	and they need more testing and bugfixing.
-	We hope to incorporate them into the <a href="#css-official">official definition of CSS</a> in a future snapshot.</p>
+	We hope to incorporate them into the <a href="#css" id="ref-for-css②">official definition of CSS</a> in a future snapshot.</p>
    <dl>
     <dt><a href="https://www.w3.org/TR/css-transitions-1/">CSS Transitions Level 1</a>
 		  <a data-link-type="biblio" href="#biblio-css-transitions-1" title="CSS Transitions">[CSS-TRANSITIONS-1]</a>
@@ -1244,7 +1363,7 @@ Modules with Rough Interoperability</span><a class="self-link" href="#rough-inte
 		  <a data-link-type="biblio" href="#biblio-css-will-change-1" title="CSS Will Change Module Level 1">[CSS-WILL-CHANGE-1]</a>
 		
     <dd>
-			Introduces a performance hint property called <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-will-change-1/#propdef-will-change" id="ref-for-propdef-will-change">will-change</a>.
+			Introduces a performance hint property called <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-will-change-1/#propdef-will-change" id="ref-for-propdef-will-change">will-change</a>.
 
 		
     <dt><a href="https://www.w3.org/TR/filter-effects-1/">Filter Effects Module Level 1</a>
@@ -1311,9 +1430,9 @@ Modules with Rough Interoperability</span><a class="self-link" href="#rough-inte
     <dd>
 			Contains defines coordinate-based positioning and offsetting schemes of CSS:
 			<a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/visuren.html#x34" id="ref-for-x34">relative positioning</a>,
-			<a data-link-type="dfn" href="https://www.w3.org/TR/css-position-3/#sticky-position" id="ref-for-sticky-position">sticky positioning</a>,
-			<a data-link-type="dfn" href="https://www.w3.org/TR/css-position-3/#absolute-position" id="ref-for-absolute-position">absolute positioning</a>,
-			and <a data-link-type="dfn" href="https://www.w3.org/TR/css-position-3/#fixed-position" id="ref-for-fixed-position">fixed positioning</a>.
+			<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-position-3/#sticky-position" id="ref-for-sticky-position">sticky positioning</a>,
+			<a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-position-3/#absolute-position" id="ref-for-absolute-position">absolute positioning</a>,
+			and <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-position-3/#fixed-position" id="ref-for-fixed-position">fixed positioning</a>.
 
 		
     <dt><a href="https://www.w3.org/TR/resize-observer-1/">Resize Observer</a>
@@ -1378,7 +1497,7 @@ CSS Levels</span><a class="self-link" href="#css-levels"></a></h3>
 			is technically a W3C Recommendation, it passed into the Recommendation stage
 			before the W3C had defined the Candidate Recommendation stage. Over time
 			implementation experience and further review has brought to light many problems
-			in the CSS2 specification, so instead of expanding an already <a href="https://www.w3.org/Style/css2-updates/REC-CSS2-19980512-errata.html">unwieldy
+			in the CSS2 specification, so instead of expanding an already <a href="http://www.w3.org/Style/css2-updates/REC-CSS2-19980512-errata.html">unwieldy
 			errata list</a>, the CSS Working Group chose to define <cite>CSS Level 2
 			Revision 1</cite> (CSS2.1). In case of any conflict between the two specs
 			CSS2.1 contains the definitive definition.
@@ -1609,9 +1728,9 @@ Preserving the Openness of CSS</span><a class="self-link" href="#open-technology
 	Working Group.</p>
    <p>Further information on submitting testcases and implementation reports
 	can be found from on the CSS Working Group’s website at
-	<a href="https://www.w3.org/Style/CSS/Test/">https://www.w3.org/Style/CSS/Test/</a>.
+	<a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
 	Questions should be directed to the
-	<a href="https://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
+	<a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
 	mailing list.</p>
    <h2 class="heading settled" data-level="4" id="CR-exceptions"><span class="secno">4. </span><span class="content">
 Safe to Release pre-CR Exceptions</span><a class="self-link" href="#CR-exceptions"></a></h2>
@@ -1621,33 +1740,33 @@ Safe to Release pre-CR Exceptions</span><a class="self-link" href="#CR-exception
 	See <a href="#experimental">§ 3.2.1 Experimentation and Unstable Features</a>.</p>
    <ul>
     <li>The flow-relative equivalents of
-		the sizing properties (<a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a>, <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a>, etc.),
+		the sizing properties (<a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a>, <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a>, etc.),
 		the border properties,
 		the margin and padding properties.
 		See <a href="https://lists.w3.org/Archives/Public/www-style/2015Jul/0040.html">explanation</a>
 		and <a href="https://www.w3.org/TR/css-logical-1/">specification</a>.
 
 		
-    <li>The <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-sizing-3/#valdef-width-min-content" id="ref-for-valdef-width-min-content">min-content</a> and <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-sizing-3/#valdef-width-max-content" id="ref-for-valdef-width-max-content">max-content</a> keywords of the sizing properties.
+    <li>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content" id="ref-for-valdef-width-min-content">min-content</a> and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content" id="ref-for-valdef-width-max-content">max-content</a> keywords of the sizing properties.
 		See <a href="https://lists.w3.org/Archives/Public/www-style/2015Aug/0109.html">decision</a>
 		and <a href="https://www.w3.org/TR/css-sizing-3/#sizing-values">specification</a>.
 		
-    <li>The <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-images-4/#funcdef-conic-gradient" id="ref-for-funcdef-conic-gradient">conic-gradient()</a> gradient notation. See <a href="https://github.com/w3c/csswg-drafts/issues/2383#issuecomment-371340088">decision</a>.
+    <li>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-images-4/#funcdef-conic-gradient" id="ref-for-funcdef-conic-gradient">conic-gradient()</a> gradient notation. See <a href="https://github.com/w3c/csswg-drafts/issues/2383#issuecomment-371340088">decision</a>.
 
 		
-    <li>The <a class="css" data-link-type="property" href="https://www.w3.org/TR/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a> property. <a data-link-type="biblio" href="#biblio-css-sizing-4" title="CSS Box Sizing Module Level 4">[CSS-SIZING-4]</a>
+    <li>The <a class="css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a> property. <a data-link-type="biblio" href="#biblio-css-sizing-4" title="CSS Box Sizing Module Level 4">[CSS-SIZING-4]</a>
 
 		
-    <li>The <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-transforms-2/#propdef-translate" id="ref-for-propdef-translate">translate</a>, <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-transforms-2/#propdef-rotate" id="ref-for-propdef-rotate">rotate</a>, and <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-transforms-2/#propdef-scale" id="ref-for-propdef-scale">scale</a> properties. <a data-link-type="biblio" href="#biblio-css-transforms-2" title="CSS Transforms Module Level 2">[CSS-TRANSFORMS-2]</a>
+    <li>The <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-translate" id="ref-for-propdef-translate">translate</a>, <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-rotate" id="ref-for-propdef-rotate">rotate</a>, and <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-scale" id="ref-for-propdef-scale">scale</a> properties. <a data-link-type="biblio" href="#biblio-css-transforms-2" title="CSS Transforms Module Level 2">[CSS-TRANSFORMS-2]</a>
 
 		
-    <li>The <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-text-4/#propdef-hyphenate-character" id="ref-for-propdef-hyphenate-character">hyphenate-character</a> property. <a data-link-type="biblio" href="#biblio-css-text-4" title="CSS Text Module Level 4">[CSS-TEXT-4]</a>
+    <li>The <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-text-4/#propdef-hyphenate-character" id="ref-for-propdef-hyphenate-character">hyphenate-character</a> property. <a data-link-type="biblio" href="#biblio-css-text-4" title="CSS Text Module Level 4">[CSS-TEXT-4]</a>
 
 		
-    <li>The <a data-link-type="functionish" href="https://www.w3.org/TR/css-color-5/#funcdef-color-mix" id="ref-for-funcdef-color-mix">color-mix()</a> function. <a data-link-type="biblio" href="#biblio-css-color-5" title="CSS Color Module Level 5">[CSS-COLOR-5]</a>
+    <li>The <a data-link-type="functionish" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#funcdef-color-mix" id="ref-for-funcdef-color-mix">color-mix()</a> function. <a data-link-type="biblio" href="#biblio-css-color-5" title="CSS Color Module Level 5">[CSS-COLOR-5]</a>
 
 		
-    <li>The <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-color-5/#color-interpolation-method" id="ref-for-color-interpolation-method">&lt;color-interpolation-method></a>, defined in <a data-link-type="biblio" href="#biblio-css-color-4" title="CSS Color Module Level 4">[CSS-COLOR-4]</a> and used for interpolation of linear, radial and conic gradients. <a data-link-type="biblio" href="#biblio-css-images-4" title="CSS Images Module Level 4">[CSS-IMAGES-4]</a>
+    <li>The <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-color-5/#color-interpolation-method" id="ref-for-color-interpolation-method">&lt;color-interpolation-method></a>, defined in <a data-link-type="biblio" href="#biblio-css-color-4" title="CSS Color Module Level 4">[CSS-COLOR-4]</a> and used for interpolation of linear, radial and conic gradients. <a data-link-type="biblio" href="#biblio-css-images-4" title="CSS Images Module Level 4">[CSS-IMAGES-4]</a>
 	
    </ul>
    <p>The following features have been explicitly and retroactively cleared
@@ -1659,7 +1778,7 @@ Safe to Release pre-CR Exceptions</span><a class="self-link" href="#CR-exception
 		and
 		<a href="https://www.w3.org/TR/css-transitions-1/">CSS Transitions Level 1</a>.
 		
-    <li>The <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/selectors-4/#dir-pseudo" id="ref-for-dir-pseudo">:dir()</a>, <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/selectors-4/#lang-pseudo" id="ref-for-lang-pseudo">:lang()</a>, and <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/selectors-4/#focus-within-pseudo" id="ref-for-focus-within-pseudo">:focus-within</a> pseudo-classes from <a data-link-type="biblio" href="#biblio-selectors-4" title="Selectors Level 4">[SELECTORS-4]</a>.
+    <li>The <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#dir-pseudo" id="ref-for-dir-pseudo">:dir()</a>, <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#lang-pseudo" id="ref-for-lang-pseudo">:lang()</a>, and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#focus-within-pseudo" id="ref-for-focus-within-pseudo">:focus-within</a> pseudo-classes from <a data-link-type="biblio" href="#biblio-selectors-4" title="Selectors Level 4">[SELECTORS-4]</a>.
 	
    </ul>
    <h2 class="heading settled" data-level="5" id="indices"><span class="secno">5. </span><span class="content">Indices</span><a class="self-link" href="#indices"></a></h2>
@@ -5355,6 +5474,14 @@ Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3
     <strong class="advisement">
         UAs MUST provide an accessible alternative.
     </strong></p>
+  <details class="wpt-tests-block" dir="ltr" lang="en" open>
+   <summary>Tests</summary>
+   <p>Tests relating to the content of this specification
+                     may be documented in “Tests” blocks like this one.
+                     Any such block is non-normative.</p>
+   <ul class="wpt-tests-list"></ul>
+   <hr>
+  </details>
   <h3 class="no-ref heading settled" id="w3c-conformance-classes"><span class="content">
 Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
   <p>Conformance to this specification
@@ -5363,18 +5490,18 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
   <dl>
    <dt>style sheet
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
             style sheet</a>.
         
    <dt>renderer
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that interprets the semantics of a style sheet and renders
             documents that use them.
         
    <dt>authoring tool
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that writes a style sheet.
     
   </dl>
@@ -5405,7 +5532,7 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
 Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <p>So that authors can exploit the forward-compatible parsing rules to
     assign fallback values, CSS renderers <strong>must</strong>
-    treat as invalid (and <a href="https://www.w3.org/TR/CSS21/conform.html#ignore">ignore
+    treat as invalid (and <a href="http://www.w3.org/TR/CSS21/conform.html#ignore">ignore
     as appropriate</a>) any at-rules, properties, property values, keywords,
     and other syntactic constructs for which they have no usable level of
     support. In particular, user agents <strong>must not</strong> selectively
@@ -5416,7 +5543,7 @@ Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <h4 class="heading settled" id="w3c-conform-future-proofing"><span class="content">
 Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#w3c-conform-future-proofing"></a></h4>
   <p>To avoid clashes with future stable CSS features,
-        the CSSWG recommends <a href="https://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="https://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="https://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
+        the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
 
 </p>
   <h3 class="no-ref heading settled" id="w3c-testing"><span class="content">
@@ -5438,143 +5565,143 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     </p>
   <p>Further information on submitting testcases and implementation reports
     can be found from on the CSS Working Group’s website at
-    <a href="https://www.w3.org/Style/CSS/Test/">https://www.w3.org/Style/CSS/Test/</a>.
+    <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
     Questions should be directed to the
-    <a href="https://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
+    <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
     mailing list.</p>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-compositing">[COMPOSITING]
-   <dd>Chris Harrelson. <a href="https://www.w3.org/TR/compositing-1/"><cite>Compositing and Blending Level 1</cite></a>. 21 March 2024. CRD. URL: <a href="https://www.w3.org/TR/compositing-1/">https://www.w3.org/TR/compositing-1/</a>
+   <dd>Chris Harrelson. <a href="https://drafts.fxtf.org/compositing-1/"><cite>Compositing and Blending Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/compositing-1/">https://drafts.fxtf.org/compositing-1/</a>
    <dt id="biblio-css-backgrounds-3">[CSS-BACKGROUNDS-3]
-   <dd>Elika Etemad; Brad Kemper. <a href="https://www.w3.org/TR/css-backgrounds-3/"><cite>CSS Backgrounds and Borders Module Level 3</cite></a>. 11 March 2024. CRD. URL: <a href="https://www.w3.org/TR/css-backgrounds-3/">https://www.w3.org/TR/css-backgrounds-3/</a>
+   <dd>Elika Etemad; Brad Kemper. <a href="https://andreubotella.com/csswg-auto-build/test/css-backgrounds/"><cite>CSS Backgrounds and Borders Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-backgrounds/">https://andreubotella.com/csswg-auto-build/test/css-backgrounds/</a>
    <dt id="biblio-css-box-3">[CSS-BOX-3]
-   <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-box-3/"><cite>CSS Box Model Module Level 3</cite></a>. 11 April 2024. REC. URL: <a href="https://www.w3.org/TR/css-box-3/">https://www.w3.org/TR/css-box-3/</a>
+   <dd>Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-box-3/"><cite>CSS Box Model Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-box-3/">https://andreubotella.com/csswg-auto-build/test/css-box-3/</a>
    <dt id="biblio-css-cascade-4">[CSS-CASCADE-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-cascade-4/"><cite>CSS Cascading and Inheritance Level 4</cite></a>. 13 January 2022. CR. URL: <a href="https://www.w3.org/TR/css-cascade-4/">https://www.w3.org/TR/css-cascade-4/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-4/"><cite>CSS Cascading and Inheritance Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-4/">https://andreubotella.com/csswg-auto-build/test/css-cascade-4/</a>
    <dt id="biblio-css-color-4">[CSS-COLOR-4]
-   <dd>Chris Lilley; Tab Atkins Jr.; Lea Verou. <a href="https://www.w3.org/TR/css-color-4/"><cite>CSS Color Module Level 4</cite></a>. 24 April 2025. CRD. URL: <a href="https://www.w3.org/TR/css-color-4/">https://www.w3.org/TR/css-color-4/</a>
+   <dd>Chris Lilley; Tab Atkins Jr.; Lea Verou. <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/"><cite>CSS Color Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-color-4/">https://andreubotella.com/csswg-auto-build/test/css-color-4/</a>
    <dt id="biblio-css-color-5">[CSS-COLOR-5]
-   <dd>Chris Lilley; et al. <a href="https://www.w3.org/TR/css-color-5/"><cite>CSS Color Module Level 5</cite></a>. 18 March 2025. WD. URL: <a href="https://www.w3.org/TR/css-color-5/">https://www.w3.org/TR/css-color-5/</a>
+   <dd>Chris Lilley; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-color-5/"><cite>CSS Color Module Level 5</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-color-5/">https://andreubotella.com/csswg-auto-build/test/css-color-5/</a>
    <dt id="biblio-css-color-adjust-1">[CSS-COLOR-ADJUST-1]
-   <dd>Elika Etemad; et al. <a href="https://www.w3.org/TR/css-color-adjust-1/"><cite>CSS Color Adjustment Module Level 1</cite></a>. 14 June 2022. CRD. URL: <a href="https://www.w3.org/TR/css-color-adjust-1/">https://www.w3.org/TR/css-color-adjust-1/</a>
+   <dd>Elika Etemad; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-color-adjust-1/"><cite>CSS Color Adjustment Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-color-adjust-1/">https://andreubotella.com/csswg-auto-build/test/css-color-adjust-1/</a>
    <dt id="biblio-css-conditional-3">[CSS-CONDITIONAL-3]
-   <dd>Chris Lilley; David Baron; Elika Etemad. <a href="https://www.w3.org/TR/css-conditional-3/"><cite>CSS Conditional Rules Module Level 3</cite></a>. 15 August 2024. CRD. URL: <a href="https://www.w3.org/TR/css-conditional-3/">https://www.w3.org/TR/css-conditional-3/</a>
+   <dd>Chris Lilley; David Baron; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-conditional-3/"><cite>CSS Conditional Rules Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-conditional-3/">https://andreubotella.com/csswg-auto-build/test/css-conditional-3/</a>
    <dt id="biblio-css-contain-1">[CSS-CONTAIN-1]
-   <dd>Tab Atkins Jr.; Florian Rivoal. <a href="https://www.w3.org/TR/css-contain-1/"><cite>CSS Containment Module Level 1</cite></a>. 25 June 2024. REC. URL: <a href="https://www.w3.org/TR/css-contain-1/">https://www.w3.org/TR/css-contain-1/</a>
+   <dd>Tab Atkins Jr.; Florian Rivoal. <a href="https://andreubotella.com/csswg-auto-build/test/css-contain-1/"><cite>CSS Containment Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-contain-1/">https://andreubotella.com/csswg-auto-build/test/css-contain-1/</a>
    <dt id="biblio-css-contain-2">[CSS-CONTAIN-2]
-   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://www.w3.org/TR/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. 17 September 2022. WD. URL: <a href="https://www.w3.org/TR/css-contain-2/">https://www.w3.org/TR/css-contain-2/</a>
+   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://andreubotella.com/csswg-auto-build/test/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-contain-2/">https://andreubotella.com/csswg-auto-build/test/css-contain-2/</a>
    <dt id="biblio-css-counter-styles-3">[CSS-COUNTER-STYLES-3]
-   <dd>Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-counter-styles-3/"><cite>CSS Counter Styles Level 3</cite></a>. 27 July 2021. CR. URL: <a href="https://www.w3.org/TR/css-counter-styles-3/">https://www.w3.org/TR/css-counter-styles-3/</a>
+   <dd>Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-counter-styles/"><cite>CSS Counter Styles Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-counter-styles/">https://andreubotella.com/csswg-auto-build/test/css-counter-styles/</a>
    <dt id="biblio-css-display-4">[CSS-DISPLAY-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-display-4/"><cite>CSS Display Module Level 4</cite></a>. 19 December 2024. FPWD. URL: <a href="https://www.w3.org/TR/css-display-4/">https://www.w3.org/TR/css-display-4/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-display/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-display/">https://andreubotella.com/csswg-auto-build/test/css-display/</a>
    <dt id="biblio-css-easing-1">[CSS-EASING-1]
-   <dd>Brian Birtles; Dean Jackson; Matt Rakow. <a href="https://www.w3.org/TR/css-easing-1/"><cite>CSS Easing Functions Level 1</cite></a>. 13 February 2023. CRD. URL: <a href="https://www.w3.org/TR/css-easing-1/">https://www.w3.org/TR/css-easing-1/</a>
+   <dd>Brian Birtles; Dean Jackson; Matt Rakow. <a href="https://andreubotella.com/csswg-auto-build/test/css-easing/"><cite>CSS Easing Functions Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-easing/">https://andreubotella.com/csswg-auto-build/test/css-easing/</a>
    <dt id="biblio-css-flexbox-1">[CSS-FLEXBOX-1]
-   <dd>Tab Atkins Jr.; et al. <a href="https://www.w3.org/TR/css-flexbox-1/"><cite>CSS Flexible Box Layout Module Level 1</cite></a>. 19 November 2018. CR. URL: <a href="https://www.w3.org/TR/css-flexbox-1/">https://www.w3.org/TR/css-flexbox-1/</a>
+   <dd>Tab Atkins Jr.; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-flexbox-1/"><cite>CSS Flexible Box Layout Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-flexbox-1/">https://andreubotella.com/csswg-auto-build/test/css-flexbox-1/</a>
    <dt id="biblio-css-fonts-3">[CSS-FONTS-3]
-   <dd>John Daggett; Myles Maxfield; Chris Lilley. <a href="https://www.w3.org/TR/css-fonts-3/"><cite>CSS Fonts Module Level 3</cite></a>. 20 September 2018. REC. URL: <a href="https://www.w3.org/TR/css-fonts-3/">https://www.w3.org/TR/css-fonts-3/</a>
+   <dd>John Daggett; Myles Maxfield; Chris Lilley. <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-3/"><cite>CSS Fonts Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-3/">https://andreubotella.com/csswg-auto-build/test/css-fonts-3/</a>
    <dt id="biblio-css-fonts-4">[CSS-FONTS-4]
-   <dd>Chris Lilley. <a href="https://www.w3.org/TR/css-fonts-4/"><cite>CSS Fonts Module Level 4</cite></a>. 1 February 2024. WD. URL: <a href="https://www.w3.org/TR/css-fonts-4/">https://www.w3.org/TR/css-fonts-4/</a>
+   <dd>Chris Lilley. <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-4/"><cite>CSS Fonts Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-fonts-4/">https://andreubotella.com/csswg-auto-build/test/css-fonts-4/</a>
    <dt id="biblio-css-grid-1">[CSS-GRID-1]
-   <dd>Tab Atkins Jr.; et al. <a href="https://www.w3.org/TR/css-grid-1/"><cite>CSS Grid Layout Module Level 1</cite></a>. 26 March 2025. CRD. URL: <a href="https://www.w3.org/TR/css-grid-1/">https://www.w3.org/TR/css-grid-1/</a>
+   <dd>Tab Atkins Jr.; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-grid-1/"><cite>CSS Grid Layout Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-grid-1/">https://andreubotella.com/csswg-auto-build/test/css-grid-1/</a>
    <dt id="biblio-css-grid-2">[CSS-GRID-2]
-   <dd>Tab Atkins Jr.; et al. <a href="https://www.w3.org/TR/css-grid-2/"><cite>CSS Grid Layout Module Level 2</cite></a>. 26 March 2025. CRD. URL: <a href="https://www.w3.org/TR/css-grid-2/">https://www.w3.org/TR/css-grid-2/</a>
+   <dd>Tab Atkins Jr.; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-grid-2/"><cite>CSS Grid Layout Module Level 2</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-grid-2/">https://andreubotella.com/csswg-auto-build/test/css-grid-2/</a>
    <dt id="biblio-css-images-3">[CSS-IMAGES-3]
-   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://www.w3.org/TR/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. 18 December 2023. CRD. URL: <a href="https://www.w3.org/TR/css-images-3/">https://www.w3.org/TR/css-images-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://andreubotella.com/csswg-auto-build/test/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-images-3/">https://andreubotella.com/csswg-auto-build/test/css-images-3/</a>
    <dt id="biblio-css-images-4">[CSS-IMAGES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://www.w3.org/TR/css-images-4/"><cite>CSS Images Module Level 4</cite></a>. 17 February 2023. WD. URL: <a href="https://www.w3.org/TR/css-images-4/">https://www.w3.org/TR/css-images-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://andreubotella.com/csswg-auto-build/test/css-images-4/"><cite>CSS Images Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-images-4/">https://andreubotella.com/csswg-auto-build/test/css-images-4/</a>
    <dt id="biblio-css-lists-3">[CSS-LISTS-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-lists-3/"><cite>CSS Lists and Counters Module Level 3</cite></a>. 17 November 2020. WD. URL: <a href="https://www.w3.org/TR/css-lists-3/">https://www.w3.org/TR/css-lists-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-lists-3/"><cite>CSS Lists and Counters Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-lists-3/">https://andreubotella.com/csswg-auto-build/test/css-lists-3/</a>
    <dt id="biblio-css-logical-1">[CSS-LOGICAL-1]
-   <dd>Rossen Atanassov; Elika Etemad. <a href="https://www.w3.org/TR/css-logical-1/"><cite>CSS Logical Properties and Values Level 1</cite></a>. 27 August 2018. WD. URL: <a href="https://www.w3.org/TR/css-logical-1/">https://www.w3.org/TR/css-logical-1/</a>
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-logical-1/"><cite>CSS Logical Properties and Values Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-logical-1/">https://andreubotella.com/csswg-auto-build/test/css-logical-1/</a>
    <dt id="biblio-css-multicol-1">[CSS-MULTICOL-1]
-   <dd>Florian Rivoal; Rachel Andrew. <a href="https://www.w3.org/TR/css-multicol-1/"><cite>CSS Multi-column Layout Module Level 1</cite></a>. 16 May 2024. CR. URL: <a href="https://www.w3.org/TR/css-multicol-1/">https://www.w3.org/TR/css-multicol-1/</a>
+   <dd>Florian Rivoal; Rachel Andrew. <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol/"><cite>CSS Multi-column Layout Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-multicol/">https://andreubotella.com/csswg-auto-build/test/css-multicol/</a>
    <dt id="biblio-css-position-3">[CSS-POSITION-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. 11 March 2025. WD. URL: <a href="https://www.w3.org/TR/css-position-3/">https://www.w3.org/TR/css-position-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-position-3/">https://andreubotella.com/csswg-auto-build/test/css-position-3/</a>
    <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. 17 December 2021. WD. URL: <a href="https://www.w3.org/TR/css-sizing-3/">https://www.w3.org/TR/css-sizing-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-3/">https://andreubotella.com/csswg-auto-build/test/css-sizing-3/</a>
    <dt id="biblio-css-sizing-4">[CSS-SIZING-4]
-   <dd>Tab Atkins Jr.; Elika Etemad; Jen Simmons. <a href="https://www.w3.org/TR/css-sizing-4/"><cite>CSS Box Sizing Module Level 4</cite></a>. 20 May 2021. WD. URL: <a href="https://www.w3.org/TR/css-sizing-4/">https://www.w3.org/TR/css-sizing-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Jen Simmons. <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/"><cite>CSS Box Sizing Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-sizing-4/">https://andreubotella.com/csswg-auto-build/test/css-sizing-4/</a>
    <dt id="biblio-css-style-attr">[CSS-STYLE-ATTR]
-   <dd>Tantek Çelik; Elika Etemad. <a href="https://www.w3.org/TR/css-style-attr/"><cite>CSS Style Attributes</cite></a>. 7 November 2013. REC. URL: <a href="https://www.w3.org/TR/css-style-attr/">https://www.w3.org/TR/css-style-attr/</a>
+   <dd>Tantek Çelik; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-style-attr/"><cite>CSS Style Attributes</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-style-attr/">https://andreubotella.com/csswg-auto-build/test/css-style-attr/</a>
    <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
-   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://www.w3.org/TR/css-syntax-3/"><cite>CSS Syntax Module Level 3</cite></a>. 24 December 2021. CRD. URL: <a href="https://www.w3.org/TR/css-syntax-3/">https://www.w3.org/TR/css-syntax-3/</a>
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/">https://andreubotella.com/csswg-auto-build/test/css-syntax/</a>
    <dt id="biblio-css-text-4">[CSS-TEXT-4]
-   <dd>Elika Etemad; et al. <a href="https://www.w3.org/TR/css-text-4/"><cite>CSS Text Module Level 4</cite></a>. 29 May 2024. WD. URL: <a href="https://www.w3.org/TR/css-text-4/">https://www.w3.org/TR/css-text-4/</a>
+   <dd>Elika Etemad; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-text-4/"><cite>CSS Text Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-text-4/">https://andreubotella.com/csswg-auto-build/test/css-text-4/</a>
    <dt id="biblio-css-transforms-1">[CSS-TRANSFORMS-1]
-   <dd>Simon Fraser; et al. <a href="https://www.w3.org/TR/css-transforms-1/"><cite>CSS Transforms Module Level 1</cite></a>. 14 February 2019. CR. URL: <a href="https://www.w3.org/TR/css-transforms-1/">https://www.w3.org/TR/css-transforms-1/</a>
+   <dd>Simon Fraser; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-transforms/"><cite>CSS Transforms Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-transforms/">https://andreubotella.com/csswg-auto-build/test/css-transforms/</a>
    <dt id="biblio-css-transforms-2">[CSS-TRANSFORMS-2]
-   <dd>Tab Atkins Jr.; et al. <a href="https://www.w3.org/TR/css-transforms-2/"><cite>CSS Transforms Module Level 2</cite></a>. 9 November 2021. WD. URL: <a href="https://www.w3.org/TR/css-transforms-2/">https://www.w3.org/TR/css-transforms-2/</a>
+   <dd>Tab Atkins Jr.; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-transforms-2/"><cite>CSS Transforms Module Level 2</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-transforms-2/">https://andreubotella.com/csswg-auto-build/test/css-transforms-2/</a>
    <dt id="biblio-css-ui-3">[CSS-UI-3]
-   <dd>Tantek Çelik; Florian Rivoal. <a href="https://www.w3.org/TR/css-ui-3/"><cite>CSS Basic User Interface Module Level 3 (CSS3 UI)</cite></a>. 21 June 2018. REC. URL: <a href="https://www.w3.org/TR/css-ui-3/">https://www.w3.org/TR/css-ui-3/</a>
+   <dd>Tantek Çelik; Florian Rivoal. <a href="https://andreubotella.com/csswg-auto-build/test/css-ui-3/"><cite>CSS Basic User Interface Module Level 3 (CSS3 UI)</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-ui-3/">https://andreubotella.com/csswg-auto-build/test/css-ui-3/</a>
    <dt id="biblio-css-ui-4">[CSS-UI-4]
-   <dd>Florian Rivoal. <a href="https://www.w3.org/TR/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. 16 March 2021. WD. URL: <a href="https://www.w3.org/TR/css-ui-4/">https://www.w3.org/TR/css-ui-4/</a>
+   <dd>Florian Rivoal. <a href="https://andreubotella.com/csswg-auto-build/test/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-ui-4/">https://andreubotella.com/csswg-auto-build/test/css-ui-4/</a>
    <dt id="biblio-css-values-3">[CSS-VALUES-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-3/"><cite>CSS Values and Units Module Level 3</cite></a>. 22 March 2024. CRD. URL: <a href="https://www.w3.org/TR/css-values-3/">https://www.w3.org/TR/css-values-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/"><cite>CSS Values and Units Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/">https://andreubotella.com/csswg-auto-build/test/css-values-3/</a>
    <dt id="biblio-css-variables-1">[CSS-VARIABLES-1]
-   <dd>Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-variables-1/"><cite>CSS Custom Properties for Cascading Variables Module Level 1</cite></a>. 16 June 2022. CR. URL: <a href="https://www.w3.org/TR/css-variables-1/">https://www.w3.org/TR/css-variables-1/</a>
+   <dd>Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-variables/"><cite>CSS Custom Properties for Cascading Variables Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-variables/">https://andreubotella.com/csswg-auto-build/test/css-variables/</a>
    <dt id="biblio-css-will-change-1">[CSS-WILL-CHANGE-1]
-   <dd>Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-will-change-1/"><cite>CSS Will Change Module Level 1</cite></a>. 5 May 2022. CRD. URL: <a href="https://www.w3.org/TR/css-will-change-1/">https://www.w3.org/TR/css-will-change-1/</a>
+   <dd>Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-will-change/"><cite>CSS Will Change Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-will-change/">https://andreubotella.com/csswg-auto-build/test/css-will-change/</a>
    <dt id="biblio-css-writing-modes-3">[CSS-WRITING-MODES-3]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://www.w3.org/TR/css-writing-modes-3/"><cite>CSS Writing Modes Level 3</cite></a>. 10 December 2019. REC. URL: <a href="https://www.w3.org/TR/css-writing-modes-3/">https://www.w3.org/TR/css-writing-modes-3/</a>
+   <dd>Elika Etemad; Koji Ishii. <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-3/"><cite>CSS Writing Modes Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-3/">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-3/</a>
    <dt id="biblio-css2">[CSS2]
-   <dd>Bert Bos; et al. <a href="https://www.w3.org/TR/CSS2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. 7 June 2011. REC. URL: <a href="https://www.w3.org/TR/CSS2/">https://www.w3.org/TR/CSS2/</a>
+   <dd>Bert Bos; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css2/">https://andreubotella.com/csswg-auto-build/test/css2/</a>
    <dt id="biblio-css3-mediaqueries">[CSS3-MEDIAQUERIES]
-   <dd>Florian Rivoal. <a href="https://www.w3.org/TR/mediaqueries-3/"><cite>Media Queries Level 3</cite></a>. 21 May 2024. REC. URL: <a href="https://www.w3.org/TR/mediaqueries-3/">https://www.w3.org/TR/mediaqueries-3/</a>
+   <dd>Florian Rivoal. <a href="https://andreubotella.com/csswg-auto-build/test/mediaqueries-3/"><cite>Media Queries Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/mediaqueries-3/">https://andreubotella.com/csswg-auto-build/test/mediaqueries-3/</a>
    <dt id="biblio-css3-namespace">[CSS3-NAMESPACE]
-   <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-namespaces-3/"><cite>CSS Namespaces Module Level 3</cite></a>. 20 March 2014. REC. URL: <a href="https://www.w3.org/TR/css-namespaces-3/">https://www.w3.org/TR/css-namespaces-3/</a>
+   <dd>Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-namespaces/"><cite>CSS Namespaces Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-namespaces/">https://andreubotella.com/csswg-auto-build/test/css-namespaces/</a>
    <dt id="biblio-resize-observer-1">[RESIZE-OBSERVER-1]
-   <dd>Aleks Totic; Greg Whitworth. <a href="https://www.w3.org/TR/resize-observer-1/"><cite>Resize Observer</cite></a>. 11 February 2020. FPWD. URL: <a href="https://www.w3.org/TR/resize-observer-1/">https://www.w3.org/TR/resize-observer-1/</a>
+   <dd>Aleks Totic; Greg Whitworth. <a href="https://andreubotella.com/csswg-auto-build/test/resize-observer/"><cite>Resize Observer</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/resize-observer/">https://andreubotella.com/csswg-auto-build/test/resize-observer/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-selectors-3">[SELECTORS-3]
-   <dd>Tantek Çelik; et al. <a href="https://www.w3.org/TR/selectors-3/"><cite>Selectors Level 3</cite></a>. 6 November 2018. REC. URL: <a href="https://www.w3.org/TR/selectors-3/">https://www.w3.org/TR/selectors-3/</a>
+   <dd>Tantek Çelik; et al. <a href="https://andreubotella.com/csswg-auto-build/test/selectors-3/"><cite>Selectors Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/selectors-3/">https://andreubotella.com/csswg-auto-build/test/selectors-3/</a>
    <dt id="biblio-selectors-4">[SELECTORS-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/selectors-4/"><cite>Selectors Level 4</cite></a>. 11 November 2022. WD. URL: <a href="https://www.w3.org/TR/selectors-4/">https://www.w3.org/TR/selectors-4/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/selectors/"><cite>Selectors Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/selectors/">https://andreubotella.com/csswg-auto-build/test/selectors/</a>
    <dt id="biblio-web-animations-1">[WEB-ANIMATIONS-1]
-   <dd>Brian Birtles; et al. <a href="https://www.w3.org/TR/web-animations-1/"><cite>Web Animations</cite></a>. 5 June 2023. WD. URL: <a href="https://www.w3.org/TR/web-animations-1/">https://www.w3.org/TR/web-animations-1/</a>
+   <dd>Brian Birtles; et al. <a href="https://andreubotella.com/csswg-auto-build/test/web-animations-1/"><cite>Web Animations</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/web-animations-1/">https://andreubotella.com/csswg-auto-build/test/web-animations-1/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-align-3/"><cite>CSS Box Alignment Module Level 3</cite></a>. 11 March 2025. WD. URL: <a href="https://www.w3.org/TR/css-align-3/">https://www.w3.org/TR/css-align-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-align/"><cite>CSS Box Alignment Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-align/">https://andreubotella.com/csswg-auto-build/test/css-align/</a>
    <dt id="biblio-css-animations-1">[CSS-ANIMATIONS-1]
-   <dd>David Baron; et al. <a href="https://www.w3.org/TR/css-animations-1/"><cite>CSS Animations Level 1</cite></a>. 2 March 2023. WD. URL: <a href="https://www.w3.org/TR/css-animations-1/">https://www.w3.org/TR/css-animations-1/</a>
+   <dd>David Baron; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-animations/"><cite>CSS Animations Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-animations/">https://andreubotella.com/csswg-auto-build/test/css-animations/</a>
    <dt id="biblio-css-break-3">[CSS-BREAK-3]
-   <dd>Rossen Atanassov; Elika Etemad. <a href="https://www.w3.org/TR/css-break-3/"><cite>CSS Fragmentation Module Level 3</cite></a>. 4 December 2018. CR. URL: <a href="https://www.w3.org/TR/css-break-3/">https://www.w3.org/TR/css-break-3/</a>
+   <dd>Rossen Atanassov; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-break/"><cite>CSS Fragmentation Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-break/">https://andreubotella.com/csswg-auto-build/test/css-break/</a>
    <dt id="biblio-css-cascade-3">[CSS-CASCADE-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-cascade-3/"><cite>CSS Cascading and Inheritance Level 3</cite></a>. 11 February 2021. REC. URL: <a href="https://www.w3.org/TR/css-cascade-3/">https://www.w3.org/TR/css-cascade-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-3/"><cite>CSS Cascading and Inheritance Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-3/">https://andreubotella.com/csswg-auto-build/test/css-cascade-3/</a>
    <dt id="biblio-css-color-3">[CSS-COLOR-3]
-   <dd>Tantek Çelik; Chris Lilley; David Baron. <a href="https://www.w3.org/TR/css-color-3/"><cite>CSS Color Module Level 3</cite></a>. 18 January 2022. REC. URL: <a href="https://www.w3.org/TR/css-color-3/">https://www.w3.org/TR/css-color-3/</a>
+   <dd>Tantek Çelik; Chris Lilley; David Baron. <a href="https://andreubotella.com/csswg-auto-build/test/css-color-3/"><cite>CSS Color Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-color-3/">https://andreubotella.com/csswg-auto-build/test/css-color-3/</a>
    <dt id="biblio-css-display-3">[CSS-DISPLAY-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-display-3/"><cite>CSS Display Module Level 3</cite></a>. 30 March 2023. CR. URL: <a href="https://www.w3.org/TR/css-display-3/">https://www.w3.org/TR/css-display-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-display/"><cite>CSS Display Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-display/">https://andreubotella.com/csswg-auto-build/test/css-display/</a>
    <dt id="biblio-css-font-loading-3">[CSS-FONT-LOADING-3]
-   <dd>Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-font-loading-3/"><cite>CSS Font Loading Module Level 3</cite></a>. 6 April 2023. WD. URL: <a href="https://www.w3.org/TR/css-font-loading-3/">https://www.w3.org/TR/css-font-loading-3/</a>
+   <dd>Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-font-loading/"><cite>CSS Font Loading Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-font-loading/">https://andreubotella.com/csswg-auto-build/test/css-font-loading/</a>
    <dt id="biblio-css-masking-1">[CSS-MASKING-1]
-   <dd>Dirk Schulze; Brian Birtles; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-masking-1/"><cite>CSS Masking Module Level 1</cite></a>. 5 August 2021. CRD. URL: <a href="https://www.w3.org/TR/css-masking-1/">https://www.w3.org/TR/css-masking-1/</a>
+   <dd>Dirk Schulze; Brian Birtles; Tab Atkins Jr.. <a href="https://drafts.fxtf.org/css-masking-1/"><cite>CSS Masking Module Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/css-masking-1/">https://drafts.fxtf.org/css-masking-1/</a>
    <dt id="biblio-css-scroll-snap-1">[CSS-SCROLL-SNAP-1]
-   <dd>Matt Rakow; et al. <a href="https://www.w3.org/TR/css-scroll-snap-1/"><cite>CSS Scroll Snap Module Level 1</cite></a>. 11 March 2021. CR. URL: <a href="https://www.w3.org/TR/css-scroll-snap-1/">https://www.w3.org/TR/css-scroll-snap-1/</a>
+   <dd>Matt Rakow; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-scroll-snap-1/"><cite>CSS Scroll Snap Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-scroll-snap-1/">https://andreubotella.com/csswg-auto-build/test/css-scroll-snap-1/</a>
    <dt id="biblio-css-scrollbars-1">[CSS-SCROLLBARS-1]
-   <dd>Tantek Çelik; Rossen Atanassov; Florian Rivoal. <a href="https://www.w3.org/TR/css-scrollbars-1/"><cite>CSS Scrollbars Styling Module Level 1</cite></a>. 9 December 2021. CR. URL: <a href="https://www.w3.org/TR/css-scrollbars-1/">https://www.w3.org/TR/css-scrollbars-1/</a>
+   <dd>Tantek Çelik; Rossen Atanassov; Florian Rivoal. <a href="https://andreubotella.com/csswg-auto-build/test/css-scrollbars/"><cite>CSS Scrollbars Styling Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-scrollbars/">https://andreubotella.com/csswg-auto-build/test/css-scrollbars/</a>
    <dt id="biblio-css-shapes-1">[CSS-SHAPES-1]
-   <dd>Alan Stearns; Rossen Atanassov; Noam Rosenthal. <a href="https://www.w3.org/TR/css-shapes-1/"><cite>CSS Shapes Module Level 1</cite></a>. 12 June 2025. CRD. URL: <a href="https://www.w3.org/TR/css-shapes-1/">https://www.w3.org/TR/css-shapes-1/</a>
+   <dd>Alan Stearns; Rossen Atanassov; Noam Rosenthal. <a href="https://andreubotella.com/csswg-auto-build/test/css-shapes/"><cite>CSS Shapes Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-shapes/">https://andreubotella.com/csswg-auto-build/test/css-shapes/</a>
    <dt id="biblio-css-speech-1">[CSS-SPEECH-1]
-   <dd>Léonie Watson; Elika Etemad. <a href="https://www.w3.org/TR/css-speech-1/"><cite>CSS Speech Module Level 1</cite></a>. 14 February 2023. CRD. URL: <a href="https://www.w3.org/TR/css-speech-1/">https://www.w3.org/TR/css-speech-1/</a>
+   <dd>Léonie Watson; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-speech-1/"><cite>CSS Speech Module Level 1</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-speech-1/">https://andreubotella.com/csswg-auto-build/test/css-speech-1/</a>
    <dt id="biblio-css-text-3">[CSS-TEXT-3]
-   <dd>Elika Etemad; Koji Ishii; Florian Rivoal. <a href="https://www.w3.org/TR/css-text-3/"><cite>CSS Text Module Level 3</cite></a>. 30 September 2024. CRD. URL: <a href="https://www.w3.org/TR/css-text-3/">https://www.w3.org/TR/css-text-3/</a>
+   <dd>Elika Etemad; Koji Ishii; Florian Rivoal. <a href="https://andreubotella.com/csswg-auto-build/test/css-text-3/"><cite>CSS Text Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-text-3/">https://andreubotella.com/csswg-auto-build/test/css-text-3/</a>
    <dt id="biblio-css-text-decor-3">[CSS-TEXT-DECOR-3]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://www.w3.org/TR/css-text-decor-3/"><cite>CSS Text Decoration Module Level 3</cite></a>. 5 May 2022. CRD. URL: <a href="https://www.w3.org/TR/css-text-decor-3/">https://www.w3.org/TR/css-text-decor-3/</a>
+   <dd>Elika Etemad; Koji Ishii. <a href="https://andreubotella.com/csswg-auto-build/test/css-text-decor-3/"><cite>CSS Text Decoration Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-text-decor-3/">https://andreubotella.com/csswg-auto-build/test/css-text-decor-3/</a>
    <dt id="biblio-css-transitions-1">[CSS-TRANSITIONS-1]
-   <dd>David Baron; et al. <a href="https://www.w3.org/TR/css-transitions-1/"><cite>CSS Transitions</cite></a>. 11 October 2018. WD. URL: <a href="https://www.w3.org/TR/css-transitions-1/">https://www.w3.org/TR/css-transitions-1/</a>
+   <dd>David Baron; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css-transitions/"><cite>CSS Transitions</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-transitions/">https://andreubotella.com/csswg-auto-build/test/css-transitions/</a>
    <dt id="biblio-css-writing-modes-4">[CSS-WRITING-MODES-4]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://www.w3.org/TR/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. 30 July 2019. CR. URL: <a href="https://www.w3.org/TR/css-writing-modes-4/">https://www.w3.org/TR/css-writing-modes-4/</a>
+   <dd>Elika Etemad; Koji Ishii. <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/">https://andreubotella.com/csswg-auto-build/test/css-writing-modes-4/</a>
    <dt id="biblio-filter-effects-1">[FILTER-EFFECTS-1]
-   <dd>Dirk Schulze; Dean Jackson. <a href="https://www.w3.org/TR/filter-effects-1/"><cite>Filter Effects Module Level 1</cite></a>. 18 December 2018. WD. URL: <a href="https://www.w3.org/TR/filter-effects-1/">https://www.w3.org/TR/filter-effects-1/</a>
+   <dd>Dirk Schulze; Dean Jackson. <a href="https://drafts.fxtf.org/filter-effects-1/"><cite>Filter Effects Module Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/filter-effects-1/">https://drafts.fxtf.org/filter-effects-1/</a>
    <dt id="biblio-mediaqueries-4">[MEDIAQUERIES-4]
-   <dd>Florian Rivoal; Tab Atkins Jr.. <a href="https://www.w3.org/TR/mediaqueries-4/"><cite>Media Queries Level 4</cite></a>. 25 December 2021. CRD. URL: <a href="https://www.w3.org/TR/mediaqueries-4/">https://www.w3.org/TR/mediaqueries-4/</a>
+   <dd>Florian Rivoal; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/mediaqueries-4/"><cite>Media Queries Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/mediaqueries-4/">https://andreubotella.com/csswg-auto-build/test/mediaqueries-4/</a>
   </dl>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
@@ -5779,7 +5906,7 @@ let dfnPanelData = {
 "author": {"dfnID":"author","dfnText":"Author","external":false,"refSections":[{"refs":[{"id":"ref-for-author"}],"title":"1.1. \nWhat is CSS?"}],"url":"#author"},
 "authoring-tool": {"dfnID":"authoring-tool","dfnText":"authoring tool","external":false,"refSections":[],"url":"#authoring-tool"},
 "cascading-style-sheets-css": {"dfnID":"cascading-style-sheets-css","dfnText":"Cascading Style Sheets (CSS)","external":false,"refSections":[],"url":"#cascading-style-sheets-css"},
-"css": {"dfnID":"css","dfnText":"Cascading Style Sheets (CSS)","external":false,"refSections":[{"refs":[{"id":"ref-for-css"}],"title":"1.1. \nWhat is CSS?"}],"url":"#css"},
+"css": {"dfnID":"css","dfnText":"Cascading Style Sheets (CSS)","external":false,"refSections":[{"refs":[{"id":"ref-for-css"}],"title":"1.1. \nWhat is CSS?"},{"refs":[{"id":"ref-for-css"}],"title":"2.2. \nFairly Stable Modules with limited implementation experience"},{"refs":[{"id":"ref-for-css"}],"title":"2.3. \nModules with Rough Interoperability"}],"url":"#css"},
 "css-level-1": {"dfnID":"css-level-1","dfnText":"CSS Level 1","external":false,"refSections":[{"refs":[{"id":"ref-for-css-level-1"}],"title":"2.4. \nCSS Levels"}],"url":"#css-level-1"},
 "css-level-2": {"dfnID":"css-level-2","dfnText":"CSS Level 2","external":false,"refSections":[{"refs":[{"id":"ref-for-css-level-2"},{"id":"ref-for-css-level-2\u2460"},{"id":"ref-for-css-level-2\u2461"}],"title":"2.4. \nCSS Levels"}],"url":"#css-level-2"},
 "css-level-3": {"dfnID":"css-level-3","dfnText":"CSS Level 3","external":false,"refSections":[{"refs":[{"id":"ref-for-css-level-3"}],"title":"2.4. \nCSS Levels"}],"url":"#css-level-3"},
@@ -6196,36 +6323,36 @@ let refsData = {
 "#user": {"displayText":"user","export":true,"for_":[],"level":"","normative":true,"shortname":"css-2022","spec":"css-2022","status":"local","text":"user","type":"dfn","url":"#user"},
 "#user-agent": {"displayText":"user agent","export":true,"for_":[],"level":"","normative":true,"shortname":"css-2022","spec":"css-2022","status":"local","text":"user agent","type":"dfn","url":"#user-agent"},
 "#vendor-prefix": {"displayText":"prefixed","export":true,"for_":[],"level":"","normative":true,"shortname":"css-2022","spec":"css-2022","status":"local","text":"prefixed","type":"dfn","url":"#vendor-prefix"},
+"https://andreubotella.com/csswg-auto-build/test/css-color-4/#propdef-opacity": {"displayText":"opacity","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"opacity","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-color-4/#propdef-opacity"},
+"https://andreubotella.com/csswg-auto-build/test/css-color-5/#color-interpolation-method": {"displayText":"<color-interpolation-method>","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"current","text":"<color-interpolation-method>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-color-5/#color-interpolation-method"},
+"https://andreubotella.com/csswg-auto-build/test/css-color-5/#funcdef-color-mix": {"displayText":"color-mix()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"current","text":"color-mix()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-color-5/#funcdef-color-mix"},
+"https://andreubotella.com/csswg-auto-build/test/css-conditional-3/#at-ruledef-media": {"displayText":"@media","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"@media","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-conditional-3/#at-ruledef-media"},
+"https://andreubotella.com/csswg-auto-build/test/css-conditional-3/#at-ruledef-supports": {"displayText":"@supports","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"@supports","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-conditional-3/#at-ruledef-supports"},
+"https://andreubotella.com/csswg-auto-build/test/css-contain-2/#propdef-contain": {"displayText":"contain","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-contain","spec":"css-contain-2","status":"current","text":"contain","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-contain-2/#propdef-contain"},
+"https://andreubotella.com/csswg-auto-build/test/css-counter-styles-3/#at-ruledef-counter-style": {"displayText":"@counter-style","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-counter-styles","spec":"css-counter-styles-3","status":"current","text":"@counter-style","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-counter-styles-3/#at-ruledef-counter-style"},
+"https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display": {"displayText":"display","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"display","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-display-4/#propdef-display"},
+"https://andreubotella.com/csswg-auto-build/test/css-images-4/#funcdef-conic-gradient": {"displayText":"conic-gradient()","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-images","spec":"css-images-4","status":"current","text":"conic-gradient()","type":"function","url":"https://andreubotella.com/csswg-auto-build/test/css-images-4/#funcdef-conic-gradient"},
 "https://andreubotella.com/csswg-auto-build/test/css-namespaces-3/#at-ruledef-namespace": {"displayText":"@namespace","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-namespaces","spec":"css-namespaces-3","status":"current","text":"@namespace","type":"at-rule","url":"https://andreubotella.com/csswg-auto-build/test/css-namespaces-3/#at-ruledef-namespace"},
-"https://www.w3.org/TR/CSS2/conform.html#doclanguage": {"displayText":"document language","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"document language","type":"dfn","url":"https://www.w3.org/TR/CSS2/conform.html#doclanguage"},
+"https://andreubotella.com/csswg-auto-build/test/css-position-3/#absolute-position": {"displayText":"absolute position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"current","text":"absolute position","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-position-3/#absolute-position"},
+"https://andreubotella.com/csswg-auto-build/test/css-position-3/#fixed-position": {"displayText":"fixed position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"current","text":"fixed position","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-position-3/#fixed-position"},
+"https://andreubotella.com/csswg-auto-build/test/css-position-3/#sticky-position": {"displayText":"sticky position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"current","text":"sticky position","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-position-3/#sticky-position"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height": {"displayText":"height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"height","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-height"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-width": {"displayText":"width","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"width","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#propdef-width"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content": {"displayText":"max-content","export":true,"for_":["width","min-width","max-width","height","min-height","max-height"],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"max-content","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-max-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content": {"displayText":"min-content","export":true,"for_":["width","min-width","max-width","height","min-height","max-height"],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"min-content","type":"value","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-3/#valdef-width-min-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#propdef-aspect-ratio": {"displayText":"aspect-ratio","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"current","text":"aspect-ratio","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-sizing-4/#propdef-aspect-ratio"},
+"https://andreubotella.com/csswg-auto-build/test/css-text-4/#propdef-hyphenate-character": {"displayText":"hyphenate-character","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text","spec":"css-text-4","status":"current","text":"hyphenate-character","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-text-4/#propdef-hyphenate-character"},
+"https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-rotate": {"displayText":"rotate","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-transforms","spec":"css-transforms-2","status":"current","text":"rotate","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-rotate"},
+"https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-scale": {"displayText":"scale","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-transforms","spec":"css-transforms-2","status":"current","text":"scale","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-scale"},
+"https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-translate": {"displayText":"translate","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-transforms","spec":"css-transforms-2","status":"current","text":"translate","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-transforms-2/#propdef-translate"},
+"https://andreubotella.com/csswg-auto-build/test/css-ui-4/#propdef-cursor": {"displayText":"cursor","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"current","text":"cursor","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-ui-4/#propdef-cursor"},
+"https://andreubotella.com/csswg-auto-build/test/css-ui-4/#propdef-outline": {"displayText":"outline","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"current","text":"outline","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-ui-4/#propdef-outline"},
+"https://andreubotella.com/csswg-auto-build/test/css-will-change-1/#propdef-will-change": {"displayText":"will-change","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-will-change","spec":"css-will-change-1","status":"current","text":"will-change","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-will-change-1/#propdef-will-change"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#dir-pseudo": {"displayText":":dir()","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":":dir()","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#dir-pseudo"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#document-language": {"displayText":"document language","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"document language","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#document-language"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#focus-within-pseudo": {"displayText":":focus-within","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":":focus-within","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#focus-within-pseudo"},
+"https://andreubotella.com/csswg-auto-build/test/selectors-4/#lang-pseudo": {"displayText":":lang()","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":":lang()","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#lang-pseudo"},
 "https://www.w3.org/TR/CSS2/visuren.html#x34": {"displayText":"relative positioning","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"relative positioning","type":"dfn","url":"https://www.w3.org/TR/CSS2/visuren.html#x34"},
-"https://www.w3.org/TR/css-color-4/#propdef-opacity": {"displayText":"opacity","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"snapshot","text":"opacity","type":"property","url":"https://www.w3.org/TR/css-color-4/#propdef-opacity"},
-"https://www.w3.org/TR/css-color-5/#color-interpolation-method": {"displayText":"<color-interpolation-method>","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"snapshot","text":"<color-interpolation-method>","type":"type","url":"https://www.w3.org/TR/css-color-5/#color-interpolation-method"},
-"https://www.w3.org/TR/css-color-5/#funcdef-color-mix": {"displayText":"color-mix()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"snapshot","text":"color-mix()","type":"function","url":"https://www.w3.org/TR/css-color-5/#funcdef-color-mix"},
-"https://www.w3.org/TR/css-conditional-3/#at-ruledef-media": {"displayText":"@media","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"snapshot","text":"@media","type":"at-rule","url":"https://www.w3.org/TR/css-conditional-3/#at-ruledef-media"},
-"https://www.w3.org/TR/css-conditional-3/#at-ruledef-supports": {"displayText":"@supports","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"snapshot","text":"@supports","type":"at-rule","url":"https://www.w3.org/TR/css-conditional-3/#at-ruledef-supports"},
-"https://www.w3.org/TR/css-contain-2/#propdef-contain": {"displayText":"contain","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-contain","spec":"css-contain-2","status":"snapshot","text":"contain","type":"property","url":"https://www.w3.org/TR/css-contain-2/#propdef-contain"},
-"https://www.w3.org/TR/css-counter-styles-3/#at-ruledef-counter-style": {"displayText":"@counter-style","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-counter-styles","spec":"css-counter-styles-3","status":"snapshot","text":"@counter-style","type":"at-rule","url":"https://www.w3.org/TR/css-counter-styles-3/#at-ruledef-counter-style"},
-"https://www.w3.org/TR/css-display-4/#propdef-display": {"displayText":"display","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"snapshot","text":"display","type":"property","url":"https://www.w3.org/TR/css-display-4/#propdef-display"},
-"https://www.w3.org/TR/css-images-4/#funcdef-conic-gradient": {"displayText":"conic-gradient()","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-images","spec":"css-images-4","status":"snapshot","text":"conic-gradient()","type":"function","url":"https://www.w3.org/TR/css-images-4/#funcdef-conic-gradient"},
-"https://www.w3.org/TR/css-position-3/#absolute-position": {"displayText":"absolute position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"snapshot","text":"absolute position","type":"dfn","url":"https://www.w3.org/TR/css-position-3/#absolute-position"},
-"https://www.w3.org/TR/css-position-3/#fixed-position": {"displayText":"fixed position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"snapshot","text":"fixed position","type":"dfn","url":"https://www.w3.org/TR/css-position-3/#fixed-position"},
-"https://www.w3.org/TR/css-position-3/#sticky-position": {"displayText":"sticky position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"snapshot","text":"sticky position","type":"dfn","url":"https://www.w3.org/TR/css-position-3/#sticky-position"},
-"https://www.w3.org/TR/css-sizing-3/#propdef-height": {"displayText":"height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"snapshot","text":"height","type":"property","url":"https://www.w3.org/TR/css-sizing-3/#propdef-height"},
-"https://www.w3.org/TR/css-sizing-3/#propdef-width": {"displayText":"width","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"snapshot","text":"width","type":"property","url":"https://www.w3.org/TR/css-sizing-3/#propdef-width"},
-"https://www.w3.org/TR/css-sizing-3/#valdef-width-max-content": {"displayText":"max-content","export":true,"for_":["width","min-width","max-width","height","min-height","max-height"],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"snapshot","text":"max-content","type":"value","url":"https://www.w3.org/TR/css-sizing-3/#valdef-width-max-content"},
-"https://www.w3.org/TR/css-sizing-3/#valdef-width-min-content": {"displayText":"min-content","export":true,"for_":["width","min-width","max-width","height","min-height","max-height"],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"snapshot","text":"min-content","type":"value","url":"https://www.w3.org/TR/css-sizing-3/#valdef-width-min-content"},
-"https://www.w3.org/TR/css-sizing-4/#propdef-aspect-ratio": {"displayText":"aspect-ratio","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"snapshot","text":"aspect-ratio","type":"property","url":"https://www.w3.org/TR/css-sizing-4/#propdef-aspect-ratio"},
-"https://www.w3.org/TR/css-text-4/#propdef-hyphenate-character": {"displayText":"hyphenate-character","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text","spec":"css-text-4","status":"snapshot","text":"hyphenate-character","type":"property","url":"https://www.w3.org/TR/css-text-4/#propdef-hyphenate-character"},
-"https://www.w3.org/TR/css-transforms-2/#propdef-rotate": {"displayText":"rotate","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-transforms","spec":"css-transforms-2","status":"snapshot","text":"rotate","type":"property","url":"https://www.w3.org/TR/css-transforms-2/#propdef-rotate"},
-"https://www.w3.org/TR/css-transforms-2/#propdef-scale": {"displayText":"scale","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-transforms","spec":"css-transforms-2","status":"snapshot","text":"scale","type":"property","url":"https://www.w3.org/TR/css-transforms-2/#propdef-scale"},
-"https://www.w3.org/TR/css-transforms-2/#propdef-translate": {"displayText":"translate","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-transforms","spec":"css-transforms-2","status":"snapshot","text":"translate","type":"property","url":"https://www.w3.org/TR/css-transforms-2/#propdef-translate"},
-"https://www.w3.org/TR/css-ui-4/#propdef-cursor": {"displayText":"cursor","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"snapshot","text":"cursor","type":"property","url":"https://www.w3.org/TR/css-ui-4/#propdef-cursor"},
-"https://www.w3.org/TR/css-ui-4/#propdef-outline": {"displayText":"outline","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"snapshot","text":"outline","type":"property","url":"https://www.w3.org/TR/css-ui-4/#propdef-outline"},
-"https://www.w3.org/TR/css-will-change-1/#propdef-will-change": {"displayText":"will-change","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-will-change","spec":"css-will-change-1","status":"snapshot","text":"will-change","type":"property","url":"https://www.w3.org/TR/css-will-change-1/#propdef-will-change"},
-"https://www.w3.org/TR/selectors-4/#dir-pseudo": {"displayText":":dir()","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"snapshot","text":":dir()","type":"selector","url":"https://www.w3.org/TR/selectors-4/#dir-pseudo"},
-"https://www.w3.org/TR/selectors-4/#focus-within-pseudo": {"displayText":":focus-within","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"snapshot","text":":focus-within","type":"selector","url":"https://www.w3.org/TR/selectors-4/#focus-within-pseudo"},
-"https://www.w3.org/TR/selectors-4/#lang-pseudo": {"displayText":":lang()","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"snapshot","text":":lang()","type":"selector","url":"https://www.w3.org/TR/selectors-4/#lang-pseudo"},
 };
 
 function mkRefHint(link, ref) {

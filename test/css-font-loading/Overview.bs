@@ -3,9 +3,7 @@ Title: CSS Font Loading Module Level 3
 Shortname: css-font-loading
 Level: 3
 Group: csswg
-Status: WD
-Date: 2023-04-06
-Prepare for TR: yes
+Status: ED
 Work Status: Exploring
 ED: https://drafts.csswg.org/css-font-loading/
 TR: https://www.w3.org/TR/css-font-loading/
@@ -13,7 +11,7 @@ Previous Version: https://www.w3.org/TR/2014/WD-css-font-loading-3-20140522/
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/, w3cid 42199
 Former Editor: John Daggett, Mozilla, jdaggett@mozilla.com
 Abstract: This CSS module describes events and interfaces used for dynamically loading font resources.
-Link Defaults: css-fonts-4 (descriptor) src, dom (interface) Event
+Link Defaults: css-fonts-3 (descriptor) src, dom (interface) Event
 Ignored Terms: EventHandler, InvalidModificationError, WorkerGlobalScope, Document, add(), src
 </pre>
 
@@ -53,14 +51,14 @@ Introduction</h2>
 Values</h3>
 
 	This specification uses {{Promise}}s,
-	which are defined in <a href="https://tc39.es/ecma262/multipage/control-abstraction-objects.html#sec-promise-objects">ECMAScript 6</a>.
-	MDN has some <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">good tutorial material introducing Promises</a>.
+	which are defined in <a href="http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts">ECMAScript 6</a>.
+	HTML5Rocks has some <a href="http://www.html5rocks.com/en/tutorials/es6/promises/">good tutorial material introducing Promises</a>.
 
 <h3 id='task-source'>
 Task Sources</h3>
 
 	Whenever this specification queues a task,
-	it queues it onto the "font loading" [=task source=].
+	it queues it onto the "font loading" task source.
 
 <!--
 ████████  ███████  ██    ██ ████████ ████████    ███     ██████  ████████
@@ -77,14 +75,17 @@ The <code>FontFace</code> Interface</h2>
 
 	The {{FontFace}} interface represents a single usable font face.
 	CSS ''@font-face'' rules implicitly define FontFace objects,
-	or they can be constructed manually from a url or a buffer source.
+	or they can be constructed manually from a url or binary data.
 
 	<xmp class="idl">
+		typedef (ArrayBuffer or ArrayBufferView) BinaryData;
+
 		dictionary FontFaceDescriptors {
 			CSSOMString style = "normal";
 			CSSOMString weight = "normal";
 			CSSOMString stretch = "normal";
 			CSSOMString unicodeRange = "U+0-10FFFF";
+			CSSOMString variant = "normal";
 			CSSOMString featureSettings = "normal";
 			CSSOMString variationSettings = "normal";
 			CSSOMString display = "auto";
@@ -97,13 +98,14 @@ The <code>FontFace</code> Interface</h2>
 
 		[Exposed=(Window,Worker)]
 		interface FontFace {
-			constructor(CSSOMString family, (CSSOMString or BufferSource) source,
+			constructor(CSSOMString family, (CSSOMString or BinaryData) source,
 		                optional FontFaceDescriptors descriptors = {});
 			attribute CSSOMString family;
 			attribute CSSOMString style;
 			attribute CSSOMString weight;
 			attribute CSSOMString stretch;
 			attribute CSSOMString unicodeRange;
+			attribute CSSOMString variant;
 			attribute CSSOMString featureSettings;
 			attribute CSSOMString variationSettings;
 			attribute CSSOMString display;
@@ -145,6 +147,7 @@ The <code>FontFace</code> Interface</h2>
 			throw a {{SyntaxError}};
 			otherwise, set the attribute to the serialization of the parsed value.
 
+		: <dfn>variant</dfn>
 		: <dfn>featureSettings</dfn>
 		: <dfn>variationSettings</dfn>
 		: <dfn>display</dfn>
@@ -208,7 +211,7 @@ The Constructor</h3>
 
 	A {{FontFace}} can be constructed either
 	from a URL pointing to a font face file,
-	or from a {{BufferSource}} containing the binary representation of a font face.
+	or from an {{ArrayBuffer}} (or {{ArrayBufferView}}) containing the binary representation of a font face.
 
 	When the <dfn constructor for=FontFace>FontFace(family, source, descriptors)</dfn> method is called,
 	execute these steps:
@@ -253,7 +256,7 @@ The Constructor</h3>
 	2. If the {{source!!argument}} argument was a {{CSSOMString}},
 		set <var>font face's</var> internal {{[[Urls]]}} slot to the string.
 
-		If the {{source}} argument was a {{BufferSource}},
+		If the {{source}} argument was a {{BinaryData}},
 		set <var>font face's</var> internal {{[[Data]]}} slot to the passed argument.
 
 	3. If <var>font face's</var> {{[[Data]]}} slot is not <code>null</code>,
@@ -315,7 +318,7 @@ The <code>load()</code> method</h3>
 
 	The {{FontFace/load()}} method of {{FontFace}}
 	forces a url-based font face to request its font data and load.
-	For fonts constructed from a buffer source,
+	For fonts constructed from binary data,
 	or fonts that are already loading or loaded,
 	it does nothing.
 
@@ -505,6 +508,8 @@ The <code>FontFaceSet</code> Interface</h2>
 
 		[Exposed=(Window,Worker)]
 		interface FontFaceSet : EventTarget {
+			constructor(sequence<FontFace> initialFaces);
+
 			setlike<FontFace>;
 			FontFaceSet add(FontFace font);
 			boolean delete(FontFace font);
@@ -536,6 +541,11 @@ The <code>FontFaceSet</code> Interface</h2>
 		:: This attribute reflects the {{FontFaceSet}}'s {{[[ReadyPromise]]}} slot.
 
 			See [[#font-face-set-ready]] for more details on this {{Promise}} and its use.
+
+		: <dfn constructor>FontFaceSet(initialFaces)</dfn>
+		:: The {{FontFaceSet}} constructor, when called,
+			must iterate its {{initialFaces}} argument
+			and add each value to its [=FontFaceSet/set entries=].
 
 		: <dfn dfn export>iteration order</dfn>
 		:: When iterated over,
@@ -783,7 +793,7 @@ Events</h3>
 
 		<li>
 			For each font face in <var>matched font faces</var>,
-			if its defined 'unicode-range!!descriptor' does not include the codepoint of at least one character in <var>text</var>,
+			if its defined 'unicode-range' does not include the codepoint of at least one character in <var>text</var>,
 			remove it from the list.
 
 			Note: Therefore, if <var>text</var> is the empty string, every font will be removed.
@@ -878,7 +888,7 @@ The <code>check()</code> method</h3>
 		as they are non-obvious:
 
 		* If the specified fonts exist,
-			but all possible faces are ruled out due to their 'unicode-range!!descriptor' not covering the provided text,
+			but all possible faces are ruled out due to their unicode-range not covering the provided text,
 			the method returns <code>true</code>,
 			as the text will be rendered in the UA's fallback font instead,
 			and won't trigger any font loads.
@@ -1193,55 +1203,18 @@ API Examples</h2>
 		It doesn't interfere with the {{loadingdone}} event.
 	</div>
 
+
 <h2 class="no-num" id="changes">Changes</h2>
-
-	Changes from the <a href="https://www.w3.org/TR/2023/WD-css-font-loading-3-20230406/">6 April 2023 Working Draft</a>:
-
-	<ul>
-		Removed variant attribute, to align with removal of the font-variant descriptor in @font-face.
-	</ul>
 
 	Changes from the <a href="https://www.w3.org/TR/2014/WD-css-font-loading-3-20140522/">May 2014 CSS Font Loading Last Call Working Draft</a>:
 
-	<ul>
-		<!-- to 3 Apr 2023 -->
-		<li>Added IDL for discovery of font information.</li>
-		<li>Clarified that FontFaceSet.clear() does not clear CSS-connected items.</li>
-		<li>Mentioned document.fonts in the introduction.</li>
-		<li>Font loading applies to shadow roots as well as documents.</li>
-		<li>No longer throw an error if none of the specified fonts exist, because this will not trigger any font loading.</li>
-		<li>Better alignment with WebIDL.</li>
-		<li>Switched to constructor() method syntax.</li>
-		<li>Clarified behavior of the matching font faces algorithm if the string to match is empty.</li>
-		<li>Converted FontFaceSource to a mixin.</li>
-		<li>Legacy term CanvasProxy changed to OffscreenCanvas.</li>
-		<li>Harmonized FontFace with @font-face, adding variationSettings and fontDisplay.</li>
-		<li>Consistently use [Exposed] in the IDL.</li>
-		<li>Prefer CSSOMString to DOMString</li>
-		<li>Better introductory text for check()</li>
-		<li>Clarified that layout operations which depend on recently-loaded fonts must be allowed to complete.</li>
-		<li>Cover more edge cases when firing load events.</li>
-		<li>Prefer async event queueing tasks over synchronous calls</li>
-		<li>fonts.ready is a property, not a function.</li>
-		<li>Differentiated between non-existing fonts, and fonts which exist but lack the required glyphs.</li>
-		<li>Precisely listed order of steps for several methods</li>
-		<li>Clarified handling of global keywords and relative values in the load() and check() functions.</li>
-		<li>Parsing a src argument is the same as parsing a CSS @font-face src descriptor.</li>
-		<li>Clarified that attempting to delete a CSS connected font has no effect, and returns false.</li>
-		<li>Clarified that adding duplicate fonts has no effect.</li>
-		<li>Clarified ordering of manually added FontFace object.</li>
-		<li>Clarified that load events only include faces still present in the set.</li>
-		<li>Added {{FontFace/variationSettings}} and {{FontFace/display}}, to sync with ''@font-face''.</li>
-		<li>Switched {{FontFaceSetLoadEvent/fontfaces}} to be a FrozenArray,
-			to match with proper IDL practice.</li>
-		<li>Fire loading events and handle promises when a loading font is added to a FontFaceSet.</li>
-		<li>Corrected the async algorithms to use "queue a task" language,
-			to ensure that side-effect timing is well-defined.</li>
-		<li>Updated several references to latest versions.</li>
-		<li>Corrections to the IDL.</li>
-		<li>Assorted typos and grammatical errors corrected.</li>
-	</ul>
+	1. Corrected the async algorithms to use "queue a task" language,
+		to ensure that side-effect timing is well-defined.
 
+	2. Switched {{FontFaceSetLoadEvent/fontfaces}} to be a FrozenArray,
+		to match with proper IDL practice.
+
+	3. Added {{FontFace/variationSettings}} and {{FontFace/display}}, to sync with ''@font-face''.
 
 <h2 class=no-num id=acknowledgments>
 Acknowledgments</h2>
@@ -1249,15 +1222,12 @@ Acknowledgments</h2>
 	Several members of the Google Fonts team provided helpful feedback on font load events,
 	as did Boris Zbarsky, Jonas Sicking and ms2ger.
 
-<h2 class=no-num id=privacy>
-Privacy Considerations</h2>
+<h2 class=no-num id=priv-sec>
+Privacy & Security Considerations</h2>
 
 	The {{FontFaceSet}} object leaks information about the user's installed fonts,
 	but in the exact same way as the existing ''@font-face'' rule;
 	no new information is leaked,
-	or in any appreciably easier manner.
+	or in any appreciable easier manner.
 
-<h2 class=no-num id=security>
-Security Considerations</h2>
-
-	No security considerations have been raised against this specification.
+	This specification introduces no new security considerations.

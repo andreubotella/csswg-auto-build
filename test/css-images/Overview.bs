@@ -8,7 +8,7 @@ ED: https://drafts.csswg.org/css-images-3/
 TR: https://www.w3.org/TR/css-images-3/
 Work Status: Testing
 Editor: Tab Atkins Jr., Google, http://xanthir.com/contact/, w3cid 42199
-Editor: Elika J. Etemad / fantasai, Apple, http://fantasai.inkedblade.net/contact, w3cid 35400
+Editor: Elika J. Etemad / fantasai, Invited Expert, http://fantasai.inkedblade.net/contact, w3cid 35400
 Editor: Lea Verou, Invited Expert, http://lea.verou.me/about, w3cid 52258
 Abstract: This module contains the features of CSS level 3 relating to the <<image>> type and some replaced elements.
 	It includes and extends the functionality of CSS level 2 [[CSS2]].
@@ -23,10 +23,9 @@ Previous Version: https://www.w3.org/TR/2012/CR-css3-images-20120417/
 Ignored Terms: <offset>, background positioning area, border image area, <meetorslice>, <ending-shape>
 Ignored Vars: start image, end image
 Include Can I Use Panels: yes
-WPT Path Prefix: css/css-images/
-WPT Display: open
 </pre>
 <pre class=link-defaults>
+spec:svg; type:element; text:feimage
 spec:css-backgrounds-3; type:value; text:center
 </pre>
 
@@ -218,7 +217,7 @@ Image References: the ''url()'' notation {#url-notation}
 ### Image Metadata ### {#url-metadata}
 
 Images can contain metadata
-such as color space, resolution and orientation
+such as resolution and orientation
 which specifies how to render the image.
 Some image formats are flexible in where this metadata can be placed in the file;
 however, if the metadata occurs <em>after</em> the actual image data,
@@ -227,20 +226,21 @@ and display it as the image's data streams in.
 
 To reduce the impact of this issue:
 
-* If the choice exists for a given image format, 
-	authors <em>must</em> produce their images
-	so that such metadata occurs before the image data in the image.
+* Authors <em>must</em> produce their image files
+	so that such metadata occurs before the image data in the image file.
 	(Note: This is the default for most images already.)
 * User agents <em>should</em> ignore any layout-impacting metadata (such as orientation or resolution)
-	that occurs after the image data begins.
+	that occurs after the image data begins in the file.
+	(Note: This rule does not impact metadata that does not affect layout,
+	such as color space information.)
 
-	If a user agent cannot ignore the metadata based its location in the image
+	If a user agent cannot ignore the metadata based its location in the file
 	(for example, if the decoder being used
-	does not report where in the image the metadata was located),
+	does not report where in the file the metadata was located),
 	it <em>must</em> use the metadata in all cases.
 	(In particular, it is not valid
 	to use the metadata only when the image is "small"
-	and the entire image is downloaded quickly,
+	and the entire file is downloaded quickly,
 	but to ignore it if the image is large
 	and the metadata isn't downloaded until well after the image starts being displayed.)
 
@@ -327,15 +327,13 @@ Linear Gradients: the ''linear-gradient()'' notation {#linear-gradients}
 
 <h4 class='no-toc' id='linear-gradient-syntax'>linear-gradient() syntax</h4>
 
-	The <dfn>linear-gradient()</dfn> notation
-	specifies a linear gradient in CSS.
-	Its syntax is as follows:
+	The linear gradient syntax is:
 
 	<pre class=prod>
-		<<linear-gradient()>> = linear-gradient( [ <<linear-gradient-syntax>> ] )
-
-		<dfn>&lt;linear-gradient-syntax></dfn> = [ <<angle>> | <<zero>> | to <<side-or-corner>> ]? , <<color-stop-list>>
-
+		<dfn>linear-gradient()</dfn> = linear-gradient(
+			[ <<angle>> | to <<side-or-corner>> ]? ,
+			<<color-stop-list>>
+		)
 		<dfn>&lt;side-or-corner></dfn> = [left | right] || [top | bottom]
 	</pre>
 
@@ -489,8 +487,7 @@ Radial Gradients: the ''radial-gradient()'' notation {#radial-gradients}
 	they instead emerge from a single point
 	and smoothly spread outward in a circular or elliptical shape.
 
-	The <dfn>radial-gradient()</dfn> notation specifies a radial gradient
-	by indicating the center of the gradient
+	A radial gradient is specified by indicating the center of the gradient
 	(where the 0% ellipse will be)
 	and the size and shape of the <dfn>ending shape</dfn>
 	(the 100% ellipse).
@@ -507,17 +504,12 @@ Radial Gradients: the ''radial-gradient()'' notation {#radial-gradients}
 	The radial gradient syntax is:
 
 	<pre class=prod>
-		<<radial-gradient()>> = radial-gradient( [ <<radial-gradient-syntax>> ] )
-
-		<dfn>&lt;radial-gradient-syntax></dfn> =
-			[ <<radial-shape>> || <<radial-size>> ]? [ at <<position>> ]? ,
-			<<color-stop-list>>
-
-		<dfn>&lt;radial-size></dfn> = <<radial-extent>> | <<length [0,∞]>> | <<length-percentage [0,∞]>>{2}
-
-		<dfn>&lt;radial-extent></dfn> = closest-corner | closest-side | farthest-corner | farthest-side
-
-		<dfn>&lt;radial-shape></dfn> = circle | ellipse
+		<dfn>radial-gradient()</dfn> = radial-gradient(
+		  [ <<ending-shape>> || <<size>> ]? [ at <<position>> ]? ,
+		  <<color-stop-list>>
+		)
+		<dfn><<size>></dfn> = <<extent-keyword>> | <<length [0,∞]>> | <<length-percentage [0,∞]>>{2}
+		<dfn><<extent-keyword>></dfn> = closest-corner | closest-side | farthest-corner | farthest-side
 	</pre>
 
 	<div class=example>
@@ -547,16 +539,16 @@ Radial Gradients: the ''radial-gradient()'' notation {#radial-gradients}
 			If this argument is omitted,
 			it defaults to ''<position>/center''.
 
-		<dt><dfn><<radial-shape>></dfn>
+		<dt><dfn><<ending-shape>></dfn>
 		<dd>
-			Can be either <dfn value for="<radial-shape>">circle</dfn> or <dfn value for="<radial-shape>">ellipse</dfn>;
+			Can be either <dfn value for="<ending-shape>">circle</dfn> or <dfn value for="<ending-shape>">ellipse</dfn>;
 			determines whether the gradient's <a>ending shape</a> is a circle or an ellipse, respectively.
-			If <<radial-shape>> is omitted,
+			If <<ending-shape>> is omitted,
 			the <a>ending shape</a> defaults to a circle
-			if the <<radial-size>> is a single <<length>>,
+			if the <<size>> is a single <<length>>,
 			and to an ellipse otherwise.
 
-		<dt><dfn><<radial-size>></dfn>
+		<dt><dfn><<size>></dfn>
 		<dd>
 			Determines the size of the gradient's <a>ending shape</a>.
 			If omitted it defaults to ''farthest-corner''.
@@ -568,9 +560,9 @@ Radial Gradients: the ''radial-gradient()'' notation {#radial-gradients}
 			If the ending-shape is an ellipse,
 			its axises are aligned with the horizontal and vertical axises.
 
-			Both ''circle'' and ''ellipse'' gradients accept the following <<radial-extent>> values:
+			Both ''circle'' and ''ellipse'' gradients accept the following keywords as their <dfn type for=''>&lt;size></dfn>:
 
-			<dl dfn-for="<radial-extent>, radial-gradient(), repeating-radial-gradient()">
+			<dl dfn-for="<size>">
 				<dt><dfn>closest-side</dfn>
 				<dd>
 					The <a>ending shape</a> is sized so that
@@ -598,11 +590,11 @@ Radial Gradients: the ''radial-gradient()'' notation {#radial-gradients}
 					the <a>ending shape</a> is given the same aspect ratio it would have if ''farthest-side'' were specified.
 			</dl>
 
-			If <<radial-shape>> is specified as ''circle'' or is omitted,
-			the <<radial-size>> may be given explicitly as:
+			If <<ending-shape>> is specified as ''circle'' or is omitted,
+			the <<size>> may be given explicitly as:
 
 			<dl>
-				<dt><dfn for="<radial-size>, radial-gradient(), repeating-radial-gradient()">&lt;length [0,∞]></dfn>
+				<dt><dfn for="<size>">&lt;length [0,∞]></dfn>
 				<dd>
 					Gives the radius of the circle explicitly.
 					Negative values are invalid.
@@ -616,11 +608,11 @@ Radial Gradients: the ''radial-gradient()'' notation {#radial-gradients}
 
 			</dl>
 
-			If <<radial-shape>> is specified as ''ellipse'' or is omitted,
-			<<radial-size>> may instead be given explicitly as:
+			If <<ending-shape>> is specified as ''ellipse'' or is omitted,
+			<<size>> may instead be given explicitly as:
 
 			<dl>
-				<dt><dfn for="<radial-size>, radial-gradient(), repeating-radial-gradient()"><<length-percentage [0,∞]>>{2}</dfn>
+				<dt><dfn for="<size>"><<length-percentage [0,∞]>>{2}</dfn>
 				<dd>
 					Gives the size of the ellipse explicitly.
 					The first value represents the horizontal radius,
@@ -638,10 +630,10 @@ Radial Gradients: the ''radial-gradient()'' notation {#radial-gradients}
 			radial-gradient() = radial-gradient(
 			  [ [ circle               || <<length [0,∞]>> ]                          [ at <<position>> ]? , |
 			    [ ellipse              || <<length-percentage [0,∞]>>{2} ]            [ at <<position>> ]? , |
-			    [ [ circle | ellipse ] || <<radial-extent>> ]                     [ at <<position>> ]? , |
+			    [ [ circle | ellipse ] || <<extent-keyword>> ]                        [ at <<position>> ]? , |
 			    at <<position>></span> ,
 			  ]?
-			  <<color-stop-list>>
+			  <<color-stop>> [ , <<color-stop>> ]+
 			)
 		</pre>
 	</div>
@@ -772,11 +764,6 @@ Repeating Gradients: the ''repeating-linear-gradient()'' and ''repeating-radial-
 	and are interpreted the same
 	as their respective non-repeating siblings defined previously.
 
-	<pre class=prod>
-		<<repeating-linear-gradient()>> = repeating-linear-gradient( [ <<linear-gradient-syntax>> ] )
-		<<repeating-radial-gradient()>> = repeating-radial-gradient( [ <<radial-gradient-syntax>> ] )
-	</pre>
-
 	When rendered, however, the color-stops are repeated infinitely in both directions,
 	with their positions shifted by multiples of the difference between
 	the last specified color-stop's position
@@ -894,13 +881,13 @@ Color Stop Lists</h4>
 
 	<a>Color stops</a> and [=transition hints=] are specified
 	in a <dfn export>color stop list</dfn>,
-	which is a list of one or more [=color stops=]
+	which is a list of two or more [=color stops=]
 	interleaved with optional [=transition hints=]:
 
 	<pre class=prod>
 		<dfn>&lt;color-stop-list></dfn> =
-			<<linear-color-stop>> , [ <<linear-color-hint>>? , <<linear-color-stop>> ]#?
-		<dfn>&lt;linear-color-stop></dfn> = <<color>> <<length-percentage>>?
+			<<linear-color-stop>> , [ <<linear-color-hint>>? , <<linear-color-stop>> ]#
+		<dfn>&lt;linear-color-stop></dfn> = <<color>> && <<length-percentage>>?
 		<dfn>&lt;linear-color-hint></dfn> = <<length-percentage>>
 	</pre>
 
@@ -1036,7 +1023,7 @@ Coloring the Gradient Line</h4>
 			With premultiplied colors,
 			transitions to or from "transparent" always look nice:
 
-			<object data="images/gradient2.svg" width="200" height="100">(Image requires SVG)</object>
+			<object data="images/gradient2.svg" width="200"height="100">(Image requires SVG)</object>
 
 			On the other hand,
 			if a gradient were to incorrectly transition in non-premultiplied space,
@@ -1046,7 +1033,7 @@ Coloring the Gradient Line</h4>
 			as it loses opacity,
 			and similarly with the blue's transition:
 
-			<object data="images/gradient3.svg" width="200" height="100">(Image requires SVG)</object>
+			<object data="images/gradient3.svg" width="200"height="100">(Image requires SVG)</object>
 		</div>
 
 	</details>
@@ -1063,8 +1050,6 @@ Color Stop “Fixup”</h4>
 		<li>
 			If the first <a>color stop</a> does not have a position,
 			set its position to 0%.
-
-		<li>
 			If the last <a>color stop</a> does not have a position,
 			set its position to 100%.
 
@@ -1191,8 +1176,8 @@ Object-Sizing Terminology {#sizing-terms}
 			CSS does not define how the natural dimensions are found in general.
 
 			Raster images are an example of an [=object=] with all three natural dimensions.
-			SVG images designed to scale might have only a [=natural aspect ratio=];
-			SVG images can also be created with only a [=natural width=] or [=natural height|height=].
+			SVG images designed to scale might have only an [=natural aspect ratio=];
+			SVG images can also be created with only an [=natural width=] or [=natural height|height=].
 			CSS gradients, defined in this specification,
 			are an example of an object with no [=natural dimensions=] at all.
 			Another example of this is embedded documents,
@@ -1281,45 +1266,6 @@ Concrete Object Size Resolution {#concrete-size-resolution}
 	This section defines some common sizing constraints
 	and how to resolve them
 	so that future specs can refer to them instead of redefining size resolution in each instance.
-
-	<wpt>
-		object-view-box-contain-intrinsic-size.html
-		object-view-box-empty-bounds.html
-		object-view-box-fit-contain-canvas.html
-		object-view-box-fit-contain-img.html
-		object-view-box-fit-contain-svg.html
-		object-view-box-fit-contain-video.html
-		object-view-box-fit-cover-canvas.html
-		object-view-box-fit-cover-img.html
-		object-view-box-fit-cover-svg.html
-		object-view-box-fit-cover-video.html
-		object-view-box-fit-fill-canvas.html
-		object-view-box-fit-fill-img.html
-		object-view-box-fit-fill-svg.html
-		object-view-box-fit-fill-video.html
-		object-view-box-fit-none-canvas.html
-		object-view-box-fit-none-img.html
-		object-view-box-fit-none-svg.html
-		object-view-box-fit-none-video.html
-		object-view-box-iframe.html
-		object-view-box-negative-bounds.html
-		object-view-box-parsing.html
-		object-view-box-property-changed.html
-		object-view-box-rect-auto.html
-		object-view-box-rect-percentage.html
-		object-view-box-rect.html
-		object-view-box-same-size.html
-		object-view-box-size-containment.html
-		object-view-box-svg-img-no-size.html
-		object-view-box-transition-mutation.html
-		object-view-box-writing-mode-canvas.html
-		object-view-box-writing-mode-img.html
-		object-view-box-writing-mode-svg.html
-		object-view-box-writing-mode-video.html
-		object-view-box-xywh-percentage.html
-		object-view-box-xywh.html
-		animation/object-view-box-interpolation.html
-	</wpt>
 
 ### Default Sizing Algorithm ### {#default-sizing}
 
@@ -1482,11 +1428,6 @@ Sizing Objects: the 'object-fit' property {#the-object-fit}
 	Animation type: discrete
 	</pre>
 
-	<wpt>
-		image-fit-001.xht
-		image-fit-006.xht
-	</wpt>
-
 	The 'object-fit' property specifies how the contents of a replaced element
 	should be fitted to the box established by its used height and width.
 
@@ -1585,31 +1526,6 @@ Positioning Objects: the 'object-position' property {#the-object-position}
 	Canonical Order: the horizontal component of the <<position>>, followed by the vertical component
 	</pre>
 
-	<wpt>
-		animation/object-position-interpolation.html
-		object-position-png-001c.html
-		object-position-png-001e.html
-		object-position-png-001i.html
-		object-position-png-001o.html
-		object-position-png-001p.html
-		object-position-png-002c.html
-		object-position-png-002e.html
-		object-position-png-002i.html
-		object-position-png-002o.html
-		object-position-png-002p.html
-		object-position-svg-001e.html
-		object-position-svg-001i.html
-		object-position-svg-001o.html
-		object-position-svg-001p.html
-		object-position-svg-002e.html
-		object-position-svg-002i.html
-		object-position-svg-002o.html
-		object-position-svg-002p.html
-		parsing/object-position-computed.html
-		parsing/object-position-invalid.html
-		parsing/object-position-valid.html
-	</wpt>
-
 	The 'object-position' property determines the alignment of the replaced element inside its box.
 	The <<position>> value type
 	(which is also used for 'background-position')
@@ -1651,45 +1567,6 @@ Image Processing {#image-processing}
 	Computed value: the specified keyword, or an <<angle>>, rounded and normalized (see text), plus optionally a ''flip'' keyword
 	Animation type: discrete
 	</pre>
-
-	<wpt>
-		image-orientation/image-orientation-background-image.html
-		image-orientation/image-orientation-background-position.html
-		image-orientation/image-orientation-background-properties-border-radius.html
-		image-orientation/image-orientation-background-properties.html
-		image-orientation/image-orientation-border-image.html
-		image-orientation/image-orientation-cursor.html
-		image-orientation/image-orientation-default.html
-		image-orientation/image-orientation-exif-png.html
-		image-orientation/image-orientation-from-image-composited-dynamic1.html
-		image-orientation/image-orientation-from-image-composited-dynamic2.html
-		image-orientation/image-orientation-from-image-composited.html
-		image-orientation/image-orientation-from-image-computed-style.html
-		image-orientation/image-orientation-from-image-content-images.html
-		image-orientation/image-orientation-from-image-dynamic1.html
-		image-orientation/image-orientation-from-image-dynamic2.html
-		image-orientation/image-orientation-from-image-embedded-content.html
-		image-orientation/image-orientation-from-image.html
-		image-orientation/image-orientation-iframe.html
-		image-orientation/image-orientation-img-object-fit.html
-		image-orientation/image-orientation-list-style-image.html
-		image-orientation/image-orientation-mask-image.html
-		image-orientation/image-orientation-none-computed-style.html
-		image-orientation/image-orientation-none-content-images.html
-		image-orientation/image-orientation-none-cross-origin-canvas.html
-		image-orientation/image-orientation-none-cross-origin-svg.html
-		image-orientation/image-orientation-none-cross-origin.html
-		image-orientation/image-orientation-none-image-document.html
-		image-orientation/image-orientation-none.html
-		image-orientation/svg-image-orientation-aspect-ratio.html
-		image-orientation/svg-image-orientation-none.html
-		image-orientation/svg-image-orientation.html
-		image-orientation/image-orientation-exif-png-2.html
-		image-orientation/image-orientation-exif-png-3.html
-		parsing/image-orientation-computed.html
-		parsing/image-orientation-invalid.html
-		parsing/image-orientation-valid.html
-	</wpt>
 
 	<strong>This property is <em>optional</em> for implementations.</strong>
 
@@ -1820,14 +1697,6 @@ Determining How To Scale an Image: the 'image-rendering' property {#the-image-re
 	Animation type: discrete
 	</pre>
 
-	<wpt>
-		image-rendering-border-image.html
-		image-rendering-mixed-scaled.html
-		parsing/image-rendering-computed.html
-		parsing/image-rendering-invalid.html
-		parsing/image-rendering-valid.html
-	</wpt>
-
 	The 'image-rendering' property provides a hint to the user-agent
 	about what aspects of an image are most important to preserve when the image is scaled,
 	to aid the user-agent in the choice of an appropriate scaling algorithm.
@@ -1841,7 +1710,7 @@ Determining How To Scale an Image: the 'image-rendering' property {#the-image-re
 	<dl dfn-type=value dfn-for=image-rendering>
 		<dt><dfn>auto</dfn>
 		<dd>
-			The scaling algorithm is UA-dependent.
+			The scaling algorithm is UA dependent.
 
 		<dt><dfn>smooth</dfn>
 		<dd>
@@ -1852,7 +1721,6 @@ Determining How To Scale an Image: the 'image-rendering' property {#the-image-re
 
 		<dt><dfn>high-quality</dfn>
 		<dd>
-
 			Identical to ''image-rendering/smooth'',
 			but with a preference for higher-quality scaling.
 			If system resources are constrained,
@@ -1875,17 +1743,15 @@ Determining How To Scale an Image: the 'image-rendering' property {#the-image-re
 
 		<dt><dfn>pixelated</dfn>
 		<dd>
+			The image is scaled in a way that preserves the pixelated nature of the original as much as possible,
+			but allows minor smoothing instead of awkward distortion when necessary.
 
-			The image is scaled in a way that preserves
-			the pixelation of the original as much as possible,
-			but allows minor smoothing as necessary to avoid distorting the image
-			when the target size is not a clean multiple of the original.
-
-			For each axis independently,
-			first determine the integer multiple of its natural size
+			For each axis,
+			independently determine the integer multiple of its natural size
 			that puts it closest to the target size
 			and is greater than zero.
-			Scale it to this integer-multiple-size using [=nearest neighbor=],
+
+			Scale it to this integer-multiple-size as for ''crisp-edges'',
 			then scale it the rest of the way to the target size as for ''smooth''.
 
 			Note: At integer multiples of the natural size,
@@ -1897,34 +1763,30 @@ Determining How To Scale an Image: the 'image-rendering' property {#the-image-re
 
 		<dt><dfn caniuse="css-crisp-edges">crisp-edges</dfn>
 		<dd>
-
 			The image is scaled in a way that preserves contrast and edges,
-			and which avoids smoothing colors or introducing blur to the image in the process.
-			This is intended for images such as line drawings.
+			and which does not smooth colors or introduce blur to the image in the process.
 
-			The image <em>may</em> be scaled using [=nearest neighbor=]
-			or any other UA-chosen algorithm
-			that does not blur edges or blend colors from the source image.
-			It can, however, detect diagonal or curved lines
-			and render them as such
-			(rather than as jagged-looking “giant pixels”).
+			The image must be scaled with the "nearest neighbor" algorithm:
+			treating the original image's pixel grid as a literal grid of rectangles,
+			scale those to the desired size,
+			then each pixel of the final image
+			takes its color solely from the nearest pixel of the scaled original image.
 
 			Note: If the new size is not an integer multiple of the original size,
-			the [=nearest neighbor=] algorithm can introduce significant “aliasing” bugs;
+			the NN algorithm can introduce significant "aliasing" bugs;
 			lines that were the same thickness in the original image
 			might be a pixel thinner or thicker in the scaled image
 			depending on where they appear,
 			etc.
-			For most purposes,
-			''pixelated'' will produce a more suitable rendering than [=nearest neighbor=].
 	</dl>
 
-	Other than the first step of ''pixelated'',
+	Other than ''crisp-edges''
+	and the portion of ''pixelated'' that acts like ''crisp-edges'',
 	this property does not dictate any particular scaling algorithm to be used.
 	For example, with ''image-rendering: auto'',
-	a user agent could scale images with bilinear interpolation by default,
+	a user agent might scale images with bilinear interpolation by default,
 	switch to nearest-neighbor interpolation in high-load situations,
-	and switch to a higher-quality scaling algorithm like Lanczos interpolation
+	and switch to a high-quality scaling algorithm like Lanczos interpolation
 	for static images that aren't moving or changing.
 
 	<div class='example'>
@@ -1940,65 +1802,30 @@ Determining How To Scale an Image: the 'image-rendering' property {#the-image-re
 
 		<figure>
 			<img src="images/pixel-art-small.gif" width=384>
-			<figcaption>The image scaled 3x with ''smooth''</figcaption>
+			<figcaption>The image scaled with ''smooth''</figcaption>
 		</figure>
 
 		<figure>
 			<img src="images/pixel-art-nn.png">
-			<figcaption>The image scaled 3x with ''pixelated''</figcaption>
+			<figcaption>The image scaled with ''pixelated'' or ''crisp-edges''</figcaption>
 		</figure>
-
-		<figure>
-			<img src="images/pixel-art-smooth.png">
-			<figcaption>
-				The image scaled 3x with ''crisp-edges''
-				interpreted with an edge-preserving algorithm.
-				<br>
-				(Interpreting as [=nearest neighbor=] would give
-				the same results as ''pixelated'' in this case.)
-			</figcaption>
-	</div>
-
-	<div algorithm>
-		The <dfn>nearest neighbor</dfn> (or NN) image scaling algorithm
-		treats the source image's pixels as literal rectangles of color
-		on the source canvas,
-		then colors each destination pixel
-		by choosing one point in the pixel's area
-		(usually either the center or top-left)
-		and using the color of the corresponding point
-		on the source canvas.
-
-		<div class=note>
-			When the target size is an integer multiple of the source,
-			this results in “big pixels”,
-			as if you'd merely zoomed in on the source image.
-			When the target size is a non-integer multiple,
-			it still produces crisp pixels
-			entirely out of source-image colors
-			(no blending or blurring),
-			but can produce aliasing quirks
-			where the “pixel grid” can appear somewhat irregular.
-
-			For example, using [=nearest neighbor=] to scale up an image by 2.5x
-			will result in each pixel of the source image
-			being used for two or three pixels of the destination image,
-			in an alternating fashion,
-			while scaling an image down to 0.5x
-			will skip every second pixel in the source image.
-		</div>
 	</div>
 
 	<div class='example'>
-		At 3x scaling as in the preceding example,
-		both ''pixelated'' and pure [=nearest neighbor=] give identical results.
-		At scale ratios between integer multiples,
+		At the 3x scaling as in the preceding example,
+		''pixelated'' and ''crisp-edges'' give identical results.
+		At scale ratios in-between integer multiples,
 		however,
 		they'll act differently:
 
 		<figure>
 			<img src="images/pixel-art-small.gif">
-			<figcaption>The same small pixel-art image as before</figcaption>
+			<figcaption>The same small pixel-art image as before.</figcaption>
+		</figure>
+
+		<figure>
+			<img src="images/pixel-art-small.gif" width=320>
+			<figcaption>The image scaled 2.5x with ''smooth''</figcaption>
 		</figure>
 
 		<figure>
@@ -2008,18 +1835,15 @@ Determining How To Scale an Image: the 'image-rendering' property {#the-image-re
 
 		<figure>
 			<img src="images/pixel-art-nn-2p5.png">
-			<figcaption>
-				The image scaled 2.5x with ''crisp-edges''
-				interpreted as [=nearest neighbor=]
-			</figcaption>
+			<figcaption>The image scaled 2.5x with ''crisp-edges''</figcaption>
 		</figure>
 
 		The ''pixelated'' version maintains the overall <em>look</em> of simply scaling the pixels up,
 		at the cost of <em>slight</em> blurring,
 		though much less blurring than the ''smooth'' scaling gives.
-		Meanwhile, [=nearest neighbor=] avoids introducing any blurring at all,
+		Meanwhile, ''crisp-edges'' avoids introducing any blurring at all,
 		at the cost of aliasing artifacts
-		making the “pixels” look irregularly sized.
+		making the "pixels" look irregularly sized.
 	</div>
 
 	This property previously accepted the values ''optimizeSpeed'' and ''optimizeQuality''.
@@ -2083,13 +1907,8 @@ Serialization {#serialization}
 		<pre>linear-gradient(red, yellow, black 100px)</pre>
 	</div>
 
-<h2 class="no-num" id="privacy">
-Privacy Considerations</h2>
-
-This specification introduces no new privacy concerns.
-
-<h2 class="no-num" id="security">
-Security Considerations</h2>
+<h2 class="no-num" id="priv-sec">
+Privacy and Security Considerations</h2>
 
 This specification allows rendering of cross-origin images by default,
 which exposes some information of those images programmatically--
@@ -2099,39 +1918,18 @@ specifically, the [=natural dimensions=] and resolution of those images.
 Acknowledgments</h2>
 
 Thanks to the Webkit team, Brad Kemper, Brian Manthos, and Alan Gresley
-for their contributions to the definition of gradients; to Melinda Grant
-for her work on 'object-fit', 'object-position', and 'image-orientation';
-<!-- to Robert O'Callahan for the definition of ''element()'';  to
-Michael Day, Håkon Lie, and Shinyu Murakami for 'image-resolution' -->
-and to L. David Baron,
-Kang-Hao Lu, Leif Arne Storset, Erik Dahlstrom, and Øyvind Stenhaug for
-their careful review, comments, and corrections.
+   for their contributions to the definition of gradients; to Melinda Grant
+   for her work on 'object-fit', 'object-position', and 'image-orientation';
+   <!-- to Robert O'Callahan for the definition of ''element()'';  to
+   Michael Day, Håkon Lie, and Shinyu Murakami for 'image-resolution' --> and to L. David Baron,
+   Kang-Hao Lu, Leif Arne Storset, Erik Dahlstrom, and Øyvind Stenhaug for
+   their careful review, comments, and corrections.
 
 <h2 class="no-num" id="changes">
 Changes</h2>
 
 <h3 id="changes-20191010">
 Changes Since the <a href="https://www.w3.org/TR/2019/CR-css-images-3-20191010/">10 October 2019 Candidate Recommendation</a></h3>
-
-	Significant changes since the <a href="https://www.w3.org/TR/2023/CRD-css-images-3-20231218/">18 December 2023 CRD</a>:
-
-	<!-- to 08 Nov 2024 -->
-	* Allow just one color stop (<a href="https://github.com/w3c/csswg-drafts/issues/10092">Issue 10092</a>)
-	* Separate first and last stop fixing into separate steps, so it's clearer what happens with a single stop (<a href="https://github.com/w3c/csswg-drafts/issues/10092">Issue 10092</a>)
-	* Remove non-normative note about color space metadata; prefer "image" to "file" (<a href="https://github.com/w3c/csswg-drafts/issues/10075">Issue 10075</a>)
-	* No longer require image metadata to be at the start of the image, if the format doesn't allow it (<a href="https://github.com/w3c/csswg-drafts/issues/8543">Issue 8543</a>)
-
-	Significant changes since the <a href="https://www.w3.org/TR/2020/CRD-css-images-3-20201217/">17 December 2020 CRD</a>:
-
-	* Remove ''&&'' which allows reordering from <<linear-color-stop>>.
-		(<a href="https://github.com/w3c/csswg-drafts/pull/8021">Issue 8021</a>)
-	* Specify ''pixelated'' to use smooth scaling from a [=nearest neighbor=] scale to the nearest pixel multiple,
-		in order to avoid distortion.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/5837">Issue 5837</a>)
-	* Explicitly allow [=nearest neighbor=] as the implementation for ''crisp-edges'',
-		since this is what implementations currently do.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/6038">Issue 6038</a>)
-	* Various editorial / typo fixes in grammar productions.
 
 	Significant changes since the <a href="https://www.w3.org/TR/2019/CR-css-images-3-20191010/">10 October 2019 CR</a>:
 
@@ -2177,325 +1975,3 @@ Changes Since the <a href="https://www.w3.org/TR/2012/CR-css3-images-20120417/">
 	- Various minor clarifications.
 
 	A <a href="https://drafts.csswg.org/issues?spec=css-images-3&doc=cr-2012">Disposition of Comments</a> is available.
-
-	
-	<wpt hidden title="Level 4 tests">
-		parsing/image-resolution-invalid.html
-		parsing/image-resolution-valid.html
-		image-set/image-set-all-options-invalid.html
-		image-set/image-set-calc-x-rendering-2.html
-		image-set/image-set-calc-x-rendering.html
-		image-set/image-set-computed.sub.html
-		image-set/image-set-conic-gradient-rendering.html
-		image-set/image-set-content-rendering.html
-		image-set/image-set-dpcm-rendering.html
-		image-set/image-set-dpi-rendering-2.html
-		image-set/image-set-dpi-rendering.html
-		image-set/image-set-dppx-rendering.html
-		image-set/image-set-empty-url-rendering.html
-		image-set/image-set-first-match-rendering.html
-		image-set/image-set-linear-gradient-rendering.html
-		image-set/image-set-negative-resolution-rendering-2.html
-		image-set/image-set-negative-resolution-rendering-3.html
-		image-set/image-set-negative-resolution-rendering.html
-		image-set/image-set-no-res-rendering-2.html
-		image-set/image-set-no-res-rendering.html
-		image-set/image-set-no-url-rendering.html
-		image-set/image-set-parsing.html
-		image-set/image-set-radial-gradient-rendering.html
-		image-set/image-set-rendering-2.html
-		image-set/image-set-rendering.html
-		image-set/image-set-repeating-conic-gradient-rendering.html
-		image-set/image-set-repeating-linear-gradient-rendering.html
-		image-set/image-set-repeating-radial-gradient-rendering.html
-		image-set/image-set-resolution-001.html
-		image-set/image-set-resolution-002.html
-		image-set/image-set-resolution-003.html
-		image-set/image-set-type-first-match-rendering.html
-		image-set/image-set-type-rendering-2.html
-		image-set/image-set-type-rendering-3.html
-		image-set/image-set-type-rendering.html
-		image-set/image-set-type-skip-unsupported-rendering.html
-		image-set/image-set-type-unsupported-rendering-2.html
-		image-set/image-set-type-unsupported-rendering.html
-		image-set/image-set-unordered-res-rendering.html
-		image-set/image-set-zero-resolution-rendering-2.html
-		image-set/image-set-zero-resolution-rendering.html
-		css-image-fallbacks-and-annotations.html
-		css-image-fallbacks-and-annotations002.html
-		css-image-fallbacks-and-annotations003.html
-		css-image-fallbacks-and-annotations004.html
-		css-image-fallbacks-and-annotations005.html
-		cross-fade-basic.html
-		cross-fade-computed-value.html
-		cross-fade-legacy-crash.html
-		cross-fade-natural-size.html
-		cross-fade-premultiplied-alpha.html
-		cross-fade-target-alpha.html
-		gradients-with-border.html
-		color-stop-currentcolor.html
-		gradient-border-box.html
-		gradient-button.html
-		gradient-content-box.html
-		linear-gradient-1.html
-		linear-gradient-2.html
-		multiple-position-color-stop-linear-2.html
-		multiple-position-color-stop-linear.html
-		normalization-linear-2.html
-		normalization-linear-degenerate.html
-		normalization-linear.html
-		tiled-gradients.html
-		gradient/color-stops-parsing.html
-		parsing/gradient-interpolation-method-computed.html
-		parsing/gradient-interpolation-method-invalid.html
-		parsing/gradient-interpolation-method-valid.html
-		parsing/gradient-position-invalid.html
-		parsing/gradient-position-valid.html
-		empty-radial-gradient-crash.html
-		infinite-radial-gradient-refcrash.html
-		multiple-position-color-stop-radial-2.html
-		multiple-position-color-stop-radial.html
-		normalization-radial-2.html
-		normalization-radial-3.html
-		normalization-radial-4.html
-		normalization-radial-degenerate.html
-		normalization-radial.html
-		radial-gradient-transition-hint-crash.html
-		tiled-radial-gradients.html
-		gradient/color-stops-parsing.html
-		parsing/gradient-interpolation-method-computed.html
-		parsing/gradient-interpolation-method-invalid.html
-		parsing/gradient-interpolation-method-valid.html
-		parsing/gradient-position-invalid.html
-		parsing/gradient-position-valid.html
-		conic-gradient-angle-negative.html
-		conic-gradient-angle.html
-		conic-gradient-center.html
-		repeating-conic-gradient.html
-		tiled-conic-gradients.html
-		multiple-position-color-stop-conic-2.html
-		multiple-position-color-stop-conic.html
-		normalization-conic-2.html
-		normalization-conic-degenerate.html
-		normalization-conic.html
-		out-of-range-color-stop-conic.html
-		tiled-conic-gradients.html
-		gradient/color-stops-parsing.html
-		parsing/gradient-interpolation-method-computed.html
-		parsing/gradient-interpolation-method-invalid.html
-		parsing/gradient-interpolation-method-valid.html
-		parsing/gradient-position-invalid.html
-		parsing/gradient-position-valid.html
-		gradient-content-box.html
-		gradient/color-stops-parsing.html
-		gradients-with-transparent.html
-		gradient/css-color-4-colors-default-to-oklab-gradient.html
-		gradient/gradient-eval-001.html
-		gradient/gradient-eval-002.html
-		gradient/gradient-eval-003.html
-		gradient/gradient-eval-004.html
-		gradient/gradient-eval-005.html
-		gradient/gradient-eval-006.html
-		gradient/gradient-eval-007.html
-		gradient/gradient-eval-008.html
-		gradient/gradient-eval-009.html
-		gradient/gradient-none-interpolation.html
-		gradient/legacy-color-gradient.html
-		gradient/oklab-gradient.html
-		gradient/srgb-gradient.html
-		gradient/srgb-linear-gradient.html
-		gradient/xyz-gradient.html
-		gradient-move-stops.html
-		gradient-nan-crash.html
-		gradient-refcrash.html
-		inheritance.html
-		object-fit-contain-png-001c.html
-		object-fit-contain-png-001e.html
-		object-fit-contain-png-001i.html
-		object-fit-contain-png-001o.html
-		object-fit-contain-png-001p.html
-		object-fit-contain-png-002c.html
-		object-fit-contain-png-002e.html
-		object-fit-contain-png-002i.html
-		object-fit-contain-png-002o.html
-		object-fit-contain-png-002p.html
-		object-fit-contain-svg-001e.html
-		object-fit-contain-svg-001i.html
-		object-fit-contain-svg-001o.html
-		object-fit-contain-svg-001p.html
-		object-fit-contain-svg-002e.html
-		object-fit-contain-svg-002i.html
-		object-fit-contain-svg-002o.html
-		object-fit-contain-svg-002p.html
-		object-fit-contain-svg-003e.html
-		object-fit-contain-svg-003i.html
-		object-fit-contain-svg-003o.html
-		object-fit-contain-svg-003p.html
-		object-fit-contain-svg-004e.html
-		object-fit-contain-svg-004i.html
-		object-fit-contain-svg-004o.html
-		object-fit-contain-svg-004p.html
-		object-fit-contain-svg-005e.html
-		object-fit-contain-svg-005i.html
-		object-fit-contain-svg-005o.html
-		object-fit-contain-svg-005p.html
-		object-fit-contain-svg-006e.html
-		object-fit-contain-svg-006i.html
-		object-fit-contain-svg-006o.html
-		object-fit-contain-svg-006p.html
-		object-fit-cover-png-001c.html
-		object-fit-cover-png-001e.html
-		object-fit-cover-png-001i.html
-		object-fit-cover-png-001o.html
-		object-fit-cover-png-001p.html
-		object-fit-cover-png-002c.html
-		object-fit-cover-png-002e.html
-		object-fit-cover-png-002i.html
-		object-fit-cover-png-002o.html
-		object-fit-cover-png-002p.html
-		object-fit-cover-svg-001e.html
-		object-fit-cover-svg-001i.html
-		object-fit-cover-svg-001o.html
-		object-fit-cover-svg-001p.html
-		object-fit-cover-svg-002e.html
-		object-fit-cover-svg-002i.html
-		object-fit-cover-svg-002o.html
-		object-fit-cover-svg-002p.html
-		object-fit-cover-svg-003e.html
-		object-fit-cover-svg-003i.html
-		object-fit-cover-svg-003o.html
-		object-fit-cover-svg-003p.html
-		object-fit-cover-svg-004e.html
-		object-fit-cover-svg-004i.html
-		object-fit-cover-svg-004o.html
-		object-fit-cover-svg-004p.html
-		object-fit-cover-svg-005e.html
-		object-fit-cover-svg-005i.html
-		object-fit-cover-svg-005o.html
-		object-fit-cover-svg-005p.html
-		object-fit-cover-svg-006e.html
-		object-fit-cover-svg-006i.html
-		object-fit-cover-svg-006o.html
-		object-fit-cover-svg-006p.html
-		object-fit-dyn-aspect-ratio-001.html
-		object-fit-dyn-aspect-ratio-002.html
-		object-fit-fill-png-001c.html
-		object-fit-fill-png-001e.html
-		object-fit-fill-png-001i.html
-		object-fit-fill-png-001o.html
-		object-fit-fill-png-001p.html
-		object-fit-fill-png-002c.html
-		object-fit-fill-png-002e.html
-		object-fit-fill-png-002i.html
-		object-fit-fill-png-002o.html
-		object-fit-fill-png-002p.html
-		object-fit-fill-svg-001e.html
-		object-fit-fill-svg-001i.html
-		object-fit-fill-svg-001o.html
-		object-fit-fill-svg-001p.html
-		object-fit-fill-svg-002e.html
-		object-fit-fill-svg-002i.html
-		object-fit-fill-svg-002o.html
-		object-fit-fill-svg-002p.html
-		object-fit-fill-svg-003e.html
-		object-fit-fill-svg-003i.html
-		object-fit-fill-svg-003o.html
-		object-fit-fill-svg-003p.html
-		object-fit-fill-svg-004e.html
-		object-fit-fill-svg-004i.html
-		object-fit-fill-svg-004o.html
-		object-fit-fill-svg-004p.html
-		object-fit-fill-svg-005e.html
-		object-fit-fill-svg-005i.html
-		object-fit-fill-svg-005o.html
-		object-fit-fill-svg-005p.html
-		object-fit-fill-svg-006e.html
-		object-fit-fill-svg-006i.html
-		object-fit-fill-svg-006o.html
-		object-fit-fill-svg-006p.html
-		object-fit-none-png-001c.html
-		object-fit-none-png-001e.html
-		object-fit-none-png-001i.html
-		object-fit-none-png-001o.html
-		object-fit-none-png-001p.html
-		object-fit-none-png-002c.html
-		object-fit-none-png-002e.html
-		object-fit-none-png-002i.html
-		object-fit-none-png-002o.html
-		object-fit-none-png-002p.html
-		object-fit-none-svg-001e.html
-		object-fit-none-svg-001i.html
-		object-fit-none-svg-001o.html
-		object-fit-none-svg-001p.html
-		object-fit-none-svg-002e.html
-		object-fit-none-svg-002i.html
-		object-fit-none-svg-002o.html
-		object-fit-none-svg-002p.html
-		object-fit-none-svg-003e.html
-		object-fit-none-svg-003i.html
-		object-fit-none-svg-003o.html
-		object-fit-none-svg-003p.html
-		object-fit-none-svg-004e.html
-		object-fit-none-svg-004i.html
-		object-fit-none-svg-004o.html
-		object-fit-none-svg-004p.html
-		object-fit-none-svg-005e.html
-		object-fit-none-svg-005i.html
-		object-fit-none-svg-005o.html
-		object-fit-none-svg-005p.html
-		object-fit-none-svg-006e.html
-		object-fit-none-svg-006i.html
-		object-fit-none-svg-006o.html
-		object-fit-none-svg-006p.html
-		object-fit-scale-down-png-001c.html
-		object-fit-scale-down-png-001e.html
-		object-fit-scale-down-png-001i.html
-		object-fit-scale-down-png-001o.html
-		object-fit-scale-down-png-001p.html
-		object-fit-scale-down-png-002c.html
-		object-fit-scale-down-png-002e.html
-		object-fit-scale-down-png-002i.html
-		object-fit-scale-down-png-002o.html
-		object-fit-scale-down-png-002p.html
-		object-fit-scale-down-svg-001e.html
-		object-fit-scale-down-svg-001i.html
-		object-fit-scale-down-svg-001o.html
-		object-fit-scale-down-svg-001p.html
-		object-fit-scale-down-svg-002e.html
-		object-fit-scale-down-svg-002i.html
-		object-fit-scale-down-svg-002o.html
-		object-fit-scale-down-svg-002p.html
-		object-fit-scale-down-svg-003e.html
-		object-fit-scale-down-svg-003i.html
-		object-fit-scale-down-svg-003o.html
-		object-fit-scale-down-svg-003p.html
-		object-fit-scale-down-svg-004e.html
-		object-fit-scale-down-svg-004i.html
-		object-fit-scale-down-svg-004o.html
-		object-fit-scale-down-svg-004p.html
-		object-fit-scale-down-svg-005e.html
-		object-fit-scale-down-svg-005i.html
-		object-fit-scale-down-svg-005o.html
-		object-fit-scale-down-svg-005p.html
-		object-fit-scale-down-svg-006e.html
-		object-fit-scale-down-svg-006i.html
-		object-fit-scale-down-svg-006o.html
-		object-fit-scale-down-svg-006p.html
-		gradient/color-scheme-dependent-color-stops.html
-		gradient/gradient-single-stop-longer-hue-hsl.html
-		gradient/gradient-single-stop-longer-hue-oklch.html
-		gradient/repeating-gradient-hsl-and-oklch.html
-		idlharness.html
-		svg-images-are-ignored.html
-		svg-script-is-ignored.html
-		animation/image-no-interpolation.html
-		animation/image-slice-interpolation-math-functions-tentative.html
-		parsing/object-fit-computed.html
-		parsing/object-fit-invalid.html
-		parsing/object-fit-valid.html
-	</wpt>
-
-	<!-- CSS Values 4 test, empty url, on background-image -->
-	<wpt hidden>
-		empty-background-image.html
-	</wpt>

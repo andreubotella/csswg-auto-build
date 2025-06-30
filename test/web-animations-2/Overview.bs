@@ -26,11 +26,6 @@ div.informative-bg h4 {
   background: none;
 }
 
-/* crbug.com/1471465 */
-dl.switch > dt {
-  counter-increment: list-item 0;
-}
-
 .attributes::before, .methods::before,
 .parameters::before, .exceptions::before,
 .constructors::before, .members::before {
@@ -58,17 +53,16 @@ dl.switch > dt > ul > li {
 
 <pre class='metadata'>
 Title: Web Animations Level 2
-Status: ED
+Status: UD
 Warning: not ready
 Work Status: Exploring
 Shortname: web-animations
 ED: https://drafts.csswg.org/web-animations-2/
-TR: https://www.w3.org/TR/web-animations-2/
-Version history: https://github.com/w3c/csswg-drafts/commits/main/web-animations-2
+Version history: https://github.com/w3c/csswg-drafts/commits/master/web-animations-1
 Level: 2
 
 Group: csswg
-!Participate: <a href="https://github.com/w3c/csswg-drafts/tree/main/web-animations-2">Fix the text through GitHub</a>
+!Participate: <a href="https://github.com/w3c/csswg-drafts/tree/master/web-animations-2">Fix the text through GitHub</a>
 !Participate: Join the &lsquo;waapi&rsquo; channel on the <a href="https://damp-lake-50659.herokuapp.com/">Animation at Work</a> slack
 !Participate: IRC: <a href="ircs://irc.w3.org:6667/webanimations">#webanimations</a> on W3C's IRC
 Repository: w3c/csswg-drafts
@@ -85,22 +79,28 @@ Abstract: This specification defines a model for synchronization and
     specifications will define declarative means for exposing these
     features.
 Ignored Vars: auto-rewind, current direction, index, initial progress,
-    timeline, new timeline, t, going forwards, did trigger
+    timeline, new timeline, t, going forwards
 </pre>
 <pre class="anchors">
 urlPrefix: https://drafts.csswg.org/web-animations-1/; type: dfn; spec: web-animations-1
     text: active-after boundary time
     text: active interval
+    text: active phase
     text: active time
+    text: after phase
     text: animation
     text: animation direction
+    text: animation playback rate
     text: animation effect
     text: Apply any pending playback rate
     text: associated effect end
     text: before-active boundary time
+    text: before flag
+    text: before phase
     text: cancel an animation
     text: current iteration
     text: current ready promise
+    text: current time
     text: current finished promise
     text: directed progress
     text: effective playback rate
@@ -108,6 +108,8 @@ urlPrefix: https://drafts.csswg.org/web-animations-1/; type: dfn; spec: web-anim
     text: end delay
     text: end time
     text: fill mode
+    text: finished play state
+    text: idle play state
     text: in effect
     text: iteration count
     text: iteration duration
@@ -121,32 +123,32 @@ urlPrefix: https://drafts.csswg.org/web-animations-1/; type: dfn; spec: web-anim
     text: pending play task
     text: pending playback rate
     text: play an animation
+    text: play state
     text: playback direction
+    text: playback rate
     text: pause an animation
-    text: reverse an animation
     text: ready
     text: set the timeline of an animation
     text: simple iteration progress
+    text: target effect
+    text: target element
     text: target property
     text: time value
     text: timeline
+    text: timeline current time
     text: transformed progress
     text: update animations and send events
     text: update the timing properties of an animation effect
     text: unresolved
     text: update an animation's finished state
-    text: default document timeline
-urlPrefix: https://webidl.spec.whatwg.org/; type: dfn; spec: webidl
+urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: webidl
     text: resolve a promise; url: resolve
+urlPrefix: https://heycam.github.io/webidl/#dfn-; type: dfn; spec: webidl
+    text: present
+    text: throw
 urlPrefix: http://www.ecma-international.org/ecma-262/6.0/#sec-; type: dfn; spec: ecma-262
     text: code realms
     text: execution contexts
-urlPrefix: https://drafts.csswg.org/scroll-animations-1/; type: dfn; spec: scroll-animations-1
-    text: html-processing-model-event-loops
-</pre>
-
-<pre class=link-defaults>
-spec:webidl; type:dfn; text:throw
 </pre>
 
 <h2 id="delta">Delta specification</h2>
@@ -163,15 +165,9 @@ previous level of this specification:
 
 *   <a>group effects</a> and <a>sequence effects</a>,
 *   an <a>animation effect</a>-specific
-    [=animation effect/playback rate=],
+    <a lt="animation effect playback rate">playback rate</a>,
+*   <a>custom effects</a>.
 *   Support for non-monotonic (scroll) timelines.
-
-<div class="amendment" id=amend-CE>
-This module also includes some exploratory proposals for [[#custom-effects]],
-however there are some concerns about the design of this feature
-and it may be replaced in a future revision.
-See <a href="https://github.com/w3c/csswg-drafts/issues/6861">discussion</a>.
-</div>
 
 <h2 id="timing-model">Timing model</h2>
 
@@ -224,13 +220,6 @@ Add:
 > case, the timeline is a <dfn lt="progress-based timeline">progress-based
 > timeline</dfn>, and its [=timeline duration=] is 100%.
 
-<h3 id="animation-frame-loop">Animation Frames</h3>
-
-Update the note on the first step of the algorithm by adding the following bullet:
-
-> *   Updating the [=animation trigger state|state=] of [=animation triggers=]
->     by running the [=updating animation trigger state=] procedure.
-
 <h3 id="animations">Animations</h3>
 
 Append:
@@ -275,7 +264,7 @@ Append:
 
 ### Setting the timeline of an animation ### {#setting-the-timeline}
 
-The procedure to <dfn export for=animation>set the timeline of an animation</dfn>,
+The procedure to <df export for=animation>set the timeline of an animation</dfn>,
 <var>animation</var>, to <var>new timeline</var> which may be null, is as
 follows:
 
@@ -284,7 +273,7 @@ follows:
 1.  If <var>new timeline</var> is the same object as <var>old timeline</var>,
     abort this procedure.
 1.  Let |previous play state| be |animation|'s [=play state=].
-1.  Let |previous current time| be the |animation|'s [=animation/current time=].
+1.  Let |previous current time| be the |animation|'s [=current time=].
 1.  Set |previous progress| based in the first condition that applies:
     <dl class=switch>
         :   If |previous current time| is unresolved:
@@ -300,12 +289,12 @@ follows:
         ::  Set |previous progress| = <code>|previous current time| /
             [=end time=]</code>
     </dl>
-
 1.  Let |from finite timeline| be true if |old timeline| is not null and
-    not [=monotonically increasing timeline|monotonically increasing=].
+    not [=monotonically increasing=].
 1.  Let |to finite timeline| be true if |timeline| is not null and not
-    [=monotonically increasing timeline|monotonically increasing=].
+    [=monotonically increasing=].
 1.  Let the <a>timeline</a> of <var>animation</var> be <var>new timeline</var>.
+1.  Set the flag |reset current time on resume| to false.
 1.  Perform the steps corresponding to the <em>first</em> matching
     condition from the following, if any:
 
@@ -314,21 +303,38 @@ follows:
         :   If |to finite timeline|,
 
         ::  1.  [=Apply any pending playback rate=] on |animation|
-            1.  set |auto align start time| to true.
-            1.  Set [=animation/start time=] to unresolved.
-            1.  Set [=animation/hold time=] to unresolved.
-            1.  If |previous play state| is "finished" or "running"
-                1. Schedule a [=pending play task=]
+            1.  Let |seek time| be zero if [=playback rate=] &ge; 0, and
+                |animation|'s <a>associated effect end</a> otherwise.
+            1.  Update the animation based on the first matching condition if any:
 
-            1.  If |previous play state| is "paused" and
-                |previous progress| is resolved:
-                1.  Set [=hold time=] to |previous progress| * [=end time=].
+                <dl class="switch">
 
-            <p class="note">
-                This step ensures that |previous progress| is preserved
-                even in the case of a pause-pending animation with a
-                resolved [=animation/start time=].
-             </p>
+                    :   If <em>either</em> of the following conditions are true:
+                        *    |previous play state| is "running" or,
+                        *    |previous play state| is "finished"
+
+                    ::  Set |animation|'s [=animation/start time=] to |seek time|.
+
+                    :   If |previous play state| is "paused":
+
+                    ::  If |previous progress| is resolved:
+
+                        1.  Set the flag |reset current time on resume| to true.
+                        1.  Set [=animation/start time=] to unresolved.
+                        1.  Set [=hold time=] to |previous progress| *
+                            [=end time=].
+
+                        <p class="note">
+                        This step ensures that |previous progress| is preserved
+                        even in the case of a pause-pending animation with a
+                        resolved [=animation/start time=].
+                        <p>
+
+                    :: Otherwise
+
+                        1. Set [=animation/start time=] to |seek time|.
+
+                </dl>
 
         :   If |from finite timeline| and |previous progress| is resolved,
 
@@ -342,21 +348,19 @@ follows:
     <a>unresolved</a>.
 
     <p class="note">
-    This step ensures that the [=play state/finished|finished play state=] of
+    This step ensures that the <a>finished play state</a> of
     <var>animation</var> is not &ldquo;sticky&rdquo; but is re-evaluated
-    based on its updated [=animation/current time=].
+    based on its updated <a>current time</a>.
     <p>
 
 1.  Run the procedure to <a>update an animation's finished state</a> for
     <var>animation</var> with the <var>did seek</var> flag set to false, and
     the <var>synchronously notify</var> flag set to false.
 
-<ins cite="#amend-CE">
 Issue: If <var>new timeline</var> is null, we should ensure that <a>custom
 effects</a> get called with an <a>unresolved</a> <a>iteration progress</a>
 (unless a subsequent change in the same script execution context makes this
 redundant).
-</ins>
 
 <h4 id="setting-the-target-effect">Setting the target effect of an
   animation</h4>
@@ -368,9 +372,8 @@ After the step to reschedule a <a>pending play task</a> add the following step:
 >     <a lt="remove an animation effect">remove</a> <var>new effect</var> from
 >     its <a>parent group</a>.
 
-<ins cite="#amend-CE">
 After the step to assign <var>new effect</var> as <var>animation</var>'s
-<a>associated effect</a> include the following step:
+<a>target effect</a> include the following step:
 
 > 1.  If <var>old effect</var> is not <code>null</code>, queue a task to call
 >     any <a>custom effects</a> associated with <a>inclusive descendants</a> of
@@ -384,42 +387,19 @@ After the step to assign <var>new effect</var> as <var>animation</var>'s
 >       The definition of when <a>custom effects</a> gets called needs to be
 >       audited and probably rewritten.
 >     </div>
-</ins>
 
-<h4 id='waiting-for-the-associated-effect'>Waiting for the associated effect</h4>
 
-Replace:
+<h4 id='waiting-for-the-target-effect'>Waiting for the target effect</h4>
 
->  An animation is ready at the first moment
->  where <em>both</em> of the following conditions are true:
->
->  * the user agent has completed any setup required
->      to begin the playback of the animation's [=associated effect=],
->      including rendering the first frame of any [=keyframe effect=].
->
->  * the animation is associated with a [=timeline=]
->      that is not [=inactive timeline|inactive=].
+The definition of when an animation is ready needs to be extended to consider
+descendant effects and custom effects such that the first condition is:
 
-With:
-
->  An animation is <dfn>ready</dfn> at the first moment
->  where <em>all</em> of the following conditions are true:
->
 > *   the user agent has completed any setup required to begin the playback of
 >     each <a>inclusive descendant</a> of
->     the animation's <a>associated effect</a>
+>     the animation's <a>target effect</a>
 >     including rendering the first frame of any <a>keyframe
->     effect</a><ins cite="#amend-CE"> or executing any <a>custom effects</a> associated with an
->     <a>animation effect</a></ins>.
->
-> *   the animation is associated with a [=timeline=]
->     that is not [=inactive timeline|inactive=].
->
-> *   the animation's [=hold time=] or [=animation/start time=] is resolved.
-
-Note: an animation is not <a>ready</a> while it has no [=animation/start time=] or [=hold time=].
-For a [=scroll-driven animation=], the start-time is determined when [=html-processing-model-event-loop|updating the timeline=] if |auto align start time| is true.
-
+>     effect</a> or executing any <a>custom effects</a> associated with an
+>     <a>animation effect</a>.
 
 <h4 id='validating-a-css-numberish-time'>Validating a CSSNumberish time</h4>
 
@@ -446,7 +426,7 @@ value of <var>time</var> is based on the first condition that matches:
     ::  <a>throw</a> a <span class="exceptionname">TypeError</span>.
     ::  return false.
 
-    :   Otherwise
+    :   Oterwise
     ::  return true.
 
 </dl>
@@ -455,7 +435,7 @@ value of <var>time</var> is based on the first condition that matches:
 <h4 id='setting-the-current-time-of-an-animation'>Setting the current time of an
 Animation</h4>
 
-The [=animation/current time=] of an animation can be set to a new value to
+The <a>current time</a> of an animation can be set to a new value to
 <em>seek</em> the animation.
 The procedure for setting the current time is defined in two parts.
 
@@ -465,7 +445,7 @@ an animation, <var>animation</var>, to <var>seek time</var> is as follows:
 1.  If <var>seek time</var> is an <a>unresolved</a> time value,
     then perform the following steps.
 
-    1.   If the [=animation/current time=] is <a lt=unresolved>resolved</a>, then
+    1.   If the <a>current time</a> is <a lt=unresolved>resolved</a>, then
          <a>throw</a> a <span class=exceptionname>TypeError</span>.
 
     1.   Abort these steps.
@@ -475,8 +455,6 @@ an animation, <var>animation</var>, to <var>seek time</var> is as follows:
     as the input.
 
 1.  If <var>valid seek time</var> is false, abort this procedure.
-
-1.  Set |auto align start time| to false.
 
 1.  Update either <var>animation</var>'s <a>hold time</a> or
     [=animation/start time=] as follows:
@@ -513,10 +491,12 @@ an animation, <var>animation</var>, to <var>seek time</var> is as follows:
     <p class=note>
       This preserves the invariant that when we don't have an active timeline it
       is only possible to set <em>either</em> the [=animation/start time=]
-      <em>or</em> the animation's [=animation/current time=].
+      <em>or</em> the animation's <a>current time</a>.
     </p>
 
 1.  Make <a>animation</a>'s <var>previous current time</var> <a>unresolved</a>.
+
+1. Set the |reset current time on resume| flag to false.
 
 
 The procedure to <dfn>set the current time</dfn> of an animation,
@@ -550,8 +530,6 @@ is as follows:
 
 1.  If <var>valid start time</var> is false, abort this procedure.
 
-1.  Set |auto align start time| to false.
-
 1.  Let <var>timeline time</var> be the current <a>time value</a> of the
     <a>timeline</a> that <var>animation</var> is associated with.
     If there is no <a>timeline</a> associated with <var>animation</var> or the
@@ -565,20 +543,22 @@ is as follows:
     <p class=note>
       This preserves the invariant that when we don't have an active timeline it
       is only possible to set <em>either</em> the [=animation/start time=]
-      <em>or</em> the animation's [=animation/current time=].
+      <em>or</em> the animation's <a>current time</a>.
     </p>
 
-1.  Let <var>previous current time</var> be <var>animation</var>'s
-    [=animation/current time=].
+1.  Let <var>previous current time</var> be <var>animation</var>'s <a>current
+    time</a>.
 
-    Note: This is the [=animation/current time=] after applying the changes from
-    the previous step which may cause the [=animation/current time=] to become
+    Note: This is the <a>current time</a> after applying the changes from the
+    previous step which may cause the <a>current time</a> to become
     <a>unresolved</a>.
 
 1.  [=Apply any pending playback rate=] on |animation|.
 
 1.  Set <var>animation</var>'s [=animation/start time=] to
     <var>new start time</var>.
+
+1.  Set the |reset current time on resume| flag to false.
 
 1.  Update <var>animation</var>'s <a>hold time</a> based
     on the first matching condition from the following,
@@ -618,31 +598,32 @@ as CSS Animations [[CSS-ANIMATIONS-1]].
     <var>animation</var> has a <a>pending pause task</a>, and false otherwise.
 1.  Let <var>has pending ready promise</var> be a boolean flag that is
     initially false.
+1.  Let <var>seek time</var> be a <a>time value</a> that is initially <a>unresolved</a>.
 1.  Let <var>has finite timeline</var> be true if |animation| has an associated
-    <a>timeline</a> that is not
-    [=monotonically increasing timeline|monotonically increasing=].
-1.  Let <var>previous current time</var> be the |animation|'s
-    [=animation/current time=]
-1.  Let <var>enable seek</var> be true if the <var>auto-rewind</var> flag is
-    true and <var>has finite timeline</var> is false.
-    Otherwise, initialize to false.
+    <a>timeline</a> that is not [=monotonically increasing=].
+1.  Let <var>previous current time</var> be the |animation|'s [=current time=]
+1.  If |reset current time on resume| is set:
+
+    * Set <var>previous current time</var> to unresolved.
+    * Set the |reset current time on resume| flag to false.
+
 1.  Perform the steps corresponding to the <em>first</em> matching
     condition from the following, if any:
 
     <dl class="switch">
 
         :   If |animation|'s [=effective playback rate=] &gt; 0,
-            <var>enable seek</var> is true and <em>either</em>
+            the <var>auto-rewind</var> flag is true and <em>either</em>
             <var>animation</var>'s:
 
             *   <var>previous current time</var> is <a>unresolved</a>, or
             *   <var>previous current time</var> &lt; zero, or
             *   <var>previous current time</var> &ge; <a>associated effect end</a>,
 
-        ::  Set the |animation|'s <a>hold time</a> to zero.
+        ::  Set <var>seek time</var> to zero.
 
         :   If |animation|'s [=effective playback rate=] &lt; 0,
-            <var>enable seek</var> is true and <em>either</em>
+            the <var>auto-rewind</var> flag is true and <em>either</em>
             <var>animation</var>'s:
 
             *   <var>previous current time</var> is <a>unresolved</a>, or
@@ -655,26 +636,31 @@ as CSS Animations [[CSS-ANIMATIONS-1]].
                 ::  <a>throw</a> an "{{InvalidStateError}}" {{DOMException}} and
                     abort these steps.
                 :   Otherwise,
-                ::  Set the |animation|'s <a>hold time</a> to the
-                    |animation|'s <a>associated effect end</a>.
+                ::  Set <var>seek time</var> to |animation|'s <a>associated effect end</a>.
 
             </dl>
 
         :   If |animation|'s [=effective playback rate=] = 0 and |animation|'s
-            [=animation/current time=] is [=unresolved=],
+            [=current time=] is [=unresolved=],
 
-        ::  Set the |animation|'s <a>hold time</a> to zero.
+        ::  Set <var>seek time</var> to zero.
 
     </dl>
 
-1.  If |has finite timeline| and |previous current time| is unresolved:
-    *   Set the flag |auto align start time| to true.
+1.  If |seek time| is <a lt=unresolved>resolved</a>,
 
-    Note: If play is called for a CSS animation during style update,
-    the |animation|'s [=animation/start time=] cannot be reliably calculated until post layout since the start time is to align with the start or end of the animation range (depending on the [=playback rate=]).
-    In this case, the animation is said to have an <dfn export for="animation">auto-aligned start
-    time</dfn>,
-    whereby the start time is automatically adjusted as needed to align the animation's progress to the animation range.
+        <dl class="switch">
+
+            :   If |has finite timeline| is true,
+            ::  1.  Set <var>animation</var>'s [=animation/start time=] to
+                    <var>seek time</var>.
+                1.  Let |animation|'s [=hold time=] be <a>unresolved</a>.
+                1.  [=Apply any pending playback rate=] on |animation|.
+
+            :   Otherwise,
+            ::  1.  Set <var>animation</var>'s <a>hold time</a> to
+                    <var>seek time</var>.
+        </dl>
 
 1.  If <var>animation</var>'s <a>hold time</a> is <a lt=unresolved>resolved</a>,
     let its [=animation/start time=] be <a>unresolved</a>.
@@ -685,9 +671,10 @@ as CSS Animations [[CSS-ANIMATIONS-1]].
     1.  Cancel that task.
     1.  Set <var>has pending ready promise</var> to true.
 
-1.  If the following three conditions are <em>all</em> satisfied:
+1.  If the following four conditions are <em>all</em> satisfied:
 
     * |animation|'s [=hold time=] is [=unresolved=], and
+    * |seek time| is [=unresolved=], and
     * |aborted pause| is false, and
     * |animation| does <em>not</em> have a [=pending playback rate=],
 
@@ -805,167 +792,28 @@ as CSS Animations [[CSS-ANIMATIONS-1]].
 Issue: The procedure to [=play an animation=] needs to include scheduling a task for
 updating [=custom effects=].
 
-<h5 id='auto-aligning-start-time'>Auto-aligning the start time</h5>
-
-When attached to a non-monotonic timeline, the start time of the animation may be layout dependent.
-In this case, we defer calculation of the start time until the timeline has been updated post
-layout.
-When updating timeline current time, the [=animation/start time=] of any attached animation is conditionally updated.
-The procedure for <dfn export for="animation">calculating an auto-aligned start time</dfn> is as follows:
-
-    1.  If the |auto-align start time| flag is false, abort this procedure.
-
-    1.  If the timeline is inactive, abort this procedure.
-
-    1.  If [=play state=] is idle, abort this procedure.
-
-    1.  If [=play state=] is paused, and [=hold time=] is resolved,
-        abort this procedure.
-
-    1.  Let |start offset| be the resolved timeline time corresponding to the start of the [=animation attachment range=].
-        In the case of view timelines, it requires a calculation based on the proportion of the cover range.
-
-    1.  Let |end offset| be the resolved timeline time corresponding to the end of the [=animation attachment range=].
-        In the case of view timelines, it requires a calculation based on the proportion of the cover range.
-
-    1.  Set [=animation/start time=] to |start offset| if [=effective playback rate=] &ge; 0,
-        and |end offset| otherwise.
-
-    1.  Clear [=hold time=].
-
 
 <h4 id='pausing-an-animation-section'>Pausing an animation</h4>
 
 The procedure to [=pause an animation=] needs to refer not only to the
-[=associated effect=] but also any descendants of the [=associated effect=].
+[=target effect=] but also any descendants of the [=target effect=].
 
-<ins cite="#amend-CE">Likewise, the procedure to [=pause an animation=] needs to include scheduling
-a task for updating [=custom effects=].</ins>
+Likewise, the procedure to [=pause an animation=] needs to include scheduling
+a task for updating [=custom effects=].
 
-Update the constraints for setting the seek time to only apply when using a
-monotonic timeline. A [=scroll-driven animation=] needs to defer setting the
-hold time until the animation range has been computed.
-
-Replace:
-
->   1. Let |seek time| be
->        a [=time value=] that is initially [=unresolved=].
->    1. Let |has finite timeline| be true
->        if |animation| has an associated [=timeline=]
->        that is not [=monotonically increasing=].
->
->    1. If the |animation|'s [=animation/current time=] is [=unresolved=],
->        perform the steps according to the first matching condition below:
->
->        <dl class=switch>
->
->        : If |animation|'s [=playback rate=] is ≥ 0,
->        ::
->            Set |seek time| to zero.
->
->        : Otherwise,
->        ::
->            <dl class=switch>
->
->            : If [=associated effect end=] for |animation| is positive infinity,
->            ::
->                [=throw=] an "{{InvalidStateError}}" {{DOMException}}
->                and abort these steps.
->
->            : Otherwise,
->            ::
->                Set |seek time| to |animation|'s [=associated effect end=].
->
->            </dl>
->
->        </dl>
->
->    1. If |seek time| is [=unresolved|resolved=],
->
->            <div class=switch>
->
->            : If |has finite timeline| is true,
->            ::
->                Set |animation|'s [=animation/start time=] to |seek time|.
->
->            : Otherwise,
->            ::
->                Set |animation|'s [=animation/hold time=] to |seek time|.
->
->             </div>
-
-with:
-
->    1. Let |has finite timeline| be true
->        if |animation| has an associated [=timeline=]
->        that is not [=monotonically increasing=].
->
->    1. If the |animation|'s [=animation/current time=] is [=unresolved=] and
->       |has finite timeline| is false,
->        perform the steps according to the first matching condition below:
->
->        <dl class=switch>
->
->        : If |animation|'s [=playback rate=] is ≥ 0,
->        ::
->            Set [=hold time=] to zero.
->
->        : Otherwise,
->        ::
->            <dl class=switch>
->
->            : If [=associated effect end=] for |animation| is positive infinity,
->            ::
->                [=throw=] an "{{InvalidStateError}}" {{DOMException}}
->                and abort these steps.
->
->            : Otherwise,
->            ::
->                Set [=hold time=] to |animation|'s [=associated effect end=].
->
->            </dl>
->
->        </dl>
->
->    1. If |has finite timeline| is true,
->        and the |animation|'s [=animation/current time=] is [=unresolved=]
->       * Set the |auto align start time| flag to true.
-
-Replace:
-
->   Schedule a task to be executed at the first possible moment where both of the following conditions are true:
->
->   * the user agent has performed any processing necessary to suspend the playback of animation’s associated effect, if any.
->
->   * the animation is associated with a timeline that is not inactive.
-
-With:
-
->   Schedule a task to be executed at the first possible moment where all of the following conditions are true:
->
->   * the user agent has performed any processing necessary to suspend the playback of animation’s associated effect, if any.
->
->   * the animation is associated with a timeline that is not inactive.
->
->   * the animation has a resolved [=hold time=] or [=animation/start time=].
-
-Note: A [=animation/start time=] is still required for a pause-pending animation if the |auto-align start time| flag is true to properly align to the animation range.
-The [=animation/start time=] is set following the procedure for [=calculating an auto-aligned start time=].
 
 <h4 id='canceling-an-animation-section'>Canceling an animation</h4>
 
-<ins cite="#amend-CE">
 Append the final step:
 
 > 1.  Queue a task to call any <a>custom effects</a> associated with
 >     <a>inclusive descendants</a> of
->     <var>animation</var>'s <a>associated effect</a>
+>     <var>animation</var>'s <a>target effect</a>
 >     with an <a>unresolved</a> iteration progress.
 >
 >     Issue: The procedures for calling custom effects need to be reworked.
 >            Currently they probably involve calling too often for changes that
 >            could be coalesced.
-</ins>
 
 <h4 id="speed-control">Speed control</h4>
 
@@ -973,54 +821,19 @@ Append the final step:
 
 Add the following sentence:
 
->   Note that <a>animation effects</a> also have a
->   [=animation effect/playback rate=] associated
+>   Note that <a>animation effects</a> also have a <a
+>   lt="animation effect playback rate">playback rate</a> associated
 >   with them that behaves differently to that defined here.
 
 </div>
-
-### Calculating the overall progress of an animation ### {#the-overall-progress-of-an-animation}
-
-  An animation's <dfn export for=animation>overallProgress</dfn> is the ratio of its
-   [=animation/current time=] to its [=associated effect end=].
-
-  <div algorithm="calculate animation overall progress">
-    The [=animation/overallProgress=] of an [=animation=], |animation|, is calculated as follows:
-
-    <dl class=switch>
-
-    : If <em>any</em> of the following are true:
-        * |animation| does not have an [=animation/associated effect=], or
-        * |animation|'s [=animation/current time=] is an [=unresolved=] time value,
-    ::
-        |animation|'s [=animation/overallProgress=] is null.
-    : If |animation|'s [=associated effect end=] is zero,
-    ::
-        : If |animation|'s [=animation/current time=] is negative,
-        :: |animation|'s [=animation/overallProgress=] is zero.
-
-        : Otherwise,
-        :: |animation|'s [=animation/overallProgress=] is one.
-    : If |animation|'s [=associated effect end=] is infinite,
-    ::
-        |animation|'s [=animation/overallProgress=] is zero.
-    : Otherwise,
-    ::
-        <blockquote>
-          <code><a for="animation">overallProgress</a> = min(max([=animation/current time=] / |animation|'s [=associated effect end=], 0), 1)
-          </code>
-        </blockquote>
-
-    </dl>
-  </div>
 
 
 <h3 id="animation-effects">Animation effects</h3>
 
 Adds the following text:
 
->     The <a>associated effect</a> of an <a>animation</a> is said to be
->     <dfn lt="directly associated with an animation">directly associated</dfn>
+>     The <a>target effect</a> of an <a>animation</a> is said to be <dfn
+>     lt="directly associated with an animation">directly associated</dfn>
 >     with that animation.
 >
 >     <a>Animation effects</a> can be combined together into a hierarchy using
@@ -1028,7 +841,7 @@ Adds the following text:
 >     Only the <a>root</a> <a>animation effect</a> of such a hierarchy can be
 >     <a>directly associated with an animation</a>.
 >     If an <a>animation effect</a> that has a <a>parent group</a>
->     is designated as the <a>associated effect</a> of an <a>animation</a>, the
+>     is designated as the <a>target effect</a> of an <a>animation</a>, the
 >     <a>animation effect</a> is removed from its <a>parent group</a> before
 >     being associated with the <a>animation</a>.
 >
@@ -1063,6 +876,8 @@ Finally, the description of the [=end delay=] is updated to:
 >     An <a>end delay</a> may also be specified but is primarily only of
 >     use when sequencing animations such as by using a <a>sequence effect</a>.
 
+</div>
+
 The normative description is updated as follows:
 
 >     The lower bound of the <a>active interval</a> is defined by the
@@ -1092,10 +907,11 @@ The normative description is updated as follows:
 >     is determined by the <a>parent group</a>, the <a>start
 >     delay</a> is a property of the <a>animation effect</a> itself.
 >
->     The lower bound of the <a>active interval</a> of an <a>animation effect</a>,
->     expressed in <a lt="inherited time">inherited time space</a>,
->     is the sum of the <a lt="animation effect start time">start time</a>
->     and the <a>start delay</a>.
+>     The lower bound of the <a>active interval</a> of an <a>animation
+>     effect</a>, expressed in <a lt="inherited time">inherited time
+>     space</a>, is the sum of the <a
+>     lt="animation effect start time">start time</a> and the <a>start
+>     delay</a>.
 >
 >     These definitions are incorporated in the calculation of the <a>local
 >     time</a> (see [[#local-time-and-inherited-time]]) and <a>active time</a>.
@@ -1164,19 +980,19 @@ For an <a>animation effect</a>, the <dfn>inherited time</dfn> at
 a given moment is based on the first matching condition from the
 following:
 
-<dl class='switch'>
+<div class='switch'>
 
 :   If the <a>animation effect</a> has a <a>parent group</a>,
 ::  the inherited time is the <a>parent group</a>'s current
     <a>transformed time</a>.
 :   If the <a>animation effect</a> is <a>directly associated with
     an animation</a>,
-::  the inherited time is the [=animation/current time=] of the
+::  the inherited time is the <a>current time</a> of the
     <a>animation</a>.
 :   Otherwise,
 ::  the inherited time is <a>unresolved</a>.
 
-</dl>
+</div>
 
 The <dfn>local time</dfn> of an <a>animation effect</a> is the
 <a>animation effect</a>'s <a>inherited time</a> minus its <a
@@ -1194,24 +1010,24 @@ The non-normative description of the [=in play=] state includes the following
 description;
 
 >     This occurs when the <a>animation effect</a> <em>and all its
->     ancestors</em> are in the [=animation effect/active phase=].
+>     ancestors</em> are in the <a>active phase</a>.
 >     <a>Animation effects</a> only &ldquo;move&rdquo; when
 >     they are <a>in play</a>.
 >
 >     It is possible for an <a>animation effect</a> to be in the
->     [=animation effect/active phase=] but not <a>in play</a>.
+>     <a>active phase</a> but not <a>in play</a>.
 >     For example, if an <a>animation effect</a> has a <a>parent
 >     group</a> that causes the animation effect's <a>active
 >     interval</a> to be clipped and both parent and child apply the
 >     same <a>fill mode</a>, the child <a>animation effect</a> may be
->     effectively be snapshotted within the [=animation effect/active phase=]
+>     effectively be snapshotted within the <a>active phase</a>
 >     despite no longer being <a>in play</a>.
 
 
 Likewise for [=current=]
 
 >     This will be the case if the <a>animation effect</a> is <a>in
->     play</a> or in its [=animation effect/before phase=], <em>or</em> it has an
+>     play</a> or in its <a>before phase</a>, <em>or</em> it has an
 >     ancestor for which this is true thereby opening up the
 >     possibility that this <a>animation effect</a> might play again
 >     (e.g. due to repeating).
@@ -1222,13 +1038,13 @@ The normative definition of <dfn>in play</dfn> includes the following condition:
 
 > 2.  the <a>animation effect</a> has a <a>parent group</a> that
 >     is <a>in play</a> or else the <a>animation effect</a> is
->     <a>directly associated with an animation</a> that is not
->     [=play state/finished=].
+>     <a>directly associated with an animation</a> that is not <a
+>     lt="finished play state">finished</a>.
 
 In place of:
 
 > 2.  the <a>animation effect</a> is <a>associated with an animation</a> that is
->     not [=play state/finished=].
+>     not <a lt="finished play state">finished</a>.
 
 
 The normative definition of <dfn>current</dfn> adds the following
@@ -1244,7 +1060,7 @@ an <a>animation effect</a>.
 ::  Determined using the following procedure:
 
     1.  If <em>any</em> of the following conditions are true:
-        *   the associated <a>animation</a>'s timeline is not a
+        *   the associated <an>animation</a>'s timeline is not a
             [=progress-based timeline=], or
         *   the associated <a>animation</a>'s [=timeline duration=] is
             unresolved or zero, or
@@ -1252,7 +1068,7 @@ an <a>animation effect</a>.
 
         return false
 
-    1.  Let <var>effective start time</var> be the <a>animation</a>'s
+   1.  Let <var>effective start time</var> be the <a>animation</a>'s
         [=animation/start time=] if resolved, or zero otherwise.
 
     1.  Set <var>unlimited current time</var> based on the first matching
@@ -1265,7 +1081,7 @@ an <a>animation effect</a>.
 
         :   Otherwise
 
-        ::  <code>animation's [=animation/current time=]</code>
+        ::  <code>animation's [=current time=]</code>
 
     1.  Let <var>effective timeline time</var> be
         <code>|unlimited current time| / <a>animation</a>'s
@@ -1285,8 +1101,7 @@ introduce a lead or lag, between the <a>timeline</a>'s current time and
 Issue: This procedure can likely be simplified, and instead determine if at a
 scrolling boundary regardless of playback rate or start time. The surprising
 behavior that this is trying to prevent is an animation becoming inactive
-precisely at the scroll limit, alleviating the need for set a fill-mode with
-a ScrollTimeline. Checking if timeline [=timeline/current time=] is
+precisely at the scroll limit, alleviating the need for set a fill-mode with a ScrollTimeline. Checking if timeline [=timeline current time|current time=] is
 0 or timeline duration may be sufficient.
 
 
@@ -1344,27 +1159,23 @@ with:
 
 The description of the forwards fill mode is updated from:
 
->     When the animation effect is in the [=animation effect/after phase=],
->     &hellip;
+>     When the animation effect is in the <a>after phase</a>, &hellip;
 
 to:
 
->     When the animation effect is in the [=animation effect/after phase=],
->     or when the animation effect is in the [=animation effect/active phase=]
->     but an <a>ancestor</a> is in its [=animation effect/after phase=],
->     &hellip;
+>     When the animation effect is in the <a>after phase</a>,
+>     or when the animation effect is in the <a>active phase</a> but an
+>     <a>ancestor</a> is in its <a>after phase</a>, &hellip;
 
 The description of the backwards fill mode is updated from:
 
->     When the animation effect is in the [=animation effect/before phase=],
->     &hellip;
+>     When the animation effect is in the <a>before phase</a>, &hellip;
 
 to:
 
->     When the animation effect is in the [=animation effect/before phase=],
->     or when the animation effect is in the [=animation effect/active phase=]
->     but an <a>ancestor</a> is in its [=animation effect/before phase=],
->     &hellip;
+>     When the animation effect is in the <a>before phase</a>,
+>     or when the animation effect is in the <a>active phase</a> but an
+>     <a>ancestor</a> is in its <a>before phase</a>, &hellip;
 
 The description of the both fill mode is updated from:
 
@@ -1479,43 +1290,45 @@ And likewise the figure is updated as follows:
 (This section is added.)
 
 Like <a>animations</a>, <a>animation effects</a> also have a <dfn
-for="animation effect" lt="playback rate">playback rate</dfn> parameter.
-The [=animation effect/playback rate=] of
+lt="animation effect playback rate">playback rate</dfn> parameter.
+The <a lt="animation effect playback rate">playback rate</a> of
 an <a>animation effect</a> is a finite real number that acts as
 a multiplier when calculating the <a>animation effect</a>'s <a>transformed
 time</a> from its <a>local time</a>.
 
-The effect of setting the [=animation effect/playback rate=]
-of an <a>animation effect</a> differs from the
-setting the [=playback rate=] on an animation.
+The effect of setting the <a lt="animation effect playback
+rate">playback rate</a> of an <a>animation effect</a> differs from the
+setting the <a lt="animation playback rate">playback rate</a> on
+an animation.
 Its behavior is defined in the timing calculations given in
 [[#core-animation-effect-calculations]].
 
 <div class="informative-bg"><em>This section is non-normative</em>
 
-In summary, the behavior of the [=animation effect/playback rate=]
-of an <a>animation effect</a> is as follows:
+In summary, the behavior of the <a lt="animation effect playback
+rate">playback rate</a> of an <a>animation effect</a> is as follows:
 
-*   The [=animation effect/playback rate=] is
+*   The <a lt="animation effect playback rate">playback rate</a> is
     applied only to the <a>active interval</a> of an <a>animation
     effect</a> and not to the time while it is <a
     lt="start delay">delayed</a> or <a lt="fill mode">filling</a>.
 
-*   Setting a negative [=animation effect/playback rate=]
-    on an <a>animation effect</a> causes the <a>animation
+*   Setting a negative <a lt="animation effect playback rate">playback
+    rate</a> on an <a>animation effect</a> causes the <a>animation
     effect</a> to begin at the end of its <a>active interval</a>.
-    This differs from the [=playback rate=] on an <a>animation</a>.
-    Setting a [=playback rate=] on
+    This differs from the <a lt="animation playback rate">playback
+    rate</a> on an <a>animation</a>.
+    Setting a <a lt="animation playback rate">playback rate</a> on
     an <a>animation</a> to a negative value at a moment before the
-    <a>animation</a>'s <a>associated effect</a> has begun, will result in the
-    <a>associated effect</a> never playing.
+    <a>animation</a>'s </a>target effect</a> has begun, will result in the
+    <a>target effect</a> never playing.
 
-*   Setting the [=animation effect/playback rate=]
-    of an <a>animation effect</a> affects the calculated value of
+*   Setting the <a lt="animation effect playback rate">playback
+    rate</a> of an <a>animation effect</a> affects the calculated value of
     the <a>active duration</a> (see [[#calculating-the-active-duration]]).
 
-*   Changing the [=animation effect/playback rate=] of an
-    <a>animation effect</a> whose <a>local time</a> is
+*   Changing the <a lt="animation effect playback rate">playback
+    rate</a> of an <a>animation effect</a> whose <a>local time</a> is
     within its <a>active interval</a> will cause it to jump.
     This is because the <a>active duration</a> will be updated but the
     <a>local time</a> will not.
@@ -1523,10 +1336,11 @@ of an <a>animation effect</a> is as follows:
     Furthermore, if other <a>animation effects</a> depend on the
     <a>animation effect</a>'s <a>active duration</a>, such as sibling
     <a>animation effect</a> in a <a>sequence effect</a>, they
-    too may jump as a result of setting the <a>animation effect</a>'s
-    [=animation effect/playback rate=].
+    too may jump as a result of setting the <a>animation effect</a>'s <a
+    lt="animation effect playback rate">playback rate</a>.
 
-    For runtime speed control the [=playback rate=] of the
+    For runtime speed control the <a
+    lt="animation playback rate">playback rate</a> of the
     <a>animation</a> should be used.
 
 </div>
@@ -1558,8 +1372,8 @@ Update diagram to show animation effect playback rate:
   <figcaption>
     Calculation of the <a>active duration</a> is based on
     multiplying the <a>iteration duration</a> by the
-    <a>iteration count</a> and then dividing by the
-    [=animation effect/playback rate=].
+    <a>iteration count</a> and then dividing by the <a lt="animation effect
+    playback rate">playback rate</a>.
   </figcaption>
 </figure>
 
@@ -1593,7 +1407,8 @@ Update the time calculations diagram as follows:
     delay</a>.<br>
     (3) The <a>active time</a> is divided by the <a>iteration duration</a>
     incorporating also the <a>iteration start</a>
-    property and the [=animation effect/playback rate=] property
+    property and the
+    <a lt="animation effect playback rate">playback rate</a> property
     to produce the <a>overall progress</a>.<br>
     (4) The <a>overall progress</a> time is then converted to an offset
     within a single iteration: the <a>simple iteration progress</a>.<br>
@@ -1641,10 +1456,10 @@ Updated to:
 >     The <dfn>active duration</dfn> is calculated according to the following
 >     steps:
 >
->     1.  If the [=animation effect/playback rate=] is
+>     1.  If the <a lt="animation effect playback rate">playback rate</a> is
 >           zero, return <code>Infinity</code>.
->     2.  Otherwise, return <code><a>repeated duration</a> /
->           abs([=animation effect/playback rate=])</code>.
+>     2.  Otherwise, return <code><a>repeated duration</a> / abs(<a
+>           lt="animation effect playback rate">playback rate</a>)</code>.
 
 <h4 id="transforming-the-local-time">Transforming the local time</h4>
 
@@ -1662,7 +1477,7 @@ reference to the [=parent group=]:
 Update the definition to include the additional steps to for each phase:
 
 > <dl class="switch">
->     :   If the animation effect is in the [=animation effect/before phase=],
+>     :   If the animation effect is in the <a>before phase</a>,
 >     ::  The result depends on the first matching condition from the
 >         following,
 >
@@ -1677,7 +1492,7 @@ Update the definition to include the additional steps to for each phase:
 >
 >         &hellip;
 >
->     :   If the animation effect is in the [=animation effect/active phase=],
+>     :   If the animation effect is in the <a>active phase</a>,
 >     ::  The result depends on the first matching condition from the
 >         following,
 >
@@ -1687,13 +1502,13 @@ Update the definition to include the additional steps to for each phase:
 >                 and that parent group is in the <a>before
 >                 phase</a>, and the <a>fill mode</a> of this animation effect
 >                 is <span class="prop-value">none</span> or <span
->                 class="prop-value">forwards</span>,
+>                 class="prop-value">forwards</a>,
 >             ::  Return an <a>unresolved</a> <a>time value</a>.
 >             :   If the animation effect has a <a>parent group</a>
 >                 and that parent group is in the <a>after
 >                 phase</a>, and the <a>fill mode</a> of this animation effect
 >                 is <span class="prop-value">none</span> or <span
->                 class="prop-value">backwards</span>,
+>                 class="prop-value">backwards</a>,
 >             ::  Return an <a>unresolved</a> <a>time value</a>.
 >             :   Otherwise,
 >             ::  Return the result of evaluating
@@ -1701,7 +1516,7 @@ Update the definition to include the additional steps to for each phase:
 >
 >         </dl>
 >
->     :   If the animation effect is in the [=animation effect/after phase=],
+>     :   If the animation effect is in the <a>after phase</a>,
 >     ::  The result depends on the first matching condition from the
 >         following,
 >
@@ -1731,19 +1546,19 @@ branch of the definition of the |initial progress| as:
 >
 >         <dl class="switch">
 >
->             :   If the [=animation effect/playback rate=] is less than zero,
+>             :   If the <a>animation effect playback rate</a> is less than zero,
 >             ::  Let <var>overall progress</var> be
 >                 <code>(<a>active time</a> - <a>active duration</a>)
->                 &times; [=animation effect/playback rate=]
->                 / <a>iteration duration</a></code>.
+>                 &times; <a lt="animation effect playback rate">playback
+>                 rate</a> / <a>iteration duration</a></code>.
 >
->             :   If the [=animation effect/playback rate=] is zero,
+>             :   If the <a>animation effect playback rate</a> is zero,
 >             ::  Let <var>overall progress</var> be zero.
 >
 >             :   Otherwise,
 >             ::  Let <var>overall progress</var> be
 >                 <code>(<a>active time</a> &times;
->                 [=animation effect/playback rate=]) /
+>                 <a lt="animation effect playback rate">playback rate</a>) /
 >                 <a>iteration duration</a></code>.
 >
 >         </dl>
@@ -1771,13 +1586,13 @@ href="http://lists.w3.org/Archives/Public/public-fx/2013JulSep/0076.html">sectio
 
 <h4 id="calculating-the-transformed-progress">Calculating the transformed progress</h4>
 
-Replace the second step as the calculation of the <a spec=css-easing>before
-flag</a> (to accommodate the effect playback rate):
+Replace the second step as the calculation of the [=before flag=] (to
+accommodate the effect playback rate):
 
 >     1.  If <em>either</em> the <var>current direction</var> is <span
->         class="prop-value">forwards</span> or the
->         [=animation effect/playback rate=] &ge; 0
->         (but <em>not</em> when both conditions are true),
+>         class="prop-value">forwards</span> or the <a>animation effect
+>         playback rate</a> &ge; 0 (but <em>not</em> when both conditions
+>         are true),
 >         let <var>going forwards</var> be true, otherwise it is false.
 
 
@@ -1820,6 +1635,7 @@ A simple example is illustrated below.
 When a <a>group effect</a> is <a>directly associated with
 an animation</a>, the <a>animation effect</a> associated with the
 <a>group effect</a> can be seeked, paused, and stopped as a unit.
+</p>
 
 </div>
 
@@ -1938,8 +1754,9 @@ This allows groups to <em>clip</em> the playback of their children.
 Some further consequences of <a>group effect</a> children basing
 their timing on their parent group's <a>transformed time</a> are:
 
-*   Setting the [=animation effect/playback rate=] of a <a>group effect</a>
-    will speed up or slow down all children.
+*   Setting the <a lt="animation effect playback rate">playback
+    rate</a> of a <a>group effect</a> will speed up or slow down all
+    children.
 
 *   Changing the <a>playback direction</a> of a <a>group effect</a>
     will change the direction of all children.
@@ -2180,11 +1997,6 @@ The procedure for sorting effects appends the following step:
 >         same <a>animation</a> since otherwise the order would have been
 >         resolved in the previous step.)
 
-Issue: The "associated animation of an animation effect" definition used when
-sorting animation effects needs to be revised to use the [=associated with an
-animation=] definition introduced in this level of the specification so that it
-correctly handles group effects.
-
 <h3 id="effect-accumulation-section">Effect accumulation</h3>
 
 Similar to the compositing performed between <a>effect values</a>
@@ -2208,7 +2020,7 @@ as follows:
     href="#the-effect-value-of-a-keyframe-animation-effect"
     section></a>.
 
-<ins cite="#amend-CE">
+
 <h3 id="custom-effects">Custom effects</h3>
 
 (This section is added.)
@@ -2245,7 +2057,8 @@ otherwise un-animatable attributes and properties, but potentially
 anything that is accessible via script, including even producing audio
 or creating vibrations.
 
-For example, using a <a>custom effect</a> that draws to a <{canvas}>
+For example, using a <a>custom effect</a> that draws to a <a
+href="https://www.w3.org/TR/html5/scripting-1.html#the-canvas-element"><code>canvas</code></a>
 element, it is possible to produce a complex animated effect
 featuring patterns that may be difficult to create using CSS or
 SVG.
@@ -2278,12 +2091,12 @@ the following criteria.
 
     *   was <a>in effect</a>, and
     *   referenced this same <a>custom effect</a>, and
-    *   had a different [=effect target/target element=]
+    *   had a different <a>target element</a>
 
     Call the callback passing an <a>unresolved</a> <a>iteration progress</a>
-    and the [=effect target/target element=] from the previous update as
-    parameters to the callback.
-2.  Call the callback for the current [=effect target/target element=] based on
+    and the <a>target element</a> from the previous update as parameters to
+    the callback.
+2.  Call the callback for the current <a>target element</a> based on
     the first matching condition from the following:
 
     <dl class="switch">
@@ -2292,8 +2105,7 @@ the following criteria.
             effect is not <a>in effect</a> but was <a>in effect</a> in the previous
             update,
         ::  Call the callback passing an <a>unresolved</a> <a>iteration progress</a>
-            and the current [=effect target/target element=] as parameters to
-            the callback.
+            and the current <a>target element</a> as parameters to the callback.
         :   Otherwise, if the <a>animation effect</a> referencing
             the custom effect:
         ::
@@ -2305,8 +2117,7 @@ the following criteria.
 
         ::  Call the callback passing with the referencing
             <a>animation effect</a>'s current <a>iteration
-            progress</a> and [=effect target/target element=] as parameters to
-            the callback.
+            progress</a> and <a>target element</a> as parameters to the callback.
 
     </dl>
 
@@ -2358,206 +2169,6 @@ order of execution is the same as that defined for <a>animation effects</a> in
 [[#the-effect-stack]].
 Items sorted earlier are executed before those sorted later.
 
-</ins>
-
-Animation Triggers {#triggers}
------------------
-
-### Overview ### {#triggers-overview}
-
-An <dfn export>animation trigger</dfn> is used to control the playback
-of its associated [=animation=] for time-driven animations.
-Like animations, [=animation triggers=] are associated with a [=timeline=]
-and are attached to an [=animation attachment range|attachment range=].
-
-Issue: Should there be any effect of triggers on scroll-driven animations?
-
-### Animation Trigger Types ### {#trigger-types}
-
-The behavior an [=animation trigger=] applies to its associated [=animation=]’s
-playback is defined by its <dfn export>animation trigger type</dfn>, and
-depending on its [=animation trigger state|state=] can apply one of two
-distinct behavior types: [=animation trigger state/primary=] or [=animation trigger state/inverse=].
-Given an internal |did trigger| flag, the values of [=animation trigger type=]
-can be one of the following:
-
-<dl>
-  <dt>''animation-trigger-type/once''
-  <dd>
-    The [=animation trigger state/primary=] behavior is [=play an animation|triggering=] the associated animation.
-
-  <dt>''animation-trigger-type/repeat''
-  <dd>
-    The [=animation trigger state/primary=] behavior is [=play an animation|triggering=] the associated animation.
-    The [=animation trigger state/inverse=] behavior is resetting the associated [=animation effect=] back to
-    its [=animation effect/before phase=] and its associated animation’s [=animation/start time=] to zero.
-
-  <dt>''animation-trigger-type/alternate''
-  <dd>
-    <dl class=switch>
-      : if the |did trigger| flag is false,
-      ::
-        The [=animation trigger state/primary=] behavior is [=play an animation|triggering=] the associated animation.
-
-      : Otherwise,
-      ::
-        The [=animation trigger state/primary=] behavior is [=reverse an animation|reversing=] the associated animation.
-
-    </dl>
-
-    The [=animation trigger state/inverse=] behavior is [=reverse an animation|reversing=] the associated animation.
-
-  <dt>''animation-trigger-type/state''
-  <dd>
-    The [=animation trigger state/primary=] behavior is [=play an animation|triggering or resuming=] the associated animation.
-    The [=animation trigger state/inverse=] behavior is [=pause an animation|pausing=] the associated animation.
-</dl>
-
-Issue: Need to bike-shed the name for type "state" type.
-
-Issue: Do we need a proper definition for "behavior types primary/inverse"?
-
-### Animation Trigger State ### {#trigger-state}
-
-An [=animation trigger=] |trigger| with [=animation trigger type=] |type|
-and an associated [=animation=] |animation|
-has an internal <dfn export lt="animation trigger state">state</dfn> which
-controls the applied behavior type. This state has discrete values
-which can be one of the following:
-
-<dl dfn-for="animation trigger state">
-  <dt><dfn>idle</dfn>
-  <dd>
-    The [=animation effect=] associated |animation| remains in
-    its [=animation effect/before phase=] and stays at zero [=animation/current time=].
-
-  <dt><dfn>primary</dfn>
-  <dd>
-    When switched to this value the [=animation trigger state/primary=] behavior type defined by |type| is applied to |animation|.
-
-  <dt><dfn>inverse</dfn>
-  <dd>
-    When switched to this value the [=animation trigger state/inverse=] behavior type defined by |type| is applied to |animation|.
-
-</dl>
-
-Issue: Do we need a formal resolution on the spec of the idle state?
-
-### Animation Trigger Active Interval ### {#trigger-active-interval}
-
-Each [=animation trigger=] defines an <dfn for="animation trigger">active interval</dfn>
-and only one such interval. This interval is the segment of the timeline’s progress
-during which the trigger’s [=animation trigger state|state=] is set to [=animation trigger state/primary=].
-
-### Animation Trigger Ranges ### {#trigger-ranges}
-
-An [=animation trigger=] has two [=animation attachment range|ranges=],
-the <dfn>default range</dfn> and the <dfn>exit range</dfn>.
-The [=exit range=] is used to replace [=default range=] and extend
-the [=animation trigger/active interval|active interval=].
-
-Issue: Should we specify that that exit range’s edges can only be equal to or greater than the default range’s edges?
-
-Depending on its most recent [=animation trigger state|state=] |state|, the
-[=animation trigger/active interval|active interval=] is defined as follows:
-
-<dl class=switch>
-  : If |state| is [=animation trigger state/primary=],
-  ::
-    Then |interval| is set to [=exit range=].
-
-  : Otherwise,
-  ::
-    |interval| is [=default range=].
-
-</dl>
-
-### Setting a Trigger of an Animation ### {#setting-animation-trigger}
-
-  <div algorithm="Setting a Trigger of an Animation">
-    The procedure of <dfn>setting a trigger of an animation</dfn> |animation|,
-    to |new trigger|, is as follows:
-
-    1. Let |old trigger| be the current [=animation trigger=] of |animation|, if any.
-
-    1. If |new trigger| is the same object as |old trigger|, abort this procedure.
-
-    1. Let the [=animation trigger|trigger=] of |animation| be |new trigger|.
-
-    1. Run the procedure to [=updating animation trigger state=] for |new trigger|.
-  </div>
-
-### Setting the timeline of an Animation Trigger ### {#setting-trigger-timeline}
-
-  <div algorithm="setting timeline of animation trigger">
-    The procedure of <dfn>setting timeline of animation trigger</dfn> |trigger|,
-    to |new timeline| which may be <code>null</code>, is as follows:
-
-    1. Let |old timeline| be the current [=timeline=] of |trigger|, if any.
-
-    1. If |new timeline| is the same object as |old timeline|, abort this procedure.
-
-    1. Let the [=timeline=] of |trigger| be |new timeline|.
-
-    1. Run the procedure to [=updating animation trigger state=] for |trigger|.
-  </div>
-
-### Updating Animation Trigger State ### {#updating-trigger-state}
-
-<div algorithm="updating animation trigger state">
-  The procedure of <dfn>updating animation trigger state</dfn> |state|
-  of an [=animation trigger=] |trigger|,
-  with a given a flag |did trigger|, and an [=animation trigger type=] |type|,
-  is as follows:
-
-  1. Let |did trigger| be a boolean flag that is initially false.
-
-  1. Let |state| be the current [=animation trigger state|state=]
-    of |trigger| that is initially [=animation trigger state/idle=].
-
-  1. Set |state| as follows:
-    <dl class=switch>
-      : If |trigger|’s [=local time=] is [=unresolved=],
-      ::
-        Then abort this procedure.
-
-      : Otherwise,
-      ::
-
-        <dl class=switch>
-          : If |type| is ''animation-trigger-type/once'' and |did trigger| flag is true,
-          ::
-            Then abort this procedure.
-
-          : Otherwise,
-          ::
-
-            <dl class=switch>
-              : If |trigger| is inside its [=animation trigger/active interval|active interval=],
-              ::
-                  1. Set |state| to [=animation trigger state/primary=].
-                  1. Set |did trigger| to true.
-
-              : Otherwise,
-              ::
-
-                <dl class=switch>
-                  : If |did trigger| flag is true,
-                  ::
-                      Set |state| to [=animation trigger state/inverse=].
-
-                </dl>
-
-            </dl>
-
-        </dl>
-
-    </dl>
-
-</div>
-
-Issue: Should it be the correct/expected behavior for the "did trigger" flag to reset to false if the timeline becomes idle again?
-
 <!-- End of animation model -->
 
 <h2 id="programming-interface">Programming interface</h2>
@@ -2567,22 +2178,12 @@ Issue: Should it be the correct/expected behavior for the "did trigger" flag to 
 <pre class="idl">
 [Exposed=Window]
 partial interface AnimationTimeline {
-    readonly attribute CSSNumberish? currentTime;
     readonly attribute CSSNumberish? duration;
     Animation play (optional AnimationEffect? effect = null);
 };
 </pre>
 
 <div class='attributes'>
-
-Update the attribute type for currentTime.
-
-:   <dfn attribute for=AnimationTimeline>currentTime</dfn>
-::  Returns the [=timeline/current time=] for this timeline or
-    <code>null</code> if this timeline is
-    <a lt="inactive timeline">inactive</a>.  The value is expressed as a
-    percentage for a [=progress-based timeline=], or as a double in
-    milliseconds otherwise.
 
 :   <dfn attribute for=AnimationTimeline>duration</dfn>
 ::  Returns the <a lt="timeline duration">duration</a> for this timeline.
@@ -2598,7 +2199,7 @@ Update the attribute type for currentTime.
     <a>ready</a>.
 
     If <var>effect</var> is specified, it will be used as the animation's
-    <a>associated effect</a>.
+    <a>target effect</a>.
 
     Issue: It has been suggested this method be renamed, or even removed
     (see <a
@@ -2620,7 +2221,7 @@ Update the attribute type for currentTime.
 
     :   <dfn argument for="AnimationTimeline/play(effect)"
          lt="effect">effect</dfn>
-    ::  the <a>associated effect</a> to assign to the newly-created
+    ::  the <a>target effect</a> to assign to the newly-created
         {{Animation}} object.
 
     </div>
@@ -2629,22 +2230,17 @@ Update the attribute type for currentTime.
 
 <h3 id="the-animation-interface">The <code>Animation</code> interface</h3>
 
-Update the startTime and currentTime of the Animation interface, and add
-rangeStart, rangeEnd, and overallProgress as follows:
+Update the startTime and currentTime of the Animation interface as follows:
 
 <pre class="idl">
 [Exposed=Window]
 partial interface Animation {
     attribute CSSNumberish?       startTime;
     attribute CSSNumberish?       currentTime;
-    attribute AnimationTrigger?   trigger;
-    attribute (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) rangeStart;
-    attribute (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) rangeEnd;
-    readonly attribute double? overallProgress;
 };
 </pre>
 
-Add or update attribute descriptions as follows:
+Replace [=animation/start time=] and [=current time=] attribute descriptions with:
 
 <div class='attributes'>
 
@@ -2662,38 +2258,13 @@ Add or update attribute descriptions as follows:
 :   <dfn attribute for=Animation>currentTime</dfn>
 ::  update the description as:
 
-    > The [=animation/current time=] of this animation. When associated with a
-    > [=progress-based timeline=], [=animation/current time=] must be returned
-    > as a {{CSSNumericValue}}. with percent units.
-    > Otherwise [=animation/current time=] must be returned as a double value,
-    > representing the time in units of milliseconds.
-    > Setting this attribute follows the procedure to
+    > The <a>current time</a> of this animation. When associated with a
+    > [=progress-based timeline=], <a>current time</a> must be returned as a
+    > {{CSSNumericValue}}. with percent units. Otherwise <a>current time</a>
+    > must be returned as a double value, representing the time in units of
+    > milliseconds. Setting this attribute follows the procedure to
     > <a>set the current time</a> of this object to the new value.
 
-Add:
-
-> :   <dfn attribute for=Animation>rangeStart</dfn>
-> ::  Specifies the start of the <a>animation</a>’s [=animation attachment range=].
->     Setting the attribute follows the same rules as the KeyframeAnimationOption
->     <a href="#dom-keyframeanimationoptions-rangestart">rangeStart</a>.
->     When reading the attribute, the returned value is either a
->     {{TimelineRangeOffset}} or the {{DOMString}} "normal".
->
-> :  <dfn attribute for=Animation>rangeEnd</dfn>
-> ::  Specifies the end of the <a>animation</a>’s [=animation attachment range=].
->     Setting the attribute follows the same rules as the KeyframeAnimationOption
->      <a href="#dom-keyframeanimationoptions-rangeend">rangeEnd</a>.
->     When reading the attribute, the returned value is either a
->     {{TimelineRangeOffset}} or the {{DOMString}} "normal".
->
-> :  <dfn attribute for=Animation>overallProgress</dfn>
-> ::  Specifies the [=animation/overallProgress=] of the <a>animation</a> as a proportion of its
->     [=associated effect end=].
->
-> :  <dfn attribute for=Animation>trigger</dfn>
-> ::  Specifies the <a>animation</a>’s associated [=animation trigger=].
->     Setting the attribute follows the same rules as the KeyframeAnimationOption
->     <a href="#dom-keyframeanimationoptions-trigger">trigger</a>.
 </div>
 
 <h3 id="the-animationeffect-interface">The <code>AnimationEffect</code> interface</h3>
@@ -2863,8 +2434,9 @@ where the unit is a valid time unit or percent.
     > [=normalize specified timing=] procedure.
 
 :   <dfn dict-member for=EffectTiming>playbackRate</dfn>
-::  The <a>animation effect</a>'s [=animation effect/playback rate=]
-    property which is a multiplier applied to the <a>local time</a> potentially
+::  The <a>animation effect</a>'s <a
+    lt="animation effect playback rate">playback rate</a> property
+    which is a multiplier applied to the <a>local time</a> potentially
     causing the effect to run at a different rate to its natural speed.
 
 </div>
@@ -2874,8 +2446,8 @@ AnimationEffect</h3>
 
 Replace:
 
-> Assign each member that <a for=map>exists</a> in |input| to the corresponding
->    timing property of |effect| as follows:
+> Assign each member <a>present</a> in |input| to the corresponding timing
+>    property of |effect| as follows:
 >
 >    *   {{EffectTiming/delay}} &rarr; [=start delay=]
 >    *   {{EffectTiming/endDelay}} &rarr; [=end delay=]
@@ -2888,8 +2460,8 @@ Replace:
 
 with:
 
-> Assign each member that <a for=map>exists</a> in |input| to the corresponding
->    timing property of |effect| as follows:
+> Assign each member <a>present</a> in |input| to the corresponding timing
+>    property of |effect| as follows:
 >
 >    *   {{EffectTiming/delay}} &rarr; [=specified start delay=]
 >    *   {{EffectTiming/endDelay}} &rarr; [=specified end delay=]
@@ -2906,7 +2478,7 @@ Add:
 >
 >    <p class="note">
 >    Timing properties may also be updated due to a style change. Any change to
->    a CSS animation property that affects timing requires rerunning the
+>    a CSS animation property that affects timing requres rerunning the
 >    procedure to [=normalize specified timing=].
 >    </p>
 
@@ -3155,7 +2727,7 @@ a {{EffectTiming}} object.</p>
 The <dfn lt="next sibling not included">next sibling of
 <var>effect</var> not included</dfn> in a set of <a>animation
 effects</a>, <var>effects</var> is determined using the following
-steps:
+steps:</p>
 
 1.  Let <var>context effect</var> be <var>effect</var>.
 2.  While the <a>next sibling</a> of <var>context effect</var> is not
@@ -3190,7 +2762,7 @@ To <dfn lt="insert children">insert</dfn> a series of zero or
 more <a>animation effects</a>, <var>effects</var>, to
 <var>parent</var>'s list of <a>child effects</a> before
 <var>reference child</var> perform the following steps for each
-<var>effect</var> in <var>effects</var>:
+<var>effect</var> in <var>effects</var>:</p>
 
 1.  <a lt="remove an animation effect">Remove</a> <var>effect</var>
     from its parent.
@@ -3251,8 +2823,7 @@ interface SequenceEffect : GroupEffect {
 };
 </pre>
 
-<div class="constructors">
-
+<div class="contructors">
 :   <dfn constructor for=SequenceEffect lt="SequenceEffect(children, timing)">constructor (sequence&lt;AnimationEffect&gt;? children,
     optional (unrestricted double or EffectTiming) timing)</dfn>
 ::  The meaning and handling of each of the parameters in this
@@ -3305,10 +2876,7 @@ partial interface KeyframeEffect {
     same properties as {{KeyframeEffect/KeyframeEffect(source)/source}} to include setting the
     <a>iteration composite operation</a> from <var>source</var> on <var>effect</var>.
 
-</div>
-
 <div class="attributes">
-
 :   <dfn attribute for=KeyframeEffect>iterationComposite</dfn>
 ::  The <a>iteration composite operation</a> property of this
     <a>keyframe effect</a> as specified by one of the
@@ -3316,8 +2884,6 @@ partial interface KeyframeEffect {
 
     On setting, sets the <a>iteration composite operation</a> property of this
     <a>animation effect</a> to the provided value.
-
-</div>
 
 <h4 id="creating-a-new-keyframeeffect-object">Creating a new <code>KeyframeEffect</code> object</h4>
 
@@ -3347,27 +2913,6 @@ new SequenceEffect(
 );</pre></div>
 
 </div>
-
-<h4 id="keyframe-offset-type">Modification to the <code>*Keyframe</code> dictionaries</h4>
-
-The <code>double?</code> type of the <code>offset</code> key
-in <code>ComputedKeyframe</code>,
-<code>BaseComputedKeyframe</code>,
-<code>BaseKeyframe</code>,
-<code>BasePropertyIndexedKeyframe</code>,
-etc.
-is replaced by <code>(CSSNumberish? or TimelineRangeOffset or DOMString)</code>,
-where <code>double</code> continues to be interpreted as a percentage,
-a {{DOMString}} is parsed into a {{TimelineRangeOffset}}
-according to the syntax of <<keyframe-selector>>,
-and the resulting {{TimelineRangeOffset}} or {{CSSNumericValue}}
-is interpreted as defined for ''@keyframes''.
-
-If the {{DOMString}} fails to parse as a valid <<keyframe-selector>>,
-then the keyframe is invalid,
-and will throw a <span class=exceptionname>TypeError</span>
-when [[web-animations-1#processing-a-keyframes-argument|processed]]
-(same as if the <code>double</code> value was outside the [0,1] range).
 
 <h4 id="the-keyframeeffectoptions-dictionary">The KeyframeEffectOptions dictionary</h4>
 
@@ -3411,8 +2956,6 @@ enum IterationCompositeOperation { "replace", "accumulate" };
 
 <h3 id="the-effectcallback-callback-function">The <code>EffectCallback</code> callback function</h3>
 
-<ins cite="#amend-CE">
-
 <a>Custom effects</a> can be defined in script by providing an
 {{EffectCallback}} callback function.
 
@@ -3433,7 +2976,7 @@ with which it is associated is updated.
     remove the effect.
 
 :   (Element or CSSPseudoElement) currentTarget
-::  The [=effect target/target element=] on which this callback is expected
+::  The <a>target element</a> on which this callback is expected
     to operate.
 
     <div class="note">
@@ -3441,15 +2984,15 @@ with which it is associated is updated.
     Note that <var>currentTarget</var> may differ from
     <code><var>animation</var>.target</code>.
 
-    If the [=effect target/target element=] of <var>animation</var>
+    If the <a>target element</a> of <var>animation</var>
     is changed between updates, this method will be
     called once with a null <var>progress</var> and the
-    previous [=effect target/target element=] as the
+    previous <a>target element</a> as the
     <var>currentTarget</var>, then again with the current
     <var>progress</var> and the updated <a>target
     element</a> as the <var>currentTarget</var>.
     This allows the animation effect to be removed from the old
-    [=effect target/target element=].
+    <a>target element</a>.
 
     </div>
 
@@ -3458,100 +3001,20 @@ with which it is associated is updated.
 
 </div>
 
-</ins>
-
 <h3 id="the-animatable-interface">The <code>Animatable</code> interface</h3>
 
-<div dfn-type=method class=methods
-       dfn-for="Animatable">
+<div class="methods">
 
-:   <dfn lt="getAnimations(options)">sequence&lt;Animation&gt; getAnimations(|options|)</dfn>
+:   <dfn method for=Animatable lt="getAnimations()">
+    sequence&lt;Animation&gt; getAnimations()</dfn>
 ::  Add:
 
-    > If this object is the [=effect target/target element=] of two or more
+    > If this object is the <a>target element</a> of two or more
     > <a>animation effects</a> which are associated with the
     > same <a>animation</a>, the corresponding {{Animation}}
     > object will still only appear in the returned list once.
 
 </div>
-
-The <code>Animatable</code> interface mixin {#the-animatable-interface-mixin}
-----------------------------------------
-
-The {{Animatable}} mixin interface
-is modified to add the following members:
-
-<div dfn-type=method class=methods
-       dfn-for="Animatable">
-
-  : <dfn lt="animate(keyframes, options)">Animation animate(|keyframes|, |options|)</dfn>
-  ::  Amend step 6 of the procedure as follows:
-
-    6. If |options| is a {{KeyframeAnimationOptions}} object,
-        let |trigger| be the <code>trigger</code> member of |options|
-        or, if <code>trigger</code> member of |options| is missing,
-        a newly created {{AnimationTrigger}} with an empty
-        {{AnimationTriggerOptions}} dictionary as its options.
-
-    7. Run the procedure to [=setting a trigger of an animation=] for |animation|
-        with the |auto-rewind| flag set to true.
-
-</div>
-
-The {{KeyframeAnimationOptions}} dictionary interface
-is modified to add the following members:
-
-<pre class='idl'>
-dictionary TimelineRangeOffset {
-  CSSOMString? rangeName;
-  CSSNumericValue offset;
-};
-
-partial dictionary KeyframeAnimationOptions {
-    (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) rangeStart = "normal";
-    (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) rangeEnd = "normal";
-    AnimationTrigger? trigger;
-};
-</pre>
-
-<div class="members">
-
-:   <dfn dict-member for=KeyframeAnimationOptions>rangeStart</dfn>
-::  If present and not "normal",
-    specifies the start of the <a>animation</a>’s [=animation attachment range=].
-    A {{DOMString}} value is parsed as an 'animation-range-end' value
-    to yield a {{TimelineRangeOffset}} {{TimelineRangeOffset/rangeName}}
-    and {{TimelineRangeOffset/offset}}
-    or alternatively a {{CSSKeywordValue}} with the {{CSSKeywordValue/value}} of "normal";
-    a {{CSSNumericValue}} is interpreted as a {{TimelineRangeOffset}}
-    with that {{TimelineRangeOffset/offset}} and a null {{TimelineRangeOffset/rangeName}}.
-
-:   <dfn dict-member for=KeyframeAnimationOptions>rangeEnd</dfn>
-::  If present and not "normal",
-    specifies the end of the <a>animation</a>’s [=animation attachment range=].
-    A {{DOMString}} value is parsed as an 'animation-range-end' value
-    to yield a {{TimelineRangeOffset}} {{TimelineRangeOffset/rangeName}}
-    and {{TimelineRangeOffset/offset}};
-    a {{CSSNumericValue}} is interpreted as a {{TimelineRangeOffset}}
-    with that {{TimelineRangeOffset/offset}} and a null {{TimelineRangeOffset/rangeName}}.
-
-:   <dfn dict-member for=KeyframeAnimationOptions>trigger</dfn>
-::  If present, specifies the <a>animation</a>’s associated [=animation trigger=]
-    by running the procedure of [=setting a trigger of an animation=].
-
-</div>
-
-Passing a {{CSSKeywordValue}} with a {{CSSKeywordValue/value}} other than "normal"
-as the {{KeyframeAnimationOptions/rangeStart}} or {{KeyframeAnimationOptions/rangeEnd}} value
-to any API defined to accept {{KeyframeAnimationOptions}}
-[=throws=] a <span class="exceptionname">TypeError</span>.
-
-Note: The {{TimelineRangeOffset/rangeName}} and {{TimelineRangeOffset/offset}}
-values of {{KeyframeAnimationOptions/rangeStart}} and {{KeyframeAnimationOptions/rangeEnd}}
-are interpreted as defined for 'animation-range-start'/'animation-range-end',
-and affect the animation accordingly.
-
-See [[web-animations-1#the-animatable-interface-mixin]] for further description.
 
 <h3 id="the-animationplaybackevent-interface">The <code>AnimationPlaybackEvent</code> interface </h3>
 
@@ -3576,10 +3039,10 @@ dictionary AnimationPlaybackEventInit : EventInit {
 Update the type for the AnimationPlaybackEvent attributes.
 
 :   <dfn attribute for=AnimationPlaybackEvent>currentTime</dfn>
-::  The [=animation/current time=] of the [=animation=] that generated the event
-    at the moment the event as queued.
-    This will be <code class=esvalue>null</code> if the [=animation=] was
-    [=play state/idle=] at the time the event was generated.
+::  The [=current time=] of the [=animation=] that generated the event at the
+    moment the event as queued.
+    This will be <code class=esvalue>null</code> if the [=animation=] was <a
+    lt="idle play state">idle</a> at the time the event was generated.
 :   <dfn attribute for=AnimationPlaybackEvent>timelineTime</dfn>
 ::  The [=time value=] of the [=timeline=] with which the [=animation=] that
     generated the event is associated at the moment the event was queued.
@@ -3601,168 +3064,6 @@ Update the type for the AnimationPlaybackEventInit members.
     attribute.
 
 </div>
-
-<h3 id="the-animationtrigger-interface">The <code>AnimationTrigger</code> interface</h3>
-
-<pre class='idl'>
-[Exposed=Window]
-interface AnimationTrigger {
-  constructor(optional AnimationTriggerOptions options = {});
-  attribute AnimationTimeline timeline;
-  attribute AnimationTriggerType type;
-  attribute any rangeStart;
-  attribute any rangeEnd;
-  attribute any exitRangeStart;
-  attribute any exitRangeEnd;
-};
-</pre>
-
-<div dfn-type=constructor class=constructors dfn-for="AnimationTrigger">
-  : <dfn lt="AnimationTrigger(options)">AnimationTrigger(|options|)</dfn>
-  ::
-      Creates a new {{AnimationTrigger}} object using the following procedure:
-
-      1. Create a new {{AnimationTrigger}} object, |trigger|.
-
-      1. Let |type| be the {{AnimationTriggerOptions/type}} property.
-
-      1. Let |timeline| be the {{AnimationTriggerOptions/timeline}} property.
-
-      1. Let |range start| be the {{AnimationTriggerOptions/rangeStart}} property.
-
-      1. Let |range end| be the {{AnimationTriggerOptions/rangeEnd}} property.
-
-      1. Set [=default range=] of |trigger| using |range start| and |range end|,
-          following the same rules as the KeyframeAnimationOption
-          <a href="#dom-keyframeanimationoptions-rangestart">rangeStart</a> and
-          <a href="#dom-keyframeanimationoptions-rangeend">rangeEnd</a> respectively.
-
-      1. Let |exit range start| be the {{AnimationTriggerOptions/exitRangeStart}} property.
-
-      1. Let |exit range end| be the {{AnimationTriggerOptions/exitRangeEnd}} property.
-
-      1. Set [=exit range=] of |trigger| using |exit range start| and |exit range end|,
-          following the same rules above for [=default range=], unless they are set to
-          "auto", in which case they are set to their corresponding side
-          of the [=default range=].
-
-      1. Run the procedure for [=setting timeline of animation trigger=]
-          on |trigger| passing |timeline| as the <var ignore>new timeline</var>.
-
-      <div dfn-type=argument class=parameters
-           dfn-for="AnimationTrigger/AnimationTrigger(options)">
-
-          : <dfn>options</dfn>
-          ::  Configuration parameters for the newly-created trigger.
-
-      </div>
-
-</div>
-
-<div dfn-type=attribute class=attributes
-       dfn-for="AnimationTrigger">
-
-  : <dfn>timeline</dfn>
-  ::
-      Returns the [=timeline=] for this trigger
-      or `null` if this timeline is [=inactive timeline|inactive=].
-
-  : <dfn>type</dfn>
-  ::
-      Returns the [=animation trigger type|type=] of this trigger.
-
-  : <dfn>rangeStart</dfn>
-  ::
-      Returns the [=default range=]’s start of this trigger.
-
-  : <dfn>rangeEnd</dfn>
-  ::
-      Returns the [=default range=]’s end of this trigger.
-
-  : <dfn>exitRangeStart</dfn>
-  ::
-      Returns the [=exit range=]’s start of this trigger.
-
-  : <dfn>exitRangeEnd</dfn>
-  ::
-      Returns the [=exit range=]’s end of this trigger.
-
-</div>
-
-<h3 id="the-animationtriggeroptions-dictionary">The <code>AnimationTriggerOptions</code> dictionary</h3>
-
-<pre class='idl'>
-dictionary AnimationTriggerOptions {
-  AnimationTimeline? timeline;
-  AnimationTriggerType? type = "once";
-  (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) rangeStart = "normal";
-  (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) rangeEnd = "normal";
-  (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) exitRangeStart = "auto";
-  (TimelineRangeOffset or CSSNumericValue or CSSKeywordValue or DOMString) exitRangeEnd = "auto";
-};
-</pre>
-
-<div dfn-type=dict-member class=members
-       dfn-for="AnimationTriggerOptions">
-
-  : <dfn>timeline</dfn>
-  ::
-      The timeline to which the trigger is associated.
-      If not specified, the trigger is associated with [=default document timeline=].
-
-  : <dfn>type</dfn>
-  ::
-      The type of trigger to create.
-      If not specified, the trigger is of type ''animation-trigger-type/once''.
-
-  : <dfn>rangeStart</dfn>
-  ::
-      The start of the trigger’s [=default range=].
-      If not specified, the [=default range=]’s start is set to "normal".
-
-  : <dfn>rangeEnd</dfn>
-  ::
-      The end of the trigger’s [=default range=].
-      If not specified, the [=default range=]’s end is set to "normal".
-
-  : <dfn>exitRangeStart</dfn>
-  ::
-      The start of the trigger’s [=exit range=].
-      If not specified, the [=exit range=]’s start is set to "auto".
-
-  : <dfn>exitRangeEnd</dfn>
-  ::
-      The end of the trigger’s [=exit range=].
-      If not specified, the [=exit range=]’s end is set to "auto".
-
-</div>
-
-<h3 id="the-animationtriggertype-enumeration">The <code>AnimationTriggerType</code> enumeration</h3>
-
-<pre class='idl'>
-enum AnimationTriggerType { "once", "repeat", "alternate", "state" };
-</pre>
-
-<dl dfn-type=enum-value
-      dfn-for="AnimationTriggerType">
-
-  : <dfn>once</dfn>
-  ::
-      Type ''animation-trigger-type/once''.
-
-  : <dfn>repeat</dfn>
-  ::
-      Type ''animation-trigger-type/repeat''.
-
-  : <dfn>alternate</dfn>
-  ::
-      Type ''animation-trigger-type/alternate''.
-
-  : <dfn>state</dfn>
-  ::
-      Type ''animation-trigger-type/state''.
-
-</dl>
 
 <h3 id="model-liveness">Model liveness</h3>
 
@@ -3795,13 +3096,3 @@ Add:
 >     </div>
 >
 >     Note: Need to spec this properly somewhere.
-
-Privacy Considerations {#priv}
-===============================================
-
-No privacy considerations have been reported on this module.
-
-Security Considerations {#sec}
-===============================================
-
-No security considerations have been reported on this module.

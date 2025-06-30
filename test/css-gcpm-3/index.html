@@ -3,11 +3,14 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>CSS Generated Content for Paged Media Module</title>
-  <meta content="WD" name="w3c-status">
+  <meta content="ED" name="w3c-status">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-gcpm-3/" rel="canonical">
-  <meta content="2009f4d01df701a0fadeeb24c5ca468d07890e77" name="revision">
+  <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="03f6b66e0a3c0b5bb1044b7d88aa6674e31c5129" name="revision">
   <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -563,8 +566,143 @@ a.self-link::before            { content: "¶"; }
 .heading > a.self-link::before { content: "§"; }
 dfn > a.self-link::before      { content: "#"; }
 </style>
-  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-WD" rel="stylesheet">
-  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
+<style>/* Boilerplate: style-wpt */
+:root {
+    --wpt-border: hsl(0, 0%, 60%);
+    --wpt-bg: hsl(0, 0%, 95%);
+    --wpt-text: var(--text);
+    --wptheading-text: hsl(0, 0%, 30%);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --wpt-border: hsl(0, 0%, 30%);
+        --wpt-bg: var(--borderedblock-bg);
+        --wpt-text: var(--text);
+        --wptheading-text: hsl(0, 0%, 60%);
+    }
+}
+.wpt-tests-block {
+    list-style: none;
+    border-left: .5em solid var(--wpt-border);
+    background: var(--wpt-bg);
+    color: var(--wpt-text);
+    margin: 1em auto;
+    padding: .5em;
+}
+.wpt-tests-block summary {
+    color: var(--wptheading-text);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.wpt-tests-block summary::marker{
+    color: var(--wpt-border);
+}
+.wpt-tests-block summary:hover::marker{
+    color: var(--wpt-text);
+}
+/*
+   The only content  of a wpt test block in its closed state is the <summary>,
+   which contains the word TESTS,
+   and that is absolutely positioned.
+   In that closed state, wpt test blocks are styled
+   to have a top margin whose height is exactly equal
+   to the height of the absolutely positioned <summary>,
+   and no other background/padding/margin/border.
+   The wpt test block elements will therefore allow the maring
+   of the previous/next block elements
+   to collapse through them;
+   if this combined margin would be larger than its own top margin,
+   it stays as is,
+   and therefore the pre-existing vertical rhythm of the document is undisturbed.
+   If that combined margin would be smaller, it is grown to that size.
+   This means that the wpt test block ensures
+   that there's always enough vertical space to insert the summary,
+   without adding more than is needed.
+*/
+.wpt-tests-block:not([open]){
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.75em;
+    line-height: 1;
+    position: relative;
+    margin: 1em 0 0;
+}
+.wpt-tests-block:not([open]) summary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*
+   It is possible that both the last child of a block element
+   and the block element itself
+   would be annotated with a <wpt> block each.
+   If the block element has a padding or a border,
+   that's fine, but otherwise
+   the bottom margin of the block and of its last child would collapse
+   and both <wpt> elements would overlap, being both placed there.
+   To avoid that, add 1px of padding to the <wpt> element annotating the last child
+   to prevent the bottom margin of the block and of its last child from collapsing
+   (and as much negative margin,
+   as wel only want to prevent margin collapsing,
+   but are not trying to actually take more space).
+*/
+.wpt-tests-block:not([open]):last-child {
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+}
+/*
+   Exception to the previous rule:
+   don't do that in non-last list items,
+   because it's not necessary,
+   and would therefore consume more space than strictly needed.
+   Lists must have list items as children, not <wpt> elements,
+   so a <wpt> element cannot be a sibling of a list item,
+   and the collision that the previous rule avoids cannot happen.
+*/
+li:not(:last-child) > .wpt-tests-block:not([open]):last-child,
+dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.wpt-tests-block:not([open]):not(:hover){
+    opacity: 0.5;
+}
+.wpt-tests-list {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr max-content auto auto;
+    grid-column-gap: .5em;
+}
+.wpt-tests-block hr:last-child {
+    display: none;
+}
+.wpt-test {
+    display: contents;
+}
+.wpt-test > a {
+    text-decoration: underline;
+    border: none;
+}
+.wpt-test > .wpt-name { grid-column: 1; }
+.wpt-test > .wpt-results { grid-column: 2; }
+.wpt-test > .wpt-live { grid-column: 3; }
+.wpt-test > .wpt-source { grid-column: 4; }
+
+.wpt-test > .wpt-results {
+    display: flex;
+    gap: .1em;
+}
+.wpt-test .wpt-result {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+}
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
@@ -572,26 +710,25 @@ dfn > a.self-link::before      { content: "#"; }
 </a>
 </p>
    <h1 class="p-name no-ref" id="title">CSS Generated Content for Paged Media Module</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#WD">W3C Working Draft</a>,
-    <time class="dt-updated" datetime="2024-01-25">25 January 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2025-06-30">30 June 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://www.w3.org/TR/2024/WD-css-gcpm-3-20240125/">https://www.w3.org/TR/2024/WD-css-gcpm-3-20240125/</a>
+      <dd><a class="u-url" href="https://drafts.csswg.org/css-gcpm/">https://drafts.csswg.org/css-gcpm/</a>
       <dt>Latest published version:
       <dd><a href="https://www.w3.org/TR/css-gcpm-3/">https://www.w3.org/TR/css-gcpm-3/</a>
-      <dt>Editor's Draft:
-      <dd><a href="https://drafts.csswg.org/css-gcpm/">https://drafts.csswg.org/css-gcpm/</a>
-      <dt>History:
-      <dd><a class="u-url" href="https://www.w3.org/standards/history/css-gcpm-3/">https://www.w3.org/standards/history/css-gcpm-3/</a>
+      <dt>Previous Versions:
+      <dd><a href="https://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/" rel="prev">https://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/</a>
+      <dd><a href="https://hg.csswg.org/drafts/raw-file/6a5c44d11c2b/css-gcpm/Overview.html" rel="prev">https://hg.csswg.org/drafts/raw-file/6a5c44d11c2b/css-gcpm/Overview.html</a>
+      <dd><a href="https://www.w3.org/TR/2011/WD-css3-gcpm-20111129/" rel="prev">https://www.w3.org/TR/2011/WD-css3-gcpm-20111129/</a>
       <dt>Feedback:
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-gcpm-3">CSSWG Issues Repository</a>
       <dd><a href="#issues-index">Inline In Spec</a>
-      <dt class="editor">Editors:
+      <dt class="editor">Editor:
       <dd class="editor p-author h-card vcard" data-editor-id="118053"><a class="p-name fn u-email email" href="mailto:mike@bfo.com">Mike Bremford</a> (<span class="p-org org">BFO</span>)
-      <dd class="editor p-author h-card vcard" data-editor-id="81117"><a class="p-name fn u-email email" href="mailto:rachelandrew@google.com">Rachel Andrew</a> (<span class="p-org org">Google</span>)
       <dt class="editor">Former Editors:
       <dd class="editor p-author h-card vcard" data-editor-id="65283"><a class="p-name fn u-email email" href="mailto:dave.cramer@hbgusa.com">Dave Cramer</a> (<span class="p-org org">Hachette Livre</span>)
       <dd class="editor p-author h-card vcard"><span class="p-name fn">Håkon Wium Lie</span> (<span class="p-org org">Opera Software</span>)
@@ -601,7 +738,7 @@ dfn > a.self-link::before      { content: "#"; }
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
 </p>
    <hr title="Separator for header">
   </div>
@@ -619,26 +756,11 @@ on screen, on paper, etc.
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p><em>This section describes the status of this document at the time of its publication.
-	A list of current W3C publications
-	and the latest revision of this technical report
-	can be found in the <a href="https://www.w3.org/TR/">W3C standards and drafts index at https://www.w3.org/TR/.</a></em>
-
-</p>
    <p>
-	This document was published
-	by the <a href="https://www.w3.org/groups/wg/css">CSS Working Group</a>
-	as a <strong>Working Draft</strong> using the <a href="https://www.w3.org/policies/process/20231103/#recs-and-notes">Recommendation
-      track</a>.
-	Publication as a Working Draft
-	does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members.
-
-</p>
-   <p>
-	This is a draft document
-	and may be updated, replaced
-	or obsoleted by other documents at any time.
-	It is inappropriate to cite this document as other than work in progress.
+	This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress.
 
 </p>
    <p>Please send feedback
@@ -652,18 +774,6 @@ on screen, on paper, etc.
 </p>
    <p>This document is governed by the
 	<a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>.
-
-</p>
-   <p>This document was produced by a group operating under the
-	<a href="https://www.w3.org/policies/patent-policy/20200915/">W3C Patent Policy</a>.
-	W3C maintains a
-	<a href="https://www.w3.org/groups/wg/css/ipr" rel="disclosure">public list of any patent disclosures</a>
-	made in connection with the deliverables of the group;
-	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent which the individual believes
-	contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a>
-	must disclose the information in accordance with
-	<a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
 
 </p>
   </div>
@@ -786,8 +896,6 @@ Bookmarks (moved)
      </ol>
     <li><a href="#ua-stylesheet"><span class="secno"></span> <span class="content">Appendix B: Default UA Stylesheet</span></a>
     <li><a href="#changes"><span class="secno"></span> <span class="content">Appendix C: Changes</span></a>
-    <li><a href="#privacy"><span class="secno"></span> <span class="content">Privacy Considerations</span></a>
-    <li><a href="#security"><span class="secno"></span> <span class="content">Security Considerations</span></a>
     <li><a href="#acknowledgments"><span class="secno"></span> <span class="content">
 Acknowledgments
 </span></a>
@@ -839,7 +947,7 @@ Value types not defined in this specification are defined in CSS Values &amp; Un
 Combination with other CSS modules may expand the definitions of these value types.</p>
    <p>In addition to the property-specific values listed in their definitions,
 all properties defined in this specification
-also accept the <a data-link-type="dfn" href="https://www.w3.org/TR/css-values-4/#css-wide-keywords" id="ref-for-css-wide-keywords">CSS-wide keywords</a> as their property value.
+also accept the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-wide-keywords" id="ref-for-css-wide-keywords">CSS-wide keywords</a> as their property value.
 For readability they have not been repeated explicitly.</p>
    <h2 class="heading settled" data-level="1" id="running-headers-and-footers"><span class="secno">1. </span><span class="content">
 	Running headers and footers
@@ -851,7 +959,7 @@ For readability they have not been repeated explicitly.</p>
 	Named strings
 </span><a class="self-link" href="#named-strings"></a></h3>
    
-The <a class="property css" data-link-type="property" href="#propdef-string-set" id="ref-for-propdef-string-set">string-set</a> property copies the text content of an element into a <span class="css">named string</span>, which functions as a variable. The text content of this named string can be retrieved using the <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-content-3/#funcdef-string" id="ref-for-funcdef-string">string()</a> function. Since these variables may change on a given page, an optional second value for the <span class="css" id="ref-for-funcdef-string①">string()</span> function allows authors to choose which value on a page is used.
+The <a class="property css" data-link-type="property" href="#propdef-string-set" id="ref-for-propdef-string-set">string-set</a> property copies the text content of an element into a <span class="css">named string</span>, which functions as a variable. The text content of this named string can be retrieved using the <a class="css" data-link-type="maybe" href="#funcdef-string" id="ref-for-funcdef-string">string()</a> function. Since these variables may change on a given page, an optional second value for the <span class="css" id="ref-for-funcdef-string①">string()</span> function allows authors to choose which value on a page is used.
 
    <h4 class="heading settled" data-level="1.1.1" id="setting-named-strings-the-string-set-pro"><span class="secno">1.1.1. </span><span class="content">
 	The string-set property
@@ -863,7 +971,7 @@ The <a class="property css" data-link-type="property" href="#propdef-string-set"
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-string-set">string-set</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a> <a class="production css" data-link-type="type" href="#content-list" id="ref-for-content-list">&lt;content-list></a> ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one">|</a> none
+      <td class="prod">[ <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value" id="ref-for-identifier-value">&lt;custom-ident></a> <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-content-3/#typedef-content-content-list" id="ref-for-typedef-content-content-list">&lt;content-list></a> ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one">|</a> none
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>none
@@ -887,34 +995,24 @@ The <a class="property css" data-link-type="property" href="#propdef-string-set"
       <td>discrete
    </table>
    <p class="all-media">User agents are expected to support this property on all media, including non-visual ones.</p>
-   <p>The <a class="property css" data-link-type="property" href="#propdef-string-set" id="ref-for-propdef-string-set①">string-set</a> property contains one or more pairs, each consisting of an custom identifier (the name of the named string) followed by a <a class="production css" data-link-type="type" href="#content-list" id="ref-for-content-list①">&lt;content-list></a> describing how to construct the value of the named string.</p>
-   <p><a class="production css" data-link-type="type" href="#content-list" id="ref-for-content-list②">&lt;content-list></a> expands to one or more of the following values, in any order.</p>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="content-list">&lt;content-list></dfn> = [ <a class="production" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#string-value" id="ref-for-string-value">&lt;string></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> <a class="production" data-link-type="function" href="https://www.w3.org/TR/css-lists-3/#funcdef-counter" id="ref-for-funcdef-counter">&lt;counter()></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> <a class="production" data-link-type="function" href="https://www.w3.org/TR/css-lists-3/#funcdef-counters" id="ref-for-funcdef-counters">&lt;counters()></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="production" data-link-type="function" href="#funcdef-content" id="ref-for-funcdef-content">&lt;content()></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> <a class="production" data-link-type="function" href="https://www.w3.org/TR/css-values-5/#funcdef-attr" id="ref-for-funcdef-attr">&lt;attr()></a> ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus">+</a>
+   <p>The <a class="property css" data-link-type="property" href="#propdef-string-set" id="ref-for-propdef-string-set①">string-set</a> property contains one or more pairs, each consisting of an custom identifier (the name of the named string) followed by a <span class="css">content-list</span> describing how to construct the value of the named string.</p>
+   <p><span class="css">content-list</span> expands to one or more of the following values, in any order.</p>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="content-list">content-list</dfn> = [ &lt;string> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> &lt;counter()> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> &lt;counters()> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> &lt;content()> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> attr(&lt;identifier>) ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus">+</a>
 </pre>
    <dl>
-    <dt><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#string-value" id="ref-for-string-value①">&lt;string></a>
-	
-    <dd>A <a href="https://www.w3.org/TR/CSS21/syndata.html#strings">string</a>, as defined in <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a>
-	
-    <dt><a class="production css" data-link-type="function" href="https://www.w3.org/TR/css-lists-3/#funcdef-counter" id="ref-for-funcdef-counter①">&lt;counter()></a>
-	
-    <dd>A <a href="https://www.w3.org/TR/CSS21/syndata.html#counter">counter()</a> function, as described in <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a>.
-	
-    <dt><a class="production css" data-link-type="function" href="https://www.w3.org/TR/css-lists-3/#funcdef-counters" id="ref-for-funcdef-counters①">&lt;counters()></a>
-	
-    <dd>A <a href="https://www.w3.org/TR/CSS21/syndata.html#counter">counters()</a> function, as described in <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a>.
-	
-    <dt><a class="production css" data-link-type="function" href="#funcdef-content" id="ref-for-funcdef-content①">&lt;content()></a>
-	
-    <dd>The <a class="css" data-link-type="maybe" href="#funcdef-content" id="ref-for-funcdef-content②">content()</a> function, described below.
-	
-    <dt><a class="production css" data-link-type="function" href="https://www.w3.org/TR/css-values-5/#funcdef-attr" id="ref-for-funcdef-attr①">&lt;attr()></a>
-	
-    <dd>An <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-values-5/#funcdef-attr" id="ref-for-funcdef-attr②">attr()</a> function, as defined in <a data-link-type="biblio" href="#biblio-css-values-3" title="CSS Values and Units Module Level 3">[CSS-VALUES-3]</a>
-
+    <dt> &lt;string> 
+    <dd> A <a href="https://www.w3.org/TR/CSS21/syndata.html#strings">string</a>, as defined in <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a> 
+    <dt> &lt;counter()> 
+    <dd> A <a href="https://www.w3.org/TR/CSS21/syndata.html#counter">counter()</a> function, as described in <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a>.
+    <dt> &lt;counters()> 
+    <dd> A <a href="https://www.w3.org/TR/CSS21/syndata.html#counter">counters()</a> function, as described in <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a>.
+    <dt>content()
+    <dd>The <a class="css" data-link-type="maybe" href="#funcdef-content" id="ref-for-funcdef-content">content()</a> function, described below.
+    <dt>attr(&lt;identifier>)
+    <dd>Returns the string value of the attribute &lt;identifier>, as defined in <a data-link-type="biblio" href="#biblio-css-values-3" title="CSS Values and Units Module Level 3">[CSS-VALUES-3]</a>
    </dl>
-   <h5 class="heading settled" data-level="1.1.1.1" id="content-function-header"><span class="secno">1.1.1.1. </span><span class="content">The <a class="css" data-link-type="maybe" href="#funcdef-content" id="ref-for-funcdef-content③">content()</a> function</span><a class="self-link" href="#content-function-header"></a></h5>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-content">content()</dfn> = content([text <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> before <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> after <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦">|</a> first-letter ])
+   <h5 class="heading settled" data-level="1.1.1.1" id="content-function-header"><span class="secno">1.1.1.1. </span><span class="content">The <a class="css" data-link-type="maybe" href="#funcdef-content" id="ref-for-funcdef-content①">content()</a> function</span><a class="self-link" href="#content-function-header"></a></h5>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-content">content()</dfn> = content([text <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> before <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> after <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑦">|</a> first-letter ])
 </pre>
    <p class="issue" id="issue-edcf4ca2"><a class="self-link" href="#issue-edcf4ca2"></a>How do we define the default value for this function?</p>
    <dl>
@@ -928,7 +1026,7 @@ The <a class="property css" data-link-type="property" href="#propdef-string-set"
     <dd>The first letter of the element, as defined for the <code><a href="https://www.w3.org/TR/css3-selectors/#first-letter">::first-letter</a></code> pseudo-element 
    </dl>
    <p>The content values of named strings are assigned at the point when the content box of the element is first created (or would have been created if the element’s display value is none). The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="entry-value">entry value</dfn> for a page is the assignment in effect at the end of the previous page. The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="exit-value">exit value</dfn> for a page is the assignment in effect at the end of the current page.</p>
-   <p>Whenever the value of the element changes, the value of the named string(s) is updated. User agents must be able to recall many values of the named string, as the <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-content-3/#funcdef-string" id="ref-for-funcdef-string②">string()</a> function can return past, current, or future values of the assignment.</p>
+   <p>Whenever the value of the element changes, the value of the named string(s) is updated. User agents must be able to recall many values of the named string, as the <a class="css" data-link-type="maybe" href="#funcdef-string" id="ref-for-funcdef-string②">string()</a> function can return past, current, or future values of the assignment.</p>
    <div class="example" id="example-e698ead2">
     <a class="self-link" href="#example-e698ead2"></a>
 
@@ -956,14 +1054,15 @@ HTML:
     <p>The value of the “header” string will be “Loomings”.</p>
    </div>
    <h4 class="heading settled" data-level="1.1.2" id="using-named-strings"><span class="secno">1.1.2. </span><span class="content">
-	The <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-content-3/#funcdef-string" id="ref-for-funcdef-string③">string()</a> function
+	The <a class="css" data-link-type="maybe" href="#funcdef-string" id="ref-for-funcdef-string③">string()</a> function
 </span><a class="self-link" href="#using-named-strings"></a></h4>
    
-The <span class="css" id="ref-for-funcdef-string④">string()</span> function is used to copy the value of a named string to the document, via the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-content-3/#propdef-content" id="ref-for-propdef-content">content</a> property. This function requires one argument, the name of the named string. Since the value of a named string may change several times on a page (as new instances of the element defining the string appear) an optional second argument indicates which value of the named string should be used.
+The <span class="css" id="ref-for-funcdef-string④">string()</span> function is used to copy the value of a named string to the document, via the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-content" id="ref-for-propdef-content">content</a> property. This function requires one argument, the name of the named string. Since the value of a named string may change several times on a page (as new instances of the element defining the string appear) an optional second argument indicates which value of the named string should be used.
 
 
-
-   <p>The second argument of the <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-content-3/#funcdef-string" id="ref-for-funcdef-string⑤">string()</a> function is one of the following keywords:</p>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-string">string()</dfn> = string( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value" id="ref-for-identifier-value①">&lt;custom-ident></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma" id="ref-for-comb-comma">,</a> [ first <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> start <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> last <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> first-except ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> )
+</pre>
+   <p>The second argument of the <a class="css" data-link-type="maybe" href="#funcdef-string" id="ref-for-funcdef-string⑤">string()</a> function is one of the following keywords:</p>
    <dl>
     <dt id="string-first"><a class="self-link" href="#string-first"></a>first
     <dd>The value of the first assignment on the page is used. If there is no assignment on the page, the <span class="css">entry value</span> is used. <code>first</code> is the default value.
@@ -1042,12 +1141,12 @@ The <a class="css" data-link-type="maybe" href="#funcdef-running" id="ref-for-fu
     <tbody>
      <tr>
       <th>Name:
-      <td><a class="css" data-link-type="property" href="https://www.w3.org/TR/css-position-3/#propdef-position" id="ref-for-propdef-position">position</a>
+      <td><a class="css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-position-3/#propdef-position" id="ref-for-propdef-position">position</a>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">New values:</a>
-      <td class="prod"><a class="production css" data-link-type="function" href="#funcdef-running" id="ref-for-funcdef-running②">&lt;running()></a>
+      <td class="prod">running()
    </table>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-running">running()</dfn> = running( <a class="production" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value①">&lt;custom-ident></a> )
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-running">running()</dfn> = running( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value" id="ref-for-identifier-value②">&lt;custom-ident></a> )
 </pre>
    <div class="example" id="example-ffae16e8">
     <a class="self-link" href="#example-ffae16e8"></a>
@@ -1075,7 +1174,7 @@ p.rh::before {
      <figcaption>Running element in page margin box</figcaption>
     </figure>
    </div>
-   <p class="note" role="note">The <a class="css" data-link-type="maybe" href="#funcdef-element" id="ref-for-funcdef-element②">element()</a> value can only be used in page margin boxes. And it cannot be combined with other possible values for the content property.</p>
+   <p class="note" role="note">The element <span class="css">value()</span> can only be used in page margin boxes. And it cannot be combined with other possible values for the content property.</p>
    <div class="issue" id="issue-00e0aa3c">
     <a class="self-link" href="#issue-00e0aa3c"></a>
 
@@ -1114,7 +1213,7 @@ letter-spacing: 1pt;
        <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-running">running</dfn>
       <tr class="value">
        <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-       <td class="prod"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value②">&lt;custom-ident></a>
+       <td class="prod"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value" id="ref-for-identifier-value③">&lt;custom-ident></a>
       <tr>
        <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
        <td>none
@@ -1140,20 +1239,20 @@ letter-spacing: 1pt;
     <p class="all-media">User agents are expected to support this property on all media, including non-visual ones.</p>
    </div>
    <h4 class="heading settled" data-level="1.2.2" id="element-syntax"><span class="secno">1.2.2. </span><span class="content">
-The <a class="css" data-link-type="maybe" href="#funcdef-element" id="ref-for-funcdef-element③">element()</a> value
+The <a class="css" data-link-type="maybe" href="#funcdef-element" id="ref-for-funcdef-element②">element()</a> value
 </span><a class="self-link" href="#element-syntax"></a></h4>
-   <p>The <a class="css" data-link-type="maybe" href="#funcdef-element" id="ref-for-funcdef-element④">element()</a> value of the content property places an element (which has been removed from the normal flow via <a class="css" data-link-type="maybe" href="#funcdef-running" id="ref-for-funcdef-running③">running()</a>) in a page margin box. Whenever the value of the element changes, the value of <span class="css" id="ref-for-funcdef-element⑤">element()</span> is updated.</p>
-   <p>Just as with <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-content-3/#funcdef-string" id="ref-for-funcdef-string⑥">string()</a>, <a class="css" data-link-type="maybe" href="#funcdef-element" id="ref-for-funcdef-element⑥">element()</a> takes an optional keyword to describe which value should be used in the case of multiple assignments on a page. User agents must be able to recall many values, as <span class="css" id="ref-for-funcdef-element⑦">element()</span> can return past, current, or future values of the assignment.</p>
+   <p>The <a class="css" data-link-type="maybe" href="#funcdef-element" id="ref-for-funcdef-element③">element()</a> value of the content property places an element (which has been removed from the normal flow via <a class="css" data-link-type="maybe" href="#funcdef-running" id="ref-for-funcdef-running②">running()</a>) in a page margin box. Whenever the value of the element changes, the value of <span class="css" id="ref-for-funcdef-element④">element()</span> is updated.</p>
+   <p>Just as with <a class="css" data-link-type="maybe" href="#funcdef-string" id="ref-for-funcdef-string⑥">string()</a>, <a class="css" data-link-type="maybe" href="#funcdef-element" id="ref-for-funcdef-element⑤">element()</a> takes an optional keyword to describe which value should be used in the case of multiple assignments on a page. User agents must be able to recall many values, as <span class="css" id="ref-for-funcdef-element⑥">element()</span> can return past, current, or future values of the assignment.</p>
    <table class="def propdef partial" data-link-for-hint="content">
     <tbody>
      <tr>
       <th>Name:
-      <td><a class="css" data-link-type="property" href="https://www.w3.org/TR/css-content-3/#propdef-content" id="ref-for-propdef-content①">content</a>
+      <td><a class="css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-content" id="ref-for-propdef-content①">content</a>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">New values:</a>
-      <td class="prod"><a class="production css" data-link-type="function" href="#funcdef-element" id="ref-for-funcdef-element⑧">&lt;element()></a>
+      <td class="prod">element()
    </table>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-element">element()</dfn> = element( <a class="production" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value③">&lt;custom-ident></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-comma" id="ref-for-comb-comma">,</a> [ first <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> last <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> first-except ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> )
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-element">element()</dfn> = element( <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value" id="ref-for-identifier-value④">&lt;custom-ident></a> <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma" id="ref-for-comb-comma①">,</a> [ first <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> start <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> last <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> first-except ]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> )
 </pre>
    <h2 class="heading settled" data-level="2" id="footnotes"><span class="secno">2. </span><span class="content">
 	Footnotes
@@ -1164,7 +1263,7 @@ Ancillary content may be moved to the bottom or side of a page. A footnote is cr
 
 
    <h3 class="heading settled" data-level="2.1" id="footnote-terms"><span class="secno">2.1. </span><span class="content">Terminology</span><a class="self-link" href="#footnote-terms"></a></h3>
-   <p>Footnotes are complex objects (see the <a href="https://www.w3.org/TR/dpub-latinreq/#footnotes">footnote section</a> at <a data-link-type="biblio" href="#biblio-dpub-latinreq" title="Requirements for Latin Text Layout and Pagination">[dpub-latinreq]</a>), so it will be helpful to define some terms before proceeding.</p>
+   <p>Footnotes are complex objects (see the <a href="https://www.w3.org/TR/2014/WD-dpub-latinreq-20140313/#footnotes">footnote section</a> at <a data-link-type="biblio" href="#biblio-dpub-latinreq" title="Requirements for Latin Text Layout and Pagination">[dpub-latinreq]</a>), so it will be helpful to define some terms before proceeding.</p>
    <figure>
     <p><img alt="page with footnotes" src="images/footnote-diagram.001.jpg" width="480"></p>
     <figcaption>Footnote terminology</figcaption>
@@ -1216,14 +1315,14 @@ span.footnote { float: footnote; }
 	Types of footnotes
 </span><a class="self-link" href="#footnote-types"></a></h3>
    
-The following new value of the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS2/visuren.html#propdef-float" id="ref-for-propdef-float">float</a> property creates a footnote element:
+The following new value of the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css2/#propdef-float" id="ref-for-propdef-float">float</a> property creates a footnote element:
 
 
    <table class="def propdef partial" data-link-for-hint="float">
     <tbody>
      <tr>
       <th>Name:
-      <td><a class="css" data-link-type="property" href="https://www.w3.org/TR/CSS2/visuren.html#propdef-float" id="ref-for-propdef-float①">float</a>
+      <td><a class="css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css2/#propdef-float" id="ref-for-propdef-float①">float</a>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">New values:</a>
       <td class="prod">footnote
@@ -1240,7 +1339,7 @@ The following new value of the <a class="property css" data-link-type="property"
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-footnote-display">footnote-display</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">block <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> inline <span id="ref-for-comb-one①②">|</span> compact
+      <td class="prod">block <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①④">|</a> inline <span id="ref-for-comb-one①⑤">|</span> compact
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>block
@@ -1264,11 +1363,11 @@ The following new value of the <a class="property css" data-link-type="property"
       <td>discrete
    </table>
    <dl>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="footnote-display" data-dfn-type="value" data-export id="footnote-display-block">block</dfn>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="propdef-footnote-display" data-dfn-type="value" data-export id="footnote-display-block">block</dfn>
     <dd>The footnote element is placed in the footnote area as a block element
-    <dt><dfn class="dfn-paneled css" data-dfn-for="footnote-display" data-dfn-type="value" data-export id="footnote-display-inline">inline</dfn>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="propdef-footnote-display" data-dfn-type="value" data-export id="footnote-display-inline">inline</dfn>
     <dd>The footnote element is placed in the footnote area as an inline element
-    <dt><dfn class="dfn-paneled css" data-dfn-for="footnote-display" data-dfn-type="value" data-export id="footnote-display-compact">compact</dfn>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="propdef-footnote-display" data-dfn-type="value" data-export id="footnote-display-compact">compact</dfn>
     <dd>The user agent determines whether a given footnote element is placed as a block element or an inline element. If two or more footnotes could fit on the same line in the footnote area, they should be placed inline.
    </dl>
    <h3 class="heading settled" data-level="2.4" id="footnote-area"><span class="secno">2.4. </span><span class="content">
@@ -1288,7 +1387,7 @@ The bottom margin edge of the footnote area is positioned so that it touches the
    <p class="issue" id="issue-069a39a3"><a class="self-link" href="#issue-069a39a3"></a>How do footnotes work in multi-column text? Prince uses <code>float: prince-column-footnote</code> to create a footnote at the bottom of a column rather than the bottom of a page.</p>
    <p class="issue" id="issue-34f910d8"><a class="self-link" href="#issue-34f910d8"></a>Implementations that support footnotes generally support page floats like <code>float: bottom</code>. Page floats should end up above the footnote area. How might this be specified?</p>
    <h4 class="heading settled" data-level="2.4.2" id="footnote-area-size"><span class="secno">2.4.2. </span><span class="content">Size of the footnote area</span><a class="self-link" href="#footnote-area-size"></a></h4>
-   <p>The <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS2/visudet.html#propdef-max-height" id="ref-for-propdef-max-height">max-height</a> property on the footnote area limits the size of this area, unless the page contains only footnotes (as may happen on the last page of a document).</p>
+   <p>The <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css2/#propdef-max-height" id="ref-for-propdef-max-height">max-height</a> property on the footnote area limits the size of this area, unless the page contains only footnotes (as may happen on the last page of a document).</p>
    <p>Since it is undesirable for a page to consist only of footnotes, user agents <em class="RFC2119">may</em> set a default max-height value on the footnote area.</p>
    <h3 class="heading settled" data-level="2.5" id="footnote-counters"><span class="secno">2.5. </span><span class="content">The Footnote Counter</span><a class="self-link" href="#footnote-counters"></a></h3>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="footnote-counter">footnote counter</dfn> is a predefined <a href="https://drafts.csswg.org/css-lists/#counter">counter</a> associated with the footnote element. Its value is the number or symbol used to identify the footnote. This value is used in both the footnote call and the footnote marker. It should be incremented for each footnote.</p>
@@ -1361,7 +1460,7 @@ Rendering footnotes and <code>footnote policy</code>
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-footnote-policy">footnote-policy</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">auto <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> line <span id="ref-for-comb-one①④">|</span> block
+      <td class="prod">auto <a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one" id="ref-for-comb-one①⑥">|</a> line <span id="ref-for-comb-one①⑦">|</span> block
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto
@@ -1408,14 +1507,14 @@ Selecting Pages
 Page Selectors
 </span><a class="self-link" href="#document-page-selectors"></a></h3>
    
-The <a class="css" data-link-type="maybe" href="#selectordef-nth" id="ref-for-selectordef-nth">:nth()</a> page pseudo-class allows the selection of arbitrary document pages. This pseudo-class takes an argument of the form <a href="https://drafts.csswg.org/css-syntax/#anb">An + B</a> as defined in <a data-link-type="biblio" href="#biblio-css3syn" title="CSS Syntax Module Level 3">[CSS3SYN]</a>. When applied to the default @page rule, <span class="css" id="ref-for-selectordef-nth①">:nth()</span> selects the document page whose index matches the argument.
+The <a class="css" data-link-type="maybe" href="#funcdef-nth" id="ref-for-funcdef-nth">nth()</a> page pseudo-class allows the selection of arbitrary document pages. This pseudo-class takes an argument of the form <a href="https://drafts.csswg.org/css-syntax/#anb">An + B</a> as defined in <a data-link-type="biblio" href="#biblio-css3syn" title="CSS Syntax Module Level 3">[CSS3SYN]</a>. When applied to the default @page rule, <span class="css" id="ref-for-funcdef-nth①">nth()</span> selects the document page whose index matches the argument.
 
 
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="selector" data-export id="selectordef-nth">:nth()</dfn> = :nth( <a class="production" data-link-type="type" href="https://www.w3.org/TR/css-syntax-3/#anb-production" id="ref-for-anb-production">&lt;an+b></a> [of <a class="production" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value④">&lt;custom-ident></a>]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> )
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-nth">nth()</dfn> = ( An<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus①">+</a>B [of <a class="production" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value" id="ref-for-identifier-value⑤">&lt;custom-ident></a>]<a data-link-type="grammar" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt" id="ref-for-mult-opt②">?</a>)
 </pre>
    <p class="note" role="note">
-<a class="css" data-link-type="maybe" href="#selectordef-nth" id="ref-for-selectordef-nth②">:nth()</a> is not related to the page counter, which may reset and use various numbering schemes.</p>
-   <p>When the <a class="css" data-link-type="maybe" href="#selectordef-nth" id="ref-for-selectordef-nth③">:nth()</a> selector is applied to a named page, and that named page is part of a page-group (see below), it selects the nth page in the page group.</p>
+<a class="css" data-link-type="maybe" href="#funcdef-nth" id="ref-for-funcdef-nth②">nth()</a> is not related to the page counter, which may reset and use various numbering schemes.</p>
+   <p>When the <a class="css" data-link-type="maybe" href="#funcdef-nth" id="ref-for-funcdef-nth③">nth()</a> selector is applied to a named page, and that named page is part of a page-group (see below), it selects the nth page in the page group.</p>
    <div class="example" id="example-b3ec403f">
     <a class="self-link" href="#example-b3ec403f"></a>
 
@@ -1436,7 +1535,7 @@ Many paginated documents have a repeating structure, consisting of many chapters
 
 
 
-   <p>When the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-page-3/#propdef-page" id="ref-for-propdef-page">page</a> property is applied to an element that also has a forced break property applied, a <span class="css">page group</span> is created. The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="page-group">page group</dfn> is the collection of all pages created by an instance of that element. When a new instance of the element is rendered, a new <span class="css">page group</span> is started.</p>
+   <p>When the <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-page-3/#propdef-page" id="ref-for-propdef-page">page</a> property is applied to an element that also has a forced break property applied, a <span class="css">page group</span> is created. The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="page-group">page group</dfn> is the collection of all pages created by an instance of that element. When a new instance of the element is rendered, a new <span class="css">page group</span> is started.</p>
    <p>A page may be part of several page groups, as a given <span class="css">page group</span> may have ancestors or descendants that are part of another <span class="css">page group</span>.</p>
    <div class="example" id="example-79ba6f1d">
     <a class="self-link" href="#example-79ba6f1d"></a>
@@ -1522,11 +1621,11 @@ Bookmarks (moved)
    <h3 class="heading settled" id="page-marks-and-bleed-area"><span class="content">Page marks and bleed area</span><a class="self-link" href="#page-marks-and-bleed-area"></a></h3>
    <p class="note" role="note">This section has been moved to <a href="https://drafts.csswg.org/css-page/#marks">CSS Paged Media Module Level 3</a>.</p>
    <h3 class="heading settled" id="cmyk-colors"><span class="content">CMYK colors</span><a class="self-link" href="#cmyk-colors"></a></h3>
-   <p class="note" role="note">This section has been moved to <a href="https://drafts.csswg.org/css-color-5/#device-cmyk">CSS Color Module Level 5</a>.</p>
+   <p class="note" role="note">This section has been moved to <a href="https://drafts.csswg.org/css-color/#cmyk-colors">CSS Color Module Level 4</a>.</p>
    <h3 class="heading settled" id="styling-blank-pages"><span class="content">Styling blank pages</span><a class="self-link" href="#styling-blank-pages"></a></h3>
    <p class="note" role="note">This section has been moved to <a href="https://drafts.csswg.org/css-page/#blank-pseudo">CSS Paged Media Module Level 3</a></p>
    <h3 class="heading settled" id="paged-presentations"><span class="content">Paged presentations</span><a class="self-link" href="#paged-presentations"></a></h3>
-   <p class="note" role="note">This section has been moved to <a href="https://drafts.csswg.org/css-overflow-4/#overflow-concepts">CSS Overflow Module Level 4</a>.</p>
+   <p class="note" role="note">This section has been moved to <a href="https://drafts.csswg.org/css-overflow-3/#paginated-overflow">CSS Overflow Module Level 3</a>.</p>
    <h3 class="heading settled" id="navigation-between-pages"><span class="content">Navigation between pages</span><a class="self-link" href="#navigation-between-pages"></a></h3>
    <p class="note" role="note">This is discussed in <a href="http://books.spec.whatwg.org/#spatial-layout-of-pages;-@layout">WHATWG CSS Books</a>.</p>
    <h3 class="heading settled" id="page-floats"><span class="content">Page floats</span><a class="self-link" href="#page-floats"></a></h3>
@@ -1582,12 +1681,10 @@ h6 { bookmark-level: 6 }
 </pre>
    </div>
    <h2 class="no-num heading settled" id="changes"><span class="content">Appendix C: Changes</span><a class="self-link" href="#changes"></a></h2>
-   <p>Changes since the <a href="https://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/">13 May 2014 Working Draft</a>:</p>
+   <p>Changes since the <a href="http://www.w3.org/TR/2014/WD-css-gcpm-3-20140513/">13 May 2014 Working Draft</a>:</p>
    <ul>
-    <li>Clarify that bookmark is only created via <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-content-3/#propdef-bookmark-level" id="ref-for-propdef-bookmark-level">bookmark-level</a> property. Remove <span class="css">none</span> value from <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-content-3/#propdef-bookmark-label" id="ref-for-propdef-bookmark-label">bookmark-label</a>.
+    <li>Clarify that bookmark is only created via <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-level" id="ref-for-propdef-bookmark-level">bookmark-level</a> property. Remove <span class="css">none</span> value from <a class="property css" data-link-type="property" href="https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-label" id="ref-for-propdef-bookmark-label">bookmark-label</a>.
     <li>Move the cross references, leaders, and bookmarks sections to the <a href="https://www.w3.org/TR/css-content-3/">CSS Generated Content Module</a>.
-    <li>Incorrect break values were fixed. See <a href="https://github.com/w3c/csswg-drafts/issues/3524">Issue #3524</a>.
-    <li>The spec has new editors.
    </ul>
    <p>Changes since the <a href="https://hg.csswg.org/drafts/raw-file/6a5c44d11c2b/css-gcpm/Overview.html">24 September 2013 Editor’s Draft</a>:</p>
    <ul>
@@ -1606,13 +1703,13 @@ h6 { bookmark-level: 6 }
 Page Marks and Bleeds section moved to <a href="https://drafts.csswg.org/css-page/#marks">CSS Paged Media Module Level 3</a>
 
     <li>
-CMYK Colors section moved to <a href="https://drafts.csswg.org/css-color-5/#device-cmyk">CSS Colors Level 5</a>.
+CMYK Colors section moved to <a href="https://drafts.csswg.org/css-color/#cmyk-colors">CSS Colors Level 4</a>.
 
     <li>
 Styling Blank Pages section deleted
 
     <li>
-Paged Presentations section moved to <a href="https://drafts.csswg.org/css-overflow-3/#overflow-concepts">CSS Overflow Module Level 3</a>.
+Paged Presentations section moved to <a href="https://drafts.csswg.org/css-overflow-3/#paginated-overflow">CSS Overflow Module Level 3</a>.
 
     <li>
 Navigation Between Pages moved to <a href="http://books.spec.whatwg.org/#spatial-layout-of-pages;-@layout">WHATWG CSS Books</a>
@@ -1642,13 +1739,13 @@ content() value of target-text changed to content(text)
 target-pull() value of content property removed
 
    </ul>
-   <p>Differences with the <a href="http://books.ideas.whatwg.org/">WHATWG CSS Books</a> specification:</p>
+   <p>Differences with the <a href="http://books.spec.whatwg.org/">WHATWG CSS Books</a> specification:</p>
    <ul>
     <li>Added <span class="css">attr(&lt;identifier>)</span> value to <a class="property css" data-link-type="property" href="#propdef-string-set" id="ref-for-propdef-string-set③">string-set</a> property. This is supported by both Prince and AntennaHouse.
     <li>
-<a href="http://books.ideas.whatwg.org/">CSS Books</a> does not have the <a class="property css" data-link-type="property" href="#propdef-footnote-display" id="ref-for-propdef-footnote-display②">footnote-display</a> property.
+<a href="http://books.spec.whatwg.org/">CSS Books</a> does not have the <a href="#propdef-footnote-display" id="ref-for-propdef-footnote-display②">footnote-display</a> property.
     <li>
-<a href="http://books.ideas.whatwg.org/">CSS Books</a> does not have the <a class="property css" data-link-type="property" href="#propdef-footnote-policy" id="ref-for-propdef-footnote-policy②">footnote-policy</a> property.
+<a href="http://books.spec.whatwg.org/">CSS Books</a> does not have the <a href="#footnote-policy">footnote-policy</a> property.
     <li>
 The relationship between the <code>nth()</code> page pseudo-class and the page-group concept is clarified, which may make the page-group property redundant.
 
@@ -1687,10 +1784,6 @@ Microtypography
 
      </ol>
    </ul>
-   <h2 class="no-num heading settled" id="privacy"><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
-   <p>No new privacy considerations have been reported on this specification.</p>
-   <h2 class="no-num heading settled" id="security"><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
-   <p>No new security considerations have been reported on this specification.</p>
    <h2 class="no-num heading settled" id="acknowledgments"><span class="content">
 Acknowledgments
 </span><a class="self-link" href="#acknowledgments"></a></h2>
@@ -1737,6 +1830,14 @@ Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3
     <strong class="advisement">
         UAs MUST provide an accessible alternative.
     </strong></p>
+  <details class="wpt-tests-block" dir="ltr" lang="en" open>
+   <summary>Tests</summary>
+   <p>Tests relating to the content of this specification
+                     may be documented in “Tests” blocks like this one.
+                     Any such block is non-normative.</p>
+   <ul class="wpt-tests-list"></ul>
+   <hr>
+  </details>
   <h3 class="no-ref heading settled" id="w3c-conformance-classes"><span class="content">
 Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
   <p>Conformance to this specification
@@ -1745,18 +1846,18 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
   <dl>
    <dt>style sheet
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
             style sheet</a>.
         
    <dt>renderer
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that interprets the semantics of a style sheet and renders
             documents that use them.
         
    <dt>authoring tool
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that writes a style sheet.
     
   </dl>
@@ -1787,7 +1888,7 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
 Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <p>So that authors can exploit the forward-compatible parsing rules to
     assign fallback values, CSS renderers <strong>must</strong>
-    treat as invalid (and <a href="https://www.w3.org/TR/CSS21/conform.html#ignore">ignore
+    treat as invalid (and <a href="http://www.w3.org/TR/CSS21/conform.html#ignore">ignore
     as appropriate</a>) any at-rules, properties, property values, keywords,
     and other syntactic constructs for which they have no usable level of
     support. In particular, user agents <strong>must not</strong> selectively
@@ -1798,7 +1899,7 @@ Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <h4 class="heading settled" id="w3c-conform-future-proofing"><span class="content">
 Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#w3c-conform-future-proofing"></a></h4>
   <p>To avoid clashes with future stable CSS features,
-        the CSSWG recommends <a href="https://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="https://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="https://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
+        the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
 
 </p>
   <h3 class="no-ref heading settled" id="w3c-testing"><span class="content">
@@ -1820,9 +1921,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     </p>
   <p>Further information on submitting testcases and implementation reports
     can be found from on the CSS Working Group’s website at
-    <a href="https://www.w3.org/Style/CSS/Test/">https://www.w3.org/Style/CSS/Test/</a>.
+    <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
     Questions should be directed to the
-    <a href="https://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
+    <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
     mailing list.</p>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
@@ -1832,12 +1933,12 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     block
     <ul>
-     <li><a href="#footnote-display-block">value for footnote-display</a><span>, in § 2.3</span>
      <li><a href="#valdef-footnote-policy-block">value for footnote-policy</a><span>, in § 2.8</span>
+     <li><a href="#footnote-display-block">value for propdef-footnote-display</a><span>, in § 2.3</span>
     </ul>
    <li><a href="#footnote-display-compact">compact</a><span>, in § 2.3</span>
    <li><a href="#funcdef-content">content()</a><span>, in § 1.1.1.1</span>
-   <li><a href="#content-list">&lt;content-list></a><span>, in § 1.1.1</span>
+   <li><a href="#content-list">content-list</a><span>, in § 1.1.1</span>
    <li><a href="#funcdef-element">element()</a><span>, in § 1.2.2</span>
    <li><a href="#entry-value">entry value</a><span>, in § 1.1.1.1</span>
    <li><a href="#exit-value">exit value</a><span>, in § 1.1.1.1</span>
@@ -1848,12 +1949,13 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#footnote-display-inline">inline</a><span>, in § 2.3</span>
    <li><a href="#footnote-policy-line">line</a><span>, in § 2.8</span>
    <li><a href="#named-string">named string</a><span>, in § 1</span>
-   <li><a href="#selectordef-nth">:nth()</a><span>, in § 3.1</span>
+   <li><a href="#funcdef-nth">nth()</a><span>, in § 3.1</span>
    <li><a href="#page-group">page group</a><span>, in § 3.2</span>
    <li><a href="#page-selectors">page selectors</a><span>, in § 3</span>
    <li><a href="#propdef-running">running</a><span>, in § 1.2.1</span>
    <li><a href="#funcdef-running">running()</a><span>, in § 1.2.1</span>
    <li><a href="#running-elements0">Running elements</a><span>, in § 1</span>
+   <li><a href="#funcdef-string">string()</a><span>, in § 1.1.2</span>
    <li><a href="#propdef-string-set">string-set</a><span>, in § 1.1.1</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1861,84 +1963,65 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-POSITION-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="b8c34db8">position</span>
+     <li><span class="dfn-paneled" id="50a5eb45">position</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="c297b070">#</span>
-     <li><span class="dfn-paneled" id="af4a190d">+</span>
-     <li><span class="dfn-paneled" id="8cd4f032">,</span>
-     <li><span class="dfn-paneled" id="a0144f62">&lt;custom-ident></span>
-     <li><span class="dfn-paneled" id="1d798932">&lt;string></span>
-     <li><span class="dfn-paneled" id="d4441b24">?</span>
-     <li><span class="dfn-paneled" id="8a110a7b">CSS-wide keywords</span>
-     <li><span class="dfn-paneled" id="4eb9d37e">|</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[CSS-VALUES-5]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="a20cee51">attr()</span>
+     <li><span class="dfn-paneled" id="ee310036">#</span>
+     <li><span class="dfn-paneled" id="52cdc00c">+</span>
+     <li><span class="dfn-paneled" id="3c77fbd0">,</span>
+     <li><span class="dfn-paneled" id="8e56b32c">&lt;custom-ident></span>
+     <li><span class="dfn-paneled" id="e5365b83">?</span>
+     <li><span class="dfn-paneled" id="9ecf6b7b">CSS-wide keywords</span>
+     <li><span class="dfn-paneled" id="7936a36b">|</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS21]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="da486c10">float</span>
-     <li><span class="dfn-paneled" id="0f0ab49f">max-height</span>
+     <li><span class="dfn-paneled" id="415315ae">float</span>
+     <li><span class="dfn-paneled" id="c81700ae">max-height</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS3-CONTENT]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="b246dfdc">bookmark-label</span>
-     <li><span class="dfn-paneled" id="7e7c0df8">bookmark-level</span>
-     <li><span class="dfn-paneled" id="f3e8378c">content</span>
-     <li><span class="dfn-paneled" id="ecfae07b">string()</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[CSS3LIST]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="598f7b8c">counter()</span>
-     <li><span class="dfn-paneled" id="a3e443ae">counters()</span>
+     <li><span class="dfn-paneled" id="b55408b5">&lt;content-list></span>
+     <li><span class="dfn-paneled" id="7c72c1f0">bookmark-label</span>
+     <li><span class="dfn-paneled" id="4872b306">bookmark-level</span>
+     <li><span class="dfn-paneled" id="f96bc335">content</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS3PAGE]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="ce1025d0">page</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[CSS3SYN]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="b2862018">&lt;an+b></span>
+     <li><span class="dfn-paneled" id="7556b3f6">page</span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-css-position-3">[CSS-POSITION-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. 11 March 2025. WD. URL: <a href="https://www.w3.org/TR/css-position-3/">https://www.w3.org/TR/css-position-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-position-3/">https://andreubotella.com/csswg-auto-build/test/css-position-3/</a>
    <dt id="biblio-css-values-3">[CSS-VALUES-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-3/"><cite>CSS Values and Units Module Level 3</cite></a>. 22 March 2024. CRD. URL: <a href="https://www.w3.org/TR/css-values-3/">https://www.w3.org/TR/css-values-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/"><cite>CSS Values and Units Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-3/">https://andreubotella.com/csswg-auto-build/test/css-values-3/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 12 March 2024. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
-   <dt id="biblio-css-values-5">[CSS-VALUES-5]
-   <dd>Tab Atkins Jr.; Elika Etemad; Miriam Suzanne. <a href="https://www.w3.org/TR/css-values-5/"><cite>CSS Values and Units Module Level 5</cite></a>. 11 November 2024. WD. URL: <a href="https://www.w3.org/TR/css-values-5/">https://www.w3.org/TR/css-values-5/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/">https://andreubotella.com/csswg-auto-build/test/css-values-4/</a>
    <dt id="biblio-css21">[CSS21]
-   <dd>Bert Bos; et al. <a href="https://www.w3.org/TR/CSS2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. 7 June 2011. REC. URL: <a href="https://www.w3.org/TR/CSS2/">https://www.w3.org/TR/CSS2/</a>
+   <dd>Bert Bos; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css2/">https://andreubotella.com/csswg-auto-build/test/css2/</a>
    <dt id="biblio-css3-content">[CSS3-CONTENT]
-   <dd>Elika Etemad; Dave Cramer. <a href="https://www.w3.org/TR/css-content-3/"><cite>CSS Generated Content Module Level 3</cite></a>. 2 August 2019. WD. URL: <a href="https://www.w3.org/TR/css-content-3/">https://www.w3.org/TR/css-content-3/</a>
-   <dt id="biblio-css3list">[CSS3LIST]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-lists-3/"><cite>CSS Lists and Counters Module Level 3</cite></a>. 17 November 2020. WD. URL: <a href="https://www.w3.org/TR/css-lists-3/">https://www.w3.org/TR/css-lists-3/</a>
+   <dd>Elika Etemad; Dave Cramer. <a href="https://andreubotella.com/csswg-auto-build/test/css-content-3/"><cite>CSS Generated Content Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-content-3/">https://andreubotella.com/csswg-auto-build/test/css-content-3/</a>
    <dt id="biblio-css3page">[CSS3PAGE]
-   <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-page-3/"><cite>CSS Paged Media Module Level 3</cite></a>. 14 September 2023. WD. URL: <a href="https://www.w3.org/TR/css-page-3/">https://www.w3.org/TR/css-page-3/</a>
-   <dt id="biblio-css3syn">[CSS3SYN]
-   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://www.w3.org/TR/css-syntax-3/"><cite>CSS Syntax Module Level 3</cite></a>. 24 December 2021. CRD. URL: <a href="https://www.w3.org/TR/css-syntax-3/">https://www.w3.org/TR/css-syntax-3/</a>
+   <dd>Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-page-3/"><cite>CSS Paged Media Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-page-3/">https://andreubotella.com/csswg-auto-build/test/css-page-3/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
+   <dt id="biblio-css3list">[CSS3LIST]
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-lists-3/"><cite>CSS Lists and Counters Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-lists-3/">https://andreubotella.com/csswg-auto-build/test/css-lists-3/</a>
+   <dt id="biblio-css3syn">[CSS3SYN]
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/">https://andreubotella.com/csswg-auto-build/test/css-syntax/</a>
    <dt id="biblio-dpub-latinreq">[DPUB-LATINREQ]
-   <dd>Dave Cramer. <a href="https://www.w3.org/TR/dpub-latinreq/"><cite>Requirements for Latin Text Layout and Pagination</cite></a>. 30 September 2014. WD. URL: <a href="https://www.w3.org/TR/dpub-latinreq/">https://www.w3.org/TR/dpub-latinreq/</a>
+   <dd>Dave Cramer. <a href="https://w3c.github.io/dpub-pagination/"><cite>Requirements for Latin Text Layout and Pagination</cite></a>. URL: <a href="https://w3c.github.io/dpub-pagination/">https://w3c.github.io/dpub-pagination/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -1966,7 +2049,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>per grammar
       <td>specified value
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-footnote-policy" id="ref-for-propdef-footnote-policy③">footnote-policy</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-footnote-policy" id="ref-for-propdef-footnote-policy②">footnote-policy</a>
       <td>auto | line | block
       <td>auto
       <td>elements
@@ -2034,7 +2117,7 @@ letter-spacing: 1pt;
        <td><span>running</span>
       <tr class="value">
        <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-       <td class="prod"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value">&lt;custom-ident></a>
+       <td class="prod"><a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value">&lt;custom-ident></a>
       <tr>
        <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
        <td>none
@@ -2271,46 +2354,42 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"0f0ab49f": {"dfnID":"0f0ab49f","dfnText":"max-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-max-height"}],"title":"2.4.2. Size of the footnote area"}],"url":"https://www.w3.org/TR/CSS2/visudet.html#propdef-max-height"},
-"1d798932": {"dfnID":"1d798932","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://www.w3.org/TR/css-values-4/#string-value"},
-"4eb9d37e": {"dfnID":"4eb9d37e","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"}],"title":"1.1.1.1. The content() function"},{"refs":[{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"}],"title":"1.2.2. \nThe element() value\n"},{"refs":[{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"}],"title":"2.3. \n\tTypes of footnotes\n"},{"refs":[{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"}],"title":"2.8. \nRendering footnotes and footnote policy\n"}],"url":"https://www.w3.org/TR/css-values-4/#comb-one"},
-"598f7b8c": {"dfnID":"598f7b8c","dfnText":"counter()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-counter"},{"id":"ref-for-funcdef-counter\u2460"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://www.w3.org/TR/css-lists-3/#funcdef-counter"},
-"7e7c0df8": {"dfnID":"7e7c0df8","dfnText":"bookmark-level","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-bookmark-level"}],"title":"Appendix C: Changes"}],"url":"https://www.w3.org/TR/css-content-3/#propdef-bookmark-level"},
-"8a110a7b": {"dfnID":"8a110a7b","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"\nValue Definitions"}],"url":"https://www.w3.org/TR/css-values-4/#css-wide-keywords"},
-"8cd4f032": {"dfnID":"8cd4f032","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"1.2.2. \nThe element() value\n"}],"url":"https://www.w3.org/TR/css-values-4/#comb-comma"},
-"a0144f62": {"dfnID":"a0144f62","dfnText":"<custom-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-identifier-value"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-identifier-value\u2460"},{"id":"ref-for-identifier-value\u2461"}],"title":"1.2.1. \nThe running() value\n"},{"refs":[{"id":"ref-for-identifier-value\u2462"}],"title":"1.2.2. \nThe element() value\n"},{"refs":[{"id":"ref-for-identifier-value\u2463"}],"title":"3.1. \nPage Selectors\n"}],"url":"https://www.w3.org/TR/css-values-4/#identifier-value"},
-"a20cee51": {"dfnID":"a20cee51","dfnText":"attr()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-attr"},{"id":"ref-for-funcdef-attr\u2460"},{"id":"ref-for-funcdef-attr\u2461"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://www.w3.org/TR/css-values-5/#funcdef-attr"},
-"a3e443ae": {"dfnID":"a3e443ae","dfnText":"counters()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-counters"},{"id":"ref-for-funcdef-counters\u2460"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://www.w3.org/TR/css-lists-3/#funcdef-counters"},
-"af4a190d": {"dfnID":"af4a190d","dfnText":"+","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-one-plus"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://www.w3.org/TR/css-values-4/#mult-one-plus"},
-"b246dfdc": {"dfnID":"b246dfdc","dfnText":"bookmark-label","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-bookmark-label"}],"title":"Appendix C: Changes"}],"url":"https://www.w3.org/TR/css-content-3/#propdef-bookmark-label"},
-"b2862018": {"dfnID":"b2862018","dfnText":"<an+b>","external":true,"refSections":[{"refs":[{"id":"ref-for-anb-production"}],"title":"3.1. \nPage Selectors\n"}],"url":"https://www.w3.org/TR/css-syntax-3/#anb-production"},
-"b8c34db8": {"dfnID":"b8c34db8","dfnText":"position","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-position"}],"title":"1.2.1. \nThe running() value\n"}],"url":"https://www.w3.org/TR/css-position-3/#propdef-position"},
-"c297b070": {"dfnID":"c297b070","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://www.w3.org/TR/css-values-4/#mult-comma"},
-"ce1025d0": {"dfnID":"ce1025d0","dfnText":"page","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-page"}],"title":"3.2. \nPage groups\n"}],"url":"https://www.w3.org/TR/css-page-3/#propdef-page"},
-"content-list": {"dfnID":"content-list","dfnText":"<content-list>","external":false,"refSections":[{"refs":[{"id":"ref-for-content-list"},{"id":"ref-for-content-list\u2460"},{"id":"ref-for-content-list\u2461"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"#content-list"},
-"d4441b24": {"dfnID":"d4441b24","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"1.2.2. \nThe element() value\n"},{"refs":[{"id":"ref-for-mult-opt\u2460"}],"title":"3.1. \nPage Selectors\n"}],"url":"https://www.w3.org/TR/css-values-4/#mult-opt"},
-"da486c10": {"dfnID":"da486c10","dfnText":"float","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-float"},{"id":"ref-for-propdef-float\u2460"}],"title":"2.3. \n\tTypes of footnotes\n"}],"url":"https://www.w3.org/TR/CSS2/visuren.html#propdef-float"},
-"ecfae07b": {"dfnID":"ecfae07b","dfnText":"string()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-string"},{"id":"ref-for-funcdef-string\u2460"}],"title":"1.1. \n\tNamed strings\n"},{"refs":[{"id":"ref-for-funcdef-string\u2461"}],"title":"1.1.1.1. The content() function"},{"refs":[{"id":"ref-for-funcdef-string\u2462"},{"id":"ref-for-funcdef-string\u2463"},{"id":"ref-for-funcdef-string\u2464"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-funcdef-string\u2465"}],"title":"1.2.2. \nThe element() value\n"}],"url":"https://www.w3.org/TR/css-content-3/#funcdef-string"},
+"3c77fbd0": {"dfnID":"3c77fbd0","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-comb-comma\u2460"}],"title":"1.2.2. \nThe element() value\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma"},
+"415315ae": {"dfnID":"415315ae","dfnText":"float","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-float"},{"id":"ref-for-propdef-float\u2460"}],"title":"2.3. \n\tTypes of footnotes\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css2/#propdef-float"},
+"4872b306": {"dfnID":"4872b306","dfnText":"bookmark-level","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-bookmark-level"}],"title":"Appendix C: Changes"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-level"},
+"50a5eb45": {"dfnID":"50a5eb45","dfnText":"position","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-position"}],"title":"1.2.1. \nThe running() value\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-position-3/#propdef-position"},
+"52cdc00c": {"dfnID":"52cdc00c","dfnText":"+","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-one-plus"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-mult-one-plus\u2460"}],"title":"3.1. \nPage Selectors\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-one-plus"},
+"7556b3f6": {"dfnID":"7556b3f6","dfnText":"page","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-page"}],"title":"3.2. \nPage groups\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-page-3/#propdef-page"},
+"7936a36b": {"dfnID":"7936a36b","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"}],"title":"1.1.1.1. The content() function"},{"refs":[{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"}],"title":"1.2.2. \nThe element() value\n"},{"refs":[{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"}],"title":"2.3. \n\tTypes of footnotes\n"},{"refs":[{"id":"ref-for-comb-one\u2460\u2465"},{"id":"ref-for-comb-one\u2460\u2466"}],"title":"2.8. \nRendering footnotes and footnote policy\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one"},
+"7c72c1f0": {"dfnID":"7c72c1f0","dfnText":"bookmark-label","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-bookmark-label"}],"title":"Appendix C: Changes"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-label"},
+"8e56b32c": {"dfnID":"8e56b32c","dfnText":"<custom-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-identifier-value"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-identifier-value\u2460"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-identifier-value\u2461"},{"id":"ref-for-identifier-value\u2462"}],"title":"1.2.1. \nThe running() value\n"},{"refs":[{"id":"ref-for-identifier-value\u2463"}],"title":"1.2.2. \nThe element() value\n"},{"refs":[{"id":"ref-for-identifier-value\u2464"}],"title":"3.1. \nPage Selectors\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value"},
+"9ecf6b7b": {"dfnID":"9ecf6b7b","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"\nValue Definitions"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-wide-keywords"},
+"b55408b5": {"dfnID":"b55408b5","dfnText":"<content-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-content-content-list"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#typedef-content-content-list"},
+"c81700ae": {"dfnID":"c81700ae","dfnText":"max-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-max-height"}],"title":"2.4.2. Size of the footnote area"}],"url":"https://andreubotella.com/csswg-auto-build/test/css2/#propdef-max-height"},
+"content-list": {"dfnID":"content-list","dfnText":"content-list","external":false,"refSections":[],"url":"#content-list"},
+"e5365b83": {"dfnID":"e5365b83","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-mult-opt\u2460"}],"title":"1.2.2. \nThe element() value\n"},{"refs":[{"id":"ref-for-mult-opt\u2461"}],"title":"3.1. \nPage Selectors\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt"},
+"ee310036": {"dfnID":"ee310036","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"1.1.1. \n\tThe string-set property\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma"},
 "entry-value": {"dfnID":"entry-value","dfnText":"entry value","external":false,"refSections":[],"url":"#entry-value"},
 "exit-value": {"dfnID":"exit-value","dfnText":"exit value","external":false,"refSections":[],"url":"#exit-value"},
-"f3e8378c": {"dfnID":"f3e8378c","dfnText":"content","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-content"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-propdef-content\u2460"}],"title":"1.2.2. \nThe element() value\n"}],"url":"https://www.w3.org/TR/css-content-3/#propdef-content"},
+"f96bc335": {"dfnID":"f96bc335","dfnText":"content","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-content"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-propdef-content\u2460"}],"title":"1.2.2. \nThe element() value\n"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-content"},
 "footnote-counter": {"dfnID":"footnote-counter","dfnText":"footnote counter","external":false,"refSections":[],"url":"#footnote-counter"},
 "footnote-display-block": {"dfnID":"footnote-display-block","dfnText":"block","external":false,"refSections":[],"url":"#footnote-display-block"},
 "footnote-display-compact": {"dfnID":"footnote-display-compact","dfnText":"compact","external":false,"refSections":[],"url":"#footnote-display-compact"},
 "footnote-display-inline": {"dfnID":"footnote-display-inline","dfnText":"inline","external":false,"refSections":[],"url":"#footnote-display-inline"},
 "footnote-policy-line": {"dfnID":"footnote-policy-line","dfnText":"line","external":false,"refSections":[{"refs":[{"id":"ref-for-footnote-policy-line"}],"title":"2.8. \nRendering footnotes and footnote policy\n"}],"url":"#footnote-policy-line"},
-"funcdef-content": {"dfnID":"funcdef-content","dfnText":"content()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-content"},{"id":"ref-for-funcdef-content\u2460"},{"id":"ref-for-funcdef-content\u2461"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-funcdef-content\u2462"}],"title":"1.1.1.1. The content() function"}],"url":"#funcdef-content"},
-"funcdef-element": {"dfnID":"funcdef-element","dfnText":"element()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-element"}],"title":"1.2. \n\tRunning elements\n"},{"refs":[{"id":"ref-for-funcdef-element\u2460"},{"id":"ref-for-funcdef-element\u2461"}],"title":"1.2.1. \nThe running() value\n"},{"refs":[{"id":"ref-for-funcdef-element\u2462"},{"id":"ref-for-funcdef-element\u2463"},{"id":"ref-for-funcdef-element\u2464"},{"id":"ref-for-funcdef-element\u2465"},{"id":"ref-for-funcdef-element\u2466"},{"id":"ref-for-funcdef-element\u2467"}],"title":"1.2.2. \nThe element() value\n"}],"url":"#funcdef-element"},
-"funcdef-running": {"dfnID":"funcdef-running","dfnText":"running()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-running"}],"title":"1.2. \n\tRunning elements\n"},{"refs":[{"id":"ref-for-funcdef-running\u2460"},{"id":"ref-for-funcdef-running\u2461"}],"title":"1.2.1. \nThe running() value\n"},{"refs":[{"id":"ref-for-funcdef-running\u2462"}],"title":"1.2.2. \nThe element() value\n"}],"url":"#funcdef-running"},
+"funcdef-content": {"dfnID":"funcdef-content","dfnText":"content()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-content"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-funcdef-content\u2460"}],"title":"1.1.1.1. The content() function"}],"url":"#funcdef-content"},
+"funcdef-element": {"dfnID":"funcdef-element","dfnText":"element()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-element"}],"title":"1.2. \n\tRunning elements\n"},{"refs":[{"id":"ref-for-funcdef-element\u2460"}],"title":"1.2.1. \nThe running() value\n"},{"refs":[{"id":"ref-for-funcdef-element\u2461"},{"id":"ref-for-funcdef-element\u2462"},{"id":"ref-for-funcdef-element\u2463"},{"id":"ref-for-funcdef-element\u2464"},{"id":"ref-for-funcdef-element\u2465"}],"title":"1.2.2. \nThe element() value\n"}],"url":"#funcdef-element"},
+"funcdef-nth": {"dfnID":"funcdef-nth","dfnText":"nth()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-nth"},{"id":"ref-for-funcdef-nth\u2460"},{"id":"ref-for-funcdef-nth\u2461"},{"id":"ref-for-funcdef-nth\u2462"}],"title":"3.1. \nPage Selectors\n"}],"url":"#funcdef-nth"},
+"funcdef-running": {"dfnID":"funcdef-running","dfnText":"running()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-running"}],"title":"1.2. \n\tRunning elements\n"},{"refs":[{"id":"ref-for-funcdef-running\u2460"}],"title":"1.2.1. \nThe running() value\n"},{"refs":[{"id":"ref-for-funcdef-running\u2461"}],"title":"1.2.2. \nThe element() value\n"}],"url":"#funcdef-running"},
+"funcdef-string": {"dfnID":"funcdef-string","dfnText":"string()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-string"},{"id":"ref-for-funcdef-string\u2460"}],"title":"1.1. \n\tNamed strings\n"},{"refs":[{"id":"ref-for-funcdef-string\u2461"}],"title":"1.1.1.1. The content() function"},{"refs":[{"id":"ref-for-funcdef-string\u2462"},{"id":"ref-for-funcdef-string\u2463"},{"id":"ref-for-funcdef-string\u2464"}],"title":"1.1.2. \n\tThe string() function\n"},{"refs":[{"id":"ref-for-funcdef-string\u2465"}],"title":"1.2.2. \nThe element() value\n"}],"url":"#funcdef-string"},
 "named-string": {"dfnID":"named-string","dfnText":"Named strings","external":false,"refSections":[],"url":"#named-string"},
 "page-group": {"dfnID":"page-group","dfnText":"page group","external":false,"refSections":[],"url":"#page-group"},
 "page-selectors": {"dfnID":"page-selectors","dfnText":"page selectors","external":false,"refSections":[],"url":"#page-selectors"},
-"propdef-footnote-display": {"dfnID":"propdef-footnote-display","dfnText":"footnote-display","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-footnote-display"}],"title":"2.3. \n\tTypes of footnotes\n"},{"refs":[{"id":"ref-for-propdef-footnote-display\u2460"},{"id":"ref-for-propdef-footnote-display\u2461"}],"title":"Appendix C: Changes"}],"url":"#propdef-footnote-display"},
-"propdef-footnote-policy": {"dfnID":"propdef-footnote-policy","dfnText":"footnote-policy","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-footnote-policy"}],"title":"2.8. \nRendering footnotes and footnote policy\n"},{"refs":[{"id":"ref-for-propdef-footnote-policy\u2460"},{"id":"ref-for-propdef-footnote-policy\u2461"}],"title":"Appendix C: Changes"}],"url":"#propdef-footnote-policy"},
+"propdef-footnote-display": {"dfnID":"propdef-footnote-display","dfnText":"footnote-display","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-footnote-display"}],"title":"2.3. \n\tTypes of footnotes\n"},{"refs":[{"id":"ref-for-propdef-footnote-display\u2460"},{"id":"ref-for-propdef-footnote-display"}],"title":"Appendix C: Changes"}],"url":"#propdef-footnote-display"},
+"propdef-footnote-policy": {"dfnID":"propdef-footnote-policy","dfnText":"footnote-policy","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-footnote-policy"}],"title":"2.8. \nRendering footnotes and footnote policy\n"},{"refs":[{"id":"ref-for-propdef-footnote-policy\u2460"}],"title":"Appendix C: Changes"}],"url":"#propdef-footnote-policy"},
 "propdef-running": {"dfnID":"propdef-running","dfnText":"running","external":false,"refSections":[],"url":"#propdef-running"},
 "propdef-string-set": {"dfnID":"propdef-string-set","dfnText":"string-set","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-string-set"}],"title":"1.1. \n\tNamed strings\n"},{"refs":[{"id":"ref-for-propdef-string-set\u2460"}],"title":"1.1.1. \n\tThe string-set property\n"},{"refs":[{"id":"ref-for-propdef-string-set\u2461"},{"id":"ref-for-propdef-string-set\u2462"}],"title":"Appendix C: Changes"}],"url":"#propdef-string-set"},
 "running-elements0": {"dfnID":"running-elements0","dfnText":"Running elements","external":false,"refSections":[],"url":"#running-elements0"},
-"selectordef-nth": {"dfnID":"selectordef-nth","dfnText":":nth()","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-nth"},{"id":"ref-for-selectordef-nth\u2460"},{"id":"ref-for-selectordef-nth\u2461"},{"id":"ref-for-selectordef-nth\u2462"}],"title":"3.1. \nPage Selectors\n"}],"url":"#selectordef-nth"},
 "valdef-float-footnote": {"dfnID":"valdef-float-footnote","dfnText":"footnote","external":false,"refSections":[],"url":"#valdef-float-footnote"},
 "valdef-footnote-policy-auto": {"dfnID":"valdef-footnote-policy-auto","dfnText":"auto","external":false,"refSections":[],"url":"#valdef-footnote-policy-auto"},
 "valdef-footnote-policy-block": {"dfnID":"valdef-footnote-policy-block","dfnText":"block","external":false,"refSections":[],"url":"#valdef-footnote-policy-block"},
@@ -2702,7 +2781,7 @@ function genLinkingSyntaxes(dfn) {
 "use strict";
 {
 let linkTitleData = {
-"#content-list": "Expands to: attr() | close-quote | contents | leader() | no-close-quote | no-open-quote | open-quote",
+"https://andreubotella.com/csswg-auto-build/test/css-content-3/#typedef-content-content-list": "Expands to: attr() | close-quote | contents | leader() | no-close-quote | no-open-quote | open-quote",
 };
 
 function setTypeTitles() {
@@ -2720,35 +2799,30 @@ document.addEventListener("DOMContentLoaded", setTypeTitles);
 "use strict";
 {
 let refsData = {
-"#content-list": {"displayText":"<content-list>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"<content-list>","type":"type","url":"#content-list"},
 "#funcdef-content": {"displayText":"content()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"content()","type":"function","url":"#funcdef-content"},
 "#funcdef-element": {"displayText":"element()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"element()","type":"function","url":"#funcdef-element"},
+"#funcdef-nth": {"displayText":"nth()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"nth()","type":"function","url":"#funcdef-nth"},
 "#funcdef-running": {"displayText":"running()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"running()","type":"function","url":"#funcdef-running"},
+"#funcdef-string": {"displayText":"string()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"string()","type":"function","url":"#funcdef-string"},
 "#propdef-footnote-display": {"displayText":"footnote-display","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"footnote-display","type":"property","url":"#propdef-footnote-display"},
 "#propdef-footnote-policy": {"displayText":"footnote-policy","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"footnote-policy","type":"property","url":"#propdef-footnote-policy"},
 "#propdef-running": {"displayText":"running","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"running","type":"property","url":"#propdef-running"},
 "#propdef-string-set": {"displayText":"string-set","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":"string-set","type":"property","url":"#propdef-string-set"},
-"#selectordef-nth": {"displayText":":nth()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-gcpm","spec":"css-gcpm-3","status":"local","text":":nth()","type":"selector","url":"#selectordef-nth"},
-"https://www.w3.org/TR/CSS2/visudet.html#propdef-max-height": {"displayText":"max-height","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"max-height","type":"property","url":"https://www.w3.org/TR/CSS2/visudet.html#propdef-max-height"},
-"https://www.w3.org/TR/CSS2/visuren.html#propdef-float": {"displayText":"float","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"float","type":"property","url":"https://www.w3.org/TR/CSS2/visuren.html#propdef-float"},
-"https://www.w3.org/TR/css-content-3/#funcdef-string": {"displayText":"string()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"snapshot","text":"string()","type":"function","url":"https://www.w3.org/TR/css-content-3/#funcdef-string"},
-"https://www.w3.org/TR/css-content-3/#propdef-bookmark-label": {"displayText":"bookmark-label","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"snapshot","text":"bookmark-label","type":"property","url":"https://www.w3.org/TR/css-content-3/#propdef-bookmark-label"},
-"https://www.w3.org/TR/css-content-3/#propdef-bookmark-level": {"displayText":"bookmark-level","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"snapshot","text":"bookmark-level","type":"property","url":"https://www.w3.org/TR/css-content-3/#propdef-bookmark-level"},
-"https://www.w3.org/TR/css-content-3/#propdef-content": {"displayText":"content","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"snapshot","text":"content","type":"property","url":"https://www.w3.org/TR/css-content-3/#propdef-content"},
-"https://www.w3.org/TR/css-lists-3/#funcdef-counter": {"displayText":"counter()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"snapshot","text":"counter()","type":"function","url":"https://www.w3.org/TR/css-lists-3/#funcdef-counter"},
-"https://www.w3.org/TR/css-lists-3/#funcdef-counters": {"displayText":"counters()","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"snapshot","text":"counters()","type":"function","url":"https://www.w3.org/TR/css-lists-3/#funcdef-counters"},
-"https://www.w3.org/TR/css-page-3/#propdef-page": {"displayText":"page","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-page","spec":"css-page-3","status":"snapshot","text":"page","type":"property","url":"https://www.w3.org/TR/css-page-3/#propdef-page"},
-"https://www.w3.org/TR/css-position-3/#propdef-position": {"displayText":"position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"snapshot","text":"position","type":"property","url":"https://www.w3.org/TR/css-position-3/#propdef-position"},
-"https://www.w3.org/TR/css-syntax-3/#anb-production": {"displayText":"<an+b>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"snapshot","text":"<an+b>","type":"type","url":"https://www.w3.org/TR/css-syntax-3/#anb-production"},
-"https://www.w3.org/TR/css-values-4/#comb-comma": {"displayText":",","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":",","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#comb-comma"},
-"https://www.w3.org/TR/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"|","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#comb-one"},
-"https://www.w3.org/TR/css-values-4/#css-wide-keywords": {"displayText":"CSS-wide keywords","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"css-wide keywords","type":"dfn","url":"https://www.w3.org/TR/css-values-4/#css-wide-keywords"},
-"https://www.w3.org/TR/css-values-4/#identifier-value": {"displayText":"<custom-ident>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"<custom-ident>","type":"type","url":"https://www.w3.org/TR/css-values-4/#identifier-value"},
-"https://www.w3.org/TR/css-values-4/#mult-comma": {"displayText":"#","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"#","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#mult-comma"},
-"https://www.w3.org/TR/css-values-4/#mult-one-plus": {"displayText":"+","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"+","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#mult-one-plus"},
-"https://www.w3.org/TR/css-values-4/#mult-opt": {"displayText":"?","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"?","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#mult-opt"},
-"https://www.w3.org/TR/css-values-4/#string-value": {"displayText":"<string>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"<string>","type":"type","url":"https://www.w3.org/TR/css-values-4/#string-value"},
-"https://www.w3.org/TR/css-values-5/#funcdef-attr": {"displayText":"attr()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-values","spec":"css-values-5","status":"snapshot","text":"attr()","type":"function","url":"https://www.w3.org/TR/css-values-5/#funcdef-attr"},
+"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-label": {"displayText":"bookmark-label","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"current","text":"bookmark-label","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-label"},
+"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-level": {"displayText":"bookmark-level","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"current","text":"bookmark-level","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-bookmark-level"},
+"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-content": {"displayText":"content","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"current","text":"content","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#propdef-content"},
+"https://andreubotella.com/csswg-auto-build/test/css-content-3/#typedef-content-content-list": {"displayText":"<content-list>","export":true,"for_":["content"],"level":"3","normative":true,"shortname":"css-content","spec":"css-content-3","status":"current","text":"<content-list>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-content-3/#typedef-content-content-list"},
+"https://andreubotella.com/csswg-auto-build/test/css-page-3/#propdef-page": {"displayText":"page","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-page","spec":"css-page-3","status":"current","text":"page","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-page-3/#propdef-page"},
+"https://andreubotella.com/csswg-auto-build/test/css-position-3/#propdef-position": {"displayText":"position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-position","spec":"css-position-3","status":"current","text":"position","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css-position-3/#propdef-position"},
+"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma": {"displayText":",","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":",","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-comma"},
+"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#comb-one"},
+"https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-wide-keywords": {"displayText":"CSS-wide keywords","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"css-wide keywords","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-wide-keywords"},
+"https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value": {"displayText":"<custom-ident>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<custom-ident>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#identifier-value"},
+"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma": {"displayText":"#","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"#","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-comma"},
+"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-one-plus": {"displayText":"+","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"+","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-one-plus"},
+"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt": {"displayText":"?","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"?","type":"grammar","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#mult-opt"},
+"https://andreubotella.com/csswg-auto-build/test/css2/#propdef-float": {"displayText":"float","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"float","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css2/#propdef-float"},
+"https://andreubotella.com/csswg-auto-build/test/css2/#propdef-max-height": {"displayText":"max-height","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"max-height","type":"property","url":"https://andreubotella.com/csswg-auto-build/test/css2/#propdef-max-height"},
 };
 
 function mkRefHint(link, ref) {

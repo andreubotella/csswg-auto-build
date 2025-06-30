@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-highlight-api-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="2009f4d01df701a0fadeeb24c5ca468d07890e77" name="revision">
+  <meta content="03f6b66e0a3c0b5bb1044b7d88aa6674e31c5129" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1227,22 +1227,16 @@ Repaints</span></a>
       <li><a href="#range-invalidation"><span class="secno">5.2</span> <span class="content">
 Range Updating and Invalidation</span></a>
      </ol>
-    <li><a href="#interactions"><span class="secno">6</span> <span class="content">
-Interacting with Custom Highlights</span></a>
-    <li><a href="#events"><span class="secno">7</span> <span class="content">
+    <li><a href="#events"><span class="secno">6</span> <span class="content">
 Event Handling</span></a>
-    <li><a href="#priv"><span class="secno"></span> <span class="content">
-Appendix A. Privacy Considerations</span></a>
-    <li><a href="#sec"><span class="secno"></span> <span class="content">
-Appendix B. Security Considerations</span></a>
+    <li><a href="#priv-sec"><span class="secno"></span> <span class="content">
+Appendix A. Privacy and Security Considerations</span></a>
     <li><a href="#credits"><span class="secno"></span> <span class="content">
-Appendix C. Acknowledgements</span></a>
+Appendix B. Acknowledgements</span></a>
     <li>
      <a href="#changes"><span class="secno"></span> <span class="content">
-Appendix D. Changes</span></a>
+Appendix C. Changes</span></a>
      <ol class="toc">
-      <li><a href="#changes-since-20211215"><span class="secno"></span> <span class="content">
-Changes since the <span>15 December 2021 Working Draft</span></span></a>
       <li><a href="#changes-since-20201208"><span class="secno"></span> <span class="content">
 Changes since the <span>8 December 2020 Working Draft</span></span></a>
       <li><a href="#changes-since-20201022"><span class="secno"></span> <span class="content">
@@ -1294,7 +1288,7 @@ Introduction</span><a class="self-link" href="#intro"></a></h2>
 	<a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-selection" id="ref-for-selectordef-selection">::selection</a>,
 	<span class="css">::inactive-selection</span>,
 	<a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-spelling-error" id="ref-for-selectordef-spelling-error">::spelling-error</a>,
-	and <a class="css" data-link-type="maybe" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-grammar-error" id="ref-for-selectordef-grammar-error">::grammar-error</a>.
+	and '''::grammar-error'''.
 	This is useful in a variety of scenarios,
 	including editing frameworks that wish to implement their own selection,
 	find-on-page over virtualized documents,
@@ -1303,10 +1297,10 @@ Introduction</span><a class="self-link" href="#intro"></a></h2>
     <p>The Custom Highlight API provides a programmatic way of adding and removing highlights
 	that do not affect the underlying DOM structure,
 	but instead applies styles to text based on <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range">range</a> objects,
-	accessed via the <span class="css">::highlight()</span> pseudo element.</p>
+	accessed via the <a class="css" data-link-type="maybe" href="#selectordef-highlight-custom-highlight-name" id="ref-for-selectordef-highlight-custom-highlight-name">::highlight()</a> pseudo element.</p>
     <div class="example" id="intro-ex">
      <a class="self-link" href="#intro-ex"></a>
-		The following code uses the <span class="css">::highlight()</span> pseudo-element
+		The following code uses the <a class="css" data-link-type="maybe" href="#selectordef-highlight-custom-highlight-name" id="ref-for-selectordef-highlight-custom-highlight-name①">::highlight()</a> pseudo-element
 		to apply a yellow background and blue foreground color to the text <q>One two</q>.
 		It does so by adding a <code class="idl"><a data-link-type="idl" href="#highlight" id="ref-for-highlight">Highlight</a></code> to the <code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry">HighlightRegistry</a></code>
 		(both of these are new concepts introduced by this specification).
@@ -1352,14 +1346,14 @@ Module Interactions</span><a class="self-link" href="#interaction"></a></h2>
 Setting up Custom Highlights</span><a class="self-link" href="#highlights-set-up"></a></h2>
    <h3 class="heading settled" data-level="3.1" id="creation"><span class="secno">3.1. </span><span class="content">
 Creating Custom Highlights</span><a class="self-link" href="#creation"></a></h3>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="custom-highlight">custom highlight</dfn> is a collection of <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range①">ranges</a>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="custom-highlight">custom highlight</dfn> is a collection of <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range①">ranges</a>
 	representing portions of a document.
 	They do not necessarily fit into the element tree,
 	and can arbitrarily cross element boundaries without honoring its nesting structure.
 	They can be used to affect the appearance of these portions of the document
 	(see <a href="#styling-highlights">§ 4 Styling Custom Highlights</a>),
 	or to handle to events associated with them
-	(see <a href="#events">§ 7 Event Handling</a>).</p>
+	(see <a href="#events">§ 6 Event Handling</a>).</p>
    <p><a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight">Custom highlights</a> are represented by
 	<dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="highlight"><code>Highlight</code></dfn> objects,
 	<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-setlike" id="ref-for-dfn-setlike">setlike</a> objects whose <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-set-entries" id="ref-for-dfn-set-entries">set entries</a> are <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#abstractrange" id="ref-for-abstractrange">AbstractRange</a></code> objects.
@@ -1370,12 +1364,6 @@ Creating Custom Highlights</span><a class="self-link" href="#creation"></a></h3>
    <p class="note" role="note"><span class="marker">Note:</span> As the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range③">ranges</a> in a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②">custom highlight</a> are <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#abstractrange" id="ref-for-abstractrange①">AbstractRange</a></code> objects,
 	authors can chose between using <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range①">Range</a></code> objects and <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange">StaticRange</a></code> objects.
 	See <a href="#range-invalidation">§ 5.2 Range Updating and Invalidation</a> for more details about this choice and its implications.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> When creating <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range②">Range</a></code> objects for use in <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③">custom highlights</a>, it is
-	suggested that authors avoid placing <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range④">range</a> endpoints in the middle of a <a data-link-type="dfn" href="https://w3c.github.io/i18n-glossary/#dfn-grapheme" id="ref-for-dfn-grapheme">grapheme</a>,
-	such as when a visible unit of text is comprised of multiple <a data-link-type="dfn" href="https://w3c.github.io/i18n-glossary/#dfn-unicode-code-point" id="ref-for-dfn-unicode-code-point">Unicode code points</a>.
-	Doing so can create undesirable highlighting effects, such as highlighting only part of
-	an Indic syllable. In addition, care needs to be taken to avoid placing an endpoint
-	in the middle of a <a data-link-type="dfn" href="https://w3c.github.io/i18n-glossary/#dfn-supplementary-code-point" id="ref-for-dfn-supplementary-code-point">supplementary character</a>.</p>
 <pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-highlighttype"><code><c- g>HighlightType</c-></code></dfn> {
   <dfn class="dfn-paneled idl-code" data-dfn-for="HighlightType" data-dfn-type="enum-value" data-export id="dom-highlighttype-highlight"><code><c- s>"highlight"</c-></code></dfn>,
   <dfn class="dfn-paneled idl-code" data-dfn-for="HighlightType" data-dfn-type="enum-value" data-export id="dom-highlighttype-spelling-error"><code><c- s>"spelling-error"</c-></code></dfn>,
@@ -1411,7 +1399,7 @@ Creating Custom Highlights</span><a class="self-link" href="#creation"></a></h3>
      <li>
 				For each <var>range</var> of <code class="idl"><a data-link-type="idl" href="#dom-highlight-highlight-initialranges-initialranges" id="ref-for-dom-highlight-highlight-initialranges-initialranges">initialRanges</a></code>,
 				let <var>rangeArg</var> be the result of <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-convert-idl-to-javascript-value" id="ref-for-dfn-convert-idl-to-javascript-value">converting</a> <var>range</var> to an ECMAScript value,
-				then run <a href="https://webidl.spec.whatwg.org/#js-set-add">the steps for a built-in setlike add function</a>,
+				then run <span spec-section="#es-add-delete">the steps for a built-in setlike add function</span>,
 				with <var>highlight</var> as the <code>this</code> value,
 				and <var>rangeArg</var> as the argument.
 			
@@ -1423,13 +1411,13 @@ Creating Custom Highlights</span><a class="self-link" href="#creation"></a></h3>
    <h3 class="heading settled" data-level="3.2" id="registration"><span class="secno">3.2. </span><span class="content">
 Registering Custom Highlights</span><a class="self-link" href="#registration"></a></h3>
    <p>In order to have any effect,
-	<a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight④">custom highlights</a> need to be
+	<a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③">custom highlights</a> need to be
 	<a data-link-type="dfn" href="#registered" id="ref-for-registered">registered</a> into the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry">highlight registry</a>.</p>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="highlight-registry">highlight registry</dfn> is accessed via the <code class="idl"><a data-link-type="idl" href="#dom-css-highlights" id="ref-for-dom-css-highlights">highlights</a></code> attribute of the <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#namespacedef-css" id="ref-for-namespacedef-css">CSS</a></code> namespace,
-	and represents all the <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑤">custom highlights</a> <a data-link-type="dfn" href="#registered" id="ref-for-registered①">registered</a> for the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object" id="ref-for-current-global-object">current global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window" id="ref-for-concept-document-window">associated Document</a>.
+	and represents all the <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight④">custom highlights</a> <a data-link-type="dfn" href="#registered" id="ref-for-registered①">registered</a> for the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object" id="ref-for-current-global-object">current global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window" id="ref-for-concept-document-window">associated Document</a>.
 	It is a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-maplike" id="ref-for-dfn-maplike">maplike</a>, and can be updated using the usual methods.
 	It’s <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-map-entries" id="ref-for-dfn-map-entries">map entries</a> is initially empty.</p>
-   <p>A <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑥">custom highlight</a> is said to be <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="registered">registered</dfn>
+   <p>A <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑤">custom highlight</a> is said to be <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="registered">registered</dfn>
 	if it is in the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry①">highlight registry</a>.
 	It stops being <a data-link-type="dfn" href="#registered" id="ref-for-registered②">registered</a> if it is later removed.</p>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>namespace</c-> <a class="idl-code" data-link-type="namespace" href="https://andreubotella.com/csswg-auto-build/test/cssom-1/#namespacedef-css" id="ref-for-namespacedef-css①"><c- g>CSS</c-></a> {
@@ -1443,21 +1431,22 @@ Registering Custom Highlights</span><a class="self-link" href="#registration"></
 </pre>
    <div class="algorithm" data-algorithm="to register a custom highlight">
     
-		To <a data-link-type="dfn" href="#registered" id="ref-for-registered③">register</a> a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑦">custom highlight</a>,
+		To <a data-link-type="dfn" href="#registered" id="ref-for-registered③">register</a> a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑥">custom highlight</a>,
 		invoke the <code>set</code> method of the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry②">highlight registry</a>
-		which will run <a href="https://webidl.spec.whatwg.org/#js-map-set">the steps for a built-in maplike set function</a>,
-		with the <span id="ref-for-highlight-registry③">highlight registry</span> as the <code>this</code> value,
+		which will run <span spec-section="#es-map-set">the steps for a built-in maplike set function</span>,
+		with the <u class="link-error" data-lt="context object" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;context object&apos; that are marked for export.
+  (Possible specs this could be from: dom-parsing)">context object</u> as the <code>this</code> value,
 		the passed-in <a data-link-type="dfn" href="#custom-highlight-name" id="ref-for-custom-highlight-name">custom highlight name</a> as <var>keyArg</var>,
 		and the passed-in highlight as <var>valueArg</var>.
 
 
-    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="custom-highlight-name">custom highlight name</dfn> assigned to a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑧">custom highlight</a> when it is <a data-link-type="dfn" href="#registered" id="ref-for-registered④">registered</a>
+    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="custom-highlight-name">custom highlight name</dfn> assigned to a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑦">custom highlight</a> when it is <a data-link-type="dfn" href="#registered" id="ref-for-registered④">registered</a>
 		is used to identify the highlight during styling (see <a href="#styling-highlights">§ 4 Styling Custom Highlights</a>).</p>
-    <p class="note" role="note"><span class="marker">Note:</span> When registering a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑨">custom highlight</a>,
+    <p class="note" role="note"><span class="marker">Note:</span> When registering a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑧">custom highlight</a>,
 	authors are advised to use a <a data-link-type="dfn" href="#custom-highlight-name" id="ref-for-custom-highlight-name①">custom highlight name</a> that is a valid CSS <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-css-identifier" id="ref-for-css-css-identifier">identifier</a>.
 	Using a name that is not a valid identifier can make the highlight hard,
 	and in some cases impossible, to style via CSS.</p>
-    <p class="note" role="note"><span class="marker">Note:</span> It is possible to <a data-link-type="dfn" href="#registered" id="ref-for-registered⑤">register</a> a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⓪">custom highlight</a> with more than one <a data-link-type="dfn" href="#custom-highlight-name" id="ref-for-custom-highlight-name②">custom highlight name</a>.
+    <p class="note" role="note"><span class="marker">Note:</span> It is possible to <a data-link-type="dfn" href="#registered" id="ref-for-registered⑤">register</a> a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight⑨">custom highlight</a> with more than one <a data-link-type="dfn" href="#custom-highlight-name" id="ref-for-custom-highlight-name②">custom highlight name</a>.
 	However, using more than one name to style a highlight
 	will assign the highlight multiple different sets of styles,
 	without a way to control the stacking order of conflicting styles
@@ -1488,7 +1477,7 @@ Registering Custom Highlights</span><a class="self-link" href="#registration"></
 <c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
 </pre>
      <p>In the example above,
-		the same <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①①">custom highlight</a> object is <a data-link-type="dfn" href="#registered" id="ref-for-registered⑥">registered</a> under the names <code>foo</code> and <code>bar</code>.
+		the same <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⓪">custom highlight</a> object is <a data-link-type="dfn" href="#registered" id="ref-for-registered⑥">registered</a> under the names <code>foo</code> and <code>bar</code>.
 		Since each of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule" id="ref-for-style-rule">style rules</a> target the same highlight and have the same <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity" id="ref-for-specificity">specificity</a>,
 		authors might expect the last rule to win in cascading order
 		and the highlighted content to be green.
@@ -1502,13 +1491,15 @@ Registering Custom Highlights</span><a class="self-link" href="#registration"></
     <h2 class="heading settled" data-level="4" id="styling-highlights"><span class="secno">4. </span><span class="content">
 Styling Custom Highlights</span><a class="self-link" href="#styling-highlights"></a></h2>
     <h3 class="heading settled" data-level="4.1" id="custom-highlight-pseudo"><span class="secno">4.1. </span><span class="content">
-The Custom Highlight Pseudo-element: <span class="css">::highlight()</span></span><a class="self-link" href="#custom-highlight-pseudo"></a></h3>
-    <p>The <span class="css">::highlight()</span> pseudo-element
+The Custom Highlight Pseudo-element: <a class="css" data-link-type="maybe" href="#selectordef-highlight-custom-highlight-name" id="ref-for-selectordef-highlight-custom-highlight-name②">::highlight()</a></span><a class="self-link" href="#custom-highlight-pseudo"></a></h3>
+    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-highlight-custom-highlight-name">::highlight(<a class="production css" data-link-type="type" href="#typedef-custom-highlight-name" id="ref-for-typedef-custom-highlight-name">&lt;custom-highlight-name></a>)</dfn> pseudo-element
 	(also known as the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="custom-highlight-pseudo-element">custom highlight pseudo-element</dfn>)
 	represents the portion of a document that
 	is being <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#contained" id="ref-for-contained">contained</a> or <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#partially-contained" id="ref-for-partially-contained">partially contained</a>
-	in all the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑤">ranges</a> of the <a data-link-type="dfn" href="#registered" id="ref-for-registered⑦">registered</a> <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①②">custom highlight</a>
-	with the <a data-link-type="dfn" href="#custom-highlight-name" id="ref-for-custom-highlight-name③">custom highlight name</a> specified as its argument.</p>
+	in all the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range④">ranges</a> of the <a data-link-type="dfn" href="#registered" id="ref-for-registered⑦">registered</a> <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①①">custom highlight</a>
+	with the <a data-link-type="dfn" href="#custom-highlight-name" id="ref-for-custom-highlight-name③">custom highlight name</a> <a class="production css" data-link-type="type" href="#typedef-custom-highlight-name" id="ref-for-typedef-custom-highlight-name①">&lt;custom-highlight-name></a>,
+	if any.
+	<dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-custom-highlight-name"><a class="production css" data-link-type="type" href="#typedef-custom-highlight-name" id="ref-for-typedef-custom-highlight-name②">&lt;custom-highlight-name></a></dfn> must be a valid CSS <a class="production css" data-link-type="type" href="https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-ident-token" id="ref-for-typedef-ident-token">&lt;ident-token></a>.</p>
     <h3 class="heading settled" data-level="4.2" id="processing-model"><span class="secno">4.2. </span><span class="content">
 Processing Model</span><a class="self-link" href="#processing-model"></a></h3>
     <h4 class="heading settled" data-level="4.2.1" id="applicable-properties"><span class="secno">4.2.1. </span><span class="content">
@@ -1532,19 +1523,19 @@ Cascading and Inheritance</span><a class="self-link" href="#c-and-h"></a></h4>
 	as defined in <a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-cascade"><cite>CSS Pseudo-Elements 4</cite> § 3.5 Cascading and Per-Element Highlight Styles</a>.</p>
     <h4 class="heading settled" data-level="4.2.4" id="painting"><span class="secno">4.2.4. </span><span class="content">
 Painting</span><a class="self-link" href="#painting"></a></h4>
-    <p>The painting of <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①③">custom highlights</a> is also handled
+    <p>The painting of <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①②">custom highlights</a> is also handled
 	identically to that of the built-in <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-pseudo-element" id="ref-for-highlight-pseudo-element④">highlight pseudo-elements</a>,
 	as specified in
 	<a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-bounds"><cite>CSS Pseudo-Elements 4</cite> § 3.4 Area of a Highlight</a> and <a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-painting"><cite>CSS Pseudo-Elements 4</cite> § 3.6 Painting the Highlight</a>,
 	with the following clarifications:</p>
     <ul>
      <li>
-			<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#range-collapsed" id="ref-for-range-collapsed">Collapsed</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑥">ranges</a> are not rendered.
+			<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#range-collapsed" id="ref-for-range-collapsed">Collapsed</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑤">ranges</a> are not rendered.
 
 		
      <li>
       
-			Overlapping <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑦">ranges</a> within a single <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①④">custom highlight</a> are rendered
+			Overlapping <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑥">ranges</a> within a single <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①③">custom highlight</a> are rendered
 			as if a single range representing the union of the overlapping ones
 			had been specified.
 
@@ -1582,28 +1573,28 @@ Painting</span><a class="self-link" href="#painting"></a></h4>
 				</div>
       </div>
      <li>
-			The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-overlay" id="ref-for-highlight-overlay">highlight overlays</a> of the <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑤">custom highlights</a>
+			The <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-overlay" id="ref-for-highlight-overlay">highlight overlays</a> of the <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①④">custom highlights</a>
 			are below those of the built-in <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-pseudo-element" id="ref-for-highlight-pseudo-element⑤">highlight pseudo-elements</a>
 			in the stacking order described in <a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-painting"><cite>CSS Pseudo-Elements 4</cite> § 3.6 Painting the Highlight</a>.
 
 		
      <li>
 			The relative stacking order of the <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-overlay" id="ref-for-highlight-overlay①">highlight overlays</a>
-			of multiple <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑥">custom highlights</a>
+			of multiple <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑤">custom highlights</a>
 			is defined by their <a data-link-type="dfn" href="#priority" id="ref-for-priority">priority</a>
 			(see <a href="#priorities">§ 4.2.5 Priority of Overlapping Highlights</a>).
 	
     </ul>
     <h4 class="heading settled" data-level="4.2.5" id="priorities"><span class="secno">4.2.5. </span><span class="content">
 Priority of Overlapping Highlights</span><a class="self-link" href="#priorities"></a></h4>
-    <p>A <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑦">custom highlight</a>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-priority" id="ref-for-dom-highlight-priority②">priority</a></code> attribute
+    <p>A <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑥">custom highlight</a>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-priority" id="ref-for-dom-highlight-priority②">priority</a></code> attribute
 	defines its <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="priority">priority</dfn>.
 	This is used to determine the stacking order of the corresponding <a data-link-type="dfn" href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-overlay" id="ref-for-highlight-overlay②">highlight overlay</a>
 	during painting operations (see <a href="#painting">§ 4.2.4 Painting</a>).
 	A higher <a data-link-type="dfn" href="#priority" id="ref-for-priority①">priority</a> results in being above in the stacking order.
 	A custom highlight will have a default numerical priority of 0
 	if its <code class="idl"><a data-link-type="idl" href="#dom-highlight-priority" id="ref-for-dom-highlight-priority③">priority</a></code> attribute has not been explicitly set.</p>
-    <p>When two or more <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑧">custom highlights</a> have the same numerical priority,
+    <p>When two or more <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑦">custom highlights</a> have the same numerical priority,
 	the one most recently <a data-link-type="dfn" href="#registered" id="ref-for-registered⑧">registered</a> has the higher effective <a data-link-type="dfn" href="#priority" id="ref-for-priority②">priority</a>.</p>
     <div class="example" id="overlap-highlight-ex">
      <a class="self-link" href="#overlap-highlight-ex"></a>
@@ -1639,7 +1630,7 @@ Priority of Overlapping Highlights</span><a class="self-link" href="#priorities"
      <p>As there are no priorities set
 		(i.e. there is a tie between <code>h1</code> and <code>h2</code>),
 		the custom highlights' styles are stacked
-		in order of insertion into the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry④">highlight registry</a>.
+		in order of insertion into the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry③">highlight registry</a>.
 		The rendered results will have "Som" with blue text on yellow background,
 		"e t" with blue text on orange background,
 		and "ext" with the default color on orange background.</p>
@@ -1656,18 +1647,18 @@ Priority of Overlapping Highlights</span><a class="self-link" href="#priorities"
     </div>
     <h4 class="heading settled" data-level="4.2.6" id="highlight-types"><span class="secno">4.2.6. </span><span class="content">
 Highlight types</span><a class="self-link" href="#highlight-types"></a></h4>
-    <p>A <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑨">custom highlight</a>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type②">type</a></code> attribute is used by authors
+    <p>A <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑧">custom highlight</a>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type②">type</a></code> attribute is used by authors
 	to specify the semantic meaning of the highlight.
 	This allows assistive technologies to include this meaning
 	when exposing the highlight to users.</p>
     <p>A custom highlight will have a default type of <code class="idl"><a data-link-type="idl" href="#dom-highlighttype-highlight" id="ref-for-dom-highlighttype-highlight①">highlight</a></code>
 	if its <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type③">type</a></code> attribute has not been explicitly set.</p>
-    <p class="note" role="note"><span class="marker">Note:</span> Authors are advised to set a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⓪">custom highlight</a>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type④">type</a></code> to <code class="idl"><a data-link-type="idl" href="#dom-highlighttype-spelling-error" id="ref-for-dom-highlighttype-spelling-error">spelling-error</a></code>
-	when that <span id="ref-for-custom-highlight②①">custom highlight</span> is being used to emphasize misspelled content.
-	Authors are advised to set a <span id="ref-for-custom-highlight②②">custom highlight</span>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type⑤">type</a></code> to <code class="idl"><a data-link-type="idl" href="#dom-highlighttype-grammar-error" id="ref-for-dom-highlighttype-grammar-error">grammar-error</a></code>
-	when that <span id="ref-for-custom-highlight②③">custom highlight</span> is being used to emphasize content that is grammatically incorrect.
+    <p class="note" role="note"><span class="marker">Note:</span> Authors are advised to set a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight①⑨">custom highlight</a>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type④">type</a></code> to <code class="idl"><a data-link-type="idl" href="#dom-highlighttype-spelling-error" id="ref-for-dom-highlighttype-spelling-error">spelling-error</a></code>
+	when that <span id="ref-for-custom-highlight②⓪">custom highlight</span> is being used to emphasize misspelled content.
+	Authors are advised to set a <span id="ref-for-custom-highlight②①">custom highlight</span>’s <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type⑤">type</a></code> to <code class="idl"><a data-link-type="idl" href="#dom-highlighttype-grammar-error" id="ref-for-dom-highlighttype-grammar-error">grammar-error</a></code>
+	when that <span id="ref-for-custom-highlight②②">custom highlight</span> is being used to emphasize content that is grammatically incorrect.
 	For all other use cases <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type⑥">type</a></code> is best left as <code class="idl"><a data-link-type="idl" href="#dom-highlighttype-highlight" id="ref-for-dom-highlighttype-highlight②">highlight</a></code>.</p>
-    <p>UAs should make <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②④">custom highlight</a>s available to assistive technologies.
+    <p>UAs should make <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②③">custom highlight</a>s available to assistive technologies.
 	When exposing a highlight using a given platform accessibility API,
 	UAs should expose the semantic meaning of the highlight
 	as specified by its <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type⑦">type</a></code> attribute
@@ -1693,26 +1684,26 @@ Responding to Changes</span><a class="self-link" href="#responding-to-changes"><
     <h3 class="heading settled" data-level="5.1" id="repaint"><span class="secno">5.1. </span><span class="content">
 Repaints</span><a class="self-link" href="#repaint"></a></h3>
     <p>The addition or removal
-	of a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑤">custom highlight</a> in the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry⑤">highlight registry</a>,
-	or of a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑧">range</a> in a <a data-link-type="dfn" href="#registered" id="ref-for-registered⑨">registered</a> <span id="ref-for-custom-highlight②⑥">custom highlight</span>,
+	of a <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②④">custom highlight</a> in the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry④">highlight registry</a>,
+	or of a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑦">range</a> in a <a data-link-type="dfn" href="#registered" id="ref-for-registered⑨">registered</a> <span id="ref-for-custom-highlight②⑤">custom highlight</span>,
 	must cause the user agent to reevaluate the rendering,
 	and to repaint if appropriate.</p>
     <p>The user agent must also repaint highlights as needed
 	in response to changes by the author
 	to the <code class="idl"><a data-link-type="idl" href="#dom-highlight-priority" id="ref-for-dom-highlight-priority④">priority</a></code>,
-	or to the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-bp" id="ref-for-concept-range-bp">boundary points</a> of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range③">Range</a></code>s
-	of a <a data-link-type="dfn" href="#registered" id="ref-for-registered①⓪">registered</a> <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑦">custom highlight</a>.</p>
+	or to the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-bp" id="ref-for-concept-range-bp">boundary points</a> of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range②">Range</a></code>s
+	of a <a data-link-type="dfn" href="#registered" id="ref-for-registered①⓪">registered</a> <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑥">custom highlight</a>.</p>
     <p>This repaint is asynchronous, and the APIs mentioned above must not block while waiting for the
 	repaint to happen.</p>
     <h3 class="heading settled" data-level="5.2" id="range-invalidation"><span class="secno">5.2. </span><span class="content">
 Range Updating and Invalidation</span><a class="self-link" href="#range-invalidation"></a></h3>
-    <p>Authors can build <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑧">custom highlights</a> using either <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range④">Range</a></code>s or <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange①">StaticRange</a></code>s.</p>
-    <p>The resulting <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑨">custom highlight</a> represents the same parts of the document,
+    <p>Authors can build <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑦">custom highlights</a> using either <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range③">Range</a></code>s or <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange①">StaticRange</a></code>s.</p>
+    <p>The resulting <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑧">custom highlight</a> represents the same parts of the document,
 	and can be styled identically.
 	However, the behavior is different
 	in case the underlying document is modified.</p>
-    <p><code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑤">Range</a></code>s are <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-live-range" id="ref-for-concept-live-range">live ranges</a>.
-	The user agent will adjust the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-bp" id="ref-for-concept-range-bp①">boundary points</a> of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑥">Range</a></code>s
+    <p><code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range④">Range</a></code>s are <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-live-range" id="ref-for-concept-live-range">live ranges</a>.
+	The user agent will adjust the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-bp" id="ref-for-concept-range-bp①">boundary points</a> of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑤">Range</a></code>s
 	in response to DOM changes overlapping the range or at its boundary,
 	and <a href="#repaint">repaint</a> accordingly.
 	<span id="ref-for-concept-range-bp②">Boundary points</span> of <span id="ref-for-concept-live-range①">live ranges</span> can also be changed
@@ -1722,197 +1713,62 @@ Range Updating and Invalidation</span><a class="self-link" href="#range-invalida
 	in response to DOM changes,
 	nor can they be modified by the author after creation.
 	The user agent is expected to store the actual <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange③">StaticRange</a></code>s, rather than backing
-	them up with live <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑦">Range</a></code>s.</p>
+	them up with live <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑥">Range</a></code>s.</p>
     <div class="advisement">
      
-		Updating all <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑧">Range</a></code> objects as the DOM is modified
+		Updating all <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑦">Range</a></code> objects as the DOM is modified
 		has a significant performance cost.
 		Authors who intend to observe DOM changes and react to them
-		by adjusting or recreating the ranges in their <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③⓪">custom highlights</a>
-		are strongly encouraged to use <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange④">StaticRange</a></code>s
+		by adjusting or recreating the ranges in their <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight②⑨">custom highlights</a>
+		are strongly encouraged to user <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange④">StaticRange</a></code>s
 		in order to avoid this costly but unnecessary step.
 
 
      <p>Conversely, authors who use <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange⑤">StaticRange</a></code>s
 		should observe and react to DOM changes,
-		by discarding stale <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑨">ranges</a> or <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③①">custom highlights</a>
+		by discarding stale <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑧">ranges</a> or <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③⓪">custom highlights</a>
 		and recreating new ones.</p>
     </div>
     <p>When computing how to render a document,
-	if <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-start-node" id="ref-for-concept-range-start-node">start node</a> or <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-end-node" id="ref-for-concept-range-end-node">end node</a> of any <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range①⓪">range</a>
-	in the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry⑥">highlight registry</a> associated with that document’s window
+	if <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-start-node" id="ref-for-concept-range-start-node">start node</a> or <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-end-node" id="ref-for-concept-range-end-node">end node</a> of any <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range⑨">range</a>
+	in the <a data-link-type="dfn" href="#highlight-registry" id="ref-for-highlight-registry⑤">highlight registry</a> associated with that document’s window
 	refer to a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#node" id="ref-for-node">Node</a></code> whose <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-including-root" id="ref-for-concept-shadow-including-root">shadow-including root</a> is not that document,
-	the user agent must ignore that <span id="ref-for-concept-range①①">range</span>.
-	If any <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange⑥">StaticRange</a></code> in the <span id="ref-for-highlight-registry⑦">highlight registry</span> associated with that document’s window
+	the user agent must ignore that <span id="ref-for-concept-range①⓪">range</span>.
+	If any <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#staticrange" id="ref-for-staticrange⑥">StaticRange</a></code> in the <span id="ref-for-highlight-registry⑥">highlight registry</span> associated with that document’s window
 	is not <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#staticrange-valid" id="ref-for-staticrange-valid">valid</a>,
-	the user agent must ignore that <span id="ref-for-concept-range①②">range</span>.</p>
-    <h2 class="heading settled" data-level="6" id="interactions"><span class="secno">6. </span><span class="content">
-Interacting with Custom Highlights</span><a class="self-link" href="#interactions"></a></h2>
-    <p>The <code class="idl"><a data-link-type="idl" href="#dom-highlightregistry-highlightsfrompoint" id="ref-for-dom-highlightregistry-highlightsfrompoint">highlightsFromPoint</a></code>(<var>x</var>, <var>y</var>, <var>options</var>) method allows developers to build scenarios
-involving user interaction with <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③②">custom highlights</a>. The method returns a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence">sequence</a> containing the <span id="ref-for-custom-highlight③③">custom highlights</span>
-at a given <var>x</var>, <var>y</var> coordinate. The <span id="ref-for-custom-highlight③④">custom highlights</span> are listed in this <span id="ref-for-idl-sequence①">sequence</span> in
-descending <a data-link-type="dfn" href="#priority" id="ref-for-priority③">priority</a> order.
-By default, <span id="ref-for-custom-highlight③⑤">custom highlights</span> in a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree">shadow tree</a> are not returned, but the developer has the possibility to pass in
-an optional <var>options</var> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-dictionary" id="ref-for-dfn-dictionary">dictionary</a> with a <var>shadowRoots</var> property containing a <span id="ref-for-idl-sequence②">sequence</span> of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#shadowroot" id="ref-for-shadowroot">ShadowRoot</a></code>
-objects. <span id="ref-for-custom-highlight③⑥">Highlights</span> contained within a <span id="ref-for-concept-shadow-tree①">shadow tree</span> provided in this way will be returned.</p>
-    <div class="example" id="highlights-from-point-ex">
-     <a class="self-link" href="#highlights-from-point-ex"></a>
-		The following example shows a way to use <code class="idl"><a data-link-type="idl" href="#dom-highlightregistry-highlightsfrompoint" id="ref-for-dom-highlightregistry-highlightsfrompoint①">highlightsFromPoint</a></code> to interact with mouse click <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event" id="ref-for-concept-event">events</a>.
-
-		
-<pre class="highlight"><c- p>&lt;</c-><c- f>style</c-><c- p>></c->
-  <c- p>:</c-><c- nd>root</c-><c- p>::</c-><c- nd>highlight</c-><c- o>(</c-><c- f>foo</c-><c- o>)</c-> <c- p>{</c->
-    <c- k>background-color</c-><c- p>:</c-><c- kc>yellow</c-><c- p>;</c->
-  <c- p>}</c->
-  <c- p>:</c-><c- nd>root</c-><c- p>::</c-><c- nd>highlight</c-><c- o>(</c-><c- f>bar</c-><c- o>)</c-> <c- p>{</c->
-    <c- k>color</c-><c- p>:</c-><c- kc>red</c-><c- p>;</c->
-  <c- p>}</c->
-<c- p>&lt;/</c-><c- f>style</c-><c- p>></c->
-<c- p>&lt;</c-><c- f>body</c-><c- p>></c->abc
-<c- p>&lt;</c-><c- f>script</c-><c- p>></c->
-  document<c- p>.</c->addEventListener<c- p>(</c-><c- t>'click'</c-><c- p>,</c-> <c- p>(</c->event<c- p>)</c-> <c- p>=></c-> <c- p>{</c->
-    <c- a>const</c-> mouseX <c- o>=</c-> event<c- p>.</c->clientX<c- p>;</c->
-    <c- a>const</c-> mouseY <c- o>=</c-> event<c- p>.</c->clientY<c- p>;</c->
-    console<c- p>.</c->log<c- p>(</c->CSS<c- p>.</c->highlights<c- p>.</c->highlightsFromPoint<c- p>(</c->mouseX<c- p>,</c-> mouseY<c- p>));</c->
-  <c- p>});</c->
-
-  <c- a>let</c-> textNode <c- o>=</c-> document<c- p>.</c->body<c- p>.</c->firstChild<c- p>;</c->
-  <c- a>let</c-> r1 <c- o>=</c-> <c- ow>new</c-> Range<c- p>();</c->
-  r1<c- p>.</c->setStart<c- p>(</c->textNode<c- p>,</c-> <c- mf>0</c-><c- p>);</c->
-  r1<c- p>.</c->setEnd<c- p>(</c->textNode<c- p>,</c-> <c- mf>2</c-><c- p>);</c->
-  <c- a>let</c-> r2 <c- o>=</c-> <c- ow>new</c-> Range<c- p>();</c->
-  r2<c- p>.</c->setStart<c- p>(</c->textNode<c- p>,</c-> <c- mf>1</c-><c- p>);</c->
-  r2<c- p>.</c->setEnd<c- p>(</c->textNode<c- p>,</c-> <c- mf>2</c-><c- p>);</c->
-
-  <c- a>let</c-> h1 <c- o>=</c-> <c- ow>new</c-> Highlight<c- p>(</c->r1<c- p>);</c->
-  <c- a>let</c-> h2 <c- o>=</c-> <c- ow>new</c-> Highlight<c- p>(</c->r2<c- p>);</c->
-  h1<c- p>.</c->priority <c- o>=</c-> <c- mf>1</c-><c- p>;</c->
-  h2<c- p>.</c->priority <c- o>=</c-> <c- mf>2</c-><c- p>;</c->
-
-  CSS<c- p>.</c->highlights<c- p>.</c->set<c- p>(</c-><c- u>"foo"</c-><c- p>,</c-> h1<c- p>);</c->
-  CSS<c- p>.</c->highlights<c- p>.</c->set<c- p>(</c-><c- u>"bar"</c-><c- p>,</c-> h2<c- p>);</c->
-<c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
-</pre>
-     <p>The code above will display the following styled text, note that "b" is affected by both <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③⑦">highlights</a>
-		<var>h1</var> and <var>h2</var>, whereas "a" is only affected by <var>h1</var>:</p>
-     <div class="sample-out" style="color:black">
-			<span style="background:yellow;">a</span><span style="background:yellow;color:red;">b</span><span>c</span>
-		</div>
-     <p>In this example there’s an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-listener" id="ref-for-concept-event-listener">event listener</a> set on click <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event" id="ref-for-concept-event①">events</a> that logs the <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③⑧">custom highlights</a>
-		present at the point where the click was made.
-		The following <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence③">sequences</a> are some examples of what will be printed to console after a click:</p>
-     <ul>
-      <li data-md>
-       <p><code>[ <var>h1</var> ]</code>, if the user clicks on character "a".</p>
-      <li data-md>
-       <p><code>[ <var>h2</var>, <var>h1</var> ]</code>, if the user clicks on character "b",
-as <var>h2</var> has higher priority than <var>h1</var>.</p>
-      <li data-md>
-       <p><code>[]</code>, if the user clicks on character "c".</p>
-     </ul>
-    </div>
-    <p>The method <code class="idl"><a data-link-type="idl" href="#dom-highlightregistry-highlightsfrompoint" id="ref-for-dom-highlightregistry-highlightsfrompoint②">highlightsFromPoint</a></code> is defined as part of the <code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry②">HighlightRegistry</a></code> interface as follows:</p>
-<pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="#highlightregistry" id="ref-for-highlightregistry③"><c- g>HighlightRegistry</c-></a> {
-  <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence④"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#highlight" id="ref-for-highlight⑤"><c- n>Highlight</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-highlightregistry-highlightsfrompoint" id="ref-for-dom-highlightregistry-highlightsfrompoint③"><c- g>highlightsFromPoint</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-float" id="ref-for-idl-float"><c- b>float</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HighlightRegistry/highlightsFromPoint(x, y, options), HighlightRegistry/highlightsFromPoint(x, y)" data-dfn-type="argument" data-export id="dom-highlightregistry-highlightsfrompoint-x-y-options-x"><code><c- g>x</c-></code></dfn>, <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-float" id="ref-for-idl-float①"><c- b>float</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HighlightRegistry/highlightsFromPoint(x, y, options), HighlightRegistry/highlightsFromPoint(x, y)" data-dfn-type="argument" data-export id="dom-highlightregistry-highlightsfrompoint-x-y-options-y"><code><c- g>y</c-></code></dfn>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-highlightsfrompointoptions" id="ref-for-dictdef-highlightsfrompointoptions"><c- n>HighlightsFromPointOptions</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HighlightRegistry/highlightsFromPoint(x, y, options), HighlightRegistry/highlightsFromPoint(x, y)" data-dfn-type="argument" data-export id="dom-highlightregistry-highlightsfrompoint-x-y-options-options"><code><c- g>options</c-></code></dfn> = {});
-};
-
-<c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-highlightsfrompointoptions"><code><c- g>HighlightsFromPointOptions</c-></code></dfn> {
-  <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑤"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#shadowroot" id="ref-for-shadowroot①"><c- n>ShadowRoot</c-></a>> <dfn class="dfn-paneled idl-code" data-default="[]" data-dfn-for="HighlightsFromPointOptions" data-dfn-type="dict-member" data-export data-type="sequence<ShadowRoot>" id="dom-highlightsfrompointoptions-shadowroots"><code><c- g>shadowRoots</c-></code></dfn> = [];
-};
-</pre>
-    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="HighlightRegistry" data-dfn-type="method" data-export data-lt="highlightsFromPoint(x, y, options)|highlightsFromPoint(x, y)" id="dom-highlightregistry-highlightsfrompoint"><code>highlightsFromPoint(<var>x</var>, <var>y</var>, <var>options</var>)</code></dfn>
-method must return the result of running these steps:</p>
-    <ol>
-     <li data-md>
-      <p>If any of the following are true, return the empty <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑥">sequence</a>:</p>
-      <ul>
-       <li data-md>
-        <p><var>x</var> is negative</p>
-       <li data-md>
-        <p><var>y</var> is negative</p>
-       <li data-md>
-        <p><var>x</var> is greater than the <u class="link-error" data-lt="viewport" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;viewport&apos; with spec &apos;css21&apos;.">viewport</u> width excluding the size of a rendered scroll bar (if any)</p>
-       <li data-md>
-        <p><var>y</var> is greater than the <u class="link-error" data-lt="viewport" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;viewport&apos; with spec &apos;css21&apos;.">viewport</u> height excluding the size of a rendered scroll bar (if any)</p>
-      </ul>
-     <li data-md>
-      <p>Otherwise, return a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence" id="ref-for-idl-sequence⑦">sequence</a> of <a data-link-type="dfn" href="#custom-highlight" id="ref-for-custom-highlight③⑨">custom highlights</a> given by ordering the highlights contained in this <code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry④">HighlightRegistry</a></code> in descending order of <a data-link-type="dfn" href="#priority" id="ref-for-priority④">priority</a>,
-including only those highlights that contain at least one <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#abstractrange" id="ref-for-abstractrange④">AbstractRange</a></code> <var>abstractRange</var> that satisfies the following:</p>
-      <ul>
-       <li data-md>
-        <p>Let <var>range</var> be a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#range" id="ref-for-range⑨">Range</a></code> object whose <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-start-node" id="ref-for-concept-range-start-node①">start node</a> and <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-end-node" id="ref-for-concept-range-end-node①">end node</a> are set to <var>abstractRange</var>’s <span id="ref-for-concept-range-start-node②">start node</span> and <span id="ref-for-concept-range-end-node②">end node</span> respectively,
-and <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-start-offset" id="ref-for-concept-range-start-offset">start offset</a> and <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range-end-offset" id="ref-for-concept-range-end-offset">end offset</a> are set to <var>abstractRange</var>’s <span id="ref-for-concept-range-start-offset①">start offset</span> and <span id="ref-for-concept-range-end-offset①">end offset</span> respectively.</p>
-       <li data-md>
-        <p>The coordinates <var>x</var>,<var>y</var> fall inside at least one of the <code class="idl"><a data-link-type="idl" href="https://drafts.fxtf.org/geometry-1/#domrect" id="ref-for-domrect">DOMRect</a></code>s returned by calling <code class="idl"><a data-link-type="idl" href="https://andreubotella.com/csswg-auto-build/test/cssom-view-1/#dom-range-getclientrects" id="ref-for-dom-range-getclientrects">getClientRects()</a></code> on <var>range</var>.</p>
-        <p class="note" role="note"><span class="marker">Note:</span> The specifics of hit testing are out of scope of this
-specification and therefore the exact details of
-<code class="idl"><a data-link-type="idl" href="#dom-highlightregistry-highlightsfrompoint" id="ref-for-dom-highlightregistry-highlightsfrompoint④">highlightsFromPoint()</a></code> are therefore too. Hit testing
-will hopefully be defined in a future revision of CSS or HTML.</p>
-       <li data-md>
-        <p>The <var>range</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-range-commonancestorcontainer" id="ref-for-dom-range-commonancestorcontainer">commonAncestorContainer</a></code> is not in a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree②">shadow tree</a> or is in a <span id="ref-for-concept-shadow-tree③">shadow tree</span> whose
-<a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element-shadow-root" id="ref-for-concept-element-shadow-root">shadow root</a> is <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contained by</a> by <var>options</var>.<var>shadowRoots</var>.</p>
-      </ul>
-    </ol>
-    <h2 class="heading settled" data-level="7" id="events"><span class="secno">7. </span><span class="content">
+	the user agent must ignore that <span id="ref-for-concept-range①①">range</span>.</p>
+    <h2 class="heading settled" data-level="6" id="events"><span class="secno">6. </span><span class="content">
 Event Handling</span><a class="self-link" href="#events"></a></h2>
     <p class="issue" id="issue-3d1f5f66"><a class="self-link" href="#issue-3d1f5f66"></a> Section on Events TBD, based on https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/master/highlight/events-explainer.md</p>
     <p class="issue" id="issue-230bd93b"><a class="self-link" href="#issue-230bd93b"></a> should custom highlights have a dedicated event handling mechanism,
 	or should that be added to pseudo-elements in general?</p>
     <div class="non-normative">
-     <h2 class="no-num heading settled" id="priv"><span class="content">
-Appendix A. Privacy Considerations</span><a class="self-link" href="#priv"></a></h2>
+     <h2 class="no-num heading settled" id="priv-sec"><span class="content">
+Appendix A. Privacy and Security Considerations</span><a class="self-link" href="#priv-sec"></a></h2>
      <p><em>This section is non-normative</em>.</p>
-     <p>This specification is not thought to introduce any new privacy concern.
-	Anyone suspecting that this is not accurate is encouraged
-	to get in touch with the CSS Working Group or the co-editors.</p>
-     <h2 class="no-num heading settled" id="sec"><span class="content">
-Appendix B. Security Considerations</span><a class="self-link" href="#sec"></a></h2>
-     <p><em>This section is non-normative</em>.</p>
-     <p>This specification is not thought to introduce any new security concern.
+     <p>This specification is not thought to introduce any new security or privacy concern.
 	Anyone suspecting that this is not accurate is encouraged
 	to get in touch with the CSS Working Group or the co-editors.</p>
     </div>
     <div class="non-normative">
      <h2 class="no-num heading settled" id="credits"><span class="content">
-Appendix C. Acknowledgements</span><a class="self-link" href="#credits"></a></h2>
+Appendix B. Acknowledgements</span><a class="self-link" href="#credits"></a></h2>
      <p><em>This section is non-normative</em>.</p>
      <p class="issue" id="issue-f0ab6bff"><a class="self-link" href="#issue-f0ab6bff"></a> Acknowledge people (other than editors) who deserve credit for this.</p>
     </div>
     <div class="non-normative">
      <h2 class="no-num heading settled" id="changes"><span class="content">
-Appendix D. Changes</span><a class="self-link" href="#changes"></a></h2>
+Appendix C. Changes</span><a class="self-link" href="#changes"></a></h2>
      <p><em>This section is non-normative</em>.</p>
-     <h3 class="no-num heading settled" id="changes-since-20211215"><span class="content">
-Changes since the <a href="https://www.w3.org/TR/2020/WD-css-highlight-api-1-20211215/">15 December 2021 Working Draft</a></span><a class="self-link" href="#changes-since-20211215"></a></h3>
-     <p>In addition to various editorial improvements and minor tweaks,
-	the main changes are:</p>
-     <ul>
-      <li data-md>
-       <p>Added a <code class="idl"><a data-link-type="idl" href="#dom-highlightregistry-highlightsfrompoint" id="ref-for-dom-highlightregistry-highlightsfrompoint⑤">highlightsFromPoint</a></code> method to
-<code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry⑤">HighlightRegistry</a></code>.
-(See <a href="https://github.com/w3c/csswg-drafts/pull/7513">Issue 7513</a>)</p>
-      <li data-md>
-       <p>Specified that highlight repainting has to be done asynchronously.
-(See <a href="https://github.com/w3c/csswg-drafts/pull/6987">Issue 6987</a>)</p>
-      <li data-md>
-       <p>Clarify that UAs cannot specify paired default highlight colors for custom highlights.
-(See <a href="https://github.com/w3c/csswg-drafts/pull/6665">Issue 6665</a>)</p>
-      <li data-md>
-       <p>Clarify that there is no restriction on custom highlights crossing containment boundaries.
-(See <a href="https://github.com/w3c/csswg-drafts/issues/4598">Issue 4598</a>)</p>
-      <li data-md>
-       <p>Added an I18N warning about placement of <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-range" id="ref-for-concept-range①③">range</a> endpoints in the middle of a
-<a data-link-type="dfn" href="https://w3c.github.io/i18n-glossary/#dfn-grapheme" id="ref-for-dfn-grapheme①">grapheme</a> or <a data-link-type="dfn" href="https://w3c.github.io/i18n-glossary/#dfn-supplementary-code-point" id="ref-for-dfn-supplementary-code-point①">supplementary character</a>.</p>
-     </ul>
-     <h3 class="no-num heading settled" id="changes-since-20201208"><span class="content">
+     <h3 class="no-num&quot; heading settled" id="changes-since-20201208"><span class="content">
 Changes since the <a href="https://www.w3.org/TR/2020/WD-css-highlight-api-1-20201208/">8 December 2020 Working Draft</a></span><a class="self-link" href="#changes-since-20201208"></a></h3>
      <p>In addition to various editorial improvements and minor tweaks,
 	the main changes are:</p>
      <ul>
       <li data-md>
-       <p>Renamed <code>HighlightsRegister</code> to <code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry⑥">HighlightRegistry</a></code></p>
+       <p>Renamed <code>HighlightsRegister</code> to <code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry②">HighlightRegistry</a></code></p>
       <li data-md>
-       <p>Removed the redundant <code>add()</code> method from <code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry⑦">HighlightRegistry</a></code>.
+       <p>Removed the redundant <code>add()</code> method from <code class="idl"><a data-link-type="idl" href="#highlightregistry" id="ref-for-highlightregistry③">HighlightRegistry</a></code>.
 (See <a href="https://github.com/w3c/csswg-drafts/pull/6092">Issue 6092</a>)</p>
       <li data-md>
        <p>Make custom highlight overlays stack below native highlight overlays.
@@ -1937,12 +1793,12 @@ and remove <code>name</code> property from Highlight.
        <p>Deferred to the <a data-link-type="biblio" href="#biblio-dom" title="DOM Standard">[DOM]</a> specification for range invalidation
 (See <a href="https://github.com/w3c/csswg-drafts/pull/4597">Issue 4597</a>)</p>
       <li data-md>
-       <p>Added a <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type⑨">type</a></code> attribute to <code class="idl"><a data-link-type="idl" href="#highlight" id="ref-for-highlight⑥">Highlight</a></code>
+       <p>Added a <code class="idl"><a data-link-type="idl" href="#dom-highlight-type" id="ref-for-dom-highlight-type⑨">type</a></code> attribute to <code class="idl"><a data-link-type="idl" href="#highlight" id="ref-for-highlight⑤">Highlight</a></code>
 to give clearer semantics to different highlights,
 in support of exposing highlights to accessibility tools.
 (See <a href="https://github.com/w3c/csswg-drafts/pull/6498">Issue 6498</a>)</p>
      </ul>
-     <h3 class="no-num heading settled" id="changes-since-20201022"><span class="content">
+     <h3 class="no-num&quot; heading settled" id="changes-since-20201022"><span class="content">
 Changes since the <a href="https://www.w3.org/TR/2020/WD-css-highlight-api-1-20201022/">22 October 2020 Working Draft</a></span><a class="self-link" href="#changes-since-20201022"></a></h3>
      <p>There have been only editorial changes since the <a href="https://www.w3.org/TR/2020/WD-css-highlight-api-1-20201022/">22 October 2020 Working Draft</a>;
 	see <a href="https://services.w3.org/htmldiff?doc1=https%3A%2F%2Fwww.w3.org%2FTR%2F2020%2FWD-css-highlight-api-1-20201022%2F&amp;doc2=https%3A%2F%2Fwww.w3.org%2FTR%2Fcss-highlight-api-1%2F">diffs</a>.</p>
@@ -2088,19 +1944,18 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#dom-highlight-highlight">constructor()</a><span>, in § 3.1</span>
    <li><a href="#dom-highlight-highlight">constructor(...initialRanges)</a><span>, in § 3.1</span>
    <li><a href="#custom-highlight">custom highlight</a><span>, in § 3.1</span>
+   <li><a href="#typedef-custom-highlight-name">&lt;custom-highlight-name></a><span>, in § 4.1</span>
    <li><a href="#custom-highlight-name">custom highlight name</a><span>, in § 3.2</span>
    <li><a href="#custom-highlight-pseudo-element">custom highlight pseudo-element</a><span>, in § 4.1</span>
    <li><a href="#dom-highlighttype-grammar-error">"grammar-error"</a><span>, in § 3.1</span>
    <li><a href="#dom-highlighttype-highlight">"highlight"</a><span>, in § 3.1</span>
    <li><a href="#highlight">Highlight</a><span>, in § 3.1</span>
    <li><a href="#dom-highlight-highlight">Highlight()</a><span>, in § 3.1</span>
+   <li><a href="#selectordef-highlight-custom-highlight-name">::highlight(&lt;custom-highlight-name>)</a><span>, in § 4.1</span>
    <li><a href="#dom-highlight-highlight">Highlight(...initialRanges)</a><span>, in § 3.1</span>
    <li><a href="#highlight-registry">highlight registry</a><span>, in § 3.2</span>
    <li><a href="#highlightregistry">HighlightRegistry</a><span>, in § 3.2</span>
    <li><a href="#dom-css-highlights">highlights</a><span>, in § 3.2</span>
-   <li><a href="#dictdef-highlightsfrompointoptions">HighlightsFromPointOptions</a><span>, in § 6</span>
-   <li><a href="#dom-highlightregistry-highlightsfrompoint">highlightsFromPoint(x, y)</a><span>, in § 6</span>
-   <li><a href="#dom-highlightregistry-highlightsfrompoint">highlightsFromPoint(x, y, options)</a><span>, in § 6</span>
    <li><a href="#enumdef-highlighttype">HighlightType</a><span>, in § 3.1</span>
    <li>
     priority
@@ -2109,7 +1964,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><a href="#priority">definition of</a><span>, in § 4.2.5</span>
     </ul>
    <li><a href="#registered">registered</a><span>, in § 3.2</span>
-   <li><a href="#dom-highlightsfrompointoptions-shadowroots">shadowRoots</a><span>, in § 6</span>
    <li><a href="#dom-highlighttype-spelling-error">"spelling-error"</a><span>, in § 3.1</span>
    <li><a href="#dom-highlight-type">type</a><span>, in § 3.1</span>
   </ul>
@@ -2128,7 +1982,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-PSEUDO-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="06aabd79">::grammar-error</span>
      <li><span class="dfn-paneled" id="6908f3d1">::selection</span>
      <li><span class="dfn-paneled" id="8338f2aa">::spelling-error</span>
      <li><span class="dfn-paneled" id="ae5cea4b">highlight overlay</span>
@@ -2138,6 +1991,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-SYNTAX-3]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="b2a4c823">&lt;ident-token></span>
      <li><span class="dfn-paneled" id="bf1cee09">style rule</span>
     </ul>
    <li>
@@ -2156,58 +2010,28 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="a776a0fa">CSS</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSSOM-VIEW-1]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="abb61231">getClientRects()</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="2ebbc6e1">AbstractRange</span>
      <li><span class="dfn-paneled" id="96c16e60">Node</span>
      <li><span class="dfn-paneled" id="d2bd0bce">Range</span>
-     <li><span class="dfn-paneled" id="1cd7ff31">ShadowRoot</span>
      <li><span class="dfn-paneled" id="753a5f1f">StaticRange</span>
      <li><span class="dfn-paneled" id="8a3e6de2">boundary point</span>
      <li><span class="dfn-paneled" id="8aac8409">collapsed</span>
-     <li><span class="dfn-paneled" id="0a42849f">commonAncestorContainer</span>
      <li><span class="dfn-paneled" id="68c2faba">contained</span>
      <li><span class="dfn-paneled" id="3edd98b4">end node</span>
-     <li><span class="dfn-paneled" id="203b148b">end offset</span>
-     <li><span class="dfn-paneled" id="26b82890">event</span>
-     <li><span class="dfn-paneled" id="06950d36">event listener</span>
      <li><span class="dfn-paneled" id="11e23a43">live ranges</span>
      <li><span class="dfn-paneled" id="8e6c8fec">partially contained</span>
      <li><span class="dfn-paneled" id="8044ee41">range</span>
-     <li><span class="dfn-paneled" id="ce720392">shadow root</span>
-     <li><span class="dfn-paneled" id="19f9e9df">shadow tree</span>
      <li><span class="dfn-paneled" id="ea2049db">shadow-including root</span>
      <li><span class="dfn-paneled" id="6c88f67e">start node</span>
-     <li><span class="dfn-paneled" id="683b1507">start offset</span>
      <li><span class="dfn-paneled" id="0c3fe0e6">valid</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[GEOMETRY-1]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="27dba777">DOMRect</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="3349d69f">associated Document</span>
      <li><span class="dfn-paneled" id="ce3d2bbb">current global object</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[I18N-GLOSSARY]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="dfe8f791">grapheme</span>
-     <li><span class="dfn-paneled" id="7b7d601e">supplementary character</span>
-     <li><span class="dfn-paneled" id="8c7163d6">unicode code point</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[INFRA]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="ae8def21">contain</span>
     </ul>
    <li>
     <a data-link-type="biblio">[SELECTORS-4]</a> defines the following terms:
@@ -2220,12 +2044,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="8855a9aa">DOMString</span>
      <li><span class="dfn-paneled" id="889e932f">Exposed</span>
      <li><span class="dfn-paneled" id="ae4bc361">converted to an ECMAScript value</span>
-     <li><span class="dfn-paneled" id="bec98d30">dictionary</span>
-     <li><span class="dfn-paneled" id="eec1be2d">float</span>
      <li><span class="dfn-paneled" id="f8de33a3">long</span>
      <li><span class="dfn-paneled" id="a1ecf8d3">map entries</span>
      <li><span class="dfn-paneled" id="77996ab1">maplike</span>
-     <li><span class="dfn-paneled" id="9cce47fd">sequence</span>
      <li><span class="dfn-paneled" id="f1195e5b">set entries</span>
      <li><span class="dfn-paneled" id="cc212fd8">setlike</span>
     </ul>
@@ -2239,16 +2060,14 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-6/"><cite>CSS Cascading and Inheritance Level 6</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-cascade-6/">https://andreubotella.com/csswg-auto-build/test/css-cascade-6/</a>
    <dt id="biblio-css-pseudo-4">[CSS-PSEUDO-4]
    <dd>Elika Etemad; Alan Stearns. <a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/"><cite>CSS Pseudo-Elements Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/">https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/</a>
+   <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/">https://andreubotella.com/csswg-auto-build/test/css-syntax/</a>
    <dt id="biblio-css2">[CSS2]
    <dd>Bert Bos; et al. <a href="https://andreubotella.com/csswg-auto-build/test/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css2/">https://andreubotella.com/csswg-auto-build/test/css2/</a>
    <dt id="biblio-cssom-1">[CSSOM-1]
    <dd>Daniel Glazman; Emilio Cobos Álvarez. <a href="https://andreubotella.com/csswg-auto-build/test/cssom/"><cite>CSS Object Model (CSSOM)</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/cssom/">https://andreubotella.com/csswg-auto-build/test/cssom/</a>
-   <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
-   <dd>Simon Pieters. <a href="https://andreubotella.com/csswg-auto-build/test/cssom-view/"><cite>CSSOM View Module</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/cssom-view/">https://andreubotella.com/csswg-auto-build/test/cssom-view/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
-   <dt id="biblio-geometry-1">[GEOMETRY-1]
-   <dd>Simon Pieters; Chris Harrelson. <a href="https://drafts.fxtf.org/geometry/"><cite>Geometry Interfaces Module Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/geometry/">https://drafts.fxtf.org/geometry/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-infra">[INFRA]
@@ -2262,12 +2081,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
-   <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
-   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-syntax/">https://andreubotella.com/csswg-auto-build/test/css-syntax/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://andreubotella.com/csswg-auto-build/test/css-values-4/">https://andreubotella.com/csswg-auto-build/test/css-values-4/</a>
-   <dt id="biblio-i18n-glossary">[I18N-GLOSSARY]
-   <dd>Richard Ishida; Addison Phillips. <a href="https://w3c.github.io/i18n-glossary/"><cite>Internationalization Glossary</cite></a>. URL: <a href="https://w3c.github.io/i18n-glossary/">https://w3c.github.io/i18n-glossary/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="idl highlight def"><c- b>enum</c-> <a href="#enumdef-highlighttype"><code><c- g>HighlightType</c-></code></a> {
@@ -2291,14 +2106,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#highlightregistry"><code><c- g>HighlightRegistry</c-></code></a> {
   <c- b>maplike</c->&lt;<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString"><c- b>DOMString</c-></a>, <a data-link-type="idl-name" href="#highlight"><c- n>Highlight</c-></a>>;
-};
-
-<c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="#highlightregistry"><c- g>HighlightRegistry</c-></a> {
-  <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="#highlight"><c- n>Highlight</c-></a>> <a class="idl-code" data-link-type="method" href="#dom-highlightregistry-highlightsfrompoint"><c- g>highlightsFromPoint</c-></a>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-float"><c- b>float</c-></a> <a href="#dom-highlightregistry-highlightsfrompoint-x-y-options-x"><code><c- g>x</c-></code></a>, <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-float"><c- b>float</c-></a> <a href="#dom-highlightregistry-highlightsfrompoint-x-y-options-y"><code><c- g>y</c-></code></a>, <c- b>optional</c-> <a data-link-type="idl-name" href="#dictdef-highlightsfrompointoptions"><c- n>HighlightsFromPointOptions</c-></a> <a href="#dom-highlightregistry-highlightsfrompoint-x-y-options-options"><code><c- g>options</c-></code></a> = {});
-};
-
-<c- b>dictionary</c-> <a href="#dictdef-highlightsfrompointoptions"><code><c- g>HighlightsFromPointOptions</c-></code></a> {
-  <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#idl-sequence"><c- b>sequence</c-></a>&lt;<a data-link-type="idl-name" href="https://dom.spec.whatwg.org/#shadowroot"><c- n>ShadowRoot</c-></a>> <a data-default="[]" data-type="sequence<ShadowRoot>" href="#dom-highlightsfrompointoptions-shadowroots"><code><c- g>shadowRoots</c-></code></a> = [];
 };
 
 </pre>
@@ -2541,83 +2348,62 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"06950d36": {"dfnID":"06950d36","dfnText":"event listener","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-event-listener"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-event-listener"},
-"06aabd79": {"dfnID":"06aabd79","dfnText":"::grammar-error","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-grammar-error"}],"title":"1. \nIntroduction"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-grammar-error"},
-"0a42849f": {"dfnID":"0a42849f","dfnText":"commonAncestorContainer","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-range-commonancestorcontainer"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#dom-range-commonancestorcontainer"},
 "0c3fe0e6": {"dfnID":"0c3fe0e6","dfnText":"valid","external":true,"refSections":[{"refs":[{"id":"ref-for-staticrange-valid"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#staticrange-valid"},
 "11e23a43": {"dfnID":"11e23a43","dfnText":"live ranges","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-live-range"},{"id":"ref-for-concept-live-range\u2460"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#concept-live-range"},
-"19f9e9df": {"dfnID":"19f9e9df","dfnText":"shadow tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-tree"},{"id":"ref-for-concept-shadow-tree\u2460"},{"id":"ref-for-concept-shadow-tree\u2461"},{"id":"ref-for-concept-shadow-tree\u2462"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
-"1cd7ff31": {"dfnID":"1cd7ff31","dfnText":"ShadowRoot","external":true,"refSections":[{"refs":[{"id":"ref-for-shadowroot"},{"id":"ref-for-shadowroot\u2460"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#shadowroot"},
-"203b148b": {"dfnID":"203b148b","dfnText":"end offset","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-end-offset"},{"id":"ref-for-concept-range-end-offset\u2460"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-range-end-offset"},
 "25535517": {"dfnID":"25535517","dfnText":"specificity","external":true,"refSections":[{"refs":[{"id":"ref-for-specificity"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity"},
-"26b82890": {"dfnID":"26b82890","dfnText":"event","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-event"},{"id":"ref-for-concept-event\u2460"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-event"},
-"27dba777": {"dfnID":"27dba777","dfnText":"DOMRect","external":true,"refSections":[{"refs":[{"id":"ref-for-domrect"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://drafts.fxtf.org/geometry-1/#domrect"},
-"2ebbc6e1": {"dfnID":"2ebbc6e1","dfnText":"AbstractRange","external":true,"refSections":[{"refs":[{"id":"ref-for-abstractrange"},{"id":"ref-for-abstractrange\u2460"},{"id":"ref-for-abstractrange\u2461"},{"id":"ref-for-abstractrange\u2462"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-abstractrange\u2463"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#abstractrange"},
+"2ebbc6e1": {"dfnID":"2ebbc6e1","dfnText":"AbstractRange","external":true,"refSections":[{"refs":[{"id":"ref-for-abstractrange"},{"id":"ref-for-abstractrange\u2460"},{"id":"ref-for-abstractrange\u2461"},{"id":"ref-for-abstractrange\u2462"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#abstractrange"},
 "3349d69f": {"dfnID":"3349d69f","dfnText":"associated Document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-window"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window"},
 "33dede0f": {"dfnID":"33dede0f","dfnText":"inheritance","external":true,"refSections":[{"refs":[{"id":"ref-for-css-inheritance"}],"title":"4.2.3. \nCascading and Inheritance"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#css-inheritance"},
-"3edd98b4": {"dfnID":"3edd98b4","dfnText":"end node","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-end-node"}],"title":"5.2. \nRange Updating and Invalidation"},{"refs":[{"id":"ref-for-concept-range-end-node\u2460"},{"id":"ref-for-concept-range-end-node\u2461"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-range-end-node"},
-"683b1507": {"dfnID":"683b1507","dfnText":"start offset","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-start-offset"},{"id":"ref-for-concept-range-start-offset\u2460"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-range-start-offset"},
+"3edd98b4": {"dfnID":"3edd98b4","dfnText":"end node","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-end-node"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#concept-range-end-node"},
 "68c2faba": {"dfnID":"68c2faba","dfnText":"contained","external":true,"refSections":[{"refs":[{"id":"ref-for-contained"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"}],"url":"https://dom.spec.whatwg.org/#contained"},
 "6908f3d1": {"dfnID":"6908f3d1","dfnText":"::selection","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-selection"}],"title":"1. \nIntroduction"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-selection"},
-"6c88f67e": {"dfnID":"6c88f67e","dfnText":"start node","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-start-node"}],"title":"5.2. \nRange Updating and Invalidation"},{"refs":[{"id":"ref-for-concept-range-start-node\u2460"},{"id":"ref-for-concept-range-start-node\u2461"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-range-start-node"},
+"6c88f67e": {"dfnID":"6c88f67e","dfnText":"start node","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-start-node"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#concept-range-start-node"},
 "753a5f1f": {"dfnID":"753a5f1f","dfnText":"StaticRange","external":true,"refSections":[{"refs":[{"id":"ref-for-staticrange"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-staticrange\u2460"},{"id":"ref-for-staticrange\u2461"},{"id":"ref-for-staticrange\u2462"},{"id":"ref-for-staticrange\u2463"},{"id":"ref-for-staticrange\u2464"},{"id":"ref-for-staticrange\u2465"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#staticrange"},
 "77996ab1": {"dfnID":"77996ab1","dfnText":"maplike","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-maplike"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#dfn-maplike"},
-"7b7d601e": {"dfnID":"7b7d601e","dfnText":"supplementary character","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-supplementary-code-point"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-dfn-supplementary-code-point\u2460"}],"title":"\nChanges since the 15 December 2021 Working Draft"}],"url":"https://w3c.github.io/i18n-glossary/#dfn-supplementary-code-point"},
 "7b82c9e5": {"dfnID":"7b82c9e5","dfnText":"pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-x22"}],"title":"2. \nModule Interactions"}],"url":"https://www.w3.org/TR/CSS2/selector.html#x22"},
-"8044ee41": {"dfnID":"8044ee41","dfnText":"range","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-concept-range\u2460"},{"id":"ref-for-concept-range\u2461"},{"id":"ref-for-concept-range\u2462"},{"id":"ref-for-concept-range\u2463"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-concept-range\u2464"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"},{"refs":[{"id":"ref-for-concept-range\u2465"},{"id":"ref-for-concept-range\u2466"}],"title":"4.2.4. \nPainting"},{"refs":[{"id":"ref-for-concept-range\u2467"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-concept-range\u2468"},{"id":"ref-for-concept-range\u2460\u24ea"},{"id":"ref-for-concept-range\u2460\u2460"},{"id":"ref-for-concept-range\u2460\u2461"}],"title":"5.2. \nRange Updating and Invalidation"},{"refs":[{"id":"ref-for-concept-range\u2460\u2462"}],"title":"\nChanges since the 15 December 2021 Working Draft"}],"url":"https://dom.spec.whatwg.org/#concept-range"},
+"8044ee41": {"dfnID":"8044ee41","dfnText":"range","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-concept-range\u2460"},{"id":"ref-for-concept-range\u2461"},{"id":"ref-for-concept-range\u2462"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-concept-range\u2463"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"},{"refs":[{"id":"ref-for-concept-range\u2464"},{"id":"ref-for-concept-range\u2465"}],"title":"4.2.4. \nPainting"},{"refs":[{"id":"ref-for-concept-range\u2466"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-concept-range\u2467"},{"id":"ref-for-concept-range\u2468"},{"id":"ref-for-concept-range\u2460\u24ea"},{"id":"ref-for-concept-range\u2460\u2460"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#concept-range"},
 "81018fdc": {"dfnID":"81018fdc","dfnText":"identifier","external":true,"refSections":[{"refs":[{"id":"ref-for-css-css-identifier"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-css-identifier"},
 "8338f2aa": {"dfnID":"8338f2aa","dfnText":"::spelling-error","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-spelling-error"}],"title":"1. \nIntroduction"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-spelling-error"},
 "8855a9aa": {"dfnID":"8855a9aa","dfnText":"DOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMString"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-Exposed\u2460"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "8a3e6de2": {"dfnID":"8a3e6de2","dfnText":"boundary point","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-bp"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-concept-range-bp\u2460"},{"id":"ref-for-concept-range-bp\u2461"},{"id":"ref-for-concept-range-bp\u2462"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#concept-range-bp"},
 "8aac8409": {"dfnID":"8aac8409","dfnText":"collapsed","external":true,"refSections":[{"refs":[{"id":"ref-for-range-collapsed"}],"title":"4.2.4. \nPainting"}],"url":"https://dom.spec.whatwg.org/#range-collapsed"},
-"8c7163d6": {"dfnID":"8c7163d6","dfnText":"unicode code point","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-unicode-code-point"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"https://w3c.github.io/i18n-glossary/#dfn-unicode-code-point"},
 "8e6c8fec": {"dfnID":"8e6c8fec","dfnText":"partially contained","external":true,"refSections":[{"refs":[{"id":"ref-for-partially-contained"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"}],"url":"https://dom.spec.whatwg.org/#partially-contained"},
 "914de498": {"dfnID":"914de498","dfnText":"highlight pseudo-element","external":true,"refSections":[{"refs":[{"id":"ref-for-highlight-pseudo-element"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-highlight-pseudo-element\u2460"}],"title":"2. \nModule Interactions"},{"refs":[{"id":"ref-for-highlight-pseudo-element\u2461"}],"title":"4.2.1. \nApplicable Properties"},{"refs":[{"id":"ref-for-highlight-pseudo-element\u2462"}],"title":"4.2.3. \nCascading and Inheritance"},{"refs":[{"id":"ref-for-highlight-pseudo-element\u2463"},{"id":"ref-for-highlight-pseudo-element\u2464"}],"title":"4.2.4. \nPainting"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-pseudo-element"},
 "96c16e60": {"dfnID":"96c16e60","dfnText":"Node","external":true,"refSections":[{"refs":[{"id":"ref-for-node"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#node"},
-"9cce47fd": {"dfnID":"9cce47fd","dfnText":"sequence","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-sequence"},{"id":"ref-for-idl-sequence\u2460"},{"id":"ref-for-idl-sequence\u2461"},{"id":"ref-for-idl-sequence\u2462"},{"id":"ref-for-idl-sequence\u2463"},{"id":"ref-for-idl-sequence\u2464"},{"id":"ref-for-idl-sequence\u2465"},{"id":"ref-for-idl-sequence\u2466"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#idl-sequence"},
 "a1ecf8d3": {"dfnID":"a1ecf8d3","dfnText":"map entries","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-map-entries"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#dfn-map-entries"},
 "a776a0fa": {"dfnID":"a776a0fa","dfnText":"CSS","external":true,"refSections":[{"refs":[{"id":"ref-for-namespacedef-css"},{"id":"ref-for-namespacedef-css\u2460"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#namespacedef-css"},
-"abb61231": {"dfnID":"abb61231","dfnText":"getClientRects()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-range-getclientrects"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://andreubotella.com/csswg-auto-build/test/cssom-view-1/#dom-range-getclientrects"},
 "ae4bc361": {"dfnID":"ae4bc361","dfnText":"converted to an ECMAScript value","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-convert-idl-to-javascript-value"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#dfn-convert-idl-to-javascript-value"},
 "ae5cea4b": {"dfnID":"ae5cea4b","dfnText":"highlight overlay","external":true,"refSections":[{"refs":[{"id":"ref-for-highlight-overlay"},{"id":"ref-for-highlight-overlay\u2460"}],"title":"4.2.4. \nPainting"},{"refs":[{"id":"ref-for-highlight-overlay\u2461"}],"title":"4.2.5. \nPriority of Overlapping Highlights"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-overlay"},
-"ae8def21": {"dfnID":"ae8def21","dfnText":"contain","external":true,"refSections":[{"refs":[{"id":"ref-for-list-contain"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://infra.spec.whatwg.org/#list-contain"},
-"bec98d30": {"dfnID":"bec98d30","dfnText":"dictionary","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-dictionary"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#dfn-dictionary"},
+"b2a4c823": {"dfnID":"b2a4c823","dfnText":"<ident-token>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-ident-token"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-ident-token"},
 "bf1cee09": {"dfnID":"bf1cee09","dfnText":"style rule","external":true,"refSections":[{"refs":[{"id":"ref-for-style-rule"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule"},
 "c2cd52d8": {"dfnID":"c2cd52d8","dfnText":"paired default highlight colors","external":true,"refSections":[{"refs":[{"id":"ref-for-paired-default-highlight-colors"}],"title":"4.2.2. \nDefault Styles"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#paired-default-highlight-colors"},
 "cc212fd8": {"dfnID":"cc212fd8","dfnText":"setlike","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-setlike"},{"id":"ref-for-dfn-setlike\u2460"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#dfn-setlike"},
 "ce3d2bbb": {"dfnID":"ce3d2bbb","dfnText":"current global object","external":true,"refSections":[{"refs":[{"id":"ref-for-current-global-object"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object"},
-"ce720392": {"dfnID":"ce720392","dfnText":"shadow root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-shadow-root"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#concept-element-shadow-root"},
-"custom-highlight": {"dfnID":"custom-highlight","dfnText":"custom highlight","external":false,"refSections":[{"refs":[{"id":"ref-for-custom-highlight"},{"id":"ref-for-custom-highlight\u2460"},{"id":"ref-for-custom-highlight\u2461"},{"id":"ref-for-custom-highlight\u2462"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-custom-highlight\u2463"},{"id":"ref-for-custom-highlight\u2464"},{"id":"ref-for-custom-highlight\u2465"},{"id":"ref-for-custom-highlight\u2466"},{"id":"ref-for-custom-highlight\u2467"},{"id":"ref-for-custom-highlight\u2468"},{"id":"ref-for-custom-highlight\u2460\u24ea"},{"id":"ref-for-custom-highlight\u2460\u2460"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2461"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2462"},{"id":"ref-for-custom-highlight\u2460\u2463"},{"id":"ref-for-custom-highlight\u2460\u2464"},{"id":"ref-for-custom-highlight\u2460\u2465"}],"title":"4.2.4. \nPainting"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2466"},{"id":"ref-for-custom-highlight\u2460\u2467"}],"title":"4.2.5. \nPriority of Overlapping Highlights"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2468"},{"id":"ref-for-custom-highlight\u2461\u24ea"},{"id":"ref-for-custom-highlight\u2461\u2460"},{"id":"ref-for-custom-highlight\u2461\u2461"},{"id":"ref-for-custom-highlight\u2461\u2462"},{"id":"ref-for-custom-highlight\u2461\u2463"}],"title":"4.2.6. \nHighlight types"},{"refs":[{"id":"ref-for-custom-highlight\u2461\u2464"},{"id":"ref-for-custom-highlight\u2461\u2465"},{"id":"ref-for-custom-highlight\u2461\u2466"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-custom-highlight\u2461\u2467"},{"id":"ref-for-custom-highlight\u2461\u2468"},{"id":"ref-for-custom-highlight\u2462\u24ea"},{"id":"ref-for-custom-highlight\u2462\u2460"}],"title":"5.2. \nRange Updating and Invalidation"},{"refs":[{"id":"ref-for-custom-highlight\u2462\u2461"},{"id":"ref-for-custom-highlight\u2462\u2462"},{"id":"ref-for-custom-highlight\u2462\u2463"},{"id":"ref-for-custom-highlight\u2462\u2464"},{"id":"ref-for-custom-highlight\u2462\u2465"},{"id":"ref-for-custom-highlight\u2462\u2466"},{"id":"ref-for-custom-highlight\u2462\u2467"},{"id":"ref-for-custom-highlight\u2462\u2468"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"#custom-highlight"},
+"custom-highlight": {"dfnID":"custom-highlight","dfnText":"custom highlight","external":false,"refSections":[{"refs":[{"id":"ref-for-custom-highlight"},{"id":"ref-for-custom-highlight\u2460"},{"id":"ref-for-custom-highlight\u2461"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-custom-highlight\u2462"},{"id":"ref-for-custom-highlight\u2463"},{"id":"ref-for-custom-highlight\u2464"},{"id":"ref-for-custom-highlight\u2465"},{"id":"ref-for-custom-highlight\u2466"},{"id":"ref-for-custom-highlight\u2467"},{"id":"ref-for-custom-highlight\u2468"},{"id":"ref-for-custom-highlight\u2460\u24ea"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2460"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2461"},{"id":"ref-for-custom-highlight\u2460\u2462"},{"id":"ref-for-custom-highlight\u2460\u2463"},{"id":"ref-for-custom-highlight\u2460\u2464"}],"title":"4.2.4. \nPainting"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2465"},{"id":"ref-for-custom-highlight\u2460\u2466"}],"title":"4.2.5. \nPriority of Overlapping Highlights"},{"refs":[{"id":"ref-for-custom-highlight\u2460\u2467"},{"id":"ref-for-custom-highlight\u2460\u2468"},{"id":"ref-for-custom-highlight\u2461\u24ea"},{"id":"ref-for-custom-highlight\u2461\u2460"},{"id":"ref-for-custom-highlight\u2461\u2461"},{"id":"ref-for-custom-highlight\u2461\u2462"}],"title":"4.2.6. \nHighlight types"},{"refs":[{"id":"ref-for-custom-highlight\u2461\u2463"},{"id":"ref-for-custom-highlight\u2461\u2464"},{"id":"ref-for-custom-highlight\u2461\u2465"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-custom-highlight\u2461\u2466"},{"id":"ref-for-custom-highlight\u2461\u2467"},{"id":"ref-for-custom-highlight\u2461\u2468"},{"id":"ref-for-custom-highlight\u2462\u24ea"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"#custom-highlight"},
 "custom-highlight-name": {"dfnID":"custom-highlight-name","dfnText":"custom highlight name","external":false,"refSections":[{"refs":[{"id":"ref-for-custom-highlight-name"},{"id":"ref-for-custom-highlight-name\u2460"},{"id":"ref-for-custom-highlight-name\u2461"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-custom-highlight-name\u2462"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"}],"url":"#custom-highlight-name"},
 "custom-highlight-pseudo-element": {"dfnID":"custom-highlight-pseudo-element","dfnText":"custom highlight pseudo-element","external":false,"refSections":[{"refs":[{"id":"ref-for-custom-highlight-pseudo-element"}],"title":"4.2.1. \nApplicable Properties"},{"refs":[{"id":"ref-for-custom-highlight-pseudo-element\u2460"}],"title":"4.2.2. \nDefault Styles"},{"refs":[{"id":"ref-for-custom-highlight-pseudo-element\u2461"}],"title":"4.2.3. \nCascading and Inheritance"}],"url":"#custom-highlight-pseudo-element"},
-"d2bd0bce": {"dfnID":"d2bd0bce","dfnText":"Range","external":true,"refSections":[{"refs":[{"id":"ref-for-range"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-range\u2460"},{"id":"ref-for-range\u2461"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-range\u2462"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-range\u2463"},{"id":"ref-for-range\u2464"},{"id":"ref-for-range\u2465"},{"id":"ref-for-range\u2466"},{"id":"ref-for-range\u2467"}],"title":"5.2. \nRange Updating and Invalidation"},{"refs":[{"id":"ref-for-range\u2468"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://dom.spec.whatwg.org/#range"},
-"dfe8f791": {"dfnID":"dfe8f791","dfnText":"grapheme","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-grapheme"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-dfn-grapheme\u2460"}],"title":"\nChanges since the 15 December 2021 Working Draft"}],"url":"https://w3c.github.io/i18n-glossary/#dfn-grapheme"},
-"dictdef-highlightsfrompointoptions": {"dfnID":"dictdef-highlightsfrompointoptions","dfnText":"HighlightsFromPointOptions","external":false,"refSections":[{"refs":[{"id":"ref-for-dictdef-highlightsfrompointoptions"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"#dictdef-highlightsfrompointoptions"},
+"d2bd0bce": {"dfnID":"d2bd0bce","dfnText":"Range","external":true,"refSections":[{"refs":[{"id":"ref-for-range"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-range\u2460"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-range\u2461"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-range\u2462"},{"id":"ref-for-range\u2463"},{"id":"ref-for-range\u2464"},{"id":"ref-for-range\u2465"},{"id":"ref-for-range\u2466"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#range"},
 "dom-css-highlights": {"dfnID":"dom-css-highlights","dfnText":"highlights","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-css-highlights"}],"title":"3.2. \nRegistering Custom Highlights"}],"url":"#dom-css-highlights"},
 "dom-highlight-highlight": {"dfnID":"dom-highlight-highlight","dfnText":"Highlight(AbstractRange... initialRanges)","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlight-highlight"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"#dom-highlight-highlight"},
 "dom-highlight-highlight-initialranges-initialranges": {"dfnID":"dom-highlight-highlight-initialranges-initialranges","dfnText":"initialRanges","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlight-highlight-initialranges-initialranges"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"#dom-highlight-highlight-initialranges-initialranges"},
 "dom-highlight-priority": {"dfnID":"dom-highlight-priority","dfnText":"priority","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlight-priority"},{"id":"ref-for-dom-highlight-priority\u2460"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-dom-highlight-priority\u2461"},{"id":"ref-for-dom-highlight-priority\u2462"}],"title":"4.2.5. \nPriority of Overlapping Highlights"},{"refs":[{"id":"ref-for-dom-highlight-priority\u2463"}],"title":"5.1. \nRepaints"}],"url":"#dom-highlight-priority"},
 "dom-highlight-type": {"dfnID":"dom-highlight-type","dfnText":"type","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlight-type"},{"id":"ref-for-dom-highlight-type\u2460"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-dom-highlight-type\u2461"},{"id":"ref-for-dom-highlight-type\u2462"},{"id":"ref-for-dom-highlight-type\u2463"},{"id":"ref-for-dom-highlight-type\u2464"},{"id":"ref-for-dom-highlight-type\u2465"},{"id":"ref-for-dom-highlight-type\u2466"},{"id":"ref-for-dom-highlight-type\u2467"}],"title":"4.2.6. \nHighlight types"},{"refs":[{"id":"ref-for-dom-highlight-type\u2468"}],"title":"\nChanges since the 8 December 2020 Working Draft"}],"url":"#dom-highlight-type"},
-"dom-highlightregistry-highlightsfrompoint": {"dfnID":"dom-highlightregistry-highlightsfrompoint","dfnText":"highlightsFromPoint(x, y, options)","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlightregistry-highlightsfrompoint"},{"id":"ref-for-dom-highlightregistry-highlightsfrompoint\u2460"},{"id":"ref-for-dom-highlightregistry-highlightsfrompoint\u2461"},{"id":"ref-for-dom-highlightregistry-highlightsfrompoint\u2462"},{"id":"ref-for-dom-highlightregistry-highlightsfrompoint\u2463"}],"title":"6. \nInteracting with Custom Highlights"},{"refs":[{"id":"ref-for-dom-highlightregistry-highlightsfrompoint\u2464"}],"title":"\nChanges since the 15 December 2021 Working Draft"}],"url":"#dom-highlightregistry-highlightsfrompoint"},
-"dom-highlightregistry-highlightsfrompoint-x-y-options-options": {"dfnID":"dom-highlightregistry-highlightsfrompoint-x-y-options-options","dfnText":"options","external":false,"refSections":[],"url":"#dom-highlightregistry-highlightsfrompoint-x-y-options-options"},
-"dom-highlightregistry-highlightsfrompoint-x-y-options-x": {"dfnID":"dom-highlightregistry-highlightsfrompoint-x-y-options-x","dfnText":"x","external":false,"refSections":[],"url":"#dom-highlightregistry-highlightsfrompoint-x-y-options-x"},
-"dom-highlightregistry-highlightsfrompoint-x-y-options-y": {"dfnID":"dom-highlightregistry-highlightsfrompoint-x-y-options-y","dfnText":"y","external":false,"refSections":[],"url":"#dom-highlightregistry-highlightsfrompoint-x-y-options-y"},
-"dom-highlightsfrompointoptions-shadowroots": {"dfnID":"dom-highlightsfrompointoptions-shadowroots","dfnText":"shadowRoots","external":false,"refSections":[],"url":"#dom-highlightsfrompointoptions-shadowroots"},
 "dom-highlighttype-grammar-error": {"dfnID":"dom-highlighttype-grammar-error","dfnText":"\"grammar-error\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlighttype-grammar-error"},{"id":"ref-for-dom-highlighttype-grammar-error\u2460"}],"title":"4.2.6. \nHighlight types"}],"url":"#dom-highlighttype-grammar-error"},
 "dom-highlighttype-highlight": {"dfnID":"dom-highlighttype-highlight","dfnText":"\"highlight\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlighttype-highlight"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-dom-highlighttype-highlight\u2460"},{"id":"ref-for-dom-highlighttype-highlight\u2461"},{"id":"ref-for-dom-highlighttype-highlight\u2462"}],"title":"4.2.6. \nHighlight types"}],"url":"#dom-highlighttype-highlight"},
 "dom-highlighttype-spelling-error": {"dfnID":"dom-highlighttype-spelling-error","dfnText":"\"spelling-error\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-highlighttype-spelling-error"},{"id":"ref-for-dom-highlighttype-spelling-error\u2460"},{"id":"ref-for-dom-highlighttype-spelling-error\u2461"},{"id":"ref-for-dom-highlighttype-spelling-error\u2462"}],"title":"4.2.6. \nHighlight types"}],"url":"#dom-highlighttype-spelling-error"},
 "ea2049db": {"dfnID":"ea2049db","dfnText":"shadow-including root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-including-root"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-including-root"},
 "ec631f7e": {"dfnID":"ec631f7e","dfnText":"cascade","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade"}],"title":"4.2.3. \nCascading and Inheritance"}],"url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-6/#cascade"},
-"eec1be2d": {"dfnID":"eec1be2d","dfnText":"float","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-float"},{"id":"ref-for-idl-float\u2460"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#idl-float"},
 "enumdef-highlighttype": {"dfnID":"enumdef-highlighttype","dfnText":"HighlightType","external":false,"refSections":[{"refs":[{"id":"ref-for-enumdef-highlighttype"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-enumdef-highlighttype\u2460"}],"title":"4.2.6. \nHighlight types"}],"url":"#enumdef-highlighttype"},
 "f1195e5b": {"dfnID":"f1195e5b","dfnText":"set entries","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-set-entries"},{"id":"ref-for-dfn-set-entries\u2460"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#dfn-set-entries"},
 "f8de33a3": {"dfnID":"f8de33a3","dfnText":"long","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-long"}],"title":"3.1. \nCreating Custom Highlights"}],"url":"https://webidl.spec.whatwg.org/#idl-long"},
-"highlight": {"dfnID":"highlight","dfnText":"Highlight","external":false,"refSections":[{"refs":[{"id":"ref-for-highlight"},{"id":"ref-for-highlight\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-highlight\u2461"},{"id":"ref-for-highlight\u2462"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-highlight\u2463"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-highlight\u2464"}],"title":"6. \nInteracting with Custom Highlights"},{"refs":[{"id":"ref-for-highlight\u2465"}],"title":"\nChanges since the 8 December 2020 Working Draft"}],"url":"#highlight"},
-"highlight-registry": {"dfnID":"highlight-registry","dfnText":"highlight registry","external":false,"refSections":[{"refs":[{"id":"ref-for-highlight-registry"},{"id":"ref-for-highlight-registry\u2460"},{"id":"ref-for-highlight-registry\u2461"},{"id":"ref-for-highlight-registry\u2462"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-highlight-registry\u2463"}],"title":"4.2.5. \nPriority of Overlapping Highlights"},{"refs":[{"id":"ref-for-highlight-registry\u2464"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-highlight-registry\u2465"},{"id":"ref-for-highlight-registry\u2466"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"#highlight-registry"},
-"highlightregistry": {"dfnID":"highlightregistry","dfnText":"HighlightRegistry","external":false,"refSections":[{"refs":[{"id":"ref-for-highlightregistry"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-highlightregistry\u2460"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-highlightregistry\u2461"},{"id":"ref-for-highlightregistry\u2462"},{"id":"ref-for-highlightregistry\u2463"}],"title":"6. \nInteracting with Custom Highlights"},{"refs":[{"id":"ref-for-highlightregistry\u2464"}],"title":"\nChanges since the 15 December 2021 Working Draft"},{"refs":[{"id":"ref-for-highlightregistry\u2465"},{"id":"ref-for-highlightregistry\u2466"}],"title":"\nChanges since the 8 December 2020 Working Draft"}],"url":"#highlightregistry"},
-"priority": {"dfnID":"priority","dfnText":"priority","external":false,"refSections":[{"refs":[{"id":"ref-for-priority"}],"title":"4.2.4. \nPainting"},{"refs":[{"id":"ref-for-priority\u2460"},{"id":"ref-for-priority\u2461"}],"title":"4.2.5. \nPriority of Overlapping Highlights"},{"refs":[{"id":"ref-for-priority\u2462"},{"id":"ref-for-priority\u2463"}],"title":"6. \nInteracting with Custom Highlights"}],"url":"#priority"},
+"highlight": {"dfnID":"highlight","dfnText":"Highlight","external":false,"refSections":[{"refs":[{"id":"ref-for-highlight"},{"id":"ref-for-highlight\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-highlight\u2461"},{"id":"ref-for-highlight\u2462"}],"title":"3.1. \nCreating Custom Highlights"},{"refs":[{"id":"ref-for-highlight\u2463"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-highlight\u2464"}],"title":"\nChanges since the 8 December 2020 Working Draft"}],"url":"#highlight"},
+"highlight-registry": {"dfnID":"highlight-registry","dfnText":"highlight registry","external":false,"refSections":[{"refs":[{"id":"ref-for-highlight-registry"},{"id":"ref-for-highlight-registry\u2460"},{"id":"ref-for-highlight-registry\u2461"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-highlight-registry\u2462"}],"title":"4.2.5. \nPriority of Overlapping Highlights"},{"refs":[{"id":"ref-for-highlight-registry\u2463"}],"title":"5.1. \nRepaints"},{"refs":[{"id":"ref-for-highlight-registry\u2464"},{"id":"ref-for-highlight-registry\u2465"}],"title":"5.2. \nRange Updating and Invalidation"}],"url":"#highlight-registry"},
+"highlightregistry": {"dfnID":"highlightregistry","dfnText":"HighlightRegistry","external":false,"refSections":[{"refs":[{"id":"ref-for-highlightregistry"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-highlightregistry\u2460"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-highlightregistry\u2461"},{"id":"ref-for-highlightregistry\u2462"}],"title":"\nChanges since the 8 December 2020 Working Draft"}],"url":"#highlightregistry"},
+"priority": {"dfnID":"priority","dfnText":"priority","external":false,"refSections":[{"refs":[{"id":"ref-for-priority"}],"title":"4.2.4. \nPainting"},{"refs":[{"id":"ref-for-priority\u2460"},{"id":"ref-for-priority\u2461"}],"title":"4.2.5. \nPriority of Overlapping Highlights"}],"url":"#priority"},
 "registered": {"dfnID":"registered","dfnText":"registered","external":false,"refSections":[{"refs":[{"id":"ref-for-registered"},{"id":"ref-for-registered\u2460"},{"id":"ref-for-registered\u2461"},{"id":"ref-for-registered\u2462"},{"id":"ref-for-registered\u2463"},{"id":"ref-for-registered\u2464"},{"id":"ref-for-registered\u2465"}],"title":"3.2. \nRegistering Custom Highlights"},{"refs":[{"id":"ref-for-registered\u2466"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"},{"refs":[{"id":"ref-for-registered\u2467"}],"title":"4.2.5. \nPriority of Overlapping Highlights"},{"refs":[{"id":"ref-for-registered\u2468"},{"id":"ref-for-registered\u2460\u24ea"}],"title":"5.1. \nRepaints"}],"url":"#registered"},
+"selectordef-highlight-custom-highlight-name": {"dfnID":"selectordef-highlight-custom-highlight-name","dfnText":"::highlight(<custom-highlight-name>)","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-highlight-custom-highlight-name"},{"id":"ref-for-selectordef-highlight-custom-highlight-name\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-selectordef-highlight-custom-highlight-name\u2461"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"}],"url":"#selectordef-highlight-custom-highlight-name"},
+"typedef-custom-highlight-name": {"dfnID":"typedef-custom-highlight-name","dfnText":"<custom-highlight-name>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-custom-highlight-name"},{"id":"ref-for-typedef-custom-highlight-name\u2460"},{"id":"ref-for-typedef-custom-highlight-name\u2461"}],"title":"4.1. \nThe Custom Highlight Pseudo-element: ::highlight()"}],"url":"#typedef-custom-highlight-name"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -3066,13 +2852,11 @@ let refsData = {
 "#custom-highlight": {"displayText":"custom highlight","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"custom highlight","type":"dfn","url":"#custom-highlight"},
 "#custom-highlight-name": {"displayText":"custom highlight name","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"custom highlight name","type":"dfn","url":"#custom-highlight-name"},
 "#custom-highlight-pseudo-element": {"displayText":"custom highlight pseudo-element","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"custom highlight pseudo-element","type":"dfn","url":"#custom-highlight-pseudo-element"},
-"#dictdef-highlightsfrompointoptions": {"displayText":"HighlightsFromPointOptions","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"HighlightsFromPointOptions","type":"dictionary","url":"#dictdef-highlightsfrompointoptions"},
 "#dom-css-highlights": {"displayText":"highlights","export":true,"for_":["CSS"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"highlights","type":"attribute","url":"#dom-css-highlights"},
 "#dom-highlight-highlight": {"displayText":"Highlight(...initialRanges)","export":true,"for_":["Highlight"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"Highlight(...initialRanges)","type":"constructor","url":"#dom-highlight-highlight"},
 "#dom-highlight-highlight-initialranges-initialranges": {"displayText":"initialRanges","export":true,"for_":["Highlight/Highlight()","Highlight/Highlight(...initialRanges)","Highlight/constructor()","Highlight/constructor(...initialRanges)"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"initialRanges","type":"argument","url":"#dom-highlight-highlight-initialranges-initialranges"},
 "#dom-highlight-priority": {"displayText":"priority","export":true,"for_":["Highlight"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"priority","type":"attribute","url":"#dom-highlight-priority"},
 "#dom-highlight-type": {"displayText":"type","export":true,"for_":["Highlight"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"type","type":"attribute","url":"#dom-highlight-type"},
-"#dom-highlightregistry-highlightsfrompoint": {"displayText":"highlightsFromPoint(x, y)","export":true,"for_":["HighlightRegistry"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"highlightsFromPoint(x, y)","type":"method","url":"#dom-highlightregistry-highlightsfrompoint"},
 "#dom-highlighttype-grammar-error": {"displayText":"\"grammar-error\"","export":true,"for_":["HighlightType"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"\"grammar-error\"","type":"enum-value","url":"#dom-highlighttype-grammar-error"},
 "#dom-highlighttype-highlight": {"displayText":"\"highlight\"","export":true,"for_":["HighlightType"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"\"highlight\"","type":"enum-value","url":"#dom-highlighttype-highlight"},
 "#dom-highlighttype-spelling-error": {"displayText":"\"spelling-error\"","export":true,"for_":["HighlightType"],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"\"spelling-error\"","type":"enum-value","url":"#dom-highlighttype-spelling-error"},
@@ -3082,59 +2866,44 @@ let refsData = {
 "#highlightregistry": {"displayText":"HighlightRegistry","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"HighlightRegistry","type":"interface","url":"#highlightregistry"},
 "#priority": {"displayText":"priority","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"priority","type":"dfn","url":"#priority"},
 "#registered": {"displayText":"registered","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"registered","type":"dfn","url":"#registered"},
+"#selectordef-highlight-custom-highlight-name": {"displayText":"::highlight(<custom-highlight-name>)","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"::highlight(<custom-highlight-name>)","type":"selector","url":"#selectordef-highlight-custom-highlight-name"},
+"#typedef-custom-highlight-name": {"displayText":"<custom-highlight-name>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-highlight-api","spec":"css-highlight-api-1","status":"local","text":"<custom-highlight-name>","type":"type","url":"#typedef-custom-highlight-name"},
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#css-inheritance": {"displayText":"inheritance","export":true,"for_":["CSS"],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"inheritance","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-5/#css-inheritance"},
 "https://andreubotella.com/csswg-auto-build/test/css-cascade-6/#cascade": {"displayText":"cascade","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"current","text":"cascade","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-cascade-6/#cascade"},
 "https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-overlay": {"displayText":"highlight overlay","export":false,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"highlight overlay","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-overlay"},
 "https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-pseudo-element": {"displayText":"highlight pseudo-element","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"highlight pseudo-element","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#highlight-pseudo-element"},
 "https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#paired-default-highlight-colors": {"displayText":"paired default highlight colors","export":false,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"paired default highlight colors","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#paired-default-highlight-colors"},
-"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-grammar-error": {"displayText":"::grammar-error","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::grammar-error","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-grammar-error"},
 "https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-selection": {"displayText":"::selection","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::selection","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-selection"},
 "https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-spelling-error": {"displayText":"::spelling-error","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::spelling-error","type":"selector","url":"https://andreubotella.com/csswg-auto-build/test/css-pseudo-4/#selectordef-spelling-error"},
 "https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule": {"displayText":"style rule","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"style rule","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#style-rule"},
+"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-ident-token": {"displayText":"<ident-token>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<ident-token>","type":"type","url":"https://andreubotella.com/csswg-auto-build/test/css-syntax-3/#typedef-ident-token"},
 "https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-css-identifier": {"displayText":"identifier","export":true,"for_":["CSS"],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"identifier","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/css-values-4/#css-css-identifier"},
 "https://andreubotella.com/csswg-auto-build/test/cssom-1/#namespacedef-css": {"displayText":"CSS","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"CSS","type":"namespace","url":"https://andreubotella.com/csswg-auto-build/test/cssom-1/#namespacedef-css"},
-"https://andreubotella.com/csswg-auto-build/test/cssom-view-1/#dom-range-getclientrects": {"displayText":"getClientRects()","export":true,"for_":["Range"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"getClientRects()","type":"method","url":"https://andreubotella.com/csswg-auto-build/test/cssom-view-1/#dom-range-getclientrects"},
 "https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity": {"displayText":"specificity","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"specificity","type":"dfn","url":"https://andreubotella.com/csswg-auto-build/test/selectors-4/#specificity"},
 "https://dom.spec.whatwg.org/#abstractrange": {"displayText":"AbstractRange","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"AbstractRange","type":"interface","url":"https://dom.spec.whatwg.org/#abstractrange"},
-"https://dom.spec.whatwg.org/#concept-element-shadow-root": {"displayText":"shadow root","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow root","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-element-shadow-root"},
-"https://dom.spec.whatwg.org/#concept-event": {"displayText":"event","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"event","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-event"},
-"https://dom.spec.whatwg.org/#concept-event-listener": {"displayText":"event listener","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"event listener","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-event-listener"},
 "https://dom.spec.whatwg.org/#concept-live-range": {"displayText":"live ranges","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"live ranges","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-live-range"},
 "https://dom.spec.whatwg.org/#concept-range": {"displayText":"range","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"range","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-range"},
 "https://dom.spec.whatwg.org/#concept-range-bp": {"displayText":"boundary point","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"boundary point","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-range-bp"},
 "https://dom.spec.whatwg.org/#concept-range-end-node": {"displayText":"end node","export":true,"for_":["range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"end node","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-range-end-node"},
-"https://dom.spec.whatwg.org/#concept-range-end-offset": {"displayText":"end offset","export":true,"for_":["range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"end offset","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-range-end-offset"},
 "https://dom.spec.whatwg.org/#concept-range-start-node": {"displayText":"start node","export":true,"for_":["range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"start node","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-range-start-node"},
-"https://dom.spec.whatwg.org/#concept-range-start-offset": {"displayText":"start offset","export":true,"for_":["range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"start offset","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-range-start-offset"},
 "https://dom.spec.whatwg.org/#concept-shadow-including-root": {"displayText":"shadow-including root","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow-including root","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-shadow-including-root"},
-"https://dom.spec.whatwg.org/#concept-shadow-tree": {"displayText":"shadow tree","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow tree","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
 "https://dom.spec.whatwg.org/#contained": {"displayText":"contained","export":true,"for_":["live range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"contained","type":"dfn","url":"https://dom.spec.whatwg.org/#contained"},
-"https://dom.spec.whatwg.org/#dom-range-commonancestorcontainer": {"displayText":"commonAncestorContainer","export":true,"for_":["Range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"commonAncestorContainer","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-range-commonancestorcontainer"},
 "https://dom.spec.whatwg.org/#node": {"displayText":"Node","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Node","type":"interface","url":"https://dom.spec.whatwg.org/#node"},
 "https://dom.spec.whatwg.org/#partially-contained": {"displayText":"partially contained","export":true,"for_":["live range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"partially contained","type":"dfn","url":"https://dom.spec.whatwg.org/#partially-contained"},
 "https://dom.spec.whatwg.org/#range": {"displayText":"Range","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Range","type":"interface","url":"https://dom.spec.whatwg.org/#range"},
 "https://dom.spec.whatwg.org/#range-collapsed": {"displayText":"collapsed","export":true,"for_":["range"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"collapsed","type":"dfn","url":"https://dom.spec.whatwg.org/#range-collapsed"},
-"https://dom.spec.whatwg.org/#shadowroot": {"displayText":"ShadowRoot","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"ShadowRoot","type":"interface","url":"https://dom.spec.whatwg.org/#shadowroot"},
 "https://dom.spec.whatwg.org/#staticrange": {"displayText":"StaticRange","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"StaticRange","type":"interface","url":"https://dom.spec.whatwg.org/#staticrange"},
 "https://dom.spec.whatwg.org/#staticrange-valid": {"displayText":"valid","export":true,"for_":["StaticRange"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"valid","type":"dfn","url":"https://dom.spec.whatwg.org/#staticrange-valid"},
-"https://drafts.fxtf.org/geometry-1/#domrect": {"displayText":"DOMRect","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"current","text":"DOMRect","type":"interface","url":"https://drafts.fxtf.org/geometry-1/#domrect"},
 "https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window": {"displayText":"associated Document","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"associated document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object": {"displayText":"current global object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"current global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#current-global-object"},
-"https://infra.spec.whatwg.org/#list-contain": {"displayText":"contain","export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"contain","type":"dfn","url":"https://infra.spec.whatwg.org/#list-contain"},
-"https://w3c.github.io/i18n-glossary/#dfn-grapheme": {"displayText":"grapheme","export":true,"for_":[],"level":"1","normative":false,"shortname":"i18n-glossary","spec":"i18n-glossary","status":"current","text":"grapheme","type":"dfn","url":"https://w3c.github.io/i18n-glossary/#dfn-grapheme"},
-"https://w3c.github.io/i18n-glossary/#dfn-supplementary-code-point": {"displayText":"supplementary character","export":true,"for_":[],"level":"1","normative":false,"shortname":"i18n-glossary","spec":"i18n-glossary","status":"current","text":"supplementary character","type":"dfn","url":"https://w3c.github.io/i18n-glossary/#dfn-supplementary-code-point"},
-"https://w3c.github.io/i18n-glossary/#dfn-unicode-code-point": {"displayText":"unicode code point","export":true,"for_":[],"level":"1","normative":false,"shortname":"i18n-glossary","spec":"i18n-glossary","status":"current","text":"unicode code point","type":"dfn","url":"https://w3c.github.io/i18n-glossary/#dfn-unicode-code-point"},
 "https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
 "https://webidl.spec.whatwg.org/#dfn-convert-idl-to-javascript-value": {"displayText":"converted to an ECMAScript value","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"converted to an ecmascript value","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-convert-idl-to-javascript-value"},
-"https://webidl.spec.whatwg.org/#dfn-dictionary": {"displayText":"dictionary","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"dictionary","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-dictionary"},
 "https://webidl.spec.whatwg.org/#dfn-map-entries": {"displayText":"map entries","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"map entries","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-map-entries"},
 "https://webidl.spec.whatwg.org/#dfn-maplike": {"displayText":"maplike","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"maplike","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-maplike"},
 "https://webidl.spec.whatwg.org/#dfn-set-entries": {"displayText":"set entries","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"set entries","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-set-entries"},
 "https://webidl.spec.whatwg.org/#dfn-setlike": {"displayText":"setlike","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"setlike","type":"dfn","url":"https://webidl.spec.whatwg.org/#dfn-setlike"},
 "https://webidl.spec.whatwg.org/#idl-DOMString": {"displayText":"DOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMString","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
-"https://webidl.spec.whatwg.org/#idl-float": {"displayText":"float","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"float","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-float"},
 "https://webidl.spec.whatwg.org/#idl-long": {"displayText":"long","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"long","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-long"},
-"https://webidl.spec.whatwg.org/#idl-sequence": {"displayText":"sequence","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"sequence","type":"dfn","url":"https://webidl.spec.whatwg.org/#idl-sequence"},
 "https://www.w3.org/TR/CSS2/selector.html#x22": {"displayText":"pseudo-elements","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"pseudo-elements","type":"dfn","url":"https://www.w3.org/TR/CSS2/selector.html#x22"},
 };
 
