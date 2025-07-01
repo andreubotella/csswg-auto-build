@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<meta charset="UTF-8" />
+<title>Bikeshed build output for {{ spec_file }}</title>
+<style>
+  .output {
+    font-family: monospace;
+    font-size: 1.15em;
+    margin: auto 2em;
+    padding: 0;
+    background-color: #F0F0F0;
+  }
+  .output li {
+    display: block;
+    white-space: pre-wrap;
+  }
+  .bs-success { background: green; color: white; font-weight: bold; }
+  .bs-failure { background: red; color: white; font-weight: bold; }
+  .bs-fatal { color: red; font-weight: bold }
+  .bs-link { color: #AA0; font-weight: bold }
+  .bs-lint { color: #AA0; font-weight: bold }
+  .bs-warning { color: #0AA; font-weight: bold }
+</style>
+
+{% macro heading(msg) -%}
+  {%- if msg.lineNum != None -%}
+    <span class="bs-{{ msg.messageType }}">LINE {{ msg.lineNum }}:</span>{{ " " }}
+  {%- elif msg.messageType != "message" -%}
+    <span class="bs-{{ msg.messageType }}">{{
+        {
+            "success": " ✔ ",
+            "failure": " ✘ ",
+            "fatal": "FATAL ERROR:",
+            "link": "LINK ERROR:",
+            "lint": "LINT:",
+            "warning": "WARNING:"
+        }[msg.messageType]
+    }}</span>{{ " " }}
+  {%- endif -%}
+{%- endmacro %}
+
+{% if messages | length == 0 %}
+<p>Automatic generation of the file {{ spec_file }} was successful.</p>
+{% else %}
+<p>Automatic generation of the file {{ spec_file }} was successful but Bikeshed reported the following:</p>
+<ul class="output">
+  {% for msg in messages %}
+  <li>{{ heading(msg) }}{{ msg.text|e }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<p>
+  Last Bikeshed run at
+  <time datetime="{{ now.isoformat(timespec='seconds') }}">
+    {{ now.strftime("%Y-%m-%d %H:%M:%S %Z") }}
+  </time>
+</p>
