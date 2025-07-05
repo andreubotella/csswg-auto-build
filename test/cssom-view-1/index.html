@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/cssom-view-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fc557ade6c57db54dfbd4cb373a242b1c7db0b80" name="revision">
+  <meta content="1942d0918a25bc8e3d6b68611a77aa1499d14053" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1347,7 +1347,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSSOM View Module</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-06-20">20 June 2025</time></p>
+    <time class="dt-updated" datetime="2025-07-04">4 July 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2928,6 +2928,42 @@ with <var>behavior</var>, <var>block</var>, <var>inline</var>, and <var>containe
     <li data-md>
      <p>Optionally perform some other action that brings the element to the user’s attention.</p>
    </ol>
+   <div class="example" id="example-19ed236b">
+    <a class="self-link" href="#example-19ed236b"></a>
+    A component can use scrollIntoView to scroll content of interest into the specified alignment:
+
+    
+<pre><code class="highlight"><c- p>&lt;</c-><c- f>style</c-><c- p>></c->
+    <c- p>.</c-><c- nc>scroller</c-> <c- p>{</c-> <c- k>overflow</c-><c- p>:</c-> <c- kc>auto</c-><c- p>;</c-> <c- k>scroll-padding</c-><c- p>:</c-> <c- mi>8</c-><c- b>px</c-><c- p>;</c-> <c- p>}</c->
+    <c- p>.</c-><c- nc>slide</c-> <c- p>{</c-> <c- k>scroll-margin</c-><c- p>:</c-> <c- mi>16</c-><c- b>px</c-><c- p>;</c-> <c- k>scroll-snap-align</c-><c- p>:</c-> <c- kc>center</c-><c- p>;</c-> <c- p>}</c->
+<c- p>&lt;/</c-><c- f>style</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"carousel"</c-><c- p>></c->
+    <c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"slides scroller"</c-><c- p>></c->
+        <c- p>&lt;</c-><c- f>div</c-> <c- e>id</c-><c- o>=</c-><c- s>"s1"</c-> <c- e>class</c-><c- o>=</c-><c- s>"slide"</c-><c- p>></c->
+        <c- p>&lt;</c-><c- f>div</c-> <c- e>id</c-><c- o>=</c-><c- s>"s2"</c-> <c- e>class</c-><c- o>=</c-><c- s>"slide"</c-><c- p>></c->
+        <c- p>&lt;</c-><c- f>div</c-> <c- e>id</c-><c- o>=</c-><c- s>"s3"</c-> <c- e>class</c-><c- o>=</c-><c- s>"slide"</c-><c- p>></c->
+    <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+    <c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"markers"</c-><c- p>></c->
+        <c- p>&lt;</c-><c- f>button</c-> <c- e>data-target</c-><c- o>=</c-><c- s>"s1"</c-><c- p>></c->1<c- p>&lt;/</c-><c- f>button</c-><c- p>></c->
+        <c- p>&lt;</c-><c- f>button</c-> <c- e>data-target</c-><c- o>=</c-><c- s>"s2"</c-><c- p>></c->2<c- p>&lt;/</c-><c- f>button</c-><c- p>></c->
+        <c- p>&lt;</c-><c- f>button</c-> <c- e>data-target</c-><c- o>=</c-><c- s>"s3"</c-><c- p>></c->3<c- p>&lt;/</c-><c- f>button</c-><c- p>></c->
+    <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>script</c-><c- p>></c->
+    document<c- p>.</c->querySelector<c- p>(</c-><c- t>'.markers'</c-><c- p>).</c->addEventListener<c- p>(</c-><c- t>'click'</c-><c- p>,</c-> <c- p>(</c->evt<c- p>)</c-> <c- p>=></c-> <c- p>{</c->
+        <c- a>const</c-> target <c- o>=</c-> document<c- p>.</c->getElementById<c- p>(</c->evt<c- p>.</c->target<c- p>.</c->dataset<c- p>.</c->target<c- p>);</c->
+        <c- k>if</c-> <c- p>(</c-><c- o>!</c->target<c- p>)</c-> <c- k>return</c-><c- p>;</c->
+        <c- c1>// scrollIntoView correctly aligns target item respecting scroll-snap-align,</c->
+        <c- c1>// scroll-margin, and the scroll container’s scroll-padding.</c->
+        target<c- p>.</c->scrollIntoView<c- p>({</c->
+            <c- c1>// Only scroll the nearest scroll container.</c->
+            container<c- o>:</c-> <c- t>'nearest'</c-><c- p>,</c->
+            behavior<c- o>:</c-> <c- t>'smooth'</c->
+        <c- p>});</c->
+    <c- p>});</c->
+<c- p>&lt;/</c-><c- f>script</c-><c- p>></c->
+</code></pre>
+   </div>
    <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="Element" data-dfn-type="method" data-export data-lt="scroll(x, y)|scroll(options)|scroll()" id="dom-element-scroll"><code>scroll()</code></dfn> method must run these steps:</p>
    <ol>
     <li data-md>
