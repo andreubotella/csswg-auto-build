@@ -95,12 +95,49 @@ spec:selectors-4; type:selector; text::disabled
 spec:css-color-4; type:property; text:color
 spec:selectors-4; type:selector; text::focus
 spec:selectors-4; type:selector; text::focus-visible
+spec:selectors-4; type:dfn; text:host language
 spec:css-backgrounds-3; type:property; text:border-radius
 spec:css-backgrounds-3; type:property; text:border-color
 spec:css-backgrounds-3; type:property; text:border-top-color
 spec:css-backgrounds-3; type:property; text:border-right-color
 spec:css-backgrounds-3; type:property; text:border-bottom-color
 spec:css-backgrounds-3; type:property; text:border-left-color
+spec:css-borders-4; type:property;
+	text:box-shadow
+	text:border-top-style
+	text:border-left-style
+	text:border-right-style
+	text:border-bottom-style
+	text:border-top-width
+	text:border-left-width
+	text:border-right-width
+	text:border-bottom-width
+	text:border-top-color
+	text:border-left-color
+	text:border-right-color
+	text:border-bottom-color
+	text:border-start-start-radius
+	text:border-start-end-radius
+	text:border-end-start-radius
+	text:border-end-end-radius
+	text:border-top-left-radius
+	text:border-top-right-radius
+	text:border-bottom-left-radius
+	text:border-bottom-right-radius
+	text:border-block-start-width
+	text:border-block-end-width
+	text:border-inline-start-width
+	text:border-inline-end-width
+	text:border-block-start-style
+	text:border-block-end-style
+	text:border-inline-start-style
+	text:border-inline-end-style
+	text:border-block-start-color
+	text:border-block-end-color
+	text:border-inline-start-color
+	text:border-inline-end-color
+spec:dom; type:dfn; text:element
+spec:infra; type:dfn; text:user agent
 </pre>
 <pre class=anchors>
 urlPrefix: https://html.spec.whatwg.org/multipage/; spec:HTML
@@ -683,17 +720,7 @@ Styling the Cursor: the 'cursor' property</h4>
 
 	<pre class="propdef">
 	Name: cursor
-	Value: [ [ <<url>> | <<url-set>> ] [&lt;x&gt; &lt;y&gt;]? ]#? <br>
-	 [ auto | default | none |<br>
-	 context-menu | help | pointer | progress | wait | <br>
-	 cell | crosshair | text | vertical-text | <br>
-	 alias | copy | move | no-drop | not-allowed | grab | grabbing | <br>
-	 e-resize | n-resize | ne-resize | nw-resize | s-resize | se-resize | sw-resize | w-resize |
-	 ew-resize | ns-resize | nesw-resize | nwse-resize |
-	 col-resize | row-resize |
-	 all-scroll |<br>
-	 zoom-in | zoom-out <br>
-	 ]
+	Value: <<cursor-image>>#? <<cursor-predefined>>
 	Initial: auto
 	Applies to: all elements
 	Inherited: yes
@@ -733,11 +760,8 @@ Styling the Cursor: the 'cursor' property</h4>
 
 	Values have the following meanings:
 
-	<style>
-	#cursors dfn { cursor: inherit }
-	</style>
 	<dl dfn-type=value dfn-for=cursor id=cursors>
-		<dt>image cursors
+		<dt><dfn><<cursor-image>></dfn>
 		<dd>
 			The first (optional) component of the 'cursor' property
 			is a list of image-based cursors.
@@ -746,297 +770,114 @@ Styling the Cursor: the 'cursor' property</h4>
 			If the user agent cannot handle any of these author-defined cursors,
 			it must use the keyword-based cursor at the end of the list.
 
-			Each author-defined image-based cursor is defined by the following values:
+			A <<cursor-image>> has the following syntax:
 
-			<dl>
-				<dt><<url>> | <<url-set>>
-				<dd>
-					The user agent retrieves the cursor from the resource designated by the <<url>> or <<url-set>>.
-					Conforming user agents may, instead of <<url>> and <<url-set>>,
-					support <<image>> which is a superset.
+			<pre class=prod>
+				<dfn type>&lt;cursor-image></dfn> = [ <<url>> | <<url-set>> ] <<number>>{2}?
+			</pre>
 
-					<dfn type>&lt;url-set></dfn> is a limited version of ''image-set()'',
-					where the <<image>> sub-production is restricted to <<url>> only.
+			The user agent retrieves the cursor from the resource designated by the <<url>> or <<url-set>>.
+			Conforming user agents may, instead of <<url>> and <<url-set>>,
+			support <<image>> which is a superset.
 
-					The UA must support the following image file formats:
+			<dfn type>&lt;url-set></dfn> is a limited version of ''image-set()'',
+			where the <<image>> sub-production is restricted to <<url>> only.
 
-					<ul>
-						<li>
-							PNG, as defined in [[!PNG]]
+			The UA must support the following image file formats:
 
-						<li>
-							SVG, as defined in [[!SVG11]],
-							in <a href="https://www.w3.org/TR/SVG2/conform.html#secure-static-mode">secure static mode</a> [[!SVG2]],
-							if it has a [=natural size=].
+			<ul>
+				<li>
+					PNG, as defined in [[!PNG]]
 
-						<li>
-							any other non-animated image file format that they support
-							for <<image>> in other properties,
-							such as the 'background-image' property
-					</ul>
+				<li>
+					SVG, as defined in [[!SVG11]],
+					in <a href="https://www.w3.org/TR/SVG2/conform.html#secure-static-mode">secure static mode</a> [[!SVG2]],
+					if it has a [=natural size=].
 
-					In addition, the UA should support the following image file formats:
+				<li>
+					any other non-animated image file format that they support
+					for <<image>> in other properties,
+					such as the 'background-image' property
+			</ul>
 
-					<ul>
-						<li>
-							SVG, as defined in [[!SVG11]],
-							in <a href="https://www.w3.org/TR/SVG2/conform.html#secure-animated-mode">secure animated mode</a> [[!SVG2]],
-							if it has a [=natural size=].
+			In addition, the UA should support the following image file formats:
 
-						<li>
-							any other animated image file format that they support
-							for <<image>> in other properties,
-							such as the 'background-image' property
-					</ul>
+			<ul>
+				<li>
+					SVG, as defined in [[!SVG11]],
+					in <a href="https://www.w3.org/TR/SVG2/conform.html#secure-animated-mode">secure animated mode</a> [[!SVG2]],
+					if it has a [=natural size=].
 
-					The UA may also support additional file formats,
-					including SVG, as defined in [[!SVG11]],
-					in secure static mode or secure animated mode [[!SVG2]],
-					even if it does not have a [=natural size=].
+				<li>
+					any other animated image file format that they support
+					for <<image>> in other properties,
+					such as the 'background-image' property
+			</ul>
 
-					Note: The CSS Working Group initially intended support for all SVG,
-					naturally sized or not.
-					Support for non-naturally sized SVG was downgraded from mandatory to optional due
-					to a lack of implementations.
+			The UA may also support additional file formats,
+			including SVG, as defined in [[!SVG11]],
+			in secure static mode or secure animated mode [[!SVG2]],
+			even if it does not have a [=natural size=].
 
-					Note: For a number of years,
-					the only file formats supported for cursors in common desktop browsers were
-					the .ico and .cur file formats, as designed by Microsoft.
-					Although this is no longer the case
-					(PNG and SVG have broad support),
-					for compatibility with legacy content,
-					UAs are encouraged to support these,
-					even though the lack of an open specification
-					makes it impossible to have a normative requirement
-					about these formats.
-					Some information on these formats can be found
-					<a href="https://en.wikipedia.org/wiki/ICO_%28file_format%29">on Wikipedia</a>.
+			Note: The CSS Working Group initially intended support for all SVG,
+			naturally sized or not.
+			Support for non-naturally sized SVG was downgraded from mandatory to optional due
+			to a lack of implementations.
 
-					The <a>default object size</a> for cursor images is
-					a UA-defined size that should be based on
-					the size of a typical cursor on the UA's operating system.
+			Note: For a number of years,
+			the only file formats supported for cursors in common desktop browsers were
+			the .ico and .cur file formats, as designed by Microsoft.
+			Although this is no longer the case
+			(PNG and SVG have broad support),
+			for compatibility with legacy content,
+			UAs are encouraged to support these,
+			even though the lack of an open specification
+			makes it impossible to have a normative requirement
+			about these formats.
+			Some information on these formats can be found
+			<a href="https://en.wikipedia.org/wiki/ICO_%28file_format%29">on Wikipedia</a>.
 
-					The <a>concrete object size</a> is determined using
-					the <a>default sizing algorithm</a>.
-					If an operating system is
-					<strong>incapable</strong> of rendering a cursor above a given size,
-					cursors larger than that size must be shrunk to within
-					the OS-supported size bounds,
-					while maintaining the cursor image's [=natural aspect ratio=], if any.
+			The <a>default object size</a> for cursor images is
+			a UA-defined size that should be based on
+			the size of a typical cursor on the UA's operating system.
 
-					The optional &lt;x&gt; and &lt;y&gt; coordinates
-					identify the exact position within the image which is the pointer position (i.e., the hotspot).
+			The <a>concrete object size</a> is determined using
+			the <a>default sizing algorithm</a>.
+			If an operating system is
+			<strong>incapable</strong> of rendering a cursor above a given size,
+			cursors larger than that size must be shrunk to within
+			the OS-supported size bounds,
+			while maintaining the cursor image's [=natural aspect ratio=], if any.
 
-				<dt>&lt;x&gt;
-				<dt>&lt;y&gt;
-				<dd>
-					Each is a <<number>>.
-					The x-coordinate and y-coordinate of the position
-					in the cursor's coordinate system (left/top relative)
-					which represents the precise position that is being pointed to.
+			The optional pair of <<number>> values
+			give the X and Y coordinates
+			of the exact position within the image which is the pointer position (i.e., the hotspot),
+			as offsets from the left/top of the image.
 
-					Note: This specification does not define
-					how the coordinate systems of the various types of <<image>> are established,
-					and defers these definitions to [[CSS-IMAGES-4]].
+			Note: This specification does not define
+			how the coordinate systems of the various types of <<image>> are established,
+			and defers these definitions to [[CSS4-IMAGES]].
 
-					If the values are unspecified,
-					then the natural hotspot defined inside the image resource itself is used.
-					If both the values are unspecific and the referenced cursor has no defined hotspot,
-					the effect is as if a value of "0 0" was specified.
+			If the values are omitted,
+			then the natural hotspot defined inside the image resource itself is used.
+			If it has no natural hotspot,
+			the top left corner of the image is used,
+			as if ''0 0'' were provided.
 
-					If the coordinates of the hotspot,
-					as specified either inside the image resource or
-					by &lt;x&gt; and &lt;y&gt; values,
-					fall outside of the cursor image,
-					they must be clamped (independently) to fit.
-			</dl>
+			If the X or Y coordinates of the hotspot
+			(whether specified explicitly or taken from the image)
+			fall outside of the cursor image,
+			they must be clamped (independently) to fit.
 
-		<dt>general purpose cursors
-		<dd>
-		<dl>
-			<dt style="cursor:auto"><dfn>auto</dfn>
-			<dd>
-				The UA determines the cursor to display based on the current context.
-				Specifically, ''cursor/auto'' behaves as ''cursor/text'' over selectable text or editable elements,
-				and ''cursor/default'' otherwise.
+		<dt><dfn><<cursor-predefined>></dfn>
+		<dd>The mandatory <<cursor-predefined>> keyword
+			specifies a predefined cursor to use,
+			or the <em>fallback</em> cursor to be used
+			if <<url>>s were provided
+			and none of them can be successfully used.
 
-				Note: When over selectable text or editable elements,
-				as it does with ''cursor/text'',
-				the UA must use a vertical or horizontal text cursor,
-				as appropriate for the [=writing mode=] of the element,
-				and may take transforms and other visual effects into account as well.
-
-			<dt style="cursor:default"><dfn>default</dfn>
-			<dd>
-				The platform-dependent default cursor.
-				Often rendered as an arrow.
-
-			<dt style="cursor:none"><dfn>none</dfn>
-			<dd>
-				No cursor is rendered for the element.
-		</dl>
-
-		<dt>links and status cursors
-		<dd>
-		<dl>
-			<dt style="cursor:context-menu"><dfn>context-menu</dfn>
-			<dd>
-				A context menu is available for the object under the cursor.
-				Often rendered as an arrow with a small menu-like graphic next to it.
-
-			<dt style="cursor:help"><dfn>help</dfn>
-			<dd>
-				Help is available for the object under the cursor.
-				Often rendered as a question mark or a balloon.
-
-			<dt style="cursor:pointer"><dfn>pointer</dfn>
-			<dd>
-				The cursor is a pointer that indicates a link.
-				Often rendered as the backside of a hand with the index finger extended.
-
-				Unless otherwise specified,
-				UAs must apply ''cursor: pointer'' to hyperlinks
-				for all supported document formats
-				via the <a lt="User-Agent Origin">UA stylesheet</a>,
-				using a normal (i.e. not ''!important'') declaration.
-
-				Authors should use pointer on links and may use it on other interactive elements.
-
-			<dt style="cursor:progress"><dfn>progress</dfn>
-			<dd>
-				A progress indicator.  The program is performing some processing,
-				but is different from ''wait'' in that the user may still interact
-				with the program. Often rendered as a spinning beach ball,
-				or an arrow with a watch or hourglass.
-
-			<dt style="cursor:wait"><dfn>wait</dfn>
-			<dd>
-				Indicates that the program is busy and the user should wait.
-				Often rendered as a watch or hourglass.
-		</dl>
-
-		<dt>selection cursors
-		<dd>
-		<dl>
-			<dt style="cursor:cell"><dfn>cell</dfn>
-			<dd>
-				Indicates that a cell or set of cells may be selected.
-				Often rendered as a thick plus-sign with a dot in the middle.
-
-			<dt style="cursor:crosshair"><dfn>crosshair</dfn>
-			<dd>
-				A simple crosshair (e.g., short line segments resembling a "+" sign).
-				Often used to indicate a two dimensional bitmap selection mode.
-
-			<dt style="cursor:text"><dfn>text</dfn>
-			<dd>
-				Indicates text that may be selected. Often rendered as an I-beam.
-				User agents must automatically display
-				a vertical I-beam/cursor over elements with a horizontal [=writing mode=],
-				and a horizontal I-beam/cursor
-				(e.g. same as the ''vertical-text'' keyword)
-				over elements in a vertical [=writing mode=].
-				Additionally, user agents may take transforms (see [[CSS-TRANSFORMS-1]])
-				or other visual effects such as text on a path (See [[SVG2/text#TextLayoutPath]]),
-				when choosing between the horizontal or vertical text cursor,
-				and may display any angle of I-beam/cursor for text that is rendered at any particular angle.
-
-			<dt style="cursor:vertical-text"><dfn>vertical-text</dfn>
-			<dd>
-				Indicates vertical text that may be selected.
-				Often rendered as a horizontal I-beam.
-		</dl>
-
-		<dt>drag and drop cursors
-		<dd>
-		<dl>
-			<dt style="cursor:alias"><dfn>alias</dfn>
-			<dd>
-				Indicates an alias of/shortcut to something is to be created.
-				Often rendered as an arrow with a small curved arrow next to it.
-
-			<dt style="cursor:copy"><dfn>copy</dfn>
-			<dd>
-				Indicates something is to be copied.
-				Often rendered as an arrow with a small plus sign next to it.
-
-			<dt style="cursor:move"><dfn>move</dfn>
-			<dd>
-				Indicates something is to be moved.
-
-			<dt style="cursor:no-drop"><dfn>no-drop</dfn>
-			<dd>
-				Indicates that the dragged item cannot be dropped at the current cursor location.
-				Often rendered as a hand or pointer with a small circle with a line through it.
-
-			<dt style="cursor:not-allowed"><dfn>not-allowed</dfn>
-			<dd>
-				Indicates that the requested action will not be carried out.
-				Often rendered as a circle with a line through it.
-
-			<dt caniuse="css3-cursors-grab" id=cursor-grab style="cursor:grab"><dfn>grab</dfn>
-			<dd>
-				Indicates that something can be grabbed (dragged to be moved).
-				Often rendered as the backside of an open hand.
-
-			<dt style="cursor:grabbing"><dfn>grabbing</dfn>
-			<dd>
-				Indicates that something is being grabbed (dragged to be moved).
-				Often rendered as the backside of a hand with fingers closed mostly out of view.
-		</dl>
-
-		<dt>resizing and scrolling cursors
-		<dd>
-		<dl>
-			<dt>
-				<span style="cursor:e-resize"><dfn>e-resize</dfn></span>,
-				<span style="cursor:n-resize"><dfn>n-resize</dfn></span>,
-				<span style="cursor:ne-resize"><dfn>ne-resize</dfn></span>,
-				<span style="cursor:nw-resize"><dfn>nw-resize</dfn></span>,
-				<span style="cursor:s-resize"><dfn>s-resize</dfn></span>,
-				<span style="cursor:se-resize"><dfn>se-resize</dfn></span>,
-				<span style="cursor:sw-resize"><dfn>sw-resize</dfn></span>,
-				<span style="cursor:w-resize"><dfn>w-resize</dfn></span>
-			<dd>
-				Indicates that some edge is to be moved.
-				For example, the ''se-resize'' cursor is used
-				when the movement starts from the south-east corner of the box.
-
-			<dt>
-				<span style="cursor:ew-resize"><dfn>ew-resize</dfn></span>,
-				<span style="cursor:ns-resize"><dfn>ns-resize</dfn></span>,
-				<span style="cursor:nesw-resize"><dfn>nesw-resize</dfn></span>,
-				<span style="cursor:nwse-resize"><dfn>nwse-resize</dfn></span>
-			<dd>
-				Indicates a bidirectional resize cursor.
-
-			<dt style="cursor:col-resize"><dfn>col-resize</dfn>
-			<dd>
-				Indicates that the item/column can be resized horizontally.
-				Often rendered as arrows pointing left and right with a vertical bar separating them.
-
-			<dt style="cursor:row-resize"><dfn>row-resize</dfn>
-			<dd>
-				Indicates that the item/row can be resized vertically.
-				Often rendered as arrows pointing up and down with a horizontal bar separating them.
-
-			<dt style="cursor:all-scroll"><dfn>all-scroll</dfn>
-			<dd>
-				Indicates that something can be scrolled in any direction.
-				Often rendered as arrows pointing up, down, left, and right with a dot in the middle.
-		</dl>
-
-		<dt caniuse="css3-cursors-newer" id="zooming-cursors">zooming cursors
-		<dd>
-		<dl>
-			<dt>
-				<span style="cursor:zoom-in"> <dfn>zoom-in</dfn></span>,
-				<span style="cursor:zoom-out"> <dfn>zoom-out</dfn></span>
-			<dd>
-				Indicates that something can be zoomed (magnified) in or out.
-				Often rendered as a magnifying glass with a "+" or "-" in the center of the glass,
-				for ''zoom-in'' and ''zoom-out'' respectively.
-		</dl>
+			See [[#predefined-cursors]] for the full set of <<cursor-predefined>> keywords
+			and their meanings.
 	</dl>
 
 	<div class="example">
@@ -1061,6 +902,167 @@ Styling the Cursor: the 'cursor' property</h4>
 	</div>
 
 
+<h5 id="predefined-cursors">
+Predefined Cursors</h5>
+
+	The <<cursor-predefined>> production encompasses a broad selection of predefined cursors,
+	present on most operating systems.
+	Its syntax is:
+
+	<pre class=prod>
+	<dfn><<cursor-predefined>></dfn> = auto | default | none |
+	                context-menu | help | pointer | progress | wait |
+	                cell | crosshair | text | vertical-text |
+	                alias | copy | move | no-drop | not-allowed | grab | grabbing |
+	                e-resize | n-resize | ne-resize | nw-resize |
+	                s-resize | se-resize | sw-resize | w-resize |
+	                ew-resize | ns-resize | nesw-resize | nwse-resize |
+	                col-resize | row-resize |
+	                all-scroll |
+	                zoom-in | zoom-out
+	</pre>
+
+	The <<cursor-predefined>> keywords have the following meanings
+	and likely renderings:
+
+	<dl dfn-type=value dfn-for=cursor>
+	<dt>general purpose cursors
+	<dd>
+		<dl>
+			<dt><dfn style="cursor:auto">auto</dfn>
+			<dd>The UA determines the cursor to display based on the current context:
+				''cursor/auto'' behaves as ''cursor/text'' over selectable text or editable elements,
+				and ''cursor/default'' otherwise.
+
+			<dt><dfn style="cursor:default">default</dfn>
+			<dd>The platform-dependent default cursor. Often rendered as an arrow.
+
+			<dt><dfn style="cursor:none">none</dfn>
+			<dd>No cursor is rendered for the element.
+		</dl>
+
+	<dt>links and status cursors
+	<dd>
+		<dl>
+			<dt><dfn style="cursor:context-menu">context-menu</dfn>
+			<dd>A context menu is available for the object under the cursor.
+				Often rendered as an arrow with a small menu-like graphic next to it.
+
+			<dt><dfn style="cursor:help">help</dfn>
+			<dd>Help is available for the object under the cursor.
+				Often rendered as a question mark or a balloon.
+
+			<dt><dfn style="cursor:pointer">pointer</dfn>
+			<dd>The cursor is a pointer that indicates a link.
+
+			<dt><dfn style="cursor:progress">progress</dfn>
+			<dd>A progress indicator.  The program is performing some processing,
+				but is different from ''wait'' in that the user may still interact
+				with the program. Often rendered as a spinning beach ball,
+				or an arrow with a watch or hourglass.
+
+			<dt><dfn style="cursor:wait">wait</dfn>
+			<dd>Indicates that the program is busy and the user should wait.
+				Often rendered as a watch or hourglass.
+		</dl>
+
+	<dt>selection cursors
+	<dd>
+		<dl>
+			<dt><dfn style="cursor:cell">cell</dfn>
+			<dd>Indicates that a cell or set of cells may be selected. Often rendered as a thick plus-sign with a dot in the middle.
+
+			<dt><dfn style="cursor:crosshair">crosshair</dfn>
+			<dd>A simple crosshair (e.g., short line segments resembling a "+" sign).
+				Often used to indicate a two dimensional bitmap selection mode.
+
+			<dt><dfn style="cursor:text">text</dfn>
+			<dd>Indicates text that may be selected. Often rendered as a vertical I-beam.
+				User agents may automatically display a horizontal I-beam/cursor
+				(e.g. same as the ''vertical-text'' keyword)
+				for vertical text, or for that matter,
+				any angle of I-beam/cursor for text that is rendered at any particular angle.
+
+			<dt><dfn style="cursor:vertical-text">vertical-text</dfn>
+			<dd>Indicates vertical-text that may be selected. Often rendered as a horizontal I-beam.
+		</dl>
+
+	<dt>drag and drop cursors
+	<dd>
+		<dl>
+			<dt><dfn style="cursor:alias">alias</dfn>
+			<dd>Indicates an alias of/shortcut to something is to be created.
+				Often rendered as an arrow with a small curved arrow next to it.
+
+			<dt><dfn style="cursor:copy">copy</dfn>
+			<dd>Indicates something is to be copied.
+				Often rendered as an arrow with a small plus sign next to it.
+
+			<dt><dfn style="cursor:move">move</dfn>
+			<dd>Indicates something is to be moved.
+
+			<dt><dfn style="cursor:no-drop">no-drop</dfn>
+			<dd>Indicates that the dragged item cannot be dropped at the current cursor location.
+				Often rendered as a hand or pointer with a small circle with a line through it.
+
+			<dt><dfn style="cursor:not-allowed">not-allowed</dfn>
+			<dd>Indicates that the requested action will not be carried out.
+				Often rendered as a circle with a line through it.
+
+			<dt><dfn caniuse=css3-cursors-grab style="cursor:grab">grab</dfn>
+			<dd>Indicates that something can be grabbed (dragged to be moved).
+				Often rendered as the backside of an open hand.
+			<dt><dfn style="cursor:grabbing">grabbing</dfn>
+			<dd>Indicates that something is being grabbed (dragged to be moved).
+				Often rendered as the backside of a hand with fingers closed mostly out of view.
+		</dl>
+
+	<dt>resizing and scrolling cursors
+	<dd>
+		<dl>
+			<dt><dfn style="cursor:e-resize">e-resize</dfn>
+			<dt><dfn style="cursor:n-resize">n-resize</dfn>
+			<dt><dfn style="cursor:ne-resize">ne-resize</dfn>
+			<dt><dfn style="cursor:nw-resize">nw-resize</dfn>
+			<dt><dfn style="cursor:s-resize">s-resize</dfn>
+			<dt><dfn style="cursor:se-resize">se-resize</dfn>
+			<dt><dfn style="cursor:sw-resize">sw-resize</dfn>
+			<dt><dfn style="cursor:w-resize">w-resize</dfn>
+			<dd>Indicates that some edge is to be moved. For example, the
+				''se-resize'' cursor is used when the movement starts from the
+				south-east corner of the box.
+
+			<dt><dfn style="cursor:ew-resize">ew-resize</dfn>
+			<dt><dfn style="cursor:ns-resize">ns-resize</dfn>
+			<dt><dfn style="cursor:nesw-resize">nesw-resize</dfn>
+			<dt><dfn style="cursor:nwse-resize">nwse-resize</dfn>
+			<dd>Indicates a bidirectional resize cursor.
+
+			<dt><dfn style="cursor:col-resize">col-resize</dfn>
+			<dd>Indicates that the item/column can be resized horizontally.
+				Often rendered as arrows pointing left and right with a vertical bar separating them.
+
+			<dt><dfn style="cursor:row-resize">row-resize</dfn>
+			<dd>Indicates that the item/row can be resized vertically.
+				Often rendered as arrows pointing up and down with a horizontal bar separating them.
+
+			<dt><dfn style="cursor:all-scroll">all-scroll</dfn>
+			<dd>Indicates that the something can be scrolled in any direction.
+				Often rendered as arrows pointing up, down, left, and right with a dot in the middle.
+		</dl>
+
+	<dt caniuse="css3-cursors-newer" id="zooming-cursors">zooming cursors
+	<dd>
+		<dl>
+			<dt><dfn style="cursor:zoom-in">zoom-in</dfn>
+			<dt><dfn style="cursor:zoom-out">zoom-out</dfn>
+			<dd>
+				Indicates that something can be zoomed (magnified) in or out, and
+				often rendered as a magnifying glass with a "+" or "-" in the center of the glass, for ''zoom-in'' and ''zoom-out'' respectively.
+		</dl>
+	</dl>
+
+
 <h5 id="canvas_cursor">
 Cursor of the canvas</h5>
 
@@ -1079,7 +1081,7 @@ Cursor of the canvas</h5>
 	boxes are generated for it and its cursor is used for the canvas.
 
 
-<h3 id="insertion-caret">
+<h3 id="the-insertion-caret">
 Insertion caret</h3>
 
 	The <dfn lt="insertion caret|caret">insertion caret</dfn> (or “caret” for short)
@@ -1091,7 +1093,7 @@ Insertion caret</h3>
 	Text or elements are considered to <dfn>accept text input</dfn>
 	if they are either an [=editable element=] or a descendent thereof,
 	excluding any such element where the [=used value=] of 'user-select' is ''user-select/none'',
-	as well as subtrees rooted at an HTML element with a {{ElementContentEditable/contentEditable}} attribute set to {{ElementContentEditable/contentEditable/false}}.
+	as well as subtrees rooted at an HTML element with a {{ElementContentEditable/contentEditable}} attribute set to <code>false</code>.
 
 	Some user agents have other user interface mechanisms
 	with a similar appearance,
@@ -1570,12 +1572,12 @@ Directional Focus Navigation: the 'nav-up', 'nav-right', 'nav-down', 'nav-left' 
 			The &lt;target-name&gt; parameter indicates the target frame for the focus navigation.
 			It is a <<string>> and it MUST NOT start with the underscore "_" character.
 			Error handling: if it does start with an underscore, "_parent" navigates to the parent frame,
-			"_root" is treated as ''root'',
+			"_root" is treated as ''nav-up/root'',
 			and other values navigate to a frame by that name if it exists.
 			If the specified target frame does not exist,
-			the parameter will be treated as the keyword ''current'',
+			the parameter will be treated as the keyword ''nav-up/current'',
 			which means to simply use the frame that the element is in.
-			The keyword ''root'' indicates that the user agent should target the full window.
+			The keyword ''nav-up/root'' indicates that the user agent should target the full window.
 	</dl>
 
 	User agents for devices with directional navigation keys
@@ -2022,7 +2024,7 @@ Animation type: discrete
 </pre>
 
 The 'interactivity' property specifies whether an element and its [=flat tree=] descendants
-(including [=text runs=])
+(including [=text nodes=])
 are [=inert=] or not.
 
 <dl dfn-type=value dfn-for=interactivity>
@@ -2035,15 +2037,15 @@ are [=inert=] or not.
 </dl>
 
 <div algorithm>
-	When an [=element=] or [=text run=] is <dfn export>inert</dfn>:
+	When an [=/element=] or [=text node=] is <dfn export>inert</dfn>:
 
-	* Hit-testing must act as if 'pointer-event' was ''pointer-events/none'',
+	* Hit-testing must act as if 'pointer-events' was ''pointer-events/none'',
 		regardless of its actual value.
 	* Text selection must act as if 'user-select' was ''user-select/none'',
 		regardless of its actual value.
-	* If the [=element=] or [=text run=] is editable,
+	* If the [=/element=] or [=text node=] is editable,
 		it must behave as if it was non-editable.
-	* The [=element=] or [=text run=] should be ignored
+	* The [=/element=] or [=text node=] should be ignored
 		for the purposes of find-in-page and similar searching actions.
 
 	User agents may allow the user 
@@ -2090,6 +2092,87 @@ In these instances, the <{input/disabled}> attribute is probably more appropriat
 	for any other elements that escape inertness by default.
 </div>
 
+
+<h3 id="interest">
+User Interest Delay: the 'interest-delay-*' properties</h3>
+
+	<pre class="propdef">
+	Name: interest-delay-start, interest-delay-end
+	Value: normal | <<time>>
+	Initial: ''interest-delay/normal''
+	Applies to: all elements
+	Inherited: yes
+	Percentages: n/a
+	Computed value: the keyword ''interest-delay/normal'' or a computed time
+	Canonical order: per grammar
+	Animation type: by computed value type
+	</pre>
+
+	<pre class="propdef shorthand">
+	Name: interest-delay
+	Value: <<'interest-delay-start'>>
+	</pre>
+
+	Some [=host language=] features
+	can be activated when a user "shows interest" in an element.
+	Exactly what this means is up to the [=host language=] and [=user agent=]
+	(for example, the HTML <{html-global/interestfor}> attribute),
+	but a common property of such features
+	is that "interest" shouldn't be gained or lost <em>instantly</em>.
+
+	For example, if "interest" can be shown by hovering the cursor over an element,
+	briefly passing the cursor over the element
+	while moving the cursor over the page
+	should not (at least by default) indicate "interest"--
+	that could result in UI confusingly popping up and disappearing
+	while the user is performing unrelated tasks.
+
+	Similarly, once interest has been shown,
+	it should not (at least by default)
+	<em>lose</em> interest instantaneously either.
+	Again, as an example,
+	if the user "shows interest" in a link by hovering the cursor over it,
+	causing a child popup list to appear next to it,
+	moving the cursor from the link to the popup
+	likely involves briefly leaving both the link and the list,
+	but shouldn't cause the list to "lose interest"
+	and close the popup.
+
+	The 'interest-delay' shorthand,
+	and its 'interest-delay-start' and 'interest-delay-end' longhands,
+	allow control of the <dfn export>interest start delay</dfn>
+	and <dfn>interest end delay</dfn>
+	for these features
+	on a given element.
+	Its possible values are:
+
+	<dl dfn-type=value dfn-for="interest-delay, interest-delay-start, interest-delay-end">
+		: <dfn>normal</dfn>
+		:: The [=interest start delay=] and/or the [=interest end delay=]
+			are UA-defined.
+			They can be chosen to match platform conventions.
+
+			These delays <em>should not</em> be zero.
+			They <em>may</em> be different from each other,
+			and may vary depending on the way the user is showing interest.
+			(For example, a "hover" and a "long press"
+			might use different delays for indicating interest.)
+
+		: <dfn><<time>></dfn>
+		:: Specifies that the [=interest start delay=] and/or the [=interest end delay=]
+			are the specified duration.
+	</dl>
+
+	The 'interest-delay' shorthand
+	sets both 'interest-delay-start' and 'interest-delay-end'
+	to the same specified value.
+
+	Note: In the future, the syntax of these properties might be expanded
+	to allow for customizing the delay
+	depending on feature
+	and how the user is showing interest.
+	(For example, providing different delays
+	for hovering vs long-pressing.)
 
 
 <h2 id="styling-widgets" oldids="form-styling, control-styling">
@@ -2247,7 +2330,7 @@ Switching appearance: the 'appearance' property</h3>
 	<a>widgets</a> are typically rendered by UAs using native UI controls of the host operating system,
 	which can neither be replicated nor styled using CSS.
 
-	The term <dfn export>widget</dfn> in this specification denotes [=replaced=] elements that can have <dfn export>native appearance</dfn>,
+	The term <dfn export>widget</dfn> in this specification denotes [=replaced=] elements that can have <dfn export lt="native appearance|native render|natively render">native appearance</dfn>,
 	meaning that they are rendered like analogous native widgets or controls of the host operating system or platform,
 	or with a look and feel not otherwise expressible in CSS.
 	It is up to the host language (e.g., HTML [[HTML]]) to define which elements can have <a>native appearance</a>.
@@ -2453,28 +2536,29 @@ Switching appearance: the 'appearance' property</h3>
 	to ensure that the intended appearance is preserved,
 	or because these properties may not be meaningful for the chosen appearance.
 
-	<dfn>Disregarding</dfn> a property means that
+	<dfn lt="disregard">Disregarding</dfn> a property means that
 	the user agent treats it as if it didn't [=apply to=] the widget in question.
 	Nevertheless,
 	unless an explicit exception is specified (for compatibility reasons),
 	the user agent must still determine the [=computed value=] of any [=disregarded=] property
 	according to the usual rules.
 
-  In more detail, the rules for disregarding properties for [=natively rendered=] widgets are:
+	In more detail, the rules for disregarding properties for [=natively rendered=] widgets are:
+
 	<ul>
-  	<li>	CSS properties that impact the box sizing or position of the widget's box (such as the [=sizing properties=]),
-	or their visual appearance outside of the box (such as 'transform', 'filter' or 'box-shadow'), must be applied to
-	 [=widgets=] rendered with their [=native appearance=]. The widget's box participates in the rest of layout like any other replaced element.
-	  <li> Properties that affect the internal box model sizing of the widget's box (such as 'box-sizing', 'padding', 'border' or 'margin') may be disregarded when needed.
-	  <li> Other properties that affect painting (like 'background-color') may be disregarded when needed.
-	  <li> User agents should take into account CSS properties that affect writing modes or font-related properties when possible,
+		<li>CSS properties that impact the box sizing or position of the widget's box (such as the [=sizing properties=]),
+			or their visual appearance outside of the box (such as 'transform', 'filter' or 'box-shadow'), must be applied to
+			[=widgets=] rendered with their [=native appearance=]. The widget's box participates in the rest of layout like any other replaced element.
+		<li> Properties that affect the internal box model sizing of the widget's box (such as 'box-sizing', 'padding', 'border' or 'margin') may be disregarded when needed.
+		<li> Other properties that affect painting (like 'background-color') may be disregarded when needed.
+		<li> User agents should take into account CSS properties that affect writing modes or font-related properties when possible,
 	when rendering text within the widget.
-	  <li> The 'object-fit' property does not apply.
+		<li> The 'object-fit' property does not apply.
 	</ul>
 
 	<div class=example>
-	  Some user agents respect the 'border' and 'padding' CSS properties for a &lt;select&gt; rendered with [=native appearance=], but
-	  not for &lt;input type=checkbox&gt;.
+		Some user agents respect the 'border' and 'padding' CSS properties for a &lt;select&gt; rendered with [=native appearance=], but
+		not for &lt;input type=checkbox&gt;.
 	</div>
 
 	Native rendering of widgets may overflow the size of its box if its intrinsic sizing exceeds that size.
