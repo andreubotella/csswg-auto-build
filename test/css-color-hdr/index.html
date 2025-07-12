@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-hdr-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="b5312ce985daef0e0a2f070130472d58892512cc" name="revision">
+  <meta content="6d3a3ac7106426beaa4445ecadf67d08818737a7" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -833,7 +833,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Color HDR Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-06-19">19 June 2025</time></p>
+    <time class="dt-updated" datetime="2025-07-11">11 July 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1288,11 +1288,11 @@ div.photogrid img <c- p>{</c-> <c- k>dynamic-range-limit</c-><c- p>:</c-> constr
 </pre>
    </div>
    <h3 class="heading settled" data-level="3.2" id="dynamic-range-limit-mix"><span class="secno">3.2. </span><span class="content">Mixing Dynamic Range Limits: the <a class="css" data-link-type="maybe" href="#funcdef-dynamic-range-limit-mix" id="ref-for-funcdef-dynamic-range-limit-mix②">dynamic-range-limit-mix()</a> function</span><a class="self-link" href="#dynamic-range-limit-mix"></a></h3>
-   <p>This function takes two or more <a class="property css" data-link-type="property" href="#propdef-dynamic-range-limit" id="ref-for-propdef-dynamic-range-limit①">dynamic-range-limit</a> values,
+   <p>This function takes one or more <a class="property css" data-link-type="property" href="#propdef-dynamic-range-limit" id="ref-for-propdef-dynamic-range-limit①">dynamic-range-limit</a> values,
 	converts them internally to a value in stops above HDR reference white,
 	and alters the display to the result of mixing them
 	by the specified amount.
-	The actual calculated result is not exposed.</p>
+	For privacy reasons, the actual calculated result is not exposed.</p>
 <pre class="prod"><dfn class="dfn-paneled" data-dfn-type="function" data-export id="funcdef-dynamic-range-limit-mix">dynamic-range-limit-mix()</dfn> = dynamic-range-limit-mix( [ <a class="production" data-link-type="property" href="#propdef-dynamic-range-limit" id="ref-for-propdef-dynamic-range-limit②">&lt;'dynamic-range-limit'></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-all" id="ref-for-comb-all">&amp;&amp;</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value">&lt;percentage [0,100]></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma">#{2,}</a> )
 </pre>
    <details class="wpt-tests-block" dir="ltr" lang="en" open>
@@ -1386,6 +1386,7 @@ div.photogrid img <c- p>{</c-> <c- k>dynamic-range-limit</c-><c- p>:</c-> constr
 	whose value is automatically calculated based on the <a data-link-type="dfn" href="#hdr-headroom" id="ref-for-hdr-headroom①">HDR headroom</a>.</p>
    <p>It does this by specifying two <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-color-5/#typedef-color" id="ref-for-typedef-color④">&lt;color></a> values,
 	each with an associated level of HDR headroom.
+	(The two headroom values must not be the same).
 	The actual value is computed by interpolating between these two colors,
 	based on the current amount of HDR headroom,
 	as described in <a href="#headroom-interpolation">§ 5.1 Interpolating colors based on headroom</a>.</p>
@@ -1393,7 +1394,7 @@ div.photogrid img <c- p>{</c-> <c- k>dynamic-range-limit</c-><c- p>:</c-> constr
 	This is a similar mechanism to gain maps, 
 	in raster images conforming to <a data-link-type="biblio" href="#biblio-iso_21496-1" title="Gain map metadata for image conversion: Part 1: Dynamic Range Conversion">[ISO_21496-1]</a>.
 	</div>
-   <p>The actual calculated color is not exposed,
+   <p>For privacy reasons, the actual calculated color is not exposed,
 	nor is the actual HDR headroom,
 	as this is a fingerprinting vector.</p>
    <p>Its syntax is as follows:</p>
@@ -1416,8 +1417,25 @@ div.photogrid img <c- p>{</c-> <c- k>dynamic-range-limit</c-><c- p>:</c-> constr
 	this color will display as</p>
 <pre class="lang-css highlight"><c- nf>color</c-><c- p>(</c->rec2100-linear <c- m>1.8</c-> <c- m>2.0</c-> <c- m>1.5</c-><c- p>)</c-> <c- m>2</c-><c- p>);</c-></pre>
     <p>For displays whose headroom lies between 0 and 2, the color is
-	interpolated. For example, on a display with HDR headroom 1:</p>
-    <p>@@ Add to the example with the calculated result at headroom 1 @@</p>
+	interpolated. For <a href="#ex-hdr-interpolate">example</a>, 
+	on a display with HDR headroom 1:</p>
+    <p>X = 243.664, Y = 275.713, Z = 244.000</p>
+   </div>
+   <p>Colors are interpolated in <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="absolute-d65-cie-xyz">Absolute D65 CIE XYZ</dfn>.</p>
+   <p>This is derived from <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-xyz-d65" id="ref-for-valdef-color-xyz-d65">xyz-d65</a>
+	by multiplying each color component by 203 <a data-link-type="biblio" href="#biblio-rpt_bt2408" title="Report ITU-R BT.2408-0 Operational practices in HDR television production">[Rpt_BT.2408]</a>
+	to convert from relative units (Y of white is 1, regardless of actual brightness)
+	to absolute units of cd/m², also called "nits".
+	In the <a href="#scolor-conversion-code">sample code</a>,
+	this constant is denoted <var>Yw</var>,
+	the luminance of HDR Reference White.</p>
+   <div class="example" id="ex-rel-to-abs">
+    <a class="self-link" href="#ex-rel-to-abs"></a>
+		For example, the css color <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white③">white</a> is 
+		
+<pre class="lang-css highlight"><c- nf>color</c-><c- p>(</c->xyz-d65 <c- m>0.9505</c-> <c- m>1</c-> <c- m>1.089</c-><c- p>)</c-></pre>
+    <p>In absolute D65 XYX this is
+		[192.9426, 203, 221.0787]</p>
    </div>
    <h3 class="heading settled" data-level="5.1" id="headroom-interpolation"><span class="secno">5.1. </span><span class="content">
 	Interpolating colors based on headroom
@@ -1428,9 +1446,9 @@ div.photogrid img <c- p>{</c-> <c- k>dynamic-range-limit</c-><c- p>:</c-> constr
 	when the target headroom is <var>H</var>:</p>
    <ol>
     <li data-md>
-     <p>Let <var>c1xyz</var> be <var>c1</var> converted to D65 CIE XYZ</p>
+     <p>Let <var>c1xyz</var> be <var>c1</var> converted to <a data-link-type="dfn" href="#absolute-d65-cie-xyz" id="ref-for-absolute-d65-cie-xyz">Absolute D65 CIE XYZ</a></p>
     <li data-md>
-     <p>Let <var>c2xyz</var> be <var>c2</var> converted to D65 CIE XYZ</p>
+     <p>Let <var>c2xyz</var> be <var>c2</var> converted to <a data-link-type="dfn" href="#absolute-d65-cie-xyz" id="ref-for-absolute-d65-cie-xyz①">Absolute D65 CIE XYZ</a></p>
     <li data-md>
      <p>Let <var> w1</var> = clamp((<var>H</var> - <var>H2</var>) / (<var>H1</var> - <var>H2</var>), 0, 1)</p>
     <li data-md>
@@ -1439,20 +1457,40 @@ Note that <var> w2</var> = 1 - <var> w1</var></p>
     <li data-md>
      <p>Let <var>eps</var> = 0.001 (one JND in linear-light space)</p>
     <li data-md>
-     <p>Let <var>cxyz</var> = pow(<var>c1xyz</var> + <var>eps</var>, <var>w1</var>) * pow(<var>c2xyz</var> + <var>eps</var>, <var>w2</var>) - <var>eps</var></p>
+     <p>Let <var>cxyz</var> = Array(3)</p>
+    <li data-md>
+     <p>For i from 0 to 2:
+Let <var>cxyz</var>[i] = pow(<var>c1xyz</var>[i] + <var>eps</var>, <var>w1</var> ) * pow(<var>c2xyz</var>[i] + <var>eps</var>, <var>w2</var> ) - <var>eps</var></p>
    </ol>
    <div class="example" id="ex-hdr-interpolate">
     <a class="self-link" href="#ex-hdr-interpolate"></a>
-	For example, given c1 = color(rec2100-linear 0.9 1.0 0.8)
+	For example, given c1 = color(rec2100-linear 0.9 1.0 0.8),
 	c2 = color(rec2100-linear 1.8 2.0 1.5),
 	H1 = 0, H2 = 2, and H = 1:
 
 	
-<pre class="lang-css highlight">c1xyz = <c- nf>color</c-><c- p>(</c->xyz-d65 <c- m>0.853</c-> <c- m>0.9619</c-> <c- m>0.8769</c-><c- p>)</c->
-c2xyz = <c- nf>color</c-><c- p>(</c->xyz-d65 <c- m>1.689</c-> <c- m>1.918</c-> <c- m>1.648</c-><c- p>)</c->
-w1 = 
-w2 =
+<pre class="lang-css highlight">c1xyz = <c- p>[</c-> <c- m>173.156</c-><c- p>,</c-> <c- m>195.260</c-><c- p>,</c-> <c- m>178.003</c-> <c- p>]</c->
+c2xyz = <c- p>[</c-> <c- m>342.883</c-><c- p>,</c-> <c- m>389.315</c-><c- p>,</c-> <c- m>334.467</c-> <c- p>]</c->
+w1 = <c- m>0.5</c->
+w2 = <c- m>0.5</c->
+cxyz = <c- p>[</c-> <c- m>243.664</c-><c- p>,</c-> <c- m>275.713</c-><c- p>,</c-> <c- m>244.000</c-> <c- p>]</c->
 </pre>
+   </div>
+   <div class="example" id="ex-hdr-interpolate-2">
+    <a class="self-link" href="#ex-hdr-interpolate-2"></a>
+		For exmple, given c1 = color(display-p3 1 1 0.33),
+		c2 = jzczhz(70% 0.14 100),
+		H1 = 0.5, H2 = 4 and H = 2;
+
+	
+<pre class="lang-css highlight">c1xyz = <c- p>[</c-> <c- m>156.285</c-><c- p>,</c-> <c- m>188.337</c-><c- p>,</c-> <c- m>28.015</c-> <c- p>]</c->
+c2xyz = <c- p>[</c-> <c- m>3776.1434</c-><c- p>,</c-> <c- m>4362.407</c-><c- p>,</c-> <c- m>1577.913</c-> <c- p>]</c->
+w1 = <c- m>0.571</c-> 
+w2 = <c- m>0.429</c->
+cxyz = <c- p>[</c-> <c- m>611.911</c-><c- p>,</c-> <c- m>724.180</c-><c- p>,</c-> <c- m>157.650</c-> <c- p>]</c->
+</pre>
+    <p>Note that c1 will be used unmodified at all headroom values &lt;= 0.5,
+	and c2 will be used unmodified at all headroom values >= 4.</p>
    </div>
    <h2 class="heading settled" data-level="6" id="DI-HDR"><span class="secno">6. </span><span class="content">
 	Device-Independent HDR Colors
@@ -1585,7 +1623,7 @@ w2 =
 		This color can be displayed for long periods,
 		or used for subtitles,
 		on any sized area of the screen.
-		It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white③">white</a>.
+		It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white④">white</a>.
 		Diffuse white is 203 cd/m²  <a data-link-type="biblio" href="#biblio-rec_bt2100" title="ITU-R BT.2100-2 Image parameter values for high dynamic range television for use in production and international programme exchange">[Rec_BT.2100]</a>.
 		
 <pre><span class="swatch" style="--color: white"></span> ictcp(0.58069 0 0)
@@ -1658,7 +1696,7 @@ after <a data-link-type="dfn" href="https://drafts.csswg.org/css-color-5/#requir
 			This color can be displayed for long periods,
 			or used for subtitles,
 			on any sized area of the screen.
-			It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white④">white</a>.
+			It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white⑤">white</a>.
 			Diffuse white is 203 cd/m²  <a data-link-type="biblio" href="#biblio-rec_bt2100" title="ITU-R BT.2100-2 Image parameter values for high dynamic range television for use in production and international programme exchange">[Rec_BT.2100]</a>.
 			
 <pre><span class="swatch" style="--color: white"></span> jzazbz(0.22207 -0.00016 -0.00012)
@@ -1881,7 +1919,7 @@ normalized to a [0, 360] range. 90 is equivalent to 90deg.</p>
 		This color can be displayed for long periods,
 		or used for subtitles,
 		on any sized area of the screen.
-		It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white⑤">white</a>.
+		It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white⑥">white</a>.
 		Diffuse white is 203 cd/m²  <a data-link-type="biblio" href="#biblio-rec_bt2100" title="ITU-R BT.2100-2 Image parameter values for high dynamic range television for use in production and international programme exchange">[Rec_BT.2100]</a>.
 		
 <pre><span class="swatch" style="--color: white"></span> color(rec2100-pq 0.58 0.58 0.58);
@@ -2057,7 +2095,7 @@ xPQ <c- o>=</c-> <c- p>(((</c->c1 <c- o>+</c-> <c- p>(</c->c2 <c- o>*</c-> <c- p
 		This color can be displayed for long periods,
 		or used for subtitles,
 		on any sized area of the screen.
-		It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white⑥">white</a>.
+		It is the same color as sRGB <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-white" id="ref-for-valdef-color-white⑦">white</a>.
 		Diffuse white is 203 cd/m²  <a data-link-type="biblio" href="#biblio-rec_bt2100" title="ITU-R BT.2100-2 Image parameter values for high dynamic range television for use in production and international programme exchange">[Rec_BT.2100]</a>.
 		
 <pre><span class="swatch" style="--color: white"></span> color(rec2100-linear 1 1 1)
@@ -2554,7 +2592,7 @@ in a user stylesheet.</p>
 		(<a href="https://github.com/w3c/csswg-drafts/issues/11698">#11698</a>)
     <li>Define epsilon on chroma of JzCzhz, for missing hue
 		(<a href="https://github.com/w3c/csswg-drafts/issues/11706">#11706</a>)
-    <li>Properly exported, and consisgtently used, the term "required conversion"
+    <li>Properly exported, and consistently used, the term "required conversion"
     <li>Removed erroneous negative chroma reference range in JzCzhz
     <li>Added RCS component keywords for relative ictcp, jzazbz, and jzczhz 
 		(<a href="https://github.com/w3c/csswg-drafts/issues/11713">#11713</a>)
@@ -2745,6 +2783,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#valdef-jzazbz-a">a</a><span>, in § 6.4</span>
+   <li><a href="#absolute-d65-cie-xyz">Absolute D65 CIE XYZ</a><span>, in § 5</span>
    <li>
     alpha
     <ul>
@@ -2811,6 +2850,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="dd998a01">rgba()</span>
      <li><span class="dfn-paneled" id="a9f3f13b">sRGB</span>
      <li><span class="dfn-paneled" id="e5aac9c3">white</span>
+     <li><span class="dfn-paneled" id="f77085d6">xyz-d65</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-COLOR-5]</a> defines the following terms:
@@ -3145,15 +3185,17 @@ let dfnPanelData = {
 "9cd25054": {"dfnID":"9cd25054","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"10.1. \nSerializing values of the color() function"}],"url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
 "a44164ce": {"dfnID":"a44164ce","dfnText":"oklab()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-oklab"}],"title":"4. The <color> syntax"}],"url":"https://drafts.csswg.org/css-color-5/#funcdef-oklab"},
 "a9f3f13b": {"dfnID":"a9f3f13b","dfnText":"sRGB","external":true,"refSections":[{"refs":[{"id":"ref-for-sRGB-space"},{"id":"ref-for-sRGB-space\u2460"}],"title":"2.1. Defining Dynamic Range"}],"url":"https://drafts.csswg.org/css-color-4/#sRGB-space"},
+"absolute-d65-cie-xyz": {"dfnID":"absolute-d65-cie-xyz","dfnText":"Absolute D65 CIE XYZ","external":false,"refSections":[{"refs":[{"id":"ref-for-absolute-d65-cie-xyz"},{"id":"ref-for-absolute-d65-cie-xyz\u2460"}],"title":"5.1. \n\tInterpolating colors based on headroom\n"}],"url":"#absolute-d65-cie-xyz"},
 "c4249aed": {"dfnID":"c4249aed","dfnText":"oklch()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-oklch"}],"title":"4. The <color> syntax"}],"url":"https://drafts.csswg.org/css-color-5/#funcdef-oklch"},
 "c9ce3bd4": {"dfnID":"c9ce3bd4","dfnText":"color space","external":true,"refSections":[{"refs":[{"id":"ref-for-color-space"}],"title":"7. \n\tSpecifying Predefined and Custom Color Spaces: the color() Function\n"}],"url":"https://drafts.csswg.org/css-color-4/#color-space"},
 "color-re-rendering": {"dfnID":"color-re-rendering","dfnText":"color re-rendering","external":false,"refSections":[],"url":"#color-re-rendering"},
 "dd998a01": {"dfnID":"dd998a01","dfnText":"rgba()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-rgba"}],"title":"4. The <color> syntax"}],"url":"https://drafts.csswg.org/css-color-4/#funcdef-rgba"},
 "dynamic-range": {"dfnID":"dynamic-range","dfnText":"Dynamic range","external":false,"refSections":[],"url":"#dynamic-range"},
 "e10c8e34": {"dfnID":"e10c8e34","dfnText":"<hue>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-hue"}],"title":"4. The <color> syntax"}],"url":"https://drafts.csswg.org/css-color-4/#typedef-hue"},
-"e5aac9c3": {"dfnID":"e5aac9c3","dfnText":"white","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-white"},{"id":"ref-for-valdef-color-white\u2460"},{"id":"ref-for-valdef-color-white\u2461"}],"title":"3.1. The dynamic-range-limit property"},{"refs":[{"id":"ref-for-valdef-color-white\u2462"}],"title":"6.3. ICtCp"},{"refs":[{"id":"ref-for-valdef-color-white\u2463"}],"title":"6.4. Jzazbz"},{"refs":[{"id":"ref-for-valdef-color-white\u2464"}],"title":"8.1. rec2100-pq"},{"refs":[{"id":"ref-for-valdef-color-white\u2465"}],"title":"8.3. rec2100-linear"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-white"},
+"e5aac9c3": {"dfnID":"e5aac9c3","dfnText":"white","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-white"},{"id":"ref-for-valdef-color-white\u2460"},{"id":"ref-for-valdef-color-white\u2461"}],"title":"3.1. The dynamic-range-limit property"},{"refs":[{"id":"ref-for-valdef-color-white\u2462"}],"title":"5. HDR colors parameterized by headroom: the hdr-color() function"},{"refs":[{"id":"ref-for-valdef-color-white\u2463"}],"title":"6.3. ICtCp"},{"refs":[{"id":"ref-for-valdef-color-white\u2464"}],"title":"6.4. Jzazbz"},{"refs":[{"id":"ref-for-valdef-color-white\u2465"}],"title":"8.1. rec2100-pq"},{"refs":[{"id":"ref-for-valdef-color-white\u2466"}],"title":"8.3. rec2100-linear"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-white"},
 "f0809abc": {"dfnID":"f0809abc","dfnText":"&&","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-all"}],"title":"3.2. Mixing Dynamic Range Limits: the dynamic-range-limit-mix() function"},{"refs":[{"id":"ref-for-comb-all\u2460"}],"title":"5. HDR colors parameterized by headroom: the hdr-color() function"}],"url":"https://drafts.csswg.org/css-values-4/#comb-all"},
 "f4b08404": {"dfnID":"f4b08404","dfnText":"required conversion","external":true,"refSections":[{"refs":[{"id":"ref-for-required-conversion"},{"id":"ref-for-required-conversion\u2460"}],"title":"6.3. ICtCp"},{"refs":[{"id":"ref-for-required-conversion\u2461"},{"id":"ref-for-required-conversion\u2462"}],"title":"6.4. Jzazbz"},{"refs":[{"id":"ref-for-required-conversion\u2463"},{"id":"ref-for-required-conversion\u2464"},{"id":"ref-for-required-conversion\u2465"}],"title":"6.5. JzCzhz"}],"url":"https://drafts.csswg.org/css-color-5/#required-conversion"},
+"f77085d6": {"dfnID":"f77085d6","dfnText":"xyz-d65","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-xyz-d65"}],"title":"5. HDR colors parameterized by headroom: the hdr-color() function"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-xyz-d65"},
 "fa0623a2": {"dfnID":"fa0623a2","dfnText":"d65","external":true,"refSections":[{"refs":[{"id":"ref-for-d65"}],"title":"6.1. \n\tIntroducing ICtCp\n"},{"refs":[{"id":"ref-for-d65\u2460"}],"title":"6.3. ICtCp"},{"refs":[{"id":"ref-for-d65\u2461"},{"id":"ref-for-d65\u2462"}],"title":"6.4. Jzazbz"},{"refs":[{"id":"ref-for-d65\u2463"}],"title":"6.5. JzCzhz"},{"refs":[{"id":"ref-for-d65\u2464"}],"title":"8.1. rec2100-pq"},{"refs":[{"id":"ref-for-d65\u2465"}],"title":"8.2. rec2100-hlg"},{"refs":[{"id":"ref-for-d65\u2466"}],"title":"8.3. rec2100-linear"}],"url":"https://drafts.csswg.org/css-color-4/#d65"},
 "faaddccf": {"dfnID":"faaddccf","dfnText":"component keyword","external":true,"refSections":[{"refs":[{"id":"ref-for-component-keyword"}],"title":"6.3. ICtCp"},{"refs":[{"id":"ref-for-component-keyword\u2460"}],"title":"6.4. Jzazbz"},{"refs":[{"id":"ref-for-component-keyword\u2461"}],"title":"6.5. JzCzhz"}],"url":"https://drafts.csswg.org/css-color-5/#component-keyword"},
 "funcdef-dynamic-range-limit-mix": {"dfnID":"funcdef-dynamic-range-limit-mix","dfnText":"dynamic-range-limit-mix()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-dynamic-range-limit-mix"},{"id":"ref-for-funcdef-dynamic-range-limit-mix\u2460"}],"title":"3.1. The dynamic-range-limit property"},{"refs":[{"id":"ref-for-funcdef-dynamic-range-limit-mix\u2461"}],"title":"3.2. Mixing Dynamic Range Limits: the dynamic-range-limit-mix() function"},{"refs":[{"id":"ref-for-funcdef-dynamic-range-limit-mix\u2462"},{"id":"ref-for-funcdef-dynamic-range-limit-mix\u2463"}],"title":"3.3. \n\tComputed Value for dynamic-range-limit\n"}],"url":"#funcdef-dynamic-range-limit-mix"},
@@ -3595,6 +3637,7 @@ document.addEventListener("DOMContentLoaded", setTypeTitles);
 "use strict";
 {
 let refsData = {
+"#absolute-d65-cie-xyz": {"displayText":"absolute d65 cie xyz","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-color-hdr","spec":"css-color-hdr-1","status":"local","text":"absolute d65 cie xyz","type":"dfn","url":"#absolute-d65-cie-xyz"},
 "#funcdef-dynamic-range-limit-mix": {"displayText":"dynamic-range-limit-mix()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-color-hdr","spec":"css-color-hdr-1","status":"local","text":"dynamic-range-limit-mix()","type":"function","url":"#funcdef-dynamic-range-limit-mix"},
 "#funcdef-hdr-color": {"displayText":"hdr-color()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-color-hdr","spec":"css-color-hdr-1","status":"local","text":"hdr-color()","type":"function","url":"#funcdef-hdr-color"},
 "#funcdef-ictcp": {"displayText":"ictcp()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-color-hdr","spec":"css-color-hdr-1","status":"local","text":"ictcp()","type":"function","url":"#funcdef-ictcp"},
@@ -3621,6 +3664,7 @@ let refsData = {
 "https://drafts.csswg.org/css-color-4/#typedef-hue": {"displayText":"<hue>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"<hue>","type":"type","url":"https://drafts.csswg.org/css-color-4/#typedef-hue"},
 "https://drafts.csswg.org/css-color-4/#valdef-color-none": {"displayText":"none","export":true,"for_":["<color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"none","type":"value","url":"https://drafts.csswg.org/css-color-4/#valdef-color-none"},
 "https://drafts.csswg.org/css-color-4/#valdef-color-white": {"displayText":"white","export":true,"for_":["<color>","<named-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"white","type":"value","url":"https://drafts.csswg.org/css-color-4/#valdef-color-white"},
+"https://drafts.csswg.org/css-color-4/#valdef-color-xyz-d65": {"displayText":"xyz-d65","export":true,"for_":["color()"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"xyz-d65","type":"value","url":"https://drafts.csswg.org/css-color-4/#valdef-color-xyz-d65"},
 "https://drafts.csswg.org/css-color-4/#valdef-lab-lab": {"displayText":"lab","export":true,"for_":["lab()"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"lab","type":"value","url":"https://drafts.csswg.org/css-color-4/#valdef-lab-lab"},
 "https://drafts.csswg.org/css-color-5/#component-keyword": {"displayText":"component keyword","export":false,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"current","text":"component keyword","type":"dfn","url":"https://drafts.csswg.org/css-color-5/#component-keyword"},
 "https://drafts.csswg.org/css-color-5/#funcdef-color": {"displayText":"color()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"current","text":"color()","type":"function","url":"https://drafts.csswg.org/css-color-5/#funcdef-color"},
