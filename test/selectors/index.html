@@ -5,10 +5,10 @@
   <title>Selectors Level 4</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 618007319, updated Thu Jun 26 17:23:55 2025 -0700" name="generator">
+  <meta content="Bikeshed version 7a96e07ec, updated Mon Jul 14 11:12:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/selectors-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="94fdd8ab1e7fa6c9ee098cbf1ee22e8f3911636b" name="revision">
+  <meta content="1d71bf702efe9d408dbf8bf90ba250afeef730e3" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1104,7 +1104,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">Selectors Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-05-06">6 May 2025</time></p>
+    <time class="dt-updated" datetime="2025-07-14">14 July 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1184,7 +1184,7 @@ on screen, on paper, etc.
 </p>
    <ul>
     <li>the column combinator
-    <li><a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class">user action pseudo-classes</a> applying to non-<u class="link-error" data-lt="tree-abiding" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;tree-abiding&apos;.">tree-abiding</u> <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element">pseudo-elements</a>
+    <li><a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class">user action pseudo-classes</a> applying to non-<a data-link-type="dfn" href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding">tree-abiding pseudo-elements</a>
     <li>the <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo">:blank</a> pseudo-class
    </ul>
    <p>“At-risk” is a W3C Process term-of-art, and does not necessarily imply that the feature is in danger of being dropped or delayed. It means that the WG believes the feature may have difficulty being interoperably implemented in a timely manner, and marking it as such allows the WG to drop the feature if necessary when transitioning to the Proposed Rec stage, without having to publish a new Candidate Rec without the feature first.</p>
@@ -1310,9 +1310,7 @@ The Link History Pseudo-classes: <span class="css">:link</span> and <span class=
 The Local Link Pseudo-class: <span class="css">:local-link</span></span></a>
       <li><a href="#the-target-pseudo"><span class="secno">8.4</span> <span class="content">
 The Target Pseudo-class: <span class="css">:target</span></span></a>
-      <li><a href="#the-target-within-pseudo"><span class="secno">8.5</span> <span class="content">
-The Target Container Pseudo-class: <span class="css">:target-within</span></span></a>
-      <li><a href="#the-scope-pseudo"><span class="secno">8.6</span> <span class="content">
+      <li><a href="#the-scope-pseudo"><span class="secno">8.5</span> <span class="content">
 The Reference Element Pseudo-class: <span class="css">:scope</span></span></a>
      </ol>
     <li>
@@ -1391,9 +1389,7 @@ The Default-option Pseudo-class: <span class="css">:default</span></span></a>
 Input Value States</span></a>
        <ol class="toc">
         <li><a href="#checked"><span class="secno">13.2.1</span> <span class="content">
-The Selected-option Pseudo-class: <span class="css">:checked</span></span></a>
-        <li><a href="#indeterminate"><span class="secno">13.2.2</span> <span class="content">
-The Indeterminate-value Pseudo-class: <span class="css">:indeterminate</span></span></a>
+The Selected-option Pseudo-classes: <span class="css">:checked</span>, <span class="css">:unchecked</span>, and <span class="css">:indeterminate</span></span></a>
        </ol>
       <li>
        <a href="#ui-validity"><span class="secno">13.3</span> <span class="content">
@@ -1871,20 +1867,11 @@ Selectors Overview</span><a class="self-link" href="#overview"></a></h2>
       <td>3
 			
      <tr>
-      <td><code>E:target-within</code>
-				
-      <td>an E element that is the target of the current URL or contains an element that does.
-				
-      <td><a href="#the-target-within-pseudo">§ 8.5 The Target Container Pseudo-class: :target-within</a>
-				
-      <td>4
-			
-     <tr>
       <td><code>E:scope</code>
 				
       <td>an E element being a <a data-link-type="dfn" href="#scoping-root" id="ref-for-scoping-root">scoping root</a>
 				
-      <td><a href="#the-scope-pseudo">§ 8.6 The Reference Element Pseudo-class: :scope</a>
+      <td><a href="#the-scope-pseudo">§ 8.5 The Reference Element Pseudo-class: :scope</a>
 				
       <td>4
 		
@@ -2013,24 +2000,17 @@ Selectors Overview</span><a class="self-link" href="#overview"></a></h2>
       <td>3-UI/4
 			
      <tr>
-      <td><code>E:checked</code>
+      <td><code>E:checked</code><br><code>E:unchecked</code><br><code>E:indeterminate</code>
 				
       <td>a user interface element E that is checked/selected
-					(for instance a radio-button or checkbox)
+					(for instance a radio-button or checkbox),
+					unchecked,
+					or in an indeterminate state
+					(neither checked nor unchecked)
 				
-      <td><a href="#checked">§ 13.2.1 The Selected-option Pseudo-class: :checked</a>
+      <td><a href="#input-value-states">§ 13.2 Input Value States</a>
 				
       <td>3
-			
-     <tr>
-      <td><code>E:indeterminate</code>
-				
-      <td>a user interface element E that is in an indeterminate state
-						(neither checked nor unchecked)
-				
-      <td><a href="#indeterminate">§ 13.2.2 The Indeterminate-value Pseudo-class: :indeterminate</a>
-				
-      <td>4
 			
      <tr>
       <td><code>E:valid</code><br><code>E:invalid</code>
@@ -2299,14 +2279,14 @@ Structure and Terminology</span><a class="self-link" href="#structure"></a></h3>
 	no whitespace is allowed between the <a data-link-type="dfn" href="#simple" id="ref-for-simple⑥">simple selectors</a>
 	in a <a data-link-type="dfn" href="#compound" id="ref-for-compound①⓪">compound selector</a>.</p>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="pseudo-compound">pseudo-compound selector</dfn>
-	is a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①">pseudo-element</a> selector,
+	is a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element">pseudo-element</a> selector,
 	optionally followed by additional <a data-link-type="dfn" href="#pseudo-class" id="ref-for-pseudo-class①">pseudo-class</a> selectors,
 	and optionally preceded by a <a data-link-type="dfn" href="#compound" id="ref-for-compound①①">compound selector</a>
 	or another <a data-link-type="dfn" href="#pseudo-compound" id="ref-for-pseudo-compound">pseudo-compound selector</a>,
 	without any <a data-link-type="dfn" href="#selector-combinator" id="ref-for-selector-combinator①">combinators</a>.
 	(A <span id="ref-for-pseudo-compound①">pseudo-compound selector</span> is represented by <a class="production css" data-link-type="type" href="#typedef-pseudo-compound-selector" id="ref-for-typedef-pseudo-compound-selector">&lt;pseudo-compound-selector></a>
 	in the selectors <a href="#grammar">grammar</a>.)
-	A <span id="ref-for-pseudo-element②">pseudo-element</span> <a data-link-type="dfn" href="#match" id="ref-for-match②">matches</a> a <span id="ref-for-pseudo-compound②">pseudo-compound selector</span>
+	A <span id="ref-for-pseudo-element①">pseudo-element</span> <a data-link-type="dfn" href="#match" id="ref-for-match②">matches</a> a <span id="ref-for-pseudo-compound②">pseudo-compound selector</span>
 	when it has the specified pseudo-element name,
 	matches the additional conditions represented by any <span id="ref-for-pseudo-class②">pseudo-classes</span>,
 	and has an <a data-link-type="dfn" href="#originating-element" id="ref-for-originating-element">originating element</a>
@@ -2353,7 +2333,7 @@ Structure and Terminology</span><a class="self-link" href="#structure"></a></h3>
 	is said to <a data-link-type="dfn" href="#match" id="ref-for-match④">match</a> a <a data-link-type="dfn" href="#complex" id="ref-for-complex①">complex selector</a>
 	when it matches the final <span id="ref-for-compound①⑧">compound</span>/<span id="ref-for-pseudo-compound⑧">pseudo-compound selector</span> in the sequence,
 	and every preceding unit of the sequence also <span id="ref-for-match⑤">matches</span>
-	an element or <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③">pseudo-element</a>,
+	an element or <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②">pseudo-element</a>,
 	with the correct relationship between consecutive units
 	as expressed by the combinators separating them
 	(or, for <span id="ref-for-pseudo-compound⑨">pseudo-compound selectors</span>,
@@ -2576,7 +2556,7 @@ Pseudo-classes</span><a class="self-link" href="#pseudo-classes"></a></h3>
     <a class="self-link" href="#example-6916597f"></a>
 		For instance, document languages do not offer mechanisms to access
 		the first letter or first line of an element’s content,
-		but there exist <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element④">pseudo-elements</a>
+		but there exist <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③">pseudo-elements</a>
 		(<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter" id="ref-for-selectordef-first-letter">::first-letter</a> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line" id="ref-for-selectordef-first-line②">::first-line</a>)
 		that allow those things to be styled.
 		Notice especially that in the case of <span class="css" id="ref-for-selectordef-first-line③">::first-line</span>,
@@ -2585,12 +2565,12 @@ Pseudo-classes</span><a class="self-link" href="#pseudo-classes"></a></h3>
 		that cannot be inferred from the document tree.
 
 
-    <p><a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element⑤">Pseudo-elements</a> can also represent content that doesn’t exist in the source document at all,
+    <p><a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element④">Pseudo-elements</a> can also represent content that doesn’t exist in the source document at all,
 		such as the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-before" id="ref-for-selectordef-before②">::before</a> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-after" id="ref-for-selectordef-after">::after</a> pseudo-elements
 		which allow additional content to be inserted before or after the contents of any element.</p>
    </div>
    <p>Like <a data-link-type="dfn" href="#pseudo-class" id="ref-for-pseudo-class①②">pseudo-classes</a>,
-	<a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element⑥">pseudo-elements</a> do not appear in or modify the document source or document tree.
+	<a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element⑤">pseudo-elements</a> do not appear in or modify the document source or document tree.
 	Accordingly, they also do not affect the interpretation of <a data-link-type="dfn" href="#structural-pseudo-classes" id="ref-for-structural-pseudo-classes">structural pseudo-classes</a>
 	or other selectors pertaining to their <a data-link-type="dfn" href="#originating-element" id="ref-for-originating-element④">originating element</a> or its tree.</p>
    <p>The host language defines which pseudo-elements exist, their type, and their abilities.
@@ -2598,29 +2578,29 @@ Pseudo-classes</span><a class="self-link" href="#pseudo-classes"></a></h3>
 	are defined in <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a> (Level 2), <a data-link-type="biblio" href="#biblio-select" title="Selectors Level 3">[SELECT]</a> (Level 3), and <a data-link-type="biblio" href="#biblio-css-pseudo-4" title="CSS Pseudo-Elements Module Level 4">[CSS-PSEUDO-4]</a> (Level 4).</p>
    <h4 class="heading settled" data-level="3.6.1" id="pseudo-element-syntax"><span class="secno">3.6.1. </span><span class="content">
 Syntax</span><a class="self-link" href="#pseudo-element-syntax"></a></h4>
-   <p>The syntax of a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element⑦">pseudo-element</a>
+   <p>The syntax of a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element⑥">pseudo-element</a>
 	is "::" (two U+003A COLON characters)
-	followed by the name of the <span id="ref-for-pseudo-element⑧">pseudo-element</span> as an <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#css-css-identifier" id="ref-for-css-css-identifier①">identifier</a>,
+	followed by the name of the <span id="ref-for-pseudo-element⑦">pseudo-element</span> as an <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#css-css-identifier" id="ref-for-css-css-identifier①">identifier</a>,
 	and, in the case of a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="functional-pseudo-element">functional pseudo-element</dfn>,
 	a pair of parentheses containing its arguments.
-	<span id="ref-for-pseudo-element⑨">Pseudo-element</span> names are <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive①">ASCII case-insensitive</a>.
+	<span id="ref-for-pseudo-element⑧">Pseudo-element</span> names are <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive①">ASCII case-insensitive</a>.
 	No <a data-link-type="dfn" href="#whitespace" id="ref-for-whitespace②">white space</a> is allowed between the two colons, or between the colons and the name.</p>
    <p>Because <a href="https://www.w3.org/TR/CSS1">CSS Level 1</a> and <a href="https://www.w3.org/TR/CSS2">CSS Level 2</a>
 	conflated pseudo-elements and pseudo-classes by sharing a single-colon syntax for both,
 	user agents must also accept the previous one-colon notation
 	for the Level 1 &amp; 2 pseudo-elements
 	(<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-before" id="ref-for-selectordef-before③">::before</a>, <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-after" id="ref-for-selectordef-after①">::after</a>, <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line" id="ref-for-selectordef-first-line④">::first-line</a>, and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter" id="ref-for-selectordef-first-letter①">::first-letter</a>).
-	This compatibility notation is not allowed for any other <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①⓪">pseudo-elements</a>.
+	This compatibility notation is not allowed for any other <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element⑨">pseudo-elements</a>.
 	However, as this syntax is deprecated,
-	authors should use the Level 3+ double-colon syntax for these <span id="ref-for-pseudo-element①①">pseudo-elements</span>.</p>
-   <p><a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①②">Pseudo-elements</a> are <a data-link-type="dfn" href="#featureless" id="ref-for-featureless⑥">featureless</a>,
+	authors should use the Level 3+ double-colon syntax for these <span id="ref-for-pseudo-element①⓪">pseudo-elements</span>.</p>
+   <p><a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①①">Pseudo-elements</a> are <a data-link-type="dfn" href="#featureless" id="ref-for-featureless⑥">featureless</a>,
 	and so can’t be matched by any other selector.</p>
    <h4 class="heading settled" data-level="3.6.2" id="pseudo-element-attachment"><span class="secno">3.6.2. </span><span class="content">
 Binding to the Document Tree</span><a class="self-link" href="#pseudo-element-attachment"></a></h4>
-   <p><a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①③">Pseudo-elements</a> do not exist independently in the tree:
+   <p><a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①②">Pseudo-elements</a> do not exist independently in the tree:
 	they are always bound to another element on the page,
 	called their <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="originating-element">originating element</dfn>.
-	Syntactically, a <span id="ref-for-pseudo-element①④">pseudo-element</span> immediately follows
+	Syntactically, a <span id="ref-for-pseudo-element①③">pseudo-element</span> immediately follows
 	the <a data-link-type="dfn" href="#compound" id="ref-for-compound②⑤">compound selector</a> representing its <a data-link-type="dfn" href="#originating-element" id="ref-for-originating-element⑤">originating element</a>.
 	If this <span id="ref-for-compound②⑥">compound selector</span> is omitted,
 	it is assumed to be the <a data-link-type="dfn" href="#universal-selector" id="ref-for-universal-selector④">universal selector</a> <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-3/#x" id="ref-for-x①">*</a>.</p>
@@ -2634,20 +2614,20 @@ Binding to the Document Tree</span><a class="self-link" href="#pseudo-element-at
     <p>The selector <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line" id="ref-for-selectordef-first-line⑤">::first-line</a> is equivalent to <span class="css">*::first-line</span>,
 		which selects the <span class="css" id="ref-for-selectordef-first-line⑥">::first-line</span> pseudo-element on <em>every</em> element in the document.</p>
    </div>
-   <p>When a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①⑤">pseudo-element</a> is encountered in a selector,
-	the part of the selector before the <span id="ref-for-pseudo-element①⑥">pseudo-element</span> selects the <a data-link-type="dfn" href="#originating-element" id="ref-for-originating-element⑦">originating element</a> for the <span id="ref-for-pseudo-element①⑦">pseudo-element</span>;
-	the part of the selector after it, if any, applies to the <span id="ref-for-pseudo-element①⑧">pseudo-element</span> itself.
+   <p>When a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①④">pseudo-element</a> is encountered in a selector,
+	the part of the selector before the <span id="ref-for-pseudo-element①⑤">pseudo-element</span> selects the <a data-link-type="dfn" href="#originating-element" id="ref-for-originating-element⑦">originating element</a> for the <span id="ref-for-pseudo-element①⑥">pseudo-element</span>;
+	the part of the selector after it, if any, applies to the <span id="ref-for-pseudo-element①⑦">pseudo-element</span> itself.
 	(See below.)</p>
    <h4 class="heading settled" data-level="3.6.3" id="pseudo-element-states"><span class="secno">3.6.3. </span><span class="content">
 Pseudo-classing Pseudo-elements</span><a class="self-link" href="#pseudo-element-states"></a></h4>
-   <p>Certain <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①⑨">pseudo-elements</a> may be immediately followed
+   <p>Certain <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element①⑧">pseudo-elements</a> may be immediately followed
 	by any combination of certain <a data-link-type="dfn" href="#pseudo-class" id="ref-for-pseudo-class①③">pseudo-classes</a>,
-	in which case the <span id="ref-for-pseudo-element②⓪">pseudo-element</span> is represented only when it is in the corresponding state.
-	This specification allows any <span id="ref-for-pseudo-element②①">pseudo-element</span> to be followed
+	in which case the <span id="ref-for-pseudo-element①⑨">pseudo-element</span> is represented only when it is in the corresponding state.
+	This specification allows any <span id="ref-for-pseudo-element②⓪">pseudo-element</span> to be followed
 	by any combination of the <a data-link-type="dfn" href="#logical-combination-pseudo-classes" id="ref-for-logical-combination-pseudo-classes①">logical combination pseudo-classes</a>
 	and the <a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class①">user action pseudo-classes</a>.
 	Other specifications may allow additional <span id="ref-for-pseudo-class①④">pseudo-classes</span>
-	to be attached to particular <span id="ref-for-pseudo-element②②">pseudo-elements</span>.
+	to be attached to particular <span id="ref-for-pseudo-element②①">pseudo-elements</span>.
 	Combinations that are not explicitly allowed are <a data-link-type="dfn" href="#invalid-selector" id="ref-for-invalid-selector">invalid selectors</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="dfn" href="#logical-combination-pseudo-classes" id="ref-for-logical-combination-pseudo-classes②">logical combination pseudo-classes</a>
 	pass any restrictions on validity of selectors at their position
@@ -2670,8 +2650,8 @@ Pseudo-classing Pseudo-elements</span><a class="self-link" href="#pseudo-element
    </div>
    <h4 class="heading settled" data-level="3.6.4" id="sub-pseudo-elements"><span class="secno">3.6.4. </span><span class="content">
 Sub-pseudo-elements</span><a class="self-link" href="#sub-pseudo-elements"></a></h4>
-   <p>Some <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②③">pseudo-elements</a> are able to be the <a data-link-type="dfn" href="#originating-element" id="ref-for-originating-element⑧">originating element</a>
-	of other <span id="ref-for-pseudo-element②④">pseudo-elements</span>,
+   <p>Some <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②②">pseudo-elements</a> are able to be the <a data-link-type="dfn" href="#originating-element" id="ref-for-originating-element⑧">originating element</a>
+	of other <span id="ref-for-pseudo-element②③">pseudo-elements</span>,
 	which are defined as the <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="sub-pseudo-element" id="sub-pseudo-element">sub-pseudo-elements</dfn>
 	of this <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="originating-pseudo-element">originating pseudo-element</dfn>.
 	For example,
@@ -2681,7 +2661,7 @@ Sub-pseudo-elements</span><a class="self-link" href="#sub-pseudo-elements"></a><
    <p>Where disambiguation is needed,
 	the term <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="ultimate-originating-element">ultimate originating element</dfn>
 	refers to the real (non-pseudo) element
-	from which a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑤">pseudo-element</a> originates.</p>
+	from which a <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②④">pseudo-element</a> originates.</p>
    <p>Unless the corresponding <a data-link-type="dfn" href="#sub-pseudo-element" id="ref-for-sub-pseudo-element①">sub-pseudo-element</a>
 	is explicitly defined to exist in another specification,
 	pseudo-element selectors are not valid
@@ -2691,8 +2671,8 @@ Sub-pseudo-elements</span><a class="self-link" href="#sub-pseudo-elements"></a><
 	(in implementations that support the <span class="css">::before::marker</span> <span id="ref-for-sub-pseudo-element②">sub-pseudo-element</span>).</p>
    <h4 class="heading settled" data-level="3.6.5" id="pseudo-element-structure"><span class="secno">3.6.5. </span><span class="content">
 Internal Structure</span><a class="self-link" href="#pseudo-element-structure"></a></h4>
-   <p>Some <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑥">pseudo-elements</a> are defined to have internal structure.
-	These <span id="ref-for-pseudo-element②⑦">pseudo-elements</span> may be followed by child/descendant combinators
+   <p>Some <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑤">pseudo-elements</a> are defined to have internal structure.
+	These <span id="ref-for-pseudo-element②⑥">pseudo-elements</span> may be followed by child/descendant combinators
 	to express those relationships.
 	Selectors containing <a data-link-type="dfn" href="#selector-combinator" id="ref-for-selector-combinator⑦">combinators</a> after the pseudo-element
 	are otherwise invalid.</p>
@@ -2704,7 +2684,7 @@ Internal Structure</span><a class="self-link" href="#pseudo-element-structure"><
    <p class="note" role="note"><span class="marker">Note:</span> A future specification may expand the capabilities of existing pseudo-elements,
 	so some of these currently-invalid selectors (e.g. <span class="css">::first-line :any-link</span>)
 	may become valid in the future.</p>
-   <p>The children of such <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑧">pseudo-elements</a> can simultaneously be children of other elements, too.
+   <p>The children of such <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑦">pseudo-elements</a> can simultaneously be children of other elements, too.
 	However, at least in CSS, their rendering must be defined so as to maintain the tree-ness of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box-tree" id="ref-for-box-tree">box tree</a>.</p>
    <h3 class="heading settled" data-level="3.7" id="case-sensitive"><span class="secno">3.7. </span><span class="content">
 Characters and case sensitivity</span><a class="self-link" href="#case-sensitive"></a></h3>
@@ -2965,7 +2945,7 @@ The Relational Pseudo-class: <a class="css" data-link-type="maybe" href="#has-ps
 	<span class="css" id="ref-for-has-pseudo④">:has()</span> is not valid within <span class="css" id="ref-for-has-pseudo⑤">:has()</span>.
 	Also, unless explicitly defined as a
 	<dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="has-allowed-pseudo-element">:has-allowed pseudo-element</dfn>,
-	<a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑨">pseudo-elements</a> are not valid selectors within <span class="css" id="ref-for-has-pseudo⑥">:has()</span>.
+	<a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑧">pseudo-elements</a> are not valid selectors within <span class="css" id="ref-for-has-pseudo⑥">:has()</span>.
 	(This specification does not define any <a data-link-type="dfn" href="#has-allowed-pseudo-element" id="ref-for-has-allowed-pseudo-element">:has-allowed pseudo-elements</a>,
 	but other specifications may do so.)</p>
    <p class="note" role="note"><span class="marker">Note:</span> Pseudo-elements are generally excluded from <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo⑦">:has()</a> because
@@ -3761,7 +3741,7 @@ The Local Link Pseudo-class: <a class="css" data-link-type="maybe" href="#local-
 	markup instructions such as <code>&lt;meta http-equiv="..."></code>,
 	or scripting instructions ).
 	UAs must ensure that <a class="css" data-link-type="maybe" href="#local-link-pseudo" id="ref-for-local-link-pseudo①">:local-link</a>,
-	as well as the <a class="css" data-link-type="maybe" href="#target-pseudo" id="ref-for-target-pseudo">:target</a> and <a class="css" data-link-type="maybe" href="#target-within-pseudo" id="ref-for-target-within-pseudo">:target-within</a> pseudo-classes below,
+	as well as the <a class="css" data-link-type="maybe" href="#target-pseudo" id="ref-for-target-pseudo">:target</a> pseudo-class below,
 	respond correctly to all such changes in state.</p>
    <h3 class="heading settled" data-level="8.4" id="the-target-pseudo"><span class="secno">8.4. </span><span class="content">
 The Target Pseudo-class: <a class="css" data-link-type="maybe" href="#target-pseudo" id="ref-for-target-pseudo①">:target</a></span><a class="self-link" href="#the-target-pseudo"></a></h3>
@@ -3799,14 +3779,11 @@ The Target Pseudo-class: <a class="css" data-link-type="maybe" href="#target-pse
 :target::before { content : url(target.png) }
 </pre>
    </div>
-   <h3 class="heading settled" data-level="8.5" id="the-target-within-pseudo"><span class="secno">8.5. </span><span class="content">
-The Target Container Pseudo-class: <a class="css" data-link-type="maybe" href="#target-within-pseudo" id="ref-for-target-within-pseudo①">:target-within</a></span><a class="self-link" href="#the-target-within-pseudo"></a></h3>
-   <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="target-within-pseudo">:target-within</dfn> pseudo-class
-	applies to any element to which the <a class="css" data-link-type="maybe" href="#target-pseudo" id="ref-for-target-pseudo③">:target</a> pseudo-class applies
-	as well as to any element whose descendant in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree">flat tree</a>
-	(including non-element nodes, such as text nodes)
-	matches the conditions for matching <span class="css" id="ref-for-target-pseudo④">:target</span>.</p>
-   <h3 class="heading settled" data-level="8.6" id="the-scope-pseudo"><span class="secno">8.6. </span><span class="content">
+   <p class="note" role="note"><span class="marker">Note:</span> This specification previously defined a <span class="css">:target-within</span> pseudo-class,
+	analogous to <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo">:focus-within</a>.
+	It was removed in favor of <span class="css">:has(:target)</span>,
+	which should hopefully suffice to solve the same use-cases.</p>
+   <h3 class="heading settled" data-level="8.5" id="the-scope-pseudo"><span class="secno">8.5. </span><span class="content">
 The Reference Element Pseudo-class: <a class="css" data-link-type="maybe" href="#scope-pseudo" id="ref-for-scope-pseudo">:scope</a></span><a class="self-link" href="#the-scope-pseudo"></a></h3>
    <p>In some contexts, selectors are matched
 	with respect to one or more <a data-link-type="dfn" href="#scoping-root" id="ref-for-scoping-root②">scoping roots</a>,
@@ -3816,10 +3793,11 @@ The Reference Element Pseudo-class: <a class="css" data-link-type="maybe" href="
 	and may be either a true element
 	or a virtual one (such as a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#documentfragment" id="ref-for-documentfragment">DocumentFragment</a></code>).</p>
    <p>If there is no <a data-link-type="dfn" href="#scoping-root" id="ref-for-scoping-root④">scoping root</a>
-	then <a class="css" data-link-type="maybe" href="#scope-pseudo" id="ref-for-scope-pseudo①">:scope</a> represents the root of the document
-	(equivalent to <a class="css" data-link-type="maybe" href="#root-pseudo" id="ref-for-root-pseudo">:root</a>).
+	then <a class="css" data-link-type="maybe" href="#scope-pseudo" id="ref-for-scope-pseudo①">:scope</a> represents the root of the tree the element is in
+	(equivalent to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-scoping-1/#selectordef-host" id="ref-for-selectordef-host①">:host</a> in a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-tree" id="ref-for-concept-shadow-tree①">shadow tree</a>,
+	or <a class="css" data-link-type="maybe" href="#root-pseudo" id="ref-for-root-pseudo">:root</a> otherwise).
 	Specifications intending for this pseudo-class to match specific elements
-	rather than the document’s root element
+	rather than this tree root element
 	must define their <span id="ref-for-scoping-root⑤">scoping root(s)</span>.</p>
    <p>A virtual <a data-link-type="dfn" href="#scoping-root" id="ref-for-scoping-root⑥">scoping root</a> is some object representing the root of a document fragment,
 	and can be used in selector patterns to represent other elements’ relationships
@@ -3844,7 +3822,7 @@ User Action Pseudo-classes</span><a class="self-link" href="#useraction-pseudos"
 	Selectors provides several <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="user action pseudo-class" data-noexport id="user-action-pseudo-class">user action pseudo-classes</dfn>
 	for the selection of an element the user is acting on.
 	(In non-interactive user agents, these pseudo-classes are valid, but never match any element.)</p>
-   <p>These pseudo-classes are not mutually exclusive.
+   <p>The <a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class②">user action pseudo-classes</a> are not mutually exclusive.
 	An element can match several such pseudo-classes at the same time.</p>
    <div class="example" id="example-fc0139c4">
     <a class="self-link" href="#example-fc0139c4"></a>
@@ -3858,12 +3836,21 @@ a:focus:hover
 /* user hovers over the link while it’s focused */
 </pre>
    </div>
+   <p>Some <a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class③">user action pseudo-classes</a>,
+	in addition to matching on the particular element with the property in question,
+	match on that element’s ancestors as well:
+	<a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo①">:hover</a>, <a class="css" data-link-type="maybe" href="#active-pseudo" id="ref-for-active-pseudo">:active</a>, <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo①">:focus-within</a>.
+	Specifically, if these match on a given element,
+	they also match on the element’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree">flat tree</a> ancestors,
+	up to and including the first <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-4/#document-top-layer" id="ref-for-document-top-layer">top layer</a> element
+	or the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root">root</a> element,
+	whichever is encountered first.</p>
    <p class="note" role="note"><span class="marker">Note:</span> The specifics of hit-testing,
 	necessary to know when several of the pseudo-classes defined in this section apply,
 	are not yet defined,
 	but will be in the future.</p>
    <h3 class="heading settled" data-level="9.1" id="the-hover-pseudo"><span class="secno">9.1. </span><span class="content">
-The Pointer Hover Pseudo-class: <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo①">:hover</a></span><a class="self-link" href="#the-hover-pseudo"></a></h3>
+The Pointer Hover Pseudo-class: <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo②">:hover</a></span><a class="self-link" href="#the-hover-pseudo"></a></h3>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="hover-pseudo">:hover</dfn> pseudo-class applies
 	while the user designates an element (or pseudo-element)
 	with a pointing device,
@@ -3874,24 +3861,24 @@ The Pointer Hover Pseudo-class: <a class="css" data-link-type="maybe" href="#hov
 	(e.g., a pen device that does not detect hovering)
 	are still conforming;
 	the selector will simply never match in such a UA.</p>
-   <p>An element also matches <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo②">:hover</a>
+   <p>An element also matches <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo③">:hover</a>
 	if one of its descendants in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree①">flat tree</a>
 	(including non-element nodes, such as text nodes)
 	matches the above conditions.</p>
-   <p>Document languages may define additional ways in which an element can match <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo③">:hover</a>.
+   <p>Document languages may define additional ways in which an element can match <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo④">:hover</a>.
 	For example, <a data-link-type="biblio" href="#biblio-html5" title="HTML5">[HTML5]</a> defines a labeled control element as <a href="https://html.spec.whatwg.org/multipage/semantics-other.html#selector-hover">matching <code>:hover</code></a>
 	when its <a data-link-type="element" href="https://html.spec.whatwg.org/multipage/forms.html#the-label-element" id="ref-for-the-label-element">label</a> is hovered.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> Since the <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo④">:hover</a> state can apply to an element
+   <p class="note" role="note"><span class="marker">Note:</span> Since the <a class="css" data-link-type="maybe" href="#hover-pseudo" id="ref-for-hover-pseudo⑤">:hover</a> state can apply to an element
 	because its child is designated by a pointing device,
-	it is possible for <span class="css" id="ref-for-hover-pseudo⑤">:hover</span> to apply
+	it is possible for <span class="css" id="ref-for-hover-pseudo⑥">:hover</span> to apply
 	to an element that is not underneath the pointing device.</p>
    <h3 class="heading settled" data-level="9.2" id="the-active-pseudo"><span class="secno">9.2. </span><span class="content">
-The Activation Pseudo-class: <a class="css" data-link-type="maybe" href="#active-pseudo" id="ref-for-active-pseudo">:active</a></span><a class="self-link" href="#the-active-pseudo"></a></h3>
+The Activation Pseudo-class: <a class="css" data-link-type="maybe" href="#active-pseudo" id="ref-for-active-pseudo①">:active</a></span><a class="self-link" href="#the-active-pseudo"></a></h3>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="active-pseudo">:active</dfn> pseudo-class
 	applies while an element is being “activated” by the user,
 	as defined by the host language;
 	for example, while a hyperlink is being triggered.</p>
-   <p>In addition, the <a class="css" data-link-type="maybe" href="#active-pseudo" id="ref-for-active-pseudo①">:active</a> pseudo-class applies
+   <p>In addition, the <a class="css" data-link-type="maybe" href="#active-pseudo" id="ref-for-active-pseudo②">:active</a> pseudo-class applies
 	while any generated box of <em>any</em> element (or pseudo-element)
 	is being actively indicated by a pointing device (in the “down” state),
 	e.g. between the time the user presses the primary mouse button and releases it,
@@ -3900,7 +3887,7 @@ The Activation Pseudo-class: <a class="css" data-link-type="maybe" href="#active
 	<a href="https://html.spec.whatwg.org/multipage/semantics-other.html#selector-active">
 	specific conditions for HTML elements to be activated
 	</a>.</p>
-   <p>An element also matches <a class="css" data-link-type="maybe" href="#active-pseudo" id="ref-for-active-pseudo②">:active</a>
+   <p>An element also matches <a class="css" data-link-type="maybe" href="#active-pseudo" id="ref-for-active-pseudo③">:active</a>
 	if one of its descendants in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree②">flat tree</a>
 	(including non-element nodes, such as text nodes)
 	matches the above conditions.</p>
@@ -3913,7 +3900,7 @@ The Input Focus Pseudo-class: <a class="css" data-link-type="maybe" href="#focus
 	which elements can acquire <a class="css" data-link-type="maybe" href="#focus-pseudo" id="ref-for-focus-pseudo③">:focus</a>.
 	For example, <a data-link-type="biblio" href="#biblio-html" title="HTML Standard">[HTML]</a> defines a list of <a href="https://html.spec.whatwg.org/multipage/interaction.html#focusable-area">focusable areas</a>.</p>
    <p>Document languages may define additional ways in which an element can match <a class="css" data-link-type="maybe" href="#focus-pseudo" id="ref-for-focus-pseudo④">:focus</a>,
-	except that the <span class="css" id="ref-for-focus-pseudo⑤">:focus</span> pseudo-class must not automatically propagate to the parent element—​see <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo">:focus-within</a> if matching on the parent is desired.
+	except that the <span class="css" id="ref-for-focus-pseudo⑤">:focus</span> pseudo-class must not automatically propagate to the parent element—​see <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo②">:focus-within</a> if matching on the parent is desired.
 	(<span class="css" id="ref-for-focus-pseudo⑥">:focus</span> may still apply to the parent element
 	if made to propagate due to other mechanisms,
 	but not merely due to being the parent.)</p>
@@ -4006,7 +3993,7 @@ that element should <a data-link-type="dfn" href="#indicate-focus" id="ref-for-i
 	so that authors using <span class="css" id="ref-for-focus-visible-pseudo④">:focus-visible</span> will not also need to disable
 	the default <a class="css" data-link-type="maybe" href="#focus-pseudo" id="ref-for-focus-pseudo①⓪">:focus</a> style.</p>
    <h3 class="heading settled" data-level="9.5" id="the-focus-within-pseudo"><span class="secno">9.5. </span><span class="content">
-The Focus Container Pseudo-class: <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo①">:focus-within</a></span><a class="self-link" href="#the-focus-within-pseudo"></a></h3>
+The Focus Container Pseudo-class: <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo③">:focus-within</a></span><a class="self-link" href="#the-focus-within-pseudo"></a></h3>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="focus-within-pseudo">:focus-within</dfn> pseudo-class
 	applies to any element (or pseudo-element)
 	for which the <a class="css" data-link-type="maybe" href="#focus-pseudo" id="ref-for-focus-pseudo①①">:focus</a> pseudo-class applies,
@@ -4246,38 +4233,65 @@ The Default-option Pseudo-class: <a class="css" data-link-type="maybe" href="#de
 	and a few other elements.</a></p>
    <h3 class="heading settled" data-level="13.2" id="input-value-states"><span class="secno">13.2. </span><span class="content">
 Input Value States</span><a class="self-link" href="#input-value-states"></a></h3>
-   <h4 class="heading settled" data-level="13.2.1" id="checked"><span class="secno">13.2.1. </span><span class="content">
-The Selected-option Pseudo-class: <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo">:checked</a></span><a class="self-link" href="#checked"></a></h4>
-   <p>Radio and checkbox elements can be toggled by the user.
-	Some menu items are “checked” when the user selects them.
-	When such elements are toggled “on”
+   <h4 class="heading settled" data-level="13.2.1" id="checked"><span class="secno">13.2.1. </span><span class="bs-old-id" id="indeterminate"></span><span class="content">
+The Selected-option Pseudo-classes: <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo">:checked</a>, <a class="css" data-link-type="maybe" href="#unchecked-pseudo" id="ref-for-unchecked-pseudo">:unchecked</a>, and <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo">:indeterminate</a></span><a class="self-link" href="#checked"></a></h4>
+   <p>Radio and checkbox elements can be toggled by the user,
+	and some menu items are “checked” when the user selects them.
+	This state is reflected by the <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="input-value-pseudo-classes">input value pseudo-classes</dfn>.</p>
+   <p>When such elements are toggled “on”
 	the <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="checked-pseudo">:checked</dfn> pseudo-class applies.
-	For example, <a data-link-type="biblio" href="#biblio-html5" title="HTML5">[HTML5]</a> defines that <a href="https://html.spec.whatwg.org/multipage/semantics-other.html#selector-checked">checked checkboxes, radio buttons, and selected <code>&lt;option></code> elements</a> match <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo①">:checked</a>.</p>
-   <p>While the <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo②">:checked</a> pseudo-class is dynamic in nature,
-	and can altered by user action,
-	since it can also be based on the presence of semantic attributes in the document
-	(such as the <code>selected</code> and <code>checked</code> attributes in <a data-link-type="biblio" href="#biblio-html5" title="HTML5">[HTML5]</a>),
-	it applies to all media.</p>
-   <div class="example" id="example-a6c4964c">
-    <a class="self-link" href="#example-a6c4964c"></a>
-		An unchecked checkbox can be selected by using the negation
-		pseudo-class:
+	For example, <a data-link-type="biblio" href="#biblio-html5" title="HTML5">[HTML5]</a> defines that <a href="https://html.spec.whatwg.org/multipage/semantics-other.html#selector-checked">checked checkboxes, radio buttons, and selected <code>&lt;option></code> elements</a> match <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo①">:checked</a>.
+	Similarly, when such elements are toggled “off”,
+	the <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="unchecked-pseudo">:unchecked</dfn> pseudo-class applies.</p>
+   <p>If an element that <em>could</em> match <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo②">:checked</a> or <a class="css" data-link-type="maybe" href="#unchecked-pseudo" id="ref-for-unchecked-pseudo①">:unchecked</a>
+	is neither "on" nor "off",
+	the <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="indeterminate-pseudo">:indeterminate</dfn> pseudo-class applies.
+	<a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo①">:indeterminate</a> also matches elements which do not have a notion of being "checked",
+	but whose "value" is still in an indeterminate state,
+	such as a progress meter whose progress percentage is unknown.</p>
+   <p>These three pseudo-classes are mutually exclusive;
+	an element can only match at most one of them at a time.
+	(And might match none,
+	if the concept of being "checked" doesn’t apply to them.)
+	If the "indeterminate" concept is not mutually exclusive
+	with the "checked"/"unchecked" concept in a host language
+	(for example, in HTML a checkbox’s "indeterminate" state is a separate boolean
+	from its "checked" state boolean),
+	being indeterminate wins over being checked/unchecked
+	for the purpose of matching these pseudo-classes.</p>
+   <div class="example" id="example-33865490">
+    <a class="self-link" href="#example-33865490"></a>
+		For example, in HTML:
 
-		
-<pre>input[type=checkbox]:not(:checked)</pre>
+
+    <ul>
+     <li data-md>
+      <p>Checkboxes match <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo②">:indeterminate</a>
+if their <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/input.html#dom-input-indeterminate" id="ref-for-dom-input-indeterminate">indeterminate</a></code> property is true;
+otherwise, they match <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo③">:checked</a> or <a class="css" data-link-type="maybe" href="#unchecked-pseudo" id="ref-for-unchecked-pseudo②">:unchecked</a>
+depending on their <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/input.html#dom-input-checked" id="ref-for-dom-input-checked">checked</a></code> property.</p>
+     <li data-md>
+      <p>Radio buttons match <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo④">:checked</a> if their <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/input.html#dom-input-checked" id="ref-for-dom-input-checked①">checked</a></code> property is true.
+Otherwise, they match <a class="css" data-link-type="maybe" href="#unchecked-pseudo" id="ref-for-unchecked-pseudo③">:unchecked</a> if they’re in a radio group
+that contains a <span class="css" id="ref-for-checked-pseudo⑤">:checked</span> radio button.
+Otherwise (their <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/input.html#dom-input-checked" id="ref-for-dom-input-checked②">checked</a></code> property is false,
+but they’re alone or in a radio group with no checked radio button),
+they match <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo③">:indeterminate</a>.</p>
+     <li data-md>
+      <p><code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/form-elements.html#the-option-element" id="ref-for-the-option-element">option</a></code> elements within a <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element" id="ref-for-the-select-element①">select</a></code>
+match <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo⑥">:checked</a> or <a class="css" data-link-type="maybe" href="#unchecked-pseudo" id="ref-for-unchecked-pseudo④">:unchecked</a>
+depending on their <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/form-elements.html#dom-option-selected" id="ref-for-dom-option-selected">selected</a></code> property.
+(They’re never <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo④">:indeterminate</a>.)</p>
+     <li data-md>
+      <p><code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element" id="ref-for-the-progress-element">progress</a></code> elements match <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo⑤">:indeterminate</a>
+if they lack a <code>value</code> attribute</p>
+    </ul>
    </div>
-   <h4 class="heading settled" data-level="13.2.2" id="indeterminate"><span class="secno">13.2.2. </span><span class="content">
-The Indeterminate-value Pseudo-class: <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo">:indeterminate</a></span><a class="self-link" href="#indeterminate"></a></h4>
-   <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="indeterminate-pseudo">:indeterminate</dfn> pseudo-class applies to UI elements whose
-	value is in an indeterminate state.
-	For example, radio and checkbox elements can be toggled between checked and unchecked states,
-	but are sometimes in an indeterminate state, neither checked nor unchecked.
-	Similarly a progress meter can be in an indeterminate state when the percent completion is unknown.
-	For example, <a data-link-type="biblio" href="#biblio-html5" title="HTML5">[HTML5]</a> defines how <a href="https://html.spec.whatwg.org/multipage/semantics-other.html#selector-indeterminate">checkboxes</a> can be made to match <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo①">:indeterminate</a>.</p>
-   <p>Like the <a class="css" data-link-type="maybe" href="#checked-pseudo" id="ref-for-checked-pseudo③">:checked</a> pseudo-class, <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo②">:indeterminate</a>
-	applies to all media. Components of a radio-group initialized with no
-	pre-selected choice, for example, would be <span class="css" id="ref-for-indeterminate-pseudo③">:indeterminate</span>
-	even in a static display.</p>
+   <p>While the <a data-link-type="dfn" href="#input-value-pseudo-classes" id="ref-for-input-value-pseudo-classes">input value pseudo-classes</a> are dynamic in nature,
+	and can altered by user action,
+	since they can also be based on the presence of semantic attributes in the document
+	(such as the <code>selected</code> and <code>checked</code> attributes in <a data-link-type="biblio" href="#biblio-html5" title="HTML5">[HTML5]</a>),
+	they apply to all media.</p>
    <h3 class="heading settled" data-level="13.3" id="ui-validity"><span class="secno">13.3. </span><span class="content">
 Input Value-checking</span><a class="self-link" href="#ui-validity"></a></h3>
    <h4 class="heading settled" data-level="13.3.1" id="blank"><span class="secno">13.3.1. </span><span class="content">
@@ -4404,7 +4418,7 @@ Tree-Structural pseudo-classes</span><a class="self-link" href="#structural-pseu
 	of children of its parent. When calculating the position of an element in
 	the list of children of its parent, the index numbering starts at 1.</p>
    <p>The <a data-link-type="dfn" href="#structural-pseudo-classes" id="ref-for-structural-pseudo-classes①">structural pseudo-classes</a> only apply to elements in the document tree;
-	they must never match <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③⓪">pseudo-elements</a>.</p>
+	they must never match <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element②⑨">pseudo-elements</a>.</p>
    <h3 class="heading settled" data-level="14.1" id="the-root-pseudo"><span class="secno">14.1. </span><span class="content">
 <a class="css" data-link-type="maybe" href="#root-pseudo" id="ref-for-root-pseudo①">:root</a> pseudo-class</span><a class="self-link" href="#the-root-pseudo"></a></h3>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="root-pseudo">:root</dfn> pseudo-class represents an element that is
@@ -5103,11 +5117,11 @@ in a <a class="production css" data-link-type="type" href="#typedef-complex-sele
 	In some circumstances, however,
 	it can be followed by more <span class="production" id="ref-for-typedef-pseudo-element-selector④">&lt;pseudo-element-selector></span>s or <a class="production css" data-link-type="type" href="#typedef-pseudo-class-selector" id="ref-for-typedef-pseudo-class-selector⑥">&lt;pseudo-class-selector></a>s;
 	but these are specified on a case-by-case basis.
-	(For example, the <a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class②">user action pseudo-classes</a> are allowed after any <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③①">pseudo-element</a>,
-	and the <a data-link-type="dfn" href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding">tree-abiding pseudo-elements</a>
+	(For example, the <a data-link-type="dfn" href="#user-action-pseudo-class" id="ref-for-user-action-pseudo-class④">user action pseudo-classes</a> are allowed after any <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③⓪">pseudo-element</a>,
+	and the <a data-link-type="dfn" href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding①">tree-abiding pseudo-elements</a>
 	are allowed after the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-scoping-1/#selectordef-slotted" id="ref-for-selectordef-slotted">::slotted()</a> pseudo-element.)</p>
    <p class="note" id="single-colon-pseudos" role="note"><a class="self-link" href="#single-colon-pseudos"></a>
-		The four <a href="https://www.w3.org/TR/CSS2/selectors.html#pseudo-element-selectors">Level 2</a> <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③②">pseudo-elements</a>
+		The four <a href="https://www.w3.org/TR/CSS2/selectors.html#pseudo-element-selectors">Level 2</a> <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③①">pseudo-elements</a>
 		(<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-before" id="ref-for-selectordef-before⑦">::before</a>, <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-after" id="ref-for-selectordef-after②">::after</a>, <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line" id="ref-for-selectordef-first-line⑨">::first-line</a>, and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter" id="ref-for-selectordef-first-letter②">::first-letter</a>)
 		may, for legacy reasons,
 		be written with only a single ":" character at their front,
@@ -5291,7 +5305,7 @@ Match a Selector Against a Tree</span><a class="self-link" href="#match-against-
    <p>APIs using this algorithm must provide a selector,
 	and one or more <var>root elements</var>
 	indicating the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree" id="ref-for-concept-tree">subtrees</a> that will be searched by the selector.
-	All of the <var>root elements</var> must share the same <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root">root</a>,
+	All of the <var>root elements</var> must share the same <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①">root</a>,
 	or else calling this algorithm is invalid.</p>
    <p>They may optionally provide:</p>
    <ul>
@@ -5302,11 +5316,11 @@ Match a Selector Against a Tree</span><a class="self-link" href="#match-against-
 		
     <li>
      
-			A list of <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③③">pseudo-elements</a> that are allowed to show up in the match list.
+			A list of <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③②">pseudo-elements</a> that are allowed to show up in the match list.
 			If not specified, this defaults to allowing all pseudo-elements.
 
 
-     <p class="issue" id="issue-15f3317f"><a class="self-link" href="#issue-15f3317f"></a> Only the <a data-link-type="dfn" href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding①">tree-abiding pseudo-elements</a> are really
+     <p class="issue" id="issue-15f3317f"><a class="self-link" href="#issue-15f3317f"></a> Only the <a data-link-type="dfn" href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding②">tree-abiding pseudo-elements</a> are really
 			handled in any way remotely like this.</p>
    </ul>
    <p>This algorithm returns a (possibly empty) list of elements.</p>
@@ -5476,7 +5490,7 @@ Appendix B: Obsolete but Required <code>-webkit-</code> Parsing Quirks for Web C
     <li data-md>
      <p><span class="css">:-webkit-autofill</span> must be treated as a <a data-link-type="dfn" href="#legacy-selector-alias" id="ref-for-legacy-selector-alias①">legacy selector alias</a> of <a class="css" data-link-type="maybe" href="#selectordef-autofill" id="ref-for-selectordef-autofill①">:autofill</a>.</p>
     <li data-md>
-     <p>All other <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③④">pseudo-elements</a> whose names begin with the string “-webkit-”
+     <p>All other <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③③">pseudo-elements</a> whose names begin with the string “-webkit-”
 (matched <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ascii-case-insensitive" id="ref-for-ascii-case-insensitive⑧">ASCII case-insensitively</a>)
 and that are not functional notations
 must be treated as valid at parse time.
@@ -5650,7 +5664,7 @@ Changes since the 7 May 2022 Working Draft</span><a class="self-link" href="#cha
      <p>Added <a class="css" data-link-type="maybe" href="#selectordef-popover-open" id="ref-for-selectordef-popover-open①">:popover-open</a> pseudo-class.
 (<a href="https://github.com/w3c/csswg-drafts/issues/8637">Issue 8637</a>)</p>
     <li data-md>
-     <p>Disallowed <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③⑤">pseudo-elements</a> from <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①④">:has()</a> unless explicitly allowed
+     <p>Disallowed <a data-link-type="dfn" href="#pseudo-element" id="ref-for-pseudo-element③④">pseudo-elements</a> from <a class="css" data-link-type="maybe" href="#has-pseudo" id="ref-for-has-pseudo①④">:has()</a> unless explicitly allowed
 by the pseudo-element’s definition.
 (<a href="https://github.com/w3c/csswg-drafts/issues/7463">Issue 7463</a>)</p>
     <li data-md>
@@ -5769,7 +5783,7 @@ Changes since the 2 February 2018 Working Draft</span><a class="self-link" href=
 Changes since the 2 May 2013 Working Draft</span><a class="self-link" href="#changes-2013"></a></h3>
    <p>Significant changes since the <a href="https://www.w3.org/TR/2013/WD-selectors4-20130502/">2 May 2013 Working Draft</a> include:</p>
    <ul>
-    <li>Added the <a class="css" data-link-type="maybe" href="#target-within-pseudo" id="ref-for-target-within-pseudo②">:target-within</a>, <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo②">:focus-within</a>, <a class="css" data-link-type="maybe" href="#focus-visible-pseudo" id="ref-for-focus-visible-pseudo⑦">:focus-visible</a>, <a class="css" data-link-type="maybe" href="#selectordef-playing" id="ref-for-selectordef-playing③">:playing</a>, and  <a class="css" data-link-type="maybe" href="#selectordef-paused" id="ref-for-selectordef-paused①">:paused</a> pseudo-classes.
+    <li>Added the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#target-within-pseudo" id="ref-for-target-within-pseudo">:target-within</a>, <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo④">:focus-within</a>, <a class="css" data-link-type="maybe" href="#focus-visible-pseudo" id="ref-for-focus-visible-pseudo⑦">:focus-visible</a>, <a class="css" data-link-type="maybe" href="#selectordef-playing" id="ref-for-selectordef-playing③">:playing</a>, and  <a class="css" data-link-type="maybe" href="#selectordef-paused" id="ref-for-selectordef-paused①">:paused</a> pseudo-classes.
 		
     <li>Added a zero-specificity <a class="css" data-link-type="maybe" href="#selectordef-matches" id="ref-for-selectordef-matches①">:matches()</a>-type pseudo-class, with name TBD.
 		
@@ -5884,7 +5898,7 @@ Changes Since Level 3</span><a class="self-link" href="#changes-level-3"></a></h
 		
     <li>Added <a href="#time-pseudos">time-dimensional pseudo-classes</a>.
 		
-    <li>Added <a class="css" data-link-type="maybe" href="#target-within-pseudo" id="ref-for-target-within-pseudo③">:target-within</a>, <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo③">:focus-within</a>, and <a class="css" data-link-type="maybe" href="#focus-visible-pseudo" id="ref-for-focus-visible-pseudo⑧">:focus-visible</a>.
+    <li>Added <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#target-within-pseudo" id="ref-for-target-within-pseudo①">:target-within</a>, <a class="css" data-link-type="maybe" href="#focus-within-pseudo" id="ref-for-focus-within-pseudo⑤">:focus-within</a>, and <a class="css" data-link-type="maybe" href="#focus-visible-pseudo" id="ref-for-focus-visible-pseudo⑧">:focus-visible</a>.
 		
     <li>Added <a class="css" data-link-type="maybe" href="#dir-pseudo" id="ref-for-dir-pseudo③">:dir()</a>.
 		
@@ -5892,7 +5906,7 @@ Changes Since Level 3</span><a class="self-link" href="#changes-level-3"></a></h
 		
     <li>Expanded <span class="css">:nth-child()</span> to accept a selector list.
 		
-    <li>Merged in input selectors from <a href="https://www.w3.org/TR/css-ui-3/">CSS Basic User Interface Module Level 3</a> and added back <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo④">:indeterminate</a>.
+    <li>Merged in input selectors from <a href="https://www.w3.org/TR/css-ui-3/">CSS Basic User Interface Module Level 3</a> and added back <a class="css" data-link-type="maybe" href="#indeterminate-pseudo" id="ref-for-indeterminate-pseudo⑥">:indeterminate</a>.
 		
     <li>Added <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo①⓪">:blank</a> and <a class="css" data-link-type="maybe" href="#user-invalid-pseudo" id="ref-for-user-invalid-pseudo⑥">:user-invalid</a>.
 		
@@ -6128,8 +6142,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#hover-pseudo">:hover</a><span>, in § 9.1</span>
    <li><a href="#typedef-id-selector">&lt;id-selector></a><span>, in § 18</span>
    <li><a href="#id-selector">ID selector</a><span>, in § 6.7</span>
-   <li><a href="#indeterminate-pseudo">:indeterminate</a><span>, in § 13.2.2</span>
+   <li><a href="#indeterminate-pseudo">:indeterminate</a><span>, in § 13.2.1</span>
    <li><a href="#indicate-focus">indicate focus</a><span>, in § 9.4</span>
+   <li><a href="#input-value-pseudo-classes">input value pseudo-classes</a><span>, in § 13.2.1</span>
    <li><a href="#in-range-pseudo">:in-range</a><span>, in § 13.3.3</span>
    <li><a href="#invalid-pseudo">:invalid</a><span>, in § 13.3.2</span>
    <li><a href="#invalid-selector">invalid</a><span>, in § 3.9</span>
@@ -6198,7 +6213,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#typedef-relative-selector-list">&lt;relative-selector-list></a><span>, in § 18</span>
    <li><a href="#required-pseudo">:required</a><span>, in § 13.3.4</span>
    <li><a href="#root-pseudo">:root</a><span>, in § 14.1</span>
-   <li><a href="#scope-pseudo">:scope</a><span>, in § 8.6</span>
+   <li><a href="#scope-pseudo">:scope</a><span>, in § 8.5</span>
    <li><a href="#scoped-selector">scope</a><span>, in § 3.3</span>
    <li><a href="#scoped-selector">scoped selector</a><span>, in § 3.3</span>
    <li><a href="#scoping-root">scoping root</a><span>, in § 3.3</span>
@@ -6219,10 +6234,10 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#sub-pseudo-element">sub-pseudo-element</a><span>, in § 3.6.4</span>
    <li><a href="#subsequent-sibling-combinator">subsequent-sibling combinator</a><span>, in § 15.4</span>
    <li><a href="#target-pseudo">:target</a><span>, in § 8.4</span>
-   <li><a href="#target-within-pseudo">:target-within</a><span>, in § 8.5</span>
    <li><a href="#typedef-type-selector">&lt;type-selector></a><span>, in § 18</span>
    <li><a href="#type-selector">type selector</a><span>, in § 5.1</span>
    <li><a href="#ultimate-originating-element">ultimate originating element</a><span>, in § 3.6.4</span>
+   <li><a href="#unchecked-pseudo">:unchecked</a><span>, in § 13.2.1</span>
    <li><a href="#universal-selector">universal selector</a><span>, in § 5.2</span>
    <li><a href="#unknown--webkit--pseudo-elements">unknown -webkit- pseudo-elements</a><span>, in § Unnumbered section</span>
    <li><a href="#user-action-pseudo-class">user action pseudo-class</a><span>, in § 9</span>
@@ -6259,6 +6274,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS-MULTICOL-2]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="e515eec3">::column</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-POSITION-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="8f59bb58">top layer</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-PSEUDO-4]</a> defines the following terms:
@@ -6359,6 +6379,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="a1a807e5">area</span>
      <li><span class="dfn-paneled" id="2c82d279">audio</span>
      <li><span class="dfn-paneled" id="bfff6250">button</span>
+     <li><span class="dfn-paneled" id="dfc2dd10">checked</span>
      <li><span class="dfn-paneled" id="b6fb7a51">custom element</span>
      <li><span class="dfn-paneled" id="1748bbeb">details</span>
      <li><span class="dfn-paneled" id="1812300f">dialog</span>
@@ -6370,6 +6391,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="ca0c892d">href</span>
      <li><span class="dfn-paneled" id="c3dd181e">html</span>
      <li><span class="dfn-paneled" id="f0811ff8">img</span>
+     <li><span class="dfn-paneled" id="24c3d56b">indeterminate</span>
      <li><span class="dfn-paneled" id="d7d642a2">input</span>
      <li><span class="dfn-paneled" id="84f243ef">label</span>
      <li><span class="dfn-paneled" id="7486f2c8">li</span>
@@ -6379,14 +6401,17 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="655fdd86">muted</span>
      <li><span class="dfn-paneled" id="99b5cef6">object</span>
      <li><span class="dfn-paneled" id="f29863d8">ol</span>
+     <li><span class="dfn-paneled" id="aee00462">option</span>
      <li><span class="dfn-paneled" id="086e3aff">origin</span>
      <li><span class="dfn-paneled" id="b80d76a2">p</span>
      <li><span class="dfn-paneled" id="b9a05383">placeholder</span>
      <li><span class="dfn-paneled" id="f4da6587">popover</span>
      <li><span class="dfn-paneled" id="83b82cf5">popover visibility state</span>
      <li><span class="dfn-paneled" id="22a0e026">pre</span>
+     <li><span class="dfn-paneled" id="b90b2ad5">progress</span>
      <li><span class="dfn-paneled" id="9dc3e09f">q</span>
      <li><span class="dfn-paneled" id="85188fb3">select</span>
+     <li><span class="dfn-paneled" id="cd8eeff2">selected</span>
      <li><span class="dfn-paneled" id="9d861566">showModal()</span>
      <li><span class="dfn-paneled" id="fb9bb722">site</span>
      <li><span class="dfn-paneled" id="b32b852a">span</span>
@@ -6414,6 +6439,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[SELECTORS-4]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="aa4fe881">:target-within</span>
      <li><span class="dfn-paneled" id="877c1491">&lt;forgiving-relative-selector-list></span>
     </ul>
    <li>
@@ -6432,6 +6458,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-display/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-display/">https://drafts.csswg.org/css-display/</a>
    <dt id="biblio-css-multicol-2">[CSS-MULTICOL-2]
    <dd>Florian Rivoal; Rachel Andrew. <a href="https://drafts.csswg.org/css-multicol-2/"><cite>CSS Multi-column Layout Module Level 2</cite></a>. URL: <a href="https://drafts.csswg.org/css-multicol-2/">https://drafts.csswg.org/css-multicol-2/</a>
+   <dt id="biblio-css-position-4">[CSS-POSITION-4]
+   <dd><a href="https://drafts.csswg.org/css-position-4/"><cite>CSS Positioned Layout Module Level 4</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/css-position-4/">https://drafts.csswg.org/css-position-4/</a>
    <dt id="biblio-css-pseudo-4">[CSS-PSEUDO-4]
    <dd>Elika Etemad; Alan Stearns. <a href="https://drafts.csswg.org/css-pseudo-4/"><cite>CSS Pseudo-Elements Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-pseudo-4/">https://drafts.csswg.org/css-pseudo-4/</a>
    <dt id="biblio-css-scoping-1">[CSS-SCOPING-1]
@@ -7732,17 +7760,18 @@ let dfnPanelData = {
 "0e9419b9": {"dfnID":"0e9419b9","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"12.1. \nCollapse State: the :open pseudo-class"},{"refs":[{"id":"ref-for-propdef-display\u2460"}],"title":"13.1.1. \nThe :enabled and :disabled Pseudo-classes"}],"url":"https://drafts.csswg.org/css-display-3/#propdef-display"},
 "12f8fb07": {"dfnID":"12f8fb07","dfnText":"visibility","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-visibility"}],"title":"12.1. \nCollapse State: the :open pseudo-class"},{"refs":[{"id":"ref-for-propdef-visibility\u2460"}],"title":"13.1.1. \nThe :enabled and :disabled Pseudo-classes"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-visibility"},
 "15e48c39": {"dfnID":"15e48c39","dfnText":"set","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-set"}],"title":"\nAppendix C: Example Privacy-Preserving :visited Restrictions"}],"url":"https://infra.spec.whatwg.org/#ordered-set"},
-"16a52cab": {"dfnID":"16a52cab","dfnText":"tree-abiding pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-tree-abiding"}],"title":"18. \nGrammar"},{"refs":[{"id":"ref-for-tree-abiding\u2460"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"https://drafts.csswg.org/css-pseudo-4/#tree-abiding"},
+"16a52cab": {"dfnID":"16a52cab","dfnText":"tree-abiding pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-tree-abiding"}],"title":"Unnumbered Section"},{"refs":[{"id":"ref-for-tree-abiding\u2460"}],"title":"18. \nGrammar"},{"refs":[{"id":"ref-for-tree-abiding\u2461"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"https://drafts.csswg.org/css-pseudo-4/#tree-abiding"},
 "1748bbeb": {"dfnID":"1748bbeb","dfnText":"details","external":true,"refSections":[{"refs":[{"id":"ref-for-the-details-element"}],"title":"12.1. \nCollapse State: the :open pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element"},
 "1812300f": {"dfnID":"1812300f","dfnText":"dialog","external":true,"refSections":[{"refs":[{"id":"ref-for-the-dialog-element"},{"id":"ref-for-the-dialog-element\u2460"}],"title":"12.1. \nCollapse State: the :open pseudo-class"},{"refs":[{"id":"ref-for-the-dialog-element\u2461"}],"title":"12.3. \nModal (Exclusive Interaction) State: the :modal pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element"},
-"19f9e9df": {"dfnID":"19f9e9df","dfnText":"shadow tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-tree"}],"title":"3.2.1. \nFeatureless Elements"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
-"22109b0e": {"dfnID":"22109b0e","dfnText":"flat tree","external":true,"refSections":[{"refs":[{"id":"ref-for-flat-tree"}],"title":"8.5. \nThe Target Container Pseudo-class: :target-within"},{"refs":[{"id":"ref-for-flat-tree\u2460"}],"title":"9.1. \nThe Pointer Hover Pseudo-class: :hover"},{"refs":[{"id":"ref-for-flat-tree\u2461"}],"title":"9.2. \nThe Activation Pseudo-class: :active"},{"refs":[{"id":"ref-for-flat-tree\u2462"}],"title":"9.5. \nThe Focus Container Pseudo-class: :focus-within"}],"url":"https://drafts.csswg.org/css-scoping-1/#flat-tree"},
+"19f9e9df": {"dfnID":"19f9e9df","dfnText":"shadow tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-tree"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2460"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
+"22109b0e": {"dfnID":"22109b0e","dfnText":"flat tree","external":true,"refSections":[{"refs":[{"id":"ref-for-flat-tree"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-flat-tree\u2460"}],"title":"9.1. \nThe Pointer Hover Pseudo-class: :hover"},{"refs":[{"id":"ref-for-flat-tree\u2461"}],"title":"9.2. \nThe Activation Pseudo-class: :active"},{"refs":[{"id":"ref-for-flat-tree\u2462"}],"title":"9.5. \nThe Focus Container Pseudo-class: :focus-within"}],"url":"https://drafts.csswg.org/css-scoping-1/#flat-tree"},
 "22a0e026": {"dfnID":"22a0e026","dfnText":"pre","external":true,"refSections":[{"refs":[{"id":"ref-for-the-pre-element"}],"title":"15.4. \nSubsequent-sibling combinator (~)"}],"url":"https://html.spec.whatwg.org/multipage/grouping-content.html#the-pre-element"},
+"24c3d56b": {"dfnID":"24c3d56b","dfnText":"indeterminate","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-input-indeterminate"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"https://html.spec.whatwg.org/multipage/input.html#dom-input-indeterminate"},
 "28c097f8": {"dfnID":"28c097f8","dfnText":"effective media volume","external":true,"refSections":[{"refs":[{"id":"ref-for-effective-media-volume"}],"title":"11.3. \nSound State: the :muted and :volume-locked pseudo-classes"}],"url":"https://html.spec.whatwg.org/multipage/media.html#effective-media-volume"},
 "2c82d279": {"dfnID":"2c82d279","dfnText":"audio","external":true,"refSections":[{"refs":[{"id":"ref-for-audio"}],"title":"11.1. \nMedia Playback State: the :playing, :paused, and :seeking pseudo-classes"},{"refs":[{"id":"ref-for-audio\u2460"}],"title":"11.2. \nMedia Loading State: the :buffering and :stalled pseudo-classes"},{"refs":[{"id":"ref-for-audio\u2461"},{"id":"ref-for-audio\u2462"}],"title":"11.3. \nSound State: the :muted and :volume-locked pseudo-classes"}],"url":"https://html.spec.whatwg.org/multipage/media.html#audio"},
 "2f0ba72c": {"dfnID":"2f0ba72c","dfnText":"document element","external":true,"refSections":[{"refs":[{"id":"ref-for-document-element"}],"title":"14.1. \n:root pseudo-class"}],"url":"https://dom.spec.whatwg.org/#document-element"},
 "3a098985": {"dfnID":"3a098985","dfnText":"<an+b>","external":true,"refSections":[{"refs":[{"id":"ref-for-anb-production"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-anb-production\u2460"}],"title":"20.5. \nChanges since the 23 August 2012 Working Draft"}],"url":"https://drafts.csswg.org/css-syntax-3/#anb-production"},
-"49a2843d": {"dfnID":"49a2843d","dfnText":"DocumentFragment","external":true,"refSections":[{"refs":[{"id":"ref-for-documentfragment"},{"id":"ref-for-documentfragment\u2460"}],"title":"8.6. \nThe Reference Element Pseudo-class: :scope"}],"url":"https://dom.spec.whatwg.org/#documentfragment"},
+"49a2843d": {"dfnID":"49a2843d","dfnText":"DocumentFragment","external":true,"refSections":[{"refs":[{"id":"ref-for-documentfragment"},{"id":"ref-for-documentfragment\u2460"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"}],"url":"https://dom.spec.whatwg.org/#documentfragment"},
 "537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"},{"id":"ref-for-mult-opt\u2461"},{"id":"ref-for-mult-opt\u2462"},{"id":"ref-for-mult-opt\u2463"},{"id":"ref-for-mult-opt\u2464"},{"id":"ref-for-mult-opt\u2465"},{"id":"ref-for-mult-opt\u2466"},{"id":"ref-for-mult-opt\u2467"},{"id":"ref-for-mult-opt\u2468"},{"id":"ref-for-mult-opt\u2460\u24ea"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
 "53a193f1": {"dfnID":"53a193f1","dfnText":"*","external":true,"refSections":[{"refs":[{"id":"ref-for-x"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-x\u2460"}],"title":"3.6.2. \nBinding to the Document Tree"}],"url":"https://drafts.csswg.org/selectors-3/#x"},
 "5869f885": {"dfnID":"5869f885","dfnText":"::before","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-before"},{"id":"ref-for-selectordef-before\u2460"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-selectordef-before\u2461"}],"title":"3.6. Pseudo-elements"},{"refs":[{"id":"ref-for-selectordef-before\u2462"}],"title":"3.6.1. \nSyntax"},{"refs":[{"id":"ref-for-selectordef-before\u2463"}],"title":"3.6.2. \nBinding to the Document Tree"},{"refs":[{"id":"ref-for-selectordef-before\u2464"}],"title":"3.6.4. \nSub-pseudo-elements"},{"refs":[{"id":"ref-for-selectordef-before\u2466"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-before"},
@@ -7758,7 +7787,7 @@ let dfnPanelData = {
 "68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"},{"id":"ref-for-mult-comma\u2460"},{"id":"ref-for-mult-comma\u2461"},{"id":"ref-for-mult-comma\u2462"},{"id":"ref-for-mult-comma\u2463"},{"id":"ref-for-mult-comma\u2464"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
 "68bf3d31": {"dfnID":"68bf3d31","dfnText":"a","external":true,"refSections":[{"refs":[{"id":"ref-for-the-a-element"},{"id":"ref-for-the-a-element\u2460"}],"title":"3.3. \nScoped Selectors"},{"refs":[{"id":"ref-for-the-a-element\u2461"},{"id":"ref-for-the-a-element\u2462"},{"id":"ref-for-the-a-element\u2463"},{"id":"ref-for-the-a-element\u2464"},{"id":"ref-for-the-a-element\u2465"}],"title":"6.1. \nAttribute presence and value selectors"},{"refs":[{"id":"ref-for-the-a-element\u2466"}],"title":"6.2. \nSubstring matching attribute selectors"},{"refs":[{"id":"ref-for-the-a-element\u2467"}],"title":"8.1. \nThe Hyperlink Pseudo-class: :any-link"}],"url":"https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element"},
 "6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"},{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"},{"id":"ref-for-comb-one\u2460\u2465"},{"id":"ref-for-comb-one\u2460\u2466"},{"id":"ref-for-comb-one\u2460\u2467"},{"id":"ref-for-comb-one\u2460\u2468"},{"id":"ref-for-comb-one\u2461\u24ea"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
-"6f0f52dc": {"dfnID":"6f0f52dc","dfnText":"parentNode","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-node-parentnode"}],"title":"8.6. \nThe Reference Element Pseudo-class: :scope"}],"url":"https://dom.spec.whatwg.org/#dom-node-parentnode"},
+"6f0f52dc": {"dfnID":"6f0f52dc","dfnText":"parentNode","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-node-parentnode"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"}],"url":"https://dom.spec.whatwg.org/#dom-node-parentnode"},
 "6f539384": {"dfnID":"6f539384","dfnText":":host-context()","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-host-context"}],"title":"3.2.1. \nFeatureless Elements"}],"url":"https://drafts.csswg.org/css-scoping-1/#selectordef-host-context"},
 "7486f2c8": {"dfnID":"7486f2c8","dfnText":"li","external":true,"refSections":[{"refs":[{"id":"ref-for-the-li-element"},{"id":"ref-for-the-li-element\u2460"}],"title":"15.2. \nChild combinator (>)"}],"url":"https://html.spec.whatwg.org/multipage/grouping-content.html#the-li-element"},
 "74a27486": {"dfnID":"74a27486","dfnText":":before","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-before\u2465"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css2/#selectordef-before"},
@@ -7769,10 +7798,11 @@ let dfnPanelData = {
 "7f9469b5": {"dfnID":"7f9469b5","dfnText":"ASCII case-insensitive","external":true,"refSections":[{"refs":[{"id":"ref-for-ascii-case-insensitive"}],"title":"3.5. \nPseudo-classes"},{"refs":[{"id":"ref-for-ascii-case-insensitive\u2460"}],"title":"3.6.1. \nSyntax"},{"refs":[{"id":"ref-for-ascii-case-insensitive\u2461"}],"title":"3.7. \nCharacters and case sensitivity"},{"refs":[{"id":"ref-for-ascii-case-insensitive\u2462"},{"id":"ref-for-ascii-case-insensitive\u2463"},{"id":"ref-for-ascii-case-insensitive\u2464"}],"title":"6.3. \nCase-sensitivity"},{"refs":[{"id":"ref-for-ascii-case-insensitive\u2465"}],"title":"6.6. \nClass selectors"},{"refs":[{"id":"ref-for-ascii-case-insensitive\u2466"}],"title":"6.7. \nID selectors"},{"refs":[{"id":"ref-for-ascii-case-insensitive\u2467"}],"title":"\nAppendix B: Obsolete but Required -webkit- Parsing Quirks for Web Compat"}],"url":"https://infra.spec.whatwg.org/#ascii-case-insensitive"},
 "83b82cf5": {"dfnID":"83b82cf5","dfnText":"popover visibility state","external":true,"refSections":[{"refs":[{"id":"ref-for-popover-visibility-state"}],"title":"12.2. \nPopover State: the :popover-open pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/popover.html#popover-visibility-state"},
 "84f243ef": {"dfnID":"84f243ef","dfnText":"label","external":true,"refSections":[{"refs":[{"id":"ref-for-the-label-element"}],"title":"9.1. \nThe Pointer Hover Pseudo-class: :hover"},{"refs":[{"id":"ref-for-the-label-element\u2460"}],"title":"9.3. \nThe Input Focus Pseudo-class: :focus"}],"url":"https://html.spec.whatwg.org/multipage/forms.html#the-label-element"},
-"85188fb3": {"dfnID":"85188fb3","dfnText":"select","external":true,"refSections":[{"refs":[{"id":"ref-for-the-select-element"}],"title":"12.1. \nCollapse State: the :open pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element"},
+"85188fb3": {"dfnID":"85188fb3","dfnText":"select","external":true,"refSections":[{"refs":[{"id":"ref-for-the-select-element"}],"title":"12.1. \nCollapse State: the :open pseudo-class"},{"refs":[{"id":"ref-for-the-select-element\u2460"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element"},
 "8716d04f": {"dfnID":"8716d04f","dfnText":"<any-value>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-any-value"}],"title":"18. \nGrammar"},{"refs":[{"id":"ref-for-typedef-any-value\u2460"}],"title":"18.1. \n<forgiving-selector-list> and <forgiving-relative-selector-list>"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-any-value"},
 "877c1491": {"dfnID":"877c1491","dfnText":"<forgiving-relative-selector-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-forgiving-relative-selector-list"}],"title":"18.1. \n<forgiving-selector-list> and <forgiving-relative-selector-list>"}],"url":"https://www.w3.org/TR/selectors-4/#typedef-forgiving-relative-selector-list"},
 "8bc6d766": {"dfnID":"8bc6d766","dfnText":"inclusive sibling","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-inclusive-sibling"}],"title":"14.3. \nChild-indexed Pseudo-classes"},{"refs":[{"id":"ref-for-concept-tree-inclusive-sibling\u2460"}],"title":"14.3.1. \n:nth-child() pseudo-class"},{"refs":[{"id":"ref-for-concept-tree-inclusive-sibling\u2461"}],"title":"14.3.2. \n:nth-last-child() pseudo-class"},{"refs":[{"id":"ref-for-concept-tree-inclusive-sibling\u2462"}],"title":"14.3.3. \n:first-child pseudo-class"},{"refs":[{"id":"ref-for-concept-tree-inclusive-sibling\u2463"}],"title":"14.3.4. \n:last-child pseudo-class"}],"url":"https://dom.spec.whatwg.org/#concept-tree-inclusive-sibling"},
+"8f59bb58": {"dfnID":"8f59bb58","dfnText":"top layer","external":true,"refSections":[{"refs":[{"id":"ref-for-document-top-layer"}],"title":"9. \nUser Action Pseudo-classes"}],"url":"https://drafts.csswg.org/css-position-4/#document-top-layer"},
 "91c016b5": {"dfnID":"91c016b5","dfnText":"identical to","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"}],"title":"2. \nSelectors Overview"},{"refs":[{"id":"ref-for-string-is\u2460"}],"title":"6.3. \nCase-sensitivity"},{"refs":[{"id":"ref-for-string-is\u2461"}],"title":"6.6. \nClass selectors"},{"refs":[{"id":"ref-for-string-is\u2462"}],"title":"6.7. \nID selectors"}],"url":"https://infra.spec.whatwg.org/#string-is"},
 "9213678e": {"dfnID":"9213678e","dfnText":"<ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-ident"}],"title":"7.2. \nThe Language Pseudo-class: :lang()"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-ident"},
 "96626f55": {"dfnID":"96626f55","dfnText":"list-item","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-list-item"}],"title":"3.6.4. \nSub-pseudo-elements"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-list-item"},
@@ -7787,8 +7817,10 @@ let dfnPanelData = {
 "a658d30c": {"dfnID":"a658d30c","dfnText":"::shadow","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-shadow"}],"title":"3.6.5. \nInternal Structure"}],"url":"https://www.w3.org/TR/css-scoping-1/#selectordef-shadow"},
 "a7bbaf9f": {"dfnID":"a7bbaf9f","dfnText":"div","external":true,"refSections":[{"refs":[{"id":"ref-for-the-div-element"}],"title":"6.6. \nClass selectors"},{"refs":[{"id":"ref-for-the-div-element\u2460"}],"title":"14.3.3. \n:first-child pseudo-class"},{"refs":[{"id":"ref-for-the-div-element\u2461"}],"title":"15.1. \nDescendant combinator ( )"}],"url":"https://html.spec.whatwg.org/multipage/grouping-content.html#the-div-element"},
 "a963f9ba": {"dfnID":"a963f9ba","dfnText":"document white space characters","external":true,"refSections":[{"refs":[{"id":"ref-for-white-space"}],"title":"14.2. \n:empty pseudo-class"}],"url":"https://drafts.csswg.org/css-text-4/#white-space"},
+"aa4fe881": {"dfnID":"aa4fe881","dfnText":":target-within","external":true,"refSections":[{"refs":[{"id":"ref-for-target-within-pseudo"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-target-within-pseudo\u2460"}],"title":"20.7. \nChanges Since Level 3"}],"url":"https://drafts.csswg.org/selectors-4/#target-within-pseudo"},
 "aa7bbf63": {"dfnID":"aa7bbf63","dfnText":"video","external":true,"refSections":[{"refs":[{"id":"ref-for-video"}],"title":"11.1. \nMedia Playback State: the :playing, :paused, and :seeking pseudo-classes"},{"refs":[{"id":"ref-for-video\u2460"}],"title":"11.2. \nMedia Loading State: the :buffering and :stalled pseudo-classes"},{"refs":[{"id":"ref-for-video\u2461"},{"id":"ref-for-video\u2462"}],"title":"11.3. \nSound State: the :muted and :volume-locked pseudo-classes"}],"url":"https://html.spec.whatwg.org/multipage/media.html#video"},
-"active-pseudo": {"dfnID":"active-pseudo","dfnText":":active","external":false,"refSections":[{"refs":[{"id":"ref-for-active-pseudo"},{"id":"ref-for-active-pseudo\u2460"},{"id":"ref-for-active-pseudo\u2461"}],"title":"9.2. \nThe Activation Pseudo-class: :active"}],"url":"#active-pseudo"},
+"active-pseudo": {"dfnID":"active-pseudo","dfnText":":active","external":false,"refSections":[{"refs":[{"id":"ref-for-active-pseudo"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-active-pseudo\u2460"},{"id":"ref-for-active-pseudo\u2461"},{"id":"ref-for-active-pseudo\u2462"}],"title":"9.2. \nThe Activation Pseudo-class: :active"}],"url":"#active-pseudo"},
+"aee00462": {"dfnID":"aee00462","dfnText":"option","external":true,"refSections":[{"refs":[{"id":"ref-for-the-option-element"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-option-element"},
 "af50aa62": {"dfnID":"af50aa62","dfnText":"<function-token>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-function-token"},{"id":"ref-for-typedef-function-token\u2460"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-function-token"},
 "any-link-pseudo": {"dfnID":"any-link-pseudo","dfnText":":any-link","external":false,"refSections":[{"refs":[{"id":"ref-for-any-link-pseudo"}],"title":"8.1. \nThe Hyperlink Pseudo-class: :any-link"},{"refs":[{"id":"ref-for-any-link-pseudo\u2460"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#any-link-pseudo"},
 "attribute-selector": {"dfnID":"attribute-selector","dfnText":"attribute selector","external":false,"refSections":[{"refs":[{"id":"ref-for-attribute-selector"}],"title":"3.1. \nStructure and Terminology"}],"url":"#attribute-selector"},
@@ -7797,7 +7829,8 @@ let dfnPanelData = {
 "b32b852a": {"dfnID":"b32b852a","dfnText":"span","external":true,"refSections":[{"refs":[{"id":"ref-for-the-span-element"},{"id":"ref-for-the-span-element\u2460"}],"title":"6.1. \nAttribute presence and value selectors"},{"refs":[{"id":"ref-for-the-span-element\u2461"}],"title":"6.6. \nClass selectors"}],"url":"https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-span-element"},
 "b6fb7a51": {"dfnID":"b6fb7a51","dfnText":"custom element","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-element"}],"title":"5.4. \nThe Defined Pseudo-class: :defined"}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element"},
 "b80d76a2": {"dfnID":"b80d76a2","dfnText":"p","external":true,"refSections":[{"refs":[{"id":"ref-for-the-p-element"}],"title":"6.6. \nClass selectors"},{"refs":[{"id":"ref-for-the-p-element\u2460"}],"title":"8.4. \nThe Target Pseudo-class: :target"},{"refs":[{"id":"ref-for-the-p-element\u2461"}],"title":"13.3.2. \nThe Validity Pseudo-classes: :valid and :invalid"},{"refs":[{"id":"ref-for-the-p-element\u2462"}],"title":"14.2. \n:empty pseudo-class"},{"refs":[{"id":"ref-for-the-p-element\u2463"}],"title":"14.3.3. \n:first-child pseudo-class"},{"refs":[{"id":"ref-for-the-p-element\u2464"}],"title":"15.1. \nDescendant combinator ( )"},{"refs":[{"id":"ref-for-the-p-element\u2465"},{"id":"ref-for-the-p-element\u2466"}],"title":"15.2. \nChild combinator (>)"},{"refs":[{"id":"ref-for-the-p-element\u2467"}],"title":"15.3. \nNext-sibling combinator (+)"}],"url":"https://html.spec.whatwg.org/multipage/grouping-content.html#the-p-element"},
-"b8e482b4": {"dfnID":"b8e482b4","dfnText":":host","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-host"}],"title":"3.2.1. \nFeatureless Elements"}],"url":"https://drafts.csswg.org/css-scoping-1/#selectordef-host"},
+"b8e482b4": {"dfnID":"b8e482b4","dfnText":":host","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-host"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-selectordef-host\u2460"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"}],"url":"https://drafts.csswg.org/css-scoping-1/#selectordef-host"},
+"b90b2ad5": {"dfnID":"b90b2ad5","dfnText":"progress","external":true,"refSections":[{"refs":[{"id":"ref-for-the-progress-element"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element"},
 "b9a05383": {"dfnID":"b9a05383","dfnText":"placeholder","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-input-placeholder"}],"title":"13.1.3. \nThe Placeholder-shown Pseudo-class: :placeholder-shown"}],"url":"https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder"},
 "bcdb6841": {"dfnID":"bcdb6841","dfnText":"requestFullscreen()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-requestfullscreen"}],"title":"12.3. \nModal (Exclusive Interaction) State: the :modal pseudo-class"}],"url":"https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen"},
 "bf0e8186": {"dfnID":"bf0e8186","dfnText":"@namespace","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-namespace"}],"title":"3.8. \nDeclaring Namespace Prefixes"},{"refs":[{"id":"ref-for-at-ruledef-namespace\u2460"}],"title":"5.3. \nNamespaces in Elemental Selectors"}],"url":"https://drafts.csswg.org/css-namespaces-3/#at-ruledef-namespace"},
@@ -7807,7 +7840,8 @@ let dfnPanelData = {
 "c90d9be6": {"dfnID":"c90d9be6","dfnText":"::slotted()","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-slotted"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css-scoping-1/#selectordef-slotted"},
 "ca0abe12": {"dfnID":"ca0abe12","dfnText":"parse a list","external":true,"refSections":[{"refs":[{"id":"ref-for-css-parse-a-comma-separated-list-according-to-a-css-grammar"}],"title":"18.1. \n<forgiving-selector-list> and <forgiving-relative-selector-list>"}],"url":"https://drafts.csswg.org/css-syntax-3/#css-parse-a-comma-separated-list-according-to-a-css-grammar"},
 "ca0c892d": {"dfnID":"ca0c892d","dfnText":"href","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-hyperlink-href"}],"title":"8.1. \nThe Hyperlink Pseudo-class: :any-link"}],"url":"https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-href"},
-"checked-pseudo": {"dfnID":"checked-pseudo","dfnText":":checked","external":false,"refSections":[{"refs":[{"id":"ref-for-checked-pseudo"},{"id":"ref-for-checked-pseudo\u2460"},{"id":"ref-for-checked-pseudo\u2461"}],"title":"13.2.1. \nThe Selected-option Pseudo-class: :checked"},{"refs":[{"id":"ref-for-checked-pseudo\u2462"}],"title":"13.2.2. \nThe Indeterminate-value Pseudo-class: :indeterminate"}],"url":"#checked-pseudo"},
+"cd8eeff2": {"dfnID":"cd8eeff2","dfnText":"selected","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-option-selected"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#dom-option-selected"},
+"checked-pseudo": {"dfnID":"checked-pseudo","dfnText":":checked","external":false,"refSections":[{"refs":[{"id":"ref-for-checked-pseudo"},{"id":"ref-for-checked-pseudo\u2460"},{"id":"ref-for-checked-pseudo\u2461"},{"id":"ref-for-checked-pseudo\u2462"},{"id":"ref-for-checked-pseudo\u2463"},{"id":"ref-for-checked-pseudo\u2464"},{"id":"ref-for-checked-pseudo\u2465"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"#checked-pseudo"},
 "child-combinator": {"dfnID":"child-combinator","dfnText":"child combinator","external":false,"refSections":[{"refs":[{"id":"ref-for-child-combinator"}],"title":"3.1. \nStructure and Terminology"}],"url":"#child-combinator"},
 "class-selector": {"dfnID":"class-selector","dfnText":"class selector","external":false,"refSections":[{"refs":[{"id":"ref-for-class-selector"}],"title":"3.1. \nStructure and Terminology"}],"url":"#class-selector"},
 "column-combinator": {"dfnID":"column-combinator","dfnText":"column combinator","external":false,"refSections":[{"refs":[{"id":"ref-for-column-combinator"}],"title":"16. \nGrid-Structural Selectors"},{"refs":[{"id":"ref-for-column-combinator\u2460"}],"title":"20.6. \nChanges since the 29 September 2011 Working Draft"}],"url":"#column-combinator"},
@@ -7824,6 +7858,7 @@ let dfnPanelData = {
 "defined-pseudo": {"dfnID":"defined-pseudo","dfnText":":defined","external":false,"refSections":[{"refs":[{"id":"ref-for-defined-pseudo"},{"id":"ref-for-defined-pseudo\u2460"},{"id":"ref-for-defined-pseudo\u2461"}],"title":"5.4. \nThe Defined Pseudo-class: :defined"},{"refs":[{"id":"ref-for-defined-pseudo\u2462"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"}],"url":"#defined-pseudo"},
 "descendant-combinator": {"dfnID":"descendant-combinator","dfnText":"descendant combinator","external":false,"refSections":[{"refs":[{"id":"ref-for-descendant-combinator"},{"id":"ref-for-descendant-combinator\u2460"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-descendant-combinator\u2461"}],"title":"3.4. \nRelative Selectors"}],"url":"#descendant-combinator"},
 "df19338c": {"dfnID":"df19338c","dfnText":"box tree","external":true,"refSections":[{"refs":[{"id":"ref-for-box-tree"}],"title":"3.6.5. \nInternal Structure"}],"url":"https://drafts.csswg.org/css-display-4/#box-tree"},
+"dfc2dd10": {"dfnID":"dfc2dd10","dfnText":"checked","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-input-checked"},{"id":"ref-for-dom-input-checked\u2460"},{"id":"ref-for-dom-input-checked\u2461"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"https://html.spec.whatwg.org/multipage/input.html#dom-input-checked"},
 "dir-pseudo": {"dfnID":"dir-pseudo","dfnText":":dir()","external":false,"refSections":[{"refs":[{"id":"ref-for-dir-pseudo"},{"id":"ref-for-dir-pseudo\u2460"},{"id":"ref-for-dir-pseudo\u2461"}],"title":"7.1. \nThe Directionality Pseudo-class: :dir()"},{"refs":[{"id":"ref-for-dir-pseudo\u2462"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#dir-pseudo"},
 "disabled-pseudo": {"dfnID":"disabled-pseudo","dfnText":":disabled","external":false,"refSections":[{"refs":[{"id":"ref-for-disabled-pseudo"},{"id":"ref-for-disabled-pseudo\u2460"},{"id":"ref-for-disabled-pseudo\u2461"},{"id":"ref-for-disabled-pseudo\u2462"}],"title":"13.1.1. \nThe :enabled and :disabled Pseudo-classes"}],"url":"#disabled-pseudo"},
 "document-language": {"dfnID":"document-language","dfnText":"document language","external":false,"refSections":[{"refs":[{"id":"ref-for-document-language"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-document-language\u2460"}],"title":"3.2. \nData Model"},{"refs":[{"id":"ref-for-document-language\u2461"}],"title":"7.1. \nThe Directionality Pseudo-class: :dir()"}],"url":"#document-language"},
@@ -7837,29 +7872,30 @@ let dfnPanelData = {
 "f0811ff8": {"dfnID":"f0811ff8","dfnText":"img","external":true,"refSections":[{"refs":[{"id":"ref-for-the-img-element"}],"title":"14.4.1. \n:nth-of-type() pseudo-class"},{"refs":[{"id":"ref-for-the-img-element\u2460"}],"title":"14.4.2. \n:nth-last-of-type() pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
 "f29863d8": {"dfnID":"f29863d8","dfnText":"ol","external":true,"refSections":[{"refs":[{"id":"ref-for-the-ol-element"}],"title":"4.2. \nThe Matches-Any Pseudo-class: :is()"},{"refs":[{"id":"ref-for-the-ol-element\u2460"},{"id":"ref-for-the-ol-element\u2461"}],"title":"15.2. \nChild combinator (>)"}],"url":"https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element"},
 "f4da6587": {"dfnID":"f4da6587","dfnText":"popover","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-popover"}],"title":"12.2. \nPopover State: the :popover-open pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/popover.html#attr-popover"},
-"f7960529": {"dfnID":"f7960529","dfnText":"root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-root"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"https://dom.spec.whatwg.org/#concept-tree-root"},
+"f7960529": {"dfnID":"f7960529","dfnText":"root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-root"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-concept-tree-root\u2460"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"https://dom.spec.whatwg.org/#concept-tree-root"},
 "fb9bb722": {"dfnID":"fb9bb722","dfnText":"site","external":true,"refSections":[{"refs":[{"id":"ref-for-site"}],"title":"\nAppendix C: Example Privacy-Preserving :visited Restrictions"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#site"},
 "fc736137": {"dfnID":"fc736137","dfnText":"textarea","external":true,"refSections":[{"refs":[{"id":"ref-for-the-textarea-element"}],"title":"13.1.3. \nThe Placeholder-shown Pseudo-class: :placeholder-shown"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element"},
 "fd0c9e35": {"dfnID":"fd0c9e35","dfnText":"::after","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-after"}],"title":"3.6. Pseudo-elements"},{"refs":[{"id":"ref-for-selectordef-after\u2460"}],"title":"3.6.1. \nSyntax"},{"refs":[{"id":"ref-for-selectordef-after\u2461"}],"title":"18. \nGrammar"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-after"},
 "fd11cdcd": {"dfnID":"fd11cdcd","dfnText":"quirks mode","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-quirks"}],"title":"6.6. \nClass selectors"},{"refs":[{"id":"ref-for-concept-document-quirks\u2460"}],"title":"6.7. \nID selectors"}],"url":"https://dom.spec.whatwg.org/#concept-document-quirks"},
-"featureless": {"dfnID":"featureless","dfnText":"featureless","external":false,"refSections":[{"refs":[{"id":"ref-for-featureless"},{"id":"ref-for-featureless\u2460"},{"id":"ref-for-featureless\u2461"},{"id":"ref-for-featureless\u2462"},{"id":"ref-for-featureless\u2463"},{"id":"ref-for-featureless\u2464"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-featureless\u2465"}],"title":"3.6.1. \nSyntax"},{"refs":[{"id":"ref-for-featureless\u2466"},{"id":"ref-for-featureless\u2467"}],"title":"5.2. \nUniversal selector "},{"refs":[{"id":"ref-for-featureless\u2468"}],"title":"8.6. \nThe Reference Element Pseudo-class: :scope"}],"url":"#featureless"},
+"featureless": {"dfnID":"featureless","dfnText":"featureless","external":false,"refSections":[{"refs":[{"id":"ref-for-featureless"},{"id":"ref-for-featureless\u2460"},{"id":"ref-for-featureless\u2461"},{"id":"ref-for-featureless\u2462"},{"id":"ref-for-featureless\u2463"},{"id":"ref-for-featureless\u2464"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-featureless\u2465"}],"title":"3.6.1. \nSyntax"},{"refs":[{"id":"ref-for-featureless\u2466"},{"id":"ref-for-featureless\u2467"}],"title":"5.2. \nUniversal selector "},{"refs":[{"id":"ref-for-featureless\u2468"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"}],"url":"#featureless"},
 "fefa5851": {"dfnID":"fefa5851","dfnText":"shadow-including tree order","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-including-tree-order"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-including-tree-order"},
 "first-child-pseudo": {"dfnID":"first-child-pseudo","dfnText":":first-child","external":false,"refSections":[{"refs":[{"id":"ref-for-first-child-pseudo"}],"title":"14.3.3. \n:first-child pseudo-class"},{"refs":[{"id":"ref-for-first-child-pseudo\u2460"}],"title":"15.2. \nChild combinator (>)"},{"refs":[{"id":"ref-for-first-child-pseudo\u2461"}],"title":"\nAppendix A: Guidance on Mapping Source Documents & Data to an Element Tree"}],"url":"#first-child-pseudo"},
 "first-of-type-pseudo": {"dfnID":"first-of-type-pseudo","dfnText":":first-of-type","external":false,"refSections":[{"refs":[{"id":"ref-for-first-of-type-pseudo"}],"title":"14.4.3. \n:first-of-type pseudo-class"}],"url":"#first-of-type-pseudo"},
 "focus-pseudo": {"dfnID":"focus-pseudo","dfnText":":focus","external":false,"refSections":[{"refs":[{"id":"ref-for-focus-pseudo"},{"id":"ref-for-focus-pseudo\u2460"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-focus-pseudo\u2461"},{"id":"ref-for-focus-pseudo\u2462"},{"id":"ref-for-focus-pseudo\u2463"},{"id":"ref-for-focus-pseudo\u2464"},{"id":"ref-for-focus-pseudo\u2465"},{"id":"ref-for-focus-pseudo\u2466"}],"title":"9.3. \nThe Input Focus Pseudo-class: :focus"},{"refs":[{"id":"ref-for-focus-pseudo\u2467"},{"id":"ref-for-focus-pseudo\u2468"},{"id":"ref-for-focus-pseudo\u2460\u24ea"}],"title":"9.4. \nThe Focus-Indicated Pseudo-class: :focus-visible"},{"refs":[{"id":"ref-for-focus-pseudo\u2460\u2460"},{"id":"ref-for-focus-pseudo\u2460\u2461"}],"title":"9.5. \nThe Focus Container Pseudo-class: :focus-within"}],"url":"#focus-pseudo"},
 "focus-visible-pseudo": {"dfnID":"focus-visible-pseudo","dfnText":":focus-visible","external":false,"refSections":[{"refs":[{"id":"ref-for-focus-visible-pseudo"},{"id":"ref-for-focus-visible-pseudo\u2460"},{"id":"ref-for-focus-visible-pseudo\u2461"},{"id":"ref-for-focus-visible-pseudo\u2462"},{"id":"ref-for-focus-visible-pseudo\u2463"}],"title":"9.4. \nThe Focus-Indicated Pseudo-class: :focus-visible"},{"refs":[{"id":"ref-for-focus-visible-pseudo\u2464"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"},{"refs":[{"id":"ref-for-focus-visible-pseudo\u2465"}],"title":"20.3. \nChanges since the 2 February 2018 Working Draft"},{"refs":[{"id":"ref-for-focus-visible-pseudo\u2466"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-focus-visible-pseudo\u2467"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#focus-visible-pseudo"},
-"focus-within-pseudo": {"dfnID":"focus-within-pseudo","dfnText":":focus-within","external":false,"refSections":[{"refs":[{"id":"ref-for-focus-within-pseudo"}],"title":"9.3. \nThe Input Focus Pseudo-class: :focus"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2460"}],"title":"9.5. \nThe Focus Container Pseudo-class: :focus-within"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2461"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2462"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#focus-within-pseudo"},
+"focus-within-pseudo": {"dfnID":"focus-within-pseudo","dfnText":":focus-within","external":false,"refSections":[{"refs":[{"id":"ref-for-focus-within-pseudo"}],"title":"8.4. \nThe Target Pseudo-class: :target"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2460"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2461"}],"title":"9.3. \nThe Input Focus Pseudo-class: :focus"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2462"}],"title":"9.5. \nThe Focus Container Pseudo-class: :focus-within"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2463"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-focus-within-pseudo\u2464"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#focus-within-pseudo"},
 "functional-pseudo-class": {"dfnID":"functional-pseudo-class","dfnText":"functional pseudo-class","external":false,"refSections":[{"refs":[{"id":"ref-for-functional-pseudo-class"},{"id":"ref-for-functional-pseudo-class\u2460"}],"title":"3.5. \nPseudo-classes"}],"url":"#functional-pseudo-class"},
 "functional-pseudo-element": {"dfnID":"functional-pseudo-element","dfnText":"functional pseudo-element","external":false,"refSections":[],"url":"#functional-pseudo-element"},
 "future-pseudo": {"dfnID":"future-pseudo","dfnText":":future","external":false,"refSections":[{"refs":[{"id":"ref-for-future-pseudo"},{"id":"ref-for-future-pseudo\u2460"},{"id":"ref-for-future-pseudo\u2461"}],"title":"10. \nTime-dimensional Pseudo-classes"},{"refs":[{"id":"ref-for-future-pseudo\u2462"},{"id":"ref-for-future-pseudo\u2463"}],"title":"10.3. \nThe Future-element Pseudo-class: :future"}],"url":"#future-pseudo"},
 "has-allowed-pseudo-element": {"dfnID":"has-allowed-pseudo-element","dfnText":":has-allowed pseudo-element","external":false,"refSections":[{"refs":[{"id":"ref-for-has-allowed-pseudo-element"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"}],"url":"#has-allowed-pseudo-element"},
 "has-pseudo": {"dfnID":"has-pseudo","dfnText":":has()","external":false,"refSections":[{"refs":[{"id":"ref-for-has-pseudo"},{"id":"ref-for-has-pseudo\u2460"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-has-pseudo\u2461"},{"id":"ref-for-has-pseudo\u2462"},{"id":"ref-for-has-pseudo\u2463"},{"id":"ref-for-has-pseudo\u2464"},{"id":"ref-for-has-pseudo\u2465"},{"id":"ref-for-has-pseudo\u2466"},{"id":"ref-for-has-pseudo\u2467"},{"id":"ref-for-has-pseudo\u2468"},{"id":"ref-for-has-pseudo\u2460\u24ea"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2460"}],"title":"17. \nCalculating a selector\u2019s specificity"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2461"}],"title":"\nAppendix A: Guidance on Mapping Source Documents & Data to an Element Tree"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2462"},{"id":"ref-for-has-pseudo\u2460\u2463"},{"id":"ref-for-has-pseudo\u2460\u2464"},{"id":"ref-for-has-pseudo\u2460\u2465"}],"title":"20.1. \nChanges since the 7 May 2022 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2466"},{"id":"ref-for-has-pseudo\u2460\u2467"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2468"}],"title":"20.3. \nChanges since the 2 February 2018 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2461\u24ea"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2461\u2460"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#has-pseudo"},
 "host-language": {"dfnID":"host-language","dfnText":"host language","external":false,"refSections":[{"refs":[{"id":"ref-for-host-language"}],"title":"3.2. \nData Model"}],"url":"#host-language"},
-"hover-pseudo": {"dfnID":"hover-pseudo","dfnText":":hover","external":false,"refSections":[{"refs":[{"id":"ref-for-hover-pseudo"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-hover-pseudo\u2460"},{"id":"ref-for-hover-pseudo\u2461"},{"id":"ref-for-hover-pseudo\u2462"},{"id":"ref-for-hover-pseudo\u2463"},{"id":"ref-for-hover-pseudo\u2464"}],"title":"9.1. \nThe Pointer Hover Pseudo-class: :hover"}],"url":"#hover-pseudo"},
+"hover-pseudo": {"dfnID":"hover-pseudo","dfnText":":hover","external":false,"refSections":[{"refs":[{"id":"ref-for-hover-pseudo"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-hover-pseudo\u2460"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-hover-pseudo\u2461"},{"id":"ref-for-hover-pseudo\u2462"},{"id":"ref-for-hover-pseudo\u2463"},{"id":"ref-for-hover-pseudo\u2464"},{"id":"ref-for-hover-pseudo\u2465"}],"title":"9.1. \nThe Pointer Hover Pseudo-class: :hover"}],"url":"#hover-pseudo"},
 "id-selector": {"dfnID":"id-selector","dfnText":"ID selector","external":false,"refSections":[{"refs":[{"id":"ref-for-id-selector"}],"title":"3.1. \nStructure and Terminology"}],"url":"#id-selector"},
 "in-range-pseudo": {"dfnID":"in-range-pseudo","dfnText":":in-range","external":false,"refSections":[{"refs":[{"id":"ref-for-in-range-pseudo"},{"id":"ref-for-in-range-pseudo\u2460"},{"id":"ref-for-in-range-pseudo\u2461"}],"title":"13.3.3. \nThe Range Pseudo-classes: :in-range and :out-of-range"}],"url":"#in-range-pseudo"},
-"indeterminate-pseudo": {"dfnID":"indeterminate-pseudo","dfnText":":indeterminate","external":false,"refSections":[{"refs":[{"id":"ref-for-indeterminate-pseudo"},{"id":"ref-for-indeterminate-pseudo\u2460"},{"id":"ref-for-indeterminate-pseudo\u2461"},{"id":"ref-for-indeterminate-pseudo\u2462"}],"title":"13.2.2. \nThe Indeterminate-value Pseudo-class: :indeterminate"},{"refs":[{"id":"ref-for-indeterminate-pseudo\u2463"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#indeterminate-pseudo"},
+"indeterminate-pseudo": {"dfnID":"indeterminate-pseudo","dfnText":":indeterminate","external":false,"refSections":[{"refs":[{"id":"ref-for-indeterminate-pseudo"},{"id":"ref-for-indeterminate-pseudo\u2460"},{"id":"ref-for-indeterminate-pseudo\u2461"},{"id":"ref-for-indeterminate-pseudo\u2462"},{"id":"ref-for-indeterminate-pseudo\u2463"},{"id":"ref-for-indeterminate-pseudo\u2464"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"},{"refs":[{"id":"ref-for-indeterminate-pseudo\u2465"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#indeterminate-pseudo"},
 "indicate-focus": {"dfnID":"indicate-focus","dfnText":"indicate focus","external":false,"refSections":[{"refs":[{"id":"ref-for-indicate-focus"},{"id":"ref-for-indicate-focus\u2460"},{"id":"ref-for-indicate-focus\u2461"},{"id":"ref-for-indicate-focus\u2462"},{"id":"ref-for-indicate-focus\u2463"},{"id":"ref-for-indicate-focus\u2464"},{"id":"ref-for-indicate-focus\u2465"},{"id":"ref-for-indicate-focus\u2466"},{"id":"ref-for-indicate-focus\u2467"},{"id":"ref-for-indicate-focus\u2468"},{"id":"ref-for-indicate-focus\u2460\u24ea"}],"title":"9.4. \nThe Focus-Indicated Pseudo-class: :focus-visible"}],"url":"#indicate-focus"},
+"input-value-pseudo-classes": {"dfnID":"input-value-pseudo-classes","dfnText":"input value pseudo-classes","external":false,"refSections":[{"refs":[{"id":"ref-for-input-value-pseudo-classes"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"#input-value-pseudo-classes"},
 "invalid-pseudo": {"dfnID":"invalid-pseudo","dfnText":":invalid","external":false,"refSections":[{"refs":[{"id":"ref-for-invalid-pseudo"},{"id":"ref-for-invalid-pseudo\u2460"},{"id":"ref-for-invalid-pseudo\u2461"}],"title":"13.3.2. \nThe Validity Pseudo-classes: :valid and :invalid"},{"refs":[{"id":"ref-for-invalid-pseudo\u2462"},{"id":"ref-for-invalid-pseudo\u2463"},{"id":"ref-for-invalid-pseudo\u2464"}],"title":"13.3.5. \nThe User-interaction Pseudo-classes: :user-valid and :user-invalid"}],"url":"#invalid-pseudo"},
 "invalid-selector": {"dfnID":"invalid-selector","dfnText":"invalid selectors","external":false,"refSections":[{"refs":[{"id":"ref-for-invalid-selector"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-invalid-selector\u2460"},{"id":"ref-for-invalid-selector\u2461"}],"title":"3.9. \nInvalid Selectors and Error Handling"},{"refs":[{"id":"ref-for-invalid-selector\u2462"}],"title":"5.3. \nNamespaces in Elemental Selectors"},{"refs":[{"id":"ref-for-invalid-selector\u2463"}],"title":"18.1. \n<forgiving-selector-list> and <forgiving-relative-selector-list>"},{"refs":[{"id":"ref-for-invalid-selector\u2464"}],"title":"19. \nAPI Hooks"},{"refs":[{"id":"ref-for-invalid-selector\u2465"},{"id":"ref-for-invalid-selector\u2466"}],"title":"19.1. \nParse A Selector"},{"refs":[{"id":"ref-for-invalid-selector\u2467"},{"id":"ref-for-invalid-selector\u2468"}],"title":"19.2. \nParse A Relative Selector"}],"url":"#invalid-selector"},
 "lang-pseudo": {"dfnID":"lang-pseudo","dfnText":":lang()","external":false,"refSections":[{"refs":[{"id":"ref-for-lang-pseudo"}],"title":"3.2. \nData Model"},{"refs":[{"id":"ref-for-lang-pseudo\u2460"}],"title":"3.5. \nPseudo-classes"},{"refs":[{"id":"ref-for-lang-pseudo\u2461"}],"title":"3.7. \nCharacters and case sensitivity"},{"refs":[{"id":"ref-for-lang-pseudo\u2462"}],"title":"6.1. \nAttribute presence and value selectors"},{"refs":[{"id":"ref-for-lang-pseudo\u2463"},{"id":"ref-for-lang-pseudo\u2464"}],"title":"7.2. \nThe Language Pseudo-class: :lang()"},{"refs":[{"id":"ref-for-lang-pseudo\u2465"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-lang-pseudo\u2466"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#lang-pseudo"},
@@ -7899,20 +7935,20 @@ let dfnPanelData = {
 "placeholder-shown-pseudo": {"dfnID":"placeholder-shown-pseudo","dfnText":":placeholder-shown","external":false,"refSections":[{"refs":[{"id":"ref-for-placeholder-shown-pseudo"},{"id":"ref-for-placeholder-shown-pseudo\u2460"}],"title":"13.1.3. \nThe Placeholder-shown Pseudo-class: :placeholder-shown"},{"refs":[{"id":"ref-for-placeholder-shown-pseudo\u2461"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"},{"refs":[{"id":"ref-for-placeholder-shown-pseudo\u2462"}],"title":"20.5. \nChanges since the 23 August 2012 Working Draft"}],"url":"#placeholder-shown-pseudo"},
 "pseudo-class": {"dfnID":"pseudo-class","dfnText":"Pseudo-classes","external":false,"refSections":[{"refs":[{"id":"ref-for-pseudo-class"},{"id":"ref-for-pseudo-class\u2460"},{"id":"ref-for-pseudo-class\u2461"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-pseudo-class\u2462"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-pseudo-class\u2463"},{"id":"ref-for-pseudo-class\u2464"},{"id":"ref-for-pseudo-class\u2465"},{"id":"ref-for-pseudo-class\u2466"},{"id":"ref-for-pseudo-class\u2467"},{"id":"ref-for-pseudo-class\u2468"},{"id":"ref-for-pseudo-class\u2460\u24ea"}],"title":"3.5. \nPseudo-classes"},{"refs":[{"id":"ref-for-pseudo-class\u2460\u2460"},{"id":"ref-for-pseudo-class\u2460\u2461"}],"title":"3.6. Pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-class\u2460\u2462"},{"id":"ref-for-pseudo-class\u2460\u2463"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-class\u2460\u2464"},{"id":"ref-for-pseudo-class\u2460\u2465"}],"title":"4. \nLogical Combinations"},{"refs":[{"id":"ref-for-pseudo-class\u2460\u2466"}],"title":"5.4. \nThe Defined Pseudo-class: :defined"},{"refs":[{"id":"ref-for-pseudo-class\u2460\u2467"},{"id":"ref-for-pseudo-class\u2460\u2468"}],"title":"9.4. \nThe Focus-Indicated Pseudo-class: :focus-visible"},{"refs":[{"id":"ref-for-pseudo-class\u2461\u24ea"}],"title":"14.4.1. \n:nth-of-type() pseudo-class"},{"refs":[{"id":"ref-for-pseudo-class\u2461\u2460"}],"title":"14.4.2. \n:nth-last-of-type() pseudo-class"}],"url":"#pseudo-class"},
 "pseudo-compound": {"dfnID":"pseudo-compound","dfnText":"pseudo-compound selector","external":false,"refSections":[{"refs":[{"id":"ref-for-pseudo-compound"},{"id":"ref-for-pseudo-compound\u2460"},{"id":"ref-for-pseudo-compound\u2461"},{"id":"ref-for-pseudo-compound\u2462"},{"id":"ref-for-pseudo-compound\u2463"},{"id":"ref-for-pseudo-compound\u2464"},{"id":"ref-for-pseudo-compound\u2465"},{"id":"ref-for-pseudo-compound\u2466"},{"id":"ref-for-pseudo-compound\u2467"},{"id":"ref-for-pseudo-compound\u2468"}],"title":"3.1. \nStructure and Terminology"}],"url":"#pseudo-compound"},
-"pseudo-element": {"dfnID":"pseudo-element","dfnText":"pseudo-element","external":false,"refSections":[{"refs":[{"id":"ref-for-pseudo-element\u2460"},{"id":"ref-for-pseudo-element\u2461"},{"id":"ref-for-pseudo-element\u2462"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-pseudo-element\u2463"},{"id":"ref-for-pseudo-element\u2464"},{"id":"ref-for-pseudo-element\u2465"}],"title":"3.6. Pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-element\u2466"},{"id":"ref-for-pseudo-element\u2467"},{"id":"ref-for-pseudo-element\u2468"},{"id":"ref-for-pseudo-element\u2460\u24ea"},{"id":"ref-for-pseudo-element\u2460\u2460"},{"id":"ref-for-pseudo-element\u2460\u2461"}],"title":"3.6.1. \nSyntax"},{"refs":[{"id":"ref-for-pseudo-element\u2460\u2462"},{"id":"ref-for-pseudo-element\u2460\u2463"},{"id":"ref-for-pseudo-element\u2460\u2464"},{"id":"ref-for-pseudo-element\u2460\u2465"},{"id":"ref-for-pseudo-element\u2460\u2466"},{"id":"ref-for-pseudo-element\u2460\u2467"}],"title":"3.6.2. \nBinding to the Document Tree"},{"refs":[{"id":"ref-for-pseudo-element\u2460\u2468"},{"id":"ref-for-pseudo-element\u2461\u24ea"},{"id":"ref-for-pseudo-element\u2461\u2460"},{"id":"ref-for-pseudo-element\u2461\u2461"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-element\u2461\u2462"},{"id":"ref-for-pseudo-element\u2461\u2463"},{"id":"ref-for-pseudo-element\u2461\u2464"}],"title":"3.6.4. \nSub-pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-element\u2461\u2465"},{"id":"ref-for-pseudo-element\u2461\u2466"},{"id":"ref-for-pseudo-element\u2461\u2467"}],"title":"3.6.5. \nInternal Structure"},{"refs":[{"id":"ref-for-pseudo-element\u2461\u2468"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u24ea"}],"title":"14. \nTree-Structural pseudo-classes"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u2460"},{"id":"ref-for-pseudo-element\u2462\u2461"}],"title":"18. \nGrammar"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u2462"}],"title":"19.5. \nMatch a Selector Against a Tree"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u2463"}],"title":"\nAppendix B: Obsolete but Required -webkit- Parsing Quirks for Web Compat"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u2464"}],"title":"20.1. \nChanges since the 7 May 2022 Working Draft"}],"url":"#pseudo-element"},
+"pseudo-element": {"dfnID":"pseudo-element","dfnText":"pseudo-element","external":false,"refSections":[{"refs":[{"id":"ref-for-pseudo-element"},{"id":"ref-for-pseudo-element\u2460"},{"id":"ref-for-pseudo-element\u2461"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-pseudo-element\u2462"},{"id":"ref-for-pseudo-element\u2463"},{"id":"ref-for-pseudo-element\u2464"}],"title":"3.6. Pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-element\u2465"},{"id":"ref-for-pseudo-element\u2466"},{"id":"ref-for-pseudo-element\u2467"},{"id":"ref-for-pseudo-element\u2468"},{"id":"ref-for-pseudo-element\u2460\u24ea"},{"id":"ref-for-pseudo-element\u2460\u2460"}],"title":"3.6.1. \nSyntax"},{"refs":[{"id":"ref-for-pseudo-element\u2460\u2461"},{"id":"ref-for-pseudo-element\u2460\u2462"},{"id":"ref-for-pseudo-element\u2460\u2463"},{"id":"ref-for-pseudo-element\u2460\u2464"},{"id":"ref-for-pseudo-element\u2460\u2465"},{"id":"ref-for-pseudo-element\u2460\u2466"}],"title":"3.6.2. \nBinding to the Document Tree"},{"refs":[{"id":"ref-for-pseudo-element\u2460\u2467"},{"id":"ref-for-pseudo-element\u2460\u2468"},{"id":"ref-for-pseudo-element\u2461\u24ea"},{"id":"ref-for-pseudo-element\u2461\u2460"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-element\u2461\u2461"},{"id":"ref-for-pseudo-element\u2461\u2462"},{"id":"ref-for-pseudo-element\u2461\u2463"}],"title":"3.6.4. \nSub-pseudo-elements"},{"refs":[{"id":"ref-for-pseudo-element\u2461\u2464"},{"id":"ref-for-pseudo-element\u2461\u2465"},{"id":"ref-for-pseudo-element\u2461\u2466"}],"title":"3.6.5. \nInternal Structure"},{"refs":[{"id":"ref-for-pseudo-element\u2461\u2467"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"},{"refs":[{"id":"ref-for-pseudo-element\u2461\u2468"}],"title":"14. \nTree-Structural pseudo-classes"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u24ea"},{"id":"ref-for-pseudo-element\u2462\u2460"}],"title":"18. \nGrammar"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u2461"}],"title":"19.5. \nMatch a Selector Against a Tree"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u2462"}],"title":"\nAppendix B: Obsolete but Required -webkit- Parsing Quirks for Web Compat"},{"refs":[{"id":"ref-for-pseudo-element\u2462\u2463"}],"title":"20.1. \nChanges since the 7 May 2022 Working Draft"}],"url":"#pseudo-element"},
 "read-only-pseudo": {"dfnID":"read-only-pseudo","dfnText":":read-only","external":false,"refSections":[{"refs":[{"id":"ref-for-read-only-pseudo"}],"title":"13.1.2. \nThe Mutability Pseudo-classes: :read-only and :read-write"}],"url":"#read-only-pseudo"},
 "read-write-pseudo": {"dfnID":"read-write-pseudo","dfnText":":read-write","external":false,"refSections":[{"refs":[{"id":"ref-for-read-write-pseudo"},{"id":"ref-for-read-write-pseudo\u2460"}],"title":"13.1.2. \nThe Mutability Pseudo-classes: :read-only and :read-write"},{"refs":[{"id":"ref-for-read-write-pseudo\u2461"}],"title":"20.1. \nChanges since the 7 May 2022 Working Draft"}],"url":"#read-write-pseudo"},
 "relative-selector": {"dfnID":"relative-selector","dfnText":"relative selectors","external":false,"refSections":[{"refs":[{"id":"ref-for-relative-selector"}],"title":"2. \nSelectors Overview"},{"refs":[{"id":"ref-for-relative-selector\u2460"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"},{"refs":[{"id":"ref-for-relative-selector\u2461"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"}],"url":"#relative-selector"},
 "relative-selector-anchor-elements": {"dfnID":"relative-selector-anchor-elements","dfnText":"relative selector anchor elements","external":false,"refSections":[{"refs":[{"id":"ref-for-relative-selector-anchor-elements"}],"title":"2. \nSelectors Overview"},{"refs":[{"id":"ref-for-relative-selector-anchor-elements\u2460"}],"title":"3.4. \nRelative Selectors"},{"refs":[{"id":"ref-for-relative-selector-anchor-elements\u2461"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"}],"url":"#relative-selector-anchor-elements"},
 "required-pseudo": {"dfnID":"required-pseudo","dfnText":":required","external":false,"refSections":[{"refs":[{"id":"ref-for-required-pseudo"}],"title":"13.3.4. \nThe Optionality Pseudo-classes: :required and :optional"}],"url":"#required-pseudo"},
-"root-pseudo": {"dfnID":"root-pseudo","dfnText":":root","external":false,"refSections":[{"refs":[{"id":"ref-for-root-pseudo"}],"title":"8.6. \nThe Reference Element Pseudo-class: :scope"},{"refs":[{"id":"ref-for-root-pseudo\u2460"},{"id":"ref-for-root-pseudo\u2461"}],"title":"14.1. \n:root pseudo-class"},{"refs":[{"id":"ref-for-root-pseudo\u2462"}],"title":"\nAppendix A: Guidance on Mapping Source Documents & Data to an Element Tree"}],"url":"#root-pseudo"},
-"scope-pseudo": {"dfnID":"scope-pseudo","dfnText":":scope","external":false,"refSections":[{"refs":[{"id":"ref-for-scope-pseudo"},{"id":"ref-for-scope-pseudo\u2460"}],"title":"8.6. \nThe Reference Element Pseudo-class: :scope"},{"refs":[{"id":"ref-for-scope-pseudo\u2461"}],"title":"19.3. \nMatch a Selector Against an Element"},{"refs":[{"id":"ref-for-scope-pseudo\u2462"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#scope-pseudo"},
+"root-pseudo": {"dfnID":"root-pseudo","dfnText":":root","external":false,"refSections":[{"refs":[{"id":"ref-for-root-pseudo"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"},{"refs":[{"id":"ref-for-root-pseudo\u2460"},{"id":"ref-for-root-pseudo\u2461"}],"title":"14.1. \n:root pseudo-class"},{"refs":[{"id":"ref-for-root-pseudo\u2462"}],"title":"\nAppendix A: Guidance on Mapping Source Documents & Data to an Element Tree"}],"url":"#root-pseudo"},
+"scope-pseudo": {"dfnID":"scope-pseudo","dfnText":":scope","external":false,"refSections":[{"refs":[{"id":"ref-for-scope-pseudo"},{"id":"ref-for-scope-pseudo\u2460"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"},{"refs":[{"id":"ref-for-scope-pseudo\u2461"}],"title":"19.3. \nMatch a Selector Against an Element"},{"refs":[{"id":"ref-for-scope-pseudo\u2462"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#scope-pseudo"},
 "scoped-selector": {"dfnID":"scoped-selector","dfnText":"scope","external":false,"refSections":[{"refs":[{"id":"ref-for-scoped-selector"},{"id":"ref-for-scoped-selector\u2460"}],"title":"3.3. \nScoped Selectors"},{"refs":[{"id":"ref-for-scoped-selector\u2461"}],"title":"19.5. \nMatch a Selector Against a Tree"},{"refs":[{"id":"ref-for-scoped-selector\u2462"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"}],"url":"#scoped-selector"},
-"scoping-root": {"dfnID":"scoping-root","dfnText":"scoping root","external":false,"refSections":[{"refs":[{"id":"ref-for-scoping-root"}],"title":"2. \nSelectors Overview"},{"refs":[{"id":"ref-for-scoping-root\u2460"}],"title":"3.3. \nScoped Selectors"},{"refs":[{"id":"ref-for-scoping-root\u2461"},{"id":"ref-for-scoping-root\u2462"},{"id":"ref-for-scoping-root\u2463"},{"id":"ref-for-scoping-root\u2464"},{"id":"ref-for-scoping-root\u2465"},{"id":"ref-for-scoping-root\u2466"},{"id":"ref-for-scoping-root\u2467"}],"title":"8.6. \nThe Reference Element Pseudo-class: :scope"},{"refs":[{"id":"ref-for-scoping-root\u2468"}],"title":"19.3. \nMatch a Selector Against an Element"},{"refs":[{"id":"ref-for-scoping-root\u2460\u24ea"},{"id":"ref-for-scoping-root\u2460\u2460"},{"id":"ref-for-scoping-root\u2460\u2461"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"#scoping-root"},
+"scoping-root": {"dfnID":"scoping-root","dfnText":"scoping root","external":false,"refSections":[{"refs":[{"id":"ref-for-scoping-root"}],"title":"2. \nSelectors Overview"},{"refs":[{"id":"ref-for-scoping-root\u2460"}],"title":"3.3. \nScoped Selectors"},{"refs":[{"id":"ref-for-scoping-root\u2461"},{"id":"ref-for-scoping-root\u2462"},{"id":"ref-for-scoping-root\u2463"},{"id":"ref-for-scoping-root\u2464"},{"id":"ref-for-scoping-root\u2465"},{"id":"ref-for-scoping-root\u2466"},{"id":"ref-for-scoping-root\u2467"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"},{"refs":[{"id":"ref-for-scoping-root\u2468"}],"title":"19.3. \nMatch a Selector Against an Element"},{"refs":[{"id":"ref-for-scoping-root\u2460\u24ea"},{"id":"ref-for-scoping-root\u2460\u2460"},{"id":"ref-for-scoping-root\u2460\u2461"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"#scoping-root"},
 "selector": {"dfnID":"selector","dfnText":"selector","external":false,"refSections":[{"refs":[{"id":"ref-for-selector\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-selector\u2461"},{"id":"ref-for-selector\u2462"},{"id":"ref-for-selector\u2463"}],"title":"3.1. \nStructure and Terminology"}],"url":"#selector"},
 "selector-combinator": {"dfnID":"selector-combinator","dfnText":"combinator","external":false,"refSections":[{"refs":[{"id":"ref-for-selector-combinator"},{"id":"ref-for-selector-combinator\u2460"},{"id":"ref-for-selector-combinator\u2461"},{"id":"ref-for-selector-combinator\u2462"},{"id":"ref-for-selector-combinator\u2463"},{"id":"ref-for-selector-combinator\u2464"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-selector-combinator\u2465"}],"title":"3.4. \nRelative Selectors"},{"refs":[{"id":"ref-for-selector-combinator\u2466"}],"title":"3.6.5. \nInternal Structure"},{"refs":[{"id":"ref-for-selector-combinator\u2467"}],"title":"19.3. \nMatch a Selector Against an Element"}],"url":"#selector-combinator"},
 "selector-list": {"dfnID":"selector-list","dfnText":"selector list","external":false,"refSections":[{"refs":[{"id":"ref-for-selector-list"},{"id":"ref-for-selector-list\u2460"},{"id":"ref-for-selector-list\u2461"},{"id":"ref-for-selector-list\u2462"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-selector-list\u2463"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-selector-list\u2464"}],"title":"4. \nLogical Combinations"},{"refs":[{"id":"ref-for-selector-list\u2465"},{"id":"ref-for-selector-list\u2466"}],"title":"4.1. \nSelector Lists"},{"refs":[{"id":"ref-for-selector-list\u2467"}],"title":"14.3.1. \n:nth-child() pseudo-class"},{"refs":[{"id":"ref-for-selector-list\u2468"}],"title":"14.3.2. \n:nth-last-child() pseudo-class"},{"refs":[{"id":"ref-for-selector-list\u2460\u24ea"},{"id":"ref-for-selector-list\u2460\u2460"},{"id":"ref-for-selector-list\u2460\u2461"}],"title":"17. \nCalculating a selector\u2019s specificity"},{"refs":[{"id":"ref-for-selector-list\u2460\u2462"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"}],"url":"#selector-list"},
-"selector-subject": {"dfnID":"selector-subject","dfnText":"subject of a selector","external":false,"refSections":[{"refs":[{"id":"ref-for-selector-subject"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-selector-subject\u2460"}],"title":"4.2. \nThe Matches-Any Pseudo-class: :is()"},{"refs":[{"id":"ref-for-selector-subject\u2461"}],"title":"4.3. \nThe Negation (Matches-None) Pseudo-class: :not()"},{"refs":[{"id":"ref-for-selector-subject\u2462"},{"id":"ref-for-selector-subject\u2463"}],"title":"8.6. \nThe Reference Element Pseudo-class: :scope"}],"url":"#selector-subject"},
+"selector-subject": {"dfnID":"selector-subject","dfnText":"subject of a selector","external":false,"refSections":[{"refs":[{"id":"ref-for-selector-subject"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-selector-subject\u2460"}],"title":"4.2. \nThe Matches-Any Pseudo-class: :is()"},{"refs":[{"id":"ref-for-selector-subject\u2461"}],"title":"4.3. \nThe Negation (Matches-None) Pseudo-class: :not()"},{"refs":[{"id":"ref-for-selector-subject\u2462"},{"id":"ref-for-selector-subject\u2463"}],"title":"8.5. \nThe Reference Element Pseudo-class: :scope"}],"url":"#selector-subject"},
 "selectordef-adjacent": {"dfnID":"selectordef-adjacent","dfnText":"+","external":false,"refSections":[],"url":"#selectordef-adjacent"},
 "selectordef-autofill": {"dfnID":"selectordef-autofill","dfnText":":autofill","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-autofill"}],"title":"13.1.4. \nThe Automatic Input Pseudo-class: :autofill"},{"refs":[{"id":"ref-for-selectordef-autofill\u2460"}],"title":"\nAppendix B: Obsolete but Required -webkit- Parsing Quirks for Web Compat"},{"refs":[{"id":"ref-for-selectordef-autofill\u2461"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"},{"refs":[{"id":"ref-for-selectordef-autofill\u2462"}],"title":"Privacy Considerations"}],"url":"#selectordef-autofill"},
 "selectordef-buffering": {"dfnID":"selectordef-buffering","dfnText":":buffering","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-buffering"},{"id":"ref-for-selectordef-buffering\u2460"},{"id":"ref-for-selectordef-buffering\u2461"}],"title":"11.2. \nMedia Loading State: the :buffering and :stalled pseudo-classes"},{"refs":[{"id":"ref-for-selectordef-buffering\u2462"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"}],"url":"#selectordef-buffering"},
@@ -7937,8 +7973,7 @@ let dfnPanelData = {
 "structural-pseudo-classes": {"dfnID":"structural-pseudo-classes","dfnText":"structural pseudo-classes","external":false,"refSections":[{"refs":[{"id":"ref-for-structural-pseudo-classes"}],"title":"3.6. Pseudo-elements"},{"refs":[{"id":"ref-for-structural-pseudo-classes\u2460"}],"title":"14. \nTree-Structural pseudo-classes"}],"url":"#structural-pseudo-classes"},
 "sub-pseudo-element": {"dfnID":"sub-pseudo-element","dfnText":"sub-pseudo-elements","external":false,"refSections":[{"refs":[{"id":"ref-for-sub-pseudo-element"},{"id":"ref-for-sub-pseudo-element\u2460"},{"id":"ref-for-sub-pseudo-element\u2461"}],"title":"3.6.4. \nSub-pseudo-elements"},{"refs":[{"id":"ref-for-sub-pseudo-element\u2462"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"}],"url":"#sub-pseudo-element"},
 "subsequent-sibling-combinator": {"dfnID":"subsequent-sibling-combinator","dfnText":"subsequent-sibling combinator","external":false,"refSections":[{"refs":[{"id":"ref-for-subsequent-sibling-combinator"}],"title":"3.1. \nStructure and Terminology"}],"url":"#subsequent-sibling-combinator"},
-"target-pseudo": {"dfnID":"target-pseudo","dfnText":":target","external":false,"refSections":[{"refs":[{"id":"ref-for-target-pseudo"}],"title":"8.3. \nThe Local Link Pseudo-class: :local-link"},{"refs":[{"id":"ref-for-target-pseudo\u2460"},{"id":"ref-for-target-pseudo\u2461"}],"title":"8.4. \nThe Target Pseudo-class: :target"},{"refs":[{"id":"ref-for-target-pseudo\u2462"},{"id":"ref-for-target-pseudo\u2463"}],"title":"8.5. \nThe Target Container Pseudo-class: :target-within"}],"url":"#target-pseudo"},
-"target-within-pseudo": {"dfnID":"target-within-pseudo","dfnText":":target-within","external":false,"refSections":[{"refs":[{"id":"ref-for-target-within-pseudo"}],"title":"8.3. \nThe Local Link Pseudo-class: :local-link"},{"refs":[{"id":"ref-for-target-within-pseudo\u2460"}],"title":"8.5. \nThe Target Container Pseudo-class: :target-within"},{"refs":[{"id":"ref-for-target-within-pseudo\u2461"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-target-within-pseudo\u2462"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#target-within-pseudo"},
+"target-pseudo": {"dfnID":"target-pseudo","dfnText":":target","external":false,"refSections":[{"refs":[{"id":"ref-for-target-pseudo"}],"title":"8.3. \nThe Local Link Pseudo-class: :local-link"},{"refs":[{"id":"ref-for-target-pseudo\u2460"},{"id":"ref-for-target-pseudo\u2461"}],"title":"8.4. \nThe Target Pseudo-class: :target"}],"url":"#target-pseudo"},
 "type-selector": {"dfnID":"type-selector","dfnText":"type selector","external":false,"refSections":[{"refs":[{"id":"ref-for-type-selector"},{"id":"ref-for-type-selector\u2460"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-type-selector\u2461"}],"title":"3.5. \nPseudo-classes"},{"refs":[{"id":"ref-for-type-selector\u2462"}],"title":"4.2. \nThe Matches-Any Pseudo-class: :is()"},{"refs":[{"id":"ref-for-type-selector\u2463"}],"title":"4.3. \nThe Negation (Matches-None) Pseudo-class: :not()"},{"refs":[{"id":"ref-for-type-selector\u2464"}],"title":"5.1. \nType (tag name) selector"},{"refs":[{"id":"ref-for-type-selector\u2465"},{"id":"ref-for-type-selector\u2466"},{"id":"ref-for-type-selector\u2467"}],"title":"5.2. \nUniversal selector "},{"refs":[{"id":"ref-for-type-selector\u2468"},{"id":"ref-for-type-selector\u2460\u24ea"},{"id":"ref-for-type-selector\u2460\u2460"}],"title":"5.3. \nNamespaces in Elemental Selectors"},{"refs":[{"id":"ref-for-type-selector\u2460\u2461"}],"title":"14.4.1. \n:nth-of-type() pseudo-class"},{"refs":[{"id":"ref-for-type-selector\u2460\u2462"}],"title":"14.4.2. \n:nth-last-of-type() pseudo-class"}],"url":"#type-selector"},
 "typedef-attr-matcher": {"dfnID":"typedef-attr-matcher","dfnText":"<attr-matcher>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-attr-matcher"},{"id":"ref-for-typedef-attr-matcher\u2460"}],"title":"18. \nGrammar"}],"url":"#typedef-attr-matcher"},
 "typedef-attr-modifier": {"dfnID":"typedef-attr-modifier","dfnText":"<attr-modifier>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-attr-modifier"}],"title":"18. \nGrammar"}],"url":"#typedef-attr-modifier"},
@@ -7970,9 +8005,10 @@ let dfnPanelData = {
 "typedef-type-selector": {"dfnID":"typedef-type-selector","dfnText":"<type-selector>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-type-selector"},{"id":"ref-for-typedef-type-selector\u2460"},{"id":"ref-for-typedef-type-selector\u2461"},{"id":"ref-for-typedef-type-selector\u2462"}],"title":"18. \nGrammar"}],"url":"#typedef-type-selector"},
 "typedef-wq-name": {"dfnID":"typedef-wq-name","dfnText":"<wq-name>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-wq-name"},{"id":"ref-for-typedef-wq-name\u2460"},{"id":"ref-for-typedef-wq-name\u2461"},{"id":"ref-for-typedef-wq-name\u2462"}],"title":"18. \nGrammar"}],"url":"#typedef-wq-name"},
 "ultimate-originating-element": {"dfnID":"ultimate-originating-element","dfnText":"ultimate originating element","external":false,"refSections":[],"url":"#ultimate-originating-element"},
+"unchecked-pseudo": {"dfnID":"unchecked-pseudo","dfnText":":unchecked","external":false,"refSections":[{"refs":[{"id":"ref-for-unchecked-pseudo"},{"id":"ref-for-unchecked-pseudo\u2460"},{"id":"ref-for-unchecked-pseudo\u2461"},{"id":"ref-for-unchecked-pseudo\u2462"},{"id":"ref-for-unchecked-pseudo\u2463"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"#unchecked-pseudo"},
 "universal-selector": {"dfnID":"universal-selector","dfnText":"universal selector","external":false,"refSections":[{"refs":[{"id":"ref-for-universal-selector"},{"id":"ref-for-universal-selector\u2460"},{"id":"ref-for-universal-selector\u2461"}],"title":"3.1. \nStructure and Terminology"},{"refs":[{"id":"ref-for-universal-selector\u2462"}],"title":"3.5. \nPseudo-classes"},{"refs":[{"id":"ref-for-universal-selector\u2463"}],"title":"3.6.2. \nBinding to the Document Tree"},{"refs":[{"id":"ref-for-universal-selector\u2464"}],"title":"4.2. \nThe Matches-Any Pseudo-class: :is()"},{"refs":[{"id":"ref-for-universal-selector\u2465"}],"title":"4.3. \nThe Negation (Matches-None) Pseudo-class: :not()"},{"refs":[{"id":"ref-for-universal-selector\u2466"},{"id":"ref-for-universal-selector\u2467"},{"id":"ref-for-universal-selector\u2468"},{"id":"ref-for-universal-selector\u2460\u24ea"},{"id":"ref-for-universal-selector\u2460\u2460"}],"title":"5.2. \nUniversal selector "},{"refs":[{"id":"ref-for-universal-selector\u2460\u2461"},{"id":"ref-for-universal-selector\u2460\u2462"}],"title":"5.3. \nNamespaces in Elemental Selectors"}],"url":"#universal-selector"},
 "unknown--webkit--pseudo-elements": {"dfnID":"unknown--webkit--pseudo-elements","dfnText":"unknown -webkit- pseudo-elements","external":false,"refSections":[{"refs":[{"id":"ref-for-unknown--webkit--pseudo-elements"}],"title":"\nAppendix B: Obsolete but Required -webkit- Parsing Quirks for Web Compat"}],"url":"#unknown--webkit--pseudo-elements"},
-"user-action-pseudo-class": {"dfnID":"user-action-pseudo-class","dfnText":"user action pseudo-classes","external":false,"refSections":[{"refs":[{"id":"ref-for-user-action-pseudo-class\u2460"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-user-action-pseudo-class\u2461"}],"title":"18. \nGrammar"}],"url":"#user-action-pseudo-class"},
+"user-action-pseudo-class": {"dfnID":"user-action-pseudo-class","dfnText":"user action pseudo-classes","external":false,"refSections":[{"refs":[{"id":"ref-for-user-action-pseudo-class\u2460"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-user-action-pseudo-class\u2461"},{"id":"ref-for-user-action-pseudo-class\u2462"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-user-action-pseudo-class\u2463"}],"title":"18. \nGrammar"}],"url":"#user-action-pseudo-class"},
 "user-invalid-pseudo": {"dfnID":"user-invalid-pseudo","dfnText":":user-invalid","external":false,"refSections":[{"refs":[{"id":"ref-for-user-invalid-pseudo"},{"id":"ref-for-user-invalid-pseudo\u2460"},{"id":"ref-for-user-invalid-pseudo\u2461"},{"id":"ref-for-user-invalid-pseudo\u2462"}],"title":"13.3.5. \nThe User-interaction Pseudo-classes: :user-valid and :user-invalid"},{"refs":[{"id":"ref-for-user-invalid-pseudo\u2463"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-user-invalid-pseudo\u2464"}],"title":"20.6. \nChanges since the 29 September 2011 Working Draft"},{"refs":[{"id":"ref-for-user-invalid-pseudo\u2465"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#user-invalid-pseudo"},
 "user-valid-pseudo": {"dfnID":"user-valid-pseudo","dfnText":":user-valid","external":false,"refSections":[{"refs":[{"id":"ref-for-user-valid-pseudo"},{"id":"ref-for-user-valid-pseudo\u2460"}],"title":"13.3.5. \nThe User-interaction Pseudo-classes: :user-valid and :user-invalid"},{"refs":[{"id":"ref-for-user-valid-pseudo\u2461"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"}],"url":"#user-valid-pseudo"},
 "valid-pseudo": {"dfnID":"valid-pseudo","dfnText":":valid","external":false,"refSections":[{"refs":[{"id":"ref-for-valid-pseudo"}],"title":"3.5. \nPseudo-classes"},{"refs":[{"id":"ref-for-valid-pseudo\u2460"},{"id":"ref-for-valid-pseudo\u2461"},{"id":"ref-for-valid-pseudo\u2462"},{"id":"ref-for-valid-pseudo\u2463"}],"title":"13.3.2. \nThe Validity Pseudo-classes: :valid and :invalid"},{"refs":[{"id":"ref-for-valid-pseudo\u2464"}],"title":"13.3.5. \nThe User-interaction Pseudo-classes: :user-valid and :user-invalid"}],"url":"#valid-pseudo"},
@@ -8459,6 +8495,7 @@ let refsData = {
 "#in-range-pseudo": {"displayText":":in-range","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":in-range","type":"selector","url":"#in-range-pseudo"},
 "#indeterminate-pseudo": {"displayText":":indeterminate","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":indeterminate","type":"selector","url":"#indeterminate-pseudo"},
 "#indicate-focus": {"displayText":"indicate focus","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"indicate focus","type":"dfn","url":"#indicate-focus"},
+"#input-value-pseudo-classes": {"displayText":"input value pseudo-classes","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"input value pseudo-classes","type":"dfn","url":"#input-value-pseudo-classes"},
 "#invalid-pseudo": {"displayText":":invalid","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":invalid","type":"selector","url":"#invalid-pseudo"},
 "#invalid-selector": {"displayText":"invalid selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"invalid selector","type":"dfn","url":"#invalid-selector"},
 "#lang-pseudo": {"displayText":":lang()","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":lang()","type":"selector","url":"#lang-pseudo"},
@@ -8531,7 +8568,6 @@ let refsData = {
 "#sub-pseudo-element": {"displayText":"sub-pseudo-element","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"sub-pseudo-element","type":"dfn","url":"#sub-pseudo-element"},
 "#subsequent-sibling-combinator": {"displayText":"subsequent-sibling combinator","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"subsequent-sibling combinator","type":"dfn","url":"#subsequent-sibling-combinator"},
 "#target-pseudo": {"displayText":":target","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":target","type":"selector","url":"#target-pseudo"},
-"#target-within-pseudo": {"displayText":":target-within","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":target-within","type":"selector","url":"#target-within-pseudo"},
 "#type-selector": {"displayText":"type selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"type selector","type":"dfn","url":"#type-selector"},
 "#typedef-attr-matcher": {"displayText":"<attr-matcher>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"<attr-matcher>","type":"type","url":"#typedef-attr-matcher"},
 "#typedef-attr-modifier": {"displayText":"<attr-modifier>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"<attr-modifier>","type":"type","url":"#typedef-attr-modifier"},
@@ -8559,6 +8595,7 @@ let refsData = {
 "#typedef-subclass-selector": {"displayText":"<subclass-selector>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"<subclass-selector>","type":"type","url":"#typedef-subclass-selector"},
 "#typedef-type-selector": {"displayText":"<type-selector>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"<type-selector>","type":"type","url":"#typedef-type-selector"},
 "#typedef-wq-name": {"displayText":"<wq-name>","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"<wq-name>","type":"type","url":"#typedef-wq-name"},
+"#unchecked-pseudo": {"displayText":":unchecked","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":unchecked","type":"selector","url":"#unchecked-pseudo"},
 "#universal-selector": {"displayText":"universal selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"universal selector","type":"dfn","url":"#universal-selector"},
 "#unknown--webkit--pseudo-elements": {"displayText":"unknown -webkit- pseudo-elements","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"unknown -webkit- pseudo-elements","type":"dfn","url":"#unknown--webkit--pseudo-elements"},
 "#user-action-pseudo-class": {"displayText":"user action pseudo-class","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"user action pseudo-class","type":"dfn","url":"#user-action-pseudo-class"},
@@ -8589,6 +8626,7 @@ let refsData = {
 "https://drafts.csswg.org/css-namespaces-3/#at-ruledef-namespace": {"displayText":"@namespace","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-namespaces","spec":"css-namespaces-3","status":"current","text":"@namespace","type":"at-rule","url":"https://drafts.csswg.org/css-namespaces-3/#at-ruledef-namespace"},
 "https://drafts.csswg.org/css-namespaces-3/#css-qualified-name": {"displayText":"CSS qualified name","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-namespaces","spec":"css-namespaces-3","status":"current","text":"css qualified name","type":"dfn","url":"https://drafts.csswg.org/css-namespaces-3/#css-qualified-name"},
 "https://drafts.csswg.org/css-namespaces-3/#default-namespace": {"displayText":"default namespace","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-namespaces","spec":"css-namespaces-3","status":"current","text":"default namespace","type":"dfn","url":"https://drafts.csswg.org/css-namespaces-3/#default-namespace"},
+"https://drafts.csswg.org/css-position-4/#document-top-layer": {"displayText":"top layer","export":true,"for_":["Document"],"level":"4","normative":true,"shortname":"css-position","spec":"css-position-4","status":"current","text":"top layer","type":"dfn","url":"https://drafts.csswg.org/css-position-4/#document-top-layer"},
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-after": {"displayText":"::after","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::after","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-after"},
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-before": {"displayText":"::before","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::before","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-before"},
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter": {"displayText":"::first-letter","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::first-letter","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter"},
@@ -8621,13 +8659,17 @@ let refsData = {
 "https://drafts.csswg.org/css2/#selectordef-before": {"displayText":":before","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":":before","type":"selector","url":"https://drafts.csswg.org/css2/#selectordef-before"},
 "https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle": {"displayText":"getComputedStyle(elt)","export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"getComputedStyle(elt)","type":"method","url":"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle"},
 "https://drafts.csswg.org/selectors-3/#x": {"displayText":"*","export":true,"for_":[],"level":"3","normative":true,"shortname":"selectors","spec":"selectors-3","status":"current","text":"*","type":"selector","url":"https://drafts.csswg.org/selectors-3/#x"},
+"https://drafts.csswg.org/selectors-4/#target-within-pseudo": {"displayText":":target-within","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":":target-within","type":"selector","url":"https://drafts.csswg.org/selectors-4/#target-within-pseudo"},
 "https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen": {"displayText":"requestFullscreen()","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"fullscreen","spec":"fullscreen","status":"current","text":"requestFullscreen()","type":"method","url":"https://fullscreen.spec.whatwg.org/#dom-element-requestfullscreen"},
 "https://html.spec.whatwg.org/multipage/browsers.html#concept-origin": {"displayText":"origin","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"origin","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#concept-origin"},
 "https://html.spec.whatwg.org/multipage/browsers.html#site": {"displayText":"site","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"site","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsers.html#site"},
 "https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element": {"displayText":"custom element","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"custom element","type":"dfn","url":"https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element"},
 "https://html.spec.whatwg.org/multipage/custom-elements.html#element-definition": {"displayText":"element definition","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"element definition","type":"dfn","url":"https://html.spec.whatwg.org/multipage/custom-elements.html#element-definition"},
 "https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element": {"displayText":"img","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"img","type":"element","url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
+"https://html.spec.whatwg.org/multipage/form-elements.html#dom-option-selected": {"displayText":"selected","export":true,"for_":["HTMLOptionElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"selected","type":"attribute","url":"https://html.spec.whatwg.org/multipage/form-elements.html#dom-option-selected"},
 "https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element": {"displayText":"button","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"button","type":"element","url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element"},
+"https://html.spec.whatwg.org/multipage/form-elements.html#the-option-element": {"displayText":"option","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"option","type":"element","url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-option-element"},
+"https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element": {"displayText":"progress","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"progress","type":"element","url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element"},
 "https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element": {"displayText":"select","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"select","type":"element","url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element"},
 "https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element": {"displayText":"textarea","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"textarea","type":"element","url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element"},
 "https://html.spec.whatwg.org/multipage/forms.html#the-label-element": {"displayText":"label","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"label","type":"element","url":"https://html.spec.whatwg.org/multipage/forms.html#the-label-element"},
@@ -8639,6 +8681,8 @@ let refsData = {
 "https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element": {"displayText":"object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"object","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-object-element"},
 "https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element": {"displayText":"area","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"area","type":"element","url":"https://html.spec.whatwg.org/multipage/image-maps.html#the-area-element"},
 "https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder": {"displayText":"placeholder","export":true,"for_":["input"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"placeholder","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/input.html#attr-input-placeholder"},
+"https://html.spec.whatwg.org/multipage/input.html#dom-input-checked": {"displayText":"checked","export":true,"for_":["HTMLInputElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"checked","type":"attribute","url":"https://html.spec.whatwg.org/multipage/input.html#dom-input-checked"},
+"https://html.spec.whatwg.org/multipage/input.html#dom-input-indeterminate": {"displayText":"indeterminate","export":true,"for_":["HTMLInputElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"indeterminate","type":"attribute","url":"https://html.spec.whatwg.org/multipage/input.html#dom-input-indeterminate"},
 "https://html.spec.whatwg.org/multipage/input.html#the-input-element": {"displayText":"input","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"input","type":"element","url":"https://html.spec.whatwg.org/multipage/input.html#the-input-element"},
 "https://html.spec.whatwg.org/multipage/interactive-elements.html#dom-dialog-showmodal": {"displayText":"showModal()","export":true,"for_":["HTMLDialogElement"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"showModal()","type":"method","url":"https://html.spec.whatwg.org/multipage/interactive-elements.html#dom-dialog-showmodal"},
 "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element": {"displayText":"details","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"details","type":"element","url":"https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element"},
