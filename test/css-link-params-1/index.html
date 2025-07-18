@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 7a96e07ec, updated Mon Jul 14 11:12:36 2025 -0700" name="generator">
   <link href="https://drafts.csswg.org/css-link-params/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fa151c4f4ad5e0f4cca57981c2a1476fc8455e3d" name="revision">
+  <meta content="7716c99e4e135c3de4d57ef9240281b125f5f665" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -832,7 +832,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Linked Parameters</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2023-08-07">7 August 2023</time></p>
+    <time class="dt-updated" datetime="2025-07-17">17 July 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -841,7 +841,6 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dd><a class="u-url" href="https://drafts.csswg.org/css-link-params/">https://drafts.csswg.org/css-link-params/</a>
       <dt>Issue Tracking:
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-link-params-1">CSSWG Issues Repository</a>
-      <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editors:
       <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="http://xanthir.com/contact/">Tab Atkins-Bittner</a> (<span class="p-org org">Google</span>)
       <dd class="editor p-author h-card vcard"><span class="p-name fn">Daniel Holbert</span> (<span class="p-org org">Mozilla</span>)
@@ -852,13 +851,13 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2023 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
 </p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>This spec introduces a way to pass CSS values into linked resources, such as SVG images, so that they can be used as CSS <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property">custom property</a> values in the destination resource. This allows easy reuse of "templated" SVG images, which can be adapted to a site’s theme color, etc. easily, without having to modify the source SVG.</p>
+   <p>This spec introduces a way to pass CSS values into linked resources, such as SVG images, so that they can be used as CSS <u class="link-error" data-lt="custom environment variables" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;custom environment variables&apos;.">custom environment variables</u> in the destination resource. This allows easy reuse of "templated" SVG images, which can be adapted to a site’s theme color, etc. easily, without having to modify the source SVG.</p>
    
 
 
@@ -904,6 +903,10 @@ on screen, on paper, etc.
       <li><a href="#setting-url"><span class="secno">2.3</span> <span class="content">Setting via the CSS <span class="css">url()</span> Function</span></a>
      </ol>
     <li><a href="#using"><span class="secno">3</span> <span class="content">Using Link Parameters</span></a>
+    <li><a href="#priv"><span class="secno"></span> <span class="content">
+Privacy Considerations</span></a>
+    <li><a href="#sec"><span class="secno"></span> <span class="content">
+Security Considerations</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a>
@@ -935,7 +938,6 @@ Non-experimental implementations</span></a>
       <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
     <li><a href="#property-index"><span class="secno"></span> <span class="content">Property Index</span></a>
-    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
   <main>
@@ -953,16 +955,45 @@ is to produce several of them,
 and change which image you’re referencing.
 This incurs delay on the page as a new resource is downloaded,
 and disallows dynamic effects like CSS Transitions.</p>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="link parameter" data-lt="CSS link parameter" id="css-link-parameter">CSS link parameters</dfn> are a way to set CSS <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property①">custom properties</a> on an "external" resource,
+   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="link parameter" data-lt="CSS link parameter" id="css-link-parameter">CSS link parameters</dfn>
+are a way to set CSS <u class="link-error" data-lt="custom environment variables" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;custom environment variables&apos;.">custom environment variables</u> on an "external" resource,
 either by a CSS property
 or thru a special fragment scheme on the URL.
 This gives a limited, but powerful, subset of the customizability that "inline" SVG images have
 to "external" SVG images.</p>
+   <p>A <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter">link parameter</a> is a pair of a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident">&lt;dashed-ident></a> name,
+and an arbitrary (possibly empty) <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value">&lt;declaration-value></a> value.</p>
+   <div class="example" id="example-b2249665">
+    <a class="self-link" href="#example-b2249665"></a>
+	For example, an SVG image can be written to use <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①">link parameters</a>,
+	allowing it to have its colors changed on the fly,
+	like:
+
+	
+<pre class="highlight"><c- p>&lt;</c-><c- f>svg</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>path</c-> <c- e>fill</c-><c- o>=</c-><c- s>"env(--color, black)"</c-> <c- e>d</c-><c- o>=</c-><c- s>"..."</c-> <c- p>/></c->
+<c- p>&lt;/</c-><c- f>svg</c-><c- p>></c->
+</pre>
+    <p>By default, it will fill its shape with black,
+	as that’s the fallback color specified.
+	But <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter②">link parameters</a> can customize the color
+	in several ways:</p>
+<pre class="highlight"><c- p>&lt;</c-><c- f>img</c-> <c- e>src</c-><c- o>=</c-><c- s>"image.svg#param(--color,green)"</c-><c- p>></c->
+</pre>
+<pre class="highlight">img <c- p>{</c->
+  <c- k>link-parameters</c-><c- p>:</c-> <c- nf>param</c-><c- p>(</c->color<c- p>,</c-> green<c- p>);</c->
+<c- p>}</c->
+</pre>
+<pre class="highlight">.foo <c- p>{</c->
+  <c- k>background-image</c-><c- p>:</c-> <c- nf>url</c-><c- p>(</c-><c- s>"image.svg", param(--color, green</c-><c- p>));</c->
+<c- p>}</c->
+</pre>
+   </div>
    <h2 class="heading settled" data-level="2" id="setting"><span class="secno">2. </span><span class="content">Setting a Link Parameter</span><a class="self-link" href="#setting"></a></h2>
-   <p>An external resource can be accompanied by a map of <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter">link parameters</a>,
-each entry composed of a <u class="link-error" data-lt="custom property name" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;custom property name&apos;.">custom property name</u> as a key,
-and an <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-any-value" id="ref-for-typedef-any-value">&lt;any-value></a> as the value.</p>
-   <p>There are three ways to specify a <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①">link parameter</a>:</p>
+   <p>An external resource can be accompanied by a list of <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter③">link parameters</a>,
+each entry composed of a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①">&lt;dashed-ident></a> as a key,
+and a (possibly empty) <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value①">&lt;declaration-value></a> as the value.</p>
+   <p>There are three ways to specify a <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter④">link parameter</a>:</p>
    <ul>
     <li data-md>
      <p>via the <a class="property css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters">link-parameters</a> property,
@@ -972,16 +1003,25 @@ and to all external resources used in CSS properties on the element</p>
     <li data-md>
      <p>via a special syntax in the fragment portion of the URL of an external resource</p>
     <li data-md>
-     <p>via a <span class="css">param()</span> argument in the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url">url()</a> syntax</p>
+     <p>via a <a class="css" data-link-type="maybe" href="#funcdef-param" id="ref-for-funcdef-param">param()</a> argument in the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url">url()</a> syntax</p>
    </ul>
    <p>If specified in multiple of these ways,
-all of the <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter②">link parameters</a> are combined.
-If the same key appears in multiple inputs,
-the latest source in the above list wins
-(that is, URL fragment beats <a class="property css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters①">link-parameters</a>,
-and <span class="css">url("..." param())</span> beats URL fragment).</p>
-   <p>The influence of <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter③">link parameters</a> on the linked resource
-is defined in the next section.</p>
+all of the <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑤">link parameters</a> are appended into a single list
+for the external resource,
+in the order:</p>
+   <ol>
+    <li data-md>
+     <p>the <a class="property css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters①">link-parameters</a> property on the element, if relevant</p>
+    <li data-md>
+     <p>the <a data-link-type="dfn" href="#svg-parameter-fragment-identifier" id="ref-for-svg-parameter-fragment-identifier">param()</a> URL fragment identifiers</p>
+    <li data-md>
+     <p>the <a class="css" data-link-type="maybe" href="#funcdef-param" id="ref-for-funcdef-param①">param()</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-url-modifier" id="ref-for-typedef-url-modifier">&lt;url-modifier></a>s in <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url①">url()</a></p>
+   </ol>
+   <p>If multiple <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑥">link parameters</a> exist with the same name,
+the last one in the list is used.</p>
+   <p>How to access <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑦">link parameters</a> in the linked resource
+is defined in the next section,
+<a href="#using">§ 3 Using Link Parameters</a>.</p>
    <h3 class="heading settled" data-level="2.1" id="link-param-prop"><span class="secno">2.1. </span><span class="content">In CSS: the <a class="property css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters②">link-parameters</a> property</span><a class="self-link" href="#link-param-prop"></a></h3>
    <table class="def propdef" data-link-for-hint="link-parameters">
     <tbody>
@@ -990,7 +1030,7 @@ is defined in the next section.</p>
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-link-parameters">link-parameters</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production css" data-link-type="type" href="#typedef-link-param" id="ref-for-typedef-link-param">&lt;link-param></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus">+</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production css" data-link-type="function" href="#funcdef-param" id="ref-for-funcdef-param②">&lt;param()></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>none
@@ -1013,7 +1053,7 @@ is defined in the next section.</p>
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>discrete
    </table>
-   <p>The <a class="property css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters③">link-parameters</a> property is one way to set <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter④">link parameters</a>
+   <p>The <a class="property css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters③">link-parameters</a> property is one way to set <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑧">link parameters</a>
 on the element itself
 (if it is an element representing an external resource,
 such as an HTML <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element" id="ref-for-the-img-element①">img</a></code> or <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code>),
@@ -1023,102 +1063,91 @@ Its values are:</p>
    <dl>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-for="none" data-dfn-type="value" data-export id="valdef-none-none">none</dfn>
     <dd data-md>
-     <p>No <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑤">link parameters</a> specified.</p>
-    <dt data-md><dfn class="dfn-paneled css" data-dfn-for="none" data-dfn-type="value" data-export id="valdef-none-link-param"><a class="production css" data-link-type="type" href="#typedef-link-param" id="ref-for-typedef-link-param①">&lt;link-param></a>+</dfn>
+     <p>No <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑨">link parameters</a> are specified.</p>
+    <dt data-md><dfn class="dfn-paneled css" data-dfn-for="none" data-dfn-type="value" data-export id="valdef-none-param"><a class="production css" data-link-type="function" href="#funcdef-param" id="ref-for-funcdef-param③">&lt;param()></a>#</dfn>
     <dd data-md>
-     <p>A list of one or more <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑥">link parameters</a>.
-If two <span id="ref-for-css-link-parameter⑦">link parameters</span> with the same name are specified
-with the same <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name">&lt;custom-property-name></a>,
-the last one wins.</p>
+     <p>A list of one or more <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①⓪">link parameters</a>.</p>
    </dl>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-link-param">&lt;link-param></dfn> = param( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name①">&lt;custom-property-name></a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value">&lt;declaration-value></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> )
+   <p>The <dfn class="dfn-paneled css" data-dfn-type="function" data-export id="funcdef-param">param()</dfn> function specifies a <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①①">link parameter</a>,
+with a key of the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident②">&lt;dashed-ident></a>,
+and a value of the <span class="css"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value②">&lt;declaration-value></a>?</span>.
+(If the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value③">&lt;declaration-value></a> is omitted,
+it represents an empty value.)
+It has the syntax:</p>
+<pre class="prod">&lt;param()> = param( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident③">&lt;dashed-ident></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma">,</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value④">&lt;declaration-value></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> )
 </pre>
-   <p>A <a class="production css" data-link-type="type" href="#typedef-link-param" id="ref-for-typedef-link-param②">&lt;link-param></a> represents a <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter⑧">link parameter</a>,
-with a key of the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name②">&lt;custom-property-name></a>.
-If the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value①">&lt;declaration-value></a> is specified,
-that’s the value of the <span id="ref-for-css-link-parameter⑨">link parameter</span>.
-If omitted,
-the value of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property②">custom property</a> of the same name on the element
-is the value of the <span id="ref-for-css-link-parameter①⓪">link parameter</span>.</p>
    <h3 class="heading settled" data-level="2.2" id="url-frag"><span class="secno">2.2. </span><span class="content">In The URL</span><a class="self-link" href="#url-frag"></a></h3>
    <p>A special "fragment identifier" can be used in the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-fragment" id="ref-for-concept-url-fragment">fragment</a> of a URL
 used to reference an external resource.
 Several examples of existing "fragment identifiers" for SVG documents can be found in <a href="http://www.w3.org/TR/SVG/linking.html#LinksIntoSVG">the SVG 1.1 specification</a>.</p>
    <p>The syntax of an <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="param()" id="svg-parameter-fragment-identifier">SVG parameter fragment identifier</dfn> is:</p>
-<pre class="prod">param( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name③">&lt;custom-property-name></a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value②">&lt;declaration-value></a> )</pre>
+<pre class="prod">param( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident④">&lt;dashed-ident></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma①">,</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value" id="ref-for-typedef-declaration-value⑤">&lt;declaration-value></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> )</pre>
    <p>(using the <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#css-value-definition-syntax" id="ref-for-css-value-definition-syntax">CSS value definition syntax</a>; TODO define an actual parser for it).</p>
-   <div class="example" id="example-b55e2a24"><a class="self-link" href="#example-b55e2a24"></a>
-	For example, to set the "--text-color" <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property③">custom property</a> of an SVG image to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-blue" id="ref-for-valdef-color-blue">blue</a>,
-	one can reference the image with a url like “<code>http://example.com/image.svg#param(--text-color%20blue)</code>”.
+   <div class="example" id="example-bc4c8262"><a class="self-link" href="#example-bc4c8262"></a>
+	For example, to set the <span class="css">env(--text-color)</span> <u class="link-error" data-lt="custom environment variable" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;custom environment variable&apos;.">custom environment variable</u>
+	of an SVG image to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-blue" id="ref-for-valdef-color-blue">blue</a>,
+	one can reference the image with a url like
+	“<code>http://example.com/image.svg#param(--text-color,blue)</code>”.
 </div>
-   <p>If passing multiple parameters to an image,
-additional <u class="link-error" data-lt="param()" title="LINK ERROR: No &apos;functionish&apos; refs found for &apos;param()&apos;.">param()</u> functions must be appended to the URL.
-If multiple <u class="link-error" data-lt="param()" title="LINK ERROR: No &apos;functionish&apos; refs found for &apos;param()&apos;.">param()</u> functions specify the same <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name④">&lt;custom-property-name></a>,
-the <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property④">custom property</a> is set to the value of the last one.</p>
-   <div class="example" id="example-c880c11a"><a class="self-link" href="#example-c880c11a"></a>
-	For example, if the image from the previous example also used a "--bg-color" <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property⑤">custom property</a>,
-	it could be referenced with a url like “<code>http://example.com/image.svg#param(--text-color%20blue)param(--bg-color%20white)</code>”.
+   <p>Multiple <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①②">link parameters</a> can be passed to an image
+by appending multiple <a data-link-type="dfn" href="#svg-parameter-fragment-identifier" id="ref-for-svg-parameter-fragment-identifier①">param()</a> fragment identifiers to the URL.</p>
+   <div class="example" id="example-e28e1243"><a class="self-link" href="#example-e28e1243"></a>
+	For example, if the image from the previous example also used <span class="css">env(--bg-color)</span>,
+	it could be referenced with a url like
+	“<code>http://example.com/image.svg#param(--text-color,blue)param(--bg-color,white)</code>”
+	to set both <span class="css">env(--text-color)</span> and <span class="css">env(--bg-color)</span>.
 </div>
    <p class="note" role="note"><span class="marker">Note:</span> Spaces, and some other characters that might be valid in CSS syntax,
 are not technically valid in URLs.
 In some contexts,
 you might need to escape those characters to form a valid URL.
 In most cases, though,
-such as HTML’s <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element" id="ref-for-the-a-element">a</a></code> element or CSS’s <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url①">url()</a> function,
+such as HTML’s <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element" id="ref-for-the-a-element">a</a></code> element or CSS’s <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url②">url()</a> function,
 spaces are accepted and do not need to be escaped.</p>
-   <h3 class="heading settled" data-level="2.3" id="setting-url"><span class="secno">2.3. </span><span class="content">Setting via the CSS <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url②">url()</a> Function</span><a class="self-link" href="#setting-url"></a></h3>
+   <h3 class="heading settled" data-level="2.3" id="setting-url"><span class="secno">2.3. </span><span class="content">Setting via the CSS <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url③">url()</a> Function</span><a class="self-link" href="#setting-url"></a></h3>
    <p>When referencing an external resource via CSS,
-the <u class="link-error" data-lt="param()" title="LINK ERROR: No &apos;functionish&apos; refs found for &apos;param()&apos;.">param()</u> function can be used in the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url③">url()</a> function.
-But a common use-case is passing in values of the page’s own <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property⑥">custom properties</a>;
-for example, a page might use a <span class="css">--primary-color</span> <span id="ref-for-custom-property⑦">custom property</span>,
+the <a data-link-type="functionish" href="#funcdef-param" id="ref-for-funcdef-param④">param()</a> function can be used in the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url④">url()</a> function.
+But a common use-case is passing in values of the page’s own <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property">custom properties</a>;
+for example, a page might use a <span class="css">--primary-color</span> <span id="ref-for-custom-property①">custom property</span>,
 and want to make an SVG image match.
-There’s no way, however, to integrate the value of a <span id="ref-for-custom-property⑧">custom property</span> in CSS into the URL passed to the <span class="css" id="ref-for-funcdef-url④">url()</span> function.</p>
+There’s no way, however, to integrate the value of a <span id="ref-for-custom-property②">custom property</span> in CSS into the URL passed to the <span class="css" id="ref-for-funcdef-url⑤">url()</span> function.</p>
    <p>To accommodate this,
-a <a class="production css" data-link-type="type" href="#typedef-link-param" id="ref-for-typedef-link-param③">&lt;link-param></a> is a valid <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-url-modifier" id="ref-for-typedef-url-modifier">&lt;url-modifier></a>.</p>
-   <p>As in the other methods of specifying <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①①">link parameters</a>,
-if the same <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name" id="ref-for-typedef-custom-property-name⑤">&lt;custom-property-name></a> is specified in several <a class="production css" data-link-type="type" href="#typedef-link-param" id="ref-for-typedef-link-param④">&lt;link-param></a>s,
-the last one wins.</p>
-   <div class="example" id="example-9fe82c4e">
-    <a class="self-link" href="#example-9fe82c4e"></a>
+<a class="css" data-link-type="maybe" href="#funcdef-param" id="ref-for-funcdef-param⑤">param()</a> is a valid <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-url-modifier" id="ref-for-typedef-url-modifier①">&lt;url-modifier></a>.
+All the <span class="css" id="ref-for-funcdef-param⑥">param()</span>s specified as a <span class="production" id="ref-for-typedef-url-modifier②">&lt;url-modifier></span>
+define <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①③">link parameters</a>,
+as for <a class="property css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters④">link-parameters</a>.</p>
+   <div class="example" id="example-bd958281">
+    <a class="self-link" href="#example-bd958281"></a>
 	For example,
 	if the site is using a <span class="css">--primary-color</span> custom property to theme its elements with,
-	and wanted an SVG background using a <span class="css">--color</span> custom property to reflect it,
+	and wanted an SVG background using <span class="css">env(--color)</span> to reflect it,
 	it could write:
 
 	
-<pre class="lang-css highlight">.foo <c- p>{</c->
-  <c- k>background-image</c-><c- p>:</c-> <c- nf>url</c-><c- p>(</c-><c- s>"http://example.com/image.svg" param(--color var(--primary-color</c-><c- p>)));</c->
+<pre class="highlight">.foo <c- p>{</c->
+  <c- k>background-image</c-><c- p>:</c-> <c- nf>url</c-><c- p>(</c->
+<c- s>    "http://example.com/image.svg"</c->
+<c- s>    param(--color, var(--primary-color</c-><c- p>))</c->
+  <c- p>);</c->
 <c- p>}</c->
 </pre>
    </div>
    <h2 class="heading settled" data-level="3" id="using"><span class="secno">3. </span><span class="content">Using Link Parameters</span><a class="self-link" href="#using"></a></h2>
-   <p>When an external resource link has one or more <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①②">link parameters</a> specified,
+   <p>When an external resource link has one or more <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①④">link parameters</a> specified,
 if the linked resource understands CSS
 (such as an SVG or HTML document),
-then the initial value of custom properties
-with names equal to the keys of the <span id="ref-for-css-link-parameter①③">link parameters</span> map
-is set to the corresponding values of the map.</p>
-   <p>If an <a class="css" data-link-type="maybe" href="https://drafts.css-houdini.org/css-properties-values-api-1/#at-ruledef-property" id="ref-for-at-ruledef-property">@property</a> rule is specified for one of the custom property names
-in the <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①④">link parameters</a>,
-the <span id="ref-for-css-link-parameter①⑤">link parameter</span> value is used for the initial value,
-rather than the <span class="css" id="ref-for-at-ruledef-property①">@property</span>-specified initial value.</p>
-   <p>If the linked resource does not understand CSS
-(such as PNG images),
-then <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①⑥">link parameters</a> have no effect.</p>
-   <p class="issue" id="issue-2c3460c5"><a class="self-link" href="#issue-2c3460c5"></a> Define a way for the linked resource to specify what link parameters they allow.
-For cross-origin iframes/etc, 
-this will default to <em>nothing</em>;
-for same-origin (or cross-origin "SVG as image"),
-it defaults to "everything".
-If not allowed, the link parameter is ignored.</p>
-   <div class="example" id="example-74f9db5a">
-    <a class="self-link" href="#example-74f9db5a"></a>
+then those <span id="ref-for-css-link-parameter①⑤">link parameters</span>
+establish global <u class="link-error" data-lt="custom environment variables" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;custom environment variables&apos;.">custom environment variables</u> for the resource
+with their name and value,
+accessible with the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-env-1/#funcdef-env" id="ref-for-funcdef-env">env()</a> function in stylesheets.</p>
+   <div class="example" id="example-d60cfbe7">
+    <a class="self-link" href="#example-d60cfbe7"></a>
 	For example, if an SVG image wanted to expose a <span class="css">--color</span> parameter,
 	it could use it like:
 
 	
-<pre class="lang-markup highlight"><c- p>&lt;</c-><c- f>svg</c-><c- p>></c->
-  <c- p>&lt;</c-><c- f>g</c-> <c- e>style</c-><c- o>=</c-><c- s>"fill: var(--color);"</c-><c- p>></c->
+<pre class="highlight"><c- p>&lt;</c-><c- f>svg</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>g</c-> <c- e>style</c-><c- o>=</c-><c- s>"fill: env(--color);"</c-><c- p>></c->
     <c- p>&lt;</c-><c- f>path</c-> <c- e>d</c-><c- o>=</c-><c- s>"..."</c-> <c- p>/></c->
   <c- p>&lt;/</c-><c- f>g</c-><c- p>></c->
 <c- p>&lt;/</c-><c- f>svg</c-><c- p>></c->
@@ -1133,34 +1162,49 @@ If not allowed, the link parameter is ignored.</p>
 
     <ol>
      <li data-md>
-      <p>On each <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-2/#funcdef-var" id="ref-for-funcdef-var">var()</a> function, provide a fallback value, like <a class="css" data-link-type="propdesc" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-fill" id="ref-for-propdef-fill①">fill: var(--color, blue)</a>.</p>
+      <p>On each <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-env-1/#funcdef-env" id="ref-for-funcdef-env①">env()</a> function, provide a fallback value, like <a class="css" data-link-type="propdesc" href="https://drafts.fxtf.org/fill-stroke-3/#propdef-fill" id="ref-for-propdef-fill①">fill: env(--color, blue)</a>.</p>
      <li data-md>
-      <p>If the custom property is going to be used a lot,
-such that providing a fallback for each individual <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-variables-2/#funcdef-var" id="ref-for-funcdef-var①">var()</a> is troublesome,
-store the <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property⑨">custom property</a> in a different name while invoking the default,
+      <p>If the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-env-1/#funcdef-env" id="ref-for-funcdef-env②">env()</a> is going to be used a lot,
+such that providing a fallback for each individual <span class="css" id="ref-for-funcdef-env③">env()</span> is troublesome,
+store the <u class="link-error" data-lt="custom environment variable" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;custom environment variable&apos;.">custom environment variable</u> in a <u class="link-error" data-lt="scoped environment variable" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;scoped environment variable&apos; that are marked for export.
+  (Possible specs this could be from: css-mixins-1)">scoped environment variable</u>
+of a different name,
+with the default specified,
 like:</p>
-<pre class="lang-css highlight">:root <c- p>{</c->
-  <c- k>--color2</c-><c- p>:</c-> <c- nf>var</c-><c- p>(</c->--color<c- p>,</c-> blue<c- p>);</c->
+<pre class="lang-css highlight"><c- n>@env</c-> --color2: <c- nf>env</c-><c- p>(</c->--color<c- p>,</c-> blue<c- p>);</c->
+
+<c- c>/* Alternately, store it in a custom property: */</c->
+:root <c- p>{</c->
+  <c- k>--color</c-><c- p>:</c-> <c- nf>env</c-><c- p>(</c->--color<c- p>,</c-> blue<c- p>);</c->
 <c- p>}</c->
 </pre>
-      <p>In this example, if <span class="css">--color</span> is provided via an <u class="link-error" data-lt="SVG parameter" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;svg parameter&apos;.">SVG parameter</u>,
-<span class="css">--color2</span> will receive its value.
-If not, it will recieve the default <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-blue" id="ref-for-valdef-color-blue①">blue</a> value.
-In either case, <span class="css">--color2</span> can be used in the SVG image’s stylesheet unconditionally,
+      <p>In this example, if <span class="css">--color</span> is provided via a <a data-link-type="dfn" href="#css-link-parameter" id="ref-for-css-link-parameter①⑥">linked parameter</a>,
+<span class="css">env(--color2)</span> will contain its value.
+If not, it will contain the default <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-color-4/#valdef-color-blue" id="ref-for-valdef-color-blue①">blue</a> value.
+In either case, <span class="css">env(--color2)</span> can be used in the stylesheet unconditionally,
 secure in the knowledge that it will always have a value.</p>
-     <li data-md>
-      <p>In a future level of the Custom Properties specification <a data-link-type="biblio" href="#biblio-css-variables" title="CSS Custom Properties for Cascading Variables Module Level 1">[CSS-VARIABLES]</a>,
-some "parent’s value" functionality will be available to make the previous suggestion more usable:</p>
-<pre class="lang-css highlight">:root <c- p>{</c->
-  <c- k>--color</c-><c- p>:</c-> <c- nf>var</c-><c- p>(</c->parent --color<c- p>,</c-> blue<c- p>);</c->
-<c- p>}</c->
-</pre>
-      <p>(This is an example syntax, and is not yet final.)</p>
-      <p>By invoking the value of the --color property on the parent
-(which, on the root element, refers to the initial value),
-an author can avoid self-reference loops while retaining the same <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property①⓪">custom property</a> name.</p>
     </ol>
    </div>
+   <p class="note" role="note"><span class="marker">Note:</span> When we define <span class="css">env(parent --color)</span> to jump up a scope level,
+you won’t need to do the rename;
+<span class="css">@env --color: env(parent --color);</span> will work just fine.</p>
+   <h2 class="no-num no-ref heading settled" id="priv"><span class="content">
+Privacy Considerations</span><a class="self-link" href="#priv"></a></h2>
+   <p>This specification introduces no new privacy considerations.</p>
+   <h2 class="no-num no-ref heading settled" id="sec"><span class="content">
+Security Considerations</span><a class="self-link" href="#sec"></a></h2>
+   <p>This specification introduces a new way to pass information to a linked resource,
+potentially from a hostile source.</p>
+   <p>While no explicit handshake is established for this channel,
+the use of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-env-1/#funcdef-env" id="ref-for-funcdef-env④">env()</a> to use the information
+minimizes the chance that the linked resource
+can be <em>surprised</em> by the information.
+The only way for the page to be vulnerable
+is to somehow be using an <em>unknown</em> <span class="css" id="ref-for-funcdef-env⑤">env()</span> in their styles,
+which will just result in invalid properties by default,
+and be visible in the developer’s Dev Tools.</p>
+   <p>Any hostile information can also only affect
+individual CSS properties that the resource explicitly opts itself into.</p>
   </main>
   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">
 Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
@@ -1299,12 +1343,16 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#css-link-parameter">CSS link parameter</a><span>, in § 1</span>
-   <li><a href="#typedef-link-param">&lt;link-param></a><span>, in § 2.1</span>
-   <li><a href="#valdef-none-link-param">&lt;link-param>+</a><span>, in § 2.1</span>
    <li><a href="#css-link-parameter">link parameter</a><span>, in § 1</span>
    <li><a href="#propdef-link-parameters">link-parameters</a><span>, in § 2.1</span>
    <li><a href="#valdef-none-none">none</a><span>, in § 2.1</span>
-   <li><a href="#svg-parameter-fragment-identifier">param()</a><span>, in § 2.2</span>
+   <li><a href="#valdef-none-param">&lt;param()>#</a><span>, in § 2.1</span>
+   <li>
+    param()
+    <ul>
+     <li><a href="#funcdef-param">(function)</a><span>, in § 2.1</span>
+     <li><a href="#svg-parameter-fragment-identifier">definition of</a><span>, in § 2.2</span>
+    </ul>
    <li><a href="#svg-parameter-fragment-identifier">SVG parameter fragment identifier</a><span>, in § 2.2</span>
   </ul>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1315,20 +1363,21 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="f17eedd8">blue</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-PROPERTIES-VALUES-API-1]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-ENV-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="dd3530b8">@property</span>
+     <li><span class="dfn-paneled" id="807f9351">env()</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-SYNTAX-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="8716d04f">&lt;any-value></span>
      <li><span class="dfn-paneled" id="8144e597">&lt;declaration-value></span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="bedd9d42">+</span>
+     <li><span class="dfn-paneled" id="68487d22">#</span>
+     <li><span class="dfn-paneled" id="9f9120ff">,</span>
+     <li><span class="dfn-paneled" id="8a427103">&lt;dashed-ident></span>
      <li><span class="dfn-paneled" id="4f968977">&lt;url-modifier></span>
      <li><span class="dfn-paneled" id="537cf076">?</span>
      <li><span class="dfn-paneled" id="b0eb2f50">CSS value definition syntax</span>
@@ -1338,9 +1387,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-VARIABLES-2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="e55dd7f2">&lt;custom-property-name></span>
      <li><span class="dfn-paneled" id="198f1537">custom property</span>
-     <li><span class="dfn-paneled" id="dbba942a">var()</span>
     </ul>
    <li>
     <a data-link-type="biblio">[FILL-STROKE-3]</a> defines the following terms:
@@ -1368,8 +1415,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
-   <dt id="biblio-css-properties-values-api-1">[CSS-PROPERTIES-VALUES-API-1]
-   <dd>Tab Atkins Jr.; Alan Stearns; Greg Whitworth. <a href="https://drafts.css-houdini.org/css-properties-values-api-1/"><cite>CSS Properties and Values API Level 1</cite></a>. URL: <a href="https://drafts.css-houdini.org/css-properties-values-api-1/">https://drafts.css-houdini.org/css-properties-values-api-1/</a>
+   <dt id="biblio-css-env-1">[CSS-ENV-1]
+   <dd><a href="https://drafts.csswg.org/css-env-1/"><cite>CSS Environment Variables Module Level 1</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/css-env-1/">https://drafts.csswg.org/css-env-1/</a>
    <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
    <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://drafts.csswg.org/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-syntax/">https://drafts.csswg.org/css-syntax/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
@@ -1391,8 +1438,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <dl>
    <dt id="biblio-css-color-4">[CSS-COLOR-4]
    <dd>Chris Lilley; Tab Atkins Jr.; Lea Verou. <a href="https://drafts.csswg.org/css-color-4/"><cite>CSS Color Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-color-4/">https://drafts.csswg.org/css-color-4/</a>
-   <dt id="biblio-css-variables">[CSS-VARIABLES]
-   <dd>Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-variables/"><cite>CSS Custom Properties for Cascading Variables Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-variables/">https://drafts.csswg.org/css-variables/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -1410,8 +1455,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <th scope="col">Com­puted value
     <tbody>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters④">link-parameters</a>
-      <td>none | &lt;link-param>+
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-link-parameters" id="ref-for-propdef-link-parameters⑤">link-parameters</a>
+      <td>none | &lt;param()>#
       <td>none
       <td>all elements and pseudo-elements
       <td>no
@@ -1420,15 +1465,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>per grammar
       <td>as specified
    </table>
-  </div>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
-  <div style="counter-reset:issue">
-   <div class="issue"> Define a way for the linked resource to specify what link parameters they allow.
-For cross-origin iframes/etc, 
-this will default to <em>nothing</em>;
-for same-origin (or cross-origin "SVG as image"),
-it defaults to "everything".
-If not allowed, the link parameter is ignored. <a class="issue-return" href="#issue-2c3460c5" title="Jump to section">↵</a></div>
   </div>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
@@ -1630,31 +1666,30 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"198f1537": {"dfnID":"198f1537","dfnText":"custom property","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-property"}],"title":"Unnumbered Section"},{"refs":[{"id":"ref-for-custom-property\u2460"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-custom-property\u2461"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-custom-property\u2462"},{"id":"ref-for-custom-property\u2463"},{"id":"ref-for-custom-property\u2464"}],"title":"2.2. In The URL"},{"refs":[{"id":"ref-for-custom-property\u2465"},{"id":"ref-for-custom-property\u2466"},{"id":"ref-for-custom-property\u2467"}],"title":"2.3. Setting via the CSS url() Function"},{"refs":[{"id":"ref-for-custom-property\u2468"},{"id":"ref-for-custom-property\u2460\u24ea"}],"title":"3. Using Link Parameters"}],"url":"https://drafts.csswg.org/css-variables-2/#custom-property"},
+"198f1537": {"dfnID":"198f1537","dfnText":"custom property","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-property"},{"id":"ref-for-custom-property\u2460"},{"id":"ref-for-custom-property\u2461"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"https://drafts.csswg.org/css-variables-2/#custom-property"},
 "2fb9329a": {"dfnID":"2fb9329a","dfnText":":hover","external":true,"refSections":[{"refs":[{"id":"ref-for-hover-pseudo"}],"title":"1. Introduction"}],"url":"https://drafts.csswg.org/selectors-4/#hover-pseudo"},
-"4f968977": {"dfnID":"4f968977","dfnText":"<url-modifier>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-url-modifier"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-url-modifier"},
-"537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"2.1. In CSS: the link-parameters property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
-"5a2f7ea1": {"dfnID":"5a2f7ea1","dfnText":"url()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-url"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-funcdef-url\u2460"}],"title":"2.2. In The URL"},{"refs":[{"id":"ref-for-funcdef-url\u2461"},{"id":"ref-for-funcdef-url\u2462"},{"id":"ref-for-funcdef-url\u2463"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"https://drafts.csswg.org/css-values-4/#funcdef-url"},
+"4f968977": {"dfnID":"4f968977","dfnText":"<url-modifier>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-url-modifier"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-typedef-url-modifier\u2460"},{"id":"ref-for-typedef-url-modifier\u2461"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-url-modifier"},
+"537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-mult-opt\u2460"}],"title":"2.2. In The URL"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
+"5a2f7ea1": {"dfnID":"5a2f7ea1","dfnText":"url()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-url"},{"id":"ref-for-funcdef-url\u2460"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-funcdef-url\u2461"}],"title":"2.2. In The URL"},{"refs":[{"id":"ref-for-funcdef-url\u2462"},{"id":"ref-for-funcdef-url\u2463"},{"id":"ref-for-funcdef-url\u2464"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"https://drafts.csswg.org/css-values-4/#funcdef-url"},
+"68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"2.1. In CSS: the link-parameters property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
 "68bf3d31": {"dfnID":"68bf3d31","dfnText":"a","external":true,"refSections":[{"refs":[{"id":"ref-for-the-a-element"}],"title":"2.2. In The URL"}],"url":"https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-a-element"},
 "6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"2.1. In CSS: the link-parameters property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
-"8144e597": {"dfnID":"8144e597","dfnText":"<declaration-value>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-declaration-value"},{"id":"ref-for-typedef-declaration-value\u2460"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-typedef-declaration-value\u2461"}],"title":"2.2. In The URL"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value"},
-"8716d04f": {"dfnID":"8716d04f","dfnText":"<any-value>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-any-value"}],"title":"2. Setting a Link Parameter"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-any-value"},
+"807f9351": {"dfnID":"807f9351","dfnText":"env()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-env"},{"id":"ref-for-funcdef-env\u2460"},{"id":"ref-for-funcdef-env\u2461"},{"id":"ref-for-funcdef-env\u2462"}],"title":"3. Using Link Parameters"},{"refs":[{"id":"ref-for-funcdef-env\u2463"},{"id":"ref-for-funcdef-env\u2464"}],"title":"Unnumbered Section"}],"url":"https://drafts.csswg.org/css-env-1/#funcdef-env"},
+"8144e597": {"dfnID":"8144e597","dfnText":"<declaration-value>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-declaration-value"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-typedef-declaration-value\u2460"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-typedef-declaration-value\u2461"},{"id":"ref-for-typedef-declaration-value\u2462"},{"id":"ref-for-typedef-declaration-value\u2463"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-typedef-declaration-value\u2464"}],"title":"2.2. In The URL"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value"},
 "87fcd40c": {"dfnID":"87fcd40c","dfnText":"iframe","external":true,"refSections":[{"refs":[{"id":"ref-for-the-iframe-element"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-the-iframe-element\u2460"}],"title":"2.1. In CSS: the link-parameters property"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
 "890a8358": {"dfnID":"890a8358","dfnText":"fill","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-fill"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-propdef-fill\u2460"}],"title":"3. Using Link Parameters"}],"url":"https://drafts.fxtf.org/fill-stroke-3/#propdef-fill"},
+"8a427103": {"dfnID":"8a427103","dfnText":"<dashed-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-dashed-ident"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2460"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2461"},{"id":"ref-for-typedef-dashed-ident\u2462"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2463"}],"title":"2.2. In The URL"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident"},
+"9f9120ff": {"dfnID":"9f9120ff","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-comb-comma\u2460"}],"title":"2.2. In The URL"}],"url":"https://drafts.csswg.org/css-values-4/#comb-comma"},
 "b0eb2f50": {"dfnID":"b0eb2f50","dfnText":"CSS value definition syntax","external":true,"refSections":[{"refs":[{"id":"ref-for-css-value-definition-syntax"}],"title":"2.2. In The URL"}],"url":"https://drafts.csswg.org/css-values-4/#css-value-definition-syntax"},
-"bedd9d42": {"dfnID":"bedd9d42","dfnText":"+","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-one-plus"}],"title":"2.1. In CSS: the link-parameters property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-one-plus"},
-"css-link-parameter": {"dfnID":"css-link-parameter","dfnText":"CSS link parameters","external":false,"refSections":[{"refs":[{"id":"ref-for-css-link-parameter"},{"id":"ref-for-css-link-parameter\u2460"},{"id":"ref-for-css-link-parameter\u2461"},{"id":"ref-for-css-link-parameter\u2462"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-css-link-parameter\u2463"},{"id":"ref-for-css-link-parameter\u2464"},{"id":"ref-for-css-link-parameter\u2465"},{"id":"ref-for-css-link-parameter\u2466"},{"id":"ref-for-css-link-parameter\u2467"},{"id":"ref-for-css-link-parameter\u2468"},{"id":"ref-for-css-link-parameter\u2460\u24ea"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-css-link-parameter\u2460\u2460"}],"title":"2.3. Setting via the CSS url() Function"},{"refs":[{"id":"ref-for-css-link-parameter\u2460\u2461"},{"id":"ref-for-css-link-parameter\u2460\u2462"},{"id":"ref-for-css-link-parameter\u2460\u2463"},{"id":"ref-for-css-link-parameter\u2460\u2464"},{"id":"ref-for-css-link-parameter\u2460\u2465"}],"title":"3. Using Link Parameters"}],"url":"#css-link-parameter"},
-"dbba942a": {"dfnID":"dbba942a","dfnText":"var()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-var"},{"id":"ref-for-funcdef-var\u2460"}],"title":"3. Using Link Parameters"}],"url":"https://drafts.csswg.org/css-variables-2/#funcdef-var"},
-"dd3530b8": {"dfnID":"dd3530b8","dfnText":"@property","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-property"},{"id":"ref-for-at-ruledef-property\u2460"}],"title":"3. Using Link Parameters"}],"url":"https://drafts.css-houdini.org/css-properties-values-api-1/#at-ruledef-property"},
-"e55dd7f2": {"dfnID":"e55dd7f2","dfnText":"<custom-property-name>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-custom-property-name"},{"id":"ref-for-typedef-custom-property-name\u2460"},{"id":"ref-for-typedef-custom-property-name\u2461"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-typedef-custom-property-name\u2462"},{"id":"ref-for-typedef-custom-property-name\u2463"}],"title":"2.2. In The URL"},{"refs":[{"id":"ref-for-typedef-custom-property-name\u2464"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name"},
+"css-link-parameter": {"dfnID":"css-link-parameter","dfnText":"CSS link parameters","external":false,"refSections":[{"refs":[{"id":"ref-for-css-link-parameter"},{"id":"ref-for-css-link-parameter\u2460"},{"id":"ref-for-css-link-parameter\u2461"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-css-link-parameter\u2462"},{"id":"ref-for-css-link-parameter\u2463"},{"id":"ref-for-css-link-parameter\u2464"},{"id":"ref-for-css-link-parameter\u2465"},{"id":"ref-for-css-link-parameter\u2466"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-css-link-parameter\u2467"},{"id":"ref-for-css-link-parameter\u2468"},{"id":"ref-for-css-link-parameter\u2460\u24ea"},{"id":"ref-for-css-link-parameter\u2460\u2460"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-css-link-parameter\u2460\u2461"}],"title":"2.2. In The URL"},{"refs":[{"id":"ref-for-css-link-parameter\u2460\u2462"}],"title":"2.3. Setting via the CSS url() Function"},{"refs":[{"id":"ref-for-css-link-parameter\u2460\u2463"},{"id":"ref-for-css-link-parameter\u2460\u2464"},{"id":"ref-for-css-link-parameter\u2460\u2465"}],"title":"3. Using Link Parameters"}],"url":"#css-link-parameter"},
 "ed948033": {"dfnID":"ed948033","dfnText":"fragment","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-url-fragment"}],"title":"2.2. In The URL"}],"url":"https://url.spec.whatwg.org/#concept-url-fragment"},
 "f0811ff8": {"dfnID":"f0811ff8","dfnText":"img","external":true,"refSections":[{"refs":[{"id":"ref-for-the-img-element"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-the-img-element\u2460"}],"title":"2.1. In CSS: the link-parameters property"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
 "f17eedd8": {"dfnID":"f17eedd8","dfnText":"blue","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-blue"}],"title":"2.2. In The URL"},{"refs":[{"id":"ref-for-valdef-color-blue\u2460"}],"title":"3. Using Link Parameters"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-blue"},
-"propdef-link-parameters": {"dfnID":"propdef-link-parameters","dfnText":"link-parameters","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-link-parameters"},{"id":"ref-for-propdef-link-parameters\u2460"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-propdef-link-parameters\u2461"},{"id":"ref-for-propdef-link-parameters\u2462"}],"title":"2.1. In CSS: the link-parameters property"}],"url":"#propdef-link-parameters"},
-"svg-parameter-fragment-identifier": {"dfnID":"svg-parameter-fragment-identifier","dfnText":"SVG parameter fragment identifier","external":false,"refSections":[],"url":"#svg-parameter-fragment-identifier"},
-"typedef-link-param": {"dfnID":"typedef-link-param","dfnText":"<link-param>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-link-param"},{"id":"ref-for-typedef-link-param\u2460"},{"id":"ref-for-typedef-link-param\u2461"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-typedef-link-param\u2462"},{"id":"ref-for-typedef-link-param\u2463"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"#typedef-link-param"},
-"valdef-none-link-param": {"dfnID":"valdef-none-link-param","dfnText":"<link-param>+","external":false,"refSections":[],"url":"#valdef-none-link-param"},
+"funcdef-param": {"dfnID":"funcdef-param","dfnText":"param()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-param"},{"id":"ref-for-funcdef-param\u2460"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-funcdef-param\u2461"},{"id":"ref-for-funcdef-param\u2462"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-funcdef-param\u2463"},{"id":"ref-for-funcdef-param\u2464"},{"id":"ref-for-funcdef-param\u2465"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"#funcdef-param"},
+"propdef-link-parameters": {"dfnID":"propdef-link-parameters","dfnText":"link-parameters","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-link-parameters"},{"id":"ref-for-propdef-link-parameters\u2460"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-propdef-link-parameters\u2461"},{"id":"ref-for-propdef-link-parameters\u2462"}],"title":"2.1. In CSS: the link-parameters property"},{"refs":[{"id":"ref-for-propdef-link-parameters\u2463"}],"title":"2.3. Setting via the CSS url() Function"}],"url":"#propdef-link-parameters"},
+"svg-parameter-fragment-identifier": {"dfnID":"svg-parameter-fragment-identifier","dfnText":"SVG parameter fragment identifier","external":false,"refSections":[{"refs":[{"id":"ref-for-svg-parameter-fragment-identifier"}],"title":"2. Setting a Link Parameter"},{"refs":[{"id":"ref-for-svg-parameter-fragment-identifier\u2460"}],"title":"2.2. In The URL"}],"url":"#svg-parameter-fragment-identifier"},
 "valdef-none-none": {"dfnID":"valdef-none-none","dfnText":"none","external":false,"refSections":[],"url":"#valdef-none-none"},
+"valdef-none-param": {"dfnID":"valdef-none-param","dfnText":"<param()>#","external":false,"refSections":[],"url":"#valdef-none-param"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -2044,21 +2079,21 @@ function genLinkingSyntaxes(dfn) {
 {
 let refsData = {
 "#css-link-parameter": {"displayText":"link parameter","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-link-params","spec":"css-link-params-1","status":"local","text":"link parameter","type":"dfn","url":"#css-link-parameter"},
+"#funcdef-param": {"displayText":"param()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-link-params","spec":"css-link-params-1","status":"local","text":"param()","type":"function","url":"#funcdef-param"},
 "#propdef-link-parameters": {"displayText":"link-parameters","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-link-params","spec":"css-link-params-1","status":"local","text":"link-parameters","type":"property","url":"#propdef-link-parameters"},
-"#typedef-link-param": {"displayText":"<link-param>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-link-params","spec":"css-link-params-1","status":"local","text":"<link-param>","type":"type","url":"#typedef-link-param"},
-"https://drafts.css-houdini.org/css-properties-values-api-1/#at-ruledef-property": {"displayText":"@property","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-properties-values-api","spec":"css-properties-values-api-1","status":"current","text":"@property","type":"at-rule","url":"https://drafts.css-houdini.org/css-properties-values-api-1/#at-ruledef-property"},
+"#svg-parameter-fragment-identifier": {"displayText":"param()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-link-params","spec":"css-link-params-1","status":"local","text":"param()","type":"dfn","url":"#svg-parameter-fragment-identifier"},
 "https://drafts.csswg.org/css-color-4/#valdef-color-blue": {"displayText":"blue","export":true,"for_":["<color>","<named-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"blue","type":"value","url":"https://drafts.csswg.org/css-color-4/#valdef-color-blue"},
-"https://drafts.csswg.org/css-syntax-3/#typedef-any-value": {"displayText":"<any-value>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<any-value>","type":"type","url":"https://drafts.csswg.org/css-syntax-3/#typedef-any-value"},
+"https://drafts.csswg.org/css-env-1/#funcdef-env": {"displayText":"env()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-env","spec":"css-env-1","status":"current","text":"env()","type":"function","url":"https://drafts.csswg.org/css-env-1/#funcdef-env"},
 "https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value": {"displayText":"<declaration-value>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<declaration-value>","type":"type","url":"https://drafts.csswg.org/css-syntax-3/#typedef-declaration-value"},
+"https://drafts.csswg.org/css-values-4/#comb-comma": {"displayText":",","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":",","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-comma"},
 "https://drafts.csswg.org/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "https://drafts.csswg.org/css-values-4/#css-value-definition-syntax": {"displayText":"CSS value definition syntax","export":true,"for_":["CSS"],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"css value definition syntax","type":"dfn","url":"https://drafts.csswg.org/css-values-4/#css-value-definition-syntax"},
 "https://drafts.csswg.org/css-values-4/#funcdef-url": {"displayText":"url()","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"url()","type":"function","url":"https://drafts.csswg.org/css-values-4/#funcdef-url"},
-"https://drafts.csswg.org/css-values-4/#mult-one-plus": {"displayText":"+","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"+","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-one-plus"},
+"https://drafts.csswg.org/css-values-4/#mult-comma": {"displayText":"#","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"#","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
 "https://drafts.csswg.org/css-values-4/#mult-opt": {"displayText":"?","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"?","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
+"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident": {"displayText":"<dashed-ident>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<dashed-ident>","type":"type","url":"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident"},
 "https://drafts.csswg.org/css-values-4/#typedef-url-modifier": {"displayText":"<url-modifier>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<url-modifier>","type":"type","url":"https://drafts.csswg.org/css-values-4/#typedef-url-modifier"},
 "https://drafts.csswg.org/css-variables-2/#custom-property": {"displayText":"custom property","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-variables","spec":"css-variables-2","status":"current","text":"custom property","type":"dfn","url":"https://drafts.csswg.org/css-variables-2/#custom-property"},
-"https://drafts.csswg.org/css-variables-2/#funcdef-var": {"displayText":"var()","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-variables","spec":"css-variables-2","status":"current","text":"var()","type":"function","url":"https://drafts.csswg.org/css-variables-2/#funcdef-var"},
-"https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name": {"displayText":"<custom-property-name>","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-variables","spec":"css-variables-2","status":"current","text":"<custom-property-name>","type":"type","url":"https://drafts.csswg.org/css-variables-2/#typedef-custom-property-name"},
 "https://drafts.csswg.org/selectors-4/#hover-pseudo": {"displayText":":hover","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":":hover","type":"selector","url":"https://drafts.csswg.org/selectors-4/#hover-pseudo"},
 "https://drafts.fxtf.org/fill-stroke-3/#propdef-fill": {"displayText":"fill","export":true,"for_":[],"level":"3","normative":true,"shortname":"fill-stroke","spec":"fill-stroke-3","status":"current","text":"fill","type":"property","url":"https://drafts.fxtf.org/fill-stroke-3/#propdef-fill"},
 "https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element": {"displayText":"img","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"img","type":"element","url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
