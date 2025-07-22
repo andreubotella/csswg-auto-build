@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 7a96e07ec, updated Mon Jul 14 11:12:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-anchor-position-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="c50033e3395ba2ca66e72a174e296e4c1ef52112" name="revision">
+  <meta content="ec8dc8b469ee268ebae66ee0303adc3d80f5a47c" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -897,7 +897,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Anchor Positioning</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-06-27">27 June 2025</time></p>
+    <time class="dt-updated" datetime="2025-07-21">21 July 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1970,7 +1970,7 @@ with the specified border edge of the <a data-link-type="dfn" href="#target-anch
 assuming that all <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container">scroll containers</a>
 between the <span id="ref-for-target-anchor-element⑨">target anchor element</span>
 and the positioned box’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block②④">containing block</a>
-are scrolled to their initial scroll position
+are scrolled to their <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset">remembered scroll offsets</a>
 (but see <a href="#scroll">§ 3.4 Taking Scroll Into Account</a>).</p>
    <p class="note" role="note"><span class="marker">Note:</span> This means that <a data-link-type="dfn" href="https://drafts.csswg.org/css-transitions-1/#transitions" id="ref-for-transitions">transitions</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/web-animations-1/#concept-animation" id="ref-for-concept-animation">animations</a>
 of a property using an <a data-link-type="dfn" href="#anchor-functions" id="ref-for-anchor-functions④">anchor function</a>
@@ -2073,7 +2073,7 @@ and thus perform layout.
 This can’t be performed on the scrolling thread!</p>
    <p>To compensate for this,
 while still allowing as much freedom to anchor to various elements as possible,
-<a data-link-type="dfn" href="#anchor-positioning" id="ref-for-anchor-positioning③">anchor positioning</a> uses a combination of <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset">remembered scroll offsets</a>
+<a data-link-type="dfn" href="#anchor-positioning" id="ref-for-anchor-positioning③">anchor positioning</a> uses a combination of <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset①">remembered scroll offsets</a>
 and <a data-link-type="dfn" href="#compensate-for-scroll" id="ref-for-compensate-for-scroll">compensating for scroll</a>.</p>
    <div class="note" role="note">
     
@@ -2097,7 +2097,7 @@ They’ll only recalculate if the positioned element stops being displayed and s
 or changes fallbacks.</p>
      <li data-md>
       <p>The one exception to this is the <a data-link-type="dfn" href="#default-anchor-element" id="ref-for-default-anchor-element⑤">default anchor element</a>;
-if it’s scrolled away from its <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset①">remembered scroll offset</a>,
+if it’s scrolled away from its <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset②">remembered scroll offset</a>,
 the positioned element moves with it.
 Because this is *purely* a shift in position,
 the positioned element can’t change size
@@ -2131,15 +2131,15 @@ or otherwise require layout in response.</p>
 	of <var>anchor</var>,
 	up to but not including 
 	<var>abspos</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block②⑦">containing block</a>.
-	The <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset②">remembered scroll offset</a> also accounts 
+	The <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset③">remembered scroll offset</a> also accounts 
 	for other scroll-dependent positioning changes,
 	such as <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position④">position: sticky</a>.
 	If <var>abspos</var> has a <a data-link-type="dfn" href="#default-anchor-element" id="ref-for-default-anchor-element⑥">default anchor element</a>,
-	it always calculates a <span id="ref-for-remembered-scroll-offset③">remembered scroll offset</span> for it,
+	it always calculates a <span id="ref-for-remembered-scroll-offset④">remembered scroll offset</span> for it,
 	even if <var>abspos</var> doesn’t actually have an <span id="ref-for-anchor-reference③">anchor reference</span> to it.</p>
     <p>All <a data-link-type="dfn" href="#anchor-reference" id="ref-for-anchor-reference④">anchor references</a> are calculated
 	as if all <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container②">scroll containers</a> were at their <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#initial-scroll-position" id="ref-for-initial-scroll-position">initial scroll position</a>,
-	and then have their associated <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset④">remembered scroll offset</a>
+	and then have their associated <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑤">remembered scroll offset</a>
 	added to them.</p>
     <p class="issue" id="issue-141fd32f"><a class="self-link" href="#issue-141fd32f"></a> Transforms have the same issue as scrolling,
 	so Anchor Positioning similarly doesn’t pay attention to them normally.
@@ -2191,9 +2191,9 @@ as <var>abspos</var>’s <a data-link-type="dfn" href="#default-anchor-box" id="
     <ul>
      <li data-md>
       <p>If <var>abspos</var> is <a data-link-type="dfn" href="#compensate-for-scroll" id="ref-for-compensate-for-scroll②">compensating for scroll</a> in the axis,
-then the length is the difference between the <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑤">remembered scroll offset</a>
+then the length is the difference between the <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑥">remembered scroll offset</a>
 of the <a data-link-type="dfn" href="#default-anchor-element" id="ref-for-default-anchor-element⑧">default anchor element</a>
-and what its current <span id="ref-for-remembered-scroll-offset⑥">remembered scroll offset</span> would be
+and what its current <span id="ref-for-remembered-scroll-offset⑦">remembered scroll offset</span> would be
 if it were recalculated.</p>
      <li data-md>
       <p>Otherwise, the length is 0.</p>
@@ -2205,9 +2205,9 @@ if it were recalculated.</p>
     <p class="issue" id="issue-5446f06a"><a class="self-link" href="#issue-5446f06a"></a> Define the precise timing of the snapshot:
 	updated each frame,
 	before style recalc.</p>
-    <p class="issue" id="issue-a8569080"><a class="self-link" href="#issue-a8569080"></a> Similar to <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑦">remembered scroll offset</a>,
+    <p class="issue" id="issue-a8569080"><a class="self-link" href="#issue-a8569080"></a> Similar to <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑧">remembered scroll offset</a>,
 	can we pay attention to transforms on the <a data-link-type="dfn" href="#default-anchor-element" id="ref-for-default-anchor-element⑨">default anchor element</a>?</p>
-    <p class="note" role="note"><span class="marker">Note:</span> While <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑧">remembered scroll offsets</a>
+    <p class="note" role="note"><span class="marker">Note:</span> While <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑨">remembered scroll offsets</a>
 	affect the value of <a class="css" data-link-type="maybe" href="#funcdef-anchor" id="ref-for-funcdef-anchor①⑤">anchor()</a> functions,
 	<a data-link-type="dfn" href="#default-scroll-shift" id="ref-for-default-scroll-shift①">default scroll shift</a> directly shifts the element,
 	<em>after</em> determining the value of its <a data-link-type="dfn" href="https://drafts.csswg.org/css-logical-1/#inset-properties" id="ref-for-inset-properties①⑥">inset properties</a>,
@@ -2851,7 +2851,7 @@ resolve the cascade,
 and perform enough layout to determine <var>el</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value②">used styles</a>.</p>
       <p>For the purpose of calculating these styles,
 a <em>hypothetical</em> <a data-link-type="dfn" href="#anchor-recalculation-point" id="ref-for-anchor-recalculation-point③">anchor recalculation point</a> is calculated,
-and the resulting hypothetical <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset⑨">remembered scroll offsets</a> are used to determine <var>el</var>’s styles.</p>
+and the resulting hypothetical <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset①⓪">remembered scroll offsets</a> are used to determine <var>el</var>’s styles.</p>
      <li data-md>
       <p>Return <var>el</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value③">used styles</a>.</p>
     </ol>
@@ -2890,7 +2890,7 @@ and getting selected as a successful option.</p>
 <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue②">continue</a>.</p>
        <li data-md>
         <p>Return <var>adjusted styles</var>,
-along with the associated set of <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset①⓪">remembered scroll offsets</a>
+along with the associated set of <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset①①">remembered scroll offsets</a>
 that were hypothetically calculated for them.</p>
       </ol>
      <li data-md>
@@ -2903,10 +2903,10 @@ that avoids overflow.</p>
 	don’t affect this calculation,
 	only <var>el</var>’s own <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#margin-box" id="ref-for-margin-box">margin box</a>.</p>
     <p class="note" role="note"><span class="marker">Note:</span> Because we purposely skip the <a data-link-type="dfn" href="#position-option" id="ref-for-position-option⑨">position option</a> currently in effect,
-	it doesn’t get its <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset①①">remembered scroll offsets</a> updated;
+	it doesn’t get its <a data-link-type="dfn" href="#remembered-scroll-offset" id="ref-for-remembered-scroll-offset①②">remembered scroll offsets</a> updated;
 	if none of the other fallbacks work
 	and we stick with the current styles,
-	all the <span id="ref-for-remembered-scroll-offset①②">remembered scroll offsets</span> stay the same.</p>
+	all the <span id="ref-for-remembered-scroll-offset①③">remembered scroll offsets</span> stay the same.</p>
    </div>
    <p>During a full layout pass,
 once a box has determined its fallback styles
@@ -4696,7 +4696,7 @@ let dfnPanelData = {
 "propdef-position-try-fallbacks": {"dfnID":"propdef-position-try-fallbacks","dfnText":"position-try-fallbacks","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-position-try-fallbacks"}],"title":"5. Overflow Management"},{"refs":[{"id":"ref-for-propdef-position-try-fallbacks\u2460"}],"title":"5.1. Giving Fallback Options: the position-try-fallbacks property"},{"refs":[{"id":"ref-for-propdef-position-try-fallbacks\u2461"}],"title":"5.2. Determining Fallback Order: the position-try-order property"},{"refs":[{"id":"ref-for-propdef-position-try-fallbacks\u2462"},{"id":"ref-for-propdef-position-try-fallbacks\u2463"}],"title":"5.3. The position-try Shorthand"},{"refs":[{"id":"ref-for-propdef-position-try-fallbacks\u2464"},{"id":"ref-for-propdef-position-try-fallbacks\u2465"}],"title":"5.4. The @position-try Rule"},{"refs":[{"id":"ref-for-propdef-position-try-fallbacks\u2466"},{"id":"ref-for-propdef-position-try-fallbacks\u2467"}],"title":"5.5. Applying Position Fallback"}],"url":"#propdef-position-try-fallbacks"},
 "propdef-position-try-order": {"dfnID":"propdef-position-try-order","dfnText":"position-try-order","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-position-try-order"}],"title":"5. Overflow Management"},{"refs":[{"id":"ref-for-propdef-position-try-order\u2460"}],"title":"5.2. Determining Fallback Order: the position-try-order property"},{"refs":[{"id":"ref-for-propdef-position-try-order\u2461"},{"id":"ref-for-propdef-position-try-order\u2462"},{"id":"ref-for-propdef-position-try-order\u2463"}],"title":"5.3. The position-try Shorthand"}],"url":"#propdef-position-try-order"},
 "propdef-position-visibility": {"dfnID":"propdef-position-visibility","dfnText":"position-visibility","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-position-visibility"}],"title":"3.5. Conditional Hiding: the position-visibility property"},{"refs":[{"id":"ref-for-propdef-position-visibility\u2460"}],"title":"11. Changes"}],"url":"#propdef-position-visibility"},
-"remembered-scroll-offset": {"dfnID":"remembered-scroll-offset","dfnText":"remembered scroll offset","external":false,"refSections":[{"refs":[{"id":"ref-for-remembered-scroll-offset"},{"id":"ref-for-remembered-scroll-offset\u2460"},{"id":"ref-for-remembered-scroll-offset\u2461"},{"id":"ref-for-remembered-scroll-offset\u2462"},{"id":"ref-for-remembered-scroll-offset\u2463"},{"id":"ref-for-remembered-scroll-offset\u2464"},{"id":"ref-for-remembered-scroll-offset\u2465"},{"id":"ref-for-remembered-scroll-offset\u2466"},{"id":"ref-for-remembered-scroll-offset\u2467"}],"title":"3.4. Taking Scroll Into Account"},{"refs":[{"id":"ref-for-remembered-scroll-offset\u2468"},{"id":"ref-for-remembered-scroll-offset\u2460\u24ea"},{"id":"ref-for-remembered-scroll-offset\u2460\u2460"},{"id":"ref-for-remembered-scroll-offset\u2460\u2461"}],"title":"5.5. Applying Position Fallback"}],"url":"#remembered-scroll-offset"},
+"remembered-scroll-offset": {"dfnID":"remembered-scroll-offset","dfnText":"remembered scroll offset","external":false,"refSections":[{"refs":[{"id":"ref-for-remembered-scroll-offset"}],"title":"3.3. Anchor-relative Insets: the anchor() function"},{"refs":[{"id":"ref-for-remembered-scroll-offset\u2460"},{"id":"ref-for-remembered-scroll-offset\u2461"},{"id":"ref-for-remembered-scroll-offset\u2462"},{"id":"ref-for-remembered-scroll-offset\u2463"},{"id":"ref-for-remembered-scroll-offset\u2464"},{"id":"ref-for-remembered-scroll-offset\u2465"},{"id":"ref-for-remembered-scroll-offset\u2466"},{"id":"ref-for-remembered-scroll-offset\u2467"},{"id":"ref-for-remembered-scroll-offset\u2468"}],"title":"3.4. Taking Scroll Into Account"},{"refs":[{"id":"ref-for-remembered-scroll-offset\u2460\u24ea"},{"id":"ref-for-remembered-scroll-offset\u2460\u2460"},{"id":"ref-for-remembered-scroll-offset\u2460\u2461"},{"id":"ref-for-remembered-scroll-offset\u2460\u2462"}],"title":"5.5. Applying Position Fallback"}],"url":"#remembered-scroll-offset"},
 "required-anchor-reference": {"dfnID":"required-anchor-reference","dfnText":"required anchor reference","external":false,"refSections":[{"refs":[{"id":"ref-for-required-anchor-reference"}],"title":"3.5. Conditional Hiding: the position-visibility property"}],"url":"#required-anchor-reference"},
 "resolvable-anchor-function": {"dfnID":"resolvable-anchor-function","dfnText":"resolvable anchor function","external":false,"refSections":[{"refs":[{"id":"ref-for-resolvable-anchor-function"},{"id":"ref-for-resolvable-anchor-function\u2460"}],"title":"3.3. Anchor-relative Insets: the anchor() function"}],"url":"#resolvable-anchor-function"},
 "resolvable-anchor-size-function": {"dfnID":"resolvable-anchor-size-function","dfnText":"resolvable anchor-size function","external":false,"refSections":[{"refs":[{"id":"ref-for-resolvable-anchor-size-function"}],"title":"4.1. The anchor-size() Function"}],"url":"#resolvable-anchor-size-function"},
