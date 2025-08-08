@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/cssom-view-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="a9016556247fcd91a965116e5ff50237255de401" name="revision">
+  <meta content="743e65324f7769559008792a22ea72ab85771bc5" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1347,7 +1347,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSSOM View Module</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-07-04">4 July 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-07">7 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -3449,24 +3449,30 @@ abort the rest of these steps.</p>
       <li data-md>
        <p>The element is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2" id="ref-for-the-body-element-2①⑥">the <code>body</code> element</a>.</p>
       <li data-md>
-       <p>The element’s computed value of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position②">position</a> property is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-position-3/#valdef-position-fixed" id="ref-for-valdef-position-fixed②">fixed</a>.</p>
+       <p>The element’s computed value of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position②">position</a> property is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-position-3/#valdef-position-fixed" id="ref-for-valdef-position-fixed②">fixed</a> and no ancestor establishes a fixed position <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block④">containing block</a>.</p>
      </ul>
     <li data-md>
      <p>Let <var>ancestor</var> be the parent of the element in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree⑤">flat tree</a> and repeat these substeps:</p>
      <ol>
       <li data-md>
-       <p>If <var>ancestor</var> is <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-closed-shadow-hidden" id="ref-for-concept-closed-shadow-hidden②">closed-shadow-hidden</a> from the element and its computed value of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position③">position</a> property is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-position-3/#valdef-position-fixed" id="ref-for-valdef-position-fixed③">fixed</a>, terminate this algorithm and return null.</p>
+       <p>If <var>ancestor</var> is <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-closed-shadow-hidden" id="ref-for-concept-closed-shadow-hidden②">closed-shadow-hidden</a> from the element, its computed value of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position③">position</a> property is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-position-3/#valdef-position-fixed" id="ref-for-valdef-position-fixed③">fixed</a>, and no ancestor establishes a fixed position <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block⑤">containing block</a>, terminate this algorithm and return null.</p>
       <li data-md>
        <p>If <var>ancestor</var> is not <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-closed-shadow-hidden" id="ref-for-concept-closed-shadow-hidden③">closed-shadow-hidden</a> from the element and satisfies at least one of the following, terminate this algorithm and return <var>ancestor</var>.</p>
        <ul>
         <li data-md>
-         <p><var>ancestor</var> is a containing block of absolutely-positioned descendants (regardless of whether there are any absolutely-positioned descendants).</p>
+         <p>The element is in a fixed position <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block⑥">containing block</a>, and <var>ancestor</var> is a containing block for fixed-positioned descendants.</p>
+        <li data-md>
+         <p>The element is not in a fixed position <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block⑦">containing block</a>, and:</p>
+         <ul>
+          <li data-md>
+           <p><var>ancestor</var> is a containing block of absolutely-positioned descendants (regardless of whether there are any absolutely-positioned descendants).</p>
+          <li data-md>
+           <p>It is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2" id="ref-for-the-body-element-2①⑦">the <code>body</code> element</a>.</p>
+          <li data-md>
+           <p>The computed value of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position④">position</a> property of the element is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-position-3/#valdef-position-static" id="ref-for-valdef-position-static">static</a> and the ancestor is one of the following <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#html-elements" id="ref-for-html-elements">HTML elements</a>: <code>td</code>, <code>th</code>, or <code>table</code>.</p>
+         </ul>
         <li data-md>
          <p>The element has a different <a data-link-type="dfn" href="https://drafts.csswg.org/css-viewport/#effective-zoom" id="ref-for-effective-zoom①">effective zoom</a> than <var>ancestor</var>.</p>
-        <li data-md>
-         <p>It is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2" id="ref-for-the-body-element-2①⑦">the <code>body</code> element</a>.</p>
-        <li data-md>
-         <p>The computed value of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position④">position</a> property of the element is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-position-3/#valdef-position-static" id="ref-for-valdef-position-static">static</a> and the ancestor is one of the following <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/infrastructure.html#html-elements" id="ref-for-html-elements">HTML elements</a>: <code>td</code>, <code>th</code>, or <code>table</code>.</p>
        </ul>
       <li data-md>
        <p>If there is no more parent of <var>ancestor</var> in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree⑥">flat tree</a>, terminate this algorithm and return null.</p>
@@ -7233,7 +7239,7 @@ let dfnPanelData = {
 "e97a9688": {"dfnID":"e97a9688","dfnText":"unsigned long","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-unsigned-long"},{"id":"ref-for-idl-unsigned-long\u2460"}],"title":"4.3. The Screen Interface"},{"refs":[{"id":"ref-for-idl-unsigned-long\u2461"}],"title":"5.1. The CaretPosition Interface"}],"url":"https://webidl.spec.whatwg.org/#idl-unsigned-long"},
 "e99bd18e": {"dfnID":"e99bd18e","dfnText":"relevant global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-global"},{"id":"ref-for-concept-relevant-global\u2460"},{"id":"ref-for-concept-relevant-global\u2461"},{"id":"ref-for-concept-relevant-global\u2462"}],"title":"4. Extensions to the Window Interface"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
 "ea5623a4": {"dfnID":"ea5623a4","dfnText":"capture","external":true,"refSections":[{"refs":[{"id":"ref-for-event-listener-capture"}],"title":"4.2. The MediaQueryList Interface"}],"url":"https://dom.spec.whatwg.org/#event-listener-capture"},
-"ea663a43": {"dfnID":"ea663a43","dfnText":"containing block","external":true,"refSections":[{"refs":[{"id":"ref-for-containing-block"},{"id":"ref-for-containing-block\u2460"},{"id":"ref-for-containing-block\u2461"},{"id":"ref-for-containing-block\u2462"}],"title":"7. Extensions to the HTMLElement Interface"}],"url":"https://drafts.csswg.org/css-display-4/#containing-block"},
+"ea663a43": {"dfnID":"ea663a43","dfnText":"containing block","external":true,"refSections":[{"refs":[{"id":"ref-for-containing-block"},{"id":"ref-for-containing-block\u2460"},{"id":"ref-for-containing-block\u2461"},{"id":"ref-for-containing-block\u2462"},{"id":"ref-for-containing-block\u2463"},{"id":"ref-for-containing-block\u2464"},{"id":"ref-for-containing-block\u2465"},{"id":"ref-for-containing-block\u2466"}],"title":"7. Extensions to the HTMLElement Interface"}],"url":"https://drafts.csswg.org/css-display-4/#containing-block"},
 "ef662a55": {"dfnID":"ef662a55","dfnText":"live","external":true,"refSections":[{"refs":[{"id":"ref-for-live"}],"title":"5. Extensions to the Document Interface"},{"refs":[{"id":"ref-for-live\u2460"}],"title":"5.1. The CaretPosition Interface"},{"refs":[{"id":"ref-for-live\u2461"},{"id":"ref-for-live\u2462"}],"title":"6. \nExtensions to the Element Interface"},{"refs":[{"id":"ref-for-live\u2463"},{"id":"ref-for-live\u2464"}],"title":"9. Extensions to the Range Interface"}],"url":"https://html.spec.whatwg.org/multipage/infrastructure.html#live"},
 "element-get-the-bounding-box": {"dfnID":"element-get-the-bounding-box","dfnText":"get the bounding box","external":false,"refSections":[{"refs":[{"id":"ref-for-element-get-the-bounding-box"}],"title":"6. \nExtensions to the Element Interface"}],"url":"#element-get-the-bounding-box"},
 "ending-edges": {"dfnID":"ending-edges","dfnText":"ending edges","external":false,"refSections":[{"refs":[{"id":"ref-for-ending-edges"},{"id":"ref-for-ending-edges\u2460"}],"title":"6.1. Element Scrolling Members"}],"url":"#ending-edges"},
