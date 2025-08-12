@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-gaps-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="68d50efaa1ffe1d184fcca42850b33dae3f8a185" name="revision">
+  <meta content="f52013a7641e2f21d04831617e41254a060984c0" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -754,7 +754,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Gap Decorations Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-08-08">8 August 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-11">11 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2010,22 +2010,16 @@ column-rule-color: red blue;
 			
      <li>
 				If <var>trailing gaps</var> is non-empty,
-				<a data-link-type="dfn" href="#assign-gap-decoration-values-in-reverse" id="ref-for-assign-gap-decoration-values-in-reverse">assign gap decoration values in reverse</a> to <var>trailing gaps</var>
-				using the last <var>trailing count</var> items in <var>values</var>.
+				<a data-link-type="dfn" href="#assign-gap-decoration-values" id="ref-for-assign-gap-decoration-values①">assign gap decoration values</a> to <var>trailing gaps</var>
+				using the first <var>trailing count</var> items in <var>values</var>.
 			
      <li>
 				If <var>auto gaps</var> is non-empty,
-				<a data-link-type="dfn" href="#assign-gap-decoration-values" id="ref-for-assign-gap-decoration-values①">assign gap decoration values</a> to <var>auto gaps</var>
+				<a data-link-type="dfn" href="#assign-gap-decoration-values" id="ref-for-assign-gap-decoration-values②">assign gap decoration values</a> to <var>auto gaps</var>
 				using the list of values in the second argument of the <a data-link-type="dfn" href="#auto-repeater" id="ref-for-auto-repeater⑥">auto repeater</a>.
 			
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="assign gap decoration values in reverse">
-		To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="assign-gap-decoration-values-in-reverse">assign gap decoration values in reverse</dfn>
-		to a list of <var>gaps</var> using a list of <var>values</var>,
-		follow the same steps as to <a data-link-type="dfn" href="#assign-gap-decoration-values" id="ref-for-assign-gap-decoration-values②">assign gap decoration values</a>,
-		except that in step 2, change all instances of "first" to "last".
-	</div>
    <h3 class="heading settled" data-level="3.5" id="gap-decoration-shorthands"><span class="secno">3.5. </span><span class="content">
 Gap decoration shorthands: The <a class="property css" data-link-type="property" href="#propdef-column-rule" id="ref-for-propdef-column-rule">column-rule</a> and <a class="property css" data-link-type="property" href="#propdef-row-rule" id="ref-for-propdef-row-rule">row-rule</a> properties</span><a class="self-link" href="#gap-decoration-shorthands"></a></h3>
    <table class="def propdef" data-link-for-hint="column-rule">
@@ -2222,6 +2216,8 @@ Changes since the <a href="https://www.w3.org/TR/2025/WD-css-gaps-1-20250417/">1
     <li>Updated <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-gaps-1/#propdef-rule-paint-order" id="ref-for-propdef-rule-paint-order">rule-paint-order</a> to <a class="property css" data-link-type="property" href="#propdef-rule-overlap" id="ref-for-propdef-rule-overlap②">rule-overlap</a>. (<a href="https://github.com/w3c/csswg-drafts/issues/12540">Issue 12540</a>)
 		
     <li>Updated the definition for intersections to use <u class="property link-error" data-lt="gutter" title="LINK ERROR: No &apos;property&apos; refs found for &apos;gutter&apos;.">gutter</u>. (<a href="https://github.com/w3c/csswg-drafts/issues/12084">Issue 12084</a>)
+		
+    <li>Updated trailing gap decoration assignment to use values in forward order. (<a href="https://github.com/w3c/csswg-drafts/issues/12527">Issue 12527</a>)
 	
    </ul>
   </main>
@@ -2362,7 +2358,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#assign-gap-decoration-values">assign gap decoration values</a><span>, in § 3.4</span>
-   <li><a href="#assign-gap-decoration-values-in-reverse">assign gap decoration values in reverse</a><span>, in § 3.4</span>
    <li><a href="#typedef-auto-line-color-list">&lt;auto-line-color-list></a><span>, in § 3.1</span>
    <li><a href="#typedef-auto-line-style-list">&lt;auto-line-style-list></a><span>, in § 3.2</span>
    <li><a href="#typedef-auto-line-width-list">&lt;auto-line-width-list></a><span>, in § 3.3</span>
@@ -2953,7 +2948,6 @@ let dfnPanelData = {
 "9f9120ff": {"dfnID":"9f9120ff","dfnText":",","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-comma"},{"id":"ref-for-comb-comma\u2460"}],"title":"3.1. \nGap decoration color: The column-rule-color and row-rule-color properties"},{"refs":[{"id":"ref-for-comb-comma\u2461"},{"id":"ref-for-comb-comma\u2462"}],"title":"3.2. \nGap decoration style: The column-rule-style and row-rule-style properties"},{"refs":[{"id":"ref-for-comb-comma\u2463"},{"id":"ref-for-comb-comma\u2464"}],"title":"3.3. \nGap decoration width: The column-rule-width and row-rule-width properties"},{"refs":[{"id":"ref-for-comb-comma\u2465"}],"title":"3.4. \nLists of values and the repeat() notation"},{"refs":[{"id":"ref-for-comb-comma\u2466"},{"id":"ref-for-comb-comma\u2467"},{"id":"ref-for-comb-comma\u2468"},{"id":"ref-for-comb-comma\u2460\u24ea"}],"title":"3.5. \nGap decoration shorthands: The column-rule and row-rule properties"}],"url":"https://drafts.csswg.org/css-values-4/#comb-comma"},
 "a8c7d10b": {"dfnID":"a8c7d10b","dfnText":"masonry container","external":true,"refSections":[{"refs":[{"id":"ref-for-masonry-container"}],"title":"2. \nGap decorations"},{"refs":[{"id":"ref-for-masonry-container\u2460"}],"title":"2.2. \nBreaking gap decorations into segments: The column-rule-break, row-rule-break, and rule-break properties"},{"refs":[{"id":"ref-for-masonry-container\u2461"}],"title":"2.3. \nAdjusting gap decoration endpoints: The column-rule-outset, row-rule-outset, and rule-outset properties"},{"refs":[{"id":"ref-for-masonry-container\u2462"}],"title":"2.4. \nGap decoration overlap: The rule-overlap property"},{"refs":[{"id":"ref-for-masonry-container\u2463"}],"title":"3.1. \nGap decoration color: The column-rule-color and row-rule-color properties"},{"refs":[{"id":"ref-for-masonry-container\u2464"}],"title":"3.2. \nGap decoration style: The column-rule-style and row-rule-style properties"},{"refs":[{"id":"ref-for-masonry-container\u2465"}],"title":"3.3. \nGap decoration width: The column-rule-width and row-rule-width properties"}],"url":"https://drafts.csswg.org/css-grid-3/#masonry-container"},
 "assign-gap-decoration-values": {"dfnID":"assign-gap-decoration-values","dfnText":"assign gap decoration values","external":false,"refSections":[{"refs":[{"id":"ref-for-assign-gap-decoration-values"},{"id":"ref-for-assign-gap-decoration-values\u2460"},{"id":"ref-for-assign-gap-decoration-values\u2461"}],"title":"3.4. \nLists of values and the repeat() notation"}],"url":"#assign-gap-decoration-values"},
-"assign-gap-decoration-values-in-reverse": {"dfnID":"assign-gap-decoration-values-in-reverse","dfnText":"assign gap decoration values in reverse","external":false,"refSections":[{"refs":[{"id":"ref-for-assign-gap-decoration-values-in-reverse"}],"title":"3.4. \nLists of values and the repeat() notation"}],"url":"#assign-gap-decoration-values-in-reverse"},
 "auto-repeater": {"dfnID":"auto-repeater","dfnText":"auto repeater","external":false,"refSections":[{"refs":[{"id":"ref-for-auto-repeater"},{"id":"ref-for-auto-repeater\u2460"},{"id":"ref-for-auto-repeater\u2461"},{"id":"ref-for-auto-repeater\u2462"},{"id":"ref-for-auto-repeater\u2463"},{"id":"ref-for-auto-repeater\u2464"},{"id":"ref-for-auto-repeater\u2465"}],"title":"3.4. \nLists of values and the repeat() notation"}],"url":"#auto-repeater"},
 "bedd9d42": {"dfnID":"bedd9d42","dfnText":"+","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-one-plus"},{"id":"ref-for-mult-one-plus\u2460"},{"id":"ref-for-mult-one-plus\u2461"}],"title":"3.1. \nGap decoration color: The column-rule-color and row-rule-color properties"},{"refs":[{"id":"ref-for-mult-one-plus\u2462"},{"id":"ref-for-mult-one-plus\u2463"},{"id":"ref-for-mult-one-plus\u2464"}],"title":"3.2. \nGap decoration style: The column-rule-style and row-rule-style properties"},{"refs":[{"id":"ref-for-mult-one-plus\u2465"},{"id":"ref-for-mult-one-plus\u2466"},{"id":"ref-for-mult-one-plus\u2467"}],"title":"3.3. \nGap decoration width: The column-rule-width and row-rule-width properties"},{"refs":[{"id":"ref-for-mult-one-plus\u2468"}],"title":"3.4. \nLists of values and the repeat() notation"}],"url":"https://drafts.csswg.org/css-values-4/#mult-one-plus"},
 "c060edb9": {"dfnID":"c060edb9","dfnText":"collapsed gutter","external":true,"refSections":[{"refs":[{"id":"ref-for-collapsed-gutter"}],"title":"2.1. \nLayout and painting"}],"url":"https://drafts.csswg.org/css-grid-2/#collapsed-gutter"},
@@ -3426,7 +3420,6 @@ document.addEventListener("DOMContentLoaded", setTypeTitles);
 {
 let refsData = {
 "#assign-gap-decoration-values": {"displayText":"assign gap decoration values","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"local","text":"assign gap decoration values","type":"dfn","url":"#assign-gap-decoration-values"},
-"#assign-gap-decoration-values-in-reverse": {"displayText":"assign gap decoration values in reverse","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"local","text":"assign gap decoration values in reverse","type":"dfn","url":"#assign-gap-decoration-values-in-reverse"},
 "#auto-repeater": {"displayText":"auto repeater","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"local","text":"auto repeater","type":"dfn","url":"#auto-repeater"},
 "#compute-the-offset": {"displayText":"compute the offset","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"local","text":"compute the offset","type":"dfn","url":"#compute-the-offset"},
 "#crossing-gap-width": {"displayText":"crossing gap width","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"local","text":"crossing gap width","type":"dfn","url":"#crossing-gap-width"},
