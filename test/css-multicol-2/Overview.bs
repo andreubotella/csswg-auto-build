@@ -360,7 +360,9 @@ The multi-column model</h2>
 
 	The column boxes are ordered
 	in the [=inline base direction=] of the multicol container
-	and arranged into <dfn lt="multi-column line | multi-col line | multicol line">multicol lines</dfn>.
+	and arranged into <dfn lt="multi-column row | multi-col row | multicol row">multicol rows</dfn>.
+	A multicol row contains at least one <dfn lt="multi-column line | multi-col line | multicol line">multicol line</dfn>
+	or spanning element.
 	The <dfn export>column width</dfn> is the length of the column box in the inline direction.
 	The <dfn export>column height</dfn> is the length of the column box in the block direction.
 	All column boxes in a line have the same column width,
@@ -529,28 +531,36 @@ The multi-column model</h2>
 	hit-test-in-vertical-rl.html
 	</wpt>
 
-	Within each [=multicol line=] in the multi-column container,
+	In the inline direction, within each [=multicol line=] in the multi-column container,
 	adjacent column boxes are separated by a <dfn noexport>column gap</dfn>,
 	which may contain a <dfn noexport>column rule</dfn>.
+	In the block direction, [=column rows=] are separated by a <dfn noexport>row gap</dfn>,
+	which may contain a <dfn noexport>row rule</dfn>.
 	All column gaps in the same multi-column container are equal.
 	All column rules in the same multi-column container are also equal, if they appear;
 	column rules only appear between columns that both have content.
 
-	In the simplest case a multicol container will contain only one line
-	of columns, and the height of each column will be equivalent to the
+	In the simplest case a multicol container will contain only one line of columns,
+	inside one multicol row, and the height of each column will be equivalent to the
 	used height of the multi-column container's content box.
 	However, [=fragmentation=] or [=spanners=]
-	can split the content of the [=multi-column container=]
+	can split the content of the [=multicol row=]
 	into multiple [=multicol lines=].
 
 	If the multi-column container is paginated, the height of each column is
 	constrained by the page and the content continues in a new line of
 	column boxes on the next page; a column box never splits across pages.
 
-	The same effect occurs when a <i>spanning element</i> divides the
-	multi-column container: the columns before the spanning element are
+	If a multi-column container in continuous media is set to wrap,
+	the height of each column is defined by the 'column-height' property.
+	If there is more content than will fit in a single row a new multicol row is created
+	in the block direction, with columns of the size defined by the 'column-height' property.
+
+	When a <i>spanning element</i> divides the
+	multi-column container: a new multicol line is created.
+	The columns before the spanning element are
 	balanced and shortened to fit their content. Content after the
-	spanning element then flows into a new, subsequent line of column boxes.
+	spanning element then flows into a new, subsequent multicol line of column boxes.
 
 	<div class="example">
 		<figure>
@@ -559,10 +569,13 @@ The multi-column model</h2>
 		</figure>
 	</div>
 
+	Issue(11976): This issue deals with the scenario where there is not enough space
+	in the current multicol row for a spanning element. Once resolved, add details here.  
+
 	A [=multi-column container=] therefore is a regular [=block container=]
 	that establishes a new [=independent formatting context=]
-	whose contents consist of a series of
-	[=multicol lines=] and multicol spanners.
+	whose contents consist of one or more
+	[=multicol rows=], containing [=multicol lines=] and multicol spanners.
 	Each [=multi-column line=] acts as a [=block-level box=]
 	that establishes a <dfn>multi-column formatting context</dfn>
 	for its [=column boxes=];
@@ -664,19 +677,20 @@ The multi-column model</h2>
 <h2 id="the-number-and-width-of-columns">
 The number and size of columns</h2>
 
-	Finding the number and width of columns is fundamental when laying out multi-column content.
-	These properties are used to set the number and width of columns:
+	Finding the number and size of columns is fundamental when laying out multi-column content.
+	These properties are used to set the number and size of columns:
 
 	<ul>
 		<li>'column-count'</li>
 		<li>'column-width'</li>
+		<li>'column-height'</li>
 	</ul>
 
-	A third property, 'columns',
-	is a shorthand property which sets both 'column-width' and 'column-count'.
+	A fourth property, 'columns', is a shorthand property which sets all of
+        'column-width', 'column-height', and 'column-count'.
 
-	Other factors, such as explicit column breaks, content, and height constraints,
-	may influence the actual number and width of columns.
+	Other factors, such as explicit column breaks, content, column wrapping,
+        and size constraints, may influence the actual number and size of columns.
 
 
 <h3 id='cw'>The Inline Size of Columns: the 'column-width' property</h3>
@@ -952,12 +966,13 @@ The number and size of columns</h2>
 
 	<pre class="propdef shorthand">
 	Name: columns
-	Value: <<'column-width'>> || <<'column-count'>> [ / <<'column-height'>> ]?
+	Value: [ <<'column-width'>> || <<'column-count'>> ] [ / <<'column-height'>> ]?
 	</pre>
 
 	This is a shorthand property for setting 'column-width', 'column-count',
 	and 'column-height'.
 	Omitted values are set to their initial values.
+	This property also resets the 'column-wrap' property to its initial value.
 
 	<div class="example">
 		Here are some valid declarations using the 'columns' property:
@@ -972,8 +987,6 @@ The number and size of columns</h2>
 		columns: 12em / 14em; /* column-width: 12em; column-height: 14em; */
 		</pre>
 	</div>
-
-	Issue(12050): The syntax of the 'columns' shorthand, with the inclusion of 'column-height', is still unresolved.
 
 	<wpt>
 	multicol-columns-001.xht
@@ -2275,6 +2288,7 @@ This appendix is <em>informative</em>.
 <h3 id="changes-from-multicol1">Changes from the <a href="https://www.w3.org/TR/2024/CR-css-multicol-1-20240516/">Candidate Recommendation (CR) of CSS-MULTICOL-1 of 16 May 2024</a></h3>
 
 <ul>
+    <li>Updates the ''columns'' shorthand property to include ''column-height''. <a href="https://github.com/w3c/csswg-drafts/issues/12050#issuecomment-3160860557">Resolved 6 Aug 2025</a>.
 	<li>Adds a draft of proposed ''column-wrap'' property.</li>
 	<li>Adds the ''column-height'' property. <a href="https://github.com/w3c/csswg-drafts/issues/2923#issuecomment-2625930018">Resolved 30 Jan 2025</a>.
 	<li>Adds the ''::column'' pseudo-element. <a href="https://github.com/w3c/csswg-drafts/issues/10715#issuecomment-2379924982">Resolved 27 Sep 2024</a>.</li>

@@ -6,7 +6,7 @@
   <meta content="FPWD" name="w3c-status">
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-multicol-2/" rel="canonical">
-  <meta content="5f19369950cc4b1355f69653cd1204d64eb48080" name="revision">
+  <meta content="9b9d5cbd780ce01d8ccc91e1a1199e40569b9028" name="revision">
   <meta content="dark light" name="color-scheme">
 <style type="text/css">
 .cols { width: 500px; height: 200px; background: #fff; position: relative; border: solid 5px blue; margin: 0.5em 2em 1em 0; font: bold 14px/19px Arial, sans-serif }
@@ -706,13 +706,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </p>
    <h1 class="p-name no-ref" id="title">CSS Multi-column Layout Module Level 2</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#FPWD">W3C First Public Working Draft</a>,
-    <time class="dt-updated" datetime="2025-06-20">20 June 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-19">19 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://www.w3.org/TR/2025/FPWD-css-multicol-2-20250620/">https://www.w3.org/TR/2025/FPWD-css-multicol-2-20250620/</a>
+      <dd><a class="u-url" href="https://www.w3.org/TR/2025/FPWD-css-multicol-2-20250819/">https://www.w3.org/TR/2025/FPWD-css-multicol-2-20250819/</a>
       <dt>Latest published version:
       <dd><a href="https://www.w3.org/TR/css-multicol-2/">https://www.w3.org/TR/css-multicol-2/</a>
       <dt>Editor's Draft:
@@ -762,7 +762,7 @@ on screen, on paper, etc.
    <p>
 	This document was published
 	by the <a href="https://www.w3.org/groups/wg/css">CSS Working Group</a>
-	as a <strong>First Public Working Draft</strong> using the <a href="https://www.w3.org/policies/process/20231103/#recs-and-notes">Recommendation
+	as a <strong>First Public Working Draft</strong> using the <a href="https://www.w3.org/policies/process/20250818/#recs-and-notes">Recommendation
       track</a>.
 	Publication as a First Public Working Draft
 	does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members.
@@ -785,7 +785,7 @@ on screen, on paper, etc.
 
 </p>
    <p>This document is governed by the
-	<a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>.
+	<a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
 
 </p>
    <p>This document was produced by a group operating under the
@@ -1162,7 +1162,9 @@ img <c- p>{</c->
 	and the block-size of the <span id="ref-for-multi-column-container⑦">multi-column container</span>.</p>
    <p>The column boxes are ordered
 	in the <a data-link-type="dfn" href="https://www.w3.org/TR/css-writing-modes-4/#inline-base-direction" id="ref-for-inline-base-direction">inline base direction</a> of the multicol container
-	and arranged into <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="multi-column line | multi-col line | multicol line" data-noexport id="multi-column-line">multicol lines</dfn>.
+	and arranged into <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="multi-column row | multi-col row | multicol row" data-noexport id="multi-column-row">multicol rows</dfn>.
+	A multicol row contains at least one <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="multi-column line | multi-col line | multicol line" data-noexport id="multi-column-line">multicol line</dfn>
+	or spanning element.
 	The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="column-width">column width</dfn> is the length of the column box in the inline direction.
 	The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="column-height">column height</dfn> is the length of the column box in the block direction.
 	All column boxes in a line have the same column width,
@@ -1184,25 +1186,32 @@ img <c- p>{</c->
 			<br>From left to right: horizontal-tb, vertical-rl, vertical-lr.</figcaption>
     </figure>
    </div>
-   <p>Within each <a data-link-type="dfn" href="#multi-column-line" id="ref-for-multi-column-line">multicol line</a> in the multi-column container,
+   <p>In the inline direction, within each <a data-link-type="dfn" href="#multi-column-line" id="ref-for-multi-column-line">multicol line</a> in the multi-column container,
 	adjacent column boxes are separated by a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="column-gap">column gap</dfn>,
 	which may contain a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="column-rule">column rule</dfn>.
+	In the block direction, <u class="link-error" data-lt="column rows" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;column rows&apos;.">column rows</u> are separated by a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="row-gap">row gap</dfn>,
+	which may contain a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="row-rule">row rule</dfn>.
 	All column gaps in the same multi-column container are equal.
 	All column rules in the same multi-column container are also equal, if they appear;
 	column rules only appear between columns that both have content.</p>
-   <p>In the simplest case a multicol container will contain only one line
-	of columns, and the height of each column will be equivalent to the
+   <p>In the simplest case a multicol container will contain only one line of columns,
+	inside one multicol row, and the height of each column will be equivalent to the
 	used height of the multi-column container’s content box.
 	However, <a data-link-type="dfn" href="https://www.w3.org/TR/css-break-4/#fragmentation" id="ref-for-fragmentation">fragmentation</a> or <a data-link-type="dfn" href="#multi-column-spanner" id="ref-for-multi-column-spanner">spanners</a>
-	can split the content of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container⑧">multi-column container</a>
+	can split the content of the <a data-link-type="dfn" href="#multi-column-row" id="ref-for-multi-column-row">multicol row</a>
 	into multiple <a data-link-type="dfn" href="#multi-column-line" id="ref-for-multi-column-line①">multicol lines</a>.</p>
    <p>If the multi-column container is paginated, the height of each column is
 	constrained by the page and the content continues in a new line of
 	column boxes on the next page; a column box never splits across pages.</p>
-   <p>The same effect occurs when a <i>spanning element</i> divides the
-	multi-column container: the columns before the spanning element are
+   <p>If a multi-column container in continuous media is set to wrap,
+	the height of each column is defined by the <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①">column-height</a> property.
+	If there is more content than will fit in a single row a new multicol row is created
+	in the block direction, with columns of the size defined by the <span class="property" id="ref-for-propdef-column-height②">column-height</span> property.</p>
+   <p>When a <i>spanning element</i> divides the
+	multi-column container: a new multicol line is created.
+	The columns before the spanning element are
 	balanced and shortened to fit their content. Content after the
-	spanning element then flows into a new, subsequent line of column boxes.</p>
+	spanning element then flows into a new, subsequent multicol line of column boxes.</p>
    <div class="example" id="example-c2c3431f">
     <a class="self-link" href="#example-c2c3431f"></a>
 		
@@ -1213,10 +1222,12 @@ img <c- p>{</c->
      <figcaption>A demonstration of how the spanning element divides the multicol container.</figcaption>
     </figure>
    </div>
-   <p>A <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container⑨">multi-column container</a> therefore is a regular <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#block-container" id="ref-for-block-container">block container</a>
+   <p class="issue" id="issue-b4b12839"><a class="self-link" href="#issue-b4b12839"></a> This issue deals with the scenario where there is not enough space
+	in the current multicol row for a spanning element. Once resolved, add details here. <a href="https://github.com/w3c/csswg-drafts/issues/11976">[Issue #11976]</a></p>
+   <p>A <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container⑧">multi-column container</a> therefore is a regular <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#block-container" id="ref-for-block-container">block container</a>
 	that establishes a new <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#independent-formatting-context" id="ref-for-independent-formatting-context">independent formatting context</a>
-	whose contents consist of a series of
-	<a data-link-type="dfn" href="#multi-column-line" id="ref-for-multi-column-line②">multicol lines</a> and multicol spanners.
+	whose contents consist of one or more
+	<a data-link-type="dfn" href="#multi-column-row" id="ref-for-multi-column-row①">multicol rows</a>, containing <a data-link-type="dfn" href="#multi-column-line" id="ref-for-multi-column-line②">multicol lines</a> and multicol spanners.
 	Each <span id="ref-for-multi-column-line③">multi-column line</span> acts as a <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#block-level-box" id="ref-for-block-level-box">block-level box</a>
 	that establishes a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="multi-column-formatting-context">multi-column formatting context</dfn>
 	for its <a data-link-type="dfn" href="#column-box" id="ref-for-column-box⑤">column boxes</a>;
@@ -1234,16 +1245,17 @@ img <c- p>{</c->
 	See <a href="#a11y">Accessibility Considerations</a> for more details.</p>
    <h2 class="heading settled" data-level="4" id="the-number-and-width-of-columns"><span class="secno">4. </span><span class="content">
 The number and size of columns</span><a class="self-link" href="#the-number-and-width-of-columns"></a></h2>
-   <p>Finding the number and width of columns is fundamental when laying out multi-column content.
-	These properties are used to set the number and width of columns:</p>
+   <p>Finding the number and size of columns is fundamental when laying out multi-column content.
+	These properties are used to set the number and size of columns:</p>
    <ul>
     <li><a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count①">column-count</a>
     <li><a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width②">column-width</a>
+    <li><a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height③">column-height</a>
    </ul>
-   <p>A third property, <a class="property css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns①">columns</a>,
-	is a shorthand property which sets both <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width③">column-width</a> and <a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count②">column-count</a>.</p>
-   <p>Other factors, such as explicit column breaks, content, and height constraints,
-	may influence the actual number and width of columns.</p>
+   <p>A fourth property, <a class="property css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns①">columns</a>, is a shorthand property which sets all of
+        <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width③">column-width</a>, <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height④">column-height</a>, and <a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count②">column-count</a>.</p>
+   <p>Other factors, such as explicit column breaks, content, column wrapping,
+        and size constraints, may influence the actual number and size of columns.</p>
    <h3 class="heading settled" data-level="4.1" id="cw"><span class="secno">4.1. </span><span class="content">The Inline Size of Columns: the <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width④">column-width</a> property</span><a class="self-link" href="#cw"></a></h3>
    <table class="def propdef" data-link-for-hint="column-width">
     <tbody>
@@ -1333,7 +1345,7 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
 	To set an exact column width,
 	the column gap and the width of the multicol container (assuming horizontal text)
 	must also be specified.</p>
-   <h3 class="heading settled" data-level="4.2" id="ch"><span class="secno">4.2. </span><span class="content">The Block Size of Columns: the <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①">column-height</a> property</span><a class="self-link" href="#ch"></a></h3>
+   <h3 class="heading settled" data-level="4.2" id="ch"><span class="secno">4.2. </span><span class="content">The Block Size of Columns: the <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑤">column-height</a> property</span><a class="self-link" href="#ch"></a></h3>
    <table class="def propdef" data-link-for-hint="column-height">
     <tbody>
      <tr>
@@ -1379,7 +1391,7 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
 			Negative values are not allowed.
 		
    </dl>
-   <p>If you set <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height②">column-height</a> and <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> on a multicol container,
+   <p>If you set <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑥">column-height</a> and <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> on a multicol container,
 	you may end up with some additional space.
 	The properties defined in the <a data-link-type="biblio" href="#biblio-css-align" title="CSS Box Alignment Module Level 3">[CSS-ALIGN]</a> specification detail how to deal with it.</p>
    <h3 class="heading settled" data-level="4.3" id="cc"><span class="secno">4.3. </span><span class="content">The Number of Columns: the <a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count④">column-count</a> property</span><a class="self-link" href="#cc"></a></h3>
@@ -1413,7 +1425,7 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>by computed value	
    </table>
-   <p>This property describes the number of columns of a <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⓪">multicol container</a>.</p>
+   <p>This property describes the number of columns of a <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container⑨">multicol container</a>.</p>
    <dl>
     <dt><dfn class="dfn-paneled css" data-dfn-for="column-count" data-dfn-type="value" data-export id="valdef-column-count-auto">auto</dfn>
 		
@@ -1470,13 +1482,13 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
       <td>discrete	
    </table>
    <p>The column-wrap property controls the behavior of overflow columns in continuous media.
-	Overflow columns occur when there is more content than will fit in a single row of columns at the specified <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height③">column-height</a>,
+	Overflow columns occur when there is more content than will fit in a single row of columns at the specified <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑦">column-height</a>,
 	or inside a height defined by the multicol container.</p>
    <dl>
     <dt><dfn class="dfn-paneled css" data-dfn-for="column-wrap" data-dfn-type="value" data-export id="valdef-column-wrap-auto">auto</dfn>
 		
     <dd>
-			If <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height④">column-height</a> is not <u class="property link-error" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> behaves as the value <u class="property link-error" data-lt="wrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;wrap&apos;.">wrap</u> otherwise acts as <u class="property link-error" data-lt="nowrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;nowrap&apos;.">nowrap</u>.
+			If <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑧">column-height</a> is not <u class="property link-error" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> behaves as the value <u class="property link-error" data-lt="wrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;wrap&apos;.">wrap</u> otherwise acts as <u class="property link-error" data-lt="nowrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;nowrap&apos;.">nowrap</u>.
 		
 		
     <dt><dfn class="dfn-paneled css" data-dfn-for="column-wrap" data-dfn-type="value" data-export id="valdef-column-wrap-nowrap">nowrap</dfn>
@@ -1529,11 +1541,11 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
 	Authors should ensure that it’s clear to a reader how the content flows,
 	particularly in situations where multiple rows are displayed on screen.</p>
    <p class="issue" id="issue-0c1febd5"><a class="self-link" href="#issue-0c1febd5"></a> The issue relating to the addition of this property is still open due to debate as to whether it’s required. <a href="https://github.com/w3c/csswg-drafts/issues/11754">[Issue #11754]</a></p>
-   <p class="issue" id="issue-efb0c119"><a class="self-link" href="#issue-efb0c119"></a> What happens if you set a height on the multicol container, 'column-wrap: wrap' but no <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑤">column-height</a>?
+   <p class="issue" id="issue-efb0c119"><a class="self-link" href="#issue-efb0c119"></a> What happens if you set a height on the multicol container, 'column-wrap: wrap' but no <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑨">column-height</a>?
 	Options are 1: The <a class="property css" data-link-type="property" href="#propdef-column-wrap" id="ref-for-propdef-column-wrap①">column-wrap</a> property is ignored. 2: 'column-height: auto' resolves to the available space
 	in the multicol container and new rows of that size are created for the overflow,
 	thus honoring the <u class="property link-error" data-lt="wrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;wrap&apos;.">wrap</u> value. <a href="https://github.com/w3c/csswg-drafts/issues/11754">[Issue #11754]</a></p>
-   <h3 class="heading settled" data-level="4.5" id="columns"><span class="secno">4.5. </span><span class="content">The <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width⑨">column-width</a>, <a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑥">column-count</a>, and <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑥">column-height</a> Shorthand: The <a class="property css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns②">columns</a> Property</span><a class="self-link" href="#columns"></a></h3>
+   <h3 class="heading settled" data-level="4.5" id="columns"><span class="secno">4.5. </span><span class="content">The <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width⑨">column-width</a>, <a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑥">column-count</a>, and <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⓪">column-height</a> Shorthand: The <a class="property css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns②">columns</a> Property</span><a class="self-link" href="#columns"></a></h3>
    <table class="def propdef" data-link-for-hint="columns">
     <tbody>
      <tr>
@@ -1541,7 +1553,7 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-columns">columns</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="production css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①⓪">&lt;'column-width'></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any">||</a> <a class="production css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑦">&lt;'column-count'></a> [ / <a class="production css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑦">&lt;'column-height'></a> ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a>	
+      <td class="prod">[ <a class="production css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①⓪">&lt;'column-width'></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any">||</a> <a class="production css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑦">&lt;'column-count'></a> ] [ / <a class="production css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①①">&lt;'column-height'></a> ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a>	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties	
@@ -1565,8 +1577,9 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
       <td>per grammar	
    </table>
    <p>This is a shorthand property for setting <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①①">column-width</a>, <a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑧">column-count</a>,
-	and <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑧">column-height</a>.
-	Omitted values are set to their initial values.</p>
+	and <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①②">column-height</a>.
+	Omitted values are set to their initial values.
+	This property also resets the <a class="property css" data-link-type="property" href="#propdef-column-wrap" id="ref-for-propdef-column-wrap②">column-wrap</a> property to its initial value.</p>
    <div class="example" id="example-dfe011c2">
     <a class="self-link" href="#example-dfe011c2"></a>
 		Here are some valid declarations using the <a class="property css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns③">columns</a> property:
@@ -1581,7 +1594,6 @@ columns: auto auto<c- p>;</c-> <c- c>/* column-width: auto; column-count: auto *
 columns: <c- m>12</c-><c- k>em</c-> / <c- m>14</c-><c- k>em</c-><c- p>;</c-> <c- c>/* column-width: 12em; column-height: 14em; */</c->
 </pre>
    </div>
-   <p class="issue" id="issue-25670964"><a class="self-link" href="#issue-25670964"></a> The syntax of the <a class="property css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns④">columns</a> shorthand, with the inclusion of <a class="property css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑨">column-height</a>, is still unresolved. <a href="https://github.com/w3c/csswg-drafts/issues/12050">[Issue #12050]</a></p>
    <h3 class="heading settled" data-level="4.6" id="pseudo-algorithm"><span class="secno">4.6. </span><span class="content">The Pseudo-algorithm</span><a class="self-link" href="#pseudo-algorithm"></a></h3>
    <p>The pseudo-algorithm below determines the used values for
 	<a class="property css" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑨">column-count</a> (N) and <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①②">column-width</a> (W). There is one other variable
@@ -1671,9 +1683,9 @@ Stacking Context</span><a class="self-link" href="#stacking-context"></a></h3>
 Styling Columns: the <a class="css" data-link-type="maybe" href="#selectordef-column" id="ref-for-selectordef-column">::column</a> pseudo-element</span><a class="self-link" href="#column-pseudo"></a></h3>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-column">::column</dfn> pseudo-element
 represents the individual columns
-in a <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①①">multi-column container</a>.
-It only exists on <span id="ref-for-multi-column-container①②">multi-column containers</span>.</p>
-   <p>A <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①③">multi-column container</a> has as many <a class="css" data-link-type="maybe" href="#selectordef-column" id="ref-for-selectordef-column①">::column</a> pseudo-elements
+in a <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⓪">multi-column container</a>.
+It only exists on <span id="ref-for-multi-column-container①①">multi-column containers</span>.</p>
+   <p>A <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①②">multi-column container</a> has as many <a class="css" data-link-type="maybe" href="#selectordef-column" id="ref-for-selectordef-column①">::column</a> pseudo-elements
 as it has columns.
 They cannot be individually addressed;
 any styles applied to a multicol’s <span class="css" id="ref-for-selectordef-column②">::column</span> pseudo-elements
@@ -1683,7 +1695,7 @@ as its corresponding column:
 the same size as the column’s <a data-link-type="dfn" href="https://www.w3.org/TR/css-sizing-3/#available" id="ref-for-available">available space</a> in the <a data-link-type="dfn" href="https://www.w3.org/TR/css-writing-modes-4/#inline-axis" id="ref-for-inline-axis">inline axis</a>
 and the container’s <a data-link-type="dfn" href="https://www.w3.org/TR/css-box-4/#content-box" id="ref-for-content-box">content box</a> in the <a data-link-type="dfn" href="https://www.w3.org/TR/css-writing-modes-4/#block-axis" id="ref-for-block-axis①">block axis</a>.
 (It does not cover the gaps/rules between columns.)</p>
-   <p><a class="css" data-link-type="maybe" href="#selectordef-column" id="ref-for-selectordef-column④">::column</a> pseudo-elements are treated as children of their <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①④">multi-column container</a>,
+   <p><a class="css" data-link-type="maybe" href="#selectordef-column" id="ref-for-selectordef-column④">::column</a> pseudo-elements are treated as children of their <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①③">multi-column container</a>,
 without any contents.
 They <em>do not</em> wrap the contents of the column,
 just fill the same space.</p>
@@ -1705,21 +1717,21 @@ as we develop more features
 that could usefully care about the <em>position</em> of a column
 without caring about the <em>contents</em>.</p>
    <h2 class="heading settled" data-level="5" id="column-gaps-and-rules"><span class="secno">5. </span><span class="content">Column Gaps and Rules</span><a class="self-link" href="#column-gaps-and-rules"></a></h2>
-   <p>Column gaps and rules are placed between columns in the same <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⑤">multicol container</a>.
+   <p>Column gaps and rules are placed between columns in the same <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①④">multicol container</a>.
 	The length of the column gaps and column rules is equal to the column height.
 	Column gaps take up space.
 	That is, column gaps will push apart content in adjacent columns
-	(within the same <span id="ref-for-multi-column-container①⑥">multicol container</span>).</p>
+	(within the same <span id="ref-for-multi-column-container①⑤">multicol container</span>).</p>
    <p>A <a data-link-type="dfn" href="#column-rule" id="ref-for-column-rule①">column rule</a> is drawn in the middle of the <a data-link-type="dfn" href="#column-gap" id="ref-for-column-gap①">column gap</a>
-	with the endpoints at opposing content edges of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⑦">multicol container</a>.
+	with the endpoints at opposing content edges of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⑥">multicol container</a>.
 	Column rules do not take up space.
 	That is, the presence or thickness of a <span id="ref-for-column-rule②">column rule</span> will not alter the placement of anything else.
 	If a <span id="ref-for-column-rule③">column rule</span> is wider than its gap,
 	the adjacent column boxes will overlap the rule,
-	and the rule may possibly extend outside the box of the <span id="ref-for-multi-column-container①⑧">multicol container</span>.
-	Column rules are painted just above the border of the <span id="ref-for-multi-column-container①⑨">multicol container</span>.
+	and the rule may possibly extend outside the box of the <span id="ref-for-multi-column-container①⑦">multicol container</span>.
+	Column rules are painted just above the border of the <span id="ref-for-multi-column-container①⑧">multicol container</span>.
 	For scrollable multicol containers,
-	note that while the border and background of the <span id="ref-for-multi-column-container②⓪">multicol container</span> obviously aren’t scrolled,
+	note that while the border and background of the <span id="ref-for-multi-column-container①⑨">multicol container</span> obviously aren’t scrolled,
 	the rules need to scroll along with the columns.
 	Column rules are only drawn between two columns that both have content.</p>
    <h3 class="heading settled" data-level="5.1" id="cg"><span class="secno">5.1. </span><span class="content">Gutters Between Columns: the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-align-3/#propdef-column-gap" id="ref-for-propdef-column-gap">column-gap</a> property</span><a class="self-link" href="#cg"></a></h3>
@@ -1998,7 +2010,7 @@ Spanning columns</span><a class="self-link" href="#spanning-columns"></a></h2>
      
 			The number of columns spanned by the element
 			depends on its <a data-link-type="dfn" href="https://www.w3.org/TR/css-sizing-3/#min-content" id="ref-for-min-content">min-content</a> <a data-link-type="dfn" href="https://www.w3.org/TR/css-sizing-3/#outer-size" id="ref-for-outer-size">outer size</a>
-			in the inline direction of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②①">multi-column container</a>.
+			in the inline direction of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⓪">multi-column container</a>.
 			If it is smaller than the used value of <a class="property css" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①④">column-width</a>,
 			this is the same as if <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span⑦">column-span: none</a> had been specified.
 			Otherwise, the number of columns spanned is the smallest positive integer <var>n</var>
@@ -2014,11 +2026,11 @@ Spanning columns</span><a class="self-link" href="#spanning-columns"></a></h2>
    </dl>
    <p>An element that spans more than one column is called a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="spanning element" id="multi-column-spanning-element">multi-column spanning element</dfn>
 	and the box it creates is called a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="spanner" id="multi-column-spanner">multi-column spanner</dfn>.</p>
-   <p>The <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#containing-block" id="ref-for-containing-block②">containing block</a> of the <a data-link-type="dfn" href="#multi-column-spanner" id="ref-for-multi-column-spanner②">spanner</a> is the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②②">multicol container</a> itself.
+   <p>The <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#containing-block" id="ref-for-containing-block②">containing block</a> of the <a data-link-type="dfn" href="#multi-column-spanner" id="ref-for-multi-column-spanner②">spanner</a> is the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②①">multicol container</a> itself.
 	Consequently, in cases where the spanner itself does not establish
 	a <span id="ref-for-containing-block③">containing block</span> for <a data-link-type="dfn" href="https://www.w3.org/TR/css-position-3/#absolute-position" id="ref-for-absolute-position①">absolutely positioned boxes</a> inside the spanner,
-	their <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#containing-block-chain" id="ref-for-containing-block-chain">containing block chain</a> skips directly to the <span id="ref-for-multi-column-container②③">multicol container</span>
-	(skipping any ancestors between the <span id="ref-for-multi-column-spanner③">spanner</span> and the <span id="ref-for-multi-column-container②④">multicol container</span>).</p>
+	their <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#containing-block-chain" id="ref-for-containing-block-chain">containing block chain</a> skips directly to the <span id="ref-for-multi-column-container②②">multicol container</span>
+	(skipping any ancestors between the <span id="ref-for-multi-column-spanner③">spanner</span> and the <span id="ref-for-multi-column-container②③">multicol container</span>).</p>
    <p>Although the spanner is taken <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#out-of-flow" id="ref-for-out-of-flow①">out-of-flow</a>,
 	this does not affect the <a href="https://www.w3.org/TR/CSS2/zindex.html">painting order</a> <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a> of the spanning element.</p>
    <div class="example" id="example-b640c5a3">
@@ -2045,7 +2057,7 @@ Spanning columns</span><a class="self-link" href="#spanning-columns"></a></h2>
    </div>
    <p>A spanning element may be lower than the first level of descendants
 	as long as they are part of the same <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#formatting-context" id="ref-for-formatting-context①">formatting context</a>,
-	and there is nothing between the spanning element and <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⑤">multicol container</a> that establishes a containing block for fixed position descendants.</p>
+	and there is nothing between the spanning element and <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②④">multicol container</a> that establishes a containing block for fixed position descendants.</p>
    <div class="example" id="example-c35d3254">
     <a class="self-link" href="#example-c35d3254"></a>
 		In this example, the element with <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span①④">column-span: all</a> is inside an element with <a class="css" data-link-type="propdesc" href="https://www.w3.org/TR/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform">transform: rotate(90deg)</a>. 
@@ -2077,7 +2089,7 @@ section <c- p>{</c->
 	the top margin/border/padding is above the spanning element, as an empty <a data-link-type="dfn" href="https://www.w3.org/TR/css-break-4/#fragment" id="ref-for-fragment①">fragment</a>.</p>
    <div class="example" id="example-fa0001d6">
     <a class="self-link" href="#example-fa0001d6"></a>
-		In this example the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⑥">multicol container</a> is the <code>article</code> element.
+		In this example the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⑤">multicol container</a> is the <code>article</code> element.
 		Inside this parent is a paragraph and then a section element.
 		The section contains an <code>h2</code> heading set to <a class="css" data-link-type="maybe" href="#valdef-column-span-all" id="ref-for-valdef-column-span-all②">all</a>
 		this spans all three columns while the containing section remains inside the column boxes.
@@ -2503,6 +2515,8 @@ Pagination and Overflow Outside Multicol Containers</span><a class="self-link" h
    <p>This appendix is <em>informative</em>.</p>
    <h3 class="heading settled" id="changes-from-multicol1"><span class="content">Changes from the <a href="https://www.w3.org/TR/2024/CR-css-multicol-1-20240516/">Candidate Recommendation (CR) of CSS-MULTICOL-1 of 16 May 2024</a></span><a class="self-link" href="#changes-from-multicol1"></a></h3>
    <ul>
+    <li>Updates the <span class="css">columns</span> shorthand property to include <span class="css">column-height</span>. <a href="https://github.com/w3c/csswg-drafts/issues/12050#issuecomment-3160860557">Resolved 6 Aug 2025</a>.
+	
     <li>Adds a draft of proposed <span class="css">column-wrap</span> property.
     <li>Adds the <span class="css">column-height</span> property. <a href="https://github.com/w3c/csswg-drafts/issues/2923#issuecomment-2625930018">Resolved 30 Jan 2025</a>.
 	
@@ -2732,15 +2746,20 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#multi-column-container">multicol container</a><span>, in § 3</span>
    <li><a href="#multi-column-line">multi-col line</a><span>, in § 3</span>
    <li><a href="#multi-column-line">multicol line</a><span>, in § 3</span>
+   <li><a href="#multi-column-row">multi-col row</a><span>, in § 3</span>
+   <li><a href="#multi-column-row">multicol row</a><span>, in § 3</span>
    <li><a href="#multi-column-container">multi-column container</a><span>, in § 3</span>
    <li><a href="#multi-column-formatting-context">multi-column formatting context</a><span>, in § 3</span>
    <li><a href="#multi-column-layout">multi-column layout</a><span>, in § 1</span>
    <li><a href="#multi-column-line">multi-column line</a><span>, in § 3</span>
+   <li><a href="#multi-column-row">multi-column row</a><span>, in § 3</span>
    <li><a href="#multi-column-spanner">multi-column spanner</a><span>, in § 7.1</span>
    <li><a href="#multi-column-spanning-element">multi-column spanning element</a><span>, in § 7.1</span>
    <li><a href="#valdef-column-span-none">none</a><span>, in § 7.1</span>
    <li><a href="#valdef-column-wrap-nowrap">nowrap</a><span>, in § 4.4</span>
    <li><a href="#overflow-columns">overflow columns</a><span>, in § 9.2</span>
+   <li><a href="#row-gap">row gap</a><span>, in § 3</span>
+   <li><a href="#row-rule">row rule</a><span>, in § 3</span>
    <li><a href="#multi-column-spanner">spanner</a><span>, in § 7.1</span>
    <li><a href="#multi-column-spanning-element">spanning element</a><span>, in § 7.1</span>
    <li><a href="#valdef-column-wrap-wrap">wrap</a><span>, in § 4.4</span>
@@ -2976,7 +2995,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>per grammar
       <td>specified keyword
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⓪">column-height</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①③">column-height</a>
       <td>auto | &lt;length [0,∞]>
       <td>auto
       <td>block containers except table wrapper boxes
@@ -3046,7 +3065,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>per grammar
       <td>the keyword auto or an absolute length
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-wrap" id="ref-for-propdef-column-wrap②">column-wrap</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-wrap" id="ref-for-propdef-column-wrap③">column-wrap</a>
       <td>auto | nowrap | wrap
       <td>auto
       <td>multicol containers
@@ -3056,8 +3075,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>per grammar
       <td>specified keyword
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns⑤">columns</a>
-      <td>&lt;'column-width'> || &lt;'column-count'> [ / &lt;'column-height'> ]?
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns④">columns</a>
+      <td>[ &lt;'column-width'> || &lt;'column-count'> ] [ / &lt;'column-height'> ]?
       <td>see individual properties
       <td>see individual properties
       <td>see individual properties
@@ -3069,12 +3088,13 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   </div>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
+   <div class="issue"> This issue deals with the scenario where there is not enough space
+	in the current multicol row for a spanning element. Once resolved, add details here. <a href="https://github.com/w3c/csswg-drafts/issues/11976">[Issue #11976]</a> <a class="issue-return" href="#issue-b4b12839" title="Jump to section">↵</a></div>
    <div class="issue"> The issue relating to the addition of this property is still open due to debate as to whether it’s required. <a href="https://github.com/w3c/csswg-drafts/issues/11754">[Issue #11754]</a> <a class="issue-return" href="#issue-0c1febd5" title="Jump to section">↵</a></div>
    <div class="issue"> What happens if you set a height on the multicol container, 'column-wrap: wrap' but no <a class="property css" data-link-type="property" href="#propdef-column-height">column-height</a>?
 	Options are 1: The <a class="property css" data-link-type="property" href="#propdef-column-wrap">column-wrap</a> property is ignored. 2: 'column-height: auto' resolves to the available space
 	in the multicol container and new rows of that size are created for the overflow,
 	thus honoring the <u class="property link-error" data-lt="wrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;wrap&apos;.">wrap</u> value. <a href="https://github.com/w3c/csswg-drafts/issues/11754">[Issue #11754]</a> <a class="issue-return" href="#issue-efb0c119" title="Jump to section">↵</a></div>
-   <div class="issue"> The syntax of the <a class="property css" data-link-type="property" href="#propdef-columns">columns</a> shorthand, with the inclusion of <a class="property css" data-link-type="property" href="#propdef-column-height">column-height</a>, is still unresolved. <a href="https://github.com/w3c/csswg-drafts/issues/12050">[Issue #12050]</a> <a class="issue-return" href="#issue-25670964" title="Jump to section">↵</a></div>
    <div class="issue">
     This definition is insufficient.
 			
@@ -3360,24 +3380,27 @@ let dfnPanelData = {
 "f72f5cb4": {"dfnID":"f72f5cb4","dfnText":"content box","external":true,"refSections":[{"refs":[{"id":"ref-for-content-box"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://www.w3.org/TR/css-box-4/#content-box"},
 "ff5f937c": {"dfnID":"ff5f937c","dfnText":"out-of-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-out-of-flow"},{"id":"ref-for-out-of-flow\u2460"}],"title":"7.1. \ncolumn-span"}],"url":"https://www.w3.org/TR/css-display-4/#out-of-flow"},
 "ffeb15ad": {"dfnID":"ffeb15ad","dfnText":"<line-style>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-line-style"},{"id":"ref-for-typedef-line-style\u2460"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"}],"url":"https://www.w3.org/TR/css-backgrounds-3/#typedef-line-style"},
-"multi-column-container": {"dfnID":"multi-column-container","dfnText":"multi-column container","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"},{"id":"ref-for-multi-column-container\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-multi-column-container\u2461"},{"id":"ref-for-multi-column-container\u2462"},{"id":"ref-for-multi-column-container\u2463"},{"id":"ref-for-multi-column-container\u2464"},{"id":"ref-for-multi-column-container\u2465"},{"id":"ref-for-multi-column-container\u2466"},{"id":"ref-for-multi-column-container\u2467"},{"id":"ref-for-multi-column-container\u2468"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u24ea"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u2460"},{"id":"ref-for-multi-column-container\u2460\u2461"},{"id":"ref-for-multi-column-container\u2460\u2462"},{"id":"ref-for-multi-column-container\u2460\u2463"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u2464"},{"id":"ref-for-multi-column-container\u2460\u2465"},{"id":"ref-for-multi-column-container\u2460\u2466"},{"id":"ref-for-multi-column-container\u2460\u2467"},{"id":"ref-for-multi-column-container\u2460\u2468"},{"id":"ref-for-multi-column-container\u2461\u24ea"}],"title":"5. Column Gaps and Rules"},{"refs":[{"id":"ref-for-multi-column-container\u2461\u2460"},{"id":"ref-for-multi-column-container\u2461\u2461"},{"id":"ref-for-multi-column-container\u2461\u2462"},{"id":"ref-for-multi-column-container\u2461\u2463"},{"id":"ref-for-multi-column-container\u2461\u2464"},{"id":"ref-for-multi-column-container\u2461\u2465"}],"title":"7.1. \ncolumn-span"}],"url":"#multi-column-container"},
+"multi-column-container": {"dfnID":"multi-column-container","dfnText":"multi-column container","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"},{"id":"ref-for-multi-column-container\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-multi-column-container\u2461"},{"id":"ref-for-multi-column-container\u2462"},{"id":"ref-for-multi-column-container\u2463"},{"id":"ref-for-multi-column-container\u2464"},{"id":"ref-for-multi-column-container\u2465"},{"id":"ref-for-multi-column-container\u2466"},{"id":"ref-for-multi-column-container\u2467"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-container\u2468"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u24ea"},{"id":"ref-for-multi-column-container\u2460\u2460"},{"id":"ref-for-multi-column-container\u2460\u2461"},{"id":"ref-for-multi-column-container\u2460\u2462"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u2463"},{"id":"ref-for-multi-column-container\u2460\u2464"},{"id":"ref-for-multi-column-container\u2460\u2465"},{"id":"ref-for-multi-column-container\u2460\u2466"},{"id":"ref-for-multi-column-container\u2460\u2467"},{"id":"ref-for-multi-column-container\u2460\u2468"}],"title":"5. Column Gaps and Rules"},{"refs":[{"id":"ref-for-multi-column-container\u2461\u24ea"},{"id":"ref-for-multi-column-container\u2461\u2460"},{"id":"ref-for-multi-column-container\u2461\u2461"},{"id":"ref-for-multi-column-container\u2461\u2462"},{"id":"ref-for-multi-column-container\u2461\u2463"},{"id":"ref-for-multi-column-container\u2461\u2464"}],"title":"7.1. \ncolumn-span"}],"url":"#multi-column-container"},
 "multi-column-formatting-context": {"dfnID":"multi-column-formatting-context","dfnText":"multi-column formatting context","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-formatting-context"}],"title":"5.1. Gutters Between Columns: the column-gap property"},{"refs":[{"id":"ref-for-multi-column-formatting-context\u2460"}],"title":"5.2. Gutters Between Rows: the row-gap property"}],"url":"#multi-column-formatting-context"},
 "multi-column-layout": {"dfnID":"multi-column-layout","dfnText":"multi-column layout","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-layout"}],"title":"3. \nThe multi-column model"}],"url":"#multi-column-layout"},
-"multi-column-line": {"dfnID":"multi-column-line","dfnText":"multicol lines","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-line"},{"id":"ref-for-multi-column-line\u2460"},{"id":"ref-for-multi-column-line\u2461"},{"id":"ref-for-multi-column-line\u2462"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-line\u2463"},{"id":"ref-for-multi-column-line\u2464"},{"id":"ref-for-multi-column-line\u2465"},{"id":"ref-for-multi-column-line\u2466"}],"title":"7.1. \ncolumn-span"},{"refs":[{"id":"ref-for-multi-column-line\u2467"}],"title":"8.1. Column Balancing: the column-fill property"}],"url":"#multi-column-line"},
+"multi-column-line": {"dfnID":"multi-column-line","dfnText":"multicol line","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-line"},{"id":"ref-for-multi-column-line\u2460"},{"id":"ref-for-multi-column-line\u2461"},{"id":"ref-for-multi-column-line\u2462"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-line\u2463"},{"id":"ref-for-multi-column-line\u2464"},{"id":"ref-for-multi-column-line\u2465"},{"id":"ref-for-multi-column-line\u2466"}],"title":"7.1. \ncolumn-span"},{"refs":[{"id":"ref-for-multi-column-line\u2467"}],"title":"8.1. Column Balancing: the column-fill property"}],"url":"#multi-column-line"},
+"multi-column-row": {"dfnID":"multi-column-row","dfnText":"multicol rows","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-row"},{"id":"ref-for-multi-column-row\u2460"}],"title":"3. \nThe multi-column model"}],"url":"#multi-column-row"},
 "multi-column-spanner": {"dfnID":"multi-column-spanner","dfnText":"multi-column spanner","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-spanner"},{"id":"ref-for-multi-column-spanner\u2460"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-spanner\u2461"},{"id":"ref-for-multi-column-spanner\u2462"}],"title":"7.1. \ncolumn-span"},{"refs":[{"id":"ref-for-multi-column-spanner\u2463"}],"title":"8.1. Column Balancing: the column-fill property"}],"url":"#multi-column-spanner"},
 "multi-column-spanning-element": {"dfnID":"multi-column-spanning-element","dfnText":"multi-column spanning element","external":false,"refSections":[],"url":"#multi-column-spanning-element"},
 "overflow-columns": {"dfnID":"overflow-columns","dfnText":"overflow columns","external":false,"refSections":[],"url":"#overflow-columns"},
 "propdef-column-count": {"dfnID":"propdef-column-count","dfnText":"column-count","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-count"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-count\u2460"},{"id":"ref-for-propdef-column-count\u2461"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-column-count\u2462"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-propdef-column-count\u2463"},{"id":"ref-for-propdef-column-count\u2464"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-propdef-column-count\u2465"},{"id":"ref-for-propdef-column-count\u2466"},{"id":"ref-for-propdef-column-count\u2467"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"},{"refs":[{"id":"ref-for-propdef-column-count\u2468"},{"id":"ref-for-propdef-column-count\u2460\u24ea"},{"id":"ref-for-propdef-column-count\u2460\u2460"}],"title":"4.6. The Pseudo-algorithm"}],"url":"#propdef-column-count"},
 "propdef-column-fill": {"dfnID":"propdef-column-fill","dfnText":"column-fill","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-fill"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-column-fill\u2460"}],"title":"8.1. Column Balancing: the column-fill property"}],"url":"#propdef-column-fill"},
-"propdef-column-height": {"dfnID":"propdef-column-height","dfnText":"column-height","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-height"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-height\u2460"},{"id":"ref-for-propdef-column-height\u2461"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-propdef-column-height\u2462"},{"id":"ref-for-propdef-column-height\u2463"},{"id":"ref-for-propdef-column-height\u2464"}],"title":"4.4. The overflow direction in continuous media: the column-wrap property"},{"refs":[{"id":"ref-for-propdef-column-height\u2465"},{"id":"ref-for-propdef-column-height\u2466"},{"id":"ref-for-propdef-column-height\u2467"},{"id":"ref-for-propdef-column-height\u2468"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"#propdef-column-height"},
+"propdef-column-height": {"dfnID":"propdef-column-height","dfnText":"column-height","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-height"},{"id":"ref-for-propdef-column-height\u2460"},{"id":"ref-for-propdef-column-height\u2461"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-height\u2462"},{"id":"ref-for-propdef-column-height\u2463"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-column-height\u2464"},{"id":"ref-for-propdef-column-height\u2465"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-propdef-column-height\u2466"},{"id":"ref-for-propdef-column-height\u2467"},{"id":"ref-for-propdef-column-height\u2468"}],"title":"4.4. The overflow direction in continuous media: the column-wrap property"},{"refs":[{"id":"ref-for-propdef-column-height\u2460\u24ea"},{"id":"ref-for-propdef-column-height\u2460\u2460"},{"id":"ref-for-propdef-column-height\u2460\u2461"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"#propdef-column-height"},
 "propdef-column-rule": {"dfnID":"propdef-column-rule","dfnText":"column-rule","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule"},{"id":"ref-for-propdef-column-rule\u2460"},{"id":"ref-for-propdef-column-rule\u2461"},{"id":"ref-for-propdef-column-rule\u2462"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-column-rule\u2463"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"#propdef-column-rule"},
 "propdef-column-rule-color": {"dfnID":"propdef-column-rule-color","dfnText":"column-rule-color","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-color"}],"title":"5.3. The Color of Column Rules: the\ncolumn-rule-color property"},{"refs":[{"id":"ref-for-propdef-column-rule-color\u2460"},{"id":"ref-for-propdef-column-rule-color\u2461"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"#propdef-column-rule-color"},
 "propdef-column-rule-style": {"dfnID":"propdef-column-rule-style","dfnText":"column-rule-style","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-style"},{"id":"ref-for-propdef-column-rule-style\u2460"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"},{"refs":[{"id":"ref-for-propdef-column-rule-style\u2461"},{"id":"ref-for-propdef-column-rule-style\u2462"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"#propdef-column-rule-style"},
 "propdef-column-rule-width": {"dfnID":"propdef-column-rule-width","dfnText":"column-rule-width","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-width"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"},{"refs":[{"id":"ref-for-propdef-column-rule-width\u2460"}],"title":"5.5. The Width Of Column Rules: the column-rule-width property"},{"refs":[{"id":"ref-for-propdef-column-rule-width\u2461"},{"id":"ref-for-propdef-column-rule-width\u2462"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"#propdef-column-rule-width"},
 "propdef-column-span": {"dfnID":"propdef-column-span","dfnText":"column-span","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-span"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-column-span\u2460"}],"title":"7. \nSpanning columns"},{"refs":[{"id":"ref-for-propdef-column-span\u2461"},{"id":"ref-for-propdef-column-span\u2462"},{"id":"ref-for-propdef-column-span\u2463"},{"id":"ref-for-propdef-column-span\u2464"},{"id":"ref-for-propdef-column-span\u2465"},{"id":"ref-for-propdef-column-span\u2466"},{"id":"ref-for-propdef-column-span\u2467"},{"id":"ref-for-propdef-column-span\u2468"},{"id":"ref-for-propdef-column-span\u2460\u24ea"},{"id":"ref-for-propdef-column-span\u2460\u2460"},{"id":"ref-for-propdef-column-span\u2460\u2461"},{"id":"ref-for-propdef-column-span\u2460\u2462"},{"id":"ref-for-propdef-column-span\u2460\u2463"},{"id":"ref-for-propdef-column-span\u2460\u2464"},{"id":"ref-for-propdef-column-span\u2460\u2465"}],"title":"7.1. \ncolumn-span"}],"url":"#propdef-column-span"},
 "propdef-column-width": {"dfnID":"propdef-column-width","dfnText":"column-width","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-width"},{"id":"ref-for-propdef-column-width\u2460"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-width\u2461"},{"id":"ref-for-propdef-column-width\u2462"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-column-width\u2463"},{"id":"ref-for-propdef-column-width\u2464"},{"id":"ref-for-propdef-column-width\u2465"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-propdef-column-width\u2466"},{"id":"ref-for-propdef-column-width\u2467"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-propdef-column-width\u2468"},{"id":"ref-for-propdef-column-width\u2460\u24ea"},{"id":"ref-for-propdef-column-width\u2460\u2460"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"},{"refs":[{"id":"ref-for-propdef-column-width\u2460\u2461"},{"id":"ref-for-propdef-column-width\u2460\u2462"}],"title":"4.6. The Pseudo-algorithm"},{"refs":[{"id":"ref-for-propdef-column-width\u2460\u2463"},{"id":"ref-for-propdef-column-width\u2460\u2464"}],"title":"7.1. \ncolumn-span"}],"url":"#propdef-column-width"},
-"propdef-column-wrap": {"dfnID":"propdef-column-wrap","dfnText":"column-wrap","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-wrap"},{"id":"ref-for-propdef-column-wrap\u2460"}],"title":"4.4. The overflow direction in continuous media: the column-wrap property"}],"url":"#propdef-column-wrap"},
-"propdef-columns": {"dfnID":"propdef-columns","dfnText":"columns","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-columns"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-columns\u2460"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-columns\u2461"},{"id":"ref-for-propdef-columns\u2462"},{"id":"ref-for-propdef-columns\u2463"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"#propdef-columns"},
+"propdef-column-wrap": {"dfnID":"propdef-column-wrap","dfnText":"column-wrap","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-wrap"},{"id":"ref-for-propdef-column-wrap\u2460"}],"title":"4.4. The overflow direction in continuous media: the column-wrap property"},{"refs":[{"id":"ref-for-propdef-column-wrap\u2461"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"#propdef-column-wrap"},
+"propdef-columns": {"dfnID":"propdef-columns","dfnText":"columns","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-columns"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-columns\u2460"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-columns\u2461"},{"id":"ref-for-propdef-columns\u2462"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"#propdef-columns"},
+"row-gap": {"dfnID":"row-gap","dfnText":"row gap","external":false,"refSections":[],"url":"#row-gap"},
+"row-rule": {"dfnID":"row-rule","dfnText":"row rule","external":false,"refSections":[],"url":"#row-rule"},
 "selectordef-column": {"dfnID":"selectordef-column","dfnText":"::column","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-column"},{"id":"ref-for-selectordef-column\u2460"},{"id":"ref-for-selectordef-column\u2461"},{"id":"ref-for-selectordef-column\u2462"},{"id":"ref-for-selectordef-column\u2463"},{"id":"ref-for-selectordef-column\u2464"},{"id":"ref-for-selectordef-column\u2465"},{"id":"ref-for-selectordef-column\u2466"},{"id":"ref-for-selectordef-column\u2467"},{"id":"ref-for-selectordef-column\u2468"},{"id":"ref-for-selectordef-column\u2460\u24ea"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"},{"refs":[{"id":"ref-for-selectordef-column\u2460\u2460"}],"title":"Changes from the Candidate Recommendation (CR) of CSS-MULTICOL-1 of 16 May 2024"}],"url":"#selectordef-column"},
 "valdef-column-count-auto": {"dfnID":"valdef-column-count-auto","dfnText":"auto","external":false,"refSections":[],"url":"#valdef-column-count-auto"},
 "valdef-column-count-integer-1": {"dfnID":"valdef-column-count-integer-1","dfnText":"<integer [1,\u221e]>","external":false,"refSections":[],"url":"#valdef-column-count-integer-1"},
@@ -3812,6 +3835,7 @@ let refsData = {
 "#multi-column-formatting-context": {"displayText":"multi-column formatting context","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"multi-column formatting context","type":"dfn","url":"#multi-column-formatting-context"},
 "#multi-column-layout": {"displayText":"multi-column layout","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"multi-column layout","type":"dfn","url":"#multi-column-layout"},
 "#multi-column-line": {"displayText":"multicol line","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"multicol line","type":"dfn","url":"#multi-column-line"},
+"#multi-column-row": {"displayText":"multicol row","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"multicol row","type":"dfn","url":"#multi-column-row"},
 "#multi-column-spanner": {"displayText":"spanner","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"spanner","type":"dfn","url":"#multi-column-spanner"},
 "#propdef-column-count": {"displayText":"column-count","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-count","type":"property","url":"#propdef-column-count"},
 "#propdef-column-fill": {"displayText":"column-fill","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-fill","type":"property","url":"#propdef-column-fill"},
