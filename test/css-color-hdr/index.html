@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-color-hdr-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="9b9d5cbd780ce01d8ccc91e1a1199e40569b9028" name="revision">
+  <meta content="79e26e22d0b8c10334ae6d0974dee648d1fba680" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -833,7 +833,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Color HDR Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-07-19">19 July 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-20">20 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1540,10 +1540,31 @@ cxyz = <c- p>[</c-> <c- m>611.911</c-><c- p>,</c-> <c- m>724.180</c-><c- p>,</c-
 	IC<sub>T</sub>C<sub>P</sub> has been tested with
 	high-chroma (wide color gamut),
 	self-luminous, and
-	high intensity (HDR) colors.
-	This makes it suitable for HDR color difference measurement 
+	high intensity (HDR) colors.</p>
+   <p>This makes it suitable for HDR color difference measurement
 	<a href="#deltaE">(deltaE ITP)</a>
 	and for gamut mapping of mixed  SDR and HDR colors.</p>
+   <div class="example" id="ex-DE-ITP">
+    <a class="self-link" href="#ex-DE-ITP"></a>
+		For example, BT.2020 and BT.2100 use the same primaries and white point.
+		BT.2020 is SDR, while BT.2100 is HDR
+		and places HDR reference white at a code value close to 0.58.
+
+
+    <p>Here is a very wide gamut primary red in both color spaces:</p>
+<pre class="lang-css highlight"><c- nf>color</c-><c- p>(</c->rec2100-pq <c- m>0.58</c-> <c- m>0</c-> <c- m>0</c-><c- p>)</c-> <c- c>/* ictcp(44.6% -0.129 0.399) */</c->
+<c- nf>color</c-><c- p>(</c->rec2020 <c- m>1</c-> <c- m>0</c-> <c- m>0</c-><c- p>)</c->       <c- c>/* ictcp(44.7% -0.130 0.399)  */</c->
+</pre>
+    <p>The two colors are clearly very close in ICTCP
+		and the deltaE ITP is 0.487,
+		meaning the colors are not visually different.</p>
+    <p>These colors are very different from sRGB "red":</p>
+<pre class="lang-css highlight"><c- nf>color</c-><c- p>(</c->rec2100-pq <c- m>0.58</c-> <c- m>0</c-> <c- m>0</c-><c- p>)</c-> <c- c>/* ictcp(44.6% -0.129 0.399) */</c->
+red                        <c- c>/* ictcp(42.8% -0.116 0.279) */</c->
+</pre>
+    <p>the deltaE ITP is 87.7,
+		meaning the colors are very visually different.</p>
+   </div>
    <h3 class="informative heading settled" data-level="6.2" id="jaz-intro"><span class="secno">6.2. </span><span class="content">
 	Introducing Jzazbz and JzCzhz
 </span><a class="self-link" href="#jaz-intro"></a></h3>

@@ -128,6 +128,7 @@ Introduction {#intro}
 	<dfn>&lt;color-function></dfn> = <<rgb()>> | <<rgba()>> |
 								<<hsl()>> | <<hsla()>> | <<hwb()>> |
 								<<lab()>> | <<lch()>> | <<oklab()>> | <<oklch()>> |
+								<<alpha()>> |
 								<<color()>>
 	</pre>
 
@@ -1028,6 +1029,7 @@ and the <<angle>> is resolved to a <<number>> of degrees
 in the range [0, 360].
 
 <wpt>
+	relative-color-with-zoom.html
 	relative-currentcolor-a98rgb-01.html
 	relative-currentcolor-lch-01.html
 	relative-currentcolor-rgb-01.html
@@ -1701,6 +1703,46 @@ Bring this into gamut
 by reducing OkLCh Chroma, yields
 <span class="swatch" style="--color: rgb(0.079% 69.282% 72.067%)"></span> oklch(0.69012 0.1173 199.893).
 The OkLCh chroma has dropped from 0.251 to 0.117.
+</div>
+
+<h3 id="relative-alpha">Relative Alpha Colors</h3>
+
+The grammar of the ''alpha()'' function is as follows:
+
+<pre class='prod'>
+<dfn>alpha()</dfn> = alpha([from <<color>>]
+					[ / [<<alpha-value>> | none] ]? )
+</pre>
+
+
+Within a [=relative color=] syntax ''alpha()'' function,
+the allowed [=component keywords=] are:
+
+* <dfn value for="alpha()">alpha</dfn> is a <<number>> that corresponds to the
+	[=origin color's=] alpha transparency. 1.0 is equivalent to 100%.
+
+The color components of the [=origin color=] are unchanged,
+the alpha component is modified or replaced.
+The result of this function is in the color space of the origin color.
+
+<div class="example" id="ex-alpha-replace">
+	For example, here the result is the same as the origin color,
+	but the alpha is changed to 80%
+
+	<pre  highlight=css>
+	--mycolor: <span class="swatch" style="--color: rgb(71.122% 22.105% 89.033% / 0.3)"></span> oklch(60% 0.25 315 / 0.3);
+	<span class="swatch" style="--color: rgb(71.122% 22.105% 89.033% / 0.8)"></span> alpha(from var(--mycolor) / 80%);
+</pre>
+</div>
+
+<div class="example" id="ex-alpha-change">
+	For example, here the result is the same as the origin color,
+	but the alpha is modified to be half of that in the origin color
+
+	<pre  highlight=css>
+	--mycolor: <span class="swatch" style="--color: rgb(71.122% 22.105% 89.033% / 0.8)"></span> oklch(60% 0.25 315 / 0.8);
+	<span class="swatch" style="--color: rgb(71.122% 22.105% 89.033% / 0.4)"></span> alpha(from var(--mycolor) / calc(alpha * 0.5));
+</pre>
 </div>
 
 <!--
@@ -2755,7 +2797,7 @@ or any other color or monochrome output device which has been characterized.
 
 	<pre class='prod'>
 		<dfn export>&lt;color-space></dfn> = <<rectangular-color-space>> | <<polar-color-space>> | <<custom-color-space>>
-		<dfn export>&lt;rectangular-color-space></dfn> = <l>''srgb''</l> | <l>''srgb-linear''</l> | <l>''display-p3''</l> | <l>''a98-rgb''</l> | <l>''prophoto-rgb''</l> | <l>''rec2020''</l> | <l>''lab''</l> | <l>''oklab''</l> | <<xyz-space>>
+		<dfn export>&lt;rectangular-color-space></dfn> = <l>''srgb''</l> | <l>''srgb-linear''</l> | <l>''display-p3''</l> | <l>''display-p3-linear''</l> | <l>''a98-rgb''</l> | <l>''prophoto-rgb''</l> | <l>''rec2020''</l> | <l>''lab''</l> | <l>''oklab''</l> | <<xyz-space>>
 		<dfn export>&lt;polar-color-space></dfn> = <l>''hsl''</l> | <l>''hwb''</l> | <l>''lch''</l> | <l>''oklch''</l>
 		<dfn export>&lt;custom-color-space></dfn> = <<dashed-ident>>
 		<dfn export>&lt;hue-interpolation-method></dfn> = [ shorter | longer | increasing | decreasing ] hue
