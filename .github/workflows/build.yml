@@ -27,11 +27,28 @@ jobs:
       - name: Build specs
         run: |
           set -e
+          shopt -s globstar extglob
           cd csswg-drafts
+          
+          # Handle markdown
+          for file in ./**/*.@(md|markdown); do
+            if [[ "$file" = *.md ]]; then
+              DEST="${file%.md}/index.html"
+            else
+              DEST="${file%.markdown}/index.html"
+            fi
+            mkdir -p "$(dirname "$DEST")"
+            echo '<!DOCTYPE html><meta charset="UTF-8">' > "$DEST"
+            echo '<meta name="color-scheme" content="light dark">' > "$DEST"
+            echo '<plaintext style="white-space: pre">' > "$DEST"
+            cat "$file" > "$DEST"
+          done
+
           # Handle non-bikeshed specs.
           for file in ./**/Overview.html; do
             cp "$file" "$(dirname "$file")/index.html"
           done
+          
           # Handle bikeshed specs.
           for file in ./**/Overview.bs; do
             echo "Building $file"
