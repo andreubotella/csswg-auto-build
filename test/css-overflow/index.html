@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-overflow-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="c327d940c7b5d623ea87e01ecba383ef8c07f9b9" name="revision">
+  <meta content="744ea620945d6e1fb3f245e5cc04668dfe3000f5" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1350,7 +1350,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Overflow Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-08-19">19 August 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-25">25 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2105,10 +2105,10 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-block-ellipsis">block-ellipsis</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> auto <span id="ref-for-comb-one⑤">|</span> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value②">&lt;string></a>	
+      <td class="prod">no-ellipsis <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> auto <span id="ref-for-comb-one⑤">|</span> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value②">&lt;string></a>	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>none	
+      <td>no-ellipsis	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
       <td><a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container①">block containers</a>	
@@ -2141,7 +2141,7 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
    <p>The inserted content is called the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="block-overflow-ellipsis">block overflow ellipsis</dfn>.
 	Values have the following meanings:</p>
    <dl>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="block-ellipsis" data-dfn-type="value" data-export id="valdef-block-ellipsis-none">none</dfn>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="block-ellipsis" data-dfn-type="value" data-export id="valdef-block-ellipsis-no-ellipsis">no-ellipsis</dfn>
 		
     <dd>
 			The rendering is unaffected.
@@ -2162,13 +2162,17 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
     <dt><dfn class="dfn-paneled css" data-dfn-for="block-ellipsis" data-dfn-type="value" data-export id="valdef-block-ellipsis-string"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value③">&lt;string></a></dfn>
 		
     <dd>
+     
 			Render the specified string
 			as the <a data-link-type="dfn" href="#block-overflow-ellipsis" id="ref-for-block-overflow-ellipsis①">block overflow ellipsis</a>
 			at the end of the affected line box.
 			The UA may truncate this string if it is absurdly long.
-	
+
+
+     <p>When set to the empty string,
+			the behavior is identical to the <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-no-ellipsis" id="ref-for-valdef-block-ellipsis-no-ellipsis">no-ellipsis</a> value.</p>
    </dl>
-   <p>When <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis②">block-ellipsis</a> is not <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-none" id="ref-for-valdef-block-ellipsis-none">none</a>,
+   <p>When <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis②">block-ellipsis</a> is neither <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-no-ellipsis" id="ref-for-valdef-block-ellipsis-no-ellipsis①">no-ellipsis</a> nor the empty string,
 	the <a data-link-type="dfn" href="#block-overflow-ellipsis" id="ref-for-block-overflow-ellipsis②">block overflow ellipsis</a> string
 	is wrapped in an anonymous inline
 	and placed at the end of the line box
@@ -2211,7 +2215,7 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
 	pointer events are dispatched to whatever is underneath it.</p>
    <p>It also has no effect on the intrinsic size of the box:
 	its <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#min-content" id="ref-for-min-content">min-content</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#max-content" id="ref-for-max-content">max-content</a> sizes
-	are calculated exactly as if <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis③">block-ellipsis</a> were <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-none" id="ref-for-valdef-block-ellipsis-none①">none</a>.</p>
+	are calculated exactly as if <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis③">block-ellipsis</a> were <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-no-ellipsis" id="ref-for-valdef-block-ellipsis-no-ellipsis②">no-ellipsis</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> Future specifications may extend this feature,
 	for example by providing an <span class="css">::ellipsis</span> pseudo-element
 	to style the text,
@@ -2266,7 +2270,7 @@ Limiting Visible Lines: the <a class="property css" data-link-type="property" hr
 		
     <dd>Sets <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines①">max-lines</a> to <a class="css" data-link-type="maybe" href="#valdef-max-lines-none" id="ref-for-valdef-max-lines-none">none</a>,
 			<a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue-auto" id="ref-for-valdef-continue-auto">auto</a>,
-			and <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑥">block-ellipsis</a> to <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-none" id="ref-for-valdef-block-ellipsis-none②">none</a>.
+			and <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑥">block-ellipsis</a> to <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-no-ellipsis" id="ref-for-valdef-block-ellipsis-no-ellipsis③">no-ellipsis</a>.
 
 		
     <dt><dfn class="dfn-paneled css" data-dfn-for="line-clamp" data-dfn-type="value" data-export id="valdef-line-clamp-integer-1"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#integer-value" id="ref-for-integer-value①">&lt;integer [1,∞]></a></dfn>
@@ -3284,10 +3288,10 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#line-clamp-container">line-clamp container</a><span>, in § 5.3.1</span>
    <li><a href="#valdef-scrollbar-gutter-match-parent">match-parent</a><span>, in § Unnumbered section</span>
    <li><a href="#propdef-max-lines">max-lines</a><span>, in § 5.2</span>
+   <li><a href="#valdef-block-ellipsis-no-ellipsis">no-ellipsis</a><span>, in § 4.2</span>
    <li>
     none
     <ul>
-     <li><a href="#valdef-block-ellipsis-none">value for block-ellipsis</a><span>, in § 4.2</span>
      <li><a href="#valdef-line-clamp-none">value for line-clamp</a><span>, in § 5.1</span>
      <li><a href="#valdef-max-lines-none">value for max-lines</a><span>, in § 5.2</span>
     </ul>
@@ -3612,8 +3616,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis①①">block-ellipsis</a>
-      <td>none | auto | &lt;string>
-      <td>none
+      <td>no-ellipsis | auto | &lt;string>
+      <td>no-ellipsis
       <td>block containers
       <td>yes
       <td>N/A
@@ -3884,8 +3888,8 @@ but non-experimental implementation is not recommended. <a class="issue-return" 
   </details>
   <details class="caniuse-status unpositioned" data-anno-for="text-overflow" data-deco>
    <summary>CanIUse</summary>
-   <p class="support"><b>Support:</b><span class="android yes"><span>Android Browser</span><span>2.1+</span></span><span class="baidu yes"><span>Baidu Browser</span><span>13.52+</span></span><span class="bb yes"><span>Blackberry Browser</span><span>7+</span></span><span class="chrome yes"><span>Chrome</span><span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span><span>139+</span></span><span class="edge yes"><span>Edge</span><span>12+</span></span><span class="firefox yes"><span>Firefox</span><span>7+</span></span><span class="and_ff yes"><span>Firefox for Android</span><span>141+</span></span><span class="ie yes"><span>IE</span><span>6+</span></span><span class="ie_mob yes"><span>IE Mobile</span><span>10+</span></span><span class="kaios yes"><span>KaiOS Browser</span><span>2.5+</span></span><span class="opera yes"><span>Opera</span><span>11+</span></span><span class="op_mini yes"><span>Opera Mini</span><span>All</span></span><span class="op_mob yes"><span>Opera Mobile</span><span>12.1+</span></span><span class="and_qq yes"><span>QQ Browser</span><span>14.9+</span></span><span class="safari yes"><span>Safari</span><span>3.1+</span></span><span class="ios_saf yes"><span>Safari on iOS</span><span>3.2+</span></span><span class="samsung yes"><span>Samsung Internet</span><span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span><span>15.5+</span></span></p>
-   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=text-overflow">caniuse.com</a> as of 2025-08-21</p>
+   <p class="support"><b>Support:</b><span class="android yes"><span>Android Browser</span><span>2.1+</span></span><span class="baidu yes"><span>Baidu Browser</span><span>13.52+</span></span><span class="bb yes"><span>Blackberry Browser</span><span>7+</span></span><span class="chrome yes"><span>Chrome</span><span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span><span>139+</span></span><span class="edge yes"><span>Edge</span><span>12+</span></span><span class="firefox yes"><span>Firefox</span><span>7+</span></span><span class="and_ff yes"><span>Firefox for Android</span><span>142+</span></span><span class="ie yes"><span>IE</span><span>6+</span></span><span class="ie_mob yes"><span>IE Mobile</span><span>10+</span></span><span class="kaios yes"><span>KaiOS Browser</span><span>2.5+</span></span><span class="opera yes"><span>Opera</span><span>11+</span></span><span class="op_mini yes"><span>Opera Mini</span><span>All</span></span><span class="op_mob yes"><span>Opera Mobile</span><span>12.1+</span></span><span class="and_qq yes"><span>QQ Browser</span><span>14.9+</span></span><span class="safari yes"><span>Safari</span><span>3.1+</span></span><span class="ios_saf yes"><span>Safari on iOS</span><span>3.2+</span></span><span class="samsung yes"><span>Samsung Internet</span><span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span><span>15.5+</span></span></p>
+   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=text-overflow">caniuse.com</a> as of 2025-08-25</p>
   </details>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
@@ -4215,7 +4219,7 @@ let dfnPanelData = {
 "propdef-overflow-clip-margin-top": {"dfnID":"propdef-overflow-clip-margin-top","dfnText":"overflow-clip-margin-top","external":false,"refSections":[],"url":"#propdef-overflow-clip-margin-top"},
 "propdef-text-overflow": {"dfnID":"propdef-text-overflow","dfnText":"text-overflow","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-overflow"},{"id":"ref-for-propdef-text-overflow\u2460"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-propdef-text-overflow\u2461"}],"title":"\nellipsing details"},{"refs":[{"id":"ref-for-propdef-text-overflow\u2462"}],"title":"\nellipsis interaction with scrolling interfaces"},{"refs":[{"id":"ref-for-propdef-text-overflow\u2463"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-propdef-text-overflow\u2464"}],"title":"\nRecent Changes"}],"url":"#propdef-text-overflow"},
 "valdef-block-ellipsis-auto": {"dfnID":"valdef-block-ellipsis-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-block-ellipsis-auto"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-block-ellipsis-auto\u2460"}],"title":"5.1.1. \nLegacy compatibility"}],"url":"#valdef-block-ellipsis-auto"},
-"valdef-block-ellipsis-none": {"dfnID":"valdef-block-ellipsis-none","dfnText":"none","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-block-ellipsis-none"},{"id":"ref-for-valdef-block-ellipsis-none\u2460"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-valdef-block-ellipsis-none\u2461"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"}],"url":"#valdef-block-ellipsis-none"},
+"valdef-block-ellipsis-no-ellipsis": {"dfnID":"valdef-block-ellipsis-no-ellipsis","dfnText":"no-ellipsis","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-block-ellipsis-no-ellipsis"},{"id":"ref-for-valdef-block-ellipsis-no-ellipsis\u2460"},{"id":"ref-for-valdef-block-ellipsis-no-ellipsis\u2461"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-valdef-block-ellipsis-no-ellipsis\u2462"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"}],"url":"#valdef-block-ellipsis-no-ellipsis"},
 "valdef-block-ellipsis-string": {"dfnID":"valdef-block-ellipsis-string","dfnText":"<string>","external":false,"refSections":[],"url":"#valdef-block-ellipsis-string"},
 "valdef-continue--webkit-legacy": {"dfnID":"valdef-continue--webkit-legacy","dfnText":"-webkit-legacy","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy\u2460"},{"id":"ref-for-valdef-continue--webkit-legacy\u2461"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy\u2462"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"#valdef-continue--webkit-legacy"},
 "valdef-continue-auto": {"dfnID":"valdef-continue-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue-auto"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue-auto\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"#valdef-continue-auto"},
@@ -4719,7 +4723,7 @@ let refsData = {
 "#propdef-overflow-clip-margin-top": {"displayText":"overflow-clip-margin-top","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"overflow-clip-margin-top","type":"property","url":"#propdef-overflow-clip-margin-top"},
 "#propdef-text-overflow": {"displayText":"text-overflow","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"text-overflow","type":"property","url":"#propdef-text-overflow"},
 "#valdef-block-ellipsis-auto": {"displayText":"auto","export":true,"for_":["block-ellipsis"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"auto","type":"value","url":"#valdef-block-ellipsis-auto"},
-"#valdef-block-ellipsis-none": {"displayText":"none","export":true,"for_":["block-ellipsis"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"none","type":"value","url":"#valdef-block-ellipsis-none"},
+"#valdef-block-ellipsis-no-ellipsis": {"displayText":"no-ellipsis","export":true,"for_":["block-ellipsis"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"no-ellipsis","type":"value","url":"#valdef-block-ellipsis-no-ellipsis"},
 "#valdef-continue--webkit-legacy": {"displayText":"-webkit-legacy","export":true,"for_":["continue"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"-webkit-legacy","type":"value","url":"#valdef-continue--webkit-legacy"},
 "#valdef-continue-auto": {"displayText":"auto","export":true,"for_":["continue"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"auto","type":"value","url":"#valdef-continue-auto"},
 "#valdef-continue-collapse": {"displayText":"collapse","export":true,"for_":["continue"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"collapse","type":"value","url":"#valdef-continue-collapse"},
