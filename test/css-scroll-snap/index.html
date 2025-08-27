@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-scroll-snap-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="744ea620945d6e1fb3f245e5cc04668dfe3000f5" name="revision">
+  <meta content="51f2b363899a6e17c9ed799817f6fbfa1b480043" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1063,7 +1063,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Scroll Snap Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-01-22">22 January 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-26">26 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1249,6 +1249,7 @@ Non-experimental implementations</span></a>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
     <li><a href="#property-index"><span class="secno"></span> <span class="content">Property Index</span></a>
    </ol>
@@ -2095,7 +2096,7 @@ Unreachable Snap Positions</span><a class="self-link" href="#unreachable"></a></
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>discrete    
    </table>
-   <p>When scrolling with an intended direction,
+   <p>When performing a <a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll">relative scroll</a>,
     the <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container③⑦">scroll container</a> can “pass over” several possible <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position③⑤">snap positions</a>
     (that would be valid to snap to,
     if the scrolling operation used the same direction
@@ -2123,7 +2124,7 @@ Unreachable Snap Positions</span><a class="self-link" href="#unreachable"></a></
             it must instead snap to the first of this element’s <span id="ref-for-scroll-snap-position③⑨">snap positions</span>.
     
    </dl>
-   <p>This property has no effect on scrolling operations with only an <a data-link-type="dfn" href="#intended-end-position" id="ref-for-intended-end-position">intended end position</a>,
+   <p>This property has no effect on non-<a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll①">relative scrolling</a> operations,
     as they do not conceptually “pass over” any <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④⓪">snap positions</a>.</p>
    <h2 class="heading settled" data-level="6" id="snap-concepts"><span class="secno">6. </span><span class="content">Snapping Mechanics</span><a class="self-link" href="#snap-concepts"></a></h2>
    <p>The precise model algorithm to select a <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④①">snap position</a> to snap to
@@ -2140,19 +2141,22 @@ Unreachable Snap Positions</span><a class="self-link" href="#unreachable"></a></
     to ensure a minimum reasonable behavior that authors can depend on
     when designing their interfaces with scroll-snapping in mind.</p>
    <h3 class="heading settled" data-level="6.1" id="scroll-types"><span class="secno">6.1. </span><span class="content">Types of Scrolling Methods</span><a class="self-link" href="#scroll-types"></a></h3>
-   <p>When a page is scrolled,
-    the action is performed with
-    an intended end position
-    and/or an intended direction.
-    Each combination of these two things
-    defines a distinct category of scrolling,
-    which can be treated slightly differently:</p>
+   <p>There are many ways to cause a page to scroll,
+    and they differ in their intent,
+    which affects how scroll snapping and other features
+    should <em>respond</em> to them.
+    The types of scrolling intents are:</p>
    <dl>
-    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="intended-end-position">intended end position</dfn>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="absolute-scroll">absolute scroll</dfn>
     <dd data-md>
-     <div class="example" id="example-3822aa28">
-      <a class="self-link" href="#example-3822aa28"></a>
-    Common examples of scrolls with only an <a data-link-type="dfn" href="#intended-end-position" id="ref-for-intended-end-position①">intended end position</a> include:
+     <p>An <a data-link-type="dfn" href="#absolute-scroll" id="ref-for-absolute-scroll">absolute scroll</a> is a scrolling operation
+that is not intended to have any relation with the previous scroll position.
+Whether the new position is before or after the previous scroll position
+is not relevant to the operation;
+the scroll container just "goes straight there".</p>
+     <div class="example" id="example-97d820ad">
+      <a class="self-link" href="#example-97d820ad"></a>
+    Common examples of <a data-link-type="dfn" href="#absolute-scroll" id="ref-for-absolute-scroll①">absolute scrolls</a> include:
 
 
       <ul>
@@ -2171,39 +2175,72 @@ released without momentum</p>
         <p>homing operations such as the <kbd>Home</kbd>/<kbd>End</kbd> keys</p>
       </ul>
      </div>
-    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="intended-direction-and-end-position">intended direction and end position</dfn>
+     <p class="note" role="note"><span class="marker">Note:</span> Scroll snapping responds to an <a data-link-type="dfn" href="#absolute-scroll" id="ref-for-absolute-scroll②">absolute scroll</a>
+by finding the nearest valid <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④②">snap position</a>,
+<em>regardless</em> of direction.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="relative-scroll">relative scroll</dfn>
     <dd data-md>
-     <div class="example" id="example-f50b3650">
-      <a class="self-link" href="#example-f50b3650"></a>
-    Common examples of scrolls with both an <a data-link-type="dfn" href="#intended-direction-and-end-position" id="ref-for-intended-direction-and-end-position">intended direction and end position</a> include:
+     <p>A <a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll②">relative scroll</a> is a scrolling operation
+that does have a meaningful relation with the previous scroll position;
+that is, the fact that the new scroll position is before or after the old scroll position
+is an important quality of the scroll.</p>
+     <p>Relative scrolls might or might not have an intended end position,
+but they always have an intended <em>direction</em>.</p>
+     <div class="example" id="example-3b0a8326">
+      <a class="self-link" href="#example-3b0a8326"></a>
+    Common examples of <a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll③">relative scrolls</a> with both an intended direction and end position include:
 
 
       <ul>
        <li data-md>
-        <p>a “fling” gesture,
-interpreted with momentum</p>
+        <p>a “fling” gesture, interpreted with momentum</p>
        <li data-md>
         <p>programmatically scrolling via APIs such as <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-scrollby" id="ref-for-dom-window-scrollby">scrollBy()</a></code></p>
        <li data-md>
         <p>paging operations such as the <kbd>PgUp</kbd>/<kbd>PgDn</kbd> keys (or equivalent operations on the scrollbar)</p>
       </ul>
-     </div>
-     <p>The intended end point of the scroll prior to intervention from features such
-as snap points is its <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="natural-end-point">natural end-point</dfn>.</p>
-    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="intended-direction">intended direction</dfn>
-    <dd data-md>
-     <div class="example" id="example-33cf1041">
-      <a class="self-link" href="#example-33cf1041"></a>
-    Common examples of scrolls with only an <a data-link-type="dfn" href="#intended-direction" id="ref-for-intended-direction">intended direction</a> include:
-
-
+      <p>Common examples of <a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll④">relative scrolls</a> with only an intended direction include:</p>
       <ul>
        <li data-md>
-        <p>pressing an arrow key on the keyboard (or equivalent operations on the scrollbar)</p>
+        <p>pressing an arrow key on the keyboard</p>
+       <li data-md>
+        <p>pressing an arrow button on the scrollbar</p>
        <li data-md>
         <p>a swiping gesture interpreted as a fixed (rather than inertial) scroll</p>
       </ul>
      </div>
+     <p>The intended end point of the scroll prior to intervention from features such
+as snap points is its <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="natural-end-point">natural end-point</dfn>.</p>
+     <p class="note" role="note"><span class="marker">Note:</span> Scroll snapping responds to a <a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll⑤">relative scroll</a>
+by finding the nearest valid <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④③">snap position</a>
+<em>in the intended direction</em> (if possible),
+so a snapped element can’t get "trapped"
+when the <span id="ref-for-scroll-snap-position④④">snap positions</span> are far apart.</p>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="stationary-scroll">stationary scroll</dfn>
+    <dd data-md>
+     <p>A <a data-link-type="dfn" href="#stationary-scroll" id="ref-for-stationary-scroll">stationary scroll</a> is a scrolling operation
+that isn’t "intending" to move the scroller at all;
+instead, it’s attempting to keep something stationary
+(usually, an element you’re focusing on).</p>
+     <div class="example" id="example-c4a7b7b7">
+      <a class="self-link" href="#example-c4a7b7b7"></a>
+    Common examples of <a data-link-type="dfn" href="#stationary-scroll" id="ref-for-stationary-scroll①">stationary scrolls</a> include:
+
+
+      <ul>
+       <li data-md>
+        <p>scroll anchoring with <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor" id="ref-for-propdef-overflow-anchor">overflow-anchor</a>,
+when off-screen content changes size
+and would move the current anchor</p>
+       <li data-md>
+        <p>scroll snapping (especially <a class="css" data-link-type="maybe" href="#valdef-scroll-snap-type-mandatory" id="ref-for-valdef-scroll-snap-type-mandatory②">mandatory</a>)
+when another element changes size
+and causes the scroller to no longer be at a valid snap point</p>
+      </ul>
+     </div>
+     <p class="note" role="note"><span class="marker">Note:</span> Scroll snapping responds to a <a data-link-type="dfn" href="#stationary-scroll" id="ref-for-stationary-scroll②">stationary scroll</a>
+by finding the nearest valid <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④⑤">snap position</a>,
+similar to an <a data-link-type="dfn" href="#absolute-scroll" id="ref-for-absolute-scroll③">absolute scroll</a>.</p>
    </dl>
    <p>Additionally, because page layouts usually align things vertically and/or horizontally,
     UAs sometimes <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="axis-lock">axis-lock</dfn> a scroll when its direction
@@ -2215,54 +2252,54 @@ as snap points is its <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport
    <h3 class="heading settled" data-level="6.2" id="choosing"><span class="secno">6.2. </span><span class="content">Choosing Snap Positions</span><a class="self-link" href="#choosing"></a></h3>
    <p>A <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container④①">scroll container</a> can have many <a data-link-type="dfn" href="#scroll-snap-area" id="ref-for-scroll-snap-area②⑦">snap areas</a>
     scattered throughout its <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scrollable-overflow-region" id="ref-for-scrollable-overflow-region②">scrollable overflow area</a>.
-    A naïve algorithm for selecting a <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④②">snap position</a>
+    A naïve algorithm for selecting a <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④⑥">snap position</a>
     can produce behavior that is unintuitive for users,
     so care is required when designing a selection algorithm.
     Here are a few pointers that can aid in the selection process:</p>
    <ul>
     <li data-md>
-     <p><a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④③">Snap positions</a> should be chosen to minimize the distance between the end-point
+     <p><a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④⑦">Snap positions</a> should be chosen to minimize the distance between the end-point
 (or the <a data-link-type="dfn" href="#natural-end-point" id="ref-for-natural-end-point">natural end-point</a>)
 and the final snapped scroll position,
 subject to the additional constraints listed in this section.</p>
     <li data-md>
      <p>If a scroll is <a data-link-type="dfn" href="#axis-lock" id="ref-for-axis-lock①">axis-locked</a>,
-any <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④④">snap positions</a> in the other axis should be ignored
+any <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④⑧">snap positions</a> in the other axis should be ignored
 during the scroll.
-(However, <span id="ref-for-scroll-snap-position④⑤">snap positions</span> in the other axis can still effect the final scroll position.)</p>
+(However, <span id="ref-for-scroll-snap-position④⑨">snap positions</span> in the other axis can still effect the final scroll position.)</p>
     <li data-md>
      <p>In order to prevent a far-offscreen element
 from having difficult-to-understand effects
 on the scroll position,
-<a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④⑥">snap positions</a> should be ignored if their elements are far outside of the “corridor”
+<a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⓪">snap positions</a> should be ignored if their elements are far outside of the “corridor”
 that the <a data-link-type="dfn" href="#scroll-snapport" id="ref-for-scroll-snapport①⑥">snapport</a> defines as it moves through the <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scrollable-overflow-region" id="ref-for-scrollable-overflow-region③">scrollable overflow area</a>,
-or a hypothetical “corridor” in the direction of a scroll with only an <a data-link-type="dfn" href="#intended-direction" id="ref-for-intended-direction①">intended direction</a>,
-or the <span id="ref-for-scroll-snapport①⑦">snapport</span> after an scroll with only an <a data-link-type="dfn" href="#intended-end-position" id="ref-for-intended-end-position②">intended end position</a>.</p>
+or a hypothetical “corridor” in the direction of a <a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll⑥">relative scroll</a>,
+or the <span id="ref-for-scroll-snapport①⑦">snapport</span> after an <a data-link-type="dfn" href="#absolute-scroll" id="ref-for-absolute-scroll④">absolute scroll</a>.</p>
     <li data-md>
-     <p>User agents <em>must</em> ensure that a user can “escape” a <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position④⑦">snap position</a>,
+     <p>User agents <em>must</em> ensure that a user can “escape” a <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤①">snap position</a>,
 regardless of the scroll method.
-For example, if the snap type is <a class="css" data-link-type="maybe" href="#valdef-scroll-snap-type-mandatory" id="ref-for-valdef-scroll-snap-type-mandatory②">mandatory</a>
-and the next <span id="ref-for-scroll-snap-position④⑧">snap position</span> is more than two screen-widths away,
+For example, if the snap type is <a class="css" data-link-type="maybe" href="#valdef-scroll-snap-type-mandatory" id="ref-for-valdef-scroll-snap-type-mandatory③">mandatory</a>
+and the next <span id="ref-for-scroll-snap-position⑤②">snap position</span> is more than two screen-widths away,
 a naïve “always snap to nearest” selection algorithm might “trap” the user
 if their end position was only one screen-width away.
-Instead, a smarter algorithm that only returned to the starting <span id="ref-for-scroll-snap-position④⑨">snap position</span>
+Instead, a smarter algorithm that only returned to the starting <span id="ref-for-scroll-snap-position⑤③">snap position</span>
 if the end-point was a fairly small distance from it,
 and otherwise ignored the starting snap position,
 would give better behavior.</p>
-     <p>(This implies that a scroll with only an <a data-link-type="dfn" href="#intended-direction" id="ref-for-intended-direction②">intended direction</a>
-must always ignore the starting <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⓪">snap positions</a>.)</p>
+     <p>(This implies that a <a data-link-type="dfn" href="#relative-scroll" id="ref-for-relative-scroll⑦">relative scroll</a> without an intended end position
+must always ignore the starting <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤④">snap positions</a>.)</p>
     <li data-md>
      <p>If a page is navigated to a fragment that defines a target element
 (e.g. one that would be matched by <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#target-pseudo" id="ref-for-target-pseudo①">:target</a>,
 or the target of <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-element-scrollintoview" id="ref-for-dom-element-scrollintoview①">scrollIntoView()</a></code>),
-and that element defines some <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤①">snap positions</a>,
-the user agent must <a data-link-type="dfn" href="#scroll-snap" id="ref-for-scroll-snap①⑨">snap</a> to one of that element’s <span id="ref-for-scroll-snap-position⑤②">snap positions</span>
+and that element defines some <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⑤">snap positions</a>,
+the user agent must <a data-link-type="dfn" href="#scroll-snap" id="ref-for-scroll-snap①⑨">snap</a> to one of that element’s <span id="ref-for-scroll-snap-position⑤⑥">snap positions</span>
 if its nearest <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container④②">scroll container</a> is a <a data-link-type="dfn" href="#scroll-snap-container" id="ref-for-scroll-snap-container⑧">scroll snap container</a>.
 The user agent <em>may</em> also do this even when the <span id="ref-for-scroll-container④③">scroll container</span> has <a class="css" data-link-type="propdesc" href="#propdef-scroll-snap-type" id="ref-for-propdef-scroll-snap-type⑨">scroll-snap-type: none</a>.</p>
     <li data-md>
      <p>If a scroll by page operation (e.g. Page down / Page up) is being performed,
-eligible <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤③">snap positions</a> that require scrolling less than or equal to the size of the <a data-link-type="dfn" href="#optimal-viewing-region" id="ref-for-optimal-viewing-region③">optimal viewing region</a> of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container④④">scroll container</a>
-should be selected before any farther away, ignoring the starting <span id="ref-for-scroll-snap-position⑤④">snap positions</span> so that progress is still made in the <a data-link-type="dfn" href="#intended-direction" id="ref-for-intended-direction③">intended direction</a>.</p>
+eligible <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⑦">snap positions</a> that require scrolling less than or equal to the size of the <a data-link-type="dfn" href="#optimal-viewing-region" id="ref-for-optimal-viewing-region③">optimal viewing region</a> of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container④④">scroll container</a>
+should be selected before any farther away, ignoring the starting <span id="ref-for-scroll-snap-position⑤⑧">snap positions</span> so that progress is still made in the intended direction.</p>
    </ul>
    <h4 class="heading settled" data-level="6.2.1" id="multiple-aligned-snap-areas"><span class="secno">6.2.1. </span><span class="content">Selecting between multiple aligned snap areas</span><a class="self-link" href="#multiple-aligned-snap-areas"></a></h4>
    <p>When <a data-link-type="dfn" href="#scroll-snap" id="ref-for-scroll-snap②⓪">snapping</a> to a scroll position
@@ -2563,19 +2600,19 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1" t
      <blockquote>
       <p>
        If the <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑤⓪">scroll container</a> was <a data-link-type="dfn" href="#scroll-snap" id="ref-for-scroll-snap②④">snapped</a> before the content change
-				and that same <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⑤">snap position</a> still exists
+				and that same <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⑨">snap position</a> still exists
 				(e.g. its associated element was not deleted),
 				the scroll container must be re-snapped to that same snap position
 				after the content change.
 				
        <ins>If multiple boxes were <a data-link-type="dfn" href="#scroll-snap" id="ref-for-scroll-snap②⑤">snapped</a> before
-				and their <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⑥">snap positions</a> no longer coincide,
+				and their <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑥⓪">snap positions</a> no longer coincide,
 				then if one of them is focused or targeted,
 				the <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑤①">scroll container</a> must re-snap to that one
 				and otherwise which one to re-snap to is UA-defined.
 				(The UA may, for example, track which element is snapped
 				as layout shifts align and de-align
-				the <span id="ref-for-scroll-snap-position⑤⑦">snap positions</span> of other elements.)
+				the <span id="ref-for-scroll-snap-position⑥①">snap positions</span> of other elements.)
 				</ins>
       </p>
      </blockquote>
@@ -2739,7 +2776,7 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1" t
       
 				Using the <a class="property css" data-link-type="property" href="#propdef-scroll-snap-type" id="ref-for-propdef-scroll-snap-type①④">scroll-snap-type</a> property on the relevant <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑤⑤">scroll container</a>,
 				the author can request a particular bias
-				for the scrollport to land on a <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⑧">snap position</a>
+				for the scrollport to land on a <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑥②">snap position</a>
 				after scrolling operations
 				
       <ins>(including programmatic scrolls such as the <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-scrollto" id="ref-for-dom-window-scrollto③">scrollTo()</a></code> method)</ins>
@@ -2783,12 +2820,12 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1" t
        If a page is navigated to a fragment that defines a target element
 				(one that would be matched by <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#target-pseudo" id="ref-for-target-pseudo⑥">:target</a>,
 				or the target of <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-element-scrollintoview" id="ref-for-dom-element-scrollintoview⑥">scrollIntoView()</a></code>),
-				and that element defines some <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑤⑨">snap positions</a>,
+				and that element defines some <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑥③">snap positions</a>,
 				the user agent 
        <del>should</del>
        <ins>must</ins>
         <a data-link-type="dfn" href="#scroll-snap" id="ref-for-scroll-snap②⑥">snap</a>
-				to one of that element’s <span id="ref-for-scroll-snap-position⑥⓪">snap positions</span>
+				to one of that element’s <span id="ref-for-scroll-snap-position⑥④">snap positions</span>
 				
        <ins>if its nearest <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scroll-container" id="ref-for-scroll-container⑤⑥">scroll container</a> is a <a data-link-type="dfn" href="#scroll-snap-container" id="ref-for-scroll-snap-container①⓪">scroll snap container</a></ins>
        .
@@ -2828,12 +2865,12 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1" t
 			
      <blockquote>
       <ins>
-       <p class="note" role="note">Although <a class="css" data-link-type="propdesc" href="#propdef-scroll-snap-type" id="ref-for-propdef-scroll-snap-type①⑥">scroll-snap-type: both</a> evaluates <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑥①">snap positions</a> independently in each axis,
-                <a href="#choosing">choosing</a> of a <span id="ref-for-scroll-snap-position⑥②">snap position</span> in one axis
-                may be influenced by <span id="ref-for-scroll-snap-position⑥③">snap positions</span> in the other axis.
+       <p class="note" role="note">Although <a class="css" data-link-type="propdesc" href="#propdef-scroll-snap-type" id="ref-for-propdef-scroll-snap-type①⑥">scroll-snap-type: both</a> evaluates <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑥⑤">snap positions</a> independently in each axis,
+                <a href="#choosing">choosing</a> of a <span id="ref-for-scroll-snap-position⑥⑥">snap position</span> in one axis
+                may be influenced by <span id="ref-for-scroll-snap-position⑥⑦">snap positions</span> in the other axis.
                 For example, snapping in one axis
                 may push off-screen the <a data-link-type="dfn" href="#scroll-snap-area" id="ref-for-scroll-snap-area③⑥">snap area</a> that the other axis would otherwise align to,
-                making its <span id="ref-for-scroll-snap-position⑥④">snap position</span> invalid and therefore unchooseable.</p>
+                making its <span id="ref-for-scroll-snap-position⑥⑧">snap position</span> invalid and therefore unchooseable.</p>
       </ins>
      </blockquote>
     <li>Clarified how the <a class="property css" data-link-type="property" href="#propdef-scroll-padding" id="ref-for-propdef-scroll-padding②③">scroll-padding</a> and <a class="property css" data-link-type="property" href="#propdef-scroll-margin" id="ref-for-propdef-scroll-margin①⑤">scroll-margin</a> shorthands
@@ -2853,8 +2890,8 @@ interact as defined in <a data-link-type="biblio" href="#biblio-css-logical-1" t
     <li>Clarified the intended effects of <a class="property css" data-link-type="property" href="#propdef-scroll-snap-stop" id="ref-for-propdef-scroll-snap-stop③">scroll-snap-stop</a> on various scrolling operations.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/1552">Issue 1552</a>)
 		
-    <li>Clarified that <a class="property css" data-link-type="property" href="#propdef-scroll-snap-stop" id="ref-for-propdef-scroll-snap-stop④">scroll-snap-stop</a> is applied to the <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑥⑤">snap positions</a> defined by the element,
-			not applied to all <span id="ref-for-scroll-snap-position⑥⑥">snap positions</span> in the <a data-link-type="dfn" href="#scroll-snap-container" id="ref-for-scroll-snap-container①①">scroll snap container</a>.
+    <li>Clarified that <a class="property css" data-link-type="property" href="#propdef-scroll-snap-stop" id="ref-for-propdef-scroll-snap-stop④">scroll-snap-stop</a> is applied to the <a data-link-type="dfn" href="#scroll-snap-position" id="ref-for-scroll-snap-position⑥⑨">snap positions</a> defined by the element,
+			not applied to all <span id="ref-for-scroll-snap-position⑦⓪">snap positions</span> in the <a data-link-type="dfn" href="#scroll-snap-container" id="ref-for-scroll-snap-container①①">scroll snap container</a>.
 		
     <li>Fixed some syntax errors in examples and added a new one to the <a class="property css" data-link-type="property" href="#propdef-scroll-snap-type" id="ref-for-propdef-scroll-snap-type①⑦">scroll-snap-type</a> section.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/827">Issue 827</a>)
@@ -2998,6 +3035,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
+   <li><a href="#absolute-scroll">absolute scroll</a><span>, in § 6.1</span>
    <li><a href="#valdef-scroll-snap-stop-always">always</a><span>, in § 5.3</span>
    <li><a href="#valdef-scroll-padding-auto">auto</a><span>, in § 4.2</span>
    <li><a href="#axis-lock">axis-lock</a><span>, in § 6.1</span>
@@ -3008,9 +3046,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#valdef-scroll-snap-align-center">center</a><span>, in § 5.2</span>
    <li><a href="#valdef-scroll-snap-align-end">end</a><span>, in § 5.2</span>
    <li><a href="#valdef-scroll-snap-type-inline">inline</a><span>, in § 4.1.1</span>
-   <li><a href="#intended-direction">intended direction</a><span>, in § 6.1</span>
-   <li><a href="#intended-direction-and-end-position">intended direction and end position</a><span>, in § 6.1</span>
-   <li><a href="#intended-end-position">intended end position</a><span>, in § 6.1</span>
    <li><a href="#valdef-scroll-padding-length-percentage-0">&lt;length-percentage [0,∞]></a><span>, in § 4.2</span>
    <li><a href="#valdef-scroll-snap-type-mandatory">mandatory</a><span>, in § 4.1.2</span>
    <li><a href="#natural-end-point">natural end-point</a><span>, in § 6.1</span>
@@ -3023,6 +3058,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#valdef-scroll-snap-stop-normal">normal</a><span>, in § 5.3</span>
    <li><a href="#optimal-viewing-region">optimal viewing region</a><span>, in § 4.2</span>
    <li><a href="#valdef-scroll-snap-type-proximity">proximity</a><span>, in § 4.1.2</span>
+   <li><a href="#relative-scroll">relative scroll</a><span>, in § 6.1</span>
    <li><a href="#re-snap">re-snap</a><span>, in § 4.1.2</span>
    <li><a href="#propdef-scroll-margin">scroll-margin</a><span>, in § 5.1</span>
    <li><a href="#propdef-scroll-margin-block">scroll-margin-block</a><span>, in § Unnumbered section</span>
@@ -3060,6 +3096,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#scroll-snapport">snapport</a><span>, in § 4.2</span>
    <li><a href="#scroll-snap-position">snap position</a><span>, in § 3</span>
    <li><a href="#valdef-scroll-snap-align-start">start</a><span>, in § 5.2</span>
+   <li><a href="#stationary-scroll">stationary scroll</a><span>, in § 6.1</span>
    <li><a href="#strictness-value">strictness value</a><span>, in § 4.1.2</span>
    <li><a href="#valdef-scroll-snap-type-x">x</a><span>, in § 4.1.1</span>
    <li><a href="#valdef-scroll-snap-type-y">y</a><span>, in § 4.1.1</span>
@@ -3117,6 +3154,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="fd0c9e35">::after</span>
      <li><span class="dfn-paneled" id="a1addf6c">::first-letter</span>
      <li><span class="dfn-paneled" id="75bfa627">::first-line</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-SCROLL-ANCHORING-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="2d5b9b69">overflow-anchor</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
@@ -3197,6 +3239,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-selectors-4">[SELECTORS-4]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/selectors/"><cite>Selectors Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/selectors/">https://drafts.csswg.org/selectors/</a>
+  </dl>
+  <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-css-scroll-anchoring-1">[CSS-SCROLL-ANCHORING-1]
+   <dd>Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-scroll-anchoring/"><cite>CSS Scroll Anchoring Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-scroll-anchoring/">https://drafts.csswg.org/css-scroll-anchoring/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -4059,6 +4106,7 @@ let dfnPanelData = {
 "18222566": {"dfnID":"18222566","dfnText":"<length-percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-length-percentage"},{"id":"ref-for-typedef-length-percentage\u2460"},{"id":"ref-for-typedef-length-percentage\u2461"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2462"},{"id":"ref-for-typedef-length-percentage\u2463"}],"title":"Physical Longhands for scroll-padding"},{"refs":[{"id":"ref-for-typedef-length-percentage\u2464"},{"id":"ref-for-typedef-length-percentage\u2465"},{"id":"ref-for-typedef-length-percentage\u2466"}],"title":"Flow-relative Longhands for scroll-padding"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-length-percentage"},
 "1b08e188": {"dfnID":"1b08e188","dfnText":"scroll-behavior","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-behavior"}],"title":"4.1.3. \nRe-snapping After Layout Changes"},{"refs":[{"id":"ref-for-propdef-scroll-behavior\u2460"}],"title":"9.1. Changes Since 19 March 2019 CR"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-scroll-behavior"},
 "25538777": {"dfnID":"25538777","dfnText":"tree order","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-order"},{"id":"ref-for-concept-tree-order\u2460"}],"title":"6.2.1. Selecting between multiple aligned snap areas"}],"url":"https://dom.spec.whatwg.org/#concept-tree-order"},
+"2d5b9b69": {"dfnID":"2d5b9b69","dfnText":"overflow-anchor","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-anchor"}],"title":"6.1. Types of Scrolling Methods"}],"url":"https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor"},
 "2f0492ac": {"dfnID":"2f0492ac","dfnText":"body","external":true,"refSections":[{"refs":[{"id":"ref-for-the-body-element"}],"title":"4.1. Scroll Snapping Rules: the scroll-snap-type property"},{"refs":[{"id":"ref-for-the-body-element\u2460"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-the-body-element\u2461"},{"id":"ref-for-the-body-element\u2462"}],"title":"9.1. Changes Since 19 March 2019 CR"}],"url":"https://html.spec.whatwg.org/multipage/sections.html#the-body-element"},
 "356b41f5": {"dfnID":"356b41f5","dfnText":"scrollBy()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-scrollby"}],"title":"6.1. Types of Scrolling Methods"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-scrollby"},
 "358fd6ff": {"dfnID":"358fd6ff","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"1.2. Value Definitions"}],"url":"https://drafts.csswg.org/css-values-4/#css-wide-keywords"},
@@ -4081,6 +4129,7 @@ let dfnPanelData = {
 "9e066e76": {"dfnID":"9e066e76","dfnText":"longhand","external":true,"refSections":[{"refs":[{"id":"ref-for-longhand"}],"title":"Physical Longhands for scroll-padding"},{"refs":[{"id":"ref-for-longhand\u2460"},{"id":"ref-for-longhand\u2461"}],"title":"Flow-relative Longhands for scroll-padding"},{"refs":[{"id":"ref-for-longhand\u2462"}],"title":"Physical Longhands for scroll-margin"},{"refs":[{"id":"ref-for-longhand\u2463"},{"id":"ref-for-longhand\u2464"}],"title":"Flow-relative Longhands for scroll-margin"}],"url":"https://drafts.csswg.org/css-cascade-5/#longhand"},
 "a1addf6c": {"dfnID":"a1addf6c","dfnText":"::first-letter","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-first-letter"}],"title":"1.1. Module interactions"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter"},
 "a73617e0": {"dfnID":"a73617e0","dfnText":"writing mode","external":true,"refSections":[{"refs":[{"id":"ref-for-writing-mode"},{"id":"ref-for-writing-mode\u2460"},{"id":"ref-for-writing-mode\u2461"}],"title":"5.2. Scroll Snapping Alignment: the scroll-snap-align property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#writing-mode"},
+"absolute-scroll": {"dfnID":"absolute-scroll","dfnText":"absolute scroll","external":false,"refSections":[{"refs":[{"id":"ref-for-absolute-scroll"},{"id":"ref-for-absolute-scroll\u2460"},{"id":"ref-for-absolute-scroll\u2461"},{"id":"ref-for-absolute-scroll\u2462"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-absolute-scroll\u2463"}],"title":"6.2. Choosing Snap Positions"}],"url":"#absolute-scroll"},
 "af017f8e": {"dfnID":"af017f8e","dfnText":"scrollTo()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-scrollto"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-dom-window-scrollto\u2460"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-dom-window-scrollto\u2461"},{"id":"ref-for-dom-window-scrollto\u2462"}],"title":"9.4. Changes Since 14 December 2017 CR"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-scrollto"},
 "axis-lock": {"dfnID":"axis-lock","dfnText":"axis-lock","external":false,"refSections":[{"refs":[{"id":"ref-for-axis-lock"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-axis-lock\u2460"}],"title":"6.2. Choosing Snap Positions"}],"url":"#axis-lock"},
 "axis-value": {"dfnID":"axis-value","dfnText":"axis values","external":false,"refSections":[],"url":"#axis-value"},
@@ -4095,9 +4144,6 @@ let dfnPanelData = {
 "f616a86d": {"dfnID":"f616a86d","dfnText":"inset properties","external":true,"refSections":[{"refs":[{"id":"ref-for-inset-properties"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-inset-properties\u2460"}],"title":"9.1. Changes Since 19 March 2019 CR"}],"url":"https://drafts.csswg.org/css-logical-1/#inset-properties"},
 "fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"}],"title":"5.1. Scroll Snapping Area: the scroll-margin property"},{"refs":[{"id":"ref-for-length-value\u2460"}],"title":"Physical Longhands for scroll-margin"},{"refs":[{"id":"ref-for-length-value\u2461"},{"id":"ref-for-length-value\u2462"}],"title":"Flow-relative Longhands for scroll-margin"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "fd0c9e35": {"dfnID":"fd0c9e35","dfnText":"::after","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-after"}],"title":"4.1.3. \nRe-snapping After Layout Changes"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-after"},
-"intended-direction": {"dfnID":"intended-direction","dfnText":"intended direction","external":false,"refSections":[{"refs":[{"id":"ref-for-intended-direction"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-intended-direction\u2460"},{"id":"ref-for-intended-direction\u2461"},{"id":"ref-for-intended-direction\u2462"}],"title":"6.2. Choosing Snap Positions"}],"url":"#intended-direction"},
-"intended-direction-and-end-position": {"dfnID":"intended-direction-and-end-position","dfnText":"intended direction and end position","external":false,"refSections":[{"refs":[{"id":"ref-for-intended-direction-and-end-position"}],"title":"6.1. Types of Scrolling Methods"}],"url":"#intended-direction-and-end-position"},
-"intended-end-position": {"dfnID":"intended-end-position","dfnText":"intended end position","external":false,"refSections":[{"refs":[{"id":"ref-for-intended-end-position"}],"title":"5.3. Scroll Snap Limits: the scroll-snap-stop property"},{"refs":[{"id":"ref-for-intended-end-position\u2460"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-intended-end-position\u2461"}],"title":"6.2. Choosing Snap Positions"}],"url":"#intended-end-position"},
 "natural-end-point": {"dfnID":"natural-end-point","dfnText":"natural end-point","external":false,"refSections":[{"refs":[{"id":"ref-for-natural-end-point"}],"title":"6.2. Choosing Snap Positions"}],"url":"#natural-end-point"},
 "optimal-viewing-region": {"dfnID":"optimal-viewing-region","dfnText":"optimal viewing region","external":false,"refSections":[{"refs":[{"id":"ref-for-optimal-viewing-region"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-optimal-viewing-region\u2460"},{"id":"ref-for-optimal-viewing-region\u2461"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-optimal-viewing-region\u2462"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-optimal-viewing-region\u2463"}],"title":"9.1. Changes Since 19 March 2019 CR"},{"refs":[{"id":"ref-for-optimal-viewing-region\u2464"},{"id":"ref-for-optimal-viewing-region\u2465"}],"title":"9.2. Changes Since 31 January 2019 CR"}],"url":"#optimal-viewing-region"},
 "propdef-scroll-margin": {"dfnID":"propdef-scroll-margin","dfnText":"scroll-margin","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-margin"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2460"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2461"}],"title":"5.1. Scroll Snapping Area: the scroll-margin property"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2462"},{"id":"ref-for-propdef-scroll-margin\u2463"},{"id":"ref-for-propdef-scroll-margin\u2464"}],"title":"Physical Longhands for scroll-margin"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2465"},{"id":"ref-for-propdef-scroll-margin\u2466"},{"id":"ref-for-propdef-scroll-margin\u2467"},{"id":"ref-for-propdef-scroll-margin\u2468"}],"title":"Flow-relative Longhands for scroll-margin"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2460\u24ea"},{"id":"ref-for-propdef-scroll-margin\u2460\u2460"}],"title":"9.2. Changes Since 31 January 2019 CR"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2460\u2461"}],"title":"9.3. Changes Since 14 August 2018 CR"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2460\u2462"},{"id":"ref-for-propdef-scroll-margin\u2460\u2463"}],"title":"9.5. Changes Since 24 August 2017 CR"},{"refs":[{"id":"ref-for-propdef-scroll-margin\u2460\u2464"}],"title":"9.6. Changes Since 20 October 2016 CR"}],"url":"#propdef-scroll-margin"},
@@ -4126,11 +4172,13 @@ let dfnPanelData = {
 "propdef-scroll-snap-stop": {"dfnID":"propdef-scroll-snap-stop","dfnText":"scroll-snap-stop","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-snap-stop\u2460"},{"id":"ref-for-propdef-scroll-snap-stop\u2461"}],"title":"5.3. Scroll Snap Limits: the scroll-snap-stop property"},{"refs":[{"id":"ref-for-propdef-scroll-snap-stop\u2462"},{"id":"ref-for-propdef-scroll-snap-stop\u2463"}],"title":"9.6. Changes Since 20 October 2016 CR"}],"url":"#propdef-scroll-snap-stop"},
 "propdef-scroll-snap-type": {"dfnID":"propdef-scroll-snap-type","dfnText":"scroll-snap-type","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2460"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2461"},{"id":"ref-for-propdef-scroll-snap-type\u2462"},{"id":"ref-for-propdef-scroll-snap-type\u2463"},{"id":"ref-for-propdef-scroll-snap-type\u2464"}],"title":"4.1. Scroll Snapping Rules: the scroll-snap-type property"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2465"},{"id":"ref-for-propdef-scroll-snap-type\u2466"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2467"}],"title":"5.2.1. \nScoping Valid Snap Positions to Visible Boxes"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2468"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2460\u24ea"},{"id":"ref-for-propdef-scroll-snap-type\u2460\u2460"},{"id":"ref-for-propdef-scroll-snap-type\u2460\u2461"}],"title":"9.1. Changes Since 19 March 2019 CR"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2460\u2462"},{"id":"ref-for-propdef-scroll-snap-type\u2460\u2463"}],"title":"9.4. Changes Since 14 December 2017 CR"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2460\u2464"}],"title":"9.5. Changes Since 24 August 2017 CR"},{"refs":[{"id":"ref-for-propdef-scroll-snap-type\u2460\u2465"},{"id":"ref-for-propdef-scroll-snap-type\u2460\u2466"}],"title":"9.6. Changes Since 20 October 2016 CR"}],"url":"#propdef-scroll-snap-type"},
 "re-snap": {"dfnID":"re-snap","dfnText":"4.1.3. \nRe-snapping After Layout Changes","external":false,"refSections":[{"refs":[{"id":"ref-for-re-snap"}],"title":"4.1.3. \nRe-snapping After Layout Changes"}],"url":"#re-snap"},
+"relative-scroll": {"dfnID":"relative-scroll","dfnText":"relative scroll","external":false,"refSections":[{"refs":[{"id":"ref-for-relative-scroll"},{"id":"ref-for-relative-scroll\u2460"}],"title":"5.3. Scroll Snap Limits: the scroll-snap-stop property"},{"refs":[{"id":"ref-for-relative-scroll\u2461"},{"id":"ref-for-relative-scroll\u2462"},{"id":"ref-for-relative-scroll\u2463"},{"id":"ref-for-relative-scroll\u2464"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-relative-scroll\u2465"},{"id":"ref-for-relative-scroll\u2466"}],"title":"6.2. Choosing Snap Positions"}],"url":"#relative-scroll"},
 "scroll-snap": {"dfnID":"scroll-snap","dfnText":"snapping","external":false,"refSections":[{"refs":[{"id":"ref-for-scroll-snap"},{"id":"ref-for-scroll-snap\u2460"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-scroll-snap\u2461"}],"title":"4.1. Scroll Snapping Rules: the scroll-snap-type property"},{"refs":[{"id":"ref-for-scroll-snap\u2462"},{"id":"ref-for-scroll-snap\u2463"},{"id":"ref-for-scroll-snap\u2464"},{"id":"ref-for-scroll-snap\u2465"},{"id":"ref-for-scroll-snap\u2466"}],"title":"4.1.1. \nScroll Snap Axis: the x, y, block, inline, and both values"},{"refs":[{"id":"ref-for-scroll-snap\u2467"},{"id":"ref-for-scroll-snap\u2468"},{"id":"ref-for-scroll-snap\u2460\u24ea"},{"id":"ref-for-scroll-snap\u2460\u2460"},{"id":"ref-for-scroll-snap\u2460\u2461"},{"id":"ref-for-scroll-snap\u2460\u2462"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"},{"refs":[{"id":"ref-for-scroll-snap\u2460\u2463"},{"id":"ref-for-scroll-snap\u2460\u2464"}],"title":"4.1.3. \nRe-snapping After Layout Changes"},{"refs":[{"id":"ref-for-scroll-snap\u2460\u2465"},{"id":"ref-for-scroll-snap\u2460\u2466"},{"id":"ref-for-scroll-snap\u2460\u2467"}],"title":"5.2.1. \nScoping Valid Snap Positions to Visible Boxes"},{"refs":[{"id":"ref-for-scroll-snap\u2460\u2468"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap\u2461\u24ea"},{"id":"ref-for-scroll-snap\u2461\u2460"},{"id":"ref-for-scroll-snap\u2461\u2461"},{"id":"ref-for-scroll-snap\u2461\u2462"}],"title":"6.2.1. Selecting between multiple aligned snap areas"},{"refs":[{"id":"ref-for-scroll-snap\u2461\u2463"},{"id":"ref-for-scroll-snap\u2461\u2464"}],"title":"9.1. Changes Since 19 March 2019 CR"},{"refs":[{"id":"ref-for-scroll-snap\u2461\u2465"}],"title":"9.5. Changes Since 24 August 2017 CR"}],"url":"#scroll-snap"},
 "scroll-snap-area": {"dfnID":"scroll-snap-area","dfnText":"scroll snap area","external":false,"refSections":[{"refs":[{"id":"ref-for-scroll-snap-area"},{"id":"ref-for-scroll-snap-area\u2460"},{"id":"ref-for-scroll-snap-area\u2461"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-scroll-snap-area\u2462"},{"id":"ref-for-scroll-snap-area\u2463"},{"id":"ref-for-scroll-snap-area\u2464"}],"title":"4.1.3. \nRe-snapping After Layout Changes"},{"refs":[{"id":"ref-for-scroll-snap-area\u2465"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-scroll-snap-area\u2466"},{"id":"ref-for-scroll-snap-area\u2467"},{"id":"ref-for-scroll-snap-area\u2468"}],"title":"5.1. Scroll Snapping Area: the scroll-margin property"},{"refs":[{"id":"ref-for-scroll-snap-area\u2460\u24ea"},{"id":"ref-for-scroll-snap-area\u2460\u2460"},{"id":"ref-for-scroll-snap-area\u2460\u2461"},{"id":"ref-for-scroll-snap-area\u2460\u2462"},{"id":"ref-for-scroll-snap-area\u2460\u2463"}],"title":"5.2. Scroll Snapping Alignment: the scroll-snap-align property"},{"refs":[{"id":"ref-for-scroll-snap-area\u2460\u2464"},{"id":"ref-for-scroll-snap-area\u2460\u2465"},{"id":"ref-for-scroll-snap-area\u2460\u2466"},{"id":"ref-for-scroll-snap-area\u2460\u2467"},{"id":"ref-for-scroll-snap-area\u2460\u2468"},{"id":"ref-for-scroll-snap-area\u2461\u24ea"},{"id":"ref-for-scroll-snap-area\u2461\u2460"}],"title":"5.2.1. \nScoping Valid Snap Positions to Visible Boxes"},{"refs":[{"id":"ref-for-scroll-snap-area\u2461\u2461"},{"id":"ref-for-scroll-snap-area\u2461\u2462"},{"id":"ref-for-scroll-snap-area\u2461\u2463"},{"id":"ref-for-scroll-snap-area\u2461\u2464"}],"title":"5.2.2. \nSnapping Boxes that Overflow the Scrollport"},{"refs":[{"id":"ref-for-scroll-snap-area\u2461\u2465"}],"title":"5.2.3. \nUnreachable Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap-area\u2461\u2466"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap-area\u2461\u2467"},{"id":"ref-for-scroll-snap-area\u2461\u2468"},{"id":"ref-for-scroll-snap-area\u2462\u24ea"}],"title":"6.2.1. Selecting between multiple aligned snap areas"},{"refs":[{"id":"ref-for-scroll-snap-area\u2462\u2460"}],"title":"Physical Longhands for scroll-margin"},{"refs":[{"id":"ref-for-scroll-snap-area\u2462\u2461"},{"id":"ref-for-scroll-snap-area\u2462\u2462"}],"title":"Flow-relative Longhands for scroll-margin"},{"refs":[{"id":"ref-for-scroll-snap-area\u2462\u2463"}],"title":"9.2. Changes Since 31 January 2019 CR"},{"refs":[{"id":"ref-for-scroll-snap-area\u2462\u2464"}],"title":"9.5. Changes Since 24 August 2017 CR"},{"refs":[{"id":"ref-for-scroll-snap-area\u2462\u2465"}],"title":"9.6. Changes Since 20 October 2016 CR"}],"url":"#scroll-snap-area"},
 "scroll-snap-container": {"dfnID":"scroll-snap-container","dfnText":"scroll snap container","external":false,"refSections":[{"refs":[{"id":"ref-for-scroll-snap-container"}],"title":"4.1. Scroll Snapping Rules: the scroll-snap-type property"},{"refs":[{"id":"ref-for-scroll-snap-container\u2460"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"},{"refs":[{"id":"ref-for-scroll-snap-container\u2461"}],"title":"4.1.3. \nRe-snapping After Layout Changes"},{"refs":[{"id":"ref-for-scroll-snap-container\u2462"},{"id":"ref-for-scroll-snap-container\u2463"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-scroll-snap-container\u2464"},{"id":"ref-for-scroll-snap-container\u2465"},{"id":"ref-for-scroll-snap-container\u2466"}],"title":"5.2. Scroll Snapping Alignment: the scroll-snap-align property"},{"refs":[{"id":"ref-for-scroll-snap-container\u2467"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap-container\u2468"}],"title":"9.2. Changes Since 31 January 2019 CR"},{"refs":[{"id":"ref-for-scroll-snap-container\u2460\u24ea"}],"title":"9.5. Changes Since 24 August 2017 CR"},{"refs":[{"id":"ref-for-scroll-snap-container\u2460\u2460"}],"title":"9.6. Changes Since 20 October 2016 CR"}],"url":"#scroll-snap-container"},
-"scroll-snap-position": {"dfnID":"scroll-snap-position","dfnText":"scroll snap positions","external":false,"refSections":[{"refs":[{"id":"ref-for-scroll-snap-position"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460"},{"id":"ref-for-scroll-snap-position\u2461"},{"id":"ref-for-scroll-snap-position\u2462"},{"id":"ref-for-scroll-snap-position\u2463"},{"id":"ref-for-scroll-snap-position\u2464"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-scroll-snap-position\u2465"},{"id":"ref-for-scroll-snap-position\u2466"},{"id":"ref-for-scroll-snap-position\u2467"},{"id":"ref-for-scroll-snap-position\u2468"},{"id":"ref-for-scroll-snap-position\u2460\u24ea"},{"id":"ref-for-scroll-snap-position\u2460\u2460"},{"id":"ref-for-scroll-snap-position\u2460\u2461"}],"title":"4.1.1. \nScroll Snap Axis: the x, y, block, inline, and both values"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460\u2462"},{"id":"ref-for-scroll-snap-position\u2460\u2463"},{"id":"ref-for-scroll-snap-position\u2460\u2464"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460\u2465"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460\u2466"},{"id":"ref-for-scroll-snap-position\u2460\u2467"},{"id":"ref-for-scroll-snap-position\u2460\u2468"},{"id":"ref-for-scroll-snap-position\u2461\u24ea"},{"id":"ref-for-scroll-snap-position\u2461\u2460"}],"title":"5.2. Scroll Snapping Alignment: the scroll-snap-align property"},{"refs":[{"id":"ref-for-scroll-snap-position\u2461\u2461"},{"id":"ref-for-scroll-snap-position\u2461\u2462"},{"id":"ref-for-scroll-snap-position\u2461\u2463"},{"id":"ref-for-scroll-snap-position\u2461\u2464"},{"id":"ref-for-scroll-snap-position\u2461\u2465"},{"id":"ref-for-scroll-snap-position\u2461\u2466"}],"title":"5.2.1. \nScoping Valid Snap Positions to Visible Boxes"},{"refs":[{"id":"ref-for-scroll-snap-position\u2461\u2467"},{"id":"ref-for-scroll-snap-position\u2461\u2468"},{"id":"ref-for-scroll-snap-position\u2462\u24ea"},{"id":"ref-for-scroll-snap-position\u2462\u2460"}],"title":"5.2.2. \nSnapping Boxes that Overflow the Scrollport"},{"refs":[{"id":"ref-for-scroll-snap-position\u2462\u2461"},{"id":"ref-for-scroll-snap-position\u2462\u2462"},{"id":"ref-for-scroll-snap-position\u2462\u2463"}],"title":"5.2.3. \nUnreachable Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap-position\u2462\u2464"},{"id":"ref-for-scroll-snap-position\u2462\u2465"},{"id":"ref-for-scroll-snap-position\u2462\u2466"},{"id":"ref-for-scroll-snap-position\u2462\u2467"},{"id":"ref-for-scroll-snap-position\u2462\u2468"},{"id":"ref-for-scroll-snap-position\u2463\u24ea"}],"title":"5.3. Scroll Snap Limits: the scroll-snap-stop property"},{"refs":[{"id":"ref-for-scroll-snap-position\u2463\u2460"}],"title":"6. Snapping Mechanics"},{"refs":[{"id":"ref-for-scroll-snap-position\u2463\u2461"},{"id":"ref-for-scroll-snap-position\u2463\u2462"},{"id":"ref-for-scroll-snap-position\u2463\u2463"},{"id":"ref-for-scroll-snap-position\u2463\u2464"},{"id":"ref-for-scroll-snap-position\u2463\u2465"},{"id":"ref-for-scroll-snap-position\u2463\u2466"},{"id":"ref-for-scroll-snap-position\u2463\u2467"},{"id":"ref-for-scroll-snap-position\u2463\u2468"},{"id":"ref-for-scroll-snap-position\u2464\u24ea"},{"id":"ref-for-scroll-snap-position\u2464\u2460"},{"id":"ref-for-scroll-snap-position\u2464\u2461"},{"id":"ref-for-scroll-snap-position\u2464\u2462"},{"id":"ref-for-scroll-snap-position\u2464\u2463"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap-position\u2464\u2464"},{"id":"ref-for-scroll-snap-position\u2464\u2465"},{"id":"ref-for-scroll-snap-position\u2464\u2466"}],"title":"9.1. Changes Since 19 March 2019 CR"},{"refs":[{"id":"ref-for-scroll-snap-position\u2464\u2467"}],"title":"9.4. Changes Since 14 December 2017 CR"},{"refs":[{"id":"ref-for-scroll-snap-position\u2464\u2468"},{"id":"ref-for-scroll-snap-position\u2465\u24ea"}],"title":"9.5. Changes Since 24 August 2017 CR"},{"refs":[{"id":"ref-for-scroll-snap-position\u2465\u2460"},{"id":"ref-for-scroll-snap-position\u2465\u2461"},{"id":"ref-for-scroll-snap-position\u2465\u2462"},{"id":"ref-for-scroll-snap-position\u2465\u2463"},{"id":"ref-for-scroll-snap-position\u2465\u2464"},{"id":"ref-for-scroll-snap-position\u2465\u2465"}],"title":"9.6. Changes Since 20 October 2016 CR"}],"url":"#scroll-snap-position"},
+"scroll-snap-position": {"dfnID":"scroll-snap-position","dfnText":"scroll snap positions","external":false,"refSections":[{"refs":[{"id":"ref-for-scroll-snap-position"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460"},{"id":"ref-for-scroll-snap-position\u2461"},{"id":"ref-for-scroll-snap-position\u2462"},{"id":"ref-for-scroll-snap-position\u2463"},{"id":"ref-for-scroll-snap-position\u2464"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-scroll-snap-position\u2465"},{"id":"ref-for-scroll-snap-position\u2466"},{"id":"ref-for-scroll-snap-position\u2467"},{"id":"ref-for-scroll-snap-position\u2468"},{"id":"ref-for-scroll-snap-position\u2460\u24ea"},{"id":"ref-for-scroll-snap-position\u2460\u2460"},{"id":"ref-for-scroll-snap-position\u2460\u2461"}],"title":"4.1.1. \nScroll Snap Axis: the x, y, block, inline, and both values"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460\u2462"},{"id":"ref-for-scroll-snap-position\u2460\u2463"},{"id":"ref-for-scroll-snap-position\u2460\u2464"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460\u2465"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-scroll-snap-position\u2460\u2466"},{"id":"ref-for-scroll-snap-position\u2460\u2467"},{"id":"ref-for-scroll-snap-position\u2460\u2468"},{"id":"ref-for-scroll-snap-position\u2461\u24ea"},{"id":"ref-for-scroll-snap-position\u2461\u2460"}],"title":"5.2. Scroll Snapping Alignment: the scroll-snap-align property"},{"refs":[{"id":"ref-for-scroll-snap-position\u2461\u2461"},{"id":"ref-for-scroll-snap-position\u2461\u2462"},{"id":"ref-for-scroll-snap-position\u2461\u2463"},{"id":"ref-for-scroll-snap-position\u2461\u2464"},{"id":"ref-for-scroll-snap-position\u2461\u2465"},{"id":"ref-for-scroll-snap-position\u2461\u2466"}],"title":"5.2.1. \nScoping Valid Snap Positions to Visible Boxes"},{"refs":[{"id":"ref-for-scroll-snap-position\u2461\u2467"},{"id":"ref-for-scroll-snap-position\u2461\u2468"},{"id":"ref-for-scroll-snap-position\u2462\u24ea"},{"id":"ref-for-scroll-snap-position\u2462\u2460"}],"title":"5.2.2. \nSnapping Boxes that Overflow the Scrollport"},{"refs":[{"id":"ref-for-scroll-snap-position\u2462\u2461"},{"id":"ref-for-scroll-snap-position\u2462\u2462"},{"id":"ref-for-scroll-snap-position\u2462\u2463"}],"title":"5.2.3. \nUnreachable Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap-position\u2462\u2464"},{"id":"ref-for-scroll-snap-position\u2462\u2465"},{"id":"ref-for-scroll-snap-position\u2462\u2466"},{"id":"ref-for-scroll-snap-position\u2462\u2467"},{"id":"ref-for-scroll-snap-position\u2462\u2468"},{"id":"ref-for-scroll-snap-position\u2463\u24ea"}],"title":"5.3. Scroll Snap Limits: the scroll-snap-stop property"},{"refs":[{"id":"ref-for-scroll-snap-position\u2463\u2460"}],"title":"6. Snapping Mechanics"},{"refs":[{"id":"ref-for-scroll-snap-position\u2463\u2461"},{"id":"ref-for-scroll-snap-position\u2463\u2462"},{"id":"ref-for-scroll-snap-position\u2463\u2463"},{"id":"ref-for-scroll-snap-position\u2463\u2464"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-scroll-snap-position\u2463\u2465"},{"id":"ref-for-scroll-snap-position\u2463\u2466"},{"id":"ref-for-scroll-snap-position\u2463\u2467"},{"id":"ref-for-scroll-snap-position\u2463\u2468"},{"id":"ref-for-scroll-snap-position\u2464\u24ea"},{"id":"ref-for-scroll-snap-position\u2464\u2460"},{"id":"ref-for-scroll-snap-position\u2464\u2461"},{"id":"ref-for-scroll-snap-position\u2464\u2462"},{"id":"ref-for-scroll-snap-position\u2464\u2463"},{"id":"ref-for-scroll-snap-position\u2464\u2464"},{"id":"ref-for-scroll-snap-position\u2464\u2465"},{"id":"ref-for-scroll-snap-position\u2464\u2466"},{"id":"ref-for-scroll-snap-position\u2464\u2467"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-scroll-snap-position\u2464\u2468"},{"id":"ref-for-scroll-snap-position\u2465\u24ea"},{"id":"ref-for-scroll-snap-position\u2465\u2460"}],"title":"9.1. Changes Since 19 March 2019 CR"},{"refs":[{"id":"ref-for-scroll-snap-position\u2465\u2461"}],"title":"9.4. Changes Since 14 December 2017 CR"},{"refs":[{"id":"ref-for-scroll-snap-position\u2465\u2462"},{"id":"ref-for-scroll-snap-position\u2465\u2463"}],"title":"9.5. Changes Since 24 August 2017 CR"},{"refs":[{"id":"ref-for-scroll-snap-position\u2465\u2464"},{"id":"ref-for-scroll-snap-position\u2465\u2465"},{"id":"ref-for-scroll-snap-position\u2465\u2466"},{"id":"ref-for-scroll-snap-position\u2465\u2467"},{"id":"ref-for-scroll-snap-position\u2465\u2468"},{"id":"ref-for-scroll-snap-position\u2466\u24ea"}],"title":"9.6. Changes Since 20 October 2016 CR"}],"url":"#scroll-snap-position"},
 "scroll-snapport": {"dfnID":"scroll-snapport","dfnText":"scroll snapport","external":false,"refSections":[{"refs":[{"id":"ref-for-scroll-snapport"}],"title":"3. Scroll Snap Model"},{"refs":[{"id":"ref-for-scroll-snapport\u2460"}],"title":"4.1.3. \nRe-snapping After Layout Changes"},{"refs":[{"id":"ref-for-scroll-snapport\u2461"},{"id":"ref-for-scroll-snapport\u2462"},{"id":"ref-for-scroll-snapport\u2463"},{"id":"ref-for-scroll-snapport\u2464"},{"id":"ref-for-scroll-snapport\u2465"}],"title":"5.2. Scroll Snapping Alignment: the scroll-snap-align property"},{"refs":[{"id":"ref-for-scroll-snapport\u2466"},{"id":"ref-for-scroll-snapport\u2467"},{"id":"ref-for-scroll-snapport\u2468"},{"id":"ref-for-scroll-snapport\u2460\u24ea"}],"title":"5.2.1. \nScoping Valid Snap Positions to Visible Boxes"},{"refs":[{"id":"ref-for-scroll-snapport\u2460\u2460"},{"id":"ref-for-scroll-snapport\u2460\u2461"},{"id":"ref-for-scroll-snapport\u2460\u2462"},{"id":"ref-for-scroll-snapport\u2460\u2463"},{"id":"ref-for-scroll-snapport\u2460\u2464"}],"title":"5.2.2. \nSnapping Boxes that Overflow the Scrollport"},{"refs":[{"id":"ref-for-scroll-snapport\u2460\u2465"},{"id":"ref-for-scroll-snapport\u2460\u2466"}],"title":"6.2. Choosing Snap Positions"},{"refs":[{"id":"ref-for-scroll-snapport\u2460\u2467"}],"title":"Physical Longhands for scroll-padding"},{"refs":[{"id":"ref-for-scroll-snapport\u2460\u2468"},{"id":"ref-for-scroll-snapport\u2461\u24ea"}],"title":"Flow-relative Longhands for scroll-padding"}],"url":"#scroll-snapport"},
+"stationary-scroll": {"dfnID":"stationary-scroll","dfnText":"stationary scroll","external":false,"refSections":[{"refs":[{"id":"ref-for-stationary-scroll"},{"id":"ref-for-stationary-scroll\u2460"},{"id":"ref-for-stationary-scroll\u2461"}],"title":"6.1. Types of Scrolling Methods"}],"url":"#stationary-scroll"},
 "strictness-value": {"dfnID":"strictness-value","dfnText":"strictness values","external":false,"refSections":[],"url":"#strictness-value"},
 "valdef-scroll-padding-auto": {"dfnID":"valdef-scroll-padding-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-padding-auto"}],"title":"4.2. Scroll Snapport: the scroll-padding property"},{"refs":[{"id":"ref-for-valdef-scroll-padding-auto\u2460"}],"title":"Physical Longhands for scroll-padding"},{"refs":[{"id":"ref-for-valdef-scroll-padding-auto\u2461"}],"title":"Flow-relative Longhands for scroll-padding"},{"refs":[{"id":"ref-for-valdef-scroll-padding-auto\u2462"}],"title":"9.3. Changes Since 14 August 2018 CR"},{"refs":[{"id":"ref-for-valdef-scroll-padding-auto\u2463"}],"title":"9.4. Changes Since 14 December 2017 CR"}],"url":"#valdef-scroll-padding-auto"},
 "valdef-scroll-padding-length-percentage-0": {"dfnID":"valdef-scroll-padding-length-percentage-0","dfnText":"<length-percentage [0,\u221e]>","external":false,"refSections":[],"url":"#valdef-scroll-padding-length-percentage-0"},
@@ -4143,7 +4191,7 @@ let dfnPanelData = {
 "valdef-scroll-snap-type-block": {"dfnID":"valdef-scroll-snap-type-block","dfnText":"block","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-block"}],"title":"4.1.1. \nScroll Snap Axis: the x, y, block, inline, and both values"}],"url":"#valdef-scroll-snap-type-block"},
 "valdef-scroll-snap-type-both": {"dfnID":"valdef-scroll-snap-type-both","dfnText":"both","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-both"}],"title":"4.1.1. \nScroll Snap Axis: the x, y, block, inline, and both values"}],"url":"#valdef-scroll-snap-type-both"},
 "valdef-scroll-snap-type-inline": {"dfnID":"valdef-scroll-snap-type-inline","dfnText":"inline","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-inline"}],"title":"4.1.1. \nScroll Snap Axis: the x, y, block, inline, and both values"}],"url":"#valdef-scroll-snap-type-inline"},
-"valdef-scroll-snap-type-mandatory": {"dfnID":"valdef-scroll-snap-type-mandatory","dfnText":"mandatory","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-mandatory"},{"id":"ref-for-valdef-scroll-snap-type-mandatory\u2460"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"},{"refs":[{"id":"ref-for-valdef-scroll-snap-type-mandatory\u2461"}],"title":"6.2. Choosing Snap Positions"}],"url":"#valdef-scroll-snap-type-mandatory"},
+"valdef-scroll-snap-type-mandatory": {"dfnID":"valdef-scroll-snap-type-mandatory","dfnText":"mandatory","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-mandatory"},{"id":"ref-for-valdef-scroll-snap-type-mandatory\u2460"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"},{"refs":[{"id":"ref-for-valdef-scroll-snap-type-mandatory\u2461"}],"title":"6.1. Types of Scrolling Methods"},{"refs":[{"id":"ref-for-valdef-scroll-snap-type-mandatory\u2462"}],"title":"6.2. Choosing Snap Positions"}],"url":"#valdef-scroll-snap-type-mandatory"},
 "valdef-scroll-snap-type-none": {"dfnID":"valdef-scroll-snap-type-none","dfnText":"none","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-none"},{"id":"ref-for-valdef-scroll-snap-type-none\u2460"},{"id":"ref-for-valdef-scroll-snap-type-none\u2461"},{"id":"ref-for-valdef-scroll-snap-type-none\u2462"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"}],"url":"#valdef-scroll-snap-type-none"},
 "valdef-scroll-snap-type-proximity": {"dfnID":"valdef-scroll-snap-type-proximity","dfnText":"proximity","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-proximity"}],"title":"4.1. Scroll Snapping Rules: the scroll-snap-type property"},{"refs":[{"id":"ref-for-valdef-scroll-snap-type-proximity\u2460"},{"id":"ref-for-valdef-scroll-snap-type-proximity\u2461"}],"title":"4.1.2. \nScroll Snap Strictness: the none, proximity, and mandatory values"}],"url":"#valdef-scroll-snap-type-proximity"},
 "valdef-scroll-snap-type-x": {"dfnID":"valdef-scroll-snap-type-x","dfnText":"x","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-scroll-snap-type-x"}],"title":"4.1.1. \nScroll Snap Axis: the x, y, block, inline, and both values"}],"url":"#valdef-scroll-snap-type-x"},
@@ -4611,11 +4659,9 @@ window.addEventListener("resize", repositionAnnoPanels);
 "use strict";
 {
 let refsData = {
+"#absolute-scroll": {"displayText":"absolute scroll","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"absolute scroll","type":"dfn","url":"#absolute-scroll"},
 "#axis-lock": {"displayText":"axis-lock","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"axis-lock","type":"dfn","url":"#axis-lock"},
 "#captures-snap-positions": {"displayText":"captures snap positions","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"captures snap positions","type":"dfn","url":"#captures-snap-positions"},
-"#intended-direction": {"displayText":"intended direction","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"intended direction","type":"dfn","url":"#intended-direction"},
-"#intended-direction-and-end-position": {"displayText":"intended direction and end position","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"intended direction and end position","type":"dfn","url":"#intended-direction-and-end-position"},
-"#intended-end-position": {"displayText":"intended end position","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"intended end position","type":"dfn","url":"#intended-end-position"},
 "#natural-end-point": {"displayText":"natural end-point","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"natural end-point","type":"dfn","url":"#natural-end-point"},
 "#optimal-viewing-region": {"displayText":"optimal viewing region","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"optimal viewing region","type":"dfn","url":"#optimal-viewing-region"},
 "#propdef-scroll-margin": {"displayText":"scroll-margin","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"scroll-margin","type":"property","url":"#propdef-scroll-margin"},
@@ -4643,11 +4689,13 @@ let refsData = {
 "#propdef-scroll-snap-align": {"displayText":"scroll-snap-align","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"scroll-snap-align","type":"property","url":"#propdef-scroll-snap-align"},
 "#propdef-scroll-snap-stop": {"displayText":"scroll-snap-stop","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"scroll-snap-stop","type":"property","url":"#propdef-scroll-snap-stop"},
 "#propdef-scroll-snap-type": {"displayText":"scroll-snap-type","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"scroll-snap-type","type":"property","url":"#propdef-scroll-snap-type"},
+"#relative-scroll": {"displayText":"relative scroll","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"relative scroll","type":"dfn","url":"#relative-scroll"},
 "#scroll-snap": {"displayText":"snap","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"snap","type":"dfn","url":"#scroll-snap"},
 "#scroll-snap-area": {"displayText":"scroll snap area","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"scroll snap area","type":"dfn","url":"#scroll-snap-area"},
 "#scroll-snap-container": {"displayText":"scroll snap container","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"scroll snap container","type":"dfn","url":"#scroll-snap-container"},
 "#scroll-snap-position": {"displayText":"scroll snap position","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"scroll snap position","type":"dfn","url":"#scroll-snap-position"},
 "#scroll-snapport": {"displayText":"snapport","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"snapport","type":"dfn","url":"#scroll-snapport"},
+"#stationary-scroll": {"displayText":"stationary scroll","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"stationary scroll","type":"dfn","url":"#stationary-scroll"},
 "#valdef-scroll-padding-auto": {"displayText":"auto","export":true,"for_":["scroll-padding","scroll-padding-block","scroll-padding-block-end","scroll-padding-block-start","scroll-padding-inline","scroll-padding-inline-end","scroll-padding-inline-start"],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"auto","type":"value","url":"#valdef-scroll-padding-auto"},
 "#valdef-scroll-snap-align-start": {"displayText":"start","export":true,"for_":["scroll-snap-align"],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"start","type":"value","url":"#valdef-scroll-snap-align-start"},
 "#valdef-scroll-snap-type-block": {"displayText":"block","export":true,"for_":["scroll-snap-type"],"level":"1","normative":true,"shortname":"css-scroll-snap","spec":"css-scroll-snap-1","status":"local","text":"block","type":"value","url":"#valdef-scroll-snap-type-block"},
@@ -4678,6 +4726,7 @@ let refsData = {
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-after": {"displayText":"::after","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::after","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-after"},
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter": {"displayText":"::first-letter","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::first-letter","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter"},
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line": {"displayText":"::first-line","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::first-line","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line"},
+"https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor": {"displayText":"overflow-anchor","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scroll-anchoring","spec":"css-scroll-anchoring-1","status":"current","text":"overflow-anchor","type":"property","url":"https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor"},
 "https://drafts.csswg.org/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "https://drafts.csswg.org/css-values-4/#css-wide-keywords": {"displayText":"CSS-wide keywords","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"css-wide keywords","type":"dfn","url":"https://drafts.csswg.org/css-values-4/#css-wide-keywords"},
 "https://drafts.csswg.org/css-values-4/#length-value": {"displayText":"<length>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<length>","type":"type","url":"https://drafts.csswg.org/css-values-4/#length-value"},

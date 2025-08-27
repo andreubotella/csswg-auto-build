@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/selectors-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="744ea620945d6e1fb3f245e5cc04668dfe3000f5" name="revision">
+  <meta content="51f2b363899a6e17c9ed799817f6fbfa1b480043" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1104,7 +1104,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">Selectors Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-08-13">13 August 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-26">26 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -4005,23 +4005,44 @@ The Focus Container Pseudo-class: <a class="css" data-link-type="maybe" href="#f
 	matches the conditions for matching <span class="css" id="ref-for-focus-pseudo①②">:focus</span>.</p>
    <h3 class="heading settled" data-level="9.6" id="interest-pseudos"><span class="secno">9.6. </span><span class="content">
 The Interest Pseudo-classes: <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source">:interest-source</a> and <a class="css" data-link-type="maybe" href="#selectordef-interest-target" id="ref-for-selectordef-interest-target">:interest-target</a></span><a class="self-link" href="#interest-pseudos"></a></h3>
-   <p><a data-link-type="dfn" href="#host-language" id="ref-for-host-language①">Host languages</a> can define that certain elements
-	are capable of "showing interest" in another element
-	(typically, an informative popup),
-	so that when a user interacts with the first element,
-	the second element can be shown or otherwise rendered differently.</p>
-   <p class="issue" id="issue-f363e9ca"><a class="self-link" href="#issue-f363e9ca"></a> TODO Add reference to the HTML feature when it’s fully landed.</p>
+   <p>A common UI feature is the ability for the user to "show interest" in certain elements
+	(an <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="interest-source">interest source</dfn>),
+	and the UI to respond to that interest
+	by showing additional information in another element
+	(the <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="interest-target">interest target</dfn>),
+	typically a popup.
+	For example, hovering a username on a page
+	might bring up an information card for that user;
+	or long-pressing a link
+	might bring up a preview of the link’s destination.
+	Whenever this happens, the first element</p>
+   <p class="note" role="note"><span class="marker">Note:</span> Exactly what elements are capable of being <a data-link-type="dfn" href="#interest-source" id="ref-for-interest-source">interest sources</a>,
+	how they’re linked to <a data-link-type="dfn" href="#interest-target" id="ref-for-interest-target">interest targets</a>,
+	and how "interest" is shown
+	are all <a data-link-type="dfn" href="#host-language" id="ref-for-host-language①">host language</a>-defined.
+	In HTML, for example,
+	this is done with the <code><u class="link-error" data-lt="interestfor" title="LINK ERROR: No &apos;element-sub&apos; refs found for &apos;interestfor&apos;.">interestfor</u></code> attribute
+	to indicate an element capable of "showing interest" 
+	(being an <span id="ref-for-interest-source①">interest source</span>,
+	and that attribute points to another element
+	intended to show the additional information
+	(the associated <span id="ref-for-interest-target①">interest target</span>)
+	(usually a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/popover.html#attr-popover" id="ref-for-attr-popover">popover</a></code> element).</p>
    <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-interest-source">:interest-source</dfn> pseudo-class
-	applies to any element (or pseudo-element)
-	that is capable of "showing interest" in another element,
-	as defined by the <a data-link-type="dfn" href="#host-language" id="ref-for-host-language②">host language</a>.
-	(It applies regardless of whether the element 
-	is <em>currently</em> showing interest or not.)</p>
-   <p>The <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-interest-target">:interest-target</dfn> pseudo-class
-	applies to the "other element"
-	that an <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source①">:interest-source</a> element is currently showing interest in.
-	(It only applies to an element 
-	that is <em>currently</em> having interest shown in it.)</p>
+	applies to an <a data-link-type="dfn" href="#interest-source" id="ref-for-interest-source②">interest source</a> element that the user is currently "showing interest" in,
+	and the <dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="selectordef-interest-target">:interest-target</dfn> pseudo-class
+	applies to the associated <a data-link-type="dfn" href="#interest-target" id="ref-for-interest-target②">interest target</a>
+	of an element matching <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source①">:interest-source</a>.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source②">:interest-source</a> only matches an <a data-link-type="dfn" href="#interest-source" id="ref-for-interest-source③">interest source</a>
+	the user is <em>currently</em> interested in,
+	not any element that can <em>potentially</em> have interest shown in it.
+	In HTML, for example,
+	just having the <code><u class="link-error" data-lt="interestfor" title="LINK ERROR: No &apos;element-sub&apos; refs found for &apos;interestfor&apos;.">interestfor</u></code> attribute
+	does not make an element match this pseudo-class;
+	the user has to actually indicate interest in it too.
+	Similarly, <a class="css" data-link-type="maybe" href="#selectordef-interest-target" id="ref-for-selectordef-interest-target①">:interest-target</a> only matches an <a data-link-type="dfn" href="#interest-target" id="ref-for-interest-target③">interest target</a>
+	that is linked to an element the user is <em>currently</em> interested in,
+	not any element pointed to by an <code><u class="link-error" data-lt="interestefor" title="LINK ERROR: No &apos;element-sub&apos; refs found for &apos;interestefor&apos;.">interestefor</u></code> attribute.</p>
    <h2 class="heading settled" data-level="10" id="time-pseudos"><span class="secno">10. </span><span class="content">
 Time-dimensional Pseudo-classes</span><a class="self-link" href="#time-pseudos"></a></h2>
    <p>These pseudo-classes classify elements with respect to the
@@ -4158,7 +4179,7 @@ Popover State: the <a class="css" data-link-type="maybe" href="#selectordef-popo
 	associated with being a popover.</p>
    <p>Exactly what “popover-showing” and “popover-hidden” states
 	mean is host-language specific,
-	but is exemplified by the presence of the HTML <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/popover.html#attr-popover" id="ref-for-attr-popover">popover</a></code> attribute
+	but is exemplified by the presence of the HTML <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/popover.html#attr-popover" id="ref-for-attr-popover①">popover</a></code> attribute
 	and the associated <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/popover.html#popover-visibility-state" id="ref-for-popover-visibility-state">popover visibility state</a>.</p>
    <h3 class="heading settled" data-level="12.3" id="modal-state"><span class="secno">12.3. </span><span class="content">
 Modal (Exclusive Interaction) State: the <a class="css" data-link-type="maybe" href="#selectordef-modal" id="ref-for-selectordef-modal">:modal</a> pseudo-class</span><a class="self-link" href="#modal-state"></a></h3>
@@ -6168,7 +6189,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#input-value-pseudo-classes">input value pseudo-classes</a><span>, in § 13.2.1</span>
    <li><a href="#in-range-pseudo">:in-range</a><span>, in § 13.3.3</span>
    <li><a href="#selectordef-interest-source">:interest-source</a><span>, in § 9.6</span>
+   <li><a href="#interest-source">interest source</a><span>, in § 9.6</span>
    <li><a href="#selectordef-interest-target">:interest-target</a><span>, in § 9.6</span>
+   <li><a href="#interest-target">interest target</a><span>, in § 9.6</span>
    <li><a href="#invalid-pseudo">:invalid</a><span>, in § 13.3.2</span>
    <li><a href="#invalid-selector">invalid</a><span>, in § 3.9</span>
    <li><a href="#invalid-selector">invalid selector</a><span>, in § 3.9</span>
@@ -6563,7 +6586,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 	the main objection seems to be implementation difficulty.
 	See <a href="https://github.com/w3c/csswg-drafts/issues/397">CSSWG issue (CSS)</a>
 	and <a href="https://github.com/whatwg/html/issues/1632">WHATWG issue (HTML)</a>. <a class="issue-return" href="#issue-1416193e" title="Jump to section">↵</a></div>
-   <div class="issue"> TODO Add reference to the HTML feature when it’s fully landed. <a class="issue-return" href="#issue-f363e9ca" title="Jump to section">↵</a></div>
    <div class="issue"> Are these still necessary now that we have more rigorous definitions for <a data-link-type="dfn" href="#match">match</a> and <a data-link-type="dfn" href="#invalid-selector">invalid selector</a>?
 	Nouns are a lot easier to coordinate across specification than predicates,
 	and details like the exact order of elements returned from <code>querySelector</code>
@@ -7895,7 +7917,7 @@ let dfnPanelData = {
 "f03eba48": {"dfnID":"f03eba48","dfnText":":target-within","external":true,"refSections":[{"refs":[{"id":"ref-for-target-within-pseudo"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-target-within-pseudo\u2460"}],"title":"20.7. \nChanges Since Level 3"}],"url":"https://www.w3.org/TR/selectors-4/#target-within-pseudo"},
 "f0811ff8": {"dfnID":"f0811ff8","dfnText":"img","external":true,"refSections":[{"refs":[{"id":"ref-for-the-img-element"}],"title":"14.4.1. \n:nth-of-type() pseudo-class"},{"refs":[{"id":"ref-for-the-img-element\u2460"}],"title":"14.4.2. \n:nth-last-of-type() pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element"},
 "f29863d8": {"dfnID":"f29863d8","dfnText":"ol","external":true,"refSections":[{"refs":[{"id":"ref-for-the-ol-element"}],"title":"4.2. \nThe Matches-Any Pseudo-class: :is()"},{"refs":[{"id":"ref-for-the-ol-element\u2460"},{"id":"ref-for-the-ol-element\u2461"}],"title":"15.2. \nChild combinator (>)"}],"url":"https://html.spec.whatwg.org/multipage/grouping-content.html#the-ol-element"},
-"f4da6587": {"dfnID":"f4da6587","dfnText":"popover","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-popover"}],"title":"12.2. \nPopover State: the :popover-open pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/popover.html#attr-popover"},
+"f4da6587": {"dfnID":"f4da6587","dfnText":"popover","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-popover"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"},{"refs":[{"id":"ref-for-attr-popover\u2460"}],"title":"12.2. \nPopover State: the :popover-open pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/popover.html#attr-popover"},
 "f7960529": {"dfnID":"f7960529","dfnText":"root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-root"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-concept-tree-root\u2460"}],"title":"19.5. \nMatch a Selector Against a Tree"}],"url":"https://dom.spec.whatwg.org/#concept-tree-root"},
 "fb9bb722": {"dfnID":"fb9bb722","dfnText":"site","external":true,"refSections":[{"refs":[{"id":"ref-for-site"}],"title":"\nAppendix C: Example Privacy-Preserving :visited Restrictions"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#site"},
 "fc736137": {"dfnID":"fc736137","dfnText":"textarea","external":true,"refSections":[{"refs":[{"id":"ref-for-the-textarea-element"}],"title":"13.1.3. \nThe Placeholder-shown Pseudo-class: :placeholder-shown"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element"},
@@ -7913,13 +7935,15 @@ let dfnPanelData = {
 "future-pseudo": {"dfnID":"future-pseudo","dfnText":":future","external":false,"refSections":[{"refs":[{"id":"ref-for-future-pseudo"},{"id":"ref-for-future-pseudo\u2460"},{"id":"ref-for-future-pseudo\u2461"}],"title":"10. \nTime-dimensional Pseudo-classes"},{"refs":[{"id":"ref-for-future-pseudo\u2462"},{"id":"ref-for-future-pseudo\u2463"}],"title":"10.3. \nThe Future-element Pseudo-class: :future"}],"url":"#future-pseudo"},
 "has-allowed-pseudo-element": {"dfnID":"has-allowed-pseudo-element","dfnText":":has-allowed pseudo-element","external":false,"refSections":[{"refs":[{"id":"ref-for-has-allowed-pseudo-element"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"}],"url":"#has-allowed-pseudo-element"},
 "has-pseudo": {"dfnID":"has-pseudo","dfnText":":has()","external":false,"refSections":[{"refs":[{"id":"ref-for-has-pseudo"},{"id":"ref-for-has-pseudo\u2460"}],"title":"3.2.1. \nFeatureless Elements"},{"refs":[{"id":"ref-for-has-pseudo\u2461"},{"id":"ref-for-has-pseudo\u2462"},{"id":"ref-for-has-pseudo\u2463"},{"id":"ref-for-has-pseudo\u2464"},{"id":"ref-for-has-pseudo\u2465"},{"id":"ref-for-has-pseudo\u2466"},{"id":"ref-for-has-pseudo\u2467"},{"id":"ref-for-has-pseudo\u2468"},{"id":"ref-for-has-pseudo\u2460\u24ea"}],"title":"4.5. \nThe Relational Pseudo-class: :has()"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2460"}],"title":"17. \nCalculating a selector\u2019s specificity"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2461"}],"title":"\nAppendix A: Guidance on Mapping Source Documents & Data to an Element Tree"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2462"},{"id":"ref-for-has-pseudo\u2460\u2463"},{"id":"ref-for-has-pseudo\u2460\u2464"},{"id":"ref-for-has-pseudo\u2460\u2465"}],"title":"20.1. \nChanges since the 7 May 2022 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2466"},{"id":"ref-for-has-pseudo\u2460\u2467"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2460\u2468"}],"title":"20.3. \nChanges since the 2 February 2018 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2461\u24ea"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-has-pseudo\u2461\u2460"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#has-pseudo"},
-"host-language": {"dfnID":"host-language","dfnText":"host language","external":false,"refSections":[{"refs":[{"id":"ref-for-host-language"}],"title":"3.2. \nData Model"},{"refs":[{"id":"ref-for-host-language\u2460"},{"id":"ref-for-host-language\u2461"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#host-language"},
+"host-language": {"dfnID":"host-language","dfnText":"host language","external":false,"refSections":[{"refs":[{"id":"ref-for-host-language"}],"title":"3.2. \nData Model"},{"refs":[{"id":"ref-for-host-language\u2460"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#host-language"},
 "hover-pseudo": {"dfnID":"hover-pseudo","dfnText":":hover","external":false,"refSections":[{"refs":[{"id":"ref-for-hover-pseudo"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-hover-pseudo\u2460"}],"title":"9. \nUser Action Pseudo-classes"},{"refs":[{"id":"ref-for-hover-pseudo\u2461"},{"id":"ref-for-hover-pseudo\u2462"},{"id":"ref-for-hover-pseudo\u2463"},{"id":"ref-for-hover-pseudo\u2464"},{"id":"ref-for-hover-pseudo\u2465"}],"title":"9.1. \nThe Pointer Hover Pseudo-class: :hover"}],"url":"#hover-pseudo"},
 "id-selector": {"dfnID":"id-selector","dfnText":"ID selector","external":false,"refSections":[{"refs":[{"id":"ref-for-id-selector"}],"title":"3.1. \nStructure and Terminology"}],"url":"#id-selector"},
 "in-range-pseudo": {"dfnID":"in-range-pseudo","dfnText":":in-range","external":false,"refSections":[{"refs":[{"id":"ref-for-in-range-pseudo"},{"id":"ref-for-in-range-pseudo\u2460"},{"id":"ref-for-in-range-pseudo\u2461"}],"title":"13.3.3. \nThe Range Pseudo-classes: :in-range and :out-of-range"}],"url":"#in-range-pseudo"},
 "indeterminate-pseudo": {"dfnID":"indeterminate-pseudo","dfnText":":indeterminate","external":false,"refSections":[{"refs":[{"id":"ref-for-indeterminate-pseudo"},{"id":"ref-for-indeterminate-pseudo\u2460"},{"id":"ref-for-indeterminate-pseudo\u2461"},{"id":"ref-for-indeterminate-pseudo\u2462"},{"id":"ref-for-indeterminate-pseudo\u2463"},{"id":"ref-for-indeterminate-pseudo\u2464"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"},{"refs":[{"id":"ref-for-indeterminate-pseudo\u2465"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#indeterminate-pseudo"},
 "indicate-focus": {"dfnID":"indicate-focus","dfnText":"indicate focus","external":false,"refSections":[{"refs":[{"id":"ref-for-indicate-focus"},{"id":"ref-for-indicate-focus\u2460"},{"id":"ref-for-indicate-focus\u2461"},{"id":"ref-for-indicate-focus\u2462"},{"id":"ref-for-indicate-focus\u2463"},{"id":"ref-for-indicate-focus\u2464"},{"id":"ref-for-indicate-focus\u2465"},{"id":"ref-for-indicate-focus\u2466"},{"id":"ref-for-indicate-focus\u2467"},{"id":"ref-for-indicate-focus\u2468"},{"id":"ref-for-indicate-focus\u2460\u24ea"}],"title":"9.4. \nThe Focus-Indicated Pseudo-class: :focus-visible"}],"url":"#indicate-focus"},
 "input-value-pseudo-classes": {"dfnID":"input-value-pseudo-classes","dfnText":"input value pseudo-classes","external":false,"refSections":[{"refs":[{"id":"ref-for-input-value-pseudo-classes"}],"title":"13.2.1. \nThe Selected-option Pseudo-classes: :checked, :unchecked, and :indeterminate"}],"url":"#input-value-pseudo-classes"},
+"interest-source": {"dfnID":"interest-source","dfnText":"interest source","external":false,"refSections":[{"refs":[{"id":"ref-for-interest-source"},{"id":"ref-for-interest-source\u2460"},{"id":"ref-for-interest-source\u2461"},{"id":"ref-for-interest-source\u2462"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#interest-source"},
+"interest-target": {"dfnID":"interest-target","dfnText":"interest target","external":false,"refSections":[{"refs":[{"id":"ref-for-interest-target"},{"id":"ref-for-interest-target\u2460"},{"id":"ref-for-interest-target\u2461"},{"id":"ref-for-interest-target\u2462"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#interest-target"},
 "invalid-pseudo": {"dfnID":"invalid-pseudo","dfnText":":invalid","external":false,"refSections":[{"refs":[{"id":"ref-for-invalid-pseudo"},{"id":"ref-for-invalid-pseudo\u2460"},{"id":"ref-for-invalid-pseudo\u2461"}],"title":"13.3.2. \nThe Validity Pseudo-classes: :valid and :invalid"},{"refs":[{"id":"ref-for-invalid-pseudo\u2462"},{"id":"ref-for-invalid-pseudo\u2463"},{"id":"ref-for-invalid-pseudo\u2464"}],"title":"13.3.5. \nThe User-interaction Pseudo-classes: :user-valid and :user-invalid"}],"url":"#invalid-pseudo"},
 "invalid-selector": {"dfnID":"invalid-selector","dfnText":"invalid selectors","external":false,"refSections":[{"refs":[{"id":"ref-for-invalid-selector"}],"title":"3.6.3. \nPseudo-classing Pseudo-elements"},{"refs":[{"id":"ref-for-invalid-selector\u2460"},{"id":"ref-for-invalid-selector\u2461"}],"title":"3.9. \nInvalid Selectors and Error Handling"},{"refs":[{"id":"ref-for-invalid-selector\u2462"}],"title":"5.3. \nNamespaces in Elemental Selectors"},{"refs":[{"id":"ref-for-invalid-selector\u2463"}],"title":"18.1. \n<forgiving-selector-list> and <forgiving-relative-selector-list>"},{"refs":[{"id":"ref-for-invalid-selector\u2464"}],"title":"19. \nAPI Hooks"},{"refs":[{"id":"ref-for-invalid-selector\u2465"},{"id":"ref-for-invalid-selector\u2466"}],"title":"19.1. \nParse A Selector"},{"refs":[{"id":"ref-for-invalid-selector\u2467"},{"id":"ref-for-invalid-selector\u2468"}],"title":"19.2. \nParse A Relative Selector"}],"url":"#invalid-selector"},
 "lang-pseudo": {"dfnID":"lang-pseudo","dfnText":":lang()","external":false,"refSections":[{"refs":[{"id":"ref-for-lang-pseudo"}],"title":"3.2. \nData Model"},{"refs":[{"id":"ref-for-lang-pseudo\u2460"}],"title":"3.5. \nPseudo-classes"},{"refs":[{"id":"ref-for-lang-pseudo\u2461"}],"title":"3.7. \nCharacters and case sensitivity"},{"refs":[{"id":"ref-for-lang-pseudo\u2462"}],"title":"6.1. \nAttribute presence and value selectors"},{"refs":[{"id":"ref-for-lang-pseudo\u2463"},{"id":"ref-for-lang-pseudo\u2464"}],"title":"7.2. \nThe Language Pseudo-class: :lang()"},{"refs":[{"id":"ref-for-lang-pseudo\u2465"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-lang-pseudo\u2466"}],"title":"20.7. \nChanges Since Level 3"}],"url":"#lang-pseudo"},
@@ -7980,8 +8004,8 @@ let dfnPanelData = {
 "selectordef-column": {"dfnID":"selectordef-column","dfnText":"||","external":false,"refSections":[],"url":"#selectordef-column"},
 "selectordef-current": {"dfnID":"selectordef-current","dfnText":":current()","external":false,"refSections":[],"url":"#selectordef-current"},
 "selectordef-fullscreen": {"dfnID":"selectordef-fullscreen","dfnText":":fullscreen","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-fullscreen"}],"title":"12.3. \nModal (Exclusive Interaction) State: the :modal pseudo-class"},{"refs":[{"id":"ref-for-selectordef-fullscreen\u2460"}],"title":"12.4. \nFullscreen Presentation State: the :fullscreen pseudo-class"},{"refs":[{"id":"ref-for-selectordef-fullscreen\u2461"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"}],"url":"#selectordef-fullscreen"},
-"selectordef-interest-source": {"dfnID":"selectordef-interest-source","dfnText":":interest-source","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-interest-source"},{"id":"ref-for-selectordef-interest-source\u2460"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#selectordef-interest-source"},
-"selectordef-interest-target": {"dfnID":"selectordef-interest-target","dfnText":":interest-target","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-interest-target"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#selectordef-interest-target"},
+"selectordef-interest-source": {"dfnID":"selectordef-interest-source","dfnText":":interest-source","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-interest-source"},{"id":"ref-for-selectordef-interest-source\u2460"},{"id":"ref-for-selectordef-interest-source\u2461"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#selectordef-interest-source"},
+"selectordef-interest-target": {"dfnID":"selectordef-interest-target","dfnText":":interest-target","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-interest-target"},{"id":"ref-for-selectordef-interest-target\u2460"}],"title":"9.6. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#selectordef-interest-target"},
 "selectordef-matches": {"dfnID":"selectordef-matches","dfnText":":matches()","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-matches"}],"title":"20.3. \nChanges since the 2 February 2018 Working Draft"},{"refs":[{"id":"ref-for-selectordef-matches\u2460"},{"id":"ref-for-selectordef-matches\u2461"}],"title":"20.4. \nChanges since the 2 May 2013 Working Draft"},{"refs":[{"id":"ref-for-selectordef-matches\u2462"},{"id":"ref-for-selectordef-matches\u2463"}],"title":"20.5. \nChanges since the 23 August 2012 Working Draft"}],"url":"#selectordef-matches"},
 "selectordef-modal": {"dfnID":"selectordef-modal","dfnText":":modal","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-modal"},{"id":"ref-for-selectordef-modal\u2460"},{"id":"ref-for-selectordef-modal\u2461"},{"id":"ref-for-selectordef-modal\u2462"}],"title":"12.3. \nModal (Exclusive Interaction) State: the :modal pseudo-class"},{"refs":[{"id":"ref-for-selectordef-modal\u2463"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"}],"url":"#selectordef-modal"},
 "selectordef-muted": {"dfnID":"selectordef-muted","dfnText":":muted","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-muted"}],"title":"11.3. \nSound State: the :muted and :volume-locked pseudo-classes"},{"refs":[{"id":"ref-for-selectordef-muted\u2460"}],"title":"20.2. \nChanges since the 21 November 2018 Working Draft"}],"url":"#selectordef-muted"},
@@ -8522,6 +8546,8 @@ let refsData = {
 "#indeterminate-pseudo": {"displayText":":indeterminate","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":indeterminate","type":"selector","url":"#indeterminate-pseudo"},
 "#indicate-focus": {"displayText":"indicate focus","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"indicate focus","type":"dfn","url":"#indicate-focus"},
 "#input-value-pseudo-classes": {"displayText":"input value pseudo-classes","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"input value pseudo-classes","type":"dfn","url":"#input-value-pseudo-classes"},
+"#interest-source": {"displayText":"interest source","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"interest source","type":"dfn","url":"#interest-source"},
+"#interest-target": {"displayText":"interest target","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"interest target","type":"dfn","url":"#interest-target"},
 "#invalid-pseudo": {"displayText":":invalid","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":invalid","type":"selector","url":"#invalid-pseudo"},
 "#invalid-selector": {"displayText":"invalid selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":"invalid selector","type":"dfn","url":"#invalid-selector"},
 "#lang-pseudo": {"displayText":":lang()","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"local","text":":lang()","type":"selector","url":"#lang-pseudo"},
