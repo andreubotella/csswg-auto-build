@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/selectors-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="51f2b363899a6e17c9ed799817f6fbfa1b480043" name="revision">
+  <meta content="b85f3365670bfafcb046edaf0c99105e0bdfb6e4" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -711,7 +711,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">Selectors Level 5</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-06-27">27 June 2025</time></p>
+    <time class="dt-updated" datetime="2025-08-27">27 August 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1003,23 +1003,25 @@ Heading Structures: the heading pseudo-classes <a class="css" data-link-type="ma
    </div>
    <p>As a functional pseudo-class,
 	<dfn class="dfn-paneled css" data-dfn-type="selector" data-export id="heading-functional-pseudo">:heading()</dfn>
-	notation represents elements that have a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/sections.html#heading-level" id="ref-for-heading-level①">heading level</a> among <var>An+B</var>.
+	notation represents elements that have a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/sections.html#heading-level" id="ref-for-heading-level①">heading level</a> among matching
+	any of the provided <var>integer</var> values.
 	The syntax is:</p>
-<pre class="prod">:heading() = :heading( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#anb-production" id="ref-for-anb-production">&lt;An+B></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a> )
+<pre class="prod">:heading() = :heading( <a class="production" data-link-type="type" href="#typedef-level" id="ref-for-typedef-level">&lt;level></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma">#</a> )
 </pre>
+   <p>where <dfn class="dfn-paneled css" data-dfn-type="type" data-export id="typedef-level"><code>&lt;level></code></dfn> is a <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-number-token" id="ref-for-typedef-number-token">&lt;number-token></a> with its type flag set to "integer".</p>
    <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#specificity" id="ref-for-specificity①">specificity</a> of <a class="css" data-link-type="maybe" href="#heading-functional-pseudo" id="ref-for-heading-functional-pseudo①">:heading()</a> is that of a class.</p>
-   <div class="example" id="example-d052ad9e">
-    <a class="self-link" href="#example-d052ad9e"></a>
+   <div class="example" id="example-8a5e281d">
+    <a class="self-link" href="#example-8a5e281d"></a>
 		The following example styles headings with levels between 1 and 3 with a
 		font-weight of 900, while headings with levels 6 onward with font-weight of
 		500, additionally heading levels 1 and 2 will be underlined, while 3 and
 		beyond will have no text-decoration:
 
 		
-<pre>:heading(-n+3) { font-weight: 900; }</pre>
-<pre>:heading(n+6) { font-weight: 500; }</pre>
+<pre>:heading(1, 2, 3) { font-weight: 900; }</pre>
+<pre>:heading(6, 7, 8, 9) { font-weight: 500; }</pre>
 <pre>:heading(1, 2) { text-decoration: underline; }</pre>
-<pre>:heading(n+3) { text-decoration: none; }</pre>
+<pre>:heading(3, 4, 5, 6, 7, 8, 9) { text-decoration: none; }</pre>
    </div>
    <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/sections.html#heading-level" id="ref-for-heading-level②">heading level</a> might be different from an element’s
 	<a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#type-selector" id="ref-for-type-selector">type selector</a>. Thus, a selector <span class="css">h1:heading(3)</span> matches any
@@ -1217,6 +1219,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <ul class="index">
    <li><a href="#heading-pseudo">:heading</a><span>, in § 4</span>
    <li><a href="#heading-functional-pseudo">:heading()</a><span>, in § 4</span>
+   <li><a href="#typedef-level">&lt;level></a><span>, in § 4</span>
    <li><a href="#local-link-pseudo">:local-link</a><span>, in § 2.1</span>
    <li><a href="#reference-combinator">reference combinator</a><span>, in § 5.1</span>
    <li><a href="#state-pseudo">:state( &lt;ident> )</a><span>, in § 3</span>
@@ -1226,7 +1229,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-SYNTAX-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="3a098985">&lt;an+b></span>
+     <li><span class="dfn-paneled" id="92700be8">&lt;number-token></span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
@@ -1497,11 +1500,11 @@ let dfnPanelData = {
 "24408a11": {"dfnID":"24408a11","dfnText":"compound selector","external":true,"refSections":[{"refs":[{"id":"ref-for-compound"},{"id":"ref-for-compound\u2460"},{"id":"ref-for-compound\u2461"}],"title":"5.1. \nReference combinators /ref/"}],"url":"https://drafts.csswg.org/selectors-4/#compound"},
 "32c45571": {"dfnID":"32c45571","dfnText":"type selector","external":true,"refSections":[{"refs":[{"id":"ref-for-type-selector"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/selectors-4/#type-selector"},
 "33cbcfca": {"dfnID":"33cbcfca","dfnText":"selector","external":true,"refSections":[{"refs":[{"id":"ref-for-selector"}],"title":"Unnumbered Section"}],"url":"https://drafts.csswg.org/selectors-4/#selector"},
-"3a098985": {"dfnID":"3a098985","dfnText":"<an+b>","external":true,"refSections":[{"refs":[{"id":"ref-for-anb-production"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/css-syntax-3/#anb-production"},
 "679bc36f": {"dfnID":"679bc36f","dfnText":"ID selector","external":true,"refSections":[{"refs":[{"id":"ref-for-id-selector"}],"title":"5.1. \nReference combinators /ref/"}],"url":"https://drafts.csswg.org/selectors-4/#id-selector"},
 "68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
 "7a87d819": {"dfnID":"7a87d819","dfnText":"is","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"},{"id":"ref-for-string-is\u2460"}],"title":"3. \nExposing custom state: the :state() pseudo-class"}],"url":"https://infra.spec.whatwg.org/#string-is"},
 "9213678e": {"dfnID":"9213678e","dfnText":"<ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-ident"}],"title":"3. \nExposing custom state: the :state() pseudo-class"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-ident"},
+"92700be8": {"dfnID":"92700be8","dfnText":"<number-token>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-number-token"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-number-token"},
 "b6fb7a51": {"dfnID":"b6fb7a51","dfnText":"custom element","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-element"}],"title":"3. \nExposing custom state: the :state() pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element"},
 "b87923a3": {"dfnID":"b87923a3","dfnText":"heading level","external":true,"refSections":[{"refs":[{"id":"ref-for-heading-level"},{"id":"ref-for-heading-level\u2460"},{"id":"ref-for-heading-level\u2461"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://html.spec.whatwg.org/multipage/sections.html#heading-level"},
 "bb2056aa": {"dfnID":"bb2056aa","dfnText":"specificity","external":true,"refSections":[{"refs":[{"id":"ref-for-specificity"},{"id":"ref-for-specificity\u2460"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/selectors-4/#specificity"},
@@ -1511,6 +1514,7 @@ let dfnPanelData = {
 "local-link-pseudo": {"dfnID":"local-link-pseudo","dfnText":":local-link","external":false,"refSections":[{"refs":[{"id":"ref-for-local-link-pseudo"},{"id":"ref-for-local-link-pseudo\u2460"}],"title":"2.1. \nThe local link pseudo-class :local-link"},{"refs":[{"id":"ref-for-local-link-pseudo\u2461"}],"title":"6.1. \nChanges Since Level 4"}],"url":"#local-link-pseudo"},
 "reference-combinator": {"dfnID":"reference-combinator","dfnText":"reference combinator","external":false,"refSections":[],"url":"#reference-combinator"},
 "state-pseudo": {"dfnID":"state-pseudo","dfnText":":state( <ident> )","external":false,"refSections":[{"refs":[{"id":"ref-for-state-pseudo"},{"id":"ref-for-state-pseudo\u2460"}],"title":"3. \nExposing custom state: the :state() pseudo-class"},{"refs":[{"id":"ref-for-state-pseudo\u2461"}],"title":"6.1. \nChanges Since Level 4"}],"url":"#state-pseudo"},
+"typedef-level": {"dfnID":"typedef-level","dfnText":"<level>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-level"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"#typedef-level"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -1903,7 +1907,8 @@ let refsData = {
 "#heading-pseudo": {"displayText":":heading","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":heading","type":"selector","url":"#heading-pseudo"},
 "#local-link-pseudo": {"displayText":":local-link","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":local-link","type":"selector","url":"#local-link-pseudo"},
 "#state-pseudo": {"displayText":":state( <ident> )","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":state( <ident> )","type":"selector","url":"#state-pseudo"},
-"https://drafts.csswg.org/css-syntax-3/#anb-production": {"displayText":"<an+b>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<an+b>","type":"type","url":"https://drafts.csswg.org/css-syntax-3/#anb-production"},
+"#typedef-level": {"displayText":"<level>","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":"<level>","type":"type","url":"#typedef-level"},
+"https://drafts.csswg.org/css-syntax-3/#typedef-number-token": {"displayText":"<number-token>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<number-token>","type":"type","url":"https://drafts.csswg.org/css-syntax-3/#typedef-number-token"},
 "https://drafts.csswg.org/css-values-4/#mult-comma": {"displayText":"#","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"#","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
 "https://drafts.csswg.org/css-values-4/#typedef-ident": {"displayText":"<ident>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<ident>","type":"type","url":"https://drafts.csswg.org/css-values-4/#typedef-ident"},
 "https://drafts.csswg.org/selectors-4/#compound": {"displayText":"compound selector","export":true,"for_":[],"level":"4","normative":true,"shortname":"selectors","spec":"selectors-4","status":"current","text":"compound selector","type":"dfn","url":"https://drafts.csswg.org/selectors-4/#compound"},
