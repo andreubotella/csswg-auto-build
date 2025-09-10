@@ -13,7 +13,7 @@ Work Status: exploring
 Editor: Chris Lilley, W3C, https://svgees.us/, w3cid 1438
 Editor: Una Kravets, Google, https://una.im, w3cid 115525
 Editor: Lea Verou, Invited Expert, https://lea.verou.me/about, w3cid 52258
-Editor: Adam Argyle, Google, https://nerdy.dev, w3cid 112669
+Former Editor: Adam Argyle, Google, https://nerdy.dev, w3cid 112669
 Abstract: This module extends CSS Color [[css-color-4]] to add color modification functions, custom color spaces (ICC profiles), contrast-color(), light-dark() and device-cmyk().
 Repository: w3c/csswg-drafts
 WPT Path Prefix: css/css-color/
@@ -218,7 +218,7 @@ Mixing Colors: the ''color-mix()'' Function {#color-mix}
 
 
 <pre class='prod'>
-	<dfn>color-mix()</dfn> = color-mix( <<color-interpolation-method>> , [ <<color>> && <<percentage [0,100]>>? ]#)
+	<dfn>color-mix()</dfn> = color-mix( [ <<color-interpolation-method>> ,]? [ <<color>> && <<percentage [0,100]>>? ]#)
 </pre>
 
 <wpt>
@@ -226,6 +226,13 @@ Mixing Colors: the ''color-mix()'' Function {#color-mix}
 	parsing/color-valid-color-mix-function.html
 
 </wpt>
+
+<h3 id="color-mix-space">
+	Colorspace for mixing
+</h3>
+
+If no color interpolation method is specified, assume Oklab.
+Otherwise, use the specified colorspace for mixing.
 
 <h3 id="color-mix-percent-norm">
 	Percentage Normalization
@@ -336,11 +343,6 @@ Mixing Colors: the ''color-mix()'' Function {#color-mix}
 	 	https://github.com/w3c/csswg-drafts/issues/11678#issuecomment-2686226875
 	-->
 
-The result of mixing is the color at the specified percentage along the progression
-of the second color to the first color.
-
-Note: As a corollary, a percentage of 0% just returns the other color converted to the specified color space,
-and a percentage of 100% returns the same color converted to the specified color space.
 
 <div class="example" id="ex-mix-lch-peru40">
 	<!--
@@ -3243,13 +3245,12 @@ The serialization of the declared value of a relative color is:
 	followed by a single space, 
 	followed by a space separated list of the non-alpha channel arguments as specified 
 	(identifiers serializing as identifiers, 
-	numbers serializing as numbers, 
-	percentages serializing as percentages, 
+	numbers and percentages serializing as numbers, 
 	angles serializing as canonicalized angles in degrees, 
 	calc() serializing in its simplified form), 
-	followed by " / " and the alpha component as specified 
-	(using the same rules as the color channel arguments) 
-	if an alpha component is present, 
+	followed (if the alpha component is non-unity) 
+	by " / " and the alpha component as specified 
+	(using the same rules as the color channel arguments, but clamped) 
 	followed by ")".
 
 2. For ''hwb()'', ''lab()'', ''lch()'', ''oklab()'', ''oklch()''
@@ -3259,7 +3260,7 @@ The serialization of the declared value of a relative color is:
 	followed by the <a href="#serial-origin-color">serialization of the origin color</a> 
 	using the rules for serializing nested origin colors, 
 	followed by a single space, 
-	followed by a space separated list of the non-alpha channel arguments as specified 
+	<!-- followed by a space separated list of the non-alpha channel arguments as specified 
 	(identifiers serializing as identifiers, 
 	numbers serializing as numbers, 
 	percentages serializing as percentages, 
@@ -3268,6 +3269,15 @@ The serialization of the declared value of a relative color is:
 	followed by " / " and the alpha component as specified 
 	(using the same rules as the color channel arguments) 
 	if an alpha component is present, 
+	followed by ")". -->
+	followed by a space separated list of the non-alpha channel arguments as specified 
+	(identifiers serializing as identifiers, 
+	numbers and percentages serializing as numbers, 
+	angles serializing as canonicalized angles in degrees, 
+	calc() serializing in its simplified form), 
+	followed (if the alpha component is non-unity) 
+	by " / " and the alpha component as specified 
+	(using the same rules as the color channel arguments, but clamped) 
 	followed by ")".
 
 3. For ''color()''
@@ -3279,15 +3289,14 @@ The serialization of the declared value of a relative color is:
 	followed by the canonical colorspace ("xyz-d65" for "xyz") 
 	in all-lowercase, 
 	followed by a single space, 
-	followed by space separated list of the non-alpha channel arguments as specified 
+	followed by a space separated list of the non-alpha channel arguments as specified 
 	(identifiers serializing as identifiers, 
-	numbers serializing as numbers, 
-	percentages serializing as percentages, 
+	numbers and percentages serializing as numbers, 
 	angles serializing as canonicalized angles in degrees, 
 	calc() serializing in its simplified form), 
-	followed by " / " and the alpha component as specified 
-	(using the same rules as the color channel arguments) 
-	if an alpha component is present, 
+	followed (if the alpha component is non-unity) 
+	by " / " and the alpha component as specified 
+	(using the same rules as the color channel arguments, but clamped) 
 	followed by ")".
 
 
@@ -3673,7 +3682,7 @@ This specification adds a way to ensure adequate contrast for text whose backgro
 </h3>
 
 <ul>
-	<!-- to 320 August 2025 -->
+	<!-- to 20 August 2025 -->
 	<li>Added display-p3-linear to color spaces for interpolation</li>
 	<li>Added the alpha() RCS function</li>
 	<li>Updated explanatory prose which still limited color-mix to two colors</li>
