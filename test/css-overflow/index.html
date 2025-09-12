@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-overflow-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="65c2d5f9c3e43d656347c392b18cc6e7659e6345" name="revision">
+  <meta content="b1c7c8258a38132bb2fdd3fac141a97294d02c9a" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1350,7 +1350,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Overflow Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-08-25">25 August 2025</time></p>
+    <time class="dt-updated" datetime="2025-09-11">11 September 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -2444,14 +2444,14 @@ If fewer than <var>N</var> line boxes exist,
 then <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines⑥">max-lines</a> introduces no <span id="ref-for-region-break⑦">region break</span>.</p>
     <li data-md>
      <p>If the box is a <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container①">line-clamp container</a>,
-its <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point③">clamp point</a> is set
+its <a data-link-type="dfn" href="#line-based-clamp-point" id="ref-for-line-based-clamp-point">line-based clamp point</a> is set
 to the first possible clamp point after
 its <var>N</var>th
 descendant <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow①">in-flow</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box①">line box</a>.
 If fewer than <var>N</var> line boxes exist,
 or if there are no possible clamp points
 after the <var>N</var>th descendant <span id="ref-for-in-flow②">in-flow</span> <span id="ref-for-line-box②">line box</span>,
-then that line-clamp container has no clamp point.</p>
+then that line-clamp container has no <span id="ref-for-line-based-clamp-point①">line-based clamp point</span>.</p>
    </ul>
    <p>Only line boxes in the same <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context" id="ref-for-block-formatting-context①">block formatting context</a>
 	are counted:
@@ -2563,7 +2563,7 @@ Fragmentation of Overflow: the <a class="property css" data-link-type="property"
      
 			If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑥">block container</a>, then it must
 			<a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#establish-an-independent-formatting-context" id="ref-for-establish-an-independent-formatting-context①">establish an independent formatting context</a> that also becomes a <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container②">line-clamp container</a>.
-			This causes all content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point④">clamp point</a> to be visually hidden, and to not be
+			This causes all content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point③">clamp point</a> to be visually hidden, and to not be
 			taken into account for the box’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#automatic-block-size" id="ref-for-automatic-block-size">automatic block size</a>.
 
 
@@ -2633,7 +2633,7 @@ See also discussions in the <a href="https://lists.w3.org/Archives/Public/www-st
 	to the first <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#forced-break" id="ref-for-forced-break①">forced break</a> if any,
 	or to the end of the <span id="ref-for-fragmented-flow①">fragmented flow</span> if there is no forced break.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This differs from the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility: hidden</a>-like behavior
-	of content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑤">clamp point</a> with <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⑥">continue: collapse</a>.</p>
+	of content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point④">clamp point</a> with <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⑥">continue: collapse</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> In the case of <a href="https://www.w3.org/TR/css-break-3/#parallel-flows">parallel fragmentation flows</a>,
 	content occurring after the <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-break" id="ref-for-fragmentation-break①">fragmentation break</a> in the box tree
 	could still be rendered,
@@ -2676,27 +2676,31 @@ contained by the line-clamp container’s <a data-link-type="dfn" href="https://
      <p>A point between two <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow③">in-flow</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-level" id="ref-for-block-level">block-level</a> sibling boxes
 in the line-clamp container’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context" id="ref-for-block-formatting-context④">block formatting context</a>.</p>
    </ul>
-   <p>If the <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container④">line-clamp container</a>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context-root" id="ref-for-block-formatting-context-root">block formatting context root</a>
-	has a <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value⑤">computed value</a> of <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines①⓪">max-lines</a> other than <a class="css" data-link-type="maybe" href="#valdef-max-lines-none" id="ref-for-valdef-max-lines-none⑤">none</a>,
-	then that property will determine the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑥">clamp point</a>.
-	Otherwise, the clamp point will be set to the last possible clamp point
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="auto-clamp-point">auto clamp point</dfn> will be set to the last possible clamp point
 	such that, for it and all previous possible clamp points,
 	the line-clamp container’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#automatic-block-size" id="ref-for-automatic-block-size①">automatic block size</a>
 	(as determined below)
 	is not greater than the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-size" id="ref-for-block-size①">block size</a> the box would have
 	if its automatic block size were infinite.
 	If the <span id="ref-for-block-size②">block size</span> would be infinite,
-	then there is no clamp point.</p>
+	then there is no <a data-link-type="dfn" href="#auto-clamp-point" id="ref-for-auto-clamp-point">auto clamp point</a>.
+	Additionally,
+	when the <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container④">line-clamp container</a>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context-root" id="ref-for-block-formatting-context-root">block formatting context root</a>
+	has a <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value⑤">computed value</a> of <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines①⓪">max-lines</a> other than <a class="css" data-link-type="maybe" href="#valdef-max-lines-none" id="ref-for-valdef-max-lines-none⑤">none</a>,
+	then that property determines the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="line-based-clamp-point">line-based clamp point</dfn>.
+	The actual <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑤">clamp point</a> used is
+	either the <span id="ref-for-auto-clamp-point①">auto clamp point</span> or the <a data-link-type="dfn" href="#line-based-clamp-point" id="ref-for-line-based-clamp-point②">line-based clamp point</a>,
+	choosing the earlier when both exist.</p>
    <p>Within a <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container⑤">line-clamp container</a>,
 	the following boxes and line boxes become <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#invisible-box" id="ref-for-invisible-box">invisible boxes</a>:</p>
    <ul>
     <li data-md>
      <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow④">in-flow</a> or floating boxes
-that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑦">clamp point</a> in the box tree.
+that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑥">clamp point</a> in the box tree.
 This includes <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#independent-formatting-context" id="ref-for-independent-formatting-context③">independent formatting contexts</a>
 and all of their descendants.</p>
     <li data-md>
-     <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box④">line boxes</a> that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑧">clamp point</a>
+     <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box④">line boxes</a> that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑦">clamp point</a>
 inside an <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#inline-formatting-context" id="ref-for-inline-formatting-context③">inline formatting context</a>.</p>
     <li data-md>
      <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position">absolutely positioned box</a>
@@ -2707,15 +2711,15 @@ and all of its descendants.</p>
 	is always counted as <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#ink-overflow" id="ref-for-ink-overflow">ink overflow</a> rather than <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scrollable-overflow" id="ref-for-scrollable-overflow①">scrollable overflow</a>.</p>
    <p class="note" role="note"><span class="marker">NOTE:</span> This differs from the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display⑧">display: none</a>-like behavior
 	of not rendered content with <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⑨">continue: discard</a>.</p>
-   <p>If a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑧">block container</a> contains a <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑨">clamp point</a>,
+   <p>If a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑧">block container</a> contains a <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑧">clamp point</a>,
 	within itself or in any of its descendants,
 	its <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#automatic-block-size" id="ref-for-automatic-block-size②">automatic block size</a> will not take into account any invisible boxes.
 	This also applies for the <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container⑥">line-clamp container</a> itself.</p>
-   <p class="note" role="note"><span class="marker">NOTE:</span> If there are any floats before the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point①⓪">clamp point</a>,
+   <p class="note" role="note"><span class="marker">NOTE:</span> If there are any floats before the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑨">clamp point</a>,
 	the <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container⑦">line-clamp container</a>’s automatic size must grow to encompass the clearance,
 	just like it would if it were a regular <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context" id="ref-for-block-formatting-context⑤">block formatting context</a> root
-	that only contained its contents before the <span id="ref-for-clamp-point①①">clamp point</span>.
-	This is regardless of whether this would cause any content after the <span id="ref-for-clamp-point①②">clamp point</span>
+	that only contained its contents before the <span id="ref-for-clamp-point①⓪">clamp point</span>.
+	This is regardless of whether this would cause any content after the <span id="ref-for-clamp-point①①">clamp point</span>
 	to be within the container’s bounds.</p>
    <h2 class="nonum heading settled" id="sbg-ext"><span class="content">
 Appendix A: Possible extensions for <span class="css">scrollbar-gutter</span></span><a class="self-link" href="#sbg-ext"></a></h2>
@@ -3271,6 +3275,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><a href="#valdef-block-ellipsis-auto">value for block-ellipsis</a><span>, in § 4.2</span>
      <li><a href="#valdef-continue-auto">value for continue</a><span>, in § 5.3</span>
     </ul>
+   <li><a href="#auto-clamp-point">auto clamp point</a><span>, in § 5.3.1</span>
    <li><a href="#valdef-line-clamp-block-ellipsis">&lt;block-ellipsis></a><span>, in § 5.1</span>
    <li><a href="#propdef-block-ellipsis">block-ellipsis</a><span>, in § 4.2</span>
    <li><a href="#block-overflow-ellipsis">block overflow ellipsis</a><span>, in § 4.2</span>
@@ -3284,6 +3289,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#funcdef-text-overflow-fade">fade()</a><span>, in § 4.1</span>
    <li><a href="#valdef-line-clamp-integer-1">&lt;integer [1,∞]></a><span>, in § 5.1</span>
    <li><a href="#valdef-overflow-clip-margin-length-0">&lt;length [0,∞]></a><span>, in § 3.2</span>
+   <li><a href="#line-based-clamp-point">line-based clamp point</a><span>, in § 5.3.1</span>
    <li><a href="#propdef-line-clamp">line-clamp</a><span>, in § 5.1</span>
    <li><a href="#line-clamp-container">line-clamp container</a><span>, in § 5.3.1</span>
    <li><a href="#valdef-scrollbar-gutter-match-parent">match-parent</a><span>, in § Unnumbered section</span>
@@ -4168,6 +4174,7 @@ let dfnPanelData = {
 "a8485ff4": {"dfnID":"a8485ff4","dfnText":"replaced element","external":true,"refSections":[{"refs":[{"id":"ref-for-replaced-element"},{"id":"ref-for-replaced-element\u2460"},{"id":"ref-for-replaced-element\u2461"},{"id":"ref-for-replaced-element\u2462"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-replaced-element\u2463"},{"id":"ref-for-replaced-element\u2464"},{"id":"ref-for-replaced-element\u2465"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-replaced-element\u2466"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-display-4/#replaced-element"},
 "a84f89a4": {"dfnID":"a84f89a4","dfnText":"stable","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-scrollbar-gutter-stable"},{"id":"ref-for-valdef-scrollbar-gutter-stable\u2460"},{"id":"ref-for-valdef-scrollbar-gutter-stable\u2461"},{"id":"ref-for-valdef-scrollbar-gutter-stable\u2462"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#valdef-scrollbar-gutter-stable"},
 "ac54fbff": {"dfnID":"ac54fbff","dfnText":"line-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-line-height"},{"id":"ref-for-propdef-line-height\u2460"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css2/#propdef-line-height"},
+"auto-clamp-point": {"dfnID":"auto-clamp-point","dfnText":"auto clamp point","external":false,"refSections":[{"refs":[{"id":"ref-for-auto-clamp-point"},{"id":"ref-for-auto-clamp-point\u2460"}],"title":"5.3.1. Line-clamp containers"}],"url":"#auto-clamp-point"},
 "b2a71e73": {"dfnID":"b2a71e73","dfnText":"scrollable overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-scrollable-overflow"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-scrollable-overflow\u2460"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-overflow-3/#scrollable-overflow"},
 "b6730ce5": {"dfnID":"b6730ce5","dfnText":"widows","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-widows"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"}],"url":"https://drafts.csswg.org/css-break-4/#propdef-widows"},
 "b7e0bc03": {"dfnID":"b7e0bc03","dfnText":"border edge","external":true,"refSections":[{"refs":[{"id":"ref-for-border-edge"},{"id":"ref-for-border-edge\u2460"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-box-4/#border-edge"},
@@ -4181,7 +4188,7 @@ let dfnPanelData = {
 "c3f3244a": {"dfnID":"c3f3244a","dfnText":"block dimension","external":true,"refSections":[{"refs":[{"id":"ref-for-block-dimension"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-dimension"},
 "ca960d4f": {"dfnID":"ca960d4f","dfnText":"block formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-block-formatting-context"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-block-formatting-context\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-block-formatting-context\u2461"},{"id":"ref-for-block-formatting-context\u2462"},{"id":"ref-for-block-formatting-context\u2463"},{"id":"ref-for-block-formatting-context\u2464"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#block-formatting-context"},
 "cecbe9cd": {"dfnID":"cecbe9cd","dfnText":"margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-margin"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-box-4/#propdef-margin"},
-"clamp-point": {"dfnID":"clamp-point","dfnText":"clamp point","external":false,"refSections":[{"refs":[{"id":"ref-for-clamp-point"},{"id":"ref-for-clamp-point\u2460"},{"id":"ref-for-clamp-point\u2461"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-clamp-point\u2462"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-clamp-point\u2463"},{"id":"ref-for-clamp-point\u2464"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-clamp-point\u2465"},{"id":"ref-for-clamp-point\u2466"},{"id":"ref-for-clamp-point\u2467"},{"id":"ref-for-clamp-point\u2468"},{"id":"ref-for-clamp-point\u2460\u24ea"},{"id":"ref-for-clamp-point\u2460\u2460"},{"id":"ref-for-clamp-point\u2460\u2461"}],"title":"5.3.1. Line-clamp containers"}],"url":"#clamp-point"},
+"clamp-point": {"dfnID":"clamp-point","dfnText":"clamp point","external":false,"refSections":[{"refs":[{"id":"ref-for-clamp-point"},{"id":"ref-for-clamp-point\u2460"},{"id":"ref-for-clamp-point\u2461"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-clamp-point\u2462"},{"id":"ref-for-clamp-point\u2463"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-clamp-point\u2464"},{"id":"ref-for-clamp-point\u2465"},{"id":"ref-for-clamp-point\u2466"},{"id":"ref-for-clamp-point\u2467"},{"id":"ref-for-clamp-point\u2468"},{"id":"ref-for-clamp-point\u2460\u24ea"},{"id":"ref-for-clamp-point\u2460\u2460"}],"title":"5.3.1. Line-clamp containers"}],"url":"#clamp-point"},
 "d2655fb4": {"dfnID":"d2655fb4","dfnText":"auto (for scrollbar-gutter)","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-scrollbar-gutter-auto"},{"id":"ref-for-valdef-scrollbar-gutter-auto\u2460"},{"id":"ref-for-valdef-scrollbar-gutter-auto\u2461"},{"id":"ref-for-valdef-scrollbar-gutter-auto\u2462"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#valdef-scrollbar-gutter-auto"},
 "e33664cd": {"dfnID":"e33664cd","dfnText":"inline-block","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-inline-block"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-inline-block"},
 "e34548f4": {"dfnID":"e34548f4","dfnText":"line box","external":true,"refSections":[{"refs":[{"id":"ref-for-line-box"},{"id":"ref-for-line-box\u2460"},{"id":"ref-for-line-box\u2461"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-line-box\u2462"},{"id":"ref-for-line-box\u2463"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-inline-3/#line-box"},
@@ -4197,6 +4204,7 @@ let dfnPanelData = {
 "fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"},{"id":"ref-for-length-value\u2461"},{"id":"ref-for-length-value\u2462"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "fb8f8e00": {"dfnID":"fb8f8e00","dfnText":"strut","external":true,"refSections":[{"refs":[{"id":"ref-for-strut"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://www.w3.org/TR/CSS21/visudet.html#strut"},
 "funcdef-text-overflow-fade": {"dfnID":"funcdef-text-overflow-fade","dfnText":"fade( [ <length-percentage> ] )","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-text-overflow-fade"},{"id":"ref-for-funcdef-text-overflow-fade\u2460"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"}],"url":"#funcdef-text-overflow-fade"},
+"line-based-clamp-point": {"dfnID":"line-based-clamp-point","dfnText":"line-based clamp point","external":false,"refSections":[{"refs":[{"id":"ref-for-line-based-clamp-point"},{"id":"ref-for-line-based-clamp-point\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-line-based-clamp-point\u2461"}],"title":"5.3.1. Line-clamp containers"}],"url":"#line-based-clamp-point"},
 "line-clamp-container": {"dfnID":"line-clamp-container","dfnText":"line-clamp container","external":false,"refSections":[{"refs":[{"id":"ref-for-line-clamp-container"},{"id":"ref-for-line-clamp-container\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-line-clamp-container\u2461"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-line-clamp-container\u2462"},{"id":"ref-for-line-clamp-container\u2463"},{"id":"ref-for-line-clamp-container\u2464"},{"id":"ref-for-line-clamp-container\u2465"},{"id":"ref-for-line-clamp-container\u2466"}],"title":"5.3.1. Line-clamp containers"}],"url":"#line-clamp-container"},
 "overflow-clip": {"dfnID":"overflow-clip","dfnText":"clip","external":false,"refSections":[],"url":"#overflow-clip"},
 "overflow-clip-edge": {"dfnID":"overflow-clip-edge","dfnText":"overflow clip edge","external":false,"refSections":[{"refs":[{"id":"ref-for-overflow-clip-edge"},{"id":"ref-for-overflow-clip-edge\u2460"},{"id":"ref-for-overflow-clip-edge\u2461"},{"id":"ref-for-overflow-clip-edge\u2462"},{"id":"ref-for-overflow-clip-edge\u2463"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"#overflow-clip-edge"},
@@ -4699,9 +4707,11 @@ window.addEventListener("resize", repositionAnnoPanels);
 "use strict";
 {
 let refsData = {
+"#auto-clamp-point": {"displayText":"auto clamp point","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"auto clamp point","type":"dfn","url":"#auto-clamp-point"},
 "#block-overflow-ellipsis": {"displayText":"block overflow ellipsis","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"block overflow ellipsis","type":"dfn","url":"#block-overflow-ellipsis"},
 "#clamp-point": {"displayText":"clamp point","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"clamp point","type":"dfn","url":"#clamp-point"},
 "#funcdef-text-overflow-fade": {"displayText":"fade()","export":true,"for_":["text-overflow"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"fade()","type":"function","url":"#funcdef-text-overflow-fade"},
+"#line-based-clamp-point": {"displayText":"line-based clamp point","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"line-based clamp point","type":"dfn","url":"#line-based-clamp-point"},
 "#line-clamp-container": {"displayText":"line-clamp container","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"line-clamp container","type":"dfn","url":"#line-clamp-container"},
 "#overflow-clip-edge": {"displayText":"overflow clip edge","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"overflow clip edge","type":"dfn","url":"#overflow-clip-edge"},
 "#overflow-ellipsis": {"displayText":"ellipsis","export":true,"for_":["text-overflow"],"level":"4","normative":true,"shortname":"css-overflow","spec":"css-overflow-4","status":"local","text":"ellipsis","type":"value","url":"#overflow-ellipsis"},
