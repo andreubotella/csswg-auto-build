@@ -9,7 +9,9 @@ Previous Version: https://www.w3.org/TR/2009/WD-cssom-view-20090804/
 Previous Version: https://www.w3.org/TR/2008/WD-cssom-view-20080222/
 Previous Version: https://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113/
 Group: CSSWG
-Status: ED
+Status: WD
+Date: 2025-09-16
+Prepare for TR: yes
 Work Status: Revising
 Shortname: cssom-view
 Level: 1
@@ -24,8 +26,9 @@ Ignored Vars: rect, point, quad
 WPT Path Prefix: css/cssom-view/
 WPT Display: open
 Include Can I Use Panels: true
-Can I Use URL: https://drafts.csswg.org/cssom-view/
+Can I Use URL: https://drafts.csswg.org/cssom-view-1/
 Can I Use URL: https://www.w3.org/TR/cssom-view-1/
+Ignore Can I Use URL Failure: https://drafts.csswg.org/cssom-view-1/
 </pre>
 
 <pre class='link-defaults'>
@@ -40,6 +43,19 @@ spec:html; type:dfn;
     text: the body element
     text: rules for parsing integers
     text: being rendered
+spec:html; type:element; text:body
+spec:css-overflow-3; type:property; text:scroll-behavior
+spec:css-overflow-3; type:value; text:smooth
+spec:css-overflow-3; type:value; text:auto
+spec:css2; type:dfn; for:/; text:media
+spec:css-scoping-1; type:dfn; text:shadow root
+spec:dom; type:dfn; text:host
+spec:dom; type:dfn; text:element
+spec:dom; type:dfn; for:Attr; text:element
+spec:css-borders-4; type:property; text:border-top-width
+spec:css-borders-4; type:property; text:border-left-width
+spec:cssom-view-1; type:dictionary; text:MouseEventInit
+spec:cssom-view-1; type:dfn; for:MediaQueryList; text:media
 </pre>
 
 <style>
@@ -2395,12 +2411,17 @@ When asked to <dfn export>run snapshot post-layout state steps</dfn> for a {{Doc
 The state that is snapshot is defined in other specifications. These steps must not invalidate <var>doc</var> or any other {{Document}}s in such a way that other post-layout snapshotting steps can observe that such snapshotting happened. It follows that the order of which such snapshotting takes place must not matter.
 
 
-Security and Privacy Considerations {#priv-sec}
+Privacy Considerations {#privacy}
 ===============================================
 
 The {{Screen}} interface exposes information about the user's display configuration, which maybe be used as input to fingerprinting algorithms. User agents may choose to hide or quantize information about the screen size or configuration, in order to protect the user’s privacy.
 
 {{MouseEvent}} contains information about the screen-relative coordinates of the event. User agents may set these properties to values that obscure the actual screen-relative location of the event, in order to protect the user’s privacy.
+
+Security Considerations {#security}
+===================================
+
+No new security considerations have been reported on this specification.
 
 
 
@@ -2426,7 +2447,7 @@ Changes since the <a href="https://www.w3.org/TR/2016/WD-cssom-view-1-20160317/"
 * Renamed the arguments to {{Window/resizeTo()}} to be <var>width</var> and <var>height</var>
 * Added script-triggered scroll-snap to list of scrolls affected by 'scroll-behavior'.
 * Fixed a logical error in the Terminology section.
-* Added the "Security and Privacy Considerations" section
+* Added the "Security Considerations" and "Privacy Considerations" sections
 * Moved the 'scroll-behavior' property to [[CSS-OVERFLOW-3]]
 * Adjusted the algorithm for {{HTMLElement/offsetWidth}} and {{HTMLElement/offsetHeight}}.
 * Added {{Element/checkVisibility()}} method to {{Element}}.
@@ -2437,7 +2458,7 @@ Changes since the <a href="https://www.w3.org/TR/2016/WD-cssom-view-1-20160317/"
 * Clarified whether scaled or unscaled dimensions are returned by various APIs in relation to the 'zoom' property.
 * Took scroll snapping and scroll target into account for various scrolling APIs.
 * Added {{Element/currentCSSZoom}} attribute to {{Element}}.
-* Added ''options'' parameter to {{Document/caretPositionFromPoint()}} method.
+* Added options parameter to {{Document/caretPositionFromPoint()}} method.
 * Removed caret range concept from CaretPosition interface.
 * Defined post-layout snapshotting.
 * Made the various scrolling algorithms accept a pseudo-element.
