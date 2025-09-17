@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-overflow-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fc66fac76a2f7bfe0c2a5ed9965ce38281757a69" name="revision">
+  <meta content="cba52cf9cef9c530b5540bb39bd45149776f6589" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1350,7 +1350,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Overflow Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-09-12">12 September 2025</time></p>
+    <time class="dt-updated" datetime="2025-09-16">16 September 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1368,6 +1368,8 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dd class="editor p-author h-card vcard" data-editor-id="35400"><a class="p-name fn u-url url" href="http://fantasai.inkedblade.net/contact">Elika J. Etemad / fantasai</a> (<span class="p-org org">Apple</span>)
       <dt>Suggest an Edit for this Spec:
       <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/css-overflow-4/Overview.bs">GitHub Editor</a>
+      <dt>Test Suite:
+      <dd class="wpt-overview"><a href="https://wpt.fyi/results/css/css-overflow/line-clamp/">https://wpt.fyi/results/css/css-overflow/line-clamp/</a>
      </dl>
     </div>
    </details>
@@ -1450,8 +1452,8 @@ Inline Overflow Ellipsis: the <span class="property">text-overflow</span> proper
 Indicating Block-Axis Overflow: the <span class="property">block-ellipsis</span> property</span></a>
      </ol>
     <li>
-     <a href="#fragmentating-overflow"><span class="secno">5</span> <span class="content">
-Fragmenting Overflow</span></a>
+     <a href="#suppressing-excess"><span class="secno">5</span> <span class="content">
+Suppressing Excess Content</span></a>
      <ol class="toc">
       <li>
        <a href="#line-clamp"><span class="secno">5.1</span> <span class="content">
@@ -1464,9 +1466,10 @@ Legacy compatibility</span></a>
 Forcing a Break After a Set Number of Lines: the <span class="property">max-lines</span> property</span></a>
       <li>
        <a href="#continue"><span class="secno">5.3</span> <span class="content">
-Fragmentation of Overflow: the <span class="property">continue</span> property</span></a>
+Handling of Excess Content: the <span class="property">continue</span> property</span></a>
        <ol class="toc">
         <li><a href="#line-clamp-containers"><span class="secno">5.3.1</span> <span class="content">Line-clamp containers</span></a>
+        <li><a href="#discarding-content"><span class="secno">5.3.2</span> <span class="content">Discarding Content</span></a>
        </ol>
      </ol>
     <li><a href="#sbg-ext"><span class="secno"></span> <span class="content">
@@ -2037,8 +2040,8 @@ ellipsis interaction with scrolling interfaces</span><a class="self-link" href="
 	to display the edge of the content
 	at which point that content should be displayed
 	rather than an ellipsis/string.</p>
-   <div class="example" id="example-45d2531f">
-    <a class="self-link" href="#example-45d2531f"></a>
+   <div class="example" id="example-2223f6c1">
+    <a class="self-link" href="#example-2223f6c1"></a>
 		This example uses text-overflow on an element with overflow scroll
 		to demonstrate the above described behavior.
 
@@ -2047,6 +2050,7 @@ ellipsis interaction with scrolling interfaces</span><a class="self-link" href="
 <pre><code class="lang-css highlight">div.crawlbar <c- p>{</c->
   <c- k>text-overflow</c-><c- p>:</c-> ellipsis<c- p>;</c->
   <c- k>height</c-><c- p>:</c-> <c- m>2</c-><c- k>em</c-><c- p>;</c->
+  <c- k>line-height</c-><c- p>:</c-> <c- m>1</c-><c- k>em</c-><c- p>;</c->
   <c- k>overflow</c-><c- p>:</c-> scroll<c- p>;</c->
   <c- k>white-space</c-><c- p>:</c-> nowrap<c- p>;</c->
   <c- k>width</c-><c- p>:</c-> <c- m>15</c-><c- k>em</c-><c- p>;</c->
@@ -2061,7 +2065,7 @@ having it overlap other text by default.
 <c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
 </code></pre>
     <p>demonstration of sample CSS and HTML:</p>
-    <div style="text-overflow: ellipsis; height: 2em; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
+    <div style="text-overflow: ellipsis; height: 2em; line-height:1; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
 		CSS is awesome, especially when you can scroll
 		to see extra text instead of just
 		having it overlap other text by default.
@@ -2087,7 +2091,7 @@ having it overlap other text by default.
 		Same as previous example except with <code>text-overflow: ellipsis ellipsis</code>, demonstrated:
 
 		
-    <div style="text-overflow: ellipsis ellipsis; height: 2em; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
+    <div style="text-overflow: ellipsis ellipsis; height: 2em; line-height: 1em; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
 		CSS is awesome, especially when you can scroll
 		to see extra text instead of just
 		having it overlap other text by default.
@@ -2128,8 +2132,15 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>discrete	
    </table>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/block-ellipsis-invalid.html" title="css/css-overflow/parsing/block-ellipsis-invalid.html">block-ellipsis-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/block-ellipsis-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/block-ellipsis-invalid.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/block-ellipsis-valid.html" title="css/css-overflow/parsing/block-ellipsis-valid.html">block-ellipsis-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/block-ellipsis-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/block-ellipsis-valid.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <p>This property allows inserting content into the last line box
-	before a (forced <em>or</em> unforced) <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break">region break</a> or a <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point">clamp point</a>
+	before a <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point">clamp point</a> or a (forced <em>or</em> unforced) <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break">region break</a>
 	to indicate the continuity of truncated / interrupted content.
 	It only affects line boxes contained directly by the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container②">block container</a> itself,
 	but as it inherits, will have an effect on descendants’ line boxes unless overridden.</p>
@@ -2138,17 +2149,23 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
 	or a <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point①">clamp point</a> in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context" id="ref-for-block-formatting-context">block formatting context</a>,
 	ignoring any intervening <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position">absolutely positioned</a> element
 	or any element closing boundary.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> See <a href="https://www.w3.org/TR/css-overflow-4/#fragmentation"><cite>CSS Overflow 4</cite> § A Redirection of Overflow</a> for a way to generate boxes with such a <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break②">region break</a>.</p>
-   <p class="issue" id="issue-23a7778c"><a class="self-link" href="#issue-23a7778c"></a> Should this apply to other types of fragmentation breaks (e.g. pages, columns)?</p>
+   <p class="note" role="note"><span class="marker">Note:</span> See <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue">continue: discard</a> for a way to generate boxes with such a <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break②">region break</a>.</p>
    <p>The inserted content is called the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="block-overflow-ellipsis">block overflow ellipsis</dfn>.
 	Values have the following meanings:</p>
    <dl>
     <dt><dfn class="dfn-paneled css" data-dfn-for="block-ellipsis" data-dfn-type="value" data-export id="valdef-block-ellipsis-no-ellipsis">no-ellipsis</dfn>
 		
     <dd>
+     
 			The rendering is unaffected.
 
-		
+			
+     <details class="wpt-tests-block" dir="ltr" lang="en" open>
+      <summary>Tests</summary>
+      <ul class="wpt-tests-list">
+       <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/line-clamp/block-ellipsis-023.html" title="css/css-overflow/line-clamp/block-ellipsis-023.html">block-ellipsis-023.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/line-clamp/block-ellipsis-023.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/line-clamp/block-ellipsis-023.html"><small>(source)</small></a>
+      </ul>
+     </details>
     <dt><dfn class="dfn-paneled css" data-dfn-for="block-ellipsis" data-dfn-type="value" data-export id="valdef-block-ellipsis-auto">auto</dfn>
 		
     <dd>
@@ -2173,6 +2190,12 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
 
      <p>When set to the empty string,
 			the behavior is identical to the <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-no-ellipsis" id="ref-for-valdef-block-ellipsis-no-ellipsis">no-ellipsis</a> value.</p>
+     <details class="wpt-tests-block" dir="ltr" lang="en" open>
+      <summary>Tests</summary>
+      <ul class="wpt-tests-list">
+       <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/line-clamp/block-ellipsis-024.html" title="css/css-overflow/line-clamp/block-ellipsis-024.html">block-ellipsis-024.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/line-clamp/block-ellipsis-024.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/line-clamp/block-ellipsis-024.html"><small>(source)</small></a>
+      </ul>
+     </details>
    </dl>
    <p>When <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis②">block-ellipsis</a> is neither <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-no-ellipsis" id="ref-for-valdef-block-ellipsis-no-ellipsis①">no-ellipsis</a> nor the empty string,
 	the <a data-link-type="dfn" href="#block-overflow-ellipsis" id="ref-for-block-overflow-ellipsis②">block overflow ellipsis</a> string
@@ -2224,8 +2247,8 @@ Indicating Block-Axis Overflow: the <a class="property css" data-link-type="prop
 	or by allowing the selection of a child element of the block
 	to use as either an inline-level or block-level indicator
 	(in which case, it can capture events).</p>
-   <h2 class="heading settled" data-level="5" id="fragmentating-overflow"><span class="secno">5. </span><span class="content">
-Fragmenting Overflow</span><a class="self-link" href="#fragmentating-overflow"></a></h2>
+   <h2 class="heading settled" data-level="5" id="suppressing-excess"><span class="secno">5. </span><span class="bs-old-id" id="fragmentating-overflow"></span><span class="content">
+Suppressing Excess Content</span><a class="self-link" href="#suppressing-excess"></a></h2>
    <h3 class="heading settled" data-level="5.1" id="line-clamp"><span class="secno">5.1. </span><span class="content">
 Limiting Visible Lines: the <a class="property css" data-link-type="property" href="#propdef-line-clamp" id="ref-for-propdef-line-clamp①">line-clamp</a> shorthand property</span><a class="self-link" href="#line-clamp"></a></h3>
    <table class="def propdef" data-link-for-hint="line-clamp">
@@ -2258,8 +2281,15 @@ Limiting Visible Lines: the <a class="property css" data-link-type="property" hr
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar	
    </table>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/line-clamp-valid.html" title="css/css-overflow/parsing/line-clamp-valid.html">line-clamp-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/line-clamp-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/line-clamp-valid.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/line-clamp-invalid.html" title="css/css-overflow/parsing/line-clamp-invalid.html">line-clamp-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/line-clamp-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/line-clamp-invalid.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <p>The <a class="property css" data-link-type="property" href="#propdef-line-clamp" id="ref-for-propdef-line-clamp②">line-clamp</a> property is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#shorthand-property" id="ref-for-shorthand-property③">shorthand</a>
-	for the <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines">max-lines</a>, <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑤">block-ellipsis</a>, and <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue">continue</a> properties.</p>
+	for the <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines">max-lines</a>, <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑤">block-ellipsis</a>, and <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①">continue</a> properties.</p>
    <p>It allows limiting the contents of a block container
 	to the specified number of lines;
 	remaining content is fragmented away
@@ -2271,7 +2301,7 @@ Limiting Visible Lines: the <a class="property css" data-link-type="property" hr
     <dt><dfn class="dfn-paneled css" data-dfn-for="line-clamp" data-dfn-type="value" data-export id="valdef-line-clamp-none">none</dfn>
 		
     <dd>Sets <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines①">max-lines</a> to <a class="css" data-link-type="maybe" href="#valdef-max-lines-none" id="ref-for-valdef-max-lines-none">none</a>,
-			<a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue-auto" id="ref-for-valdef-continue-auto">auto</a>,
+			<a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue②">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue-auto" id="ref-for-valdef-continue-auto">auto</a>,
 			and <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑥">block-ellipsis</a> to <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-no-ellipsis" id="ref-for-valdef-block-ellipsis-no-ellipsis③">no-ellipsis</a>.
 
 		
@@ -2280,8 +2310,7 @@ Limiting Visible Lines: the <a class="property css" data-link-type="property" hr
     <dt><dfn class="dfn-paneled css" data-dfn-for="line-clamp" data-dfn-type="value" data-export id="valdef-line-clamp-block-ellipsis">&lt;<a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑦">block-ellipsis</a>></dfn>
 		
     <dd>
-     <p class="issue" id="issue-dba10f75"><a class="self-link" href="#issue-dba10f75"></a> Whether this should imply <a class="css" data-link-type="maybe" href="#valdef-continue-discard" id="ref-for-valdef-continue-discard">discard</a> or <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse">collapse</a> is an unresolved question. <a href="https://github.com/w3c/csswg-drafts/issues/7708">[Issue #7708]</a></p>
-     <p>Sets <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue②">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse①">collapse</a>
+     <p>Sets <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue③">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse">collapse</a>
 			if either or both values are specified,
 			unless the <a class="css" data-link-type="maybe" href="#valdef-line-clamp--webkit-legacy" id="ref-for-valdef-line-clamp--webkit-legacy①">-webkit-legacy</a> keyword is also specified.</p>
      <p>Sets <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines②">max-lines</a> to the specified <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#integer-value" id="ref-for-integer-value②">&lt;integer></a>
@@ -2290,7 +2319,7 @@ Limiting Visible Lines: the <a class="property css" data-link-type="property" hr
 			or to <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-auto" id="ref-for-valdef-block-ellipsis-auto">auto</a> if omitted.</p>
     <dt><dfn class="dfn-paneled css" data-dfn-for="line-clamp" data-dfn-type="value" data-export id="valdef-line-clamp--webkit-legacy">-webkit-legacy</dfn>
 		
-    <dd>Sets <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue③">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy">-webkit-legacy</a>.
+    <dd>Sets <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue④">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy">-webkit-legacy</a>.
 
 	
    </dl>
@@ -2334,7 +2363,7 @@ strong <c- p>{</c->
 Legacy compatibility</span><a class="self-link" href="#webkit-line-clamp"></a></h4>
    <p>For compatibility with legacy content,
 	UAs that support <a class="property css" data-link-type="property" href="#propdef-line-clamp" id="ref-for-propdef-line-clamp③">line-clamp</a> must also support the <a class="property css" data-link-type="property" href="#propdef--webkit-line-clamp" id="ref-for-propdef--webkit-line-clamp">-webkit-line-clamp</a> property
-	and the additional <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy①">-webkit-legacy</a> value for the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue④">continue</a> property.</p>
+	and the additional <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy①">-webkit-legacy</a> value for the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑤">continue</a> property.</p>
    <table class="def propdef" data-link-for-hint="-webkit-line-clamp">
     <tbody>
      <tr>
@@ -2365,16 +2394,23 @@ Legacy compatibility</span><a class="self-link" href="#webkit-line-clamp"></a></
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar	
    </table>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/webkit-line-clamp-valid.html" title="css/css-overflow/parsing/webkit-line-clamp-valid.html">webkit-line-clamp-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/webkit-line-clamp-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/webkit-line-clamp-valid.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/webkit-line-clamp-invalid.html" title="css/css-overflow/parsing/webkit-line-clamp-invalid.html">webkit-line-clamp-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/webkit-line-clamp-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/webkit-line-clamp-invalid.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <table class="def propdef partial" data-link-for-hint="continue">
     <tbody>
      <tr>
       <th>Name:
-      <td><a class="css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑤">continue</a>
+      <td><a class="css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑥">continue</a>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">New values:</a>
       <td class="prod">-webkit-legacy	
    </table>
-   <p>Like <a class="property css" data-link-type="property" href="#propdef-line-clamp" id="ref-for-propdef-line-clamp④">line-clamp</a>, <a class="property css" data-link-type="property" href="#propdef--webkit-line-clamp" id="ref-for-propdef--webkit-line-clamp①">-webkit-line-clamp</a> is a shorthand of <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines③">max-lines</a>, <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑨">block-ellipsis</a>, and <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑥">continue</a>,
+   <p>Like <a class="property css" data-link-type="property" href="#propdef-line-clamp" id="ref-for-propdef-line-clamp④">line-clamp</a>, <a class="property css" data-link-type="property" href="#propdef--webkit-line-clamp" id="ref-for-propdef--webkit-line-clamp①">-webkit-line-clamp</a> is a shorthand of <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines③">max-lines</a>, <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis⑨">block-ellipsis</a>, and <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑦">continue</a>,
 	except that:</p>
    <ul>
     <li data-md>
@@ -2382,11 +2418,11 @@ Legacy compatibility</span><a class="self-link" href="#webkit-line-clamp"></a></
     <li data-md>
      <p>it unconditionally sets <a class="property css" data-link-type="property" href="#propdef-block-ellipsis" id="ref-for-propdef-block-ellipsis①⓪">block-ellipsis</a> to <a class="css" data-link-type="maybe" href="#valdef-block-ellipsis-auto" id="ref-for-valdef-block-ellipsis-auto①">auto</a></p>
     <li data-md>
-     <p>it sets <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑦">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy②">-webkit-legacy</a> instead of <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse②">collapse</a>
+     <p>it sets <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑧">continue</a> to <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy②">-webkit-legacy</a> instead of <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse①">collapse</a>
 when an <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#integer-value" id="ref-for-integer-value⑤">&lt;integer [1,∞]></a> is specified
 (as if the <a class="css" data-link-type="maybe" href="#valdef-line-clamp--webkit-legacy" id="ref-for-valdef-line-clamp--webkit-legacy②">-webkit-legacy</a> keyword was set on <a class="property css" data-link-type="property" href="#propdef-line-clamp" id="ref-for-propdef-line-clamp⑤">line-clamp</a>)</p>
    </ul>
-   <p>The <dfn class="dfn-paneled css" data-dfn-for="continue" data-dfn-type="value" data-export id="valdef-continue--webkit-legacy">-webkit-legacy</dfn> value behaves identically to <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse③">collapse</a>,
+   <p>The <dfn class="dfn-paneled css" data-dfn-for="continue" data-dfn-type="value" data-export id="valdef-continue--webkit-legacy">-webkit-legacy</dfn> value behaves identically to <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse②">collapse</a>,
 	except that it only takes effect
 	if the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#specified-value" id="ref-for-specified-value">specified value</a> of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display">display</a> property
 	is <a class="css" data-link-type="maybe" href="https://compat.spec.whatwg.org/#valdef-flex--webkit-box" id="ref-for-valdef-flex--webkit-box">-webkit-box</a> or <a class="css" data-link-type="maybe" href="https://compat.spec.whatwg.org/#valdef-flex--webkit-inline-box" id="ref-for-valdef-flex--webkit-inline-box">-webkit-inline-box</a>
@@ -2417,7 +2453,7 @@ Forcing a Break After a Set Number of Lines: the <a class="property css" data-li
       <td><a class="css" data-link-type="maybe" href="#valdef-max-lines-none" id="ref-for-valdef-max-lines-none③">none</a>	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td><a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container④">block containers</a> which are also either <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container②">fragmentation containers</a> that capture <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break④">region breaks</a> or <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container">line-clamp containers</a>	
+      <td><a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container④">block containers</a> which are also either <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container">line-clamp containers</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container②">fragmentation containers</a> that capture <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break④">region breaks</a>	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no	
@@ -2434,26 +2470,39 @@ Forcing a Break After a Set Number of Lines: the <a class="property css" data-li
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>by computed value type	
    </table>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/max-lines-valid.html" title="css/css-overflow/parsing/max-lines-valid.html">max-lines-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/max-lines-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/max-lines-valid.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/max-lines-invalid.html" title="css/css-overflow/parsing/max-lines-invalid.html">max-lines-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/max-lines-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/max-lines-invalid.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <p>If the value of <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines⑤">max-lines</a> is not <dfn class="dfn-paneled css" data-dfn-for="max-lines" data-dfn-type="value" data-export id="valdef-max-lines-none">none</dfn>,
 	then, given a <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value">computed value</a> of <var>N</var>:</p>
    <ul>
-    <li data-md>
-     <p>If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container③">fragmentation container</a> that captures <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break⑤">region breaks</a>,
-a <span id="ref-for-region-break⑥">region break</span>
-is forced after its <var>N</var>th
-descendant <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow">in-flow</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box">line box</a>.
-If fewer than <var>N</var> line boxes exist,
-then <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines⑥">max-lines</a> introduces no <span id="ref-for-region-break⑦">region break</span>.</p>
     <li data-md>
      <p>If the box is a <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container①">line-clamp container</a>,
 its <a data-link-type="dfn" href="#line-based-clamp-point" id="ref-for-line-based-clamp-point">line-based clamp point</a> is set
 to the first possible clamp point after
 its <var>N</var>th
-descendant <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow①">in-flow</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box①">line box</a>.
+descendant <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow">in-flow</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box">line box</a>.
 If fewer than <var>N</var> line boxes exist,
 or if there are no possible clamp points
-after the <var>N</var>th descendant <span id="ref-for-in-flow②">in-flow</span> <span id="ref-for-line-box②">line box</span>,
+after the <var>N</var>th descendant <span id="ref-for-in-flow①">in-flow</span> <span id="ref-for-line-box①">line box</span>,
 then that line-clamp container has no <span id="ref-for-line-based-clamp-point①">line-based clamp point</span>.</p>
+     <details class="wpt-tests-block" dir="ltr" lang="en" open>
+      <summary>Tests</summary>
+      <ul class="wpt-tests-list">
+       <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/line-clamp/block-ellipsis-022.html" title="css/css-overflow/line-clamp/block-ellipsis-022.html">block-ellipsis-022.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/line-clamp/block-ellipsis-022.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/line-clamp/block-ellipsis-022.html"><small>(source)</small></a>
+      </ul>
+     </details>
+    <li data-md>
+     <p>If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container③">fragmentation container</a> that captures <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break⑤">region breaks</a>,
+a <span id="ref-for-region-break⑥">region break</span>
+is forced after its <var>N</var>th
+descendant <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow②">in-flow</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box②">line box</a>.
+If fewer than <var>N</var> line boxes exist,
+then <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines⑥">max-lines</a> introduces no <span id="ref-for-region-break⑦">region break</span>.</p>
    </ul>
    <p>Only line boxes in the same <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context" id="ref-for-block-formatting-context①">block formatting context</a>
 	are counted:
@@ -2476,7 +2525,7 @@ then that line-clamp container has no <span id="ref-for-line-based-clamp-point�
 		or “region breaks” (breaks across any other kind of CSS-induced <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container④">fragmentation containers</a>).
 
 
-    <p>If an implementation supports neither <a data-link-type="biblio" href="#biblio-css-regions-1" title="CSS Regions Module Level 1">[CSS-REGIONS-1]</a> nor <a href="https://www.w3.org/TR/css-overflow-4/#fragmentation"><cite>CSS Overflow 4</cite> § A Redirection of Overflow</a>,
+    <p>If an implementation supports neither <a data-link-type="biblio" href="#biblio-css-regions-1" title="CSS Regions Module Level 1">[CSS-REGIONS-1]</a> nor <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue⑨">continue: discard</a>,
 		then it will have had no occasion yet to run into that kind of breaks,
 		and this will be an addition.
 		However the addition does not involve bringing over any of the <span title="CSS Regions Module Level 1">[CSS-REGIONS-1]</span> functionality.
@@ -2491,7 +2540,7 @@ for the purpose of forced breaks.</p>
     </ul>
    </div>
    <h3 class="heading settled" data-level="5.3" id="continue"><span class="secno">5.3. </span><span class="content">
-Fragmentation of Overflow: the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑧">continue</a> property</span><a class="self-link" href="#continue"></a></h3>
+Handling of Excess Content: the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①⓪">continue</a> property</span><a class="self-link" href="#continue"></a></h3>
    <table class="def propdef" data-link-for-hint="continue">
     <tbody>
      <tr>
@@ -2522,32 +2571,46 @@ Fragmentation of Overflow: the <a class="property css" data-link-type="property"
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>discrete	
    </table>
-   <p>The <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue⑨">continue</a> property gives authors the ability
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/continue-valid.html" title="css/css-overflow/parsing/continue-valid.html">continue-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/continue-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/continue-valid.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/continue-invalid.html" title="css/css-overflow/parsing/continue-invalid.html">continue-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/continue-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/continue-invalid.html"><small>(source)</small></a>
+    </ul>
+   </details>
+   <p>The <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①①">continue</a> property gives authors the ability
 	to truncate/interrupt the content inside a box,
 	either by visually hiding the remaining content,
 	or by turning the box into a <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container⑤">fragmentation container</a> (see <a data-link-type="biblio" href="#biblio-css-break-3" title="CSS Fragmentation Module Level 3">[CSS-BREAK-3]</a>)
 	and discarding the content after the <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-break" id="ref-for-fragmentation-break">fragmentation break</a>.</p>
-   <p class="issue" id="issue-b97a50c8"><a class="self-link" href="#issue-b97a50c8"></a> <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⓪">continue: discard</a> is meant to generalize and replace the <code>region-fragment</code> property from <a data-link-type="biblio" href="#biblio-css-regions-1" title="CSS Regions Module Level 1">[CSS-REGIONS-1]</a>.
-	Once it is sufficiently stable in this specification,
-	<code>region-fragment</code> should be removed from the regions specification in favor of this.</p>
    <dl>
     <dt><dfn class="dfn-paneled css" data-dfn-for="continue" data-dfn-type="value" data-export id="valdef-continue-auto">auto</dfn>
 		
     <dd>
      <p>If the box has more content than can fit,
 			the excess content is handled according to the usual rules.</p>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="continue" data-dfn-type="value" data-export id="valdef-continue-collapse">collapse</dfn>
+		
+    <dd>
+     
+			If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑥">block container</a>, then it must
+			<a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#establish-an-independent-formatting-context" id="ref-for-establish-an-independent-formatting-context">establish an independent formatting context</a> that also becomes a <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container②">line-clamp container</a>.
+			This causes all content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point③">clamp point</a> to be visually hidden, and to not be
+			taken into account for the box’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#automatic-block-size" id="ref-for-automatic-block-size">automatic block size</a>.
+
+
+     <p>If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-2/#multi-column-container" id="ref-for-multi-column-container②">multicol container</a>,
+			the behavior is the same as <a class="css" data-link-type="maybe" href="#valdef-continue-auto" id="ref-for-valdef-continue-auto②">auto</a>.</p>
     <dt><dfn class="dfn-paneled css" data-dfn-for="continue" data-dfn-type="value" data-export id="valdef-continue-discard">discard</dfn>
 		
     <dd>
      
-			The box must <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#establish-an-independent-formatting-context" id="ref-for-establish-an-independent-formatting-context">establish an independent formatting context</a>
+			The box must <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#establish-an-independent-formatting-context" id="ref-for-establish-an-independent-formatting-context①">establish an independent formatting context</a>
 			and becomes a <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container⑥">fragmentation container</a>
 			that captures <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break⑨">region breaks</a>,
 			if it is not already.
 			<a data-link-type="biblio" href="#biblio-css-break-3" title="CSS Fragmentation Module Level 3">[CSS-BREAK-3]</a>
-			Content after the first <span id="ref-for-region-break①⓪">region break</span> is not rendered (see below).
-			(If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-2/#multi-column-container" id="ref-for-multi-column-container②">multi-column container</a>,
-			any <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-1/#overflow-columns" id="ref-for-overflow-columns">overflow columns</a> are also not rendered.)
+			Content after the first <span id="ref-for-region-break①⓪">region break</span> is not rendered.
 
 
      <p class="note" role="note"><span class="marker">Note:</span> This <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#region-break" id="ref-for-region-break①①">region break</a> might be <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#forced-break" id="ref-for-forced-break">forced</a>
@@ -2559,18 +2622,10 @@ Fragmentation of Overflow: the <a class="property css" data-link-type="property"
 			Breaks applying to other <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-context" id="ref-for-fragmentation-context①">fragmentation contexts</a>
 			(such as pagination of this box itself)
 			do not cause any content to be discarded.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="continue" data-dfn-type="value" data-export id="valdef-continue-collapse">collapse</dfn>
-		
-    <dd>
-     
-			If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑥">block container</a>, then it must
-			<a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#establish-an-independent-formatting-context" id="ref-for-establish-an-independent-formatting-context①">establish an independent formatting context</a> that also becomes a <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container②">line-clamp container</a>.
-			This causes all content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point③">clamp point</a> to be visually hidden, and to not be
-			taken into account for the box’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#automatic-block-size" id="ref-for-automatic-block-size">automatic block size</a>.
-
-
-     <p>If the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-2/#multi-column-container" id="ref-for-multi-column-container③">multicol container</a>,
-			the behavior is the same as 'continue/auto'.</p>
+     <p>See <a href="#discarding-content">§ 5.3.2 Discarding Content</a> for further details.</p>
+     <p class="issue" id="issue-b97a50c8"><a class="self-link" href="#issue-b97a50c8"></a> <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①②">continue: discard</a> is meant to generalize and replace the <code>region-fragment</code> property from <a data-link-type="biblio" href="#biblio-css-regions-1" title="CSS Regions Module Level 1">[CSS-REGIONS-1]</a>.
+			Once it is sufficiently stable in this specification,
+			<code>region-fragment</code> should be removed from the regions specification in favor of this.</p>
    </dl>
    <div class="example" id="ex-continue-overflow">
     <a class="self-link" href="#ex-continue-overflow"></a>
@@ -2578,7 +2633,7 @@ Fragmentation of Overflow: the <a class="property css" data-link-type="property"
 		 as in the illustration bellow,
 		an article with one excessively long overflowing line
 		and four more lines in the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-dimension" id="ref-for-block-dimension">block dimension</a> than can fit,
-		different renderings are possible based on the combination of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overflow-3/#propdef-overflow" id="ref-for-propdef-overflow①⓪">overflow</a> and <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①①">continue</a> property.
+		different renderings are possible based on the combination of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overflow-3/#propdef-overflow" id="ref-for-propdef-overflow①⓪">overflow</a> and <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①③">continue</a> property.
 
 		
     <figure>
@@ -2588,10 +2643,10 @@ Fragmentation of Overflow: the <a class="property css" data-link-type="property"
      <thead>
       <tr>
        <th>
-       <th><a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①②">continue: collapse</a> /
-					<span class="css" id="ref-for-propdef-continue①③">continue: discard</span>
+       <th><a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①④">continue: collapse</a> /
+					<span class="css" id="ref-for-propdef-continue①⑤">continue: discard</span>
 				
-       <th><a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①④">continue: auto</a>
+       <th><a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⑥">continue: auto</a>
 
 			
      <tbody>
@@ -2609,56 +2664,30 @@ Fragmentation of Overflow: the <a class="property css" data-link-type="property"
        <td><img alt="rendering with continue:auto and overflow:hidden" height="90" src="images/continue-auto-hidden.png" width="78">
     </table>
    </div>
-   <p>Content that is “not rendered” due to <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⑤">continue: discard</a>
-	is discarded, similar to <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display①">display: none</a>:</p>
-   <ul>
-    <li data-md>
-     <p>It is not rendered.</p>
-    <li data-md>
-     <p>It is also not made available for speech rendering.</p>
-    <li data-md>
-     <p>It does not allow user interaction.</p>
-    <li data-md>
-     <p class="issue" id="issue-0232c12f"><a class="self-link" href="#issue-0232c12f"></a> Make sure effects on OM are well defined <a href="https://github.com/w3c/csswg-drafts/issues/2970">[Issue #2970]</a></p>
-    <li data-md>
-     <p class="issue" id="issue-70383456"><a class="self-link" href="#issue-70383456"></a> What about <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box" id="ref-for-positioned-box">positioned</a> elements whose static position is in the discarded content are not rendered?
-See also discussions in the <a href="https://lists.w3.org/Archives/Public/www-style/2018Jul/0030.html">Sydney F2F meeting</a>. <a href="https://github.com/w3c/csswg-drafts/issues/2971">[Issue #2971]</a></p>
-   </ul>
-   <p>However, since intrinsic sizes are calculated across <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container⑧">fragmentation containers</a>,
-	this content <em>is</em> taken into account
-	for the purpose of finding the box’s
-	<a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size">min-content</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#max-content" id="ref-for-max-content①">max-content</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-size" id="ref-for-inline-size">inline sizes</a>
-	(see <a href="https://drafts.csswg.org/css-break-3/#varying-size-boxes"><cite>CSS Fragmentation 3</cite> § 5.1 Breaking into Varying-size Fragmentainers</a>).
-	<span id="ref-for-min-content-inline-size①">Min-content</span> and <span id="ref-for-max-content②">max-content</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-size" id="ref-for-block-size">block sizes</a>
-	are calculated based on the content
-	from the start of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmented-flow" id="ref-for-fragmented-flow">fragmented flow</a>
-	to the first <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#forced-break" id="ref-for-forced-break①">forced break</a> if any,
-	or to the end of the <span id="ref-for-fragmented-flow①">fragmented flow</span> if there is no forced break.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> This differs from the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility: hidden</a>-like behavior
-	of content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point④">clamp point</a> with <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⑥">continue: collapse</a>.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> In the case of <a href="https://www.w3.org/TR/css-break-3/#parallel-flows">parallel fragmentation flows</a>,
-	content occurring after the <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-break" id="ref-for-fragmentation-break①">fragmentation break</a> in the box tree
-	could still be rendered,
-	if it is laid out above the position
-	representing the end of this <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container⑨">fragmentation container</a>.</p>
    <p>Additionaliy,
 	for compatibility (see <a href="#webkit-line-clamp">§ 5.1.1 Legacy compatibility</a>),
-	when the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value①">computed value</a> of the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①⑦">continue</a> property is <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse④">collapse</a>, <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy③">-webkit-legacy</a>, or <a class="css" data-link-type="maybe" href="#valdef-continue-discard" id="ref-for-valdef-continue-discard①">discard</a>
+	when the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value①">computed value</a> of the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①⑦">continue</a> property is <a class="css" data-link-type="maybe" href="#valdef-continue-collapse" id="ref-for-valdef-continue-collapse③">collapse</a>, <a class="css" data-link-type="maybe" href="#valdef-continue--webkit-legacy" id="ref-for-valdef-continue--webkit-legacy③">-webkit-legacy</a>, or <a class="css" data-link-type="maybe" href="#valdef-continue-discard" id="ref-for-valdef-continue-discard">discard</a>
 	and the <span id="ref-for-computed-value②">computed value</span> of the <a class="property css" data-link-type="property" href="https://compat.spec.whatwg.org/#propdef--webkit-box-orient" id="ref-for-propdef--webkit-box-orient①">-webkit-box-orient</a> property is <span class="css">vertical</span>:</p>
    <ul>
     <li data-md>
-     <p>If the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#specified-value" id="ref-for-specified-value①">specified value</a> of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display②">display</a> property is <a class="css" data-link-type="maybe" href="https://compat.spec.whatwg.org/#valdef-flex--webkit-box" id="ref-for-valdef-flex--webkit-box①">-webkit-box</a>,
+     <p>If the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#specified-value" id="ref-for-specified-value①">specified value</a> of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display①">display</a> property is <a class="css" data-link-type="maybe" href="https://compat.spec.whatwg.org/#valdef-flex--webkit-box" id="ref-for-valdef-flex--webkit-box①">-webkit-box</a>,
 the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value③">computed value</a> becomes <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-display-4/#valdef-display-flow-root" id="ref-for-valdef-display-flow-root">flow-root</a> and
 the box establishes a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#bfc" id="ref-for-bfc">BFC</a>.</p>
     <li data-md>
-     <p>If the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#specified-value" id="ref-for-specified-value②">specified value</a> of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display③">display</a> property is <a class="css" data-link-type="maybe" href="https://compat.spec.whatwg.org/#valdef-flex--webkit-inline-box" id="ref-for-valdef-flex--webkit-inline-box①">-webkit-inline-box</a>,
+     <p>If the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#specified-value" id="ref-for-specified-value②">specified value</a> of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display②">display</a> property is <a class="css" data-link-type="maybe" href="https://compat.spec.whatwg.org/#valdef-flex--webkit-inline-box" id="ref-for-valdef-flex--webkit-inline-box①">-webkit-inline-box</a>,
 the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value④">computed value</a> becomes <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-display-4/#valdef-display-inline-block" id="ref-for-valdef-display-inline-block">inline-block</a> and
 the box establishes a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#bfc" id="ref-for-bfc①">BFC</a>.</p>
    </ul>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/parsing/webkit-box-computed.html" title="css/css-overflow/parsing/webkit-box-computed.html">webkit-box-computed.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/parsing/webkit-box-computed.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/parsing/webkit-box-computed.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <p class="note" role="note"><span class="marker">Note:</span> This means that <a class="property css" data-link-type="property" href="#propdef-line-clamp" id="ref-for-propdef-line-clamp⑥">line-clamp</a> (set without <a class="css" data-link-type="maybe" href="#valdef-line-clamp--webkit-legacy" id="ref-for-valdef-line-clamp--webkit-legacy③">-webkit-legacy</a>) will work
 	if both or neither of <a class="css" data-link-type="propdesc" href="https://compat.spec.whatwg.org/#propdef--webkit-box-orient" id="ref-for-propdef--webkit-box-orient②">-webkit-box-orient: vertical</a>
-	and <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display④">display: -webkit-box</a> or <span class="css" id="ref-for-propdef-display⑤">display: -webkit-inline-box</span> are set,
-	but not if <span class="css" id="ref-for-propdef-display⑥">display: -webkit-box</span> or <span class="css" id="ref-for-propdef-display⑦">display: -webkit-inline-box</span> is set
+	and <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display③">display: -webkit-box</a> or <span class="css" id="ref-for-propdef-display④">display: -webkit-inline-box</span> are set,
+	but not if <span class="css" id="ref-for-propdef-display⑤">display: -webkit-box</span> or <span class="css" id="ref-for-propdef-display⑥">display: -webkit-inline-box</span> is set
 	while <span class="css" id="ref-for-propdef--webkit-box-orient③">-webkit-box-orient: vertical</span> isn’t,
 	as the box would be a <a data-link-type="dfn" href="https://drafts.csswg.org/css-flexbox-1/#flex-container" id="ref-for-flex-container">flex container</a> rather than a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑦">block container</a>,
 	and thus the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue①⑧">continue</a> property would not apply.</p>
@@ -2682,15 +2711,15 @@ in the line-clamp container’s <a data-link-type="dfn" href="https://drafts.css
 	such that, for it and all previous possible clamp points,
 	the line-clamp container’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#automatic-block-size" id="ref-for-automatic-block-size①">automatic block size</a>
 	(as determined below)
-	is not greater than the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-size" id="ref-for-block-size①">block size</a> the box would have
+	is not greater than the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-size" id="ref-for-block-size">block size</a> the box would have
 	if its automatic block size were infinite.
-	If the <span id="ref-for-block-size②">block size</span> would be infinite,
+	If the <span id="ref-for-block-size①">block size</span> would be infinite,
 	then there is no <a data-link-type="dfn" href="#auto-clamp-point" id="ref-for-auto-clamp-point">auto clamp point</a>.
 	Additionally,
 	when the <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container④">line-clamp container</a>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context-root" id="ref-for-block-formatting-context-root">block formatting context root</a>
 	has a <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value⑤">computed value</a> of <a class="property css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines①⓪">max-lines</a> other than <a class="css" data-link-type="maybe" href="#valdef-max-lines-none" id="ref-for-valdef-max-lines-none⑤">none</a>,
 	then that property determines the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="line-based-clamp-point">line-based clamp point</dfn>.
-	The actual <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑤">clamp point</a> used is
+	The actual <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point④">clamp point</a> used is
 	either the <span id="ref-for-auto-clamp-point①">auto clamp point</span> or the <a data-link-type="dfn" href="#line-based-clamp-point" id="ref-for-line-based-clamp-point②">line-based clamp point</a>,
 	choosing the earlier when both exist.</p>
    <p>Within a <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container⑤">line-clamp container</a>,
@@ -2698,11 +2727,11 @@ in the line-clamp container’s <a data-link-type="dfn" href="https://drafts.css
    <ul>
     <li data-md>
      <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow④">in-flow</a> or floating boxes
-that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑥">clamp point</a> in the box tree.
+that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑤">clamp point</a> in the box tree.
 This includes <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#independent-formatting-context" id="ref-for-independent-formatting-context③">independent formatting contexts</a>
 and all of their descendants.</p>
     <li data-md>
-     <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box④">line boxes</a> that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑦">clamp point</a>
+     <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-inline-3/#line-box" id="ref-for-line-box④">line boxes</a> that follow the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑥">clamp point</a>
 inside an <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#inline-formatting-context" id="ref-for-inline-formatting-context③">inline formatting context</a>.</p>
     <li data-md>
      <p>Any <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position①">absolutely positioned box</a>
@@ -2711,18 +2740,129 @@ and all of its descendants.</p>
    </ul>
    <p>Any overflow such invisible boxes and line boxes might have
 	is always counted as <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#ink-overflow" id="ref-for-ink-overflow">ink overflow</a> rather than <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scrollable-overflow" id="ref-for-scrollable-overflow①">scrollable overflow</a>.</p>
-   <p class="note" role="note"><span class="marker">NOTE:</span> This differs from the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display⑧">display: none</a>-like behavior
+   <p class="note" role="note"><span class="marker">NOTE:</span> This differs from the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display⑦">display: none</a>-like behavior
 	of not rendered content with <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue①⑨">continue: discard</a>.</p>
-   <p>If a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑧">block container</a> contains a <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑧">clamp point</a>,
+   <p>If a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-container" id="ref-for-block-container⑧">block container</a> contains a <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑦">clamp point</a>,
 	within itself or in any of its descendants,
 	its <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#automatic-block-size" id="ref-for-automatic-block-size②">automatic block size</a> will not take into account any invisible boxes.
 	This also applies for the <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container⑥">line-clamp container</a> itself.</p>
-   <p class="note" role="note"><span class="marker">NOTE:</span> If there are any floats before the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑨">clamp point</a>,
+   <p class="note" role="note"><span class="marker">NOTE:</span> If there are any floats before the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point⑧">clamp point</a>,
 	the <a data-link-type="dfn" href="#line-clamp-container" id="ref-for-line-clamp-container⑦">line-clamp container</a>’s automatic size must grow to encompass the clearance,
 	just like it would if it were a regular <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#block-formatting-context" id="ref-for-block-formatting-context⑤">block formatting context</a> root
-	that only contained its contents before the <span id="ref-for-clamp-point①⓪">clamp point</span>.
-	This is regardless of whether this would cause any content after the <span id="ref-for-clamp-point①①">clamp point</span>
+	that only contained its contents before the <span id="ref-for-clamp-point⑨">clamp point</span>.
+	This is regardless of whether this would cause any content after the <span id="ref-for-clamp-point①⓪">clamp point</span>
 	to be within the container’s bounds.</p>
+   <h4 class="heading settled" data-level="5.3.2" id="discarding-content"><span class="secno">5.3.2. </span><span class="content">Discarding Content</span><a class="self-link" href="#discarding-content"></a></h4>
+   <p>Content that is “not rendered” due to <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue②⓪">continue: discard</a>
+	is discarded, similar to <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display⑧">display: none</a>:</p>
+   <ul>
+    <li data-md>
+     <p>It is not rendered.</p>
+    <li data-md>
+     <p>It is also not made available for speech rendering.</p>
+    <li data-md>
+     <p>It does not allow user interaction.</p>
+    <li data-md>
+     <p class="issue" id="issue-0232c12f"><a class="self-link" href="#issue-0232c12f"></a> Make sure effects on OM are well defined <a href="https://github.com/w3c/csswg-drafts/issues/2970">[Issue #2970]</a></p>
+    <li data-md>
+     <p class="issue" id="issue-70383456"><a class="self-link" href="#issue-70383456"></a> What about <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box" id="ref-for-positioned-box">positioned</a> elements whose static position is in the discarded content are not rendered?
+See also discussions in the <a href="https://lists.w3.org/Archives/Public/www-style/2018Jul/0030.html">Sydney F2F meeting</a>. <a href="https://github.com/w3c/csswg-drafts/issues/2971">[Issue #2971]</a></p>
+   </ul>
+   <p>However, since intrinsic sizes are calculated across <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container⑧">fragmentation containers</a>,
+	this content <em>is</em> taken into account
+	for the purpose of finding the box’s
+	<a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#min-content-inline-size" id="ref-for-min-content-inline-size">min-content</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#max-content" id="ref-for-max-content①">max-content</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#inline-size" id="ref-for-inline-size">inline sizes</a>
+	(see <a href="https://drafts.csswg.org/css-break-3/#varying-size-boxes"><cite>CSS Fragmentation 3</cite> § 5.1 Breaking into Varying-size Fragmentainers</a>).
+	<span id="ref-for-min-content-inline-size①">Min-content</span> and <span id="ref-for-max-content②">max-content</span> <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#block-size" id="ref-for-block-size②">block sizes</a>
+	are calculated based on the content
+	from the start of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmented-flow" id="ref-for-fragmented-flow">fragmented flow</a>
+	to the first <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#forced-break" id="ref-for-forced-break①">forced break</a> if any,
+	or to the end of the <span id="ref-for-fragmented-flow①">fragmented flow</span> if there is no forced break.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> This differs from the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility: hidden</a>-like behavior
+	of content after the <a data-link-type="dfn" href="#clamp-point" id="ref-for-clamp-point①①">clamp point</a> with <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue②①">continue: collapse</a>.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> In the case of <a href="https://www.w3.org/TR/css-break-3/#parallel-flows">parallel fragmentation flows</a>,
+	content occurring after the <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-break" id="ref-for-fragmentation-break①">fragmentation break</a> in the box tree
+	could still be rendered,
+	if it is laid out above the position
+	representing the end of this <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragmentation-container" id="ref-for-fragmentation-container⑨">fragmentation container</a>.</p>
+   <p>Additionally,
+	if the box is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-2/#multi-column-container" id="ref-for-multi-column-container③">multi-column container</a>,
+	any <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-1/#overflow-columns" id="ref-for-overflow-columns">overflow columns</a> are also not rendered,
+	nor is any subsequent content—​including any <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#out-of-flow" id="ref-for-out-of-flow">out of flow</a> content
+	whose static position is in or after overflow columns,
+	nor is any additional <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-2/#multi-column-line" id="ref-for-multi-column-line">multi-column line</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/css-multicol-2/#multi-column-row" id="ref-for-multi-column-row">multi-column row</a>
+	that would be generated to hold such content.</p>
+   <details class="wpt-tests-block" dir="ltr" lang="en" open>
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/line-clamp/discard/discard-multicol-001.html" title="css/css-overflow/line-clamp/discard/discard-multicol-001.html">discard-multicol-001.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/line-clamp/discard/discard-multicol-001.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/line-clamp/discard/discard-multicol-001.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/line-clamp/discard/discard-multicol-002.html" title="css/css-overflow/line-clamp/discard/discard-multicol-002.html">discard-multicol-002.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/line-clamp/discard/discard-multicol-002.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/line-clamp/discard/discard-multicol-002.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-overflow/line-clamp/discard/discard-multicol-003.html" title="css/css-overflow/line-clamp/discard/discard-multicol-003.html">discard-multicol-003.html</a> <a class="wpt-live" href="http://wpt.live/css/css-overflow/line-clamp/discard/discard-multicol-003.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-overflow/line-clamp/discard/discard-multicol-003.html"><small>(source)</small></a>
+    </ul>
+   </details>
+   <div class="example" id="discard-overflow-column">
+    <a class="self-link" href="#discard-overflow-column"></a>
+		In the absence of the <a class="property css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue②②">continue</a> property,
+		based on <a data-biblio-display="inline" data-link-type="biblio" href="https://drafts.csswg.org/css-multicol/"><cite>CSS Multi-column Layout Module Level 1</cite></a>,
+		the following markup and associated CSS would be expected
+		to render as follows.
+
+		
+<pre class="highlight"><c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"multicol"</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Column 1<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Column 2<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Column 3<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Overflow column
+    <c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"spanner"</c-><c- p>></c->Spanner 1<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+  <c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"spanner"</c-><c- p>></c->Spanner 2<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Following 1<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Following 2<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Following 3<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>div</c-> <c- e>class</c-><c- o>=</c-><c- s>"spanner"</c-><c- p>></c->Spanner 3<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Following 4<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Following 5<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+  <c- p>&lt;</c-><c- f>p</c-><c- p>></c->Following 6<c- p>&lt;/</c-><c- f>p</c-><c- p>></c->
+<c- p>&lt;/</c-><c- f>div</c-><c- p>></c->
+</pre>
+<pre><code class="highlight">.multicol <c- p>{</c->
+  <c- k>columns</c-><c- p>:</c-> <c- m>3</c-><c- p>;</c->
+  <c- k>border</c-><c- p>:</c-> solid <c- m>1</c-><c- k>px</c-><c- p>;</c->
+<c- p>}</c->
+.multicol p <c- p>{</c->
+  <c- k>break-after</c-><c- p>:</c-> column<c- p>;</c->
+  <c- k>break-inside</c-><c- p>:</c-> avoid<c- p>;</c->
+<c- p>}</c->
+.spanner <c- p>{</c->
+  <c- k>column-span</c-><c- p>:</c-> all<c- p>;</c->
+  <c- k>text-align</c-><c- p>:</c-> center<c- p>;</c->
+<c- p>}</c->
+</code></pre>
+    <figure>
+<pre id="sample-rendering-overflow-multicolumn-1" style="width: 63ch"><div style="border:solid 1px; width: 47ch;">Column 1        Column 2        Column 3        Overflow column
+           Spanner 1
+           Spanner 2
+Following 1     Following 2     Following 3
+           Spanner 3
+Following 4     Following 5     Following 6
+</div></pre>
+    </figure>
+    <p>There is one overflow column,
+		a spanner whose static position is within that overflow column,
+		another spanner whose static position is after the overflow column,
+		inflow content after the spanners and the overflow column,
+		and another spanner whose static position is in this subsequent inflow content.</p>
+    <p>If we additionally apply the following style,
+		everything starting from and including the overflow column is discarded.</p>
+<pre><code class="highlight">.multicol <c- p>{</c->
+  <c- k>continue</c-><c- p>:</c-> discard<c- p>;</c->
+  <c- k>block-ellipsis</c-><c- p>:</c-> auto<c- p>;</c->
+<c- p>}</c->
+</code></pre>
+    <figure>
+<pre id="sample-rendering-overflow-multicolumn-2"><div style="border:solid 1px; width: 47ch;">Column 1        Column 2        Column 3…</div></pre>
+    </figure>
+   </div>
    <h2 class="nonum heading settled" id="sbg-ext"><span class="content">
 Appendix A: Possible extensions for <span class="css">scrollbar-gutter</span></span><a class="self-link" href="#sbg-ext"></a></h2>
    <p><i>This section is non-normative.</i></p>
@@ -3098,7 +3238,7 @@ Recent Changes</span><a class="self-link" href="#recent-changes"></a></h3>
     <li>Dropped the tentative <code>force</code> value for the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overflow-3/#propdef-scrollbar-gutter" id="ref-for-propdef-scrollbar-gutter②⓪">scrollbar-gutter</a> property.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/9815">Issue 9815</a>)
 		
-    <li>Establish an Independent Formatting Context when <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue②⓪">continue: discard</a> is used.
+    <li>Establish an Independent Formatting Context when <a class="css" data-link-type="propdesc" href="#propdef-continue" id="ref-for-propdef-continue②③">continue: discard</a> is used.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/10323">Issue 10323</a>)
 		
     <li>Blockify elements with <code>(-webkit-)line-clamp</code>,
@@ -3399,6 +3539,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="b8f126f1">inline formatting context</span>
      <li><span class="dfn-paneled" id="e33664cd">inline-block</span>
      <li><span class="dfn-paneled" id="11c499ba">invisible box</span>
+     <li><span class="dfn-paneled" id="a46ac4e1">out of flow</span>
      <li><span class="dfn-paneled" id="94f59a47">replaced</span>
      <li><span class="dfn-paneled" id="a8485ff4">replaced element</span>
      <li><span class="dfn-paneled" id="12f8fb07">visibility</span>
@@ -3428,6 +3569,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS-MULTICOL-2]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="396d5070">multi-column container</span>
+     <li><span class="dfn-paneled" id="1fb5d481">multi-column line</span>
+     <li><span class="dfn-paneled" id="45f75b27">multi-column row</span>
      <li><span class="dfn-paneled" id="229cad55">multicol container</span>
     </ul>
    <li>
@@ -3635,7 +3778,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>specified value
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue②①">continue</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-continue" id="ref-for-propdef-continue②④">continue</a>
       <td>auto | discard | collapse
       <td>auto
       <td>block containers and multicol containers
@@ -3660,7 +3803,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-max-lines" id="ref-for-propdef-max-lines①②">max-lines</a>
       <td>none | &lt;integer [1,∞]>
       <td>none
-      <td>block containers which are also either fragmentation containers that capture region breaks or line-clamp containers
+      <td>block containers which are also either line-clamp containers or fragmentation containers that capture region breaks
       <td>no
       <td>N/A
       <td>by computed value type
@@ -3828,11 +3971,9 @@ is still being worked out. <a href="https://github.com/w3c/csswg-drafts/issues/7
 			or to the physical area of the line box,
 			or the intersection of both? <a class="issue-return" href="#issue-948cb1ee" title="Jump to section">↵</a></div>
    <div class="issue"> insert RTL example diagram here to illustrate note. <a class="issue-return" href="#issue-4b5212a2" title="Jump to section">↵</a></div>
-   <div class="issue"> Should this apply to other types of fragmentation breaks (e.g. pages, columns)? <a class="issue-return" href="#issue-23a7778c" title="Jump to section">↵</a></div>
-   <div class="issue"> Whether this should imply <a class="css" data-link-type="maybe" href="#valdef-continue-discard">discard</a> or <a class="css" data-link-type="maybe" href="#valdef-continue-collapse">collapse</a> is an unresolved question. <a href="https://github.com/w3c/csswg-drafts/issues/7708">[Issue #7708]</a> <a class="issue-return" href="#issue-dba10f75" title="Jump to section">↵</a></div>
    <div class="issue"> <a class="css" data-link-type="propdesc" href="#propdef-continue">continue: discard</a> is meant to generalize and replace the <code>region-fragment</code> property from <a data-link-type="biblio" href="#biblio-css-regions-1" title="CSS Regions Module Level 1">[CSS-REGIONS-1]</a>.
-	Once it is sufficiently stable in this specification,
-	<code>region-fragment</code> should be removed from the regions specification in favor of this. <a class="issue-return" href="#issue-b97a50c8" title="Jump to section">↵</a></div>
+			Once it is sufficiently stable in this specification,
+			<code>region-fragment</code> should be removed from the regions specification in favor of this. <a class="issue-return" href="#issue-b97a50c8" title="Jump to section">↵</a></div>
    <div class="issue"> Make sure effects on OM are well defined <a href="https://github.com/w3c/csswg-drafts/issues/2970">[Issue #2970]</a> <a class="issue-return" href="#issue-0232c12f" title="Jump to section">↵</a></div>
    <div class="issue"> What about <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#positioned-box">positioned</a> elements whose static position is in the discarded content are not rendered?
 See also discussions in the <a href="https://lists.w3.org/Archives/Public/www-style/2018Jul/0030.html">Sydney F2F meeting</a>. <a href="https://github.com/w3c/csswg-drafts/issues/2971">[Issue #2971]</a> <a class="issue-return" href="#issue-70383456" title="Jump to section">↵</a></div>
@@ -3898,7 +4039,7 @@ but non-experimental implementation is not recommended. <a class="issue-return" 
   <details class="caniuse-status unpositioned" data-anno-for="text-overflow" data-deco>
    <summary>CanIUse</summary>
    <p class="support"><b>Support:</b><span class="android yes"><span>Android Browser</span><span>2.1+</span></span><span class="baidu yes"><span>Baidu Browser</span><span>13.52+</span></span><span class="bb yes"><span>Blackberry Browser</span><span>7+</span></span><span class="chrome yes"><span>Chrome</span><span>4+</span></span><span class="and_chr yes"><span>Chrome for Android</span><span>139+</span></span><span class="edge yes"><span>Edge</span><span>12+</span></span><span class="firefox yes"><span>Firefox</span><span>7+</span></span><span class="and_ff yes"><span>Firefox for Android</span><span>142+</span></span><span class="ie yes"><span>IE</span><span>6+</span></span><span class="ie_mob yes"><span>IE Mobile</span><span>10+</span></span><span class="kaios yes"><span>KaiOS Browser</span><span>2.5+</span></span><span class="opera yes"><span>Opera</span><span>11+</span></span><span class="op_mini yes"><span>Opera Mini</span><span>All</span></span><span class="op_mob yes"><span>Opera Mobile</span><span>12.1+</span></span><span class="and_qq yes"><span>QQ Browser</span><span>14.9+</span></span><span class="safari yes"><span>Safari</span><span>3.1+</span></span><span class="ios_saf yes"><span>Safari on iOS</span><span>3.2+</span></span><span class="samsung yes"><span>Samsung Internet</span><span>4+</span></span><span class="and_uc yes"><span>UC Browser for Android</span><span>15.5+</span></span></p>
-   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=text-overflow">caniuse.com</a> as of 2025-09-11</p>
+   <p class="caniuse">Source: <a href="https://caniuse.com/#feat=text-overflow">caniuse.com</a> as of 2025-09-16</p>
   </details>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
@@ -4101,60 +4242,62 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "0812e39f": {"dfnID":"0812e39f","dfnText":"ink overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-ink-overflow"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-overflow-3/#ink-overflow"},
-"0a52b385": {"dfnID":"0a52b385","dfnText":"break-after","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-break-after"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-break-after"},
+"0a52b385": {"dfnID":"0a52b385","dfnText":"break-after","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-break-after"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-break-after"},
 "0b8a742a": {"dfnID":"0b8a742a","dfnText":"left","external":true,"refSections":[{"refs":[{"id":"ref-for-physical-left"},{"id":"ref-for-physical-left\u2460"}],"title":"\nuser interaction with ellipsis"}],"url":"https://drafts.csswg.org/css-writing-modes-3/#physical-left"},
 "0be4aca5": {"dfnID":"0be4aca5","dfnText":"force","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-scrollbar-gutter-force"},{"id":"ref-for-valdef-scrollbar-gutter-force\u2460"},{"id":"ref-for-valdef-scrollbar-gutter-force\u2461"},{"id":"ref-for-valdef-scrollbar-gutter-force\u2462"},{"id":"ref-for-valdef-scrollbar-gutter-force\u2463"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://www.w3.org/TR/css-overflow-4/#valdef-scrollbar-gutter-force"},
 "0e74a72c": {"dfnID":"0e74a72c","dfnText":"soft wrap opportunity","external":true,"refSections":[{"refs":[{"id":"ref-for-soft-wrap-opportunity"},{"id":"ref-for-soft-wrap-opportunity\u2460"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-text-4/#soft-wrap-opportunity"},
 "11c499ba": {"dfnID":"11c499ba","dfnText":"invisible box","external":true,"refSections":[{"refs":[{"id":"ref-for-invisible-box"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#invisible-box"},
-"12f8fb07": {"dfnID":"12f8fb07","dfnText":"visibility","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-visibility"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-visibility"},
+"12f8fb07": {"dfnID":"12f8fb07","dfnText":"visibility","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-visibility"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-visibility"},
 "14c62133": {"dfnID":"14c62133","dfnText":"scrollbar gutter","external":true,"refSections":[{"refs":[{"id":"ref-for-scrollbar-gutter"},{"id":"ref-for-scrollbar-gutter\u2460"},{"id":"ref-for-scrollbar-gutter\u2461"},{"id":"ref-for-scrollbar-gutter\u2462"},{"id":"ref-for-scrollbar-gutter\u2463"},{"id":"ref-for-scrollbar-gutter\u2464"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#scrollbar-gutter"},
 "15f5b381": {"dfnID":"15f5b381","dfnText":"<percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-percentage-value"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"}],"url":"https://drafts.csswg.org/css-values-4/#percentage-value"},
 "18222566": {"dfnID":"18222566","dfnText":"<length-percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-length-percentage"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-length-percentage"},
-"190183bb": {"dfnID":"190183bb","dfnText":"block size","external":true,"refSections":[{"refs":[{"id":"ref-for-block-size"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-block-size\u2460"},{"id":"ref-for-block-size\u2461"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-size"},
-"1cf918c1": {"dfnID":"1cf918c1","dfnText":"specified value","external":true,"refSections":[{"refs":[{"id":"ref-for-specified-value"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-specified-value\u2460"},{"id":"ref-for-specified-value\u2461"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-cascade-5/#specified-value"},
-"229cad55": {"dfnID":"229cad55","dfnText":"multicol container","external":true,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-multi-column-container\u2460"},{"id":"ref-for-multi-column-container\u2461"},{"id":"ref-for-multi-column-container\u2462"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-multicol-2/#multi-column-container"},
-"24285d87": {"dfnID":"24285d87","dfnText":"flex container","external":true,"refSections":[{"refs":[{"id":"ref-for-flex-container"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-flexbox-1/#flex-container"},
+"190183bb": {"dfnID":"190183bb","dfnText":"block size","external":true,"refSections":[{"refs":[{"id":"ref-for-block-size"},{"id":"ref-for-block-size\u2460"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-block-size\u2461"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-size"},
+"1cf918c1": {"dfnID":"1cf918c1","dfnText":"specified value","external":true,"refSections":[{"refs":[{"id":"ref-for-specified-value"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-specified-value\u2460"},{"id":"ref-for-specified-value\u2461"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-cascade-5/#specified-value"},
+"1fb5d481": {"dfnID":"1fb5d481","dfnText":"multi-column line","external":true,"refSections":[{"refs":[{"id":"ref-for-multi-column-line"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-multicol-2/#multi-column-line"},
+"229cad55": {"dfnID":"229cad55","dfnText":"multicol container","external":true,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-multi-column-container\u2460"},{"id":"ref-for-multi-column-container\u2461"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-multi-column-container\u2462"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-multicol-2/#multi-column-container"},
+"24285d87": {"dfnID":"24285d87","dfnText":"flex container","external":true,"refSections":[{"refs":[{"id":"ref-for-flex-container"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-flexbox-1/#flex-container"},
 "24f4b323": {"dfnID":"24f4b323","dfnText":"overflow-x","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-x"},{"id":"ref-for-propdef-overflow-x\u2460"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow-x"},
 "2589df91": {"dfnID":"2589df91","dfnText":"orphans","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-orphans"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-orphans"},
-"25ccffa4": {"dfnID":"25ccffa4","dfnText":"min-content inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-inline-size"},{"id":"ref-for-min-content-inline-size\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-sizing-3/#min-content-inline-size"},
-"26a40c98": {"dfnID":"26a40c98","dfnText":"max-content size","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-max-content\u2460"},{"id":"ref-for-max-content\u2461"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-sizing-3/#max-content"},
-"28d6b91b": {"dfnID":"28d6b91b","dfnText":"max-content","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-max-content\u2460"},{"id":"ref-for-max-content\u2461"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-sizing-3/#max-content"},
+"25ccffa4": {"dfnID":"25ccffa4","dfnText":"min-content inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content-inline-size"},{"id":"ref-for-min-content-inline-size\u2460"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-sizing-3/#min-content-inline-size"},
+"26a40c98": {"dfnID":"26a40c98","dfnText":"max-content size","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-max-content\u2460"},{"id":"ref-for-max-content\u2461"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-sizing-3/#max-content"},
+"28d6b91b": {"dfnID":"28d6b91b","dfnText":"max-content","external":true,"refSections":[{"refs":[{"id":"ref-for-max-content"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-max-content\u2460"},{"id":"ref-for-max-content\u2461"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-sizing-3/#max-content"},
 "2c299d7c": {"dfnID":"2c299d7c","dfnText":"outer box-shadow","external":true,"refSections":[{"refs":[{"id":"ref-for-box-shadow-outer-box-shadow"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-outer-box-shadow"},
 "2c3a36fb": {"dfnID":"2c3a36fb","dfnText":"visible","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-overflow-visible"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-valdef-overflow-visible\u2460"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-valdef-overflow-visible\u2461"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#valdef-overflow-visible"},
 "2e45f1bb": {"dfnID":"2e45f1bb","dfnText":"line-left","external":true,"refSections":[{"refs":[{"id":"ref-for-line-left"},{"id":"ref-for-line-left\u2460"},{"id":"ref-for-line-left\u2461"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#line-left"},
 "33eda2d8": {"dfnID":"33eda2d8","dfnText":"clip","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-overflow-clip"},{"id":"ref-for-valdef-overflow-clip\u2460"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-valdef-overflow-clip\u2461"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#valdef-overflow-clip"},
 "358fd6ff": {"dfnID":"358fd6ff","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"1.1. \nValue Definitions"}],"url":"https://drafts.csswg.org/css-values-4/#css-wide-keywords"},
-"37f0daea": {"dfnID":"37f0daea","dfnText":"inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-size"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-size"},
-"396d5070": {"dfnID":"396d5070","dfnText":"multi-column container","external":true,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-multi-column-container\u2460"},{"id":"ref-for-multi-column-container\u2461"},{"id":"ref-for-multi-column-container\u2462"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-multicol-2/#multi-column-container"},
+"37f0daea": {"dfnID":"37f0daea","dfnText":"inline size","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-size"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-size"},
+"396d5070": {"dfnID":"396d5070","dfnText":"multi-column container","external":true,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-multi-column-container\u2460"},{"id":"ref-for-multi-column-container\u2461"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-multi-column-container\u2462"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-multicol-2/#multi-column-container"},
 "3be9f354": {"dfnID":"3be9f354","dfnText":"scrollbar-gutter","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scrollbar-gutter"},{"id":"ref-for-propdef-scrollbar-gutter\u2460"},{"id":"ref-for-propdef-scrollbar-gutter\u2461"},{"id":"ref-for-propdef-scrollbar-gutter\u2462"},{"id":"ref-for-propdef-scrollbar-gutter\u2463"},{"id":"ref-for-propdef-scrollbar-gutter\u2464"},{"id":"ref-for-propdef-scrollbar-gutter\u2465"},{"id":"ref-for-propdef-scrollbar-gutter\u2466"},{"id":"ref-for-propdef-scrollbar-gutter\u2467"},{"id":"ref-for-propdef-scrollbar-gutter\u2468"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u24ea"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2460"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2461"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2462"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2463"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2464"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2465"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2466"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"},{"refs":[{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2467"},{"id":"ref-for-propdef-scrollbar-gutter\u2460\u2468"},{"id":"ref-for-propdef-scrollbar-gutter\u2461\u24ea"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-scrollbar-gutter"},
 "3f0db204": {"dfnID":"3f0db204","dfnText":"min-content size","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-sizing-3/#min-content"},
-"40060954": {"dfnID":"40060954","dfnText":"fragmentation container","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-container"},{"id":"ref-for-fragmentation-container\u2460"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-fragmentation-container\u2461"},{"id":"ref-for-fragmentation-container\u2462"},{"id":"ref-for-fragmentation-container\u2463"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-fragmentation-container\u2464"},{"id":"ref-for-fragmentation-container\u2465"},{"id":"ref-for-fragmentation-container\u2466"},{"id":"ref-for-fragmentation-container\u2467"},{"id":"ref-for-fragmentation-container\u2468"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-container"},
+"40060954": {"dfnID":"40060954","dfnText":"fragmentation container","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-container"},{"id":"ref-for-fragmentation-container\u2460"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-fragmentation-container\u2461"},{"id":"ref-for-fragmentation-container\u2462"},{"id":"ref-for-fragmentation-container\u2463"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-fragmentation-container\u2464"},{"id":"ref-for-fragmentation-container\u2465"},{"id":"ref-for-fragmentation-container\u2466"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-fragmentation-container\u2467"},{"id":"ref-for-fragmentation-container\u2468"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-container"},
 "43562076": {"dfnID":"43562076","dfnText":"<visual-box>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-visual-box"},{"id":"ref-for-typedef-visual-box\u2460"},{"id":"ref-for-typedef-visual-box\u2461"},{"id":"ref-for-typedef-visual-box\u2462"},{"id":"ref-for-typedef-visual-box\u2463"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-box-4/#typedef-visual-box"},
+"45f75b27": {"dfnID":"45f75b27","dfnText":"multi-column row","external":true,"refSections":[{"refs":[{"id":"ref-for-multi-column-row"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-multicol-2/#multi-column-row"},
 "46d5c7e2": {"dfnID":"46d5c7e2","dfnText":"ignored","external":true,"refSections":[{"refs":[{"id":"ref-for-css-ignored"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"}],"url":"https://drafts.csswg.org/css-syntax-3/#css-ignored"},
-"4afd591e": {"dfnID":"4afd591e","dfnText":"automatic block size","external":true,"refSections":[{"refs":[{"id":"ref-for-automatic-block-size"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-automatic-block-size\u2460"},{"id":"ref-for-automatic-block-size\u2461"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-sizing-3/#automatic-block-size"},
+"4afd591e": {"dfnID":"4afd591e","dfnText":"automatic block size","external":true,"refSections":[{"refs":[{"id":"ref-for-automatic-block-size"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-automatic-block-size\u2460"},{"id":"ref-for-automatic-block-size\u2461"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-sizing-3/#automatic-block-size"},
 "51fe9b84": {"dfnID":"51fe9b84","dfnText":"absolutely position","external":true,"refSections":[{"refs":[{"id":"ref-for-absolute-position"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-absolute-position\u2460"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-position-3/#absolute-position"},
 "537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-mult-opt\u2460"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
 "56177fad": {"dfnID":"56177fad","dfnText":"shorthand","external":true,"refSections":[{"refs":[{"id":"ref-for-shorthand-property"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-shorthand-property\u2460"},{"id":"ref-for-shorthand-property\u2461"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-shorthand-property\u2462"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"}],"url":"https://drafts.csswg.org/css-cascade-5/#shorthand-property"},
 "58157ca0": {"dfnID":"58157ca0","dfnText":"containing block chain","external":true,"refSections":[{"refs":[{"id":"ref-for-containing-block-chain"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#containing-block-chain"},
 "5879b11d": {"dfnID":"5879b11d","dfnText":"content language","external":true,"refSections":[{"refs":[{"id":"ref-for-content-language"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-text-4/#content-language"},
 "5bc8bd12": {"dfnID":"5bc8bd12","dfnText":"direction","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-direction"}],"title":"\nuser interaction with ellipsis"}],"url":"https://drafts.csswg.org/css-writing-modes-3/#propdef-direction"},
-"607244fc": {"dfnID":"607244fc","dfnText":"flow-root","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-flow-root"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-flow-root"},
-"6234b6c0": {"dfnID":"6234b6c0","dfnText":"fragmented flow","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmented-flow"},{"id":"ref-for-fragmented-flow\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#fragmented-flow"},
-"6458a3ef": {"dfnID":"6458a3ef","dfnText":"fragmentation break","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-break"},{"id":"ref-for-fragmentation-break\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-break"},
+"607244fc": {"dfnID":"607244fc","dfnText":"flow-root","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-flow-root"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-flow-root"},
+"6234b6c0": {"dfnID":"6234b6c0","dfnText":"fragmented flow","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmented-flow"},{"id":"ref-for-fragmented-flow\u2460"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-break-4/#fragmented-flow"},
+"6458a3ef": {"dfnID":"6458a3ef","dfnText":"fragmentation break","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-break"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-fragmentation-break\u2460"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-break"},
 "64747b41": {"dfnID":"64747b41","dfnText":"UA style sheet","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-origin-ua"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"}],"url":"https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua"},
 "6821b177": {"dfnID":"6821b177","dfnText":"mask-image","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-mask-image"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"}],"url":"https://drafts.fxtf.org/css-masking-1/#propdef-mask-image"},
-"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-comb-one\u2465"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-comb-one\u2466"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-comb-one\u2467"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-comb-one\u2465"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-comb-one\u2466"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-comb-one\u2467"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "6f7798a0": {"dfnID":"6f7798a0","dfnText":"root inline box","external":true,"refSections":[{"refs":[{"id":"ref-for-root-inline-box"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-inline-3/#root-inline-box"},
 "70c9f859": {"dfnID":"70c9f859","dfnText":"<integer>","external":true,"refSections":[{"refs":[{"id":"ref-for-integer-value"},{"id":"ref-for-integer-value\u2460"},{"id":"ref-for-integer-value\u2461"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-integer-value\u2462"},{"id":"ref-for-integer-value\u2463"},{"id":"ref-for-integer-value\u2464"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-integer-value\u2465"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"}],"url":"https://drafts.csswg.org/css-values-4/#integer-value"},
-"714ae626": {"dfnID":"714ae626","dfnText":"-webkit-box","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-flex--webkit-box"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-flex--webkit-box\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://compat.spec.whatwg.org/#valdef-flex--webkit-box"},
+"714ae626": {"dfnID":"714ae626","dfnText":"-webkit-box","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-flex--webkit-box"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-flex--webkit-box\u2460"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://compat.spec.whatwg.org/#valdef-flex--webkit-box"},
 "75bfa627": {"dfnID":"75bfa627","dfnText":"::first-line","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-first-line"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line"},
 "7bc19a34": {"dfnID":"7bc19a34","dfnText":"end","external":true,"refSections":[{"refs":[{"id":"ref-for-css-end"},{"id":"ref-for-css-end\u2460"},{"id":"ref-for-css-end\u2461"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-css-end\u2462"}],"title":"\nellipsis interaction with scrolling interfaces"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-end"},
-"7bd44c3c": {"dfnID":"7bd44c3c","dfnText":"-webkit-box-orient","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef--webkit-box-orient"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef--webkit-box-orient\u2460"},{"id":"ref-for-propdef--webkit-box-orient\u2461"},{"id":"ref-for-propdef--webkit-box-orient\u2462"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://compat.spec.whatwg.org/#propdef--webkit-box-orient"},
+"7bd44c3c": {"dfnID":"7bd44c3c","dfnText":"-webkit-box-orient","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef--webkit-box-orient"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef--webkit-box-orient\u2460"},{"id":"ref-for-propdef--webkit-box-orient\u2461"},{"id":"ref-for-propdef--webkit-box-orient\u2462"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://compat.spec.whatwg.org/#propdef--webkit-box-orient"},
 "8067deca": {"dfnID":"8067deca","dfnText":"start","external":true,"refSections":[{"refs":[{"id":"ref-for-css-start"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-css-start\u2460"}],"title":"\nellipsis interaction with scrolling interfaces"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-start"},
 "8141cabb": {"dfnID":"8141cabb","dfnText":"independent formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-independent-formatting-context"},{"id":"ref-for-independent-formatting-context\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-independent-formatting-context\u2461"},{"id":"ref-for-independent-formatting-context\u2462"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#independent-formatting-context"},
 "8379845e": {"dfnID":"8379845e","dfnText":"block-level","external":true,"refSections":[{"refs":[{"id":"ref-for-block-level"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-block-level\u2460"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-display-4/#block-level"},
 "86923d07": {"dfnID":"86923d07","dfnText":"scroll container","external":true,"refSections":[{"refs":[{"id":"ref-for-scroll-container"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#scroll-container"},
-"86928bde": {"dfnID":"86928bde","dfnText":"overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow"},{"id":"ref-for-propdef-overflow\u2460"},{"id":"ref-for-propdef-overflow\u2461"},{"id":"ref-for-propdef-overflow\u2462"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-propdef-overflow\u2463"},{"id":"ref-for-propdef-overflow\u2464"},{"id":"ref-for-propdef-overflow\u2465"},{"id":"ref-for-propdef-overflow\u2466"},{"id":"ref-for-propdef-overflow\u2467"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-propdef-overflow\u2468"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-propdef-overflow\u2460\u24ea"},{"id":"ref-for-propdef-overflow\u2460\u2460"},{"id":"ref-for-propdef-overflow\u2460\u2461"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-propdef-overflow\u2460\u2462"},{"id":"ref-for-propdef-overflow\u2460\u2463"},{"id":"ref-for-propdef-overflow\u2460\u2464"},{"id":"ref-for-propdef-overflow\u2460\u2465"},{"id":"ref-for-propdef-overflow\u2460\u2466"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"},{"refs":[{"id":"ref-for-propdef-overflow\u2460\u2467"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
+"86928bde": {"dfnID":"86928bde","dfnText":"overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow"},{"id":"ref-for-propdef-overflow\u2460"},{"id":"ref-for-propdef-overflow\u2461"},{"id":"ref-for-propdef-overflow\u2462"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-propdef-overflow\u2463"},{"id":"ref-for-propdef-overflow\u2464"},{"id":"ref-for-propdef-overflow\u2465"},{"id":"ref-for-propdef-overflow\u2466"},{"id":"ref-for-propdef-overflow\u2467"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-propdef-overflow\u2468"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-propdef-overflow\u2460\u24ea"},{"id":"ref-for-propdef-overflow\u2460\u2460"},{"id":"ref-for-propdef-overflow\u2460\u2461"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-propdef-overflow\u2460\u2462"},{"id":"ref-for-propdef-overflow\u2460\u2463"},{"id":"ref-for-propdef-overflow\u2460\u2464"},{"id":"ref-for-propdef-overflow\u2460\u2465"},{"id":"ref-for-propdef-overflow\u2460\u2466"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"},{"refs":[{"id":"ref-for-propdef-overflow\u2460\u2467"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
 "884d81d3": {"dfnID":"884d81d3","dfnText":"overlay scrollbars","external":true,"refSections":[{"refs":[{"id":"ref-for-overlay-scrollbars"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#overlay-scrollbars"},
 "8996bcc8": {"dfnID":"8996bcc8","dfnText":"overflow-wrap","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-wrap"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-text-4/#propdef-overflow-wrap"},
 "8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-comb-any\u2461"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-comb-any\u2462"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
@@ -4167,12 +4310,13 @@ let dfnPanelData = {
 "982e17a3": {"dfnID":"982e17a3","dfnText":"unicode-bidi","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-unicode-bidi"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-writing-modes-3/#propdef-unicode-bidi"},
 "9958418a": {"dfnID":"9958418a","dfnText":"overflow-y","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-y"},{"id":"ref-for-propdef-overflow-y\u2460"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow-y"},
 "99cabd32": {"dfnID":"99cabd32","dfnText":"in-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-in-flow"},{"id":"ref-for-in-flow\u2460"},{"id":"ref-for-in-flow\u2461"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-in-flow\u2462"},{"id":"ref-for-in-flow\u2463"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#in-flow"},
-"9c6732e6": {"dfnID":"9c6732e6","dfnText":"BFC","external":true,"refSections":[{"refs":[{"id":"ref-for-bfc"},{"id":"ref-for-bfc\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#bfc"},
-"9cd25054": {"dfnID":"9cd25054","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-computed-value\u2460"},{"id":"ref-for-computed-value\u2461"},{"id":"ref-for-computed-value\u2462"},{"id":"ref-for-computed-value\u2463"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-computed-value\u2464"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
+"9c6732e6": {"dfnID":"9c6732e6","dfnText":"BFC","external":true,"refSections":[{"refs":[{"id":"ref-for-bfc"},{"id":"ref-for-bfc\u2460"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#bfc"},
+"9cd25054": {"dfnID":"9cd25054","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-computed-value\u2460"},{"id":"ref-for-computed-value\u2461"},{"id":"ref-for-computed-value\u2462"},{"id":"ref-for-computed-value\u2463"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-computed-value\u2464"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
 "9e066e76": {"dfnID":"9e066e76","dfnText":"longhand","external":true,"refSections":[{"refs":[{"id":"ref-for-longhand"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-longhand\u2460"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-cascade-5/#longhand"},
-"9f3d4f17": {"dfnID":"9f3d4f17","dfnText":"block container","external":true,"refSections":[{"refs":[{"id":"ref-for-block-container"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-block-container\u2460"},{"id":"ref-for-block-container\u2461"},{"id":"ref-for-block-container\u2462"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-block-container\u2463"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-block-container\u2464"},{"id":"ref-for-block-container\u2465"},{"id":"ref-for-block-container\u2466"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-block-container\u2467"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#block-container"},
+"9f3d4f17": {"dfnID":"9f3d4f17","dfnText":"block container","external":true,"refSections":[{"refs":[{"id":"ref-for-block-container"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-block-container\u2460"},{"id":"ref-for-block-container\u2461"},{"id":"ref-for-block-container\u2462"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-block-container\u2463"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-block-container\u2464"},{"id":"ref-for-block-container\u2465"},{"id":"ref-for-block-container\u2466"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-block-container\u2467"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#block-container"},
 "a1addf6c": {"dfnID":"a1addf6c","dfnText":"::first-letter","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-first-letter"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-letter"},
-"a270c80d": {"dfnID":"a270c80d","dfnText":"fragmentation context","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-context"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-fragmentation-context\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-context"},
+"a270c80d": {"dfnID":"a270c80d","dfnText":"fragmentation context","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-context"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-fragmentation-context\u2460"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-context"},
+"a46ac4e1": {"dfnID":"a46ac4e1","dfnText":"out of flow","external":true,"refSections":[{"refs":[{"id":"ref-for-out-of-flow"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-display-4/#out-of-flow"},
 "a4eb3c57": {"dfnID":"a4eb3c57","dfnText":"used value","external":true,"refSections":[{"refs":[{"id":"ref-for-used-value"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"}],"url":"https://drafts.csswg.org/css-cascade-5/#used-value"},
 "a73617e0": {"dfnID":"a73617e0","dfnText":"writing mode","external":true,"refSections":[{"refs":[{"id":"ref-for-writing-mode"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#writing-mode"},
 "a8485ff4": {"dfnID":"a8485ff4","dfnText":"replaced element","external":true,"refSections":[{"refs":[{"id":"ref-for-replaced-element"},{"id":"ref-for-replaced-element\u2460"},{"id":"ref-for-replaced-element\u2461"},{"id":"ref-for-replaced-element\u2462"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-replaced-element\u2463"},{"id":"ref-for-replaced-element\u2464"},{"id":"ref-for-replaced-element\u2465"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-replaced-element\u2466"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-display-4/#replaced-element"},
@@ -4182,42 +4326,42 @@ let dfnPanelData = {
 "b2a71e73": {"dfnID":"b2a71e73","dfnText":"scrollable overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-scrollable-overflow"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-scrollable-overflow\u2460"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-overflow-3/#scrollable-overflow"},
 "b6730ce5": {"dfnID":"b6730ce5","dfnText":"widows","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-widows"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"}],"url":"https://drafts.csswg.org/css-break-4/#propdef-widows"},
 "b7e0bc03": {"dfnID":"b7e0bc03","dfnText":"border edge","external":true,"refSections":[{"refs":[{"id":"ref-for-border-edge"},{"id":"ref-for-border-edge\u2460"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-box-4/#border-edge"},
-"b8c7a216": {"dfnID":"b8c7a216","dfnText":"forced break","external":true,"refSections":[{"refs":[{"id":"ref-for-forced-break"},{"id":"ref-for-forced-break\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#forced-break"},
+"b8c7a216": {"dfnID":"b8c7a216","dfnText":"forced break","external":true,"refSections":[{"refs":[{"id":"ref-for-forced-break"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-forced-break\u2460"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-break-4/#forced-break"},
 "b8f126f1": {"dfnID":"b8f126f1","dfnText":"inline formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-formatting-context"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"},{"refs":[{"id":"ref-for-inline-formatting-context\u2460"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-inline-formatting-context\u2461"},{"id":"ref-for-inline-formatting-context\u2462"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#inline-formatting-context"},
-"ba2b58c4": {"dfnID":"ba2b58c4","dfnText":"region break","external":true,"refSections":[{"refs":[{"id":"ref-for-region-break"},{"id":"ref-for-region-break\u2460"},{"id":"ref-for-region-break\u2461"},{"id":"ref-for-region-break\u2462"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-region-break\u2463"},{"id":"ref-for-region-break\u2464"},{"id":"ref-for-region-break\u2465"},{"id":"ref-for-region-break\u2466"},{"id":"ref-for-region-break\u2467"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-region-break\u2468"},{"id":"ref-for-region-break\u2460\u24ea"},{"id":"ref-for-region-break\u2460\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#region-break"},
-"bb0df938": {"dfnID":"bb0df938","dfnText":"positioned","external":true,"refSections":[{"refs":[{"id":"ref-for-positioned-box"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-position-3/#positioned-box"},
+"ba2b58c4": {"dfnID":"ba2b58c4","dfnText":"region break","external":true,"refSections":[{"refs":[{"id":"ref-for-region-break"},{"id":"ref-for-region-break\u2460"},{"id":"ref-for-region-break\u2461"},{"id":"ref-for-region-break\u2462"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-region-break\u2463"},{"id":"ref-for-region-break\u2464"},{"id":"ref-for-region-break\u2465"},{"id":"ref-for-region-break\u2466"},{"id":"ref-for-region-break\u2467"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-region-break\u2468"},{"id":"ref-for-region-break\u2460\u24ea"},{"id":"ref-for-region-break\u2460\u2460"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#region-break"},
+"bb0df938": {"dfnID":"bb0df938","dfnText":"positioned","external":true,"refSections":[{"refs":[{"id":"ref-for-positioned-box"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-position-3/#positioned-box"},
 "block-overflow-ellipsis": {"dfnID":"block-overflow-ellipsis","dfnText":"block overflow ellipsis","external":false,"refSections":[{"refs":[{"id":"ref-for-block-overflow-ellipsis"},{"id":"ref-for-block-overflow-ellipsis\u2460"},{"id":"ref-for-block-overflow-ellipsis\u2461"},{"id":"ref-for-block-overflow-ellipsis\u2462"},{"id":"ref-for-block-overflow-ellipsis\u2463"},{"id":"ref-for-block-overflow-ellipsis\u2464"},{"id":"ref-for-block-overflow-ellipsis\u2465"},{"id":"ref-for-block-overflow-ellipsis\u2466"},{"id":"ref-for-block-overflow-ellipsis\u2467"},{"id":"ref-for-block-overflow-ellipsis\u2468"},{"id":"ref-for-block-overflow-ellipsis\u2460\u24ea"},{"id":"ref-for-block-overflow-ellipsis\u2460\u2460"},{"id":"ref-for-block-overflow-ellipsis\u2460\u2461"},{"id":"ref-for-block-overflow-ellipsis\u2460\u2462"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"#block-overflow-ellipsis"},
-"c150f8fa": {"dfnID":"c150f8fa","dfnText":"unforced break","external":true,"refSections":[{"refs":[{"id":"ref-for-unforced-break"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#unforced-break"},
-"c1654d36": {"dfnID":"c1654d36","dfnText":"break-before","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-break-before"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-break-before"},
-"c3f3244a": {"dfnID":"c3f3244a","dfnText":"block dimension","external":true,"refSections":[{"refs":[{"id":"ref-for-block-dimension"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-dimension"},
+"c150f8fa": {"dfnID":"c150f8fa","dfnText":"unforced break","external":true,"refSections":[{"refs":[{"id":"ref-for-unforced-break"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-break-4/#unforced-break"},
+"c1654d36": {"dfnID":"c1654d36","dfnText":"break-before","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-break-before"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-break-before"},
+"c3f3244a": {"dfnID":"c3f3244a","dfnText":"block dimension","external":true,"refSections":[{"refs":[{"id":"ref-for-block-dimension"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-dimension"},
 "ca960d4f": {"dfnID":"ca960d4f","dfnText":"block formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-block-formatting-context"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-block-formatting-context\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-block-formatting-context\u2461"},{"id":"ref-for-block-formatting-context\u2462"},{"id":"ref-for-block-formatting-context\u2463"},{"id":"ref-for-block-formatting-context\u2464"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#block-formatting-context"},
 "cecbe9cd": {"dfnID":"cecbe9cd","dfnText":"margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-margin"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-box-4/#propdef-margin"},
-"clamp-point": {"dfnID":"clamp-point","dfnText":"clamp point","external":false,"refSections":[{"refs":[{"id":"ref-for-clamp-point"},{"id":"ref-for-clamp-point\u2460"},{"id":"ref-for-clamp-point\u2461"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-clamp-point\u2462"},{"id":"ref-for-clamp-point\u2463"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-clamp-point\u2464"},{"id":"ref-for-clamp-point\u2465"},{"id":"ref-for-clamp-point\u2466"},{"id":"ref-for-clamp-point\u2467"},{"id":"ref-for-clamp-point\u2468"},{"id":"ref-for-clamp-point\u2460\u24ea"},{"id":"ref-for-clamp-point\u2460\u2460"}],"title":"5.3.1. Line-clamp containers"}],"url":"#clamp-point"},
+"clamp-point": {"dfnID":"clamp-point","dfnText":"clamp point","external":false,"refSections":[{"refs":[{"id":"ref-for-clamp-point"},{"id":"ref-for-clamp-point\u2460"},{"id":"ref-for-clamp-point\u2461"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-clamp-point\u2462"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-clamp-point\u2463"},{"id":"ref-for-clamp-point\u2464"},{"id":"ref-for-clamp-point\u2465"},{"id":"ref-for-clamp-point\u2466"},{"id":"ref-for-clamp-point\u2467"},{"id":"ref-for-clamp-point\u2468"},{"id":"ref-for-clamp-point\u2460\u24ea"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-clamp-point\u2460\u2460"}],"title":"5.3.2. Discarding Content"}],"url":"#clamp-point"},
 "d2655fb4": {"dfnID":"d2655fb4","dfnText":"auto (for scrollbar-gutter)","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-scrollbar-gutter-auto"},{"id":"ref-for-valdef-scrollbar-gutter-auto\u2460"},{"id":"ref-for-valdef-scrollbar-gutter-auto\u2461"},{"id":"ref-for-valdef-scrollbar-gutter-auto\u2462"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#valdef-scrollbar-gutter-auto"},
-"e33664cd": {"dfnID":"e33664cd","dfnText":"inline-block","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-inline-block"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-inline-block"},
+"e33664cd": {"dfnID":"e33664cd","dfnText":"inline-block","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-inline-block"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-inline-block"},
 "e34548f4": {"dfnID":"e34548f4","dfnText":"line box","external":true,"refSections":[{"refs":[{"id":"ref-for-line-box"},{"id":"ref-for-line-box\u2460"},{"id":"ref-for-line-box\u2461"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-line-box\u2462"},{"id":"ref-for-line-box\u2463"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-inline-3/#line-box"},
-"e4a82d25": {"dfnID":"e4a82d25","dfnText":"overflow columns","external":true,"refSections":[{"refs":[{"id":"ref-for-overflow-columns"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-multicol-1/#overflow-columns"},
+"e4a82d25": {"dfnID":"e4a82d25","dfnText":"overflow columns","external":true,"refSections":[{"refs":[{"id":"ref-for-overflow-columns"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-multicol-1/#overflow-columns"},
 "e73f6d8c": {"dfnID":"e73f6d8c","dfnText":"absolutely positioned box","external":true,"refSections":[{"refs":[{"id":"ref-for-absolute-position"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-absolute-position\u2460"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-position-3/#absolute-position"},
 "e7ab0d6a": {"dfnID":"e7ab0d6a","dfnText":"scroll","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-overflow-scroll"},{"id":"ref-for-valdef-overflow-scroll\u2460"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#valdef-overflow-scroll"},
-"e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-display\u2460"},{"id":"ref-for-propdef-display\u2461"},{"id":"ref-for-propdef-display\u2462"},{"id":"ref-for-propdef-display\u2463"},{"id":"ref-for-propdef-display\u2464"},{"id":"ref-for-propdef-display\u2465"},{"id":"ref-for-propdef-display\u2466"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-propdef-display\u2467"}],"title":"5.3.1. Line-clamp containers"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
+"e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-display\u2460"},{"id":"ref-for-propdef-display\u2461"},{"id":"ref-for-propdef-display\u2462"},{"id":"ref-for-propdef-display\u2463"},{"id":"ref-for-propdef-display\u2464"},{"id":"ref-for-propdef-display\u2465"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-propdef-display\u2466"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-propdef-display\u2467"}],"title":"5.3.2. Discarding Content"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "e8907287": {"dfnID":"e8907287","dfnText":"hidden","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-overflow-hidden"},{"id":"ref-for-valdef-overflow-hidden\u2460"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-overflow-3/#valdef-overflow-hidden"},
 "f0809abc": {"dfnID":"f0809abc","dfnText":"&&","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-all"}],"title":"\nAppendix A: Possible extensions for scrollbar-gutter"}],"url":"https://drafts.csswg.org/css-values-4/#comb-all"},
-"f41ab620": {"dfnID":"f41ab620","dfnText":"establish an independent formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-establish-an-independent-formatting-context"},{"id":"ref-for-establish-an-independent-formatting-context\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#establish-an-independent-formatting-context"},
-"f60f5478": {"dfnID":"f60f5478","dfnText":"-webkit-inline-box","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-flex--webkit-inline-box"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-flex--webkit-inline-box\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"https://compat.spec.whatwg.org/#valdef-flex--webkit-inline-box"},
+"f41ab620": {"dfnID":"f41ab620","dfnText":"establish an independent formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-establish-an-independent-formatting-context"},{"id":"ref-for-establish-an-independent-formatting-context\u2460"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://drafts.csswg.org/css-display-4/#establish-an-independent-formatting-context"},
+"f60f5478": {"dfnID":"f60f5478","dfnText":"-webkit-inline-box","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-flex--webkit-inline-box"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-flex--webkit-inline-box\u2460"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"https://compat.spec.whatwg.org/#valdef-flex--webkit-inline-box"},
 "fa646702": {"dfnID":"fa646702","dfnText":"line-right","external":true,"refSections":[{"refs":[{"id":"ref-for-line-right"},{"id":"ref-for-line-right\u2460"},{"id":"ref-for-line-right\u2461"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#line-right"},
 "fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"},{"id":"ref-for-length-value\u2461"},{"id":"ref-for-length-value\u2462"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "fb8f8e00": {"dfnID":"fb8f8e00","dfnText":"strut","external":true,"refSections":[{"refs":[{"id":"ref-for-strut"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"}],"url":"https://www.w3.org/TR/CSS21/visudet.html#strut"},
 "funcdef-text-overflow-fade": {"dfnID":"funcdef-text-overflow-fade","dfnText":"fade( [ <length-percentage> ] )","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-text-overflow-fade"},{"id":"ref-for-funcdef-text-overflow-fade\u2460"}],"title":"4.1. \nInline Overflow Ellipsis: the text-overflow property"}],"url":"#funcdef-text-overflow-fade"},
 "line-based-clamp-point": {"dfnID":"line-based-clamp-point","dfnText":"line-based clamp point","external":false,"refSections":[{"refs":[{"id":"ref-for-line-based-clamp-point"},{"id":"ref-for-line-based-clamp-point\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-line-based-clamp-point\u2461"}],"title":"5.3.1. Line-clamp containers"}],"url":"#line-based-clamp-point"},
-"line-clamp-container": {"dfnID":"line-clamp-container","dfnText":"line-clamp container","external":false,"refSections":[{"refs":[{"id":"ref-for-line-clamp-container"},{"id":"ref-for-line-clamp-container\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-line-clamp-container\u2461"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-line-clamp-container\u2462"},{"id":"ref-for-line-clamp-container\u2463"},{"id":"ref-for-line-clamp-container\u2464"},{"id":"ref-for-line-clamp-container\u2465"},{"id":"ref-for-line-clamp-container\u2466"}],"title":"5.3.1. Line-clamp containers"}],"url":"#line-clamp-container"},
+"line-clamp-container": {"dfnID":"line-clamp-container","dfnText":"line-clamp container","external":false,"refSections":[{"refs":[{"id":"ref-for-line-clamp-container"},{"id":"ref-for-line-clamp-container\u2460"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-line-clamp-container\u2461"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-line-clamp-container\u2462"},{"id":"ref-for-line-clamp-container\u2463"},{"id":"ref-for-line-clamp-container\u2464"},{"id":"ref-for-line-clamp-container\u2465"},{"id":"ref-for-line-clamp-container\u2466"}],"title":"5.3.1. Line-clamp containers"}],"url":"#line-clamp-container"},
 "overflow-clip": {"dfnID":"overflow-clip","dfnText":"clip","external":false,"refSections":[],"url":"#overflow-clip"},
 "overflow-clip-edge": {"dfnID":"overflow-clip-edge","dfnText":"overflow clip edge","external":false,"refSections":[{"refs":[{"id":"ref-for-overflow-clip-edge"},{"id":"ref-for-overflow-clip-edge\u2460"},{"id":"ref-for-overflow-clip-edge\u2461"},{"id":"ref-for-overflow-clip-edge\u2462"},{"id":"ref-for-overflow-clip-edge\u2463"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"}],"url":"#overflow-clip-edge"},
 "overflow-ellipsis": {"dfnID":"overflow-ellipsis","dfnText":"ellipsis","external":false,"refSections":[{"refs":[{"id":"ref-for-overflow-ellipsis"}],"title":"\nuser interaction with ellipsis"}],"url":"#overflow-ellipsis"},
 "propdef--webkit-line-clamp": {"dfnID":"propdef--webkit-line-clamp","dfnText":"-webkit-line-clamp","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef--webkit-line-clamp"},{"id":"ref-for-propdef--webkit-line-clamp\u2460"},{"id":"ref-for-propdef--webkit-line-clamp\u2461"}],"title":"5.1.1. \nLegacy compatibility"}],"url":"#propdef--webkit-line-clamp"},
 "propdef-block-ellipsis": {"dfnID":"propdef-block-ellipsis","dfnText":"block-ellipsis","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-block-ellipsis\u2460"},{"id":"ref-for-propdef-block-ellipsis\u2461"},{"id":"ref-for-propdef-block-ellipsis\u2462"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-propdef-block-ellipsis\u2463"},{"id":"ref-for-propdef-block-ellipsis\u2464"},{"id":"ref-for-propdef-block-ellipsis\u2465"},{"id":"ref-for-propdef-block-ellipsis\u2466"},{"id":"ref-for-propdef-block-ellipsis\u2467"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-propdef-block-ellipsis\u2468"},{"id":"ref-for-propdef-block-ellipsis\u2460\u24ea"}],"title":"5.1.1. \nLegacy compatibility"}],"url":"#propdef-block-ellipsis"},
-"propdef-continue": {"dfnID":"propdef-continue","dfnText":"continue","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-continue"},{"id":"ref-for-propdef-continue\u2460"},{"id":"ref-for-propdef-continue\u2461"},{"id":"ref-for-propdef-continue\u2462"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-propdef-continue\u2463"},{"id":"ref-for-propdef-continue\u2464"},{"id":"ref-for-propdef-continue\u2465"},{"id":"ref-for-propdef-continue\u2466"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-continue\u2467"},{"id":"ref-for-propdef-continue\u2468"},{"id":"ref-for-propdef-continue\u2460\u24ea"},{"id":"ref-for-propdef-continue\u2460\u2460"},{"id":"ref-for-propdef-continue\u2460\u2461"},{"id":"ref-for-propdef-continue\u2460\u2462"},{"id":"ref-for-propdef-continue\u2460\u2463"},{"id":"ref-for-propdef-continue\u2460\u2464"},{"id":"ref-for-propdef-continue\u2460\u2465"},{"id":"ref-for-propdef-continue\u2460\u2466"},{"id":"ref-for-propdef-continue\u2460\u2467"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-propdef-continue\u2460\u2468"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-propdef-continue\u2461\u24ea"}],"title":"\nRecent Changes"}],"url":"#propdef-continue"},
-"propdef-line-clamp": {"dfnID":"propdef-line-clamp","dfnText":"line-clamp","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-line-clamp\u2460"},{"id":"ref-for-propdef-line-clamp\u2461"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-propdef-line-clamp\u2462"},{"id":"ref-for-propdef-line-clamp\u2463"},{"id":"ref-for-propdef-line-clamp\u2464"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-line-clamp\u2465"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-propdef-line-clamp\u2466"}],"title":"\nRecent Changes"}],"url":"#propdef-line-clamp"},
-"propdef-max-lines": {"dfnID":"propdef-max-lines","dfnText":"max-lines","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-max-lines"},{"id":"ref-for-propdef-max-lines\u2460"},{"id":"ref-for-propdef-max-lines\u2461"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-propdef-max-lines\u2462"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-max-lines\u2463"},{"id":"ref-for-propdef-max-lines\u2464"},{"id":"ref-for-propdef-max-lines\u2465"},{"id":"ref-for-propdef-max-lines\u2466"},{"id":"ref-for-propdef-max-lines\u2467"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-propdef-max-lines\u2468"}],"title":"5.3. \nFragmentation of Overflow: the continue property"},{"refs":[{"id":"ref-for-propdef-max-lines\u2460\u24ea"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-propdef-max-lines\u2460\u2460"}],"title":"\nRecent Changes"}],"url":"#propdef-max-lines"},
+"propdef-continue": {"dfnID":"propdef-continue","dfnText":"continue","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-continue"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-propdef-continue\u2460"},{"id":"ref-for-propdef-continue\u2461"},{"id":"ref-for-propdef-continue\u2462"},{"id":"ref-for-propdef-continue\u2463"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-propdef-continue\u2464"},{"id":"ref-for-propdef-continue\u2465"},{"id":"ref-for-propdef-continue\u2466"},{"id":"ref-for-propdef-continue\u2467"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-continue\u2468"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-propdef-continue\u2460\u24ea"},{"id":"ref-for-propdef-continue\u2460\u2460"},{"id":"ref-for-propdef-continue\u2460\u2461"},{"id":"ref-for-propdef-continue\u2460\u2462"},{"id":"ref-for-propdef-continue\u2460\u2463"},{"id":"ref-for-propdef-continue\u2460\u2464"},{"id":"ref-for-propdef-continue\u2460\u2465"},{"id":"ref-for-propdef-continue\u2460\u2466"},{"id":"ref-for-propdef-continue\u2460\u2467"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-propdef-continue\u2460\u2468"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-propdef-continue\u2461\u24ea"},{"id":"ref-for-propdef-continue\u2461\u2460"},{"id":"ref-for-propdef-continue\u2461\u2461"}],"title":"5.3.2. Discarding Content"},{"refs":[{"id":"ref-for-propdef-continue\u2461\u2462"}],"title":"\nRecent Changes"}],"url":"#propdef-continue"},
+"propdef-line-clamp": {"dfnID":"propdef-line-clamp","dfnText":"line-clamp","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-line-clamp\u2460"},{"id":"ref-for-propdef-line-clamp\u2461"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-propdef-line-clamp\u2462"},{"id":"ref-for-propdef-line-clamp\u2463"},{"id":"ref-for-propdef-line-clamp\u2464"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-line-clamp\u2465"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-propdef-line-clamp\u2466"}],"title":"\nRecent Changes"}],"url":"#propdef-line-clamp"},
+"propdef-max-lines": {"dfnID":"propdef-max-lines","dfnText":"max-lines","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-max-lines"},{"id":"ref-for-propdef-max-lines\u2460"},{"id":"ref-for-propdef-max-lines\u2461"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-propdef-max-lines\u2462"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-propdef-max-lines\u2463"},{"id":"ref-for-propdef-max-lines\u2464"},{"id":"ref-for-propdef-max-lines\u2465"},{"id":"ref-for-propdef-max-lines\u2466"},{"id":"ref-for-propdef-max-lines\u2467"}],"title":"5.2. \nForcing a Break After a Set Number of Lines: the max-lines property"},{"refs":[{"id":"ref-for-propdef-max-lines\u2468"}],"title":"5.3. \nHandling of Excess Content: the continue property"},{"refs":[{"id":"ref-for-propdef-max-lines\u2460\u24ea"}],"title":"5.3.1. Line-clamp containers"},{"refs":[{"id":"ref-for-propdef-max-lines\u2460\u2460"}],"title":"\nRecent Changes"}],"url":"#propdef-max-lines"},
 "propdef-overflow-clip-margin": {"dfnID":"propdef-overflow-clip-margin","dfnText":"overflow-clip-margin","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-clip-margin\u2460"}],"title":"3.1. \nManaging Overflow: the overflow-x, overflow-y, and overflow properties"},{"refs":[{"id":"ref-for-propdef-overflow-clip-margin\u2461"},{"id":"ref-for-propdef-overflow-clip-margin\u2462"}],"title":"3.2. \nExpanding Clipping Bounds: the overflow-clip-margin-* properties"},{"refs":[{"id":"ref-for-propdef-overflow-clip-margin\u2463"},{"id":"ref-for-propdef-overflow-clip-margin\u2464"}],"title":"\nRecent Changes"}],"url":"#propdef-overflow-clip-margin"},
 "propdef-overflow-clip-margin-block": {"dfnID":"propdef-overflow-clip-margin-block","dfnText":"overflow-clip-margin-block","external":false,"refSections":[],"url":"#propdef-overflow-clip-margin-block"},
 "propdef-overflow-clip-margin-block-end": {"dfnID":"propdef-overflow-clip-margin-block-end","dfnText":"overflow-clip-margin-block-end","external":false,"refSections":[],"url":"#propdef-overflow-clip-margin-block-end"},
@@ -4233,11 +4377,11 @@ let dfnPanelData = {
 "valdef-block-ellipsis-auto": {"dfnID":"valdef-block-ellipsis-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-block-ellipsis-auto"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-block-ellipsis-auto\u2460"}],"title":"5.1.1. \nLegacy compatibility"}],"url":"#valdef-block-ellipsis-auto"},
 "valdef-block-ellipsis-no-ellipsis": {"dfnID":"valdef-block-ellipsis-no-ellipsis","dfnText":"no-ellipsis","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-block-ellipsis-no-ellipsis"},{"id":"ref-for-valdef-block-ellipsis-no-ellipsis\u2460"},{"id":"ref-for-valdef-block-ellipsis-no-ellipsis\u2461"}],"title":"4.2. \nIndicating Block-Axis Overflow: the block-ellipsis property"},{"refs":[{"id":"ref-for-valdef-block-ellipsis-no-ellipsis\u2462"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"}],"url":"#valdef-block-ellipsis-no-ellipsis"},
 "valdef-block-ellipsis-string": {"dfnID":"valdef-block-ellipsis-string","dfnText":"<string>","external":false,"refSections":[],"url":"#valdef-block-ellipsis-string"},
-"valdef-continue--webkit-legacy": {"dfnID":"valdef-continue--webkit-legacy","dfnText":"-webkit-legacy","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy\u2460"},{"id":"ref-for-valdef-continue--webkit-legacy\u2461"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy\u2462"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"#valdef-continue--webkit-legacy"},
-"valdef-continue-auto": {"dfnID":"valdef-continue-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue-auto"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue-auto\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"#valdef-continue-auto"},
-"valdef-continue-collapse": {"dfnID":"valdef-continue-collapse","dfnText":"collapse","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue-collapse"},{"id":"ref-for-valdef-continue-collapse\u2460"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue-collapse\u2461"},{"id":"ref-for-valdef-continue-collapse\u2462"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-continue-collapse\u2463"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"#valdef-continue-collapse"},
-"valdef-continue-discard": {"dfnID":"valdef-continue-discard","dfnText":"discard","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue-discard"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue-discard\u2460"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"#valdef-continue-discard"},
-"valdef-line-clamp--webkit-legacy": {"dfnID":"valdef-line-clamp--webkit-legacy","dfnText":"-webkit-legacy","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-line-clamp--webkit-legacy"},{"id":"ref-for-valdef-line-clamp--webkit-legacy\u2460"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-line-clamp--webkit-legacy\u2461"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-line-clamp--webkit-legacy\u2462"}],"title":"5.3. \nFragmentation of Overflow: the continue property"}],"url":"#valdef-line-clamp--webkit-legacy"},
+"valdef-continue--webkit-legacy": {"dfnID":"valdef-continue--webkit-legacy","dfnText":"-webkit-legacy","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy\u2460"},{"id":"ref-for-valdef-continue--webkit-legacy\u2461"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-continue--webkit-legacy\u2462"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"#valdef-continue--webkit-legacy"},
+"valdef-continue-auto": {"dfnID":"valdef-continue-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue-auto"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue-auto\u2460"},{"id":"ref-for-valdef-continue-auto\u2461"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"#valdef-continue-auto"},
+"valdef-continue-collapse": {"dfnID":"valdef-continue-collapse","dfnText":"collapse","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue-collapse"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-continue-collapse\u2460"},{"id":"ref-for-valdef-continue-collapse\u2461"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-continue-collapse\u2462"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"#valdef-continue-collapse"},
+"valdef-continue-discard": {"dfnID":"valdef-continue-discard","dfnText":"discard","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-continue-discard"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"#valdef-continue-discard"},
+"valdef-line-clamp--webkit-legacy": {"dfnID":"valdef-line-clamp--webkit-legacy","dfnText":"-webkit-legacy","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-line-clamp--webkit-legacy"},{"id":"ref-for-valdef-line-clamp--webkit-legacy\u2460"}],"title":"5.1. \nLimiting Visible Lines: the line-clamp shorthand property"},{"refs":[{"id":"ref-for-valdef-line-clamp--webkit-legacy\u2461"}],"title":"5.1.1. \nLegacy compatibility"},{"refs":[{"id":"ref-for-valdef-line-clamp--webkit-legacy\u2462"}],"title":"5.3. \nHandling of Excess Content: the continue property"}],"url":"#valdef-line-clamp--webkit-legacy"},
 "valdef-line-clamp-block-ellipsis": {"dfnID":"valdef-line-clamp-block-ellipsis","dfnText":"<block-ellipsis>","external":false,"refSections":[],"url":"#valdef-line-clamp-block-ellipsis"},
 "valdef-line-clamp-integer-1": {"dfnID":"valdef-line-clamp-integer-1","dfnText":"<integer [1,\u221e]>","external":false,"refSections":[],"url":"#valdef-line-clamp-integer-1"},
 "valdef-line-clamp-none": {"dfnID":"valdef-line-clamp-none","dfnText":"none","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-line-clamp-none"}],"title":"5.1.1. \nLegacy compatibility"}],"url":"#valdef-line-clamp-none"},
@@ -4783,6 +4927,7 @@ let refsData = {
 "https://drafts.csswg.org/css-display-4/#independent-formatting-context": {"displayText":"independent formatting context","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"independent formatting context","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#independent-formatting-context"},
 "https://drafts.csswg.org/css-display-4/#inline-formatting-context": {"displayText":"inline formatting context","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"inline formatting context","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#inline-formatting-context"},
 "https://drafts.csswg.org/css-display-4/#invisible-box": {"displayText":"invisible box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"invisible box","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#invisible-box"},
+"https://drafts.csswg.org/css-display-4/#out-of-flow": {"displayText":"out of flow","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"out of flow","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#out-of-flow"},
 "https://drafts.csswg.org/css-display-4/#propdef-display": {"displayText":"display","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"display","type":"property","url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "https://drafts.csswg.org/css-display-4/#propdef-visibility": {"displayText":"visibility","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"visibility","type":"property","url":"https://drafts.csswg.org/css-display-4/#propdef-visibility"},
 "https://drafts.csswg.org/css-display-4/#replaced-element": {"displayText":"replaced element","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"replaced element","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#replaced-element"},
@@ -4793,6 +4938,8 @@ let refsData = {
 "https://drafts.csswg.org/css-inline-3/#root-inline-box": {"displayText":"root inline box","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-inline","spec":"css-inline-3","status":"current","text":"root inline box","type":"dfn","url":"https://drafts.csswg.org/css-inline-3/#root-inline-box"},
 "https://drafts.csswg.org/css-multicol-1/#overflow-columns": {"displayText":"overflow columns","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-multicol","spec":"css-multicol-1","status":"current","text":"overflow columns","type":"dfn","url":"https://drafts.csswg.org/css-multicol-1/#overflow-columns"},
 "https://drafts.csswg.org/css-multicol-2/#multi-column-container": {"displayText":"multi-column container","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"current","text":"multi-column container","type":"dfn","url":"https://drafts.csswg.org/css-multicol-2/#multi-column-container"},
+"https://drafts.csswg.org/css-multicol-2/#multi-column-line": {"displayText":"multi-column line","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"current","text":"multi-column line","type":"dfn","url":"https://drafts.csswg.org/css-multicol-2/#multi-column-line"},
+"https://drafts.csswg.org/css-multicol-2/#multi-column-row": {"displayText":"multi-column row","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"current","text":"multi-column row","type":"dfn","url":"https://drafts.csswg.org/css-multicol-2/#multi-column-row"},
 "https://drafts.csswg.org/css-overflow-3/#ink-overflow": {"displayText":"ink overflow","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-overflow","spec":"css-overflow-3","status":"current","text":"ink overflow","type":"dfn","url":"https://drafts.csswg.org/css-overflow-3/#ink-overflow"},
 "https://drafts.csswg.org/css-overflow-3/#overlay-scrollbars": {"displayText":"overlay scrollbars","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-overflow","spec":"css-overflow-3","status":"current","text":"overlay scrollbars","type":"dfn","url":"https://drafts.csswg.org/css-overflow-3/#overlay-scrollbars"},
 "https://drafts.csswg.org/css-overflow-3/#propdef-overflow": {"displayText":"overflow","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-overflow","spec":"css-overflow-3","status":"current","text":"overflow","type":"property","url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
@@ -5048,5 +5195,119 @@ window.addEventListener("resize", () => {
     // Hide any open ref hint.
     hideAllRefHints();
 });
+}
+</script>
+<script>/* Boilerplate: script-wpt */
+"use strict";
+{
+let wptData = {
+"paths": ["/css/css-overflow/"],
+};
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+    if(wptData.paths.length == 0) return;
+
+    const runsUrl = "https://wpt.fyi/api/runs?label=master&label=stable&max-count=1&product=chrome&product=firefox&product=safari&product=edge";
+    const runs = await (await fetch(runsUrl)).json();
+
+    let testResults = [];
+    for(const pathPrefix of wptData.paths) {
+        const pathResults = await (await fetch("https://wpt.fyi/api/search", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+            },
+            body: JSON.stringify({
+                "run_ids": runs.map(x=>x.id),
+                "query": {"path": pathPrefix},
+            })
+        })).json();
+        testResults = testResults.concat(pathResults.results);
+    }
+
+    const browsers = runs.map(x=>({name:x.browser_name, version:x.browser_version, passes:0, total: 0}));
+    const resultsFromPath = new Map(testResults.map(result=>{
+        const testPath = result.test;
+        const passes = result.legacy_status.map(x=>[x.passes, x.total]);
+        return [testPath, passes];
+    }));
+    const seenTests = new Set();
+    document.querySelectorAll(".wpt-name").forEach(nameEl=>{
+        const passData = resultsFromPath.get("/" + nameEl.getAttribute("title"));
+        if(!passData) {
+            console.log("Couldn't find test in results:", nameEl);
+            return
+        }
+        const numTests = passData[0][1];
+        if(numTests > 1) {
+            nameEl.insertAdjacentElement("beforeend",
+                mk.small({}, ` (${numTests} tests)`));
+        }
+        if(passData == undefined) return;
+        const resultsEl = mk.span({"class":"wpt-results"},
+            ...passData.map((p,i) => mk.span(
+            {
+                "title": `${browsers[i].name} ${p[0]}/${p[1]}`,
+                "class": "wpt-result",
+                "style": `background: conic-gradient(forestgreen ${p[0]/p[1]*360}deg, darkred 0deg);`,
+            })),
+        );
+        nameEl.insertAdjacentElement("afterend", resultsEl);
+
+        // Only update the summary pass/total count if we haven't seen this
+        // test before, to support authors listing the same test multiple times
+        // in a spec.
+        if (!seenTests.has(nameEl.getAttribute("title"))) {
+            seenTests.add(nameEl.getAttribute("title"));
+            passData.forEach((p,i) => {
+                browsers[i].passes += p[0];
+                browsers[i].total += p[1];
+            });
+        }
+    });
+    const overview = document.querySelector(".wpt-overview");
+    if(overview) {
+        overview.appendChild(mk.ul({}, ...browsers.map(formatWptResult)));
+        document.head.appendChild(mk.style({},
+            `.wpt-overview ul { display: flex; flex-flow: row wrap; gap: .2em; justify-content: start; list-style: none; padding: 0; margin: 0;}
+             .wpt-overview li { padding: .25em 1em; color: black; text-align: center; }
+             .wpt-overview img { height: 1.5em; height: max(1.5em, 32px); background: transparent; }
+             .wpt-overview .browser { font-weight: bold; }
+             .wpt-overview .passes-none { background: #e57373; }
+             .wpt-overview .passes-hardly { background: #ffb74d; }
+             .wpt-overview .passes-a-few { background: #ffd54f; }
+             .wpt-overview .passes-half { background: #fff176; }
+             .wpt-overview .passes-lots { background: #dce775; }
+             .wpt-overview .passes-most { background: #aed581; }
+             .wpt-overview .passes-all { background: #81c784; }`));
+    }
+});
+
+function formatWptResult({name, version, passes, total}) {
+    const passRate = passes/total;
+    let passClass = "";
+    if(passRate == 0)      passClass = "passes-none";
+    else if(passRate < .2) passClass = "passes-hardly";
+    else if(passRate < .4) passClass = "passes-a-few";
+    else if(passRate < .6) passClass = "passes-half";
+    else if(passRate < .8) passClass = "passes-lots";
+    else if(passRate < 1)  passClass = "passes-most";
+    else                   passClass = "passes-all";
+
+    name = name[0].toUpperCase() + name.slice(1);
+    const shortVersion = /^\d+/.exec(version);
+    const icon = []
+
+    if(name == "Chrome") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/chrome_64x64.png"}));
+    if(name == "Edge") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/edge_64x64.png"}));
+    if(name == "Safari") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/safari_64x64.png"}));
+    if(name == "Firefox") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/firefox_64x64.png"}));
+
+    return mk.li({"class":passClass},
+        mk.nobr({'class':'browser'}, ...icon, ` ${name} ${shortVersion}`),
+        mk.br(),
+        mk.nobr({'class':'pass-rate'}, `${passes}/${total}`)
+    );
+}
 }
 </script>

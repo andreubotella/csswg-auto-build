@@ -28,6 +28,10 @@ spec:css-writing-modes-4; type:dfn; text:end
 url: https://drafts.csswg.org/selectors-3/#subject; type: dfn; text: subject;
 url: https://www.w3.org/TR/CSS21/visudet.html#strut; type: dfn; text: strut;
 </pre>
+<pre class=metadata>
+WPT Display: open
+WPT Path Prefix: /css/css-overflow/line-clamp/
+</pre>
 	<style>
 		table.source-demo-pair {
 			width: 100%;
@@ -637,6 +641,7 @@ ellipsis interaction with scrolling interfaces</h3>
 		div.crawlbar {
 			text-overflow: ellipsis;
 			height: 2em;
+			line-height: 1em;
 			overflow: scroll;
 			white-space: nowrap;
 			width: 15em;
@@ -654,7 +659,7 @@ ellipsis interaction with scrolling interfaces</h3>
 		</code></pre>
 
 		demonstration of sample CSS and HTML:
-		<div style="text-overflow: ellipsis; height: 2em; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
+		<div style="text-overflow: ellipsis; height: 2em; line-height:1; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
 		CSS is awesome, especially when you can scroll
 		to see extra text instead of just
 		having it overlap other text by default.
@@ -681,7 +686,7 @@ ellipsis interaction with scrolling interfaces</h3>
 	<div class="example">
 		Same as previous example except with <code>text-overflow: ellipsis ellipsis</code>, demonstrated:
 
-		<div style="text-overflow: ellipsis ellipsis; height: 2em; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
+		<div style="text-overflow: ellipsis ellipsis; height: 2em; line-height: 1em; overflow: scroll; white-space: nowrap; width: 15em; border:1em solid black;">
 		CSS is awesome, especially when you can scroll
 		to see extra text instead of just
 		having it overlap other text by default.
@@ -706,8 +711,13 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 		Animation type: discrete
 	</pre>
 
+	<wpt pathprefix="/css/css-overflow/parsing/">
+		block-ellipsis-invalid.html
+		block-ellipsis-valid.html
+	</wpt>
+
 	This property allows inserting content into the last line box
-	before a (forced <em>or</em> unforced) <a>region break</a> or a [=clamp point=]
+	before a [=clamp point=] or a (forced <em>or</em> unforced) <a>region break</a>
 	to indicate the continuity of truncated / interrupted content.
 	It only affects line boxes contained directly by the <a>block container</a> itself,
 	but as it inherits, will have an effect on descendants’ line boxes unless overridden.
@@ -718,9 +728,7 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 	ignoring any intervening [=absolutely positioned=] element
 	or any element closing boundary.
 
-	Note: See [[css-overflow-4#fragmentation]] for a way to generate boxes with such a [=region break=].
-
-	ISSUE: Should this apply to other types of fragmentation breaks (e.g. pages, columns)?
+	Note: See ''continue: discard'' for a way to generate boxes with such a [=region break=].
 
 	The inserted content is called the <dfn>block overflow ellipsis</dfn>.
 	Values have the following meanings:
@@ -730,6 +738,9 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 		<dd>
 			The rendering is unaffected.
 
+			<wpt>
+				block-ellipsis-023.html
+			</wpt>
 		<dt><dfn>auto</dfn>
 		<dd>
 			Render an ellipsis character (U+2026)--
@@ -751,6 +762,10 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 
 			When set to the empty string,
 			the behavior is identical to the ''no-ellipsis'' value.
+
+			<wpt>
+				block-ellipsis-024.html
+			</wpt>
 	</dl>
 
 	When 'block-ellipsis' is neither ''no-ellipsis'' nor the empty string,
@@ -812,8 +827,8 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 	(in which case, it can capture events).
 
 
-<h2 id=fragmentating-overflow>
-Fragmenting Overflow</h2>
+<h2 id=suppressing-excess oldids=fragmentating-overflow>
+Suppressing Excess Content</h2>
 
 <h3 id=line-clamp>
 Limiting Visible Lines: the 'line-clamp' shorthand property</h3>
@@ -824,6 +839,11 @@ Limiting Visible Lines: the 'line-clamp' shorthand property</h3>
 		Initial: none
 		Percentages: N/A
 	</pre>
+
+	<wpt pathprefix="/css/css-overflow/parsing/">
+		line-clamp-valid.html
+		line-clamp-invalid.html
+	</wpt>
 
 	The 'line-clamp' property is a <a>shorthand</a>
 	for the 'max-lines', 'block-ellipsis', and 'continue' properties.
@@ -846,8 +866,6 @@ Limiting Visible Lines: the 'line-clamp' shorthand property</h3>
 		<dt><dfn><<integer [1,∞]>></dfn>
 		<dt><dfn><'block-ellipsis'></dfn>
 		<dd>
-
-			Issue(7708): Whether this should imply ''discard'' or ''collapse'' is an unresolved question.
 
 			Sets 'continue' to ''collapse''
 			if either or both values are specified,
@@ -919,6 +937,11 @@ Legacy compatibility</h4>
 		Percentages: N/A
 	</pre>
 
+	<wpt pathprefix="/css/css-overflow/parsing/">
+		webkit-line-clamp-valid.html
+		webkit-line-clamp-invalid.html
+	</wpt>
+
 	<pre class="propdef partial">
 		Name: continue
 		New Values: -webkit-legacy
@@ -958,22 +981,21 @@ Forcing a Break After a Set Number of Lines: the 'max-lines' property</h3>
 		Name: max-lines
 		Value: ''none'' | <<integer [1,∞]>>
 		Initial: ''none''
-		Applies to: <a>block containers</a> which are also either [=fragmentation containers=] that capture [=region breaks=] or [=line-clamp containers=]
+		Applies to: <a>block containers</a> which are also either [=line-clamp containers=] or [=fragmentation containers=] that capture [=region breaks=]
 		Inherited: no
 		Percentages: N/A
 		Computed value: the keyword ''max-lines/none'' or an integer
 		Animation type: by computed value type
 	</pre>
 
+	<wpt pathprefix="/css/css-overflow/parsing/">
+		max-lines-valid.html
+		max-lines-invalid.html
+	</wpt>
+
 	If the value of 'max-lines' is not <dfn for=max-lines dfn-type=value>none</dfn>,
 	then, given a [=computed value=] of <var>N</var>:
 
-	- If the box is a [=fragmentation container=] that captures [=region breaks=],
-		a <a>region break</a>
-		is forced after its <var>N</var>th
-		descendant <a>in-flow</a> <a>line box</a>.
-		If fewer than <var>N</var> line boxes exist,
-		then 'max-lines' introduces no <a>region break</a>.
 	- If the box is a [=line-clamp container=],
 		its [=line-based clamp point=] is set
 		to the first possible clamp point after
@@ -984,6 +1006,15 @@ Forcing a Break After a Set Number of Lines: the 'max-lines' property</h3>
 		after the <var>N</var>th descendant <a>in-flow</a> <a>line box</a>,
 		then that line-clamp container has no [=line-based clamp point=].
 
+		<wpt>
+			block-ellipsis-022.html
+		</wpt>
+	- If the box is a [=fragmentation container=] that captures [=region breaks=],
+		a <a>region break</a>
+		is forced after its <var>N</var>th
+		descendant <a>in-flow</a> <a>line box</a>.
+		If fewer than <var>N</var> line boxes exist,
+		then 'max-lines' introduces no <a>region break</a>.
 
 	Only line boxes in the same <a>block formatting context</a>
 	are counted:
@@ -1008,7 +1039,7 @@ Forcing a Break After a Set Number of Lines: the 'max-lines' property</h3>
 		“column breaks” (breaks across multi-column layout columns [[css-multicol-1]]),
 		or “region breaks” (breaks across any other kind of CSS-induced <a>fragmentation containers</a>).
 
-		If an implementation supports neither [[CSS-REGIONS-1]] nor [[CSS-OVERFLOW-4#fragmentation]],
+		If an implementation supports neither [[CSS-REGIONS-1]] nor ''continue: discard'',
 		then it will have had no occasion yet to run into that kind of breaks,
 		and this will be an addition.
 		However the addition does not involve bringing over any of the [[CSS-REGIONS-1]] functionality.
@@ -1021,7 +1052,7 @@ Forcing a Break After a Set Number of Lines: the 'max-lines' property</h3>
 	</div>
 
 <h3 id="continue">
-Fragmentation of Overflow: the 'continue' property</h3>
+Handling of Excess Content: the 'continue' property</h3>
 
 	<pre class=propdef>
 		Name: continue
@@ -1034,15 +1065,16 @@ Fragmentation of Overflow: the 'continue' property</h3>
 		Animation type: discrete
 	</pre>
 
+	<wpt pathprefix="/css/css-overflow/parsing/">
+		continue-valid.html
+		continue-invalid.html
+	</wpt>
+
 	The 'continue' property gives authors the ability
 	to truncate/interrupt the content inside a box,
 	either by visually hiding the remaining content,
 	or by turning the box into a [=fragmentation container=] (see [[!CSS-BREAK-3]])
 	and discarding the content after the [=fragmentation break=].
-
-	Issue: ''continue: discard'' is meant to generalize and replace the <code>region-fragment</code> property from [[CSS-REGIONS-1]].
-	Once it is sufficiently stable in this specification,
-	<code>region-fragment</code> should be removed from the regions specification in favor of this.
 
 	<dl dfn-for="continue" dfn-type="value">
 		<dt><dfn>auto</dfn>
@@ -1051,6 +1083,16 @@ Fragmentation of Overflow: the 'continue' property</h3>
 			If the box has more content than can fit,
 			the excess content is handled according to the usual rules.
 
+		<dt><dfn>collapse</dfn>
+		<dd>
+			If the box is a [=block container=], then it must
+			[=establish an independent formatting context=] that also becomes a [=line-clamp container=].
+			This causes all content after the [=clamp point=] to be visually hidden, and to not be
+			taken into account for the box's [=automatic block size=].
+
+			If the box is a [=multicol container=],
+			the behavior is the same as ''continue/auto''.
+
 		<dt><dfn>discard</dfn>
 		<dd>
 			The box must [=establish an independent formatting context=]
@@ -1058,9 +1100,7 @@ Fragmentation of Overflow: the 'continue' property</h3>
 			that captures <a>region breaks</a>,
 			if it is not already.
 			[[!CSS-BREAK-3]]
-			Content after the first [=region break=] is not rendered (see below).
-			(If the box is a [=multi-column container=],
-			any [=overflow columns=] are also not rendered.)
+			Content after the first [=region break=] is not rendered.
 
 			Note: This [=region break=] might be <a lt="forced break">forced</a>
 			(e.g. imposed by 'max-lines' or by another mechanism,
@@ -1072,15 +1112,11 @@ Fragmentation of Overflow: the 'continue' property</h3>
 			(such as pagination of this box itself)
 			do not cause any content to be discarded.
 
-		<dt><dfn>collapse</dfn>
-		<dd>
-			If the box is a [=block container=], then it must
-			[=establish an independent formatting context=] that also becomes a [=line-clamp container=].
-			This causes all content after the [=clamp point=] to be visually hidden, and to not be
-			taken into account for the box's [=automatic block size=].
+			See [[#discarding-content]] for further details.
 
-			If the box is a [=multicol container=],
-			the behavior is the same as 'continue/auto'.
+			Issue: ''continue: discard'' is meant to generalize and replace the <code>region-fragment</code> property from [[CSS-REGIONS-1]].
+			Once it is sufficiently stable in this specification,
+			<code>region-fragment</code> should be removed from the regions specification in favor of this.
 	</dl>
 
 	<div class=example id=ex-continue-overflow>
@@ -1131,40 +1167,6 @@ Fragmentation of Overflow: the 'continue' property</h3>
 
 	</div>
 
-	Content that is “not rendered” due to ''continue: discard''
-	is discarded, similar to ''display: none'':
-		* It is not rendered.
-		* It is also not made available for speech rendering.
-		* It does not allow user interaction.
-		* Issue(2970): Make sure effects on OM are well defined
-		* Issue(2971): What about [=positioned=] elements whose static position is in the discarded content are not rendered?
-			See also discussions in the <a href="https://lists.w3.org/Archives/Public/www-style/2018Jul/0030.html">Sydney F2F meeting</a>.
-
-	However, since intrinsic sizes are calculated across <a>fragmentation containers</a>,
-	this content <em>is</em> taken into account
-	for the purpose of finding the box’s
-	<a lt="min-content inline size">min-content</a> and <a>max-content</a> <a>inline sizes</a>
-	(see [[css-break-3#varying-size-boxes]]).
-	<a lt="min-content inline size">Min-content</a> and <a>max-content</a> <a>block sizes</a>
-	are calculated based on the content
-	from the start of the [=fragmented flow=]
-	to the first [=forced break=] if any,
-	or to the end of the [=fragmented flow=] if there is no forced break.
-
-<!--
-	Calculating intrinsic block sizes to the first forced <em>or unforced</em> break
-	would cause intrinsic sizes to depend on layout, which would cause circularities.
--->
-
-	Note: This differs from the ''visibility: hidden''-like behavior
-	of content after the [=clamp point=] with ''continue: collapse''.
-
-	Note: In the case of <a href="https://www.w3.org/TR/css-break-3/#parallel-flows">parallel fragmentation flows</a>,
-	content occurring after the <a>fragmentation break</a> in the box tree
-	could still be rendered,
-	if it is laid out above the position
-	representing the end of this <a>fragmentation container</a>.
-
 	Additionaliy,
 	for compatibility (see [[#webkit-line-clamp]]),
 	when the [=computed value=] of the 'continue' property is ''collapse'', ''continue/-webkit-legacy'', or ''discard''
@@ -1175,6 +1177,10 @@ Fragmentation of Overflow: the 'continue' property</h3>
 	* If the [=specified value=] of the 'display' property is ''-webkit-inline-box'',
 		the [=computed value=] becomes ''inline-block'' and
 		the box establishes a [=BFC=].
+
+	<wpt pathprefix="/css/css-overflow/parsing/">
+		webkit-box-computed.html
+	</wpt>
 
 	Note: This means that 'line-clamp' (set without ''line-clamp/-webkit-legacy'') will work
 	if both or neither of ''-webkit-box-orient: vertical''
@@ -1244,6 +1250,136 @@ Fragmentation of Overflow: the 'continue' property</h3>
 	that only contained its contents before the [=clamp point=].
 	This is regardless of whether this would cause any content after the [=clamp point=]
 	to be within the container's bounds.
+
+<h4 id=discarding-content>Discarding Content</h4>
+
+	Content that is “not rendered” due to ''continue: discard''
+	is discarded, similar to ''display: none'':
+		* It is not rendered.
+		* It is also not made available for speech rendering.
+		* It does not allow user interaction.
+		* Issue(2970): Make sure effects on OM are well defined
+		* Issue(2971): What about [=positioned=] elements whose static position is in the discarded content are not rendered?
+			See also discussions in the <a href="https://lists.w3.org/Archives/Public/www-style/2018Jul/0030.html">Sydney F2F meeting</a>.
+
+	However, since intrinsic sizes are calculated across <a>fragmentation containers</a>,
+	this content <em>is</em> taken into account
+	for the purpose of finding the box’s
+	<a lt="min-content inline size">min-content</a> and <a>max-content</a> <a>inline sizes</a>
+	(see [[css-break-3#varying-size-boxes]]).
+	<a lt="min-content inline size">Min-content</a> and <a>max-content</a> <a>block sizes</a>
+	are calculated based on the content
+	from the start of the [=fragmented flow=]
+	to the first [=forced break=] if any,
+	or to the end of the [=fragmented flow=] if there is no forced break.
+
+<!--
+	Calculating intrinsic block sizes to the first forced <em>or unforced</em> break
+	would cause intrinsic sizes to depend on layout, which would cause circularities.
+-->
+
+	Note: This differs from the ''visibility: hidden''-like behavior
+	of content after the [=clamp point=] with ''continue: collapse''.
+
+	Note: In the case of <a href="https://www.w3.org/TR/css-break-3/#parallel-flows">parallel fragmentation flows</a>,
+	content occurring after the <a>fragmentation break</a> in the box tree
+	could still be rendered,
+	if it is laid out above the position
+	representing the end of this <a>fragmentation container</a>.
+
+	Additionally,
+	if the box is a [=multi-column container=],
+	any [=overflow columns=] are also not rendered,
+	nor is any subsequent content--
+	including any [=out of flow=] content
+	whose static position is in or after overflow columns,
+	nor is any additional [=multi-column line=] or [=multi-column row=]
+	that would be generated to hold such content.
+
+	<wpt>
+		discard/discard-multicol-001.html
+		discard/discard-multicol-002.html
+		discard/discard-multicol-003.html
+	</wpt>
+
+	<div class=example id=discard-overflow-column>
+		In the absence of the 'continue' property,
+		based on [[css-multicol-1 inline]],
+		the following markup and associated CSS would be expected
+		to render as follows.
+
+		<xmp highlight=markup>
+			<div class="multicol">
+				<p>Column 1</p>
+				<p>Column 2</p>
+				<p>Column 3</p>
+				<p>Overflow column
+					<div class="spanner">Spanner 1</div>
+				</p>
+				<div class="spanner">Spanner 2</div>
+				<p>Following 1</p>
+				<p>Following 2</p>
+				<p>Following 3</p>
+				<div class="spanner">Spanner 3</div>
+				<p>Following 4</p>
+				<p>Following 5</p>
+				<p>Following 6</p>
+			</div>
+		</xmp>
+		<pre><code highlight=css>
+			.multicol {
+			  columns: 3;
+			  border: solid 1px;
+			}
+			.multicol p {
+			  break-after: column;
+			  break-inside: avoid;
+			}
+			.spanner {
+			  column-span: all;
+			  text-align: center;
+			}
+		</code></pre>
+		<!--
+			ommitted because incidental to the example, but needed for an exact rendering:
+			p { margin: 0; }
+			.multicol {
+			  width: 47ch;
+			  font-family: monospace;
+			  gap: 1ch;
+			}
+		-->
+		<figure>
+		<pre id=sample-rendering-overflow-multicolumn-1 style="width: 63ch">
+		<div style="border:solid 1px; width: 47ch;">Column 1        Column 2        Column 3        Overflow column
+						   Spanner 1
+						   Spanner 2
+		Following 1     Following 2     Following 3
+						   Spanner 3
+		Following 4     Following 5     Following 6
+		</div></pre>
+		</figure>
+
+		There is one overflow column,
+		a spanner whose static position is within that overflow column,
+		another spanner whose static position is after the overflow column,
+		inflow content after the spanners and the overflow column,
+		and another spanner whose static position is in this subsequent inflow content.
+
+		If we additionally apply the following style,
+		everything starting from and including the overflow column is discarded.
+
+		<pre><code highlight=css>
+			.multicol {
+			  continue: discard;
+			  block-ellipsis: auto;
+			}
+		</code></pre>
+		<figure>
+		<pre id=sample-rendering-overflow-multicolumn-2>
+		<div style="border:solid 1px; width: 47ch;">Column 1        Column 2        Column 3…</div></pre>
+		</figure>
+	</div>
 
 <h2 id=sbg-ext class=nonum>
 Appendix A: Possible extensions for ''scrollbar-gutter''</h2>
