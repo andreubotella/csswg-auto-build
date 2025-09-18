@@ -365,13 +365,17 @@ Establishing Masonry Layout</h3>
 	</dl>
 
 	A [=masonry container=] that is not [=subgridded=] in its [=grid axis=] establishes
-	an [=independent formatting context|independent=] <dfn export>grid formatting context</dfn>
+	an [=independent formatting context=]
 	for its contents.
 
 	<div class=issue>
 	ISSUE(12022): We are looking for a reasonable 'display' value (that includes the word ''display/grid'' somehow) to represent [=masonry layout=].
 	They could be of the form <css>something-grid</css>, <css>grid-something</css>, <css>grid something</css>, or <css>something grid</css>.
 	Suggestions are welcome in the issue.
+	</div>
+
+	<div class=issue>
+	ISSUE(12820): Write up how grid/masonry formatting contexts work more formally?
 	</div>
 
 <h2 id="masonry-track-templates">
@@ -433,20 +437,24 @@ Intrinsic Tracks and repeat()</h4>
 	<div algorithm="determine intrinsic repetitions">
 		To determine the number of repetitions
 		that a ''repeat()'' function resolves to,
-		run layout as defined in [[#track-sizing-performance]],
-		with the following changes:
+		resolve the repeated track sizing functions to definite sizes
+		by initializing the track sizes (per [[css-grid-2#algo-init]])
+		and resolving intrinsic track sizes (per [[css-grid-2#algo-content]])
+		in accordance with [[#track-sizing]]
+		with the following assumptions:
 
 		* Expand ''repeat()/auto-fill''/''repeat()/auto-fit'' repeat functions once.
 		* Ignore explicit item placement.
 			(That is, assume all items have an [=automatic position=].)
+		* Do not [=collapsed grid track|collapse=] any tracks.
 		* If a [=masonry item=] has a span larger than 1,
-			then for each of its intrinsic sizes
-			that it would contribute to the [=virtual masonry item=],
+			then for each of its intrinsic size contributions,
 			first subtract the combined size of the gaps it would span,
 			and divide by its span.
-			Then treat it as being a span-1 item with those sizes.
+			Then treat it as an item that has a span of 1
+			and these modified intrinsic size contributions.
 
-		Any intrinsically-sized tracks are then treated as having the size
+		All tracks are then treated as having the size
 		calculated by this simplified layout
 		(including those in ''repeat()'' arguments,
 		taking from their corresponding single repetition)
@@ -826,9 +834,23 @@ Placement Precision: the 'item-tolerance' property</h3>
 
 	ISSUE(10884): The CSSWG is open to better names for this property.
 
-	Note: We expect to apply this property to apply to [=flex layout=] in the future also,
+	Note: We expect to apply this property to [=flex layout=] in the future also,
 	see <a href='https://github.com/w3c/csswg-drafts/issues/3071'>discussions</a>
 	on how that might work.
+
+<h3 id="masonry-dense-packing">
+Dense Placement: the ''item-pack/dense'' keyword</h3>
+
+	In [=grid layout=], ''grid-auto-flow: dense'' allows backtracking
+	during the [[css-grid-2#auto-placement-algo|grid item placement algorithm]].
+	The ''item-pack/dense'' keyword similarly allows backtracking
+	during the [[#masonry-layout-algorithm|masonry placement algorithm]].
+	However, because masonry placement and sizing are intertwined,
+	an item can only backtrack into a compatible empty slot if
+	the total used size of that slot’s tracks
+	matches the used size of the item’s normal-placement tracks.
+
+	Note: This restriction avoids laying out the item more than once.
 
 <h3 id="masonry-layout-algorithm">
 Masonry Layout and Placement Algorithm</h3>
@@ -873,6 +895,25 @@ Masonry Layout and Placement Algorithm</h3>
 			and then layout the item.
 			Set the [=running position=] of the spanned  [=grid axis=] tracks
 			to <code><var>max_pos</var> + [=outer size=] + 'grid-gap'</code>.
+
+		<li>
+			If the [=masonry container=] uses ''item-pack/dense'' packing,
+			and there exists skipped empty space in the layout
+			(e.g. due to spanning items)
+			into which the item, as it is sized now,
+			could have fit if it were placed earlier,
+			and where the spanned tracks have the same total used size
+			as the tracks into which it is currently placed,
+			then instead place it into the highest such space.
+			If there are multiple valid spaces within the [=tie threshold=] of the highest space,
+			place it in the [=start=]-most of them.
+			Rewind the [=auto-placement cursor=] and the [=running position=]
+			to their values before this item’s placement.
+
+			Note: Dense packing both ignores the [=auto-placement cursor=] when backfilling,
+			and does not update it after placement.
+			If there aren't any acceptable placement gaps to backfill, though,
+			it places items exactly as when ''item-pack/dense'' were not specified.
 	</ol>
 
 	Note: This algorithm chooses the track
@@ -1510,6 +1551,8 @@ Recent Changes</h3>
 		 <a href="https://github.com/w3c/csswg-drafts/issues/12111">Issue 12111</a>)
 	* Added a placeholder for a [=masonry layout=] 'display' value.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/12022">Issue 12022</a>)
+	* Defined [[#masonry-dense-packing|dense packing]] for [=masonry layout=].
+		(<a href="https://github.com/w3c/csswg-drafts/issues/9326">Issue 9326</a>)
 	* Tweak baseline alignment to export the highest/lowest among the first/last items of every track.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/9530">Issue 9530</a>)
 
