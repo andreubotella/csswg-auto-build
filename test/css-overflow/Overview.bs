@@ -300,6 +300,11 @@ Inline Overflow Ellipsis: the 'text-overflow' property</h3>
 	Animation type: by computed value type
 	</pre>
 
+	<wpt>
+		line-clamp-auto-009.html
+		line-clamp-auto-010.html
+	</wpt>
+
 	ISSUE: This section might need to be re-synced against [[CSS-OVERFLOW-3]].
 
 	This property specifies rendering when inline content overflows
@@ -727,13 +732,21 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 		block-ellipsis-012.html
 		block-ellipsis-022.html
 		block-ellipsis-repaint-002.html
+		line-clamp-auto-016.html
+		line-clamp-auto-017.html
 	</wpt>
 
-	This property only affects a line box
-	if it immediately precedes either a [=region break=]
-	or a [=clamp point=] in the [=block formatting context=],
-	ignoring any intervening [=absolutely positioned=] element
-	or any element closing boundary.
+	Ignoring any intervening [=absolutely positioned=] element
+	or any element closing boundary,
+	this property only affects a line box
+	if it immediately precedes either a [=region break=] or a [=clamp point=],
+	and the line box is in the same [=independent formatting context=]
+	as the [=clamp point=] or the [=region break=].
+
+	<wpt>
+		line-clamp-auto-034.html
+		line-clamp-auto-036.html
+	</wpt>
 
 	Note: See ''continue: discard'' for a way to generate boxes with such a [=region break=].
 
@@ -787,7 +800,8 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 	and is placed in the line box after the last
 	<a>soft wrap opportunity</a> (see [[!CSS-TEXT-3]])
 	that would still allow the entire <a>block overflow ellipsis</a> to fit on the line.
-	For this purpose, <a>soft wrap opportunities</a> added by 'overflow-wrap' are ignored.
+	For this purpose, <a>soft wrap opportunities</a> added by 'overflow-wrap' are ignored,
+	as are those inhibited by ''text-wrap-mode: nowrap''.
 	If this results in the entire contents of the line box being displaced,
 	the line box is considered to contain a [=strut=], as defined in [[CSS2/visudet#leading]].
 	Text <a href="https://www.w3.org/TR/css-text-3/#justification">alignment and justification</a>
@@ -803,15 +817,18 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 		block-ellipsis-005.html
 		block-ellipsis-006.html
 		block-ellipsis-010.html
-		block-ellipsis-013.tentative.html
-		block-ellipsis-014.tentative.html
+		block-ellipsis-013.html
+		block-ellipsis-014.html
 		block-ellipsis-015.tentative.html
 		block-ellipsis-016.html
-		block-ellipsis-017.tentative.html
+		block-ellipsis-017.html
 		block-ellipsis-018.html
 		block-ellipsis-023.html
 		block-ellipsis-024.html
 		block-ellipsis-025.html
+		block-ellipsis-026.html
+		block-ellipsis-027.html
+		block-ellipsis-028.html
 		block-ellipsis-repaint-003.html
 		block-ellipsis-repaint-004.html
 		block-ellipsis-repaint-001.html
@@ -907,6 +924,7 @@ Limiting Visible Lines: the 'line-clamp' shorthand property</h3>
 
 			<wpt>
 				line-clamp-020.html
+				line-clamp-auto-038.html
 			</wpt>
 
 		<dt><dfn><<integer [1,∞]>></dfn>
@@ -925,6 +943,7 @@ Limiting Visible Lines: the 'line-clamp' shorthand property</h3>
 			<wpt>
 				line-clamp-auto-001-crash.html
 				line-clamp-auto-002-crash.html
+				line-clamp-auto-001.html
 			</wpt>
 
 		<dt><dfn>-webkit-legacy</dfn>
@@ -1299,16 +1318,47 @@ Handling of Excess Content: the 'continue' property</h3>
 	which is one of the following block-axis positions inside it:
 
 	- The start of the [=line-clamp container=].
+
+		<wpt>
+			line-clamp-auto-011.html
+			line-clamp-auto-037.html
+		</wpt>
+
 	- A point between two consecutive [=line boxes=]
 		in an [=inline formatting context=]
 		contained by the line-clamp container's [=block formatting context=].
+
+		<wpt>
+			line-clamp-auto-004.html
+			line-clamp-auto-005.html
+			line-clamp-auto-013.html
+			line-clamp-auto-014.html
+			line-clamp-auto-016.html
+			line-clamp-auto-017.html
+			line-clamp-auto-with-ruby-001.html
+			line-clamp-auto-with-ruby-002.html
+			line-clamp-auto-with-ruby-003.html
+			line-clamp-auto-with-ruby-004.html
+		</wpt>
+
 	- A point between two [=in-flow=] [=block-level=] sibling boxes
 		in the line-clamp container's [=block formatting context=].
+
+		<wpt>
+			line-clamp-auto-034.html
+			line-clamp-auto-035.html
+			line-clamp-auto-036.html
+		</wpt>
 
 	<wpt>
 		block-ellipsis-011.html
 		block-ellipsis-012.html
 		line-clamp-003.html
+		line-clamp-auto-006.html
+		line-clamp-auto-007.html
+		line-clamp-auto-008.html
+		line-clamp-auto-012.html
+		line-clamp-auto-033.html
 	</wpt>
 
 	The <dfn>auto clamp point</dfn> will be set to the last possible clamp point
@@ -1330,6 +1380,24 @@ Handling of Excess Content: the 'continue' property</h3>
 	<wpt>
 		line-clamp-011.html
 		line-clamp-035.html
+		line-clamp-auto-001.html
+		line-clamp-auto-004.html
+		line-clamp-auto-005.html
+		line-clamp-auto-006.html
+		line-clamp-auto-007.html
+		line-clamp-auto-008.html
+		line-clamp-auto-011.html
+		line-clamp-auto-012.html
+		line-clamp-auto-013.html
+		line-clamp-auto-014.html
+		line-clamp-auto-016.html
+		line-clamp-auto-033.html
+		line-clamp-auto-035.html
+		line-clamp-auto-036.html
+		line-clamp-auto-037.html
+		line-clamp-auto-with-ruby-002.html
+		line-clamp-auto-with-ruby-003.html
+		line-clamp-auto-with-ruby-004.html
 	</wpt>
 
 	Within a [=line-clamp container=],
@@ -1348,6 +1416,8 @@ Handling of Excess Content: the 'continue' property</h3>
 			line-clamp-031.html
 			line-clamp-032.html
 			line-clamp-033.html
+			line-clamp-auto-033.html
+			line-clamp-auto-with-ruby-002.html
 		</wpt>
 
 	- Any [=line boxes=] that follow the [=clamp point=]
@@ -1382,6 +1452,8 @@ Handling of Excess Content: the 'continue' property</h3>
 	<wpt>
 		line-clamp-004.html
 		line-clamp-009.html
+		line-clamp-auto-004.html
+		line-clamp-auto-005.html
 	</wpt>
 
 	NOTE: If there are any floats before the [=clamp point=],
