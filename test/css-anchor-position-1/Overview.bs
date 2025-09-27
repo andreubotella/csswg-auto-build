@@ -110,6 +110,23 @@ to find the “best” one that avoids overlap/overflow.
 		max-inline-size: 20em;
 	}
 	</pre>
+
+	Note that using the [[HTML#the-popover-attribute|Popover API]]
+	will automatically set 'position' and create the anchoring relationship
+	without setting 'anchor-name' or 'position-anchor' value
+	(by defining an [=implicit anchor=]),
+	so those properties wouldn't need to be explicitly set again.
+	So with the correct markup, this example can be simplified to:
+
+	<pre class=lang-css>
+	.tooltip {
+		/* Using the popover + popovertarget attributes sets 'position: fixed'
+		   and creates the necessary position-anchor relationship already. */
+		position-area: block-start;
+		position-try: flip-block;
+		max-inline-size: 20em;
+	}
+	</pre>
 </div>
 
 <h3 id="values">
@@ -156,7 +173,7 @@ Animation Type: discrete
 
 The 'anchor-name' property declares
 that an element is an <dfn>anchor element</dfn>,
-whose [=principal box=] is an <dfn local-lt=anchor>anchor box</dfn>,
+whose [=principal box=] is an [=anchor box=],
 and gives it a list of <dfn lt="anchor name">anchor names</dfn> to be targeted by.
 Values are defined as follows:
 
@@ -168,7 +185,7 @@ Values are defined as follows:
 	:: If the element generates a [=principal box=],
 		the element is an [=anchor element=],
 		with a list of [=anchor names=] as specified.
-		Each [=anchor name=] is a [=tree-scoped name=].
+		Each [=anchor name=] is a [=tree-scoped name/loosely matched=] [=tree-scoped name=].
 
 		Otherwise, the property has no effect.
 </dl>
@@ -195,6 +212,11 @@ Note: While an element is in the [=skipped contents=] of another element
 it's not an [=acceptable anchor element=],
 effectively acting as if it had no names.
 
+Note: Positioned elements in [=shadow trees=]
+can reference [=anchor names=] defined in “higher” trees.
+Currently, they cannot reference [=anchor names=]
+defined in “lower” shadow trees, though.
+
 ### Implicit Anchor Elements ### {#implicit}
 
 Some specifications can define that,
@@ -214,20 +236,37 @@ The [=implicit anchor element=] of a [=pseudo-element=]
 is its [=originating element=],
 unless otherwise specified.
 
-### The Anchor's Position ### {#determining-position}
+### The Anchor Box ### {#anchor-position-size}
 
-Several features of this specification refer to the position and size of an [=anchor box=].
-The [=anchor box=]'s position and size is determined after layout,
-and for these purposes
-includes 'position'-based adjustments
-(such as ''position: relative'' or ''position: sticky'').
+Several features of this specification refer to the position and size of an <dfn local-lt=anchor>anchor box</dfn>.
+Unless otherwise specified,
+this refers to the [=border box=] edge of the [=principal box=] of the [=anchor element=].
+The [=anchor box=]'s position and size is determined after layout.
 
-Post-layout effects, such as 'transform',
+This position and size includes 'zoom' and 'position'-based adjustments
+(such as ''position: relative'' or ''position: sticky'')
+as well as transforms (such as 'transform' or 'offset-path').
+In these cases, the axis-aligned bounding rectangle of the [=anchor box=]
+in the coordinate space of the [=absolutely positioned=] element's [=containing block=]
+is used instead.
+Transforms are often optimized onto a different thread,
+so transform-based updates to an [=anchor box’s=] position
+may be delayed by a few frames.
+Authors can avoid this delay by using absolute or relative positioning instead where practical.
+
+If the [=anchor box=] is [=fragmented=],
+and the [=containing block=] of the [=absolutely positioned=] box
+referring to that [=anchor box=] is outside the relevant [=fragmentation context=],
+the axis-aligned bounding rectangle of its [=box fragments=] is used instead.
+(If the [=absolutely positioned=] box is inside the [=fragmentation context=],
+it sees the [=anchor box=] as unfragmented--
+and can be itself fragmented by the [=fragmentation context=].)
+
+For performance reasons,
+scrolling is handled specially, see [[#scroll]].
+Other post-layout effects, such as filters,
 do not affect the [=anchor box's=] position.
 
-Note: Allowing an anchor to opt into including the effects of 'transform'
-or similar properties
-might be allowed in the future.
 
 <!-- Big Text: a-scope
 
@@ -274,7 +313,7 @@ Values have the following meanings:
 		to [=anchor elements=] within this subtree.
 
 		This value only affects [=anchor names=] in the same tree scope,
-		as if it were a [=tree-scoped name=].
+		as if it were a [=tree-scoped name/strictly matched=] [=tree-scoped name=].
 		(That is, ''anchor-scope: all'' acts identically
 		to ''anchor-scope: --foo, --bar, ...'',
 		listing all relevant [=anchor names=].)
@@ -286,11 +325,9 @@ Values have the following meanings:
 		to be in scope only for this element's descendants;
 		and limits descendants to only match these [=anchor names=]
 		to [=anchor elements=] within this subtree.
-		The <<dashed-ident>> is a [=tree-scoped name=].
 
-		Note: Per [[css-scoping-1]],
-		when two [=tree-scoped names=] are compared,
-		they only match if they're from the same tree.
+		The <<dashed-ident>> represents a [=tree-scoped name/strictly matched=] [=tree-scoped name=],
+		i.e. it can only match against [=anchor names=] in the same shadow tree.[[!CSS-SCOPING-1]]
 </dl>
 
 This property has no effect on [=implicit anchor elements=].
@@ -429,8 +466,8 @@ in anchor positioning.
 			and either
 			* |possible anchor| is [=in a lower top layer=] than |positioned el|, or
 			* they both exist in the same [=top layer=],
-			 but |possible anchor| is either not [=absolutely positioned=]
-			 or occurs earlier in the [=flat tree=] order than |positioned el|
+				but |possible anchor| is either not [=absolutely positioned=]
+				or occurs earlier in the [=flat tree=] order than |positioned el|
 		* The element generating |possible anchor|'s [=containing block=]
 			(if one exists)
 			is an [=acceptable anchor element=] for |positioned el|
@@ -862,12 +899,8 @@ resolves at [=computed value=] time
 to the <<length>> that would align the edge
 of the positioned boxes' [=inset-modified containing block=]
 corresponding to the property the function appears in
-with the specified border edge of the [=target anchor element=],
-assuming that all [=scroll containers=]
-between the [=target anchor element=]
-and the positioned box's [=containing block=]
-are scrolled to their [=remembered scroll offsets=]
-(but see [[#scroll]]).
+with the specified edge
+of the [=target anchor element's=] [=anchor box=].
 
 Note: This means that [=transitions=] or [=animations=]
 of a property using an [=anchor function=]
@@ -876,10 +909,6 @@ the [=anchor box=] moving,
 [=anchor elements=] being added or removed from the document,
 the 'anchor-name' property being changed on anchors,
 etc.
-
-If the [=target anchor element=] is [=fragmented=],
-the axis-aligned bounding rectangle
-of the [=box fragment|fragments=]' [=border boxes=] is used instead.
 
 <div class=example>
 	For example,
@@ -1289,7 +1318,7 @@ Anchor-Based Alignment {#alignment}
 <h3 id=position-area-alignment>
 Area-specific Default Alignment</h3>
 
-When using 'position-area',
+When 'position-area' is not ''position-area/none'',
 the behavior of the ''align-self/normal'' [=self-alignment=] value
 changes depending on the <<position-area>> value,
 to align the box towards the anchor:
@@ -1302,6 +1331,14 @@ to align the box towards the anchor:
 	is toward the non-specified side track:
 	if it's specifying the “start” track of its axis,
 	the default alignment in that axis is ''align-self/end''; etc.
+
+However, if only one [=inset property=] in the relevant axis is ''inset/auto'',
+the default alignment is instead
+towards the edge with the non-''inset/auto'' inset;
+and this is an ''align-self/unsafe'' alignment.
+
+Note: This single-''inset/auto'' behavior preserves the way
+a single specified inset controls the position of an [=absolutely positioned=] box.
 
 <div class=example>
 	For example, assuming an English-equivalent writing mode (horizontal-tb, ltr),
@@ -1489,10 +1526,10 @@ is equivalent to ''width: anchor-size(width)''.)
 An ''anchor-size()'' function representing a [=resolvable anchor-size function=]
 resolves at [=computed value=] time
 (via [=style & layout interleaving=])
-to the <<length>> separating the relevant border edges
+to the <<length>> separating the relevant edges
 (either left and right, or top and bottom,
 whichever is in the specified axis)
-of the [=target anchor element=].
+of the [=target anchor element's=] [=anchor box=].
 
 
 <h4 id=anchor-size-resolution oldids=anchor-size-valid>
@@ -2142,7 +2179,7 @@ laying out later boxes cannot change this decision.
 			its [=containing block=] has changed,
 			or it no longer generates a box.
 		* Its computed value for any [=longhand property|longhand=] of 'position-try' has changed.
-		* Its computed value for any [=@position-try property=] has changed.
+		* Its computed value for any [=accepted @position-try property=] has changed.
 		* Any of the ''@position-try'' rules referenced by it
 			have been added, removed, or mutated.
 
@@ -2371,13 +2408,15 @@ both existing and upcoming,
 allow establishing such connections explicitly,
 so that non-visual user agents can also benefit.
 
-For example, the Popover API in HTML
+For example, the [[HTML#the-popover-attribute|Popover API in HTML]]
 automatically links the invoker button
 to the popover element,
 including automatically adjusting tabbing order;
 it <em>also</em> establishes the invoker button
 as the [=implicit anchor element=] for the popover,
 making it easy to use Anchor Positioning as well.
+
+Issue: Add a popover example.
 
 In more general cases,
 ARIA features such as

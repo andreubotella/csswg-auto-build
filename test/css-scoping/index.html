@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-scoping-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="8ee7a05f87123313c9241f67449aef9b72b707ce" name="revision">
+  <meta content="e54ed0d184343270f42e975e31fc6f950209bf94" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -1099,7 +1099,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Scoping Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-05-09">9 May 2025</time></p>
+    <time class="dt-updated" datetime="2025-09-26">26 September 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1769,52 +1769,70 @@ Name-Defining Constructs and Inheritance</span><a class="self-link" href="#shado
 	and doesn’t give surprising results.</p>
    <p>If an at-rule or property defines a name that other CSS constructs can refer to it by,
 	such as a <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule②">@font-face</a> <a class="property css" data-link-type="descriptor" href="https://drafts.csswg.org/css-fonts-4/#descdef-font-face-font-family" id="ref-for-descdef-font-face-font-family">font-family</a> name
-	or an <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes①">@keyframes</a> name,
+	or an <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope" id="ref-for-propdef-anchor-scope">anchor-scope</a> name,
 	it must be defined as a <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export id="css-tree-scoped-name">tree-scoped name</dfn>.
-	<a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name">Tree-scoped names</a> are "global" within a particular <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree">node tree</a>;
-	unless otherwise specified,
-	they’re associated with the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root②">root</a> of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element">element</a> hosting the stylesheet that the at-rule or property is defined in.</p>
-   <p>Properties or descriptors that reference a "global" name,
+	<a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name">Tree-scoped names</a> are associated with
+	the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root②">root</a> of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element">element</a> hosting the stylesheet
+	that the at-rule or property is declared in.</p>
+   <p>Additionally, <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name①">tree-scoped names</a> can be <dfn class="dfn-paneled" data-dfn-for="tree-scoped name" data-dfn-type="dfn" data-export id="tree-scoped-name-loosely-matched">loosely matched</dfn> or <dfn class="dfn-paneled" data-dfn-for="tree-scoped name" data-dfn-type="dfn" data-export id="tree-scoped-name-strictly-matched">strictly matched</dfn>,
+	defaulting to <a data-link-type="dfn" href="#tree-scoped-name-loosely-matched" id="ref-for-tree-scoped-name-loosely-matched">loosely matched</a> unless otherwise specified.
+	A <span id="ref-for-tree-scoped-name-loosely-matched①">loosely matched</span> <span id="ref-for-css-tree-scoped-name②">tree-scoped name</span>
+	can be matched by <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference">tree-scoped references</a>
+	(see below)
+	in the same tree or descendant trees,
+	while a <a data-link-type="dfn" href="#tree-scoped-name-strictly-matched" id="ref-for-tree-scoped-name-strictly-matched">strictly matched</a> <span id="ref-for-css-tree-scoped-name③">tree-scoped name</span>
+	can only be matched by <span id="ref-for-css-tree-scoped-reference①">tree-scoped references</span>
+	in the exact same tree.</p>
+   <p>Properties or descriptors that reference a <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name④">tree-scoped name</a>,
 	such as the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family">font-family</a>
 	or <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-animations-1/#propdef-animation-name" id="ref-for-propdef-animation-name">animation-name</a> properties,
 	must define their value as a <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export id="css-tree-scoped-reference">tree-scoped reference</dfn>.
-	<a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference">Tree-scoped references</a> implicitly capture
-	a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree①">node tree</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root③">root</a>
+	These references implicitly capture
+	a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree">node tree</a> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root③">root</a>
 	along with their specified value:
 	unless otherwise specified,
-	the <span id="ref-for-concept-tree-root④">root</span> of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element①">element</a> hosting the stylesheet that the property or descriptor is defined in.
-	This <span id="ref-for-concept-tree-root⑤">root</span> reference stays with the <span id="ref-for-css-tree-scoped-reference①">tree-scoped reference</span>
+	the <span id="ref-for-concept-tree-root④">root</span> of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element①">element</a> hosting the stylesheet that the property or descriptor is declared in.
+	This <span id="ref-for-concept-tree-root⑤">root</span> reference stays with the <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference②">tree-scoped reference</a>
 	as it is inherited.</p>
-   <p>Whenever a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference②">tree-scoped reference</a> is dereferenced
-	to find the CSS construct it is referencing,
-	first search only the <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name①">tree-scoped names</a> associated with the same <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root⑥">root</a>
-	as the <span id="ref-for-css-tree-scoped-reference③">tree-scoped reference</span> must be searched.
-	If no relevant <span id="ref-for-css-tree-scoped-name②">tree-scoped name</span> is found,
+   <p>If a <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name⑤">tree-scoped name</a> is <dfn class="dfn-paneled" data-dfn-for="tree-scoped name" data-dfn-type="dfn" data-export id="tree-scoped-name-global">global</dfn>
+	(such as <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule③">@font-face</a> names),
+	then when a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference③">tree-scoped reference</a> is dereferenced to find it,
+	first search only the <span id="ref-for-css-tree-scoped-name⑥">tree-scoped names</span> associated with the same <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root⑥">root</a>
+	as the <span id="ref-for-css-tree-scoped-reference④">tree-scoped reference</span>.
+	If no relevant <span id="ref-for-css-tree-scoped-name⑦">tree-scoped name</span> is found,
 	and the <span id="ref-for-concept-tree-root⑦">root</span> is a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-shadow-root" id="ref-for-concept-shadow-root⑦">shadow root</a>,
-	then repeat this search in the <span id="ref-for-concept-tree-root⑧">root</span>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-documentfragment-host" id="ref-for-concept-documentfragment-host①">host</a>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree②">node tree</a>.
-	(In other words, <span id="ref-for-css-tree-scoped-name③">tree-scoped names</span> "inherit" into descendant shadow trees,
+	then repeat this search in the <span id="ref-for-concept-tree-root⑧">root</span>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-documentfragment-host" id="ref-for-concept-documentfragment-host①">host</a>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree①">node tree</a> (recursively).
+	(In other words, global <span id="ref-for-css-tree-scoped-name⑧">tree-scoped names</span> “inherit” into descendant shadow trees,
 	so long as they don’t define the same name themselves.)</p>
-   <p>If two <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name④">tree-scoped names</a> are directly compared
-	(for example, comparing an <u class="link-error" data-lt="anchor name" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;anchor name&apos; that are marked for export.
-  (Possible specs this could be from: css-anchor-position-1)">anchor name</u> with an <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope" id="ref-for-propdef-anchor-scope">anchor-scope</a> ident),
+   <p>If a <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name⑨">tree-scoped name</a> is <dfn class="dfn-paneled" data-dfn-for="tree-scoped name" data-dfn-type="dfn" data-export id="tree-scoped-name-local">local</dfn> to an element
+	(such as <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name" id="ref-for-propdef-anchor-name">anchor-name</a> or <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope" id="ref-for-propdef-anchor-scope①">anchor-scope</a> values),
+	then whether a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑤">tree-scoped reference</a> matches the <span id="ref-for-css-tree-scoped-name①⓪">tree-scoped name</span> on a given element
+	depends on whether the <span id="ref-for-css-tree-scoped-name①①">tree-scoped name</span> is <a data-link-type="dfn" href="#tree-scoped-name-strictly-matched" id="ref-for-tree-scoped-name-strictly-matched①">strictly</a> or <a data-link-type="dfn" href="#tree-scoped-name-loosely-matched" id="ref-for-tree-scoped-name-loosely-matched②">loosely</a> matched.
+	A <span id="ref-for-tree-scoped-name-strictly-matched②">strictly matched</span> <span id="ref-for-css-tree-scoped-name①②">tree-scoped name</span> only matches if
+	both names are associated with the same tree.
+	A <span id="ref-for-tree-scoped-name-loosely-matched③">loosely matched</span> <span id="ref-for-css-tree-scoped-name①③">tree-scoped name</span> also matches if
+	the <span id="ref-for-css-tree-scoped-name①④">tree-scoped name</span> is associated with an ancestor tree.</p>
+   <p>If two <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name①⑤">tree-scoped names</a> are directly compared
+	(for example, when comparing <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value">computed values</a>),
 	they are considered to match only if their identifiers match,
 	<em>and</em> their <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root⑨">root</a>s match exactly.
 	(If one has a <span id="ref-for-concept-tree-root①⓪">root</span> that’s an ancestor of the other, for example,
 	they <em>do not</em> match.)</p>
-   <div class="issue" id="issue-725cfdca">
-    <a class="self-link" href="#issue-725cfdca"></a>
+   <div class="issue" id="issue-3293692a">
+    <a class="self-link" href="#issue-3293692a"></a>
 		TODO: Fix all the at-rules that define global names,
 		and the properties that reference them,
 		to use these concepts.
 
 
+    <p>Global names include:</p>
     <ul>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule③">@font-face</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family①">font-family</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule④">@font-face</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family①">font-family</a></p>
      <li data-md>
       <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-feature-values" id="ref-for-at-ruledef-font-feature-values">@font-feature-values</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family②">font-family</a></p>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes②">@keyframes</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-animations-1/#propdef-animation-name" id="ref-for-propdef-animation-name①">animation-name</a></p>
+      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes①">@keyframes</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-animations-1/#propdef-animation-name" id="ref-for-propdef-animation-name①">animation-name</a></p>
      <li data-md>
       <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-counter-styles-3/#at-ruledef-counter-style" id="ref-for-at-ruledef-counter-style">@counter-style</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-list-style-type" id="ref-for-propdef-list-style-type">list-style-type</a></p>
      <li data-md>
@@ -1860,24 +1878,24 @@ Name-Defining Constructs and Inheritance</span><a class="self-link" href="#shado
   <c- p>&lt;/</c-><c- f>::shadow</c-><c- p>></c->
 <c- p>&lt;/</c-><c- f>my-component</c-><c- p>></c->
 </pre>
-    <p>The <span class="css">.outer</span> element references the outer <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule④">@font-face</a>, using the "outer.woff" file.</p>
+    <p>The <span class="css">.outer</span> element references the outer <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑤">@font-face</a>, using the "outer.woff" file.</p>
     <p>The <span class="css">.inner-default</span> element inherits the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family③">font-family: foo</a> value from the outer document,
-		using the same <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference④">tree-scoped reference</a> as <span class="css">.outer</span>,
+		using the same <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑥">tree-scoped reference</a> as <span class="css">.outer</span>,
 		and thus also uses the "outer.woff" font file.</p>
     <p>The <span class="css">.inner-style</span> element, on the other hand,
 		receives a <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family④">font-family: foo</a> from the stylesheet inside the shadow,
-		and thus its <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑤">tree-scoped reference</a> refers to the shadow’s <span class="css">@font-family</span>,
+		and thus its <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑦">tree-scoped reference</a> refers to the shadow’s <span class="css">@font-family</span>,
 		and it uses the "inner.woff" file.</p>
     <p>The <span class="css">.part-styled</span> element also receives its style from the outer document,
 		tho by being directly set rather than by inheritance.
-		Thus, its <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑥">tree-scoped reference</a> also refer’s to the outer document,
+		Thus, its <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑧">tree-scoped reference</a> also refer’s to the outer document,
 		and it uses the "outer.woff" file.</p>
    </div>
    <div class="example" id="example-6de7b535">
     <a class="self-link" href="#example-6de7b535"></a>
 		Here is a more complex example,
 		showing three levels of trees,
-		and illustrating precisely how <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name⑤">tree-scoped names</a> and <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑦">tree-scoped references</a> inherit.
+		and illustrating precisely how <a data-link-type="dfn" href="#css-tree-scoped-name" id="ref-for-css-tree-scoped-name①⑥">tree-scoped names</a> and <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑨">tree-scoped references</a> inherit.
 
 		
 <pre class="highlight"><c- p>&lt;</c-><c- f>style</c-><c- p>></c->
@@ -1917,14 +1935,14 @@ Name-Defining Constructs and Inheritance</span><a class="self-link" href="#shado
 </pre>
     <p>Here, just as in the previous example,
 		<span class="css">.inner-default</span> is inheriting the <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑤">font-family: foo</a> declared in the outer document,
-		and so it ends up referencing the outer document’s <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑤">@font-face</a>,
+		and so it ends up referencing the outer document’s <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑥">@font-face</a>,
 		and is rendered with the "outer.woff" file.</p>
     <p>On the other hand,
 		<span class="css">.inner-search</span> receives its style from a stylesheet in <code>&lt;grandchild-component></code>’s shadow tree,
-		so it attempts to find a <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑥">@font-face</a> defining a <span class="css">foo</span> font in that tree.
-		There is no such <span class="css" id="ref-for-at-font-face-rule⑦">@font-face</span>,
+		so it attempts to find a <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑦">@font-face</a> defining a <span class="css">foo</span> font in that tree.
+		There is no such <span class="css" id="ref-for-at-font-face-rule⑧">@font-face</span>,
 		so it starts walking up the shadow trees,
-		finding an appropriate <span class="css" id="ref-for-at-font-face-rule⑧">@font-face</span> in <code>&lt;child-component></code>,
+		finding an appropriate <span class="css" id="ref-for-at-font-face-rule⑨">@font-face</span> in <code>&lt;child-component></code>,
 		so it’s rendered with the "inner.woff" file.</p>
    </div>
    <details class="wpt-tests-block" dir="ltr" lang="en">
@@ -1949,7 +1967,7 @@ Name-Defining Constructs and Inheritance</span><a class="self-link" href="#shado
    </details>
    <h4 class="heading settled" data-level="2.5.1" id="shadow-names-serialization"><span class="secno">2.5.1. </span><span class="content">
 Serialized Tree-Scoped References</span><a class="self-link" href="#shadow-names-serialization"></a></h4>
-   <p>If a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑧">tree-scoped reference</a> is serialized,
+   <p>If a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①⓪">tree-scoped reference</a> is serialized,
 	it serializes only its value;
 	the associated <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①①">root</a> is lost.</p>
    <div class="example" id="example-ad083628">
@@ -1994,18 +2012,18 @@ Serialized Tree-Scoped References</span><a class="self-link" href="#shadow-names
   <c- p>&lt;/</c-><c- f>::shadow</c-><c- p>></c->
 <c- p>&lt;/</c-><c- f>my-component</c-><c- p>></c->
 </pre>
-    <p>The <code>.outer</code> element is styled with the outer document’s "foo" <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule⑨">@font-face</a>.
+    <p>The <code>.outer</code> element is styled with the outer document’s "foo" <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule①⓪">@font-face</a>.
 		The <code>.inner-default</code> element inherits <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑥">font-family</a> from the outer document,
-		meaning it inherits a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference⑨">tree-scoped reference</a>
+		meaning it inherits a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①①">tree-scoped reference</a>
 		referencing that outer document,
 		and so it’s in the same font as <code>.outer</code>.</p>
     <p>Meanwhile, <code>.inner-styled</code> is explicitly styled from inside the shadow root,
-		so it receives a fresh <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①⓪">tree-scoped reference</a>
+		so it receives a fresh <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①②">tree-scoped reference</a>
 		referencing its shadow tree,
-		and it is instead styled the shadow’s own "foo" <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule①⓪">@font-face</a>.</p>
+		and it is instead styled the shadow’s own "foo" <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule" id="ref-for-at-font-face-rule①①">@font-face</a>.</p>
     <p>Despite that, the script running inside the component
 		sees the two elements as having the same value for <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family" id="ref-for-propdef-font-family⑦">font-family</a>,
-		because the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①②">root</a>-reference part of a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①①">tree-scoped reference</a>
+		because the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①②">root</a>-reference part of a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①③">tree-scoped reference</a>
 		is not preserved by serialization.
 		If it were to set <code class="highlight">innerDefault<c- p>.</c->style<c- p>.</c->fontFamily <c- o>=</c-> defaultFont<c- p>;</c-></code>
 		(thus setting the <span class="property" id="ref-for-propdef-font-family⑧">font-family</span> property of the element’s attribute stylesheet,
@@ -2013,10 +2031,10 @@ Serialized Tree-Scoped References</span><a class="self-link" href="#shadow-names
 		the <code>.inner-default</code> element would suddenly switch
 		to the same font as <code>.inner-styled</code>!</p>
    </div>
-   <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="biblio" href="#biblio-css-typed-om-1" title="CSS Typed OM Level 1">[css-typed-om-1]</a> is expected to reflect the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①③">root</a> reference of a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①②">tree-scoped reference</a>
+   <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="biblio" href="#biblio-css-typed-om-1" title="CSS Typed OM Level 1">[css-typed-om-1]</a> is expected to reflect the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-root" id="ref-for-concept-tree-root①③">root</a> reference of a <a data-link-type="dfn" href="#css-tree-scoped-reference" id="ref-for-css-tree-scoped-reference①④">tree-scoped reference</a>
 	in its <a data-link-type="dfn" href="https://drafts.css-houdini.org/css-typed-om-1/#css-reify" id="ref-for-css-reify">reification</a> rules for values,
-	allowing authors to tell what <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree③">node tree</a> the reference is taking its values from,
-	and allowing values to be transported across <span id="ref-for-concept-node-tree④">node trees</span>
+	allowing authors to tell what <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-tree" id="ref-for-concept-node-tree②">node tree</a> the reference is taking its values from,
+	and allowing values to be transported across <span id="ref-for-concept-node-tree③">node trees</span>
 	without changing their meaning.</p>
    <h2 class="heading settled" data-level="3" id="changes"><span class="secno">3. </span><span class="content">
 Changes</span><a class="self-link" href="#changes"></a></h2>
@@ -2202,13 +2220,17 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#dom-window-defaultelementstylesmap-slot">[[defaultElementStylesMap]]</a><span>, in § 1</span>
    <li><a href="#flat-tree">flattened element tree</a><span>, in § 2.4</span>
    <li><a href="#flat-tree">flat tree</a><span>, in § 2.4</span>
+   <li><a href="#tree-scoped-name-global">global</a><span>, in § 2.5</span>
    <li><a href="#selectordef-has-slotted">:has-slotted</a><span>, in § 2.2.5</span>
    <li><a href="#selectordef-host">:host</a><span>, in § 2.2.3</span>
    <li><a href="#selectordef-host-function">:host()</a><span>, in § 2.2.3</span>
    <li><a href="#selectordef-host-context">:host-context()</a><span>, in § 2.2.3</span>
    <li><a href="#in-the-context-of-a-shadow-tree">in the context of a shadow tree</a><span>, in § 2.2.1</span>
    <li><a href="#in-the-context-of-a-shadow-tree">in the context of the shadow tree</a><span>, in § 2.2.1</span>
+   <li><a href="#tree-scoped-name-local">local</a><span>, in § 2.5</span>
+   <li><a href="#tree-scoped-name-loosely-matched">loosely matched</a><span>, in § 2.5</span>
    <li><a href="#selectordef-slotted">::slotted()</a><span>, in § 2.2.4</span>
+   <li><a href="#tree-scoped-name-strictly-matched">strictly matched</a><span>, in § 2.5</span>
    <li><a href="#tree-context">tree context</a><span>, in § 2.2.1</span>
    <li><a href="#css-tree-scoped-name">tree-scoped name</a><span>, in § 2.5</span>
    <li><a href="#css-tree-scoped-reference">tree-scoped reference</a><span>, in § 2.5</span>
@@ -2218,6 +2240,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-ANCHOR-POSITION-1]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="be2c21cf">anchor-name</span>
      <li><span class="dfn-paneled" id="2284f85b">anchor-scope</span>
     </ul>
    <li>
@@ -2229,6 +2252,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="9cd25054">computed value</span>
      <li><span class="dfn-paneled" id="f45b0220">UA origin</span>
      <li><span class="dfn-paneled" id="63fe4250">user-agent origin</span>
     </ul>
@@ -2411,6 +2435,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 		to use these concepts.
 
 
+    <p>Global names include:</p>
     <ul>
      <li data-md>
       <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-5/#at-font-face-rule">@font-face</a>, referenced by <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-family">font-family</a></p>
@@ -2427,7 +2452,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li data-md>
       <p>others?</p>
     </ul>
-    	 <a class="issue-return" href="#issue-725cfdca" title="Jump to section">↵</a>
+    	 <a class="issue-return" href="#issue-3293692a" title="Jump to section">↵</a>
    </div>
   </div>
   <details class="mdn-anno unpositioned" data-anno-for="host-selector">
@@ -2676,13 +2701,13 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "03eee7b4": {"dfnID":"03eee7b4","dfnText":"color()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-color"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-color-5/#funcdef-color"},
-"0497de86": {"dfnID":"0497de86","dfnText":"@font-face","external":true,"refSections":[{"refs":[{"id":"ref-for-at-font-face-rule"}],"title":"1. \nDefault Styles for Custom Elements"},{"refs":[{"id":"ref-for-at-font-face-rule\u2460"},{"id":"ref-for-at-font-face-rule\u2461"},{"id":"ref-for-at-font-face-rule\u2462"},{"id":"ref-for-at-font-face-rule\u2463"},{"id":"ref-for-at-font-face-rule\u2464"},{"id":"ref-for-at-font-face-rule\u2465"},{"id":"ref-for-at-font-face-rule\u2466"},{"id":"ref-for-at-font-face-rule\u2467"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-at-font-face-rule\u2468"},{"id":"ref-for-at-font-face-rule\u2460\u24ea"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"https://drafts.csswg.org/css-fonts-5/#at-font-face-rule"},
+"0497de86": {"dfnID":"0497de86","dfnText":"@font-face","external":true,"refSections":[{"refs":[{"id":"ref-for-at-font-face-rule"}],"title":"1. \nDefault Styles for Custom Elements"},{"refs":[{"id":"ref-for-at-font-face-rule\u2460"},{"id":"ref-for-at-font-face-rule\u2461"},{"id":"ref-for-at-font-face-rule\u2462"},{"id":"ref-for-at-font-face-rule\u2463"},{"id":"ref-for-at-font-face-rule\u2464"},{"id":"ref-for-at-font-face-rule\u2465"},{"id":"ref-for-at-font-face-rule\u2466"},{"id":"ref-for-at-font-face-rule\u2467"},{"id":"ref-for-at-font-face-rule\u2468"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-at-font-face-rule\u2460\u24ea"},{"id":"ref-for-at-font-face-rule\u2460\u2460"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"https://drafts.csswg.org/css-fonts-5/#at-font-face-rule"},
 "0a78ad53": {"dfnID":"0a78ad53","dfnText":"@font-palette-values","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-font-palette-values"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-palette-values"},
 "11e722f0": {"dfnID":"11e722f0","dfnText":"stylesheet","external":true,"refSections":[{"refs":[{"id":"ref-for-css-stylesheet"}],"title":"1. \nDefault Styles for Custom Elements"}],"url":"https://drafts.csswg.org/css-syntax-3/#css-stylesheet"},
 "1324ff49": {"dfnID":"1324ff49","dfnText":":not()","external":true,"refSections":[{"refs":[{"id":"ref-for-negation-pseudo"}],"title":"2.2.3. \nSelecting Into the Light: the :host, :host(), and :host-context() pseudo-classes"}],"url":"https://drafts.csswg.org/selectors-4/#negation-pseudo"},
 "16a52cab": {"dfnID":"16a52cab","dfnText":"tree-abiding pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-tree-abiding"}],"title":"2.2.4. \nSelecting Slot-Assigned Content: the ::slotted() pseudo-element"}],"url":"https://drafts.csswg.org/css-pseudo-4/#tree-abiding"},
 "19f9e9df": {"dfnID":"19f9e9df","dfnText":"shadow tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-tree"},{"id":"ref-for-concept-shadow-tree\u2460"},{"id":"ref-for-concept-shadow-tree\u2461"}],"title":"1. \nDefault Styles for Custom Elements"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2462"},{"id":"ref-for-concept-shadow-tree\u2463"},{"id":"ref-for-concept-shadow-tree\u2464"},{"id":"ref-for-concept-shadow-tree\u2465"},{"id":"ref-for-concept-shadow-tree\u2466"},{"id":"ref-for-concept-shadow-tree\u2467"},{"id":"ref-for-concept-shadow-tree\u2468"},{"id":"ref-for-concept-shadow-tree\u2460\u24ea"}],"title":"2.1. \nInformative Explanation of Shadow DOM"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2460\u2460"},{"id":"ref-for-concept-shadow-tree\u2460\u2461"},{"id":"ref-for-concept-shadow-tree\u2460\u2462"},{"id":"ref-for-concept-shadow-tree\u2460\u2463"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2460\u2464"},{"id":"ref-for-concept-shadow-tree\u2460\u2465"},{"id":"ref-for-concept-shadow-tree\u2460\u2466"},{"id":"ref-for-concept-shadow-tree\u2460\u2467"},{"id":"ref-for-concept-shadow-tree\u2460\u2468"},{"id":"ref-for-concept-shadow-tree\u2461\u24ea"},{"id":"ref-for-concept-shadow-tree\u2461\u2460"},{"id":"ref-for-concept-shadow-tree\u2461\u2461"}],"title":"2.2.2. \nSelecting Shadow Hosts from within a Shadow Tree"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2461\u2462"},{"id":"ref-for-concept-shadow-tree\u2461\u2463"},{"id":"ref-for-concept-shadow-tree\u2461\u2464"},{"id":"ref-for-concept-shadow-tree\u2461\u2465"},{"id":"ref-for-concept-shadow-tree\u2461\u2466"},{"id":"ref-for-concept-shadow-tree\u2461\u2467"},{"id":"ref-for-concept-shadow-tree\u2461\u2468"}],"title":"2.2.3. \nSelecting Into the Light: the :host, :host(), and :host-context() pseudo-classes"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2462\u24ea"}],"title":"2.2.4. \nSelecting Slot-Assigned Content: the ::slotted() pseudo-element"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2462\u2460"},{"id":"ref-for-concept-shadow-tree\u2462\u2461"},{"id":"ref-for-concept-shadow-tree\u2462\u2462"},{"id":"ref-for-concept-shadow-tree\u2462\u2463"}],"title":"2.4. \nFlattening the DOM into an Element Tree"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2462\u2464"},{"id":"ref-for-concept-shadow-tree\u2462\u2465"},{"id":"ref-for-concept-shadow-tree\u2462\u2466"},{"id":"ref-for-concept-shadow-tree\u2462\u2467"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-concept-shadow-tree\u2462\u2468"},{"id":"ref-for-concept-shadow-tree\u2463\u24ea"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
-"2284f85b": {"dfnID":"2284f85b","dfnText":"anchor-scope","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-anchor-scope"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope"},
+"2284f85b": {"dfnID":"2284f85b","dfnText":"anchor-scope","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-anchor-scope"},{"id":"ref-for-propdef-anchor-scope\u2460"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope"},
 "24408a11": {"dfnID":"24408a11","dfnText":"compound selector","external":true,"refSections":[{"refs":[{"id":"ref-for-compound"}],"title":"1. \nDefault Styles for Custom Elements"}],"url":"https://drafts.csswg.org/selectors-4/#compound"},
 "27d9b7ea": {"dfnID":"27d9b7ea","dfnText":"element","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element"},{"id":"ref-for-concept-element\u2460"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://dom.spec.whatwg.org/#concept-element"},
 "2807a08c": {"dfnID":"2807a08c","dfnText":"find slottables","external":true,"refSections":[{"refs":[{"id":"ref-for-find-slotables"}],"title":"2.4. \nFlattening the DOM into an Element Tree"}],"url":"https://dom.spec.whatwg.org/#find-slotables"},
@@ -2715,14 +2740,16 @@ let dfnPanelData = {
 "92b2d7da": {"dfnID":"92b2d7da","dfnText":"children","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-child"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"},{"refs":[{"id":"ref-for-concept-tree-child\u2460"}],"title":"2.2.4. \nSelecting Slot-Assigned Content: the ::slotted() pseudo-element"},{"refs":[{"id":"ref-for-concept-tree-child\u2461"},{"id":"ref-for-concept-tree-child\u2462"}],"title":"2.4. \nFlattening the DOM into an Element Tree"}],"url":"https://dom.spec.whatwg.org/#concept-tree-child"},
 "92befb0f": {"dfnID":"92befb0f","dfnText":"@font-feature-values","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-font-feature-values"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-fonts-4/#at-ruledef-font-feature-values"},
 "94d3d62c": {"dfnID":"94d3d62c","dfnText":"@color-profile","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-profile"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-color-5/#at-ruledef-profile"},
+"9cd25054": {"dfnID":"9cd25054","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
 "b4d48921": {"dfnID":"b4d48921","dfnText":":is()","external":true,"refSections":[{"refs":[{"id":"ref-for-matches-pseudo"}],"title":"2.2.3. \nSelecting Into the Light: the :host, :host(), and :host-context() pseudo-classes"}],"url":"https://drafts.csswg.org/selectors-4/#matches-pseudo"},
 "b6fb7a51": {"dfnID":"b6fb7a51","dfnText":"custom element","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-element"}],"title":"1. \nDefault Styles for Custom Elements"}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element"},
 "bb2056aa": {"dfnID":"bb2056aa","dfnText":"specificity","external":true,"refSections":[{"refs":[{"id":"ref-for-specificity"},{"id":"ref-for-specificity\u2460"},{"id":"ref-for-specificity\u2461"},{"id":"ref-for-specificity\u2462"},{"id":"ref-for-specificity\u2463"}],"title":"2.2.3. \nSelecting Into the Light: the :host, :host(), and :host-context() pseudo-classes"},{"refs":[{"id":"ref-for-specificity\u2464"},{"id":"ref-for-specificity\u2465"}],"title":"2.2.4. \nSelecting Slot-Assigned Content: the ::slotted() pseudo-element"}],"url":"https://drafts.csswg.org/selectors-4/#specificity"},
-"c7d8d91b": {"dfnID":"c7d8d91b","dfnText":"node tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-node-tree"},{"id":"ref-for-concept-node-tree\u2460"},{"id":"ref-for-concept-node-tree\u2461"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-concept-node-tree\u2462"},{"id":"ref-for-concept-node-tree\u2463"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"https://dom.spec.whatwg.org/#concept-node-tree"},
+"be2c21cf": {"dfnID":"be2c21cf","dfnText":"anchor-name","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-anchor-name"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name"},
+"c7d8d91b": {"dfnID":"c7d8d91b","dfnText":"node tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-node-tree"},{"id":"ref-for-concept-node-tree\u2460"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-concept-node-tree\u2461"},{"id":"ref-for-concept-node-tree\u2462"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"https://dom.spec.whatwg.org/#concept-node-tree"},
 "c8f141cb": {"dfnID":"c8f141cb","dfnText":"match a selector against a tree","external":true,"refSections":[{"refs":[{"id":"ref-for-match-a-selector-against-a-tree"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"}],"url":"https://drafts.csswg.org/selectors-4/#match-a-selector-against-a-tree"},
 "cd1cb230": {"dfnID":"cd1cb230","dfnText":"light tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-light-tree"},{"id":"ref-for-concept-light-tree\u2460"}],"title":"2.1. \nInformative Explanation of Shadow DOM"},{"refs":[{"id":"ref-for-concept-light-tree\u2461"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"},{"refs":[{"id":"ref-for-concept-light-tree\u2462"},{"id":"ref-for-concept-light-tree\u2463"}],"title":"2.4. \nFlattening the DOM into an Element Tree"},{"refs":[{"id":"ref-for-concept-light-tree\u2464"}],"title":"2.4.1. \nSlots and Slotted Elements in a Shadow Tree"}],"url":"https://dom.spec.whatwg.org/#concept-light-tree"},
-"css-tree-scoped-name": {"dfnID":"css-tree-scoped-name","dfnText":"tree-scoped name","external":false,"refSections":[{"refs":[{"id":"ref-for-css-tree-scoped-name"},{"id":"ref-for-css-tree-scoped-name\u2460"},{"id":"ref-for-css-tree-scoped-name\u2461"},{"id":"ref-for-css-tree-scoped-name\u2462"},{"id":"ref-for-css-tree-scoped-name\u2463"},{"id":"ref-for-css-tree-scoped-name\u2464"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"#css-tree-scoped-name"},
-"css-tree-scoped-reference": {"dfnID":"css-tree-scoped-reference","dfnText":"tree-scoped reference","external":false,"refSections":[{"refs":[{"id":"ref-for-css-tree-scoped-reference"},{"id":"ref-for-css-tree-scoped-reference\u2460"},{"id":"ref-for-css-tree-scoped-reference\u2461"},{"id":"ref-for-css-tree-scoped-reference\u2462"},{"id":"ref-for-css-tree-scoped-reference\u2463"},{"id":"ref-for-css-tree-scoped-reference\u2464"},{"id":"ref-for-css-tree-scoped-reference\u2465"},{"id":"ref-for-css-tree-scoped-reference\u2466"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-css-tree-scoped-reference\u2467"},{"id":"ref-for-css-tree-scoped-reference\u2468"},{"id":"ref-for-css-tree-scoped-reference\u2460\u24ea"},{"id":"ref-for-css-tree-scoped-reference\u2460\u2460"},{"id":"ref-for-css-tree-scoped-reference\u2460\u2461"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"#css-tree-scoped-reference"},
+"css-tree-scoped-name": {"dfnID":"css-tree-scoped-name","dfnText":"tree-scoped name","external":false,"refSections":[{"refs":[{"id":"ref-for-css-tree-scoped-name"},{"id":"ref-for-css-tree-scoped-name\u2460"},{"id":"ref-for-css-tree-scoped-name\u2461"},{"id":"ref-for-css-tree-scoped-name\u2462"},{"id":"ref-for-css-tree-scoped-name\u2463"},{"id":"ref-for-css-tree-scoped-name\u2464"},{"id":"ref-for-css-tree-scoped-name\u2465"},{"id":"ref-for-css-tree-scoped-name\u2466"},{"id":"ref-for-css-tree-scoped-name\u2467"},{"id":"ref-for-css-tree-scoped-name\u2468"},{"id":"ref-for-css-tree-scoped-name\u2460\u24ea"},{"id":"ref-for-css-tree-scoped-name\u2460\u2460"},{"id":"ref-for-css-tree-scoped-name\u2460\u2461"},{"id":"ref-for-css-tree-scoped-name\u2460\u2462"},{"id":"ref-for-css-tree-scoped-name\u2460\u2463"},{"id":"ref-for-css-tree-scoped-name\u2460\u2464"},{"id":"ref-for-css-tree-scoped-name\u2460\u2465"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"#css-tree-scoped-name"},
+"css-tree-scoped-reference": {"dfnID":"css-tree-scoped-reference","dfnText":"tree-scoped reference","external":false,"refSections":[{"refs":[{"id":"ref-for-css-tree-scoped-reference"},{"id":"ref-for-css-tree-scoped-reference\u2460"},{"id":"ref-for-css-tree-scoped-reference\u2461"},{"id":"ref-for-css-tree-scoped-reference\u2462"},{"id":"ref-for-css-tree-scoped-reference\u2463"},{"id":"ref-for-css-tree-scoped-reference\u2464"},{"id":"ref-for-css-tree-scoped-reference\u2465"},{"id":"ref-for-css-tree-scoped-reference\u2466"},{"id":"ref-for-css-tree-scoped-reference\u2467"},{"id":"ref-for-css-tree-scoped-reference\u2468"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-css-tree-scoped-reference\u2460\u24ea"},{"id":"ref-for-css-tree-scoped-reference\u2460\u2460"},{"id":"ref-for-css-tree-scoped-reference\u2460\u2461"},{"id":"ref-for-css-tree-scoped-reference\u2460\u2462"},{"id":"ref-for-css-tree-scoped-reference\u2460\u2463"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"#css-tree-scoped-reference"},
 "d65d17df": {"dfnID":"d65d17df","dfnText":"font-family","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-family"},{"id":"ref-for-propdef-font-family\u2460"},{"id":"ref-for-propdef-font-family\u2461"},{"id":"ref-for-propdef-font-family\u2462"},{"id":"ref-for-propdef-font-family\u2463"},{"id":"ref-for-propdef-font-family\u2464"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-propdef-font-family\u2465"},{"id":"ref-for-propdef-font-family\u2466"},{"id":"ref-for-propdef-font-family\u2467"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-family"},
 "d984b6fe": {"dfnID":"d984b6fe","dfnText":"animation-name","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-animation-name"},{"id":"ref-for-propdef-animation-name\u2460"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-animations-1/#propdef-animation-name"},
 "da8b8e0e": {"dfnID":"da8b8e0e","dfnText":"descendant","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-descendant"}],"title":"2.1. \nInformative Explanation of Shadow DOM"},{"refs":[{"id":"ref-for-concept-tree-descendant\u2460"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"}],"url":"https://dom.spec.whatwg.org/#concept-tree-descendant"},
@@ -2733,7 +2760,7 @@ let dfnPanelData = {
 "e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"2.2.2. \nSelecting Shadow Hosts from within a Shadow Tree"},{"refs":[{"id":"ref-for-propdef-display\u2460"},{"id":"ref-for-propdef-display\u2461"}],"title":"2.4.1. \nSlots and Slotted Elements in a Shadow Tree"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "f45b0220": {"dfnID":"f45b0220","dfnText":"UA origin","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade-origin-ua"},{"id":"ref-for-cascade-origin-ua\u2460"}],"title":"1. \nDefault Styles for Custom Elements"},{"refs":[{"id":"ref-for-cascade-origin-ua\u2461"}],"title":"2.4.1. \nSlots and Slotted Elements in a Shadow Tree"}],"url":"https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua"},
 "f7960529": {"dfnID":"f7960529","dfnText":"root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-root"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"},{"refs":[{"id":"ref-for-concept-tree-root\u2460"}],"title":"2.4. \nFlattening the DOM into an Element Tree"},{"refs":[{"id":"ref-for-concept-tree-root\u2461"},{"id":"ref-for-concept-tree-root\u2462"},{"id":"ref-for-concept-tree-root\u2463"},{"id":"ref-for-concept-tree-root\u2464"},{"id":"ref-for-concept-tree-root\u2465"},{"id":"ref-for-concept-tree-root\u2466"},{"id":"ref-for-concept-tree-root\u2467"},{"id":"ref-for-concept-tree-root\u2468"},{"id":"ref-for-concept-tree-root\u2460\u24ea"}],"title":"2.5. \nName-Defining Constructs and Inheritance"},{"refs":[{"id":"ref-for-concept-tree-root\u2460\u2460"},{"id":"ref-for-concept-tree-root\u2460\u2461"},{"id":"ref-for-concept-tree-root\u2460\u2462"}],"title":"2.5.1. \nSerialized Tree-Scoped References"}],"url":"https://dom.spec.whatwg.org/#concept-tree-root"},
-"fa19c68e": {"dfnID":"fa19c68e","dfnText":"@keyframes","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-keyframes"},{"id":"ref-for-at-ruledef-keyframes\u2460"},{"id":"ref-for-at-ruledef-keyframes\u2461"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes"},
+"fa19c68e": {"dfnID":"fa19c68e","dfnText":"@keyframes","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-keyframes"},{"id":"ref-for-at-ruledef-keyframes\u2460"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes"},
 "flat-tree": {"dfnID":"flat-tree","dfnText":"flattened element tree","external":false,"refSections":[{"refs":[{"id":"ref-for-flat-tree"}],"title":"2.1. \nInformative Explanation of Shadow DOM"},{"refs":[{"id":"ref-for-flat-tree\u2460"},{"id":"ref-for-flat-tree\u2461"},{"id":"ref-for-flat-tree\u2462"},{"id":"ref-for-flat-tree\u2463"}],"title":"2.4. \nFlattening the DOM into an Element Tree"}],"url":"#flat-tree"},
 "in-the-context-of-a-shadow-tree": {"dfnID":"in-the-context-of-a-shadow-tree","dfnText":"in the context of a shadow tree","external":false,"refSections":[{"refs":[{"id":"ref-for-in-the-context-of-a-shadow-tree"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"},{"refs":[{"id":"ref-for-in-the-context-of-a-shadow-tree\u2460"}],"title":"2.2.2. \nSelecting Shadow Hosts from within a Shadow Tree"},{"refs":[{"id":"ref-for-in-the-context-of-a-shadow-tree\u2461"},{"id":"ref-for-in-the-context-of-a-shadow-tree\u2462"},{"id":"ref-for-in-the-context-of-a-shadow-tree\u2463"}],"title":"2.2.3. \nSelecting Into the Light: the :host, :host(), and :host-context() pseudo-classes"},{"refs":[{"id":"ref-for-in-the-context-of-a-shadow-tree\u2464"}],"title":"3. \nChanges"}],"url":"#in-the-context-of-a-shadow-tree"},
 "selectordef-has-slotted": {"dfnID":"selectordef-has-slotted","dfnText":":has-slotted","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-has-slotted"},{"id":"ref-for-selectordef-has-slotted\u2460"},{"id":"ref-for-selectordef-has-slotted\u2461"},{"id":"ref-for-selectordef-has-slotted\u2462"},{"id":"ref-for-selectordef-has-slotted\u2463"}],"title":"2.2.5. \nMatching on the Presence of Slot-Assigned Nodes: the :has-slotted pseudo-class"}],"url":"#selectordef-has-slotted"},
@@ -2742,6 +2769,10 @@ let dfnPanelData = {
 "selectordef-host-function": {"dfnID":"selectordef-host-function","dfnText":":host()","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-host-function"}],"title":"2.2.2. \nSelecting Shadow Hosts from within a Shadow Tree"},{"refs":[{"id":"ref-for-selectordef-host-function\u2460"},{"id":"ref-for-selectordef-host-function\u2461"}],"title":"2.2.3. \nSelecting Into the Light: the :host, :host(), and :host-context() pseudo-classes"},{"refs":[{"id":"ref-for-selectordef-host-function\u2462"}],"title":"3. \nChanges"}],"url":"#selectordef-host-function"},
 "selectordef-slotted": {"dfnID":"selectordef-slotted","dfnText":"::slotted()","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-slotted"},{"id":"ref-for-selectordef-slotted\u2460"},{"id":"ref-for-selectordef-slotted\u2461"},{"id":"ref-for-selectordef-slotted\u2462"},{"id":"ref-for-selectordef-slotted\u2463"},{"id":"ref-for-selectordef-slotted\u2464"},{"id":"ref-for-selectordef-slotted\u2465"},{"id":"ref-for-selectordef-slotted\u2466"},{"id":"ref-for-selectordef-slotted\u2467"},{"id":"ref-for-selectordef-slotted\u2468"}],"title":"2.2.4. \nSelecting Slot-Assigned Content: the ::slotted() pseudo-element"},{"refs":[{"id":"ref-for-selectordef-slotted\u2460\u24ea"}],"title":"2.4. \nFlattening the DOM into an Element Tree"},{"refs":[{"id":"ref-for-selectordef-slotted\u2460\u2460"},{"id":"ref-for-selectordef-slotted\u2460\u2461"}],"title":"3. \nChanges"}],"url":"#selectordef-slotted"},
 "tree-context": {"dfnID":"tree-context","dfnText":"tree context","external":false,"refSections":[{"refs":[{"id":"ref-for-tree-context"},{"id":"ref-for-tree-context\u2460"}],"title":"2.2.1. \nMatching Selectors Against Shadow Trees"}],"url":"#tree-context"},
+"tree-scoped-name-global": {"dfnID":"tree-scoped-name-global","dfnText":"global","external":false,"refSections":[],"url":"#tree-scoped-name-global"},
+"tree-scoped-name-local": {"dfnID":"tree-scoped-name-local","dfnText":"local","external":false,"refSections":[],"url":"#tree-scoped-name-local"},
+"tree-scoped-name-loosely-matched": {"dfnID":"tree-scoped-name-loosely-matched","dfnText":"loosely matched","external":false,"refSections":[{"refs":[{"id":"ref-for-tree-scoped-name-loosely-matched"},{"id":"ref-for-tree-scoped-name-loosely-matched\u2460"},{"id":"ref-for-tree-scoped-name-loosely-matched\u2461"},{"id":"ref-for-tree-scoped-name-loosely-matched\u2462"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"#tree-scoped-name-loosely-matched"},
+"tree-scoped-name-strictly-matched": {"dfnID":"tree-scoped-name-strictly-matched","dfnText":"strictly matched","external":false,"refSections":[{"refs":[{"id":"ref-for-tree-scoped-name-strictly-matched"},{"id":"ref-for-tree-scoped-name-strictly-matched\u2460"},{"id":"ref-for-tree-scoped-name-strictly-matched\u2461"}],"title":"2.5. \nName-Defining Constructs and Inheritance"}],"url":"#tree-scoped-name-strictly-matched"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -3198,6 +3229,8 @@ let refsData = {
 "#selectordef-host-function": {"displayText":":host()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"local","text":":host()","type":"selector","url":"#selectordef-host-function"},
 "#selectordef-slotted": {"displayText":"::slotted()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"local","text":"::slotted()","type":"selector","url":"#selectordef-slotted"},
 "#tree-context": {"displayText":"tree context","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"local","text":"tree context","type":"dfn","url":"#tree-context"},
+"#tree-scoped-name-loosely-matched": {"displayText":"loosely matched","export":true,"for_":["tree-scoped name"],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"local","text":"loosely matched","type":"dfn","url":"#tree-scoped-name-loosely-matched"},
+"#tree-scoped-name-strictly-matched": {"displayText":"strictly matched","export":true,"for_":["tree-scoped name"],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"local","text":"strictly matched","type":"dfn","url":"#tree-scoped-name-strictly-matched"},
 "https://dom.spec.whatwg.org/#concept-documentfragment-host": {"displayText":"host","export":true,"for_":["DocumentFragment"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"host","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-documentfragment-host"},
 "https://dom.spec.whatwg.org/#concept-element": {"displayText":"element","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"element","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-element"},
 "https://dom.spec.whatwg.org/#concept-element-local-name": {"displayText":"local name","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"local name","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-element-local-name"},
@@ -3216,10 +3249,12 @@ let refsData = {
 "https://dom.spec.whatwg.org/#find-flattened-slotables": {"displayText":"find flattened slottables","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"find flattened slottables","type":"dfn","url":"https://dom.spec.whatwg.org/#find-flattened-slotables"},
 "https://dom.spec.whatwg.org/#find-slotables": {"displayText":"find slottables","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"find slottables","type":"dfn","url":"https://dom.spec.whatwg.org/#find-slotables"},
 "https://drafts.css-houdini.org/css-typed-om-1/#css-reify": {"displayText":"reification","export":true,"for_":["CSS"],"level":"1","normative":true,"shortname":"css-typed-om","spec":"css-typed-om-1","status":"current","text":"reification","type":"dfn","url":"https://drafts.css-houdini.org/css-typed-om-1/#css-reify"},
+"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name": {"displayText":"anchor-name","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor-name","type":"property","url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name"},
 "https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope": {"displayText":"anchor-scope","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor-scope","type":"property","url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope"},
 "https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes": {"displayText":"@keyframes","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-animations","spec":"css-animations-1","status":"current","text":"@keyframes","type":"at-rule","url":"https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes"},
 "https://drafts.csswg.org/css-animations-1/#propdef-animation-name": {"displayText":"animation-name","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-animations","spec":"css-animations-1","status":"current","text":"animation-name","type":"property","url":"https://drafts.csswg.org/css-animations-1/#propdef-animation-name"},
 "https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua": {"displayText":"user-agent origin","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"user-agent origin","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#cascade-origin-ua"},
+"https://drafts.csswg.org/css-cascade-5/#computed-value": {"displayText":"computed value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"computed value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
 "https://drafts.csswg.org/css-cascade-6/#cascade": {"displayText":"cascade","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"current","text":"cascade","type":"dfn","url":"https://drafts.csswg.org/css-cascade-6/#cascade"},
 "https://drafts.csswg.org/css-color-5/#at-ruledef-profile": {"displayText":"@color-profile","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"current","text":"@color-profile","type":"at-rule","url":"https://drafts.csswg.org/css-color-5/#at-ruledef-profile"},
 "https://drafts.csswg.org/css-color-5/#funcdef-color": {"displayText":"color()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"current","text":"color()","type":"function","url":"https://drafts.csswg.org/css-color-5/#funcdef-color"},
