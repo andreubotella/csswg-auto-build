@@ -16,6 +16,7 @@ Abstract: This module contains the features of CSS relating to scrollable overfl
 	'line-clamp', its longhands, and its legacy pre-standard syntax;
 	adding a 'block-ellipsis' property;
 	and expanding 'overflow-clip-margin' with longhands.
+At Risk: ''continue: discard''
 </pre>
 <pre class="link-defaults">
 type: dfn; spec:css-multicol-1; text:overflow column
@@ -800,55 +801,104 @@ Indicating Block-Axis Overflow: the 'block-ellipsis' property</h3>
 	</dl>
 
 	When 'block-ellipsis' is neither ''no-ellipsis'' nor the empty string,
-	the <a>block overflow ellipsis</a> string
-	is wrapped in an anonymous inline
-	and placed at the end of the line box
-	as a direct child of the <a>block container</a>’s <a>root inline box</a>,
-	reducing the space in the line box
+	the [=block overflow ellipsis=] string
+	is placed at the end of the line box
+	reducing the space
 	available to the other contents of the line.
-	This inline is assigned ''unicode-bidi: plaintext''
-	and ''line-height: 0''
-	and is placed in the line box after the last
-	<a>soft wrap opportunity</a> (see [[!CSS-TEXT-3]])
-	that would still allow the entire <a>block overflow ellipsis</a> to fit on the line,
-	applying [[css-text-4#white-space-rules]] including [[css-text-4#white-space-phase-2]]
-	before inserting the [=block overflow ellipsis=].
-	For this purpose, <a>soft wrap opportunities</a> added by 'overflow-wrap' are ignored,
-	as are those inhibited by ''text-wrap-mode: nowrap''.
-	If this results in the entire contents of the line box being displaced,
-	the line box is considered to contain a [=strut=], as defined in [[CSS2/visudet#leading]].
+
+	<wpt>
+		block-ellipsis-023.html
+		block-ellipsis-024.html
+		block-ellipsis-repaint-001.html
+		block-ellipsis-repaint-003.html
+		block-ellipsis-repaint-004.html
+	</wpt>
+
+	More specifically:
+	* The [=block overflow ellipsis=]
+		is wrapped in an anonymous inline
+		whose parent is the [=block container=]’s [=root inline box=].
+		This inline is assigned ''unicode-bidi: plaintext''
+		and ''line-height: 0''.
+
+		<wpt>
+			block-ellipsis-002.html
+			block-ellipsis-003.html
+			block-ellipsis-004.html
+			block-ellipsis-005.html
+			block-ellipsis-006.html
+			block-ellipsis-010.html
+		</wpt>
+
+	* The user agent makes room as necessary of the [=block overflow ellipsis=]
+		by displacing content from the end of the line as if wrapping,
+		until the last <a>soft wrap opportunity</a> (see [[!CSS-TEXT-3]])
+		that would still allow the entire <a>block overflow ellipsis</a> to fit on the line,
+		applying [[css-text-4#white-space-rules]] including [[css-text-4#white-space-phase-2]]
+		before insertion.
+
+		<wpt>
+			block-ellipsis-001.html
+			block-ellipsis-028.html
+			block-ellipsis-029.html
+			block-ellipsis-030.html
+			webkit-line-clamp-025.html
+		</wpt>
+
+		For this purpose, <a>soft wrap opportunities</a> added by 'overflow-wrap' are ignored,
+		as are those inhibited by ''text-wrap-mode: nowrap''.
+
+		<wpt>
+			block-ellipsis-013.html
+			block-ellipsis-014.html
+			block-ellipsis-015.tentative.html
+			block-ellipsis-016.html
+			block-ellipsis-017.html
+			block-ellipsis-027.html
+		</wpt>
+
+		If this results in the entire contents of the line box being displaced,
+		the line box is considered to contain a [=strut=], as defined in [[CSS2/visudet#leading]].
+
+		<wpt>
+			block-ellipsis-016.html
+			block-ellipsis-018.html
+			block-ellipsis-025.html
+		</wpt>
+
+		Displacing content to make room for the [=block overflow ellipsis=]
+		can cause the [=logical height=] of line box where it is inserted to shrink.
+		This must not cause a reevaluation of the effects of the 'continue' property
+		and must not change which line box is the last one before the truncated content.
+
+		<wpt>
+			line-clamp-auto-041.html
+		</wpt>
+
+	* The anonymous inline of [=block overflow ellipsis=] is placed
+		after any remaining content,
+		after [[css-text-4#white-space-phase-2]],
+		as a direct child of the <a>block container</a>’s <a>root inline box</a>,
+		with the appropriate bidi embedding levels
+		given its directionality
+		and that of its parent.
+
+		<wpt>
+			block-ellipsis-004.html
+			block-ellipsis-005.html
+			block-ellipsis-006.html
+			block-ellipsis-026.html
+			webkit-line-clamp-014.html
+			webkit-line-clamp-032.html
+			webkit-line-clamp-035.html
+		</wpt>
+
 	Text <a href="https://www.w3.org/TR/css-text-3/#justification">alignment and justification</a>
 	occurs after placement,
 	and measures the inserted <a>block overflow ellipsis</a>
 	together with the rest of the line’s content.
 
 	<wpt>
-		block-ellipsis-001.html
-		block-ellipsis-002.html
-		block-ellipsis-003.html
-		block-ellipsis-004.html
-		block-ellipsis-005.html
-		block-ellipsis-006.html
-		block-ellipsis-010.html
-		block-ellipsis-013.html
-		block-ellipsis-014.html
-		block-ellipsis-015.tentative.html
-		block-ellipsis-016.html
-		block-ellipsis-017.html
-		block-ellipsis-018.html
-		block-ellipsis-023.html
-		block-ellipsis-024.html
-		block-ellipsis-025.html
-		block-ellipsis-026.html
-		block-ellipsis-027.html
-		block-ellipsis-028.html
-		block-ellipsis-repaint-003.html
-		block-ellipsis-repaint-004.html
-		block-ellipsis-repaint-001.html
-		webkit-line-clamp-014.html
-		webkit-line-clamp-025.html
-		webkit-line-clamp-032.html
-		webkit-line-clamp-035.html
 		webkit-line-clamp-051.html
 		webkit-line-clamp-052.html
 		webkit-line-clamp-053.html
@@ -1309,6 +1359,10 @@ Handling of Excess Content: the 'continue' property</h3>
 			Issue: ''continue: discard'' is meant to generalize and replace the <code>region-fragment</code> property from [[CSS-REGIONS-1]].
 			Once it is sufficiently stable in this specification,
 			<code>region-fragment</code> should be removed from the regions specification in favor of this.
+
+			Note: ''continue: discard'' is [=at risk=]:
+			it may be removed before advancement to [=Recommendation=]
+			if criteria for advancement are not fulfilled.
 	</dl>
 
 	<div class=example id=ex-continue-overflow>
@@ -1359,7 +1413,45 @@ Handling of Excess Content: the 'continue' property</h3>
 
 	</div>
 
-	Additionaliy,
+	When 'text-wrap-style' is set to ''text-wrap-style/balance''
+	on a block container whose 'continue' has a value other than ''continue/auto'',
+	or which participates in the [=block formatting context=]
+	established by an element whose 'continue' has a value other than ''continue/auto'',
+	layout must first be computed as if 'text-wrap-style' were set to 'text-wrap-style/stable'.
+	Then, after any excess content has been truncated
+	and after any necessary [=block overflow ellipsis=] has been inserted,
+	the remaining content must be rebalanced,
+	as per ''text-wrap-style: balance''.
+	If this rebalancing would cause the [=logical height=] of the content to grow,
+	the cutoff point ([=clamp point=] or [=fragmentation break=]) must be reevaluated,
+	and any necessary [=block overflow ellipsis=] reapplied accordingly.
+	Whether to rebalance again after that is up to the user agent,
+	but if it does so,
+	it must always ensure that the constraints
+	about the placement of the cutoff point are adhered to,
+	no matter how many iterations it choose to make.
+
+	<wpt>
+		line-clamp-balance-001.html
+		line-clamp-balance-002.html
+		line-clamp-balance-003.html
+		line-clamp-balance-004.html
+		line-clamp-balance-005.html
+		line-clamp-balance-006.html
+		line-clamp-balance-007.html
+		line-clamp-balance-008.html
+		line-clamp-balance-009.html
+		line-clamp-balance-010.html
+		line-clamp-balance-011.html
+		line-clamp-balance-012.html
+	</wpt>
+
+	For other values of 'text-wrap-style',
+	whether to apply them before the effects of the 'continue' property,
+	after, or both,
+	is undefined in this level.
+
+	Additionally,
 	for compatibility (see [[#webkit-line-clamp]]),
 	when the [=computed value=] of the 'continue' property is ''collapse'', ''continue/-webkit-legacy'', or ''discard''
 	and the [=computed value=] of the '-webkit-box-orient' property is ''vertical'':
@@ -1609,6 +1701,10 @@ Handling of Excess Content: the 'continue' property</h3>
 	to be within the container's bounds.
 
 <h4 id=discarding-content>Discarding Content</h4>
+
+			Note: ''continue: discard'', and thus this subsection, is [=at risk=]:
+			it may be removed before advancement to [=Recommendation=]
+			if criteria for advancement are not fulfilled.
 
 	Content that is “not rendered” due to ''continue: discard''
 	is discarded, similar to ''display: none'':
