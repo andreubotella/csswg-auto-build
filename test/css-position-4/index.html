@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-position-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="a69ef92e210e8fc1cfeb42054e01899b08d8580c" name="revision">
+  <meta content="87ca031e7a9b660ac46ca0fb111582ec1fcbdbbf" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1116,7 +1116,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="p-name no-ref" id="title">CSS Positioned Layout Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-09-26">26 September 2025</time></p>
+    <time class="dt-updated" datetime="2025-10-07">7 October 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1192,6 +1192,7 @@ on screen, on paper, etc.
       <li><a href="#overlay"><span class="secno">3.4</span> <span class="content">Controlling the Top Layer: the <span class="property">overlay</span> property</span></a>
      </ol>
     <li><a href="#painting-order"><span class="secno">4</span> <span class="content">Painting Order and Stacking Contexts</span></a>
+    <li><a href="#changes"><span class="secno">5</span> <span class="content">Changes</span></a>
     <li><a href="#privacy"><span class="secno"></span> <span class="content">Privacy Considerations</span></a>
     <li><a href="#security"><span class="secno"></span> <span class="content">Security Considerations</span></a>
     <li>
@@ -1272,7 +1273,7 @@ and the effects of relative positioning and transforms,
 which do otherwise extend the scrollable area to display them.</p>
      <p>The <a data-link-type="dfn" href="#scrollable-containing-block" id="ref-for-scrollable-containing-block②">scrollable containing block</a> established by the document
 is the union of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#initial-containing-block" id="ref-for-initial-containing-block①">initial containing block</a> and
-the <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#margin-box" id="ref-for-margin-box">margin box</a> of the <u class="link-error" data-lt="root box" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;root box&apos;.">root box</u> itself.</p>
+the <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#margin-box" id="ref-for-margin-box">margin box</a> of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#root-element" id="ref-for-root-element">root element</a>’s generated <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box">box</a>.</p>
    </dl>
    <p class="note" role="note"><span class="marker">Note:</span> While all of these are in some sense corresponding to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#padding-box" id="ref-for-padding-box②">padding box</a>,
 they do not coincide for boxes with <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#scrollable-overflow" id="ref-for-scrollable-overflow">scrollable overflow</a>.</p>
@@ -1282,7 +1283,7 @@ specific to their layer.</p>
    <p>Unless otherwise specified,
 absolutely positioned boxes use the <a data-link-type="dfn" href="#local-containing-block" id="ref-for-local-containing-block③">local containing block</a>.
 Certain CSS features can specify a different <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block①">containing block</a>.
-For example, <u class="link-error" data-lt="fixed positioned boxes" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;fixed positioned boxes&apos;.">fixed positioned boxes</u> typically use the document’s <a data-link-type="dfn" href="#fixed-containing-block" id="ref-for-fixed-containing-block②">fixed containing block</a>,
+For example, <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#fixed-position" id="ref-for-fixed-position①">fixed-positioned boxes</a> typically use the document’s <a data-link-type="dfn" href="#fixed-containing-block" id="ref-for-fixed-containing-block②">fixed containing block</a>,
 and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-area" id="ref-for-propdef-position-area">position-area</a> values other than <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-anchor-position-1/#valdef-position-area-none" id="ref-for-valdef-position-area-none">none</a>
 can opt absolutely positioned boxes into the <a data-link-type="dfn" href="#scrollable-containing-block" id="ref-for-scrollable-containing-block③">scrollable containing block</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> There is not currently any way to refer to a <a data-link-type="dfn" href="#fixed-containing-block" id="ref-for-fixed-containing-block③">fixed containing block</a>
@@ -1293,14 +1294,14 @@ but one might be added in the future.</p>
 an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> containing <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element">elements</a> from the document.
 Elements in the <a data-link-type="dfn" href="#document-top-layer" id="ref-for-document-top-layer">top layer</a>
 do not lay out normally based on their position in the document;
-instead they generate <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box">boxes</a>
+instead they generate <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box①">boxes</a>
 as if they were siblings of the root element.
 <span id="ref-for-document-top-layer①">Top layer</span> elements are rendered in the order they appear in the <span id="ref-for-document-top-layer②">top layer</span>;
 the last element in the <span id="ref-for-document-top-layer③">top layer</span> is rendered on top of everything else.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This special rendering behavior ensures
 that elements in the <a data-link-type="dfn" href="#document-top-layer" id="ref-for-document-top-layer④">top layer</a> cannot be clipped by anything in the document,
 or obscured by anything except elements later in the <span id="ref-for-document-top-layer⑤">top layer</span>.
-This ensures that things like <u class="link-error" data-lt="popovers" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;popovers&apos;.">popovers</u>
+This ensures that things like <a href="https://html.spec.whatwg.org/multipage/popover.html#the-popover-attribute">popovers</a>
 can be displayed reliably,
 regardless of what their ancestor elements might be doing.</p>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="top-layer-root">top layer root</dfn> of an element
@@ -1662,7 +1663,7 @@ as its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#con
    <div class="algorithm" data-algorithm="paint a stacking context">
     
 	To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="paint-a-stacking-context">paint a stacking context</dfn>
-	given an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element①">element</a>, <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element">pseudo-element</a>, or <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box①">box</a> <var>root</var>,
+	given an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element①">element</a>, <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element">pseudo-element</a>, or <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box②">box</a> <var>root</var>,
 	and an infinite canvas <var>canvas</var>:
 
 
@@ -1673,10 +1674,10 @@ as its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#con
 and <var>canvas</var>,
 then return.</p>
      <li data-md>
-      <p class="assertion">Assert: <var>root</var> is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box②">box</a>,
+      <p class="assertion">Assert: <var>root</var> is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box③">box</a>,
 and generates a <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/visuren.html#x43" id="ref-for-x43②">stacking context</a>.</p>
      <li data-md>
-      <p>If <var>root</var> is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#root-element" id="ref-for-root-element">root element’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#principal-box" id="ref-for-principal-box①">principal box</a>,
+      <p>If <var>root</var> is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#root-element" id="ref-for-root-element①">root element’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#principal-box" id="ref-for-principal-box①">principal box</a>,
 paint <var>root</var>’s background over the entire <var>canvas</var>,
 with the origin of the background positioning area
 being the position on <var>canvas</var>
@@ -1773,7 +1774,7 @@ into <var>canvas</var>.</p>
       <ol>
        <li data-md>
         <p>Paint <var>root</var>’s background to <var>canvas</var>
-if it is not the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#root-element" id="ref-for-root-element①">root element’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#principal-box" id="ref-for-principal-box②">principal box</a>.</p>
+if it is not the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#root-element" id="ref-for-root-element②">root element’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#principal-box" id="ref-for-principal-box②">principal box</a>.</p>
        <li data-md>
         <p>Paint <var>root</var>’s border to <var>canvas</var>.</p>
       </ol>
@@ -1782,7 +1783,7 @@ if it is not the <a data-link-type="dfn" href="https://drafts.csswg.org/css-disp
       <ol>
        <li data-md>
         <p>Paint <var>root</var>’s background to <var>canvas</var>
-if it is not the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#root-element" id="ref-for-root-element②">root element’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#principal-box" id="ref-for-principal-box③">principal box</a>.</p>
+if it is not the <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#root-element" id="ref-for-root-element③">root element’s</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#principal-box" id="ref-for-principal-box③">principal box</a>.</p>
        <li data-md>
         <p>For each column group of <var>root</var> in <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-order" id="ref-for-concept-tree-order⑥">tree order</a>,
 paint the column group’s background to <var>canvas</var>.</p>
@@ -1864,7 +1865,7 @@ and the root element’s line-through, if any,
 is drawn bottommost)
 into <var>canvas</var>.</p>
           </ol>
-         <dt data-md>If this child is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box③">box</a>:
+         <dt data-md>If this child is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box④">box</a>:
          <dd data-md>
           <p><a data-link-type="dfn" href="#paint-a-box-in-a-line-box" id="ref-for-paint-a-box-in-a-line-box②">Paint a box in a line box</a>
 given the child,
@@ -1893,7 +1894,7 @@ into <var>canvas</var>.</p>
    <div class="algorithm" data-algorithm="paint a stacking container">
     
 	To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="paint-a-stacking-container">paint a stacking container</dfn>,
-	given a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box④">box</a> <var>root</var>
+	given a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box⑤">box</a> <var>root</var>
 	and a canvas <var>canvas</var>:
 
 
@@ -1916,6 +1917,12 @@ so nothing in the stacking context can obscure them).
 It is recommended that UAs use <a data-link-type="dfn" href="#out-of-band-outline" id="ref-for-out-of-band-outline①">out-of-band outlines</a>,
 as making outlines easily visible
 is an important accessibility feature.</p>
+   <h2 class="heading settled" data-level="5" id="changes"><span class="secno">5. </span><span class="content">Changes</span><a class="self-link" href="#changes"></a></h2>
+   <p>Significant changes since the <a href="https://www.w3.org/TR/2025/WD-css-position-4-20250708/">8 July 2025 First Public Working Draft</a>:</p>
+   <ul>
+    <li data-md>
+     <p>None (markup and linking fixes only).</p>
+   </ul>
    <h2 class="no-num heading settled" id="privacy"><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <p>No new privacy considerations have been reported on this specification.</p>
    <h2 class="no-num heading settled" id="security"><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
@@ -2177,6 +2184,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="b7221005">fixed</span>
      <li><span class="dfn-paneled" id="0f1a25f5">fixed position</span>
      <li><span class="dfn-paneled" id="c6027972">fixed positioning containing block</span>
+     <li><span class="dfn-paneled" id="725b73bd">fixed-positioned box</span>
      <li><span class="dfn-paneled" id="b8a0ba74">position</span>
      <li><span class="dfn-paneled" id="3ee9c907">sticky position</span>
     </ul>
@@ -2292,6 +2300,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad; Koji Ishii. <a href="https://drafts.csswg.org/css-writing-modes-3/"><cite>CSS Writing Modes Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-writing-modes-3/">https://drafts.csswg.org/css-writing-modes-3/</a>
    <dt id="biblio-fullscreen">[FULLSCREEN]
    <dd>Philip Jägenstedt. <a href="https://fullscreen.spec.whatwg.org/"><cite>Fullscreen API Standard</cite></a>. Living Standard. URL: <a href="https://fullscreen.spec.whatwg.org/">https://fullscreen.spec.whatwg.org/</a>
+   <dt id="biblio-html">[HTML]
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -2544,7 +2554,7 @@ function parseHTML(markup) {
 let dfnPanelData = {
 "022ed06a": {"dfnID":"022ed06a","dfnText":"step-end","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-step-easing-function-step-end"}],"title":"3.4. Controlling the Top Layer: the overlay property"}],"url":"https://drafts.csswg.org/css-easing-2/#valdef-step-easing-function-step-end"},
 "083ffe5f": {"dfnID":"083ffe5f","dfnText":"inline box","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-box"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#inline-box"},
-"0f1a25f5": {"dfnID":"0f1a25f5","dfnText":"fixed position","external":true,"refSections":[{"refs":[{"id":"ref-for-fixed-position"}],"title":"Unnumbered Section"}],"url":"https://drafts.csswg.org/css-position-3/#fixed-position"},
+"0f1a25f5": {"dfnID":"0f1a25f5","dfnText":"fixed position","external":true,"refSections":[{"refs":[{"id":"ref-for-fixed-position"}],"title":"Unnumbered Section"},{"refs":[{"id":"ref-for-fixed-position\u2460"}],"title":"2. Scrollable Containing Block"}],"url":"https://drafts.csswg.org/css-position-3/#fixed-position"},
 "12f8fb07": {"dfnID":"12f8fb07","dfnText":"visibility","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-visibility"}],"title":"3.4. Controlling the Top Layer: the overlay property"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-visibility"},
 "154375a0": {"dfnID":"154375a0","dfnText":"margin box","external":true,"refSections":[{"refs":[{"id":"ref-for-margin-box"}],"title":"2. Scrollable Containing Block"}],"url":"https://drafts.csswg.org/css-box-4/#margin-box"},
 "2467179e": {"dfnID":"2467179e","dfnText":"content","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-content"}],"title":"3.2. The ::backdrop Pseudo-Element"}],"url":"https://drafts.csswg.org/css-content-3/#propdef-content"},
@@ -2567,13 +2577,14 @@ let dfnPanelData = {
 "6d19ac93": {"dfnID":"6d19ac93","dfnText":"user agent","external":true,"refSections":[{"refs":[{"id":"ref-for-user-agent"}],"title":"3. Top Layer"}],"url":"https://infra.spec.whatwg.org/#user-agent"},
 "6eacac06": {"dfnID":"6eacac06","dfnText":"cascade origin","external":true,"refSections":[{"refs":[{"id":"ref-for-origin"}],"title":"3.3. Top Layer Manipulation"}],"url":"https://drafts.csswg.org/css-cascade-6/#origin"},
 "6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"3.4. Controlling the Top Layer: the overlay property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"725b73bd": {"dfnID":"725b73bd","dfnText":"fixed-positioned box","external":true,"refSections":[{"refs":[{"id":"ref-for-fixed-position"}],"title":"Unnumbered Section"},{"refs":[{"id":"ref-for-fixed-position\u2460"}],"title":"2. Scrollable Containing Block"}],"url":"https://drafts.csswg.org/css-position-3/#fixed-position"},
 "80eb9508": {"dfnID":"80eb9508","dfnText":"principal box","external":true,"refSections":[{"refs":[{"id":"ref-for-principal-box"},{"id":"ref-for-principal-box\u2460"},{"id":"ref-for-principal-box\u2461"},{"id":"ref-for-principal-box\u2462"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#principal-box"},
 "82805a4e": {"dfnID":"82805a4e","dfnText":"originating element","external":true,"refSections":[{"refs":[{"id":"ref-for-originating-element"},{"id":"ref-for-originating-element\u2460"}],"title":"3.2. The ::backdrop Pseudo-Element"}],"url":"https://drafts.csswg.org/selectors-4/#originating-element"},
 "8379845e": {"dfnID":"8379845e","dfnText":"block-level","external":true,"refSections":[{"refs":[{"id":"ref-for-block-level"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#block-level"},
 "85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"},{"id":"ref-for-document\u2460"}],"title":"3. Top Layer"},{"refs":[{"id":"ref-for-document\u2461"}],"title":"3.3. Top Layer Manipulation"}],"url":"https://dom.spec.whatwg.org/#document"},
 "86923d07": {"dfnID":"86923d07","dfnText":"scroll container","external":true,"refSections":[{"refs":[{"id":"ref-for-scroll-container"},{"id":"ref-for-scroll-container\u2460"},{"id":"ref-for-scroll-container\u2461"},{"id":"ref-for-scroll-container\u2462"},{"id":"ref-for-scroll-container\u2463"},{"id":"ref-for-scroll-container\u2464"},{"id":"ref-for-scroll-container\u2465"},{"id":"ref-for-scroll-container\u2466"},{"id":"ref-for-scroll-container\u2467"}],"title":"2. Scrollable Containing Block"}],"url":"https://drafts.csswg.org/css-overflow-3/#scroll-container"},
 "86928bde": {"dfnID":"86928bde","dfnText":"overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow"}],"title":"3.1. Top Layer Styling"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
-"881c2f72": {"dfnID":"881c2f72","dfnText":"box","external":true,"refSections":[{"refs":[{"id":"ref-for-box"}],"title":"3. Top Layer"},{"refs":[{"id":"ref-for-box\u2460"},{"id":"ref-for-box\u2461"},{"id":"ref-for-box\u2462"},{"id":"ref-for-box\u2463"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#box"},
+"881c2f72": {"dfnID":"881c2f72","dfnText":"box","external":true,"refSections":[{"refs":[{"id":"ref-for-box"}],"title":"2. Scrollable Containing Block"},{"refs":[{"id":"ref-for-box\u2460"}],"title":"3. Top Layer"},{"refs":[{"id":"ref-for-box\u2461"},{"id":"ref-for-box\u2462"},{"id":"ref-for-box\u2463"},{"id":"ref-for-box\u2464"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#box"},
 "8d0ede2c": {"dfnID":"8d0ede2c","dfnText":"initial containing block","external":true,"refSections":[{"refs":[{"id":"ref-for-initial-containing-block"},{"id":"ref-for-initial-containing-block\u2460"}],"title":"2. Scrollable Containing Block"},{"refs":[{"id":"ref-for-initial-containing-block\u2461"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#initial-containing-block"},
 "8e39589a": {"dfnID":"8e39589a","dfnText":"block box","external":true,"refSections":[{"refs":[{"id":"ref-for-block-box"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#block-box"},
 "91bfbe18": {"dfnID":"91bfbe18","dfnText":"opacity","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-opacity"}],"title":"3.1. Top Layer Styling"}],"url":"https://drafts.csswg.org/css-color-4/#propdef-opacity"},
@@ -2601,7 +2612,7 @@ let dfnPanelData = {
 "c1b73c63": {"dfnID":"c1b73c63","dfnText":"padding","external":true,"refSections":[{"refs":[{"id":"ref-for-padding"}],"title":"2. Scrollable Containing Block"}],"url":"https://drafts.csswg.org/css-box-4/#padding"},
 "c6027972": {"dfnID":"c6027972","dfnText":"fixed positioning containing block","external":true,"refSections":[{"refs":[{"id":"ref-for-fixed-positioning-containing-block"},{"id":"ref-for-fixed-positioning-containing-block\u2460"}],"title":"2. Scrollable Containing Block"}],"url":"https://drafts.csswg.org/css-position-3/#fixed-positioning-containing-block"},
 "c82d6e13": {"dfnID":"c82d6e13","dfnText":"z-index","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-z-index"},{"id":"ref-for-propdef-z-index\u2460"},{"id":"ref-for-propdef-z-index\u2461"},{"id":"ref-for-propdef-z-index\u2462"},{"id":"ref-for-propdef-z-index\u2463"},{"id":"ref-for-propdef-z-index\u2464"},{"id":"ref-for-propdef-z-index\u2465"},{"id":"ref-for-propdef-z-index\u2466"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css2/#propdef-z-index"},
-"cc682c89": {"dfnID":"cc682c89","dfnText":"root element","external":true,"refSections":[{"refs":[{"id":"ref-for-root-element"},{"id":"ref-for-root-element\u2460"},{"id":"ref-for-root-element\u2461"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#root-element"},
+"cc682c89": {"dfnID":"cc682c89","dfnText":"root element","external":true,"refSections":[{"refs":[{"id":"ref-for-root-element"}],"title":"2. Scrollable Containing Block"},{"refs":[{"id":"ref-for-root-element\u2460"},{"id":"ref-for-root-element\u2461"},{"id":"ref-for-root-element\u2462"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#root-element"},
 "d7fa3e1c": {"dfnID":"d7fa3e1c","dfnText":"inline-level","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-level"},{"id":"ref-for-inline-level\u2460"},{"id":"ref-for-inline-level\u2461"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#inline-level"},
 "d8586311": {"dfnID":"d8586311","dfnText":"interpolate","external":true,"refSections":[{"refs":[{"id":"ref-for-interpolation"}],"title":"3.4. Controlling the Top Layer: the overlay property"}],"url":"https://drafts.csswg.org/css-values-4/#interpolation"},
 "df19338c": {"dfnID":"df19338c","dfnText":"box tree","external":true,"refSections":[{"refs":[{"id":"ref-for-box-tree"},{"id":"ref-for-box-tree\u2460"}],"title":"4. Painting Order and Stacking Contexts"}],"url":"https://drafts.csswg.org/css-display-4/#box-tree"},
