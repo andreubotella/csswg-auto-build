@@ -2,13 +2,13 @@
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-  <title>CSS Nesting Module</title>
+  <title>CSS Nesting Module Level 1</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-nesting-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="c548a9a1d46577060adfa7106255b0b2094e85e0" name="revision">
+  <meta content="3cb487335db94a9e6c95d11b2ec759b5d6405e36" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -835,9 +835,9 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
     <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
 </a>
 </p>
-   <h1 class="p-name no-ref" id="title">CSS Nesting Module</h1>
+   <h1 class="p-name no-ref" id="title">CSS Nesting Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-09-09">9 September 2025</time></p>
+    <time class="dt-updated" datetime="2025-10-12">12 October 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1606,12 +1606,8 @@ Nested <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-
 	an <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-⑥">&amp;</a> in the <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-cascade-6/#typedef-scope-start" id="ref-for-typedef-scope-start">&lt;scope-start></a> selector
 	refers to the elements matched
 	by the nearest ancestor style rule.</p>
-   <p>For the purposes of the style rules in its body
-	and its own <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-cascade-6/#typedef-scope-end" id="ref-for-typedef-scope-end">&lt;scope-end></a> selector,
-	the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope" id="ref-for-at-ruledef-scope③">@scope</a> rule is treated as an ancestor style rule,
-	matching the elements matched by its <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-cascade-6/#typedef-scope-start" id="ref-for-typedef-scope-start①">&lt;scope-start></a> selector.</p>
-   <div class="example" id="example-792b81d1">
-    <a class="self-link" href="#example-792b81d1"></a>
+   <div class="example" id="example-d2d35473">
+    <a class="self-link" href="#example-d2d35473"></a>
 		That is, the following code:
 
 		
@@ -1627,13 +1623,17 @@ Nested <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-
 </pre>
     <p>is equivalent to:</p>
 <pre class="highlight">.parent <c- p>{</c-> <c- k>color</c-><c- p>:</c-> blue<c- p>;</c-> <c- p>}</c->
-<c- n>@scope</c-> <c- p>(</c->.parent > .scope<c- p>)</c-> to <c- p>(</c->.parent > .scope .limit<c- p>)</c-> <c- p>{</c->
-  .parent > .scope .content <c- p>{</c->
+<c- n>@scope</c-> <c- p>(</c->.parent > .scope<c- p>)</c-> to <c- p>(</c-><c- nf>:where</c-><c- p>(</c->:scope<c- p>)</c-> .limit<c- p>)</c-> <c- p>{</c->
+  <c- nf>:where</c-><c- p>(</c->:scope<c- p>)</c-> .content <c- p>{</c->
     <c- k>color</c-><c- p>:</c-> red<c- p>;</c->
   <c- p>}</c->
 <c- p>}</c->
 </pre>
    </div>
+   <div class="note" role="note">
+	The <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-⑦">&amp;</a> selector behaves like <code class="highlight"><c- nf>:where</c-><c- p>(</c->:scope<c- p>)</c-></code>
+	in <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope" id="ref-for-at-ruledef-scope③">@scope</a> rules.
+	</div>
    <h3 class="heading settled" data-level="3.4" id="mixing"><span class="secno">3.4. </span><span class="content">Mixing Nesting Rules and Declarations</span><a class="self-link" href="#mixing"></a></h3>
    <p>When a style rule contains both declarations
 	and <a data-link-type="dfn" href="#nested-style-rule" id="ref-for-nested-style-rule⑦">nested style rules</a> or <a data-link-type="dfn" href="#nested-group-rules" id="ref-for-nested-group-rules④">nested group rules</a>,
@@ -1701,7 +1701,7 @@ article <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
 	(This also happens to act slightly better in older user agents:
 	due to specifics of how parsing and error-recovery work,
 	properties appearing after nested rules can get skipped.)</p>
-   <h2 class="heading settled" data-level="4" id="nest-selector"><span class="secno">4. </span><span class="content">Nesting Selector: the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-⑦">&amp;</a> selector</span><a class="self-link" href="#nest-selector"></a></h2>
+   <h2 class="heading settled" data-level="4" id="nest-selector"><span class="secno">4. </span><span class="content">Nesting Selector: the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-⑧">&amp;</a> selector</span><a class="self-link" href="#nest-selector"></a></h2>
    <p>When using a <a data-link-type="dfn" href="#nested-style-rule" id="ref-for-nested-style-rule⑨">nested style rule</a>,
 	one must be able to refer to the elements matched by the parent rule;
 	that is, after all, <em>the entire point of nesting</em>.
@@ -1743,7 +1743,7 @@ article <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
   &amp;:hover <c- p>{</c-> <c- k>color</c-><c- p>:</c-> blue<c- p>;</c-> <c- p>}</c->
 <c- p>}</c->
 </pre>
-    <p>the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-⑧">&amp;</a> only represents the elements matched by <span class="css">.foo</span>;
+    <p>the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-⑨">&amp;</a> only represents the elements matched by <span class="css">.foo</span>;
 		in other words, it’s equivalent to:</p>
 <pre class="lang-css highlight">.foo<c- p>,</c-> .foo::before<c- p>,</c-> .foo::after <c- p>{</c->
   <c- k>color</c-><c- p>:</c-> red<c- p>;</c->
@@ -1754,7 +1754,7 @@ article <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
 </pre>
    </div>
    <p class="issue" id="issue-62c479a8"><a class="self-link" href="#issue-62c479a8"></a> We’d like to relax this restriction,
-	but need to do so simultaneously for both <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#matches-pseudo" id="ref-for-matches-pseudo②">:is()</a> and <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-⑨">&amp;</a>,
+	but need to do so simultaneously for both <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#matches-pseudo" id="ref-for-matches-pseudo②">:is()</a> and <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①⓪">&amp;</a>,
 	since they’re intentionally built on the same underlying mechanisms.
 	(<a href="https://github.com/w3c/csswg-drafts/issues/7433">Issue 7433</a>)</p>
    <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#specificity" id="ref-for-specificity">specificity</a> of the <a data-link-type="dfn" href="#nesting-selector" id="ref-for-nesting-selector⑧">nesting selector</a>
@@ -1778,7 +1778,7 @@ article <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
 <c- p>&lt;/</c-><c- f>b</c-><c- p>></c->
 </pre>
     <p>The text will be blue, rather than red.
-		The specificity of the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①⓪">&amp;</a>
+		The specificity of the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①①">&amp;</a>
 		is the larger of the specificities of <span class="css">#a</span> ([1,0,0])
 		and <span class="css">b</span> ([0,0,1]),
 		so it’s [1,0,0],
@@ -1802,7 +1802,7 @@ article <c- p>{</c-> <c- k>color</c-><c- p>:</c-> red<c- p>;</c-> <c- p>}</c->
 		depending on how precisely it was matched,
 		it makes selector matching much more complicated and slower.</p>
     <p>That skirts the question, tho:
-		why <em>do</em> we define <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①①">&amp;</a> in terms of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#matches-pseudo" id="ref-for-matches-pseudo⑤">:is()</a>?
+		why <em>do</em> we define <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①②">&amp;</a> in terms of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-4/#matches-pseudo" id="ref-for-matches-pseudo⑤">:is()</a>?
 		Some non-browser implementations of Nesting-like functionality
 		do <em>not</em> desugar to <span class="css" id="ref-for-matches-pseudo⑥">:is()</span>,
 		largely because they predate the introduction of <span class="css" id="ref-for-matches-pseudo⑦">:is()</span> as well.
@@ -1898,7 +1898,7 @@ The Nested Declarations Rule</span><a class="self-link" href="#nested-declaratio
    <p>To accomplish this, CSS parsing <em>automatically</em> wraps such properties
 	in a special child rule
 	to contain them.
-	However, if we were to wrap them in a <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#style-rule" id="ref-for-style-rule⑥">style rule</a> with an <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①②">&amp;</a> selector,
+	However, if we were to wrap them in a <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#style-rule" id="ref-for-style-rule⑥">style rule</a> with an <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①③">&amp;</a> selector,
 	it would have somewhat unfortunate behavior:</p>
    <div class="example" id="example-a4638964">
     <a class="self-link" href="#example-a4638964"></a>
@@ -1914,7 +1914,7 @@ The Nested Declarations Rule</span><a class="self-link" href="#nested-declaratio
 </pre>
     <p>the nested rule <em>does not</em> apply the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-background" id="ref-for-propdef-background②">background</a> property
 		to the <span class="css">.foo::before</span> elements,
-		because the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①③">&amp;</a> can’t represent pseudo-elements.</p>
+		because the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①④">&amp;</a> can’t represent pseudo-elements.</p>
    </div>
    <p>Similarly, child declarations in nested non-style rules
 	need to be exposed as <a data-link-type="dfn" href="https://drafts.csswg.org/css-syntax-3/#css-rule" id="ref-for-css-rule">rules</a> in some way,
@@ -1930,7 +1930,7 @@ The Nested Declarations Rule</span><a class="self-link" href="#nested-declaratio
 	It matches the exact same elements and pseudo-elements
 	as its parent style rule,
 	with the same specificity behavior.
-	<span class="note">(This is <em>similar to</em> being a style rule with an <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①④">&amp;</a> selector,
+	<span class="note">(This is <em>similar to</em> being a style rule with an <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①⑤">&amp;</a> selector,
 	but slightly more powerful,
 	as explained above.)</span></p>
    <details class="note">
@@ -1940,7 +1940,7 @@ The Nested Declarations Rule</span><a class="self-link" href="#nested-declaratio
 		to act as if they were placed at the front of the rule.
 		It also automatically wrapped raw declarations inside of <a data-link-type="dfn" href="#nested-group-rules" id="ref-for-nested-group-rules⑥">nested group rules</a>
 		in plain style rules,
-		using the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①⑤">&amp;</a> selector.</p>
+		using the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①⑥">&amp;</a> selector.</p>
     <p>There are two major reasons we switched to instead use the <a data-link-type="dfn" href="#nested-declarations-rule①" id="ref-for-nested-declarations-rule①⑥">nested declarations rule</a>.</p>
     <p>First, using an <span class="css">&amp; {...}</span> rule to implicitly wrap declarations in a <a data-link-type="dfn" href="#nested-group-rules" id="ref-for-nested-group-rules⑦">nested group rule</a>
 		also changed the behavior.
@@ -1979,7 +1979,7 @@ The Nested Declarations Rule</span><a class="self-link" href="#nested-declaratio
     <p>In a darkmode page,
 		the <span class="css">.foo</span> element would have its text color changed to white,
 		but its <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-before" id="ref-for-selectordef-before">::before</a> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-after" id="ref-for-selectordef-after">::after</a> pseudos would remain black,
-		because the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①⑥">&amp;</a> selector can’t represent pseudo-elements.</p>
+		because the <a class="css" data-link-type="maybe" href="#selectordef-" id="ref-for-selectordef-①⑦">&amp;</a> selector can’t represent pseudo-elements.</p>
     <p>However, it was instead written as:</p>
 <pre class="language-css highlight">.foo<c- p>,</c-> .foo::before<c- p>,</c-> .foo::after <c- p>{</c->
   <c- k>color</c-><c- p>:</c-> black<c- p>;</c->
@@ -2066,6 +2066,10 @@ will collapse into a single rule when serialized and parsed again.</p>
    <p>Significant changes since the
 <a href="https://www.w3.org/TR/2023/WD-css-nesting-1-20230214/">Feb 14, 2023 Working Draft</a>:</p>
    <ul>
+    <li data-md>
+     <p>The <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-6/#typedef-scope-start" id="ref-for-typedef-scope-start①">&lt;scope-start></a> selector of a <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope" id="ref-for-at-ruledef-scope④">@scope</a> rule
+no longer acts as the parent rule for nesting.
+(<a href="https://github.com/w3c/csswg-drafts/issues/9740">Issue 9740</a>)</p>
     <li data-md>
      <p>Clarified that the <a data-link-type="dfn" href="#nesting-selector" id="ref-for-nesting-selector①③">nesting selector</a> is allowed to match featureless elements.</p>
     <li data-md>
@@ -2253,7 +2257,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-CASCADE-6]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="3024450a">&lt;scope-end></span>
      <li><span class="dfn-paneled" id="2b1bb297">&lt;scope-start></span>
      <li><span class="dfn-paneled" id="84b13f54">@scope</span>
     </ul>
@@ -2599,10 +2602,9 @@ let dfnPanelData = {
 "21ecf38f": {"dfnID":"21ecf38f","dfnText":"PutForwards","external":true,"refSections":[{"refs":[{"id":"ref-for-PutForwards"}],"title":"6.1. The CSSNestedDeclarations Interface"}],"url":"https://webidl.spec.whatwg.org/#PutForwards"},
 "24408a11": {"dfnID":"24408a11","dfnText":"compound selector","external":true,"refSections":[{"refs":[{"id":"ref-for-compound"},{"id":"ref-for-compound\u2460"}],"title":"4. Nesting Selector: the & selector"}],"url":"https://drafts.csswg.org/selectors-4/#compound"},
 "29c3f2fe": {"dfnID":"29c3f2fe","dfnText":"computed flag","external":true,"refSections":[{"refs":[{"id":"ref-for-cssstyledeclaration-computed-flag"}],"title":"6.1. The CSSNestedDeclarations Interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssstyledeclaration-computed-flag"},
-"2b1bb297": {"dfnID":"2b1bb297","dfnText":"<scope-start>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-start"},{"id":"ref-for-typedef-scope-start\u2460"}],"title":"3.3.1. \nNested @scope Rules"}],"url":"https://drafts.csswg.org/css-cascade-6/#typedef-scope-start"},
+"2b1bb297": {"dfnID":"2b1bb297","dfnText":"<scope-start>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-start"}],"title":"3.3.1. \nNested @scope Rules"},{"refs":[{"id":"ref-for-typedef-scope-start\u2460"}],"title":"7. Changes"}],"url":"https://drafts.csswg.org/css-cascade-6/#typedef-scope-start"},
 "2c2c4b46": {"dfnID":"2c2c4b46","dfnText":"serialize a CSS declaration block","external":true,"refSections":[{"refs":[{"id":"ref-for-serialize-a-css-declaration-block"}],"title":"6.1. The CSSNestedDeclarations Interface"}],"url":"https://drafts.csswg.org/cssom-1/#serialize-a-css-declaration-block"},
 "2fd70eda": {"dfnID":"2fd70eda","dfnText":"simple selector","external":true,"refSections":[{"refs":[{"id":"ref-for-simple"}],"title":"3.1. Syntax"}],"url":"https://drafts.csswg.org/selectors-4/#simple"},
-"3024450a": {"dfnID":"3024450a","dfnText":"<scope-end>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-scope-end"}],"title":"3.3.1. \nNested @scope Rules"}],"url":"https://drafts.csswg.org/css-cascade-6/#typedef-scope-end"},
 "32c45571": {"dfnID":"32c45571","dfnText":"type selector","external":true,"refSections":[{"refs":[{"id":"ref-for-type-selector"}],"title":"4. Nesting Selector: the & selector"}],"url":"https://drafts.csswg.org/selectors-4/#type-selector"},
 "3a1154bf": {"dfnID":"3a1154bf","dfnText":"featureless","external":true,"refSections":[{"refs":[{"id":"ref-for-featureless"}],"title":"4. Nesting Selector: the & selector"}],"url":"https://drafts.csswg.org/selectors-4/#featureless"},
 "4013a022": {"dfnID":"4013a022","dfnText":"this","external":true,"refSections":[{"refs":[{"id":"ref-for-this"}],"title":"6.1. The CSSNestedDeclarations Interface"}],"url":"https://webidl.spec.whatwg.org/#this"},
@@ -2622,7 +2624,7 @@ let dfnPanelData = {
 "762610c7": {"dfnID":"762610c7","dfnText":"at-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-at-rule"}],"title":"3.1. Syntax"}],"url":"https://drafts.csswg.org/css-syntax-3/#at-rule"},
 "76c4403d": {"dfnID":"76c4403d","dfnText":"parse","external":true,"refSections":[{"refs":[{"id":"ref-for-css-parse-something-according-to-a-css-grammar"}],"title":"3.1. Syntax"}],"url":"https://drafts.csswg.org/css-syntax-3/#css-parse-something-according-to-a-css-grammar"},
 "8056dead": {"dfnID":"8056dead","dfnText":"parent CSS rule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssstyledeclaration-parent-css-rule"}],"title":"6.1. The CSSNestedDeclarations Interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssstyledeclaration-parent-css-rule"},
-"84b13f54": {"dfnID":"84b13f54","dfnText":"@scope","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-scope"}],"title":"3.3. Nesting Other At-Rules"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2460"},{"id":"ref-for-at-ruledef-scope\u2461"},{"id":"ref-for-at-ruledef-scope\u2462"}],"title":"3.3.1. \nNested @scope Rules"}],"url":"https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope"},
+"84b13f54": {"dfnID":"84b13f54","dfnText":"@scope","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-scope"}],"title":"3.3. Nesting Other At-Rules"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2460"},{"id":"ref-for-at-ruledef-scope\u2461"},{"id":"ref-for-at-ruledef-scope\u2462"}],"title":"3.3.1. \nNested @scope Rules"},{"refs":[{"id":"ref-for-at-ruledef-scope\u2463"}],"title":"7. Changes"}],"url":"https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope"},
 "860c17f8": {"dfnID":"860c17f8","dfnText":"<delim-token>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-delim-token"}],"title":"3.1. Syntax"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-delim-token"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"6.1. The CSSNestedDeclarations Interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "8c57eaed": {"dfnID":"8c57eaed","dfnText":"serialize a CSS rule","external":true,"refSections":[{"refs":[{"id":"ref-for-serialize-a-css-rule"}],"title":"6.1. The CSSNestedDeclarations Interface"}],"url":"https://drafts.csswg.org/cssom-1/#serialize-a-css-rule"},
@@ -2656,7 +2658,7 @@ let dfnPanelData = {
 "nested-group-rules": {"dfnID":"nested-group-rules","dfnText":"nested group rules","external":false,"refSections":[{"refs":[{"id":"ref-for-nested-group-rules"},{"id":"ref-for-nested-group-rules\u2460"},{"id":"ref-for-nested-group-rules\u2461"}],"title":"3.3. Nesting Other At-Rules"},{"refs":[{"id":"ref-for-nested-group-rules\u2462"}],"title":"3.3.1. \nNested @scope Rules"},{"refs":[{"id":"ref-for-nested-group-rules\u2463"},{"id":"ref-for-nested-group-rules\u2464"}],"title":"3.4. Mixing Nesting Rules and Declarations"},{"refs":[{"id":"ref-for-nested-group-rules\u2465"},{"id":"ref-for-nested-group-rules\u2466"}],"title":"5. \nThe Nested Declarations Rule"}],"url":"#nested-group-rules"},
 "nested-style-rule": {"dfnID":"nested-style-rule","dfnText":"nested style rules","external":false,"refSections":[{"refs":[{"id":"ref-for-nested-style-rule"}],"title":"3. Nesting Style Rules"},{"refs":[{"id":"ref-for-nested-style-rule\u2460"},{"id":"ref-for-nested-style-rule\u2461"},{"id":"ref-for-nested-style-rule\u2462"},{"id":"ref-for-nested-style-rule\u2463"}],"title":"3.1. Syntax"},{"refs":[{"id":"ref-for-nested-style-rule\u2464"},{"id":"ref-for-nested-style-rule\u2465"}],"title":"3.3. Nesting Other At-Rules"},{"refs":[{"id":"ref-for-nested-style-rule\u2466"},{"id":"ref-for-nested-style-rule\u2467"}],"title":"3.4. Mixing Nesting Rules and Declarations"},{"refs":[{"id":"ref-for-nested-style-rule\u2468"},{"id":"ref-for-nested-style-rule\u2460\u24ea"}],"title":"4. Nesting Selector: the & selector"},{"refs":[{"id":"ref-for-nested-style-rule\u2460\u2460"}],"title":"5. \nThe Nested Declarations Rule"},{"refs":[{"id":"ref-for-nested-style-rule\u2460\u2461"}],"title":"6. CSSOM"}],"url":"#nested-style-rule"},
 "nesting-selector": {"dfnID":"nesting-selector","dfnText":"nesting selector","external":false,"refSections":[{"refs":[{"id":"ref-for-nesting-selector"}],"title":"3. Nesting Style Rules"},{"refs":[{"id":"ref-for-nesting-selector\u2460"},{"id":"ref-for-nesting-selector\u2461"}],"title":"3.1. Syntax"},{"refs":[{"id":"ref-for-nesting-selector\u2462"}],"title":"3.3. Nesting Other At-Rules"},{"refs":[{"id":"ref-for-nesting-selector\u2463"}],"title":"3.4. Mixing Nesting Rules and Declarations"},{"refs":[{"id":"ref-for-nesting-selector\u2464"},{"id":"ref-for-nesting-selector\u2465"},{"id":"ref-for-nesting-selector\u2466"},{"id":"ref-for-nesting-selector\u2467"},{"id":"ref-for-nesting-selector\u2468"},{"id":"ref-for-nesting-selector\u2460\u24ea"},{"id":"ref-for-nesting-selector\u2460\u2460"}],"title":"4. Nesting Selector: the & selector"},{"refs":[{"id":"ref-for-nesting-selector\u2460\u2461"}],"title":"6. CSSOM"},{"refs":[{"id":"ref-for-nesting-selector\u2460\u2462"}],"title":"7. Changes"}],"url":"#nesting-selector"},
-"selectordef-": {"dfnID":"selectordef-","dfnText":"&","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-"},{"id":"ref-for-selectordef-\u2460"},{"id":"ref-for-selectordef-\u2461"},{"id":"ref-for-selectordef-\u2462"}],"title":"2. \nExplainer"},{"refs":[{"id":"ref-for-selectordef-\u2463"},{"id":"ref-for-selectordef-\u2464"}],"title":"3.1. Syntax"},{"refs":[{"id":"ref-for-selectordef-\u2465"}],"title":"3.3.1. \nNested @scope Rules"},{"refs":[{"id":"ref-for-selectordef-\u2466"},{"id":"ref-for-selectordef-\u2467"},{"id":"ref-for-selectordef-\u2468"},{"id":"ref-for-selectordef-\u2460\u24ea"},{"id":"ref-for-selectordef-\u2460\u2460"}],"title":"4. Nesting Selector: the & selector"},{"refs":[{"id":"ref-for-selectordef-\u2460\u2461"},{"id":"ref-for-selectordef-\u2460\u2462"},{"id":"ref-for-selectordef-\u2460\u2463"},{"id":"ref-for-selectordef-\u2460\u2464"},{"id":"ref-for-selectordef-\u2460\u2465"}],"title":"5. \nThe Nested Declarations Rule"}],"url":"#selectordef-"},
+"selectordef-": {"dfnID":"selectordef-","dfnText":"&","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-"},{"id":"ref-for-selectordef-\u2460"},{"id":"ref-for-selectordef-\u2461"},{"id":"ref-for-selectordef-\u2462"}],"title":"2. \nExplainer"},{"refs":[{"id":"ref-for-selectordef-\u2463"},{"id":"ref-for-selectordef-\u2464"}],"title":"3.1. Syntax"},{"refs":[{"id":"ref-for-selectordef-\u2465"},{"id":"ref-for-selectordef-\u2466"}],"title":"3.3.1. \nNested @scope Rules"},{"refs":[{"id":"ref-for-selectordef-\u2467"},{"id":"ref-for-selectordef-\u2468"},{"id":"ref-for-selectordef-\u2460\u24ea"},{"id":"ref-for-selectordef-\u2460\u2460"},{"id":"ref-for-selectordef-\u2460\u2461"}],"title":"4. Nesting Selector: the & selector"},{"refs":[{"id":"ref-for-selectordef-\u2460\u2462"},{"id":"ref-for-selectordef-\u2460\u2463"},{"id":"ref-for-selectordef-\u2460\u2464"},{"id":"ref-for-selectordef-\u2460\u2465"},{"id":"ref-for-selectordef-\u2460\u2466"}],"title":"5. \nThe Nested Declarations Rule"}],"url":"#selectordef-"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -3056,7 +3058,6 @@ let refsData = {
 "https://drafts.csswg.org/css-backgrounds-3/#propdef-background": {"displayText":"background","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"background","type":"property","url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background"},
 "https://drafts.csswg.org/css-cascade-5/#at-ruledef-layer": {"displayText":"@layer","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"@layer","type":"at-rule","url":"https://drafts.csswg.org/css-cascade-5/#at-ruledef-layer"},
 "https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope": {"displayText":"@scope","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"current","text":"@scope","type":"at-rule","url":"https://drafts.csswg.org/css-cascade-6/#at-ruledef-scope"},
-"https://drafts.csswg.org/css-cascade-6/#typedef-scope-end": {"displayText":"<scope-end>","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"current","text":"<scope-end>","type":"type","url":"https://drafts.csswg.org/css-cascade-6/#typedef-scope-end"},
 "https://drafts.csswg.org/css-cascade-6/#typedef-scope-start": {"displayText":"<scope-start>","export":true,"for_":[],"level":"6","normative":true,"shortname":"css-cascade","spec":"css-cascade-6","status":"current","text":"<scope-start>","type":"type","url":"https://drafts.csswg.org/css-cascade-6/#typedef-scope-start"},
 "https://drafts.csswg.org/css-color-4/#propdef-color": {"displayText":"color","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"color","type":"property","url":"https://drafts.csswg.org/css-color-4/#propdef-color"},
 "https://drafts.csswg.org/css-conditional-3/#at-ruledef-media": {"displayText":"@media","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"@media","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-3/#at-ruledef-media"},
