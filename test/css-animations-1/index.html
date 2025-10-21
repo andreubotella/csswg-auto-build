@@ -6,7 +6,7 @@
   <meta content="WD" name="w3c-status">
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-animations-1/" rel="canonical">
-  <meta content="a48d4f4a78e4f19506795e5f4933a5778d8d8452" name="revision">
+  <meta content="643d5f0111d212dc74d581aa68ba53e7b177a96f" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -699,13 +699,13 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </p>
    <h1 class="p-name no-ref" id="title">CSS Animations Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#WD">W3C Working Draft</a>,
-    <time class="dt-updated" datetime="2025-10-12">12 October 2025</time></p>
+    <time class="dt-updated" datetime="2025-10-20">20 October 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://www.w3.org/TR/2025/WD-css-animations-1-20251012/">https://www.w3.org/TR/2025/WD-css-animations-1-20251012/</a>
+      <dd><a class="u-url" href="https://www.w3.org/TR/2025/WD-css-animations-1-20251020/">https://www.w3.org/TR/2025/WD-css-animations-1-20251020/</a>
       <dt>Latest published version:
       <dd><a href="https://www.w3.org/TR/css-animations-1/">https://www.w3.org/TR/css-animations-1/</a>
       <dt>Editor's Draft:
@@ -1119,9 +1119,12 @@ Declaring Keyframes</span><a class="self-link" href="#keyframes"></a></h2>
 	As normal for <span class="production" id="ref-for-identifier-value②">&lt;custom-ident></span>s and <span class="production" id="ref-for-string-value②">&lt;string></span>s,
 	the names are fully <a data-link-type="dfn" href="https://www.w3.org/TR/i18n-glossary/#dfn-case-sensitive" id="ref-for-dfn-case-sensitive">case-sensitive</a>;
 	two names are equal only if they are codepoint-by-codepoint equal.
-	The <span class="production" id="ref-for-identifier-value③">&lt;custom-ident></span> additionally excludes the <a class="css" data-link-type="maybe" href="#valdef-animation-name-none" id="ref-for-valdef-animation-name-none">none</a> keyword.</p>
-   <div class="example" id="example-d0936079">
-    <a class="self-link" href="#example-d0936079"></a>
+	The <span class="production" id="ref-for-identifier-value③">&lt;custom-ident></span> additionally excludes the <a class="css" data-link-type="maybe" href="#valdef-animation-name-none" id="ref-for-valdef-animation-name-none">none</a> keyword.
+	The <span class="production" id="ref-for-string-value③">&lt;string></span> should be treated as <span class="production" id="ref-for-identifier-value④">&lt;custom-ident></span>, hence parsed as invalid if
+	is one of the <a data-link-type="dfn" href="https://www.w3.org/TR/css-values-4/#css-wide-keywords" id="ref-for-css-wide-keywords①">CSS-wide keywords</a> or "default"; empty string is not allowed
+	either. It’s serialized as identifier when possible and as <span class="production" id="ref-for-string-value④">&lt;string></span> otherwise.</p>
+   <div class="example" id="example-43ccdfed">
+    <a class="self-link" href="#example-43ccdfed"></a>
 		For example, the following two <a class="css" data-link-type="maybe" href="#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes②">@keyframes</a> rules have the same name,
 		so the first will be ignored:
 
@@ -1134,12 +1137,12 @@ Declaring Keyframes</span><a class="self-link" href="#keyframes"></a></h2>
 <pre class="lang-css highlight"><c- n>@keyframes</c-> FOO <c- p>{</c-> <c- c>/* ... */</c-> <c- p>}</c->
 </pre>
     <p>The following <a class="css" data-link-type="maybe" href="#at-ruledef-keyframes" id="ref-for-at-ruledef-keyframes④">@keyframes</a> rules are invalid
-		because they use disallowed <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value④">&lt;custom-ident></a> values:</p>
+		because they use disallowed <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value⑤">&lt;custom-ident></a> values:</p>
 <pre class="lang-css highlight"><c- n>@keyframes</c-> initial <c- p>{</c-> <c- c>/* ... */</c-> <c- p>}</c->
 <c- n>@keyframes</c-> None <c- p>{</c-> <c- c>/* ... */</c-> <c- p>}</c->
 </pre>
-    <p>However, those names <em>can</em> be specified with a <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#string-value" id="ref-for-string-value③">&lt;string></a>,
-		so the following are both <em>valid</em>:</p>
+    <p>They are also <em>invalid</em> if those names are specified with a <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#string-value" id="ref-for-string-value⑤">&lt;string></a>
+		because they can not be serialized as valid <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#identifier-value" id="ref-for-identifier-value⑥">&lt;custom-ident></a>:</p>
 <pre class="lang-css highlight"><c- n>@keyframes</c-> <c- s>"initial"</c-> <c- p>{</c-> <c- c>/* ... */</c-> <c- p>}</c->
 <c- n>@keyframes</c-> <c- s>"None"</c-> <c- p>{</c-> <c- c>/* ... */</c-> <c- p>}</c->
 </pre>
@@ -3185,7 +3188,7 @@ let dfnPanelData = {
 "0f78dbdd": {"dfnID":"0f78dbdd","dfnText":"CSSRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssrule"}],"title":"6.1. \nThe CSSRule Interface"},{"refs":[{"id":"ref-for-cssrule\u2460"}],"title":"6.1.1. \nIDL Definition"},{"refs":[{"id":"ref-for-cssrule\u2461"}],"title":"6.2.1. \nIDL Definition"},{"refs":[{"id":"ref-for-cssrule\u2462"}],"title":"6.3.1. \nIDL Definition"}],"url":"https://www.w3.org/TR/cssom-1/#cssrule"},
 "128295ac": {"dfnID":"128295ac","dfnText":"<percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-percentage-value"}],"title":"3. \nDeclaring Keyframes"}],"url":"https://www.w3.org/TR/css-values-4/#percentage-value"},
 "129bdae8": {"dfnID":"129bdae8","dfnText":"Event","external":true,"refSections":[{"refs":[{"id":"ref-for-event"}],"title":"5.1.1. \nIDL Definition"}],"url":"https://dom.spec.whatwg.org/#event"},
-"1d798932": {"dfnID":"1d798932","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"},{"id":"ref-for-string-value\u2461"},{"id":"ref-for-string-value\u2462"}],"title":"3. \nDeclaring Keyframes"}],"url":"https://www.w3.org/TR/css-values-4/#string-value"},
+"1d798932": {"dfnID":"1d798932","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"},{"id":"ref-for-string-value\u2461"},{"id":"ref-for-string-value\u2462"},{"id":"ref-for-string-value\u2463"},{"id":"ref-for-string-value\u2464"}],"title":"3. \nDeclaring Keyframes"}],"url":"https://www.w3.org/TR/css-values-4/#string-value"},
 "1dd77088": {"dfnID":"1dd77088","dfnText":"input progress value","external":true,"refSections":[{"refs":[{"id":"ref-for-input-progress-value"}],"title":"4.3. \nThe animation-timing-function property"}],"url":"https://www.w3.org/TR/css-easing-2/#input-progress-value"},
 "21ecf38f": {"dfnID":"21ecf38f","dfnText":"PutForwards","external":true,"refSections":[{"refs":[{"id":"ref-for-PutForwards"}],"title":"6.2.1. \nIDL Definition"}],"url":"https://webidl.spec.whatwg.org/#PutForwards"},
 "26896c20": {"dfnID":"26896c20","dfnText":"CSSRuleList","external":true,"refSections":[{"refs":[{"id":"ref-for-cssrulelist"}],"title":"6.3.1. \nIDL Definition"},{"refs":[{"id":"ref-for-cssrulelist\u2460"}],"title":"6.3.2. \nAttributes"}],"url":"https://www.w3.org/TR/cssom-1/#cssrulelist"},
@@ -3209,14 +3212,14 @@ let dfnPanelData = {
 "842014fe": {"dfnID":"842014fe","dfnText":"CSS identifier","external":true,"refSections":[{"refs":[{"id":"ref-for-css-css-identifier"}],"title":"4.1. \nThe animation-name property"}],"url":"https://www.w3.org/TR/css-values-4/#css-css-identifier"},
 "85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"}],"title":"5.3. Event\nhandlers on elements, Document objects, and Window\nobjects"}],"url":"https://dom.spec.whatwg.org/#document"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"5.1.1. \nIDL Definition"},{"refs":[{"id":"ref-for-Exposed\u2460"}],"title":"6.2.1. \nIDL Definition"},{"refs":[{"id":"ref-for-Exposed\u2461"}],"title":"6.3.1. \nIDL Definition"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
-"8a110a7b": {"dfnID":"8a110a7b","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"1.1. \nValue Definitions"}],"url":"https://www.w3.org/TR/css-values-4/#css-wide-keywords"},
+"8a110a7b": {"dfnID":"8a110a7b","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"1.1. \nValue Definitions"},{"refs":[{"id":"ref-for-css-wide-keywords\u2460"}],"title":"3. \nDeclaring Keyframes"}],"url":"https://www.w3.org/TR/css-values-4/#css-wide-keywords"},
 "8c800cdf": {"dfnID":"8c800cdf","dfnText":"double","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-double"},{"id":"ref-for-idl-double\u2460"}],"title":"5.1.1. \nIDL Definition"},{"refs":[{"id":"ref-for-idl-double\u2461"}],"title":"5.1.2. \nAttributes"}],"url":"https://webidl.spec.whatwg.org/#idl-double"},
 "95b5db38": {"dfnID":"95b5db38","dfnText":"step position","external":true,"refSections":[{"refs":[{"id":"ref-for-step-position"}],"title":"4.3. \nThe animation-timing-function property"}],"url":"https://www.w3.org/TR/css-easing-2/#step-position"},
 "9852f862": {"dfnID":"9852f862","dfnText":"declarations","external":true,"refSections":[{"refs":[{"id":"ref-for-cssstyledeclaration-declarations"}],"title":"6.2.2. \nAttributes"}],"url":"https://www.w3.org/TR/cssom-1/#cssstyledeclaration-declarations"},
 "99316c56": {"dfnID":"99316c56","dfnText":"event constructor","external":true,"refSections":[{"refs":[{"id":"ref-for-constructing-events"}],"title":"5.1.2. \nAttributes"}],"url":"https://dom.spec.whatwg.org/#constructing-events"},
 "9d357000": {"dfnID":"9d357000","dfnText":"CSSOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-cssomstring"},{"id":"ref-for-cssomstring\u2460"},{"id":"ref-for-cssomstring\u2461"},{"id":"ref-for-cssomstring\u2462"},{"id":"ref-for-cssomstring\u2463"}],"title":"5.1.1. \nIDL Definition"},{"refs":[{"id":"ref-for-cssomstring\u2464"},{"id":"ref-for-cssomstring\u2465"}],"title":"5.1.2. \nAttributes"},{"refs":[{"id":"ref-for-cssomstring\u2466"}],"title":"6.2.1. \nIDL Definition"},{"refs":[{"id":"ref-for-cssomstring\u2467"}],"title":"6.2.2. \nAttributes"},{"refs":[{"id":"ref-for-cssomstring\u2468"},{"id":"ref-for-cssomstring\u2460\u24ea"},{"id":"ref-for-cssomstring\u2460\u2460"},{"id":"ref-for-cssomstring\u2460\u2461"}],"title":"6.3.1. \nIDL Definition"},{"refs":[{"id":"ref-for-cssomstring\u2460\u2462"}],"title":"6.3.2. \nAttributes"},{"refs":[{"id":"ref-for-cssomstring\u2460\u2463"}],"title":"6.3.4. \nThe appendRule method"},{"refs":[{"id":"ref-for-cssomstring\u2460\u2464"}],"title":"6.3.5. \nThe deleteRule method"},{"refs":[{"id":"ref-for-cssomstring\u2460\u2465"}],"title":"6.3.6. \nThe findRule method"}],"url":"https://www.w3.org/TR/cssom-1/#cssomstring"},
 "9d386f55": {"dfnID":"9d386f55","dfnText":"event handler event type","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handler-event-type"},{"id":"ref-for-event-handler-event-type\u2460"}],"title":"5.3. Event\nhandlers on elements, Document objects, and Window\nobjects"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type"},
-"a0144f62": {"dfnID":"a0144f62","dfnText":"<custom-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-identifier-value"},{"id":"ref-for-identifier-value\u2460"},{"id":"ref-for-identifier-value\u2461"},{"id":"ref-for-identifier-value\u2462"},{"id":"ref-for-identifier-value\u2463"}],"title":"3. \nDeclaring Keyframes"}],"url":"https://www.w3.org/TR/css-values-4/#identifier-value"},
+"a0144f62": {"dfnID":"a0144f62","dfnText":"<custom-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-identifier-value"},{"id":"ref-for-identifier-value\u2460"},{"id":"ref-for-identifier-value\u2461"},{"id":"ref-for-identifier-value\u2462"},{"id":"ref-for-identifier-value\u2463"},{"id":"ref-for-identifier-value\u2464"},{"id":"ref-for-identifier-value\u2465"}],"title":"3. \nDeclaring Keyframes"}],"url":"https://www.w3.org/TR/css-values-4/#identifier-value"},
 "a0336d84": {"dfnID":"a0336d84","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"},{"id":"ref-for-comb-any\u2461"},{"id":"ref-for-comb-any\u2462"},{"id":"ref-for-comb-any\u2463"},{"id":"ref-for-comb-any\u2464"},{"id":"ref-for-comb-any\u2465"}],"title":"4.9. \nThe animation shorthand property"}],"url":"https://www.w3.org/TR/css-values-4/#comb-any"},
 "a5c91173": {"dfnID":"a5c91173","dfnText":"SameObject","external":true,"refSections":[{"refs":[{"id":"ref-for-SameObject"}],"title":"6.2.1. \nIDL Definition"}],"url":"https://webidl.spec.whatwg.org/#SameObject"},
 "a81b1fb8": {"dfnID":"a81b1fb8","dfnText":"<declaration-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-declaration-list"},{"id":"ref-for-typedef-declaration-list\u2460"}],"title":"3. \nDeclaring Keyframes"}],"url":"https://www.w3.org/TR/css-syntax-3/#typedef-declaration-list"},
