@@ -24,7 +24,7 @@ Former Editor: Sylvain Galineau, Adobe, galineau@adobe.com
 Abstract: This CSS module describes a way for authors to animate the values of CSS properties over time, using keyframes. The behavior of these keyframe animations can be controlled by specifying their duration, number of repeats, and repeating behavior.
 
 Link Defaults: css-values-3 (type) <time>, cssom-1 (interface) cssstyledeclaration, dom-core-ls (interface) event, webidl (type) SyntaxError
-Ignored Terms: domstring, animationeventinit, event, eventinit, eventtarget, document
+Ignored Terms: domstring, animationeventinit, cssText, event, eventinit, eventtarget, document
 </pre>
 <!-- <a href="https://www.w3.org/Bugs/Public/buglist.cgi?component=Animations&list_id=36653&product=CSS&query_format=advanced&resolution=---">In Bugzilla</a> -->
 <pre class="anchors">
@@ -229,10 +229,6 @@ Declaring Keyframes</h2>
 	the names are fully <a>case-sensitive</a>;
 	two names are equal only if they are codepoint-by-codepoint equal.
 	The <<custom-ident>> additionally excludes the ''animation-name/none'' keyword.
-	The <<string>> should be treated as <<custom-ident>>, hence parsed as invalid if
-	is one of the <a>CSS-wide keywords</a> or "default"; empty string is not allowed
-	either. It's serialized as identifier when possible and as <<string>> otherwise.
-
 
 	<div class=example>
 		For example, the following two ''@keyframes'' rules have the same name,
@@ -258,8 +254,8 @@ Declaring Keyframes</h2>
 		@keyframes None { /* ... */ }
 		</pre>
 
-		They are also <em>invalid</em> if those names are specified with a <<string>>
-		because they can not be serialized as valid <<custom-ident>>:
+		However, those names <em>can</em> be specified with a <<string>>,
+		so the following are both <em>valid</em>:
 
 		<pre class=lang-css>
 		@keyframes "initial" { /* ... */ }
@@ -376,7 +372,7 @@ Declaring Keyframes</h2>
 		the state of the animation if it were given a duration of ''10s''.
 
 		<figure>
-			<img src="images/animation1.png" alt="">
+			<img src="images/animation1.png" alt="" width="504">
 			<figcaption>Animation states specified by keyframes</figcaption>
 		</figure>
 	</div>
@@ -1086,7 +1082,7 @@ Attributes</h4>
 			  <dd>The declared declarations in the rule, in <a spec=cssom>specified
 			      order</a>.
 			  <dt><a spec=cssom for=CSSStyleDeclaration>parent CSS rule</a>
-			  <dd>The <a>context object</a> (i.e. this {{CSSKeyframeRule}}).
+			  <dd>The context object (i.e. this {{CSSKeyframeRule}}).
 			  <dt><a spec=cssom for=CSSStyleDeclaration>owner node</a>
 			  <dd>Null.
 			</dl>
