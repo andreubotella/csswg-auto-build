@@ -3,11 +3,14 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>CSS Viewport Module Level 1</title>
-  <meta content="FPWD" name="w3c-status">
+  <meta content="ED" name="w3c-status">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="http://www.w3.org/TR/css-viewport-1/" rel="canonical">
-  <meta content="34d7f5cbb1214cff98133749406513edb8a1af40" name="revision">
+  <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="d1c88e9a832880e2bd3beec17be6b9d92627fd33" name="revision">
   <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
 	/* Style for algorithm pseudo code. */
 
@@ -723,8 +726,143 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
 }
 </style>
-  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-WD" rel="stylesheet">
-  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
+<style>/* Boilerplate: style-wpt */
+:root {
+    --wpt-border: hsl(0, 0%, 60%);
+    --wpt-bg: hsl(0, 0%, 95%);
+    --wpt-text: var(--text);
+    --wptheading-text: hsl(0, 0%, 30%);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --wpt-border: hsl(0, 0%, 30%);
+        --wpt-bg: var(--borderedblock-bg);
+        --wpt-text: var(--text);
+        --wptheading-text: hsl(0, 0%, 60%);
+    }
+}
+.wpt-tests-block {
+    list-style: none;
+    border-left: .5em solid var(--wpt-border);
+    background: var(--wpt-bg);
+    color: var(--wpt-text);
+    margin: 1em auto;
+    padding: .5em;
+}
+.wpt-tests-block summary {
+    color: var(--wptheading-text);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.wpt-tests-block summary::marker{
+    color: var(--wpt-border);
+}
+.wpt-tests-block summary:hover::marker{
+    color: var(--wpt-text);
+}
+/*
+   The only content  of a wpt test block in its closed state is the <summary>,
+   which contains the word TESTS,
+   and that is absolutely positioned.
+   In that closed state, wpt test blocks are styled
+   to have a top margin whose height is exactly equal
+   to the height of the absolutely positioned <summary>,
+   and no other background/padding/margin/border.
+   The wpt test block elements will therefore allow the maring
+   of the previous/next block elements
+   to collapse through them;
+   if this combined margin would be larger than its own top margin,
+   it stays as is,
+   and therefore the pre-existing vertical rhythm of the document is undisturbed.
+   If that combined margin would be smaller, it is grown to that size.
+   This means that the wpt test block ensures
+   that there's always enough vertical space to insert the summary,
+   without adding more than is needed.
+*/
+.wpt-tests-block:not([open]){
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.75em;
+    line-height: 1;
+    position: relative;
+    margin: 1em 0 0;
+}
+.wpt-tests-block:not([open]) summary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*
+   It is possible that both the last child of a block element
+   and the block element itself
+   would be annotated with a <wpt> block each.
+   If the block element has a padding or a border,
+   that's fine, but otherwise
+   the bottom margin of the block and of its last child would collapse
+   and both <wpt> elements would overlap, being both placed there.
+   To avoid that, add 1px of padding to the <wpt> element annotating the last child
+   to prevent the bottom margin of the block and of its last child from collapsing
+   (and as much negative margin,
+   as wel only want to prevent margin collapsing,
+   but are not trying to actually take more space).
+*/
+.wpt-tests-block:not([open]):last-child {
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+}
+/*
+   Exception to the previous rule:
+   don't do that in non-last list items,
+   because it's not necessary,
+   and would therefore consume more space than strictly needed.
+   Lists must have list items as children, not <wpt> elements,
+   so a <wpt> element cannot be a sibling of a list item,
+   and the collision that the previous rule avoids cannot happen.
+*/
+li:not(:last-child) > .wpt-tests-block:not([open]):last-child,
+dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.wpt-tests-block:not([open]):not(:hover){
+    opacity: 0.5;
+}
+.wpt-tests-list {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr max-content auto auto;
+    grid-column-gap: .5em;
+}
+.wpt-tests-block hr:last-child {
+    display: none;
+}
+.wpt-test {
+    display: contents;
+}
+.wpt-test > a {
+    text-decoration: underline;
+    border: none;
+}
+.wpt-test > .wpt-name { grid-column: 1; }
+.wpt-test > .wpt-results { grid-column: 2; }
+.wpt-test > .wpt-live { grid-column: 3; }
+.wpt-test > .wpt-source { grid-column: 4; }
+
+.wpt-test > .wpt-results {
+    display: flex;
+    gap: .1em;
+}
+.wpt-test .wpt-result {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+}
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
@@ -732,22 +870,18 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </a>
 </p>
    <h1 class="p-name no-ref" id="title">CSS Viewport Module Level 1</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#FPWD">W3C First Public Working Draft</a>,
-    <time class="dt-updated" datetime="2025-07-06">6 July 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2025-10-24">24 October 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://www.w3.org/TR/2025/FPWD-css-viewport-1-20250706/">https://www.w3.org/TR/2025/FPWD-css-viewport-1-20250706/</a>
+      <dd><a class="u-url" href="https://drafts.csswg.org/css-viewport-1/">https://drafts.csswg.org/css-viewport-1/</a>
       <dt>Latest published version:
-      <dd><a href="https://www.w3.org/TR/css-viewport-1/">https://www.w3.org/TR/css-viewport-1/</a>
-      <dt>Editor's Draft:
-      <dd><a href="https://drafts.csswg.org/css-viewport-1/">https://drafts.csswg.org/css-viewport-1/</a>
+      <dd><a href="http://www.w3.org/TR/css-viewport-1/">http://www.w3.org/TR/css-viewport-1/</a>
       <dt>Previous Versions:
-      <dd><a href="https://www.w3.org/TR/2016/WD-css-device-adapt-1-20160329/" rel="prev">https://www.w3.org/TR/2016/WD-css-device-adapt-1-20160329/</a>
-      <dt>History:
-      <dd><a class="u-url" href="https://www.w3.org/standards/history/css-viewport-1/">https://www.w3.org/standards/history/css-viewport-1/</a>
+      <dd><a href="http://www.w3.org/TR/2016/WD-css-device-adapt-1-20160329/" rel="prev">http://www.w3.org/TR/2016/WD-css-device-adapt-1-20160329/</a>
       <dt>Feedback:
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-viewport-1">CSSWG Issues Repository</a>
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-viewport-1">CSSWG GitHub</a>
@@ -784,26 +918,11 @@ on screen, on paper, etc.
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p><em>This section describes the status of this document at the time of its publication.
-	A list of current W3C publications
-	and the latest revision of this technical report
-	can be found in the <a href="https://www.w3.org/TR/">W3C standards and drafts index.</a></em>
-
-</p>
    <p>
-	This document was published
-	by the <a href="https://www.w3.org/groups/wg/css">CSS Working Group</a>
-	as a <strong>First Public Working Draft</strong> using the <a href="https://www.w3.org/policies/process/20250818/#recs-and-notes">Recommendation
-      track</a>.
-	Publication as a First Public Working Draft
-	does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members.
-
-</p>
-   <p>
-	This is a draft document
-	and may be updated, replaced
-	or obsoleted by other documents at any time.
-	It is inappropriate to cite this document as other than a work in progress.
+	This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress.
 
 </p>
    <p>Please send feedback
@@ -817,18 +936,6 @@ on screen, on paper, etc.
 </p>
    <p>This document is governed by the
 	<a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
-
-</p>
-   <p>This document was produced by a group operating under the
-	<a href="https://www.w3.org/policies/patent-policy/20200915/">W3C Patent Policy</a>.
-	W3C maintains a
-	<a href="https://www.w3.org/groups/wg/css/ipr" rel="disclosure">public list of any patent disclosures</a>
-	made in connection with the deliverables of the group;
-	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent that the individual believes
-	contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a>
-	must disclose the information in accordance with
-	<a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
 
 </p>
   </div>
@@ -951,7 +1058,7 @@ Introduction</span><a class="self-link" href="#intro"></a></h2>
 
     <p>CSS 2.1 <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a> specifies an
 <a href="https://www.w3.org/TR/CSS21/visudet.html#containing-block-details">
-initial containing block</a> for <a data-link-type="dfn" href="https://www.w3.org/TR/mediaqueries-5/#continuous-media" id="ref-for-continuous-media">continuous media</a> that has the dimensions
+initial containing block</a> for <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-5/#continuous-media" id="ref-for-continuous-media">continuous media</a> that has the dimensions
 of the <a href="https://www.w3.org/TR/CSS21/visuren.html#viewport">
 viewport</a>. Since the viewport is generally no larger than the display,
 devices with smaller displays such as phones or tablets typically present
@@ -983,10 +1090,10 @@ are listed in <a href="https://www.w3.org/Graphics/SVG/WG/wiki/Proposals/Investi
    <h2 class="heading settled" data-level="2" id="the-viewport"><span class="secno">2. </span><span class="content">
 The viewport</span><a class="self-link" href="#the-viewport"></a></h2>
    <p>In CSS 2.1 a <a href="https://www.w3.org/TR/CSS21/visuren.html#viewport">viewport</a>
-is a feature of a user agent for <a data-link-type="dfn" href="https://www.w3.org/TR/mediaqueries-5/#continuous-media" id="ref-for-continuous-media①">continuous media</a> and used to
+is a feature of a user agent for <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-5/#continuous-media" id="ref-for-continuous-media①">continuous media</a> and used to
 establish the initial containing block for <span id="ref-for-continuous-media②">continuous media</span>.
-For <a data-link-type="dfn" href="https://www.w3.org/TR/mediaqueries-5/#paged-media" id="ref-for-paged-media">paged media</a>, the initial containing block is based on the page area.
-The page area can be set through <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-page-3/#at-ruledef-page" id="ref-for-at-ruledef-page">@page</a> rules.</p>
+For <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-5/#paged-media" id="ref-for-paged-media">paged media</a>, the initial containing block is based on the page area.
+The page area can be set through <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-page-3/#at-ruledef-page" id="ref-for-at-ruledef-page">@page</a> rules.</p>
    <p>This specification introduces a way of overriding the size of the viewport
 provided by the user agent (UA). Because of this, we need to introduce the
 difference between the <span class="css">initial viewport</span> and the <span class="css">actual viewport</span>.</p>
@@ -1013,7 +1120,7 @@ the UA should offer a scrolling or panning mechanism.</p>
 <span class="css">actual viewport</span> and the window or viewing area are aligned if the
 base direction of the document is ltr. Similarly, that the upper-right
 corners are aligned when the base direction is rtl. The base direction
-for a document is defined as the computed value of the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction">direction</a>
+for a document is defined as the computed value of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction">direction</a>
 property for the first <code class="html">&lt;BODY></code> element of
 an HTML or XHTML document. For other document types, it is the
 computed <span class="property" id="ref-for-propdef-direction①">direction</span> for the root element.</p>
@@ -1146,7 +1253,7 @@ viewport-resizing behavior:</p>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="overlays-content"><code>overlays-content</code></dfn>
     <dd>
 		Interactive UI widgets MUST NOT <a data-link-type="dfn" href="#resize" id="ref-for-resize">resize</a> the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport">initial viewport</a> nor
-		the <a data-link-type="dfn" href="https://www.w3.org/TR/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport">visual viewport</a>. The user agent must perform the same steps
+		the <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport">visual viewport</a>. The user agent must perform the same steps
 		as when <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/virtual-keyboard#dom-virtualkeyboard-overlayscontent" id="ref-for-dom-virtualkeyboard-overlayscontent">VirtualKeyboard.overlaysContent</a></code> is set to
 		<code>true</code>.
 	
@@ -1156,14 +1263,14 @@ viewport-resizing behavior:</p>
 		Interactive UI widgets MUST <a data-link-type="dfn" href="#resize" id="ref-for-resize①">resize</a> the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport①">initial viewport</a> by the interactive widget.
 	
      <div class="note" role="note">
-		Since the <a data-link-type="dfn" href="https://www.w3.org/TR/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport①">visual viewport</a>’s size is derived from the
+		Since the <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport①">visual viewport</a>’s size is derived from the
 		<a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport②">initial viewport</a>, <a data-link-type="dfn" href="#resizes-content" id="ref-for-resizes-content">resizes-content</a> will cause a resize of both the initial and visual
 		viewports.
 	</div>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="resizes-visual"><code>resizes-visual</code></dfn>
     <dd>
-		Interactive UI widgets MUST <a data-link-type="dfn" href="#resize" id="ref-for-resize②">resize</a> the <a data-link-type="dfn" href="https://www.w3.org/TR/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport②">visual viewport</a> but MUST
-		NOT <span id="ref-for-resize③">resize</span> the <a data-link-type="dfn" href="https://www.w3.org/TR/css-viewport-1/#initial-viewport" id="ref-for-initial-viewport③">initial viewport</a>.
+		Interactive UI widgets MUST <a data-link-type="dfn" href="#resize" id="ref-for-resize②">resize</a> the <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport②">visual viewport</a> but MUST
+		NOT <span id="ref-for-resize③">resize</span> the <a data-link-type="dfn" href="https://drafts.csswg.org/css-viewport/#initial-viewport" id="ref-for-initial-viewport③">initial viewport</a>.
 	
    </dl>
    <p>If no value, or an invalid value, is set for <a data-link-type="dfn" href="#interactive-widget" id="ref-for-interactive-widget①">interactive-widget</a>, the behavior implied by
@@ -1201,25 +1308,25 @@ only the value previously set to it.</p>
 </span><a class="self-link" href="#zoom-property"></a></h2>
    <p>An element becomes zoomed when the <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom①">zoom</a> property has a positive computed value different than 1
 (or when a flat tree ancestor has zoom).</p>
-   <p>To apply zoom, the <a data-link-type="dfn" href="https://www.w3.org/TR/css-cascade-5/#used-value" id="ref-for-used-value">used value</a> of a CSS property (including values inside of <u class="link-error" data-lt="path()" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;path()&apos;.">path()</u> strings) is pre-multiplied
+   <p>To apply zoom, the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value">used value</a> of a CSS property (including values inside of <u class="link-error" data-lt="path()" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;path()&apos;.">path()</u> strings) is pre-multiplied
 (before any other steps in the <span id="ref-for-used-value①">used value</span> stage)
 by the <span id="ref-for-used-value②">used value</span> of <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom②">zoom</a> for the element.
-It also multiplies the <a data-link-type="dfn" href="https://www.w3.org/TR/css-images-3/#natural-size" id="ref-for-natural-size">natural size</a> of all replaced elements,
+It also multiplies the <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natural-size" id="ref-for-natural-size">natural size</a> of all replaced elements,
 background images,
 and nested frames
 (except for fenced frames <a data-link-type="biblio" href="#biblio-fenced-frame" title="Fenced Frame">[FENCED-FRAME]</a>)
 by the <span id="ref-for-used-value③">used value</span> of <span class="property" id="ref-for-propdef-zoom③">zoom</span>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This results in a magnification or minification effect.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> Since this multiplication is on <a data-link-type="dfn" href="https://www.w3.org/TR/css-cascade-5/#computed-value" id="ref-for-computed-value">computed value</a>s, it applies to
-all inherited properties such as <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height" id="ref-for-propdef-line-height">line-height</a> and <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-fonts-4/#propdef-font-size" id="ref-for-propdef-font-size">font-size</a>.</p>
-   <p>Nested values of <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom④">zoom</a> multiply, resulting in additional scaling of <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#length-value" id="ref-for-length-value">&lt;length></a> values.
-The <a data-link-type="dfn" href="https://www.w3.org/TR/css-cascade-5/#used-value" id="ref-for-used-value④">used value</a> for zoom is always its <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom">effective zoom</a>.</p>
-   <p>The <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑤">zoom</a> property has no effect on <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#length-value" id="ref-for-length-value①">&lt;length></a> property values with computed values that are <u class="property link-error" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> or <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#percentage-value" id="ref-for-percentage-value">&lt;percentage></a>.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> Unlike <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform">transform</a>,
+   <p class="note" role="note"><span class="marker">Note:</span> Since this multiplication is on <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value">computed value</a>s, it applies to
+all inherited properties such as <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-line-height" id="ref-for-propdef-line-height">line-height</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-size" id="ref-for-propdef-font-size">font-size</a>.</p>
+   <p>Nested values of <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom④">zoom</a> multiply, resulting in additional scaling of <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value">&lt;length></a> values.
+The <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value④">used value</a> for zoom is always its <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom">effective zoom</a>.</p>
+   <p>The <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑤">zoom</a> property has no effect on <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value①">&lt;length></a> property values with computed values that are <u class="property link-error" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> or <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value">&lt;percentage></a>.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> Unlike <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform">transform</a>,
 scaling the <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑥">zoom</a> property affects layout.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> The computed value of <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-fonts-4/#propdef-font-size" id="ref-for-propdef-font-size①">font-size</a> is never <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#percentage-value" id="ref-for-percentage-value①">&lt;percentage></a>;
+   <p class="note" role="note"><span class="marker">Note:</span> The computed value of <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-size" id="ref-for-propdef-font-size①">font-size</a> is never <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value①">&lt;percentage></a>;
 thus <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑦">zoom</a> always applies.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑧">zoom</a> does not affect or prevent <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform①">transform</a> scaling.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑧">zoom</a> does not affect or prevent <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform①">transform</a> scaling.</p>
    <table class="def propdef" data-link-for-hint="zoom">
     <tbody>
      <tr>
@@ -1227,22 +1334,22 @@ thus <a class="property css" data-link-type="property" href="#propdef-zoom" id="
       <td><dfn class="dfn-paneled css" data-dfn-type="property" data-export id="propdef-zoom">zoom</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#number-value" id="ref-for-number-value">&lt;number [0,∞]></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#percentage-value" id="ref-for-percentage-value②">&lt;percentage [0,∞]></a>
+      <td class="prod"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value">&lt;number [0,∞]></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value②">&lt;percentage [0,∞]></a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>1
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td>all <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#length-value" id="ref-for-length-value②">&lt;length></a> property values of all elements
+      <td>all <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value②">&lt;length></a> property values of all elements
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
       <td>no
      <tr>
       <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>Converted to <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#number-value" id="ref-for-number-value①">&lt;number></a>
+      <td>Converted to <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value①">&lt;number></a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>as specified, but with <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#percentage-value" id="ref-for-percentage-value③">&lt;percentage></a> converted to the equivalent <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#number-value" id="ref-for-number-value②">&lt;number></a>
+      <td>as specified, but with <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value③">&lt;percentage></a> converted to the equivalent <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value②">&lt;number></a>
      <tr>
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar
@@ -1255,7 +1362,7 @@ thus <a class="property css" data-link-type="property" href="#propdef-zoom" id="
    </table>
    <p>The values of this property have the following meanings:</p>
    <dl>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="zoom" data-dfn-type="value" data-export id="valdef-zoom-number"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#number-value" id="ref-for-number-value③">&lt;number></a></dfn>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="zoom" data-dfn-type="value" data-export id="valdef-zoom-number"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value③">&lt;number></a></dfn>
 	
     <dd>
      
@@ -1266,7 +1373,7 @@ thus <a class="property css" data-link-type="property" href="#propdef-zoom" id="
 
 
      <p class="note" role="note"><span class="marker">Note:</span> The treatment of 0 is a web compatibility quirk.</p>
-    <dt><dfn class="dfn-paneled css" data-dfn-for="zoom" data-dfn-type="value" data-export id="valdef-zoom-percentage"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#percentage-value" id="ref-for-percentage-value④">&lt;percentage></a></dfn>
+    <dt><dfn class="dfn-paneled css" data-dfn-for="zoom" data-dfn-type="value" data-export id="valdef-zoom-percentage"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value④">&lt;percentage></a></dfn>
 	
     <dd>
      
@@ -1339,27 +1446,27 @@ Outer text
    </div>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="effective-zoom">effective zoom</dfn> of an element is the product of its computed
 value of <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom①①">zoom</a> and all flat tree ancestors' computed values of <span class="property" id="ref-for-propdef-zoom①②">zoom</span>.</p>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="scaled">scaled</dfn> value of a CSS length is the <a data-link-type="dfn" href="https://www.w3.org/TR/css-cascade-5/#used-value" id="ref-for-used-value⑤">used value</a> of that length;
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="scaled">scaled</dfn> value of a CSS length is the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value⑤">used value</a> of that length;
 in particular it includes zoom.</p>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="unscaled">unscaled</dfn> value of a CSS length relative to an element is the <a data-link-type="dfn" href="#scaled" id="ref-for-scaled">scaled</a> value divided by the element’s <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom①">effective zoom</a>.</p>
    <div class="note" role="note">
-	The <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom②">effective zoom</a> of an element in a nested frame may be a value other than 1 even if <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom①③">zoom</a> is never set on an element in that frame. This can be observed by authors via APIs such as <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-view-1/#dom-window-devicepixelratio" id="ref-for-dom-window-devicepixelratio">devicePixelRatio</a></code> and <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-view-1/#dom-element-getboundingclientrect" id="ref-for-dom-element-getboundingclientrect">getBoundingClientRect</a></code>.
+	The <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom②">effective zoom</a> of an element in a nested frame may be a value other than 1 even if <a class="property css" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom①③">zoom</a> is never set on an element in that frame. This can be observed by authors via APIs such as <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio" id="ref-for-dom-window-devicepixelratio">devicePixelRatio</a></code> and <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-element-getboundingclientrect" id="ref-for-dom-element-getboundingclientrect">getBoundingClientRect</a></code>.
 </div>
    <h3 class="heading settled" data-level="4.1" id="zoom-om"><span class="secno">4.1. </span><span class="content">
 	DOM and CSSOM interaction
 </span><a class="self-link" href="#zoom-om"></a></h3>
-   <p>Computed style APIs (i.e., all values returned by <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle">getComputedStyle()</a></code>) that are non-auto and non-percentage lengths must be <a data-link-type="dfn" href="#unscaled" id="ref-for-unscaled">unscaled</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-view-1/#dom-element-getboundingclientrect" id="ref-for-dom-element-getboundingclientrect①">getBoundingClientRect</a></code>,
-	<code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-view-1/#dom-element-getclientrects" id="ref-for-dom-element-getclientrects">getClientRects</a></code>,
-	and <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/intersection-observer/#intersectionobserver" id="ref-for-intersectionobserver">IntersectionObserver</a></code> APIs must return rects with <a data-link-type="dfn" href="#scaled" id="ref-for-scaled①">scaled</a>
+   <p>Computed style APIs (i.e., all values returned by <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle">getComputedStyle()</a></code>) that are non-auto and non-percentage lengths must be <a data-link-type="dfn" href="#unscaled" id="ref-for-unscaled">unscaled</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-element-getboundingclientrect" id="ref-for-dom-element-getboundingclientrect①">getBoundingClientRect</a></code>,
+	<code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-element-getclientrects" id="ref-for-dom-element-getclientrects">getClientRects</a></code>,
+	and <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver">IntersectionObserver</a></code> APIs must return rects with <a data-link-type="dfn" href="#scaled" id="ref-for-scaled①">scaled</a>
 	lengths.</p>
    <p>All other APIs related to element geometries must return <a data-link-type="dfn" href="#unscaled" id="ref-for-unscaled①">unscaled</a> lengths
 	(except as detailed below).
-	This is explained in detail in <a href="https://www.w3.org/TR/cssom-view-1/#extensions-to-the-htmlelement-interface"><cite>CSSOM View</cite> § 7 Extensions to the HTMLElement Interface</a>.</p>
-   <p>In cases where properties (such as <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-view-1/#dom-element-scrolltop" id="ref-for-dom-element-scrolltop">scrollTop</a></code>) are propagated to the viewport,
+	This is explained in detail in <a href="https://drafts.csswg.org/cssom-view-1/#extensions-to-the-htmlelement-interface"><cite>CSSOM View</cite> § 7 Extensions to the HTMLElement Interface</a>.</p>
+   <p>In cases where properties (such as <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-element-scrolltop" id="ref-for-dom-element-scrolltop">scrollTop</a></code>) are propagated to the viewport,
 	APIs for these lengths must be in viewport units,
 	and not be divided by the zoom of the element.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-view-1/#dom-window-devicepixelratio" id="ref-for-dom-window-devicepixelratio①">devicePixelRatio</a></code> of a frame is multiplied by the <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom③">effective zoom</a> inherited by its parent frame.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio" id="ref-for-dom-window-devicepixelratio①">devicePixelRatio</a></code> of a frame is multiplied by the <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom③">effective zoom</a> inherited by its parent frame.</p>
    <h2 class="heading settled" data-level="5" id="extensions-to-the-window-interface"><span class="secno">5. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window">Window</a></code> Interface</span><a class="self-link" href="#extensions-to-the-window-interface"></a></h2>
 <pre class="idl highlight def"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①"><c- g>Window</c-></a> {
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Replaceable" id="ref-for-Replaceable"><c- g>Replaceable</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#viewport①" id="ref-for-viewport①"><c- n>Viewport</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export data-readonly data-type="Viewport" id="dom-window-viewport"><code><c- g>viewport</c-></code></dfn>;
@@ -1369,15 +1476,15 @@ in particular it includes zoom.</p>
    <h3 class="heading settled" data-level="6.1" id="the-viewport-interface"><span class="secno">6.1. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①①">Viewport</a></code> Interface</span><a class="self-link" href="#the-viewport-interface"></a></h3>
 <pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="viewport①"><code><c- g>Viewport</c-></code></dfn> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="https://www.w3.org/TR/geometry-1/#domrect" id="ref-for-domrect"><c- n>DOMRect</c-></a>>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<DOMRect>?" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments②"><c- g>segments</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="https://drafts.fxtf.org/geometry-1/#domrect" id="ref-for-domrect"><c- n>DOMRect</c-></a>>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<DOMRect>?" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments②"><c- g>segments</c-></a>;
 };
 </pre>
    <h2 class="heading settled" data-level="7" id="segments"><span class="secno">7. </span><span class="content">
 	The <dfn class="dfn-paneled idl-code" data-dfn-for="Viewport" data-dfn-type="attribute" data-export id="dom-viewport-segments"><code>segments</code></dfn> property
 </span><a class="self-link" href="#segments"></a></h2>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments③">segments</a></code> property is an array of <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/geometry-1/#domrect" id="ref-for-domrect①">DOMRect</a></code> that represent the dimensions of each existing viewport segment.
-Each <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/geometry-1/#domrect" id="ref-for-domrect②">DOMRect</a></code> contains the geometry of the segment (x, y, width, height) in CSS <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-values-4/#px" id="ref-for-px">px</a>.</p>
-   <p>Additional details about the definition of a viewport segment can be found here: <a href="https://www.w3.org/TR/css-env-1/#viewport-segments"><cite>CSS Environment Variables 1</cite> § 2.3 Viewport segment variables</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments③">segments</a></code> property is an array of <code class="idl"><a data-link-type="idl" href="https://drafts.fxtf.org/geometry-1/#domrect" id="ref-for-domrect①">DOMRect</a></code> that represent the dimensions of each existing viewport segment.
+Each <code class="idl"><a data-link-type="idl" href="https://drafts.fxtf.org/geometry-1/#domrect" id="ref-for-domrect②">DOMRect</a></code> contains the geometry of the segment (x, y, width, height) in CSS <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px">px</a>.</p>
+   <p>Additional details about the definition of a viewport segment can be found here: <a href="https://drafts.csswg.org/css-env-1/#viewport-segments"><cite>CSS Environment Variables 1</cite> § 2.3 Viewport segment variables</a>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments④">segments</a></code> attribute getter steps are:</p>
    <ol>
     <li data-md>
@@ -1385,11 +1492,11 @@ Each <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/geome
     <li data-md>
      <p>Let <var>topLevelTraversable</var> be <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable">navigable</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#bc-traversable" id="ref-for-bc-traversable">top-level traversable</a>.</p>
     <li data-md>
-     <p>If <var>topLevelTraversable</var>.<a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride">[[DisplayFeaturesOverride]]</a> is non-null, return <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①③">Viewport</a></code>’s <a href="https://www.w3.org/TR/css-env-1/#viewport-segments">segments</a> array calculated from <var>topLevelTraversable</var>.<span id="ref-for-top-level-traversable-displayfeaturesoverride①">[[DisplayFeaturesOverride]]</span>.</p>
+     <p>If <var>topLevelTraversable</var>.<a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride">[[DisplayFeaturesOverride]]</a> is non-null, return <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①③">Viewport</a></code>’s <a href="https://drafts.csswg.org/css-env-1/#viewport-segments">segments</a> array calculated from <var>topLevelTraversable</var>.<span id="ref-for-top-level-traversable-displayfeaturesoverride①">[[DisplayFeaturesOverride]]</span>.</p>
     <li data-md>
      <p>If there is only a single viewport segment (typically the size of the <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①④">Viewport</a></code>) return an array with that single segment.</p>
     <li data-md>
-     <p>Otherwise, return the <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①⑤">Viewport</a></code>’s <a href="https://www.w3.org/TR/css-env-1/#viewport-segments">segments</a> array calculated from the hardware features.</p>
+     <p>Otherwise, return the <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①⑤">Viewport</a></code>’s <a href="https://drafts.csswg.org/css-env-1/#viewport-segments">segments</a> array calculated from the hardware features.</p>
    </ol>
    <div class="non-normative">
     
@@ -1397,7 +1504,7 @@ Each <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/geome
 
 
     <p>The <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments⑤">segments</a></code> property represents an immutable snapshot of the device <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments⑥">segments</a></code> when the value was queried.
-If the device state changes (rotation, window resize, <a data-link-type="dfn" href="https://www.w3.org/TR/device-posture/#dfn-posture" id="ref-for-dfn-posture">posture</a> change), the value previously retrieved will be invalid. Developers can listen to <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/screen-orientation/#dom-screenorientation-onchange" id="ref-for-dom-screenorientation-onchange">Screen Orientation</a></code>, <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/cssom-view-1/#eventdef-window-resize" id="ref-for-eventdef-window-resize">Window Resize</a></code>, or <code class="idl"><a data-link-type="idl" href="https://www.w3.org/TR/device-posture/#dom-deviceposture-onchange" id="ref-for-dom-deviceposture-onchange">Posture</a></code> changes events to detect device state changes.</p>
+If the device state changes (rotation, window resize, <a data-link-type="dfn" href="https://w3c.github.io/device-posture/#dfn-posture" id="ref-for-dfn-posture">posture</a> change), the value previously retrieved will be invalid. Developers can listen to <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/screen-orientation/#dom-screenorientation-onchange" id="ref-for-dom-screenorientation-onchange">Screen Orientation</a></code>, <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#eventdef-window-resize" id="ref-for-eventdef-window-resize">Window Resize</a></code>, or <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/device-posture/#dom-deviceposture-onchange" id="ref-for-dom-deviceposture-onchange">Posture</a></code> changes events to detect device state changes.</p>
     <div class="example" id="example-b989fc89"><a class="self-link" href="#example-b989fc89"></a>
 If a viewport of 400px by 400px is split horizontally into two side-by-side segments, the <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments⑦">segments</a></code> array will have the following content:
 <code class="highlight"><c- p>[</c->DOMRect<c- p>(</c-><c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>400</c-><c- p>,</c-> <c- mf>200</c-><c- p>),</c-> DOMRect<c- p>(</c-><c- mf>0</c-><c- p>,</c-> <c- mf>200</c-><c- p>,</c-> <c- mf>400</c-><c- p>,</c-> <c- mf>200</c-><c- p>)]</c-></code>
@@ -1406,7 +1513,7 @@ If a viewport of 400px by 400px is split horizontally into two side-by-side segm
    <h2 class="no-num heading settled" id="changes"><span class="content">Appendix A. Changes</span><a class="self-link" href="#changes"></a></h2>
    <p>This appendix is <em>informative</em>.</p>
    <h3 class="no-num heading settled" id="since-the-29-march-2016-working-draft"><span class="content">Since the 
-	<a href="https://www.w3.org/TR/2016/WD-css-device-adapt-1-20160329/">29 
+	<a href="http://www.w3.org/TR/2016/WD-css-device-adapt-1-20160329/">29 
 		March 2016 Working Draft</a>
 </span><a class="self-link" href="#since-the-29-march-2016-working-draft"></a></h3>
    <ul>
@@ -1452,13 +1559,13 @@ If a viewport of 400px by 400px is split horizontally into two side-by-side segm
    
 The <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments⑨">segments</a></code> property poses a challenge to test authors, as exercising this property
 requires access to specific hardware devices. To address this challenge this document defines
-<a data-link-type="biblio" href="#biblio-webdriver2" title="WebDriver">[WEBDRIVER2]</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-extension-commands" id="ref-for-dfn-extension-commands">extension commands</a> that allow users to control how the viewport is split by
+<a data-link-type="biblio" href="#biblio-webdriver2" title="WebDriver">[WEBDRIVER2]</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-extension-commands" id="ref-for-dfn-extension-commands">extension commands</a> that allow users to control how the viewport is split by
 one or more <a data-link-type="dfn" href="#display-feature①" id="ref-for-display-feature①"> display features</a> (such as a fold or a hinge between two separate displays).
 
 
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="display-feature-override">display feature override</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> encapsulating the result of a single display feature.
 It has a <dfn class="dfn-paneled" data-dfn-for="display feature override" data-dfn-type="dfn" data-noexport id="display-feature-override-orientation">orientation</dfn> (a string that is either "vertical" or "horizontal"),
-a <dfn class="dfn-paneled" data-dfn-for="display feature override" data-dfn-type="dfn" data-noexport id="display-feature-override-mask-length">mask length</dfn> (a positive number describing the length of the feature in CSS <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-values-4/#px" id="ref-for-px①">px</a>), and
+a <dfn class="dfn-paneled" data-dfn-for="display feature override" data-dfn-type="dfn" data-noexport id="display-feature-override-mask-length">mask length</dfn> (a positive number describing the length of the feature in CSS <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px①">px</a>), and
 an <dfn class="dfn-paneled" data-dfn-for="display feature override" data-dfn-type="dfn" data-noexport id="display-feature-override-offset">offset</dfn> (which describe the distance from the origin of the viewport in CSS <span class="css" id="ref-for-px②">px</span>).</p>
    <h4 class="heading settled" id="internal-slots"><span class="content">Internal slots</span><a class="self-link" href="#internal-slots"></a></h4>
    
@@ -1493,7 +1600,7 @@ internal slots:
 			HTTP Method
 		
       <th>
-			<a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-extension-command-uri-template" id="ref-for-dfn-extension-command-uri-template">URI Template</a>
+			<a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-extension-command-uri-template" id="ref-for-dfn-extension-command-uri-template">URI Template</a>
 		
      <tr>
       <td>
@@ -1503,7 +1610,7 @@ internal slots:
 			/session/{session id}/displayfeatures
 		
    </table>
-   <p>This <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-extension-commands" id="ref-for-dfn-extension-commands②">extension command</a> creates a setup that emulates a set of <a data-link-type="dfn" href="#display-feature-override" id="ref-for-display-feature-override①">display feature override</a> by taking a list of display features as
+   <p>This <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-extension-commands" id="ref-for-dfn-extension-commands②">extension command</a> creates a setup that emulates a set of <a data-link-type="dfn" href="#display-feature-override" id="ref-for-display-feature-override①">display feature override</a> by taking a list of display features as
 parameter.</p>
    <div class="non-normative">
     
@@ -1529,8 +1636,8 @@ parameter.</p>
 	vertical display feature, the other is showing an horizontal display feature" src="display_features.svg" style="width: 70%;height: auto; margin:auto; display: flex;"></p>
     <div class="example" id="example-c5981ba4">
      <a class="self-link" href="#example-c5981ba4"></a>
-		To create a <a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride②">[[DisplayFeaturesOverride]]</a> in the <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-current-browsing-context" id="ref-for-dfn-current-browsing-context">current browsing context</a> of the <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver-bidi/#modules-session" id="ref-for-modules-session">session</a> with ID 23,
-		the <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-local-ends" id="ref-for-dfn-local-ends">local end</a> would POST to `/session/23/displayfeatures` with the body:
+		To create a <a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride②">[[DisplayFeaturesOverride]]</a> in the <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-current-browsing-context" id="ref-for-dfn-current-browsing-context">current browsing context</a> of the <a data-link-type="dfn" href="https://w3c.github.io/webdriver-bidi/#modules-session" id="ref-for-modules-session">session</a> with ID 23,
+		the <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-local-ends" id="ref-for-dfn-local-ends">local end</a> would POST to `/session/23/displayfeatures` with the body:
 		
 <pre class="lang-json highlight"><c- p>{</c->
   <c- f>"features"</c-><c- p>:</c-> <c- p>[</c->
@@ -1547,44 +1654,44 @@ parameter.</p>
     </div>
    </div>
    <div>
-The <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-remote-end-steps" id="ref-for-dfn-remote-end-steps">remote end steps</a> are:
+The <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-remote-end-steps" id="ref-for-dfn-remote-end-steps">remote end steps</a> are:
 </div>
    <ol>
-    <li>Let <var>features</var> be the result of invoking <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-getting-properties" id="ref-for-dfn-getting-properties">getting a property</a> "features" from
+    <li>Let <var>features</var> be the result of invoking <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-getting-properties" id="ref-for-dfn-getting-properties">getting a property</a> "features" from
 	<var>parameters</var>.
 	
-    <li>If <var>features</var> is not a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects" id="ref-for-sec-array-objects">Array</a></code>, return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.
+    <li>If <var>features</var> is not a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects" id="ref-for-sec-array-objects">Array</a></code>, return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument">invalid argument</a>.
 	
     <li>Let <var>parsedFeatures</var> be a new <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <a data-link-type="dfn" href="#display-feature-override" id="ref-for-display-feature-override③">display feature override</a>.
     <li>
      For each <var>feature item</var> in <var>features</var>:
 		
      <ol>
-      <li>If <var>feature item</var> is not an <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object-objects" id="ref-for-sec-object-objects">Object</a></code>, return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error①">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code①">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument①">invalid argument</a>.
-      <li>Let <var>mask length</var> be the result of invoking <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-getting-properties" id="ref-for-dfn-getting-properties①">getting a property</a> "maskLength" from <var>feature item</var>.
-      <li>If <var>mask length</var> is not a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects" id="ref-for-sec-number-objects">Number</a></code> or its value is <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan" id="ref-for-sec-number.nan">NaN</a></code>, +∞, −∞, or negative return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error②">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code②">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument②">invalid argument</a>.
+      <li>If <var>feature item</var> is not an <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object-objects" id="ref-for-sec-object-objects">Object</a></code>, return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error①">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code①">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument①">invalid argument</a>.
+      <li>Let <var>mask length</var> be the result of invoking <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-getting-properties" id="ref-for-dfn-getting-properties①">getting a property</a> "maskLength" from <var>feature item</var>.
+      <li>If <var>mask length</var> is not a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects" id="ref-for-sec-number-objects">Number</a></code> or its value is <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan" id="ref-for-sec-number.nan">NaN</a></code>, +∞, −∞, or negative return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error②">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code②">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument②">invalid argument</a>.
 			
-      <li>Let <var>offset</var> be the result of invoking <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-getting-properties" id="ref-for-dfn-getting-properties②">getting a property</a> "offset" from <var>feature item</var>.
-      <li>If <var>offset</var> is not a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects" id="ref-for-sec-number-objects①">Number</a></code> or its value is <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan" id="ref-for-sec-number.nan①">NaN</a></code>, +∞, −∞, or negative return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error③">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code③">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument③">invalid argument</a>.
+      <li>Let <var>offset</var> be the result of invoking <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-getting-properties" id="ref-for-dfn-getting-properties②">getting a property</a> "offset" from <var>feature item</var>.
+      <li>If <var>offset</var> is not a <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects" id="ref-for-sec-number-objects①">Number</a></code> or its value is <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan" id="ref-for-sec-number.nan①">NaN</a></code>, +∞, −∞, or negative return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error③">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code③">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument③">invalid argument</a>.
 			
-      <li>Let <var>orientation</var> be the result of invoking <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-getting-properties" id="ref-for-dfn-getting-properties③">getting a property</a> "orientation" from <var>feature item</var>.
-      <li>If <var>orientation</var> is not a <code class="idl"><a data-link-type="idl" href="https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string" id="ref-for-dom-speechgrammarlist-addfromstring-string-weight-string">string</a></code>, return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error④">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code④">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument④">invalid argument</a>.
-      <li>If <var>orientation</var> is neither "vertical" or "vertical", return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error⑤">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code⑤">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument⑤">invalid argument</a>.
+      <li>Let <var>orientation</var> be the result of invoking <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-getting-properties" id="ref-for-dfn-getting-properties③">getting a property</a> "orientation" from <var>feature item</var>.
+      <li>If <var>orientation</var> is not a <code class="idl"><a data-link-type="idl" href="https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string" id="ref-for-dom-speechgrammarlist-addfromstring-string-weight-string">string</a></code>, return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error④">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code④">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument④">invalid argument</a>.
+      <li>If <var>orientation</var> is neither "vertical" or "vertical", return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error⑤">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code⑤">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument⑤">invalid argument</a>.
 			
-      <li>If <var>orientation</var> is "vertical" and <var>mask length</var> + <var>offset</var> is greater than viewport width including the size of the rendered scrollbar, return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error⑥">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code⑥">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument⑥">invalid argument</a>.
-      <li>If <var>orientation</var> is "vertical" and <var>mask length</var> + <var>offset</var> is greater than viewport height including the size of the rendered scrollbar, return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error" id="ref-for-dfn-error⑦">error</a> with <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-error-code" id="ref-for-dfn-error-code⑦">WebDriver error code</a> <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument⑦">invalid argument</a>.
+      <li>If <var>orientation</var> is "vertical" and <var>mask length</var> + <var>offset</var> is greater than viewport width including the size of the rendered scrollbar, return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error⑥">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code⑥">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument⑥">invalid argument</a>.
+      <li>If <var>orientation</var> is "vertical" and <var>mask length</var> + <var>offset</var> is greater than viewport height including the size of the rendered scrollbar, return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error" id="ref-for-dfn-error⑦">error</a> with <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-error-code" id="ref-for-dfn-error-code⑦">WebDriver error code</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-invalid-argument" id="ref-for-dfn-invalid-argument⑦">invalid argument</a>.
       <li>Let <var>override</var> be a new <a data-link-type="dfn" href="#display-feature-override" id="ref-for-display-feature-override④">display feature override</a>.
       <li>Set <var>override</var>’s <a data-link-type="dfn" href="#display-feature-override-mask-length" id="ref-for-display-feature-override-mask-length">mask length</a> to <var>mask length</var>.
       <li>Set <var>override</var>’s <a data-link-type="dfn" href="#display-feature-override-orientation" id="ref-for-display-feature-override-orientation">orientation</a> to <var>orientation</var>.
       <li>Set <var>override</var>’s <a data-link-type="dfn" href="#display-feature-override-offset" id="ref-for-display-feature-override-offset">offset</a> to <var>offset</var>.
       <li><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> <var>override</var> to <var>parsedFeatures</var>.
      </ol>
-    <li>Let <var>topLevelTraversable</var> be the <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-current-browsing-context" id="ref-for-dfn-current-browsing-context①">current browsing context</a>’s
+    <li>Let <var>topLevelTraversable</var> be the <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-current-browsing-context" id="ref-for-dfn-current-browsing-context①">current browsing context</a>’s
 	<a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#bc-traversable" id="ref-for-bc-traversable②">top-level traversable</a>.
 	
     <li>Set <var>topLevelTraversable</var>.<a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride③">[[DisplayFeaturesOverride]]</a> to <var>parsedFeatures</var>.
 	
-    <li>Return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-success" id="ref-for-dfn-success">success</a> with data <code>null</code>.
+    <li>Return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-success" id="ref-for-dfn-success">success</a> with data <code>null</code>.
 	
    </ol>
    <h5 class="heading settled" id="clear-display-features"><span class="content">Clear display features</span><a class="self-link" href="#clear-display-features"></a></h5>
@@ -1595,7 +1702,7 @@ The <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-remote-e
 			HTTP Method
 		
       <th>
-		<a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-extension-command-uri-template" id="ref-for-dfn-extension-command-uri-template①">URI Template</a>
+		<a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-extension-command-uri-template" id="ref-for-dfn-extension-command-uri-template①">URI Template</a>
 	
      <tr>
       <td>
@@ -1606,19 +1713,19 @@ The <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-remote-e
 		
    </table>
    <div>
-	This <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-extension-commands" id="ref-for-dfn-extension-commands③">extension command</a> removes the display features override and returns
+	This <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-extension-commands" id="ref-for-dfn-extension-commands③">extension command</a> removes the display features override and returns
 	control back to hardware.
 </div>
    <div>
-	The <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-remote-end-steps" id="ref-for-dfn-remote-end-steps①">remote end steps</a> are:
+	The <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-remote-end-steps" id="ref-for-dfn-remote-end-steps①">remote end steps</a> are:
 </div>
    <ol>
-    <li>Let <var>topLevelTraversable</var> be the <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-current-browsing-context" id="ref-for-dfn-current-browsing-context②">current browsing context</a>’s 
+    <li>Let <var>topLevelTraversable</var> be the <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-current-browsing-context" id="ref-for-dfn-current-browsing-context②">current browsing context</a>’s 
 	<a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#bc-traversable" id="ref-for-bc-traversable③">top-level traversable</a>.
 	
     <li>Set <var>topLevelTraversable</var>. <a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride④">[[DisplayFeaturesOverride]]</a> to <code>null</code>.
 	
-    <li>Return <a data-link-type="dfn" href="https://www.w3.org/TR/webdriver2/#dfn-success" id="ref-for-dfn-success①">success</a> with data <code>null</code>.
+    <li>Return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-success" id="ref-for-dfn-success①">success</a> with data <code>null</code>.
 	
    </ol>
   </main>
@@ -1659,6 +1766,14 @@ Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3
     <strong class="advisement">
         UAs MUST provide an accessible alternative.
     </strong></p>
+  <details class="wpt-tests-block" dir="ltr" lang="en" open>
+   <summary>Tests</summary>
+   <p>Tests relating to the content of this specification
+                     may be documented in “Tests” blocks like this one.
+                     Any such block is non-normative.</p>
+   <ul class="wpt-tests-list"></ul>
+   <hr>
+  </details>
   <h3 class="no-ref heading settled" id="w3c-conformance-classes"><span class="content">
 Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
   <p>Conformance to this specification
@@ -1667,18 +1782,18 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
   <dl>
    <dt>style sheet
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
             style sheet</a>.
         
    <dt>renderer
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that interprets the semantics of a style sheet and renders
             documents that use them.
         
    <dt>authoring tool
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that writes a style sheet.
     
   </dl>
@@ -1709,7 +1824,7 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
 Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <p>So that authors can exploit the forward-compatible parsing rules to
     assign fallback values, CSS renderers <strong>must</strong>
-    treat as invalid (and <a href="https://www.w3.org/TR/CSS21/conform.html#ignore">ignore
+    treat as invalid (and <a href="http://www.w3.org/TR/CSS21/conform.html#ignore">ignore
     as appropriate</a>) any at-rules, properties, property values, keywords,
     and other syntactic constructs for which they have no usable level of
     support. In particular, user agents <strong>must not</strong> selectively
@@ -1720,7 +1835,7 @@ Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <h4 class="heading settled" id="w3c-conform-future-proofing"><span class="content">
 Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#w3c-conform-future-proofing"></a></h4>
   <p>To avoid clashes with future stable CSS features,
-        the CSSWG recommends <a href="https://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="https://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="https://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
+        the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
 
 </p>
   <h3 class="no-ref heading settled" id="w3c-testing"><span class="content">
@@ -1742,9 +1857,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     </p>
   <p>Further information on submitting testcases and implementation reports
     can be found from on the CSS Working Group’s website at
-    <a href="https://www.w3.org/Style/CSS/Test/">https://www.w3.org/Style/CSS/Test/</a>.
+    <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
     Questions should be directed to the
-    <a href="https://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
+    <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
     mailing list.</p>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
@@ -1778,73 +1893,73 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="8c8e51b4">computed value</span>
-     <li><span class="dfn-paneled" id="1a2b1083">used value</span>
+     <li><span class="dfn-paneled" id="9cd25054">computed value</span>
+     <li><span class="dfn-paneled" id="a4eb3c57">used value</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-FONTS-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="297dfe3a">font-size</span>
+     <li><span class="dfn-paneled" id="fdf6efd5">font-size</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-IMAGES-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="c0cc78c8">natural size</span>
+     <li><span class="dfn-paneled" id="ed3eb665">natural size</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-PAGE-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="2c5a261b">@page</span>
+     <li><span class="dfn-paneled" id="5ee7eb9e">@page</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-TRANSFORMS-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="e7c6bf78">transform</span>
+     <li><span class="dfn-paneled" id="e2e08d07">transform</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="98ddb9b0">&lt;length></span>
-     <li><span class="dfn-paneled" id="61bb5e44">&lt;number></span>
-     <li><span class="dfn-paneled" id="128295ac">&lt;percentage></span>
-     <li><span class="dfn-paneled" id="20730c34">px</span>
-     <li><span class="dfn-paneled" id="4eb9d37e">|</span>
+     <li><span class="dfn-paneled" id="fb030e6c">&lt;length></span>
+     <li><span class="dfn-paneled" id="16310992">&lt;number></span>
+     <li><span class="dfn-paneled" id="15f5b381">&lt;percentage></span>
+     <li><span class="dfn-paneled" id="9ddea951">px</span>
+     <li><span class="dfn-paneled" id="6ec67710">|</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-VIEWPORT-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="b15f2265">initial viewport</span>
+     <li><span class="dfn-paneled" id="f242baf0">initial viewport</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-WRITING-MODES-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="fb688f4f">direction</span>
+     <li><span class="dfn-paneled" id="5bc8bd12">direction</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS21]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="fb01f680">line-height</span>
+     <li><span class="dfn-paneled" id="ac54fbff">line-height</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSSOM-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="bfb148e6">getComputedStyle(elt)</span>
+     <li><span class="dfn-paneled" id="b203675a">getComputedStyle(elt)</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSSOM-VIEW-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="e4aff4af">devicePixelRatio</span>
-     <li><span class="dfn-paneled" id="9f97cd15">getBoundingClientRect()</span>
-     <li><span class="dfn-paneled" id="5003184e">getClientRects()</span>
-     <li><span class="dfn-paneled" id="b2bc4829">resize</span>
-     <li><span class="dfn-paneled" id="0a662c58">scrollTop</span>
-     <li><span class="dfn-paneled" id="d8d2e3c2">visual viewport</span>
+     <li><span class="dfn-paneled" id="c0159396">devicePixelRatio</span>
+     <li><span class="dfn-paneled" id="d38f9598">getBoundingClientRect()</span>
+     <li><span class="dfn-paneled" id="ca01f655">getClientRects()</span>
+     <li><span class="dfn-paneled" id="fb17617c">resize</span>
+     <li><span class="dfn-paneled" id="dc0eaa56">scrollTop</span>
+     <li><span class="dfn-paneled" id="6c514f92">visual viewport</span>
     </ul>
    <li>
     <a data-link-type="biblio">[DEVICE-POSTURE]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="f0145330">onchange</span>
-     <li><span class="dfn-paneled" id="ab46db89">posture</span>
+     <li><span class="dfn-paneled" id="33b28eb1">onchange</span>
+     <li><span class="dfn-paneled" id="1ec42261">posture</span>
     </ul>
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
@@ -1862,7 +1977,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[GEOMETRY-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="d11c73d6">DOMRect</span>
+     <li><span class="dfn-paneled" id="27dba777">DOMRect</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -1883,18 +1998,18 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[INTERSECTION-OBSERVER]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="8e7046bc">IntersectionObserver</span>
+     <li><span class="dfn-paneled" id="9be179f5">IntersectionObserver</span>
     </ul>
    <li>
     <a data-link-type="biblio">[MEDIAQUERIES-5]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="9e462db5">continuous media</span>
-     <li><span class="dfn-paneled" id="23af89d0">paged media</span>
+     <li><span class="dfn-paneled" id="aba1ccaf">continuous media</span>
+     <li><span class="dfn-paneled" id="758665a5">paged media</span>
     </ul>
    <li>
     <a data-link-type="biblio">[SCREEN-ORIENTATION]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="6366fced">onchange</span>
+     <li><span class="dfn-paneled" id="6e23e5b9">onchange</span>
     </ul>
    <li>
     <a data-link-type="biblio">[SPEECH-API]</a> defines the following terms:
@@ -1909,21 +2024,21 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[WEBDRIVER-BIDI]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="339bae60">session</span>
+     <li><span class="dfn-paneled" id="a3ba9024">session</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBDRIVER2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="49f565c9">current browsing context</span>
-     <li><span class="dfn-paneled" id="ba18b752">error</span>
-     <li><span class="dfn-paneled" id="7c8c6b0a">error code</span>
-     <li><span class="dfn-paneled" id="eadea5f4">extension command URI Template</span>
-     <li><span class="dfn-paneled" id="318bc860">extension commands</span>
-     <li><span class="dfn-paneled" id="76cda605">getting a property</span>
-     <li><span class="dfn-paneled" id="ddd987d2">invalid argument</span>
-     <li><span class="dfn-paneled" id="47aec294">local end</span>
-     <li><span class="dfn-paneled" id="8a1fd4b7">remote end steps</span>
-     <li><span class="dfn-paneled" id="fbac5254">success</span>
+     <li><span class="dfn-paneled" id="024a1df2">current browsing context</span>
+     <li><span class="dfn-paneled" id="bb4c269e">error</span>
+     <li><span class="dfn-paneled" id="c8ff8493">error code</span>
+     <li><span class="dfn-paneled" id="040c67fa">extension command URI Template</span>
+     <li><span class="dfn-paneled" id="09daa25c">extension commands</span>
+     <li><span class="dfn-paneled" id="5b668531">getting a property</span>
+     <li><span class="dfn-paneled" id="8da4d1e3">invalid argument</span>
+     <li><span class="dfn-paneled" id="9a707b42">local end</span>
+     <li><span class="dfn-paneled" id="82c23298">remote end steps</span>
+     <li><span class="dfn-paneled" id="4be6272b">success</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -1938,27 +2053,27 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
-   <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. 13 January 2022. CR. URL: <a href="https://www.w3.org/TR/css-cascade-5/">https://www.w3.org/TR/css-cascade-5/</a>
+   <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-cascade-5/">https://drafts.csswg.org/css-cascade-5/</a>
    <dt id="biblio-css-env-1">[CSS-ENV-1]
-   <dd><a href="https://www.w3.org/TR/css-env-1/"><cite>CSS Environment Variables Module Level 1</cite></a>. 23 September 2025. FPWD. URL: <a href="https://www.w3.org/TR/css-env-1/">https://www.w3.org/TR/css-env-1/</a>
+   <dd><a href="https://drafts.csswg.org/css-env-1/"><cite>CSS Environment Variables Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-env-1/">https://drafts.csswg.org/css-env-1/</a>
    <dt id="biblio-css-images-3">[CSS-IMAGES-3]
-   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://www.w3.org/TR/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. 18 December 2023. CRD. URL: <a href="https://www.w3.org/TR/css-images-3/">https://www.w3.org/TR/css-images-3/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://drafts.csswg.org/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-3/">https://drafts.csswg.org/css-images-3/</a>
    <dt id="biblio-css-page-3">[CSS-PAGE-3]
-   <dd>Elika Etemad. <a href="https://www.w3.org/TR/css-page-3/"><cite>CSS Paged Media Module Level 3</cite></a>. 14 September 2023. WD. URL: <a href="https://www.w3.org/TR/css-page-3/">https://www.w3.org/TR/css-page-3/</a>
+   <dd>Elika Etemad. <a href="https://drafts.csswg.org/css-page-3/"><cite>CSS Paged Media Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-page-3/">https://drafts.csswg.org/css-page-3/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 12 March 2024. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
    <dt id="biblio-css-viewport-1">[CSS-VIEWPORT-1]
-   <dd>Florian Rivoal; Emilio Cobos Álvarez. <a href="https://www.w3.org/TR/css-viewport-1/"><cite>CSS Viewport Module Level 1</cite></a>. 25 January 2024. FPWD. URL: <a href="https://www.w3.org/TR/css-viewport-1/">https://www.w3.org/TR/css-viewport-1/</a>
+   <dd>Florian Rivoal; Emilio Cobos Álvarez. <a href="https://drafts.csswg.org/css-viewport/"><cite>CSS Viewport Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-viewport/">https://drafts.csswg.org/css-viewport/</a>
    <dt id="biblio-css-writing-modes-3">[CSS-WRITING-MODES-3]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://www.w3.org/TR/css-writing-modes-3/"><cite>CSS Writing Modes Level 3</cite></a>. 10 December 2019. REC. URL: <a href="https://www.w3.org/TR/css-writing-modes-3/">https://www.w3.org/TR/css-writing-modes-3/</a>
+   <dd>Elika Etemad; Koji Ishii. <a href="https://drafts.csswg.org/css-writing-modes-3/"><cite>CSS Writing Modes Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-writing-modes-3/">https://drafts.csswg.org/css-writing-modes-3/</a>
    <dt id="biblio-css21">[CSS21]
-   <dd>Bert Bos; et al. <a href="https://www.w3.org/TR/CSS2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. 7 June 2011. REC. URL: <a href="https://www.w3.org/TR/CSS2/">https://www.w3.org/TR/CSS2/</a>
+   <dd>Bert Bos; et al. <a href="https://drafts.csswg.org/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://drafts.csswg.org/css2/">https://drafts.csswg.org/css2/</a>
    <dt id="biblio-css3-conditional">[CSS3-CONDITIONAL]
-   <dd>Chris Lilley; David Baron; Elika Etemad. <a href="https://www.w3.org/TR/css-conditional-3/"><cite>CSS Conditional Rules Module Level 3</cite></a>. 15 August 2024. CRD. URL: <a href="https://www.w3.org/TR/css-conditional-3/">https://www.w3.org/TR/css-conditional-3/</a>
+   <dd>Chris Lilley; David Baron; Elika Etemad. <a href="https://drafts.csswg.org/css-conditional-3/"><cite>CSS Conditional Rules Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-conditional-3/">https://drafts.csswg.org/css-conditional-3/</a>
    <dt id="biblio-cssom-1">[CSSOM-1]
-   <dd>Daniel Glazman; Emilio Cobos Álvarez. <a href="https://www.w3.org/TR/cssom-1/"><cite>CSS Object Model (CSSOM)</cite></a>. 26 August 2021. WD. URL: <a href="https://www.w3.org/TR/cssom-1/">https://www.w3.org/TR/cssom-1/</a>
+   <dd>Daniel Glazman; Emilio Cobos Álvarez. <a href="https://drafts.csswg.org/cssom/"><cite>CSS Object Model (CSSOM)</cite></a>. URL: <a href="https://drafts.csswg.org/cssom/">https://drafts.csswg.org/cssom/</a>
    <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
-   <dd>Simon Fraser; Emilio Cobos Álvarez. <a href="https://www.w3.org/TR/cssom-view-1/"><cite>CSSOM View Module</cite></a>. 16 September 2025. WD. URL: <a href="https://www.w3.org/TR/cssom-view-1/">https://www.w3.org/TR/cssom-view-1/</a>
+   <dd>Simon Fraser; Emilio Cobos Álvarez. <a href="https://drafts.csswg.org/cssom-view/"><cite>CSSOM View Module</cite></a>. URL: <a href="https://drafts.csswg.org/cssom-view/">https://drafts.csswg.org/cssom-view/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
@@ -1966,23 +2081,23 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dt id="biblio-fenced-frame">[FENCED-FRAME]
    <dd><a href="https://wicg.github.io/fenced-frame/"><cite>Fenced Frame</cite></a>. Draft Community Group Report. URL: <a href="https://wicg.github.io/fenced-frame/">https://wicg.github.io/fenced-frame/</a>
    <dt id="biblio-geometry-1">[GEOMETRY-1]
-   <dd>Simon Pieters; Chris Harrelson. <a href="https://www.w3.org/TR/geometry-1/"><cite>Geometry Interfaces Module Level 1</cite></a>. 4 December 2018. CR. URL: <a href="https://www.w3.org/TR/geometry-1/">https://www.w3.org/TR/geometry-1/</a>
+   <dd>Simon Pieters; Chris Harrelson. <a href="https://drafts.fxtf.org/geometry/"><cite>Geometry Interfaces Module Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/geometry/">https://drafts.fxtf.org/geometry/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
    <dt id="biblio-intersection-observer">[INTERSECTION-OBSERVER]
-   <dd>Stefan Zager; Emilio Cobos Álvarez; Traian Captan. <a href="https://www.w3.org/TR/intersection-observer/"><cite>Intersection Observer</cite></a>. 18 October 2023. WD. URL: <a href="https://www.w3.org/TR/intersection-observer/">https://www.w3.org/TR/intersection-observer/</a>
+   <dd>Stefan Zager; Emilio Cobos Álvarez; Traian Captan. <a href="https://w3c.github.io/IntersectionObserver/"><cite>Intersection Observer</cite></a>. URL: <a href="https://w3c.github.io/IntersectionObserver/">https://w3c.github.io/IntersectionObserver/</a>
    <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
-   <dd>Dean Jackson; et al. <a href="https://www.w3.org/TR/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. 18 December 2021. WD. URL: <a href="https://www.w3.org/TR/mediaqueries-5/">https://www.w3.org/TR/mediaqueries-5/</a>
+   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-speech-api">[SPEECH-API]
    <dd><a href="https://webaudio.github.io/web-speech-api/"><cite>Web Speech API</cite></a>. Draft Community Group Report. URL: <a href="https://webaudio.github.io/web-speech-api/">https://webaudio.github.io/web-speech-api/</a>
    <dt id="biblio-virtual-keyboard">[VIRTUAL-KEYBOARD]
-   <dd>Anupam Snigdha. <a href="https://www.w3.org/TR/virtual-keyboard/"><cite>VirtualKeyboard API</cite></a>. 5 May 2022. WD. URL: <a href="https://www.w3.org/TR/virtual-keyboard/">https://www.w3.org/TR/virtual-keyboard/</a>
+   <dd>Anupam Snigdha. <a href="https://w3c.github.io/virtual-keyboard/"><cite>VirtualKeyboard API</cite></a>. URL: <a href="https://w3c.github.io/virtual-keyboard/">https://w3c.github.io/virtual-keyboard/</a>
    <dt id="biblio-webdriver2">[WEBDRIVER2]
-   <dd>Simon Stewart; David Burns. <a href="https://www.w3.org/TR/webdriver2/"><cite>WebDriver</cite></a>. 20 October 2025. WD. URL: <a href="https://www.w3.org/TR/webdriver2/">https://www.w3.org/TR/webdriver2/</a>
+   <dd>Simon Stewart; David Burns. <a href="https://w3c.github.io/webdriver/"><cite>WebDriver</cite></a>. URL: <a href="https://w3c.github.io/webdriver/">https://w3c.github.io/webdriver/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -1991,15 +2106,15 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dt id="biblio-algorithms">[Algorithms]
    <dd>Thomas H. Cormen; et al. <cite>Introduction to Algorithms, Second Edition, MIT Press</cite>. 
    <dt id="biblio-css-fonts-4">[CSS-FONTS-4]
-   <dd>Chris Lilley. <a href="https://www.w3.org/TR/css-fonts-4/"><cite>CSS Fonts Module Level 4</cite></a>. 1 February 2024. WD. URL: <a href="https://www.w3.org/TR/css-fonts-4/">https://www.w3.org/TR/css-fonts-4/</a>
+   <dd>Chris Lilley. <a href="https://drafts.csswg.org/css-fonts-4/"><cite>CSS Fonts Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-fonts-4/">https://drafts.csswg.org/css-fonts-4/</a>
    <dt id="biblio-css-transforms-1">[CSS-TRANSFORMS-1]
-   <dd>Simon Fraser; et al. <a href="https://www.w3.org/TR/css-transforms-1/"><cite>CSS Transforms Module Level 1</cite></a>. 14 February 2019. CR. URL: <a href="https://www.w3.org/TR/css-transforms-1/">https://www.w3.org/TR/css-transforms-1/</a>
+   <dd>Simon Fraser; et al. <a href="https://drafts.csswg.org/css-transforms/"><cite>CSS Transforms Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-transforms/">https://drafts.csswg.org/css-transforms/</a>
    <dt id="biblio-device-posture">[DEVICE-POSTURE]
-   <dd>Kenneth Christiansen; Alexis Menard; Diego Gonzalez-Zuniga. <a href="https://www.w3.org/TR/device-posture/"><cite>Device Posture API</cite></a>. 26 November 2024. CR. URL: <a href="https://www.w3.org/TR/device-posture/">https://www.w3.org/TR/device-posture/</a>
+   <dd>Kenneth Christiansen; Alexis Menard; Diego Gonzalez-Zuniga. <a href="https://w3c.github.io/device-posture/"><cite>Device Posture API</cite></a>. URL: <a href="https://w3c.github.io/device-posture/">https://w3c.github.io/device-posture/</a>
    <dt id="biblio-screen-orientation">[SCREEN-ORIENTATION]
-   <dd>Marcos Caceres. <a href="https://www.w3.org/TR/screen-orientation/"><cite>Screen Orientation</cite></a>. 21 October 2025. WD. URL: <a href="https://www.w3.org/TR/screen-orientation/">https://www.w3.org/TR/screen-orientation/</a>
+   <dd>Marcos Caceres. <a href="https://w3c.github.io/screen-orientation/"><cite>Screen Orientation</cite></a>. URL: <a href="https://w3c.github.io/screen-orientation/">https://w3c.github.io/screen-orientation/</a>
    <dt id="biblio-webdriver-bidi">[WEBDRIVER-BIDI]
-   <dd>James Graham; Alex Rudenko; Maksim Sadym. <a href="https://www.w3.org/TR/webdriver-bidi/"><cite>WebDriver BiDi</cite></a>. 21 October 2025. WD. URL: <a href="https://www.w3.org/TR/webdriver-bidi/">https://www.w3.org/TR/webdriver-bidi/</a>
+   <dd>James Graham; Alex Rudenko; Maksim Sadym. <a href="https://w3c.github.io/webdriver-bidi/"><cite>WebDriver BiDi</cite></a>. URL: <a href="https://w3c.github.io/webdriver-bidi/">https://w3c.github.io/webdriver-bidi/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -2037,7 +2152,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#viewport①"><code><c- g>Viewport</c-></code></a> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="https://www.w3.org/TR/geometry-1/#domrect"><c- n>DOMRect</c-></a>>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<DOMRect>?" href="#dom-viewport-segments"><c- g>segments</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="https://drafts.fxtf.org/geometry-1/#domrect"><c- n>DOMRect</c-></a>>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<DOMRect>?" href="#dom-viewport-segments"><c- g>segments</c-></a>;
 };
 
 </pre>
@@ -2258,53 +2373,54 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "01d5a451": {"dfnID":"01d5a451","dfnText":"Replaceable","external":true,"refSections":[{"refs":[{"id":"ref-for-Replaceable"}],"title":"5. Extensions to the Window Interface"}],"url":"https://webidl.spec.whatwg.org/#Replaceable"},
-"0a662c58": {"dfnID":"0a662c58","dfnText":"scrollTop","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-scrolltop"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://www.w3.org/TR/cssom-view-1/#dom-element-scrolltop"},
+"024a1df2": {"dfnID":"024a1df2","dfnText":"current browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-current-browsing-context"},{"id":"ref-for-dfn-current-browsing-context\u2460"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-current-browsing-context\u2461"}],"title":"Clear display features"}],"url":"https://w3c.github.io/webdriver/#dfn-current-browsing-context"},
+"040c67fa": {"dfnID":"040c67fa","dfnText":"extension command URI Template","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-extension-command-uri-template"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-extension-command-uri-template\u2460"}],"title":"Clear display features"}],"url":"https://w3c.github.io/webdriver/#dfn-extension-command-uri-template"},
+"09daa25c": {"dfnID":"09daa25c","dfnText":"extension commands","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-extension-commands"}],"title":"Automation of the segments property"},{"refs":[{"id":"ref-for-dfn-extension-commands\u2460"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-dfn-extension-commands\u2461"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-extension-commands\u2462"}],"title":"Clear display features"}],"url":"https://w3c.github.io/webdriver/#dfn-extension-commands"},
 "0e3ba9f8": {"dfnID":"0e3ba9f8","dfnText":"fully active","external":true,"refSections":[{"refs":[{"id":"ref-for-fully-active"}],"title":"7. \n\tThe segments property\n"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active"},
 "0ff9b6b9": {"dfnID":"0ff9b6b9","dfnText":"top-level traversable","external":true,"refSections":[{"refs":[{"id":"ref-for-bc-traversable"}],"title":"7. \n\tThe segments property\n"},{"refs":[{"id":"ref-for-bc-traversable\u2460"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-bc-traversable\u2461"}],"title":"Set display features"},{"refs":[{"id":"ref-for-bc-traversable\u2462"}],"title":"Clear display features"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#bc-traversable"},
-"128295ac": {"dfnID":"128295ac","dfnText":"<percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-percentage-value"},{"id":"ref-for-percentage-value\u2460"},{"id":"ref-for-percentage-value\u2461"},{"id":"ref-for-percentage-value\u2462"},{"id":"ref-for-percentage-value\u2463"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-values-4/#percentage-value"},
-"1a2b1083": {"dfnID":"1a2b1083","dfnText":"used value","external":true,"refSections":[{"refs":[{"id":"ref-for-used-value"},{"id":"ref-for-used-value\u2460"},{"id":"ref-for-used-value\u2461"},{"id":"ref-for-used-value\u2462"},{"id":"ref-for-used-value\u2463"},{"id":"ref-for-used-value\u2464"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-cascade-5/#used-value"},
-"20730c34": {"dfnID":"20730c34","dfnText":"px","external":true,"refSections":[{"refs":[{"id":"ref-for-px"}],"title":"7. \n\tThe segments property\n"},{"refs":[{"id":"ref-for-px\u2460"},{"id":"ref-for-px\u2461"}],"title":"Automation of the segments property"}],"url":"https://www.w3.org/TR/css-values-4/#px"},
-"23af89d0": {"dfnID":"23af89d0","dfnText":"paged media","external":true,"refSections":[{"refs":[{"id":"ref-for-paged-media"}],"title":"2. \nThe viewport"}],"url":"https://www.w3.org/TR/mediaqueries-5/#paged-media"},
-"297dfe3a": {"dfnID":"297dfe3a","dfnText":"font-size","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-size"},{"id":"ref-for-propdef-font-size\u2460"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-fonts-4/#propdef-font-size"},
-"2c5a261b": {"dfnID":"2c5a261b","dfnText":"@page","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-page"}],"title":"2. \nThe viewport"}],"url":"https://www.w3.org/TR/css-page-3/#at-ruledef-page"},
-"318bc860": {"dfnID":"318bc860","dfnText":"extension commands","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-extension-commands"}],"title":"Automation of the segments property"},{"refs":[{"id":"ref-for-dfn-extension-commands\u2460"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-dfn-extension-commands\u2461"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-extension-commands\u2462"}],"title":"Clear display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-extension-commands"},
-"339bae60": {"dfnID":"339bae60","dfnText":"session","external":true,"refSections":[{"refs":[{"id":"ref-for-modules-session"}],"title":"Set display features"}],"url":"https://www.w3.org/TR/webdriver-bidi/#modules-session"},
-"47aec294": {"dfnID":"47aec294","dfnText":"local end","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-local-ends"}],"title":"Set display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-local-ends"},
-"49f565c9": {"dfnID":"49f565c9","dfnText":"current browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-current-browsing-context"},{"id":"ref-for-dfn-current-browsing-context\u2460"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-current-browsing-context\u2461"}],"title":"Clear display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-current-browsing-context"},
-"4eb9d37e": {"dfnID":"4eb9d37e","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-values-4/#comb-one"},
-"5003184e": {"dfnID":"5003184e","dfnText":"getClientRects()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-getclientrects"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://www.w3.org/TR/cssom-view-1/#dom-element-getclientrects"},
+"15f5b381": {"dfnID":"15f5b381","dfnText":"<percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-percentage-value"},{"id":"ref-for-percentage-value\u2460"},{"id":"ref-for-percentage-value\u2461"},{"id":"ref-for-percentage-value\u2462"},{"id":"ref-for-percentage-value\u2463"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-values-4/#percentage-value"},
+"16310992": {"dfnID":"16310992","dfnText":"<number>","external":true,"refSections":[{"refs":[{"id":"ref-for-number-value"},{"id":"ref-for-number-value\u2460"},{"id":"ref-for-number-value\u2461"},{"id":"ref-for-number-value\u2462"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-values-4/#number-value"},
+"1ec42261": {"dfnID":"1ec42261","dfnText":"posture","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-posture"}],"title":"7. \n\tThe segments property\n"}],"url":"https://w3c.github.io/device-posture/#dfn-posture"},
+"27dba777": {"dfnID":"27dba777","dfnText":"DOMRect","external":true,"refSections":[{"refs":[{"id":"ref-for-domrect"}],"title":"6.1. The Viewport Interface"},{"refs":[{"id":"ref-for-domrect\u2460"},{"id":"ref-for-domrect\u2461"}],"title":"7. \n\tThe segments property\n"}],"url":"https://drafts.fxtf.org/geometry-1/#domrect"},
+"33b28eb1": {"dfnID":"33b28eb1","dfnText":"onchange","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-deviceposture-onchange"}],"title":"7. \n\tThe segments property\n"}],"url":"https://w3c.github.io/device-posture/#dom-deviceposture-onchange"},
+"4be6272b": {"dfnID":"4be6272b","dfnText":"success","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-success"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-success\u2460"}],"title":"Clear display features"}],"url":"https://w3c.github.io/webdriver/#dfn-success"},
 "53275e46": {"dfnID":"53275e46","dfnText":"append","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"Set display features"}],"url":"https://infra.spec.whatwg.org/#list-append"},
+"5b668531": {"dfnID":"5b668531","dfnText":"getting a property","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-getting-properties"},{"id":"ref-for-dfn-getting-properties\u2460"},{"id":"ref-for-dfn-getting-properties\u2461"},{"id":"ref-for-dfn-getting-properties\u2462"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-getting-properties"},
+"5bc8bd12": {"dfnID":"5bc8bd12","dfnText":"direction","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-direction"},{"id":"ref-for-propdef-direction\u2460"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/css-writing-modes-3/#propdef-direction"},
 "5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"},{"id":"ref-for-window\u2460"}],"title":"5. Extensions to the Window Interface"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"5ee7eb9e": {"dfnID":"5ee7eb9e","dfnText":"@page","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-page"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/css-page-3/#at-ruledef-page"},
 "5f9c7266": {"dfnID":"5f9c7266","dfnText":"Number","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-number-objects"},{"id":"ref-for-sec-number-objects\u2460"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects"},
-"61bb5e44": {"dfnID":"61bb5e44","dfnText":"<number>","external":true,"refSections":[{"refs":[{"id":"ref-for-number-value"},{"id":"ref-for-number-value\u2460"},{"id":"ref-for-number-value\u2461"},{"id":"ref-for-number-value\u2462"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-values-4/#number-value"},
-"6366fced": {"dfnID":"6366fced","dfnText":"onchange","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-screenorientation-onchange"}],"title":"7. \n\tThe segments property\n"}],"url":"https://www.w3.org/TR/screen-orientation/#dom-screenorientation-onchange"},
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"Set display features"}],"url":"https://infra.spec.whatwg.org/#list"},
-"76cda605": {"dfnID":"76cda605","dfnText":"getting a property","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-getting-properties"},{"id":"ref-for-dfn-getting-properties\u2460"},{"id":"ref-for-dfn-getting-properties\u2461"},{"id":"ref-for-dfn-getting-properties\u2462"}],"title":"Set display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-getting-properties"},
-"7c8c6b0a": {"dfnID":"7c8c6b0a","dfnText":"error code","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-error-code"},{"id":"ref-for-dfn-error-code\u2460"},{"id":"ref-for-dfn-error-code\u2461"},{"id":"ref-for-dfn-error-code\u2462"},{"id":"ref-for-dfn-error-code\u2463"},{"id":"ref-for-dfn-error-code\u2464"},{"id":"ref-for-dfn-error-code\u2465"},{"id":"ref-for-dfn-error-code\u2466"}],"title":"Set display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-error-code"},
+"6c514f92": {"dfnID":"6c514f92","dfnText":"visual viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-visual-viewport"},{"id":"ref-for-visual-viewport\u2460"},{"id":"ref-for-visual-viewport\u2461"}],"title":"3.4. interactive-widget"}],"url":"https://drafts.csswg.org/cssom-view-1/#visual-viewport"},
+"6e23e5b9": {"dfnID":"6e23e5b9","dfnText":"onchange","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-screenorientation-onchange"}],"title":"7. \n\tThe segments property\n"}],"url":"https://w3c.github.io/screen-orientation/#dom-screenorientation-onchange"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"758665a5": {"dfnID":"758665a5","dfnText":"paged media","external":true,"refSections":[{"refs":[{"id":"ref-for-paged-media"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/mediaqueries-5/#paged-media"},
+"82c23298": {"dfnID":"82c23298","dfnText":"remote end steps","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-remote-end-steps"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-remote-end-steps\u2460"}],"title":"Clear display features"}],"url":"https://w3c.github.io/webdriver/#dfn-remote-end-steps"},
 "85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"}],"title":"7. \n\tThe segments property\n"}],"url":"https://dom.spec.whatwg.org/#document"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"6.1. The Viewport Interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
-"8a1fd4b7": {"dfnID":"8a1fd4b7","dfnText":"remote end steps","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-remote-end-steps"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-remote-end-steps\u2460"}],"title":"Clear display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-remote-end-steps"},
-"8c8e51b4": {"dfnID":"8c8e51b4","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-cascade-5/#computed-value"},
-"8e7046bc": {"dfnID":"8e7046bc","dfnText":"IntersectionObserver","external":true,"refSections":[{"refs":[{"id":"ref-for-intersectionobserver"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://www.w3.org/TR/intersection-observer/#intersectionobserver"},
+"8da4d1e3": {"dfnID":"8da4d1e3","dfnText":"invalid argument","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-invalid-argument"},{"id":"ref-for-dfn-invalid-argument\u2460"},{"id":"ref-for-dfn-invalid-argument\u2461"},{"id":"ref-for-dfn-invalid-argument\u2462"},{"id":"ref-for-dfn-invalid-argument\u2463"},{"id":"ref-for-dfn-invalid-argument\u2464"},{"id":"ref-for-dfn-invalid-argument\u2465"},{"id":"ref-for-dfn-invalid-argument\u2466"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-invalid-argument"},
 "984221ca": {"dfnID":"984221ca","dfnText":"struct","external":true,"refSections":[{"refs":[{"id":"ref-for-struct"}],"title":"Automation of the segments property"}],"url":"https://infra.spec.whatwg.org/#struct"},
-"98ddb9b0": {"dfnID":"98ddb9b0","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"},{"id":"ref-for-length-value\u2461"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-values-4/#length-value"},
+"9a707b42": {"dfnID":"9a707b42","dfnText":"local end","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-local-ends"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-local-ends"},
+"9be179f5": {"dfnID":"9be179f5","dfnText":"IntersectionObserver","external":true,"refSections":[{"refs":[{"id":"ref-for-intersectionobserver"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://w3c.github.io/IntersectionObserver/#intersectionobserver"},
 "9c19b7fc": {"dfnID":"9c19b7fc","dfnText":"navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-navigable"}],"title":"7. \n\tThe segments property\n"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#navigable"},
-"9e462db5": {"dfnID":"9e462db5","dfnText":"continuous media","external":true,"refSections":[{"refs":[{"id":"ref-for-continuous-media"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-continuous-media\u2460"},{"id":"ref-for-continuous-media\u2461"}],"title":"2. \nThe viewport"}],"url":"https://www.w3.org/TR/mediaqueries-5/#continuous-media"},
-"9f97cd15": {"dfnID":"9f97cd15","dfnText":"getBoundingClientRect()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-getboundingclientrect"}],"title":"4. \n\tThe zoom property\n"},{"refs":[{"id":"ref-for-dom-element-getboundingclientrect\u2460"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://www.w3.org/TR/cssom-view-1/#dom-element-getboundingclientrect"},
+"9cd25054": {"dfnID":"9cd25054","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
+"9ddea951": {"dfnID":"9ddea951","dfnText":"px","external":true,"refSections":[{"refs":[{"id":"ref-for-px"}],"title":"7. \n\tThe segments property\n"},{"refs":[{"id":"ref-for-px\u2460"},{"id":"ref-for-px\u2461"}],"title":"Automation of the segments property"}],"url":"https://drafts.csswg.org/css-values-4/#px"},
+"a3ba9024": {"dfnID":"a3ba9024","dfnText":"session","external":true,"refSections":[{"refs":[{"id":"ref-for-modules-session"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver-bidi/#modules-session"},
+"a4eb3c57": {"dfnID":"a4eb3c57","dfnText":"used value","external":true,"refSections":[{"refs":[{"id":"ref-for-used-value"},{"id":"ref-for-used-value\u2460"},{"id":"ref-for-used-value\u2461"},{"id":"ref-for-used-value\u2462"},{"id":"ref-for-used-value\u2463"},{"id":"ref-for-used-value\u2464"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-cascade-5/#used-value"},
 "a5c91173": {"dfnID":"a5c91173","dfnText":"SameObject","external":true,"refSections":[{"refs":[{"id":"ref-for-SameObject"}],"title":"5. Extensions to the Window Interface"}],"url":"https://webidl.spec.whatwg.org/#SameObject"},
 "a6e67972": {"dfnID":"a6e67972","dfnText":"Object","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-object-objects"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object-objects"},
-"ab46db89": {"dfnID":"ab46db89","dfnText":"posture","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-posture"}],"title":"7. \n\tThe segments property\n"}],"url":"https://www.w3.org/TR/device-posture/#dfn-posture"},
+"aba1ccaf": {"dfnID":"aba1ccaf","dfnText":"continuous media","external":true,"refSections":[{"refs":[{"id":"ref-for-continuous-media"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-continuous-media\u2460"},{"id":"ref-for-continuous-media\u2461"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/mediaqueries-5/#continuous-media"},
+"ac54fbff": {"dfnID":"ac54fbff","dfnText":"line-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-line-height"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css2/#propdef-line-height"},
 "actual-viewport": {"dfnID":"actual-viewport","dfnText":"actual viewport","external":false,"refSections":[],"url":"#actual-viewport"},
-"b15f2265": {"dfnID":"b15f2265","dfnText":"initial viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-initial-viewport\u2462"}],"title":"3.4. interactive-widget"}],"url":"https://www.w3.org/TR/css-viewport-1/#initial-viewport"},
-"b2bc4829": {"dfnID":"b2bc4829","dfnText":"resize","external":true,"refSections":[{"refs":[{"id":"ref-for-eventdef-window-resize"}],"title":"7. \n\tThe segments property\n"}],"url":"https://www.w3.org/TR/cssom-view-1/#eventdef-window-resize"},
-"ba18b752": {"dfnID":"ba18b752","dfnText":"error","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-error"},{"id":"ref-for-dfn-error\u2460"},{"id":"ref-for-dfn-error\u2461"},{"id":"ref-for-dfn-error\u2462"},{"id":"ref-for-dfn-error\u2463"},{"id":"ref-for-dfn-error\u2464"},{"id":"ref-for-dfn-error\u2465"},{"id":"ref-for-dfn-error\u2466"}],"title":"Set display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-error"},
-"bfb148e6": {"dfnID":"bfb148e6","dfnText":"getComputedStyle(elt)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-getcomputedstyle"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://www.w3.org/TR/cssom-1/#dom-window-getcomputedstyle"},
-"c0cc78c8": {"dfnID":"c0cc78c8","dfnText":"natural size","external":true,"refSections":[{"refs":[{"id":"ref-for-natural-size"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-images-3/#natural-size"},
-"d11c73d6": {"dfnID":"d11c73d6","dfnText":"DOMRect","external":true,"refSections":[{"refs":[{"id":"ref-for-domrect"}],"title":"6.1. The Viewport Interface"},{"refs":[{"id":"ref-for-domrect\u2460"},{"id":"ref-for-domrect\u2461"}],"title":"7. \n\tThe segments property\n"}],"url":"https://www.w3.org/TR/geometry-1/#domrect"},
-"d8d2e3c2": {"dfnID":"d8d2e3c2","dfnText":"visual viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-visual-viewport"},{"id":"ref-for-visual-viewport\u2460"},{"id":"ref-for-visual-viewport\u2461"}],"title":"3.4. interactive-widget"}],"url":"https://www.w3.org/TR/cssom-view-1/#visual-viewport"},
+"b203675a": {"dfnID":"b203675a","dfnText":"getComputedStyle(elt)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-getcomputedstyle"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle"},
+"bb4c269e": {"dfnID":"bb4c269e","dfnText":"error","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-error"},{"id":"ref-for-dfn-error\u2460"},{"id":"ref-for-dfn-error\u2461"},{"id":"ref-for-dfn-error\u2462"},{"id":"ref-for-dfn-error\u2463"},{"id":"ref-for-dfn-error\u2464"},{"id":"ref-for-dfn-error\u2465"},{"id":"ref-for-dfn-error\u2466"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-error"},
+"c0159396": {"dfnID":"c0159396","dfnText":"devicePixelRatio","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-devicepixelratio"}],"title":"4. \n\tThe zoom property\n"},{"refs":[{"id":"ref-for-dom-window-devicepixelratio\u2460"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio"},
+"c8ff8493": {"dfnID":"c8ff8493","dfnText":"error code","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-error-code"},{"id":"ref-for-dfn-error-code\u2460"},{"id":"ref-for-dfn-error-code\u2461"},{"id":"ref-for-dfn-error-code\u2462"},{"id":"ref-for-dfn-error-code\u2463"},{"id":"ref-for-dfn-error-code\u2464"},{"id":"ref-for-dfn-error-code\u2465"},{"id":"ref-for-dfn-error-code\u2466"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-error-code"},
+"ca01f655": {"dfnID":"ca01f655","dfnText":"getClientRects()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-getclientrects"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-element-getclientrects"},
+"d38f9598": {"dfnID":"d38f9598","dfnText":"getBoundingClientRect()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-getboundingclientrect"}],"title":"4. \n\tThe zoom property\n"},{"refs":[{"id":"ref-for-dom-element-getboundingclientrect\u2460"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-element-getboundingclientrect"},
 "d9d0d16f": {"dfnID":"d9d0d16f","dfnText":"string","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-speechgrammarlist-addfromstring-string-weight-string"}],"title":"Set display features"}],"url":"https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string"},
+"dc0eaa56": {"dfnID":"dc0eaa56","dfnText":"scrollTop","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-scrolltop"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-element-scrolltop"},
 "dcf5fafa": {"dfnID":"dcf5fafa","dfnText":"FrozenArray","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-frozen-array"}],"title":"6.1. The Viewport Interface"}],"url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
-"ddd987d2": {"dfnID":"ddd987d2","dfnText":"invalid argument","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-invalid-argument"},{"id":"ref-for-dfn-invalid-argument\u2460"},{"id":"ref-for-dfn-invalid-argument\u2461"},{"id":"ref-for-dfn-invalid-argument\u2462"},{"id":"ref-for-dfn-invalid-argument\u2463"},{"id":"ref-for-dfn-invalid-argument\u2464"},{"id":"ref-for-dfn-invalid-argument\u2465"},{"id":"ref-for-dfn-invalid-argument\u2466"}],"title":"Set display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-invalid-argument"},
 "display-feature-override": {"dfnID":"display-feature-override","dfnText":"display feature override","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature-override"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-display-feature-override\u2460"},{"id":"ref-for-display-feature-override\u2461"},{"id":"ref-for-display-feature-override\u2462"},{"id":"ref-for-display-feature-override\u2463"}],"title":"Set display features"}],"url":"#display-feature-override"},
 "display-feature-override-mask-length": {"dfnID":"display-feature-override-mask-length","dfnText":"mask length","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature-override-mask-length"}],"title":"Set display features"}],"url":"#display-feature-override-mask-length"},
 "display-feature-override-offset": {"dfnID":"display-feature-override-offset","dfnText":"offset","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature-override-offset"}],"title":"Set display features"}],"url":"#display-feature-override-offset"},
@@ -2312,18 +2428,17 @@ let dfnPanelData = {
 "display-feature①": {"dfnID":"display-feature\u2460","dfnText":"Display feature","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature\u2460"}],"title":"Automation of the segments property"}],"url":"#display-feature\u2460"},
 "dom-viewport-segments": {"dfnID":"dom-viewport-segments","dfnText":"segments","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-viewport-segments"},{"id":"ref-for-dom-viewport-segments\u2460"}],"title":"2.1. Display feature definition"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2461"}],"title":"6.1. The Viewport Interface"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2462"},{"id":"ref-for-dom-viewport-segments\u2463"},{"id":"ref-for-dom-viewport-segments\u2464"},{"id":"ref-for-dom-viewport-segments\u2465"},{"id":"ref-for-dom-viewport-segments\u2466"}],"title":"7. \n\tThe segments property\n"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2467"},{"id":"ref-for-dom-viewport-segments\u2468"}],"title":"Automation of the segments property"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2460\u24ea"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2460\u2460"}],"title":"Set display features"}],"url":"#dom-viewport-segments"},
 "dom-window-viewport": {"dfnID":"dom-window-viewport","dfnText":"viewport","external":false,"refSections":[],"url":"#dom-window-viewport"},
+"e2e08d07": {"dfnID":"e2e08d07","dfnText":"transform","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-transform"},{"id":"ref-for-propdef-transform\u2460"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-transforms-1/#propdef-transform"},
 "e3fe45c5": {"dfnID":"e3fe45c5","dfnText":"overlaysContent","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-virtualkeyboard-overlayscontent"}],"title":"3.4. interactive-widget"},{"refs":[{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2460"},{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2461"},{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2462"},{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2463"}],"title":"3.4.1. \n\tInteraction with virtualKeyboard.overlaysContent\n"}],"url":"https://w3c.github.io/virtual-keyboard#dom-virtualkeyboard-overlayscontent"},
-"e4aff4af": {"dfnID":"e4aff4af","dfnText":"devicePixelRatio","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-devicepixelratio"}],"title":"4. \n\tThe zoom property\n"},{"refs":[{"id":"ref-for-dom-window-devicepixelratio\u2460"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://www.w3.org/TR/cssom-view-1/#dom-window-devicepixelratio"},
-"e7c6bf78": {"dfnID":"e7c6bf78","dfnText":"transform","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-transform"},{"id":"ref-for-propdef-transform\u2460"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/css-transforms-1/#propdef-transform"},
 "e99bd18e": {"dfnID":"e99bd18e","dfnText":"relevant global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-global"}],"title":"7. \n\tThe segments property\n"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
-"eadea5f4": {"dfnID":"eadea5f4","dfnText":"extension command URI Template","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-extension-command-uri-template"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-extension-command-uri-template\u2460"}],"title":"Clear display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-extension-command-uri-template"},
+"ed3eb665": {"dfnID":"ed3eb665","dfnText":"natural size","external":true,"refSections":[{"refs":[{"id":"ref-for-natural-size"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-images-3/#natural-size"},
 "effective-zoom": {"dfnID":"effective-zoom","dfnText":"effective zoom","external":false,"refSections":[{"refs":[{"id":"ref-for-effective-zoom"},{"id":"ref-for-effective-zoom\u2460"},{"id":"ref-for-effective-zoom\u2461"}],"title":"4. \n\tThe zoom property\n"},{"refs":[{"id":"ref-for-effective-zoom\u2462"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"#effective-zoom"},
-"f0145330": {"dfnID":"f0145330","dfnText":"onchange","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-deviceposture-onchange"}],"title":"7. \n\tThe segments property\n"}],"url":"https://www.w3.org/TR/device-posture/#dom-deviceposture-onchange"},
+"f242baf0": {"dfnID":"f242baf0","dfnText":"initial viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-initial-viewport\u2462"}],"title":"3.4. interactive-widget"}],"url":"https://drafts.csswg.org/css-viewport/#initial-viewport"},
 "f426b2a9": {"dfnID":"f426b2a9","dfnText":"Array","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-array-objects"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects"},
-"fb01f680": {"dfnID":"fb01f680","dfnText":"line-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-line-height"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height"},
-"fb688f4f": {"dfnID":"fb688f4f","dfnText":"direction","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-direction"},{"id":"ref-for-propdef-direction\u2460"}],"title":"2. \nThe viewport"}],"url":"https://www.w3.org/TR/css-writing-modes-3/#propdef-direction"},
-"fbac5254": {"dfnID":"fbac5254","dfnText":"success","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-success"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-success\u2460"}],"title":"Clear display features"}],"url":"https://www.w3.org/TR/webdriver2/#dfn-success"},
+"fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"},{"id":"ref-for-length-value\u2461"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
+"fb17617c": {"dfnID":"fb17617c","dfnText":"resize","external":true,"refSections":[{"refs":[{"id":"ref-for-eventdef-window-resize"}],"title":"7. \n\tThe segments property\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#eventdef-window-resize"},
 "fd00e7b4": {"dfnID":"fd00e7b4","dfnText":"NaN","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-number.nan"},{"id":"ref-for-sec-number.nan\u2460"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan"},
+"fdf6efd5": {"dfnID":"fdf6efd5","dfnText":"font-size","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-size"},{"id":"ref-for-propdef-font-size\u2460"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size"},
 "initial-viewport": {"dfnID":"initial-viewport","dfnText":"initial viewport","external":false,"refSections":[{"refs":[{"id":"ref-for-initial-viewport"},{"id":"ref-for-initial-viewport\u2460"},{"id":"ref-for-initial-viewport\u2461"}],"title":"3.4. interactive-widget"}],"url":"#initial-viewport"},
 "interactive-widget": {"dfnID":"interactive-widget","dfnText":"interactive-widget","external":false,"refSections":[{"refs":[{"id":"ref-for-interactive-widget"},{"id":"ref-for-interactive-widget\u2460"}],"title":"3.4. interactive-widget"},{"refs":[{"id":"ref-for-interactive-widget\u2461"},{"id":"ref-for-interactive-widget\u2462"},{"id":"ref-for-interactive-widget\u2463"}],"title":"3.4.1. \n\tInteraction with virtualKeyboard.overlaysContent\n"}],"url":"#interactive-widget"},
 "overlays-content": {"dfnID":"overlays-content","dfnText":"overlays-content","external":false,"refSections":[{"refs":[{"id":"ref-for-overlays-content"}],"title":"3.4.1. \n\tInteraction with virtualKeyboard.overlaysContent\n"}],"url":"#overlays-content"},
@@ -2725,7 +2840,7 @@ function genLinkingSyntaxes(dfn) {
 "use strict";
 {
 let linkTitleData = {
-"https://www.w3.org/TR/css-values-4/#length-value": "Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw",
+"https://drafts.csswg.org/css-values-4/#length-value": "Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw",
 };
 
 function setTypeTitles() {
@@ -2762,6 +2877,30 @@ let refsData = {
 "#unscaled": {"displayText":"unscaled","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"unscaled","type":"dfn","url":"#unscaled"},
 "#viewport①": {"displayText":"Viewport","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"Viewport","type":"interface","url":"#viewport\u2460"},
 "https://dom.spec.whatwg.org/#document": {"displayText":"Document","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Document","type":"interface","url":"https://dom.spec.whatwg.org/#document"},
+"https://drafts.csswg.org/css-cascade-5/#computed-value": {"displayText":"computed value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"computed value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
+"https://drafts.csswg.org/css-cascade-5/#used-value": {"displayText":"used value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"used value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#used-value"},
+"https://drafts.csswg.org/css-fonts-4/#propdef-font-size": {"displayText":"font-size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-size","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size"},
+"https://drafts.csswg.org/css-images-3/#natural-size": {"displayText":"natural size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-images","spec":"css-images-3","status":"current","text":"natural size","type":"dfn","url":"https://drafts.csswg.org/css-images-3/#natural-size"},
+"https://drafts.csswg.org/css-page-3/#at-ruledef-page": {"displayText":"@page","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-page","spec":"css-page-3","status":"current","text":"@page","type":"at-rule","url":"https://drafts.csswg.org/css-page-3/#at-ruledef-page"},
+"https://drafts.csswg.org/css-transforms-1/#propdef-transform": {"displayText":"transform","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-transforms","spec":"css-transforms-1","status":"current","text":"transform","type":"property","url":"https://drafts.csswg.org/css-transforms-1/#propdef-transform"},
+"https://drafts.csswg.org/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"https://drafts.csswg.org/css-values-4/#length-value": {"displayText":"<length>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<length>","type":"type","url":"https://drafts.csswg.org/css-values-4/#length-value"},
+"https://drafts.csswg.org/css-values-4/#number-value": {"displayText":"<number>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<number>","type":"type","url":"https://drafts.csswg.org/css-values-4/#number-value"},
+"https://drafts.csswg.org/css-values-4/#percentage-value": {"displayText":"<percentage>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<percentage>","type":"type","url":"https://drafts.csswg.org/css-values-4/#percentage-value"},
+"https://drafts.csswg.org/css-values-4/#px": {"displayText":"px","export":true,"for_":["<length>"],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"px","type":"value","url":"https://drafts.csswg.org/css-values-4/#px"},
+"https://drafts.csswg.org/css-viewport/#initial-viewport": {"displayText":"initial viewport","export":false,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"current","text":"initial viewport","type":"dfn","url":"https://drafts.csswg.org/css-viewport/#initial-viewport"},
+"https://drafts.csswg.org/css-writing-modes-3/#propdef-direction": {"displayText":"direction","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-3","status":"current","text":"direction","type":"property","url":"https://drafts.csswg.org/css-writing-modes-3/#propdef-direction"},
+"https://drafts.csswg.org/css2/#propdef-line-height": {"displayText":"line-height","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"line-height","type":"property","url":"https://drafts.csswg.org/css2/#propdef-line-height"},
+"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle": {"displayText":"getComputedStyle(elt)","export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"getComputedStyle(elt)","type":"method","url":"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle"},
+"https://drafts.csswg.org/cssom-view-1/#dom-element-getboundingclientrect": {"displayText":"getBoundingClientRect()","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"getBoundingClientRect()","type":"method","url":"https://drafts.csswg.org/cssom-view-1/#dom-element-getboundingclientrect"},
+"https://drafts.csswg.org/cssom-view-1/#dom-element-getclientrects": {"displayText":"getClientRects()","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"getClientRects()","type":"method","url":"https://drafts.csswg.org/cssom-view-1/#dom-element-getclientrects"},
+"https://drafts.csswg.org/cssom-view-1/#dom-element-scrolltop": {"displayText":"scrollTop","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"scrollTop","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-element-scrolltop"},
+"https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio": {"displayText":"devicePixelRatio","export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"devicePixelRatio","type":"attribute","url":"https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio"},
+"https://drafts.csswg.org/cssom-view-1/#eventdef-window-resize": {"displayText":"resize","export":true,"for_":["Window","VisualViewport"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"resize","type":"event","url":"https://drafts.csswg.org/cssom-view-1/#eventdef-window-resize"},
+"https://drafts.csswg.org/cssom-view-1/#visual-viewport": {"displayText":"visual viewport","export":false,"for_":[],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"current","text":"visual viewport","type":"dfn","url":"https://drafts.csswg.org/cssom-view-1/#visual-viewport"},
+"https://drafts.csswg.org/mediaqueries-5/#continuous-media": {"displayText":"continuous media","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"continuous media","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-5/#continuous-media"},
+"https://drafts.csswg.org/mediaqueries-5/#paged-media": {"displayText":"paged media","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"paged media","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-5/#paged-media"},
+"https://drafts.fxtf.org/geometry-1/#domrect": {"displayText":"DOMRect","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"current","text":"DOMRect","type":"interface","url":"https://drafts.fxtf.org/geometry-1/#domrect"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#bc-traversable": {"displayText":"top-level traversable","export":true,"for_":["browsing context"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"top-level traversable","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#bc-traversable"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active": {"displayText":"fully active","export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"fully active","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#navigable": {"displayText":"navigable","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"navigable","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#navigable"},
@@ -2774,51 +2913,27 @@ let refsData = {
 "https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects": {"displayText":"Array","export":true,"for_":[],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"Array","type":"interface","url":"https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects"},
 "https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects": {"displayText":"Number","export":true,"for_":[],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"Number","type":"interface","url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects"},
 "https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan": {"displayText":"NaN","export":true,"for_":["Number"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"NaN","type":"attribute","url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan"},
+"https://w3c.github.io/IntersectionObserver/#intersectionobserver": {"displayText":"IntersectionObserver","export":true,"for_":[],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"IntersectionObserver","type":"interface","url":"https://w3c.github.io/IntersectionObserver/#intersectionobserver"},
+"https://w3c.github.io/device-posture/#dfn-posture": {"displayText":"posture","export":true,"for_":[],"level":"1","normative":true,"shortname":"device-posture","spec":"device-posture","status":"current","text":"posture","type":"dfn","url":"https://w3c.github.io/device-posture/#dfn-posture"},
+"https://w3c.github.io/device-posture/#dom-deviceposture-onchange": {"displayText":"onchange","export":true,"for_":["DevicePosture"],"level":"1","normative":true,"shortname":"device-posture","spec":"device-posture","status":"current","text":"onchange","type":"attribute","url":"https://w3c.github.io/device-posture/#dom-deviceposture-onchange"},
+"https://w3c.github.io/screen-orientation/#dom-screenorientation-onchange": {"displayText":"onchange","export":true,"for_":["ScreenOrientation"],"level":"1","normative":true,"shortname":"screen-orientation","spec":"screen-orientation","status":"current","text":"onchange","type":"attribute","url":"https://w3c.github.io/screen-orientation/#dom-screenorientation-onchange"},
 "https://w3c.github.io/virtual-keyboard#dom-virtualkeyboard-overlayscontent": {"displayText":"overlaysContent","export":true,"for_":["VirtualKeyboard"],"level":"","normative":true,"shortname":"virtual-keyboard","spec":"virtual-keyboard","status":"anchor-block","text":"overlaysContent","type":"attribute","url":"https://w3c.github.io/virtual-keyboard#dom-virtualkeyboard-overlayscontent"},
+"https://w3c.github.io/webdriver-bidi/#modules-session": {"displayText":"session","export":true,"for_":["modules"],"level":"1","normative":true,"shortname":"webdriver-bidi","spec":"webdriver-bidi","status":"current","text":"session","type":"dfn","url":"https://w3c.github.io/webdriver-bidi/#modules-session"},
+"https://w3c.github.io/webdriver/#dfn-current-browsing-context": {"displayText":"current browsing context","export":false,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"current browsing context","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-current-browsing-context"},
+"https://w3c.github.io/webdriver/#dfn-error": {"displayText":"error","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"error","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-error"},
+"https://w3c.github.io/webdriver/#dfn-error-code": {"displayText":"error code","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"error code","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-error-code"},
+"https://w3c.github.io/webdriver/#dfn-extension-command-uri-template": {"displayText":"extension command URI Template","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"extension command uri template","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-extension-command-uri-template"},
+"https://w3c.github.io/webdriver/#dfn-extension-commands": {"displayText":"extension commands","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"extension commands","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-extension-commands"},
+"https://w3c.github.io/webdriver/#dfn-getting-properties": {"displayText":"getting a property","export":false,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"getting a property","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-getting-properties"},
+"https://w3c.github.io/webdriver/#dfn-invalid-argument": {"displayText":"invalid argument","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"invalid argument","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-invalid-argument"},
+"https://w3c.github.io/webdriver/#dfn-local-ends": {"displayText":"local end","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"local end","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-local-ends"},
+"https://w3c.github.io/webdriver/#dfn-remote-end-steps": {"displayText":"remote end steps","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"remote end steps","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-remote-end-steps"},
+"https://w3c.github.io/webdriver/#dfn-success": {"displayText":"success","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"success","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-success"},
 "https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string": {"displayText":"string","export":true,"for_":["SpeechGrammarList/addFromString(string, weight)","SpeechGrammarList/addFromString(string)"],"level":"1","normative":true,"shortname":"speech-api","spec":"speech-api","status":"current","text":"string","type":"argument","url":"https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string"},
 "https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
 "https://webidl.spec.whatwg.org/#Replaceable": {"displayText":"Replaceable","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Replaceable","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Replaceable"},
 "https://webidl.spec.whatwg.org/#SameObject": {"displayText":"SameObject","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"SameObject","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#SameObject"},
 "https://webidl.spec.whatwg.org/#idl-frozen-array": {"displayText":"FrozenArray","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"FrozenArray","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
-"https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height": {"displayText":"line-height","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"line-height","type":"property","url":"https://www.w3.org/TR/CSS2/visudet.html#propdef-line-height"},
-"https://www.w3.org/TR/css-cascade-5/#computed-value": {"displayText":"computed value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"snapshot","text":"computed value","type":"dfn","url":"https://www.w3.org/TR/css-cascade-5/#computed-value"},
-"https://www.w3.org/TR/css-cascade-5/#used-value": {"displayText":"used value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"snapshot","text":"used value","type":"dfn","url":"https://www.w3.org/TR/css-cascade-5/#used-value"},
-"https://www.w3.org/TR/css-fonts-4/#propdef-font-size": {"displayText":"font-size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"snapshot","text":"font-size","type":"property","url":"https://www.w3.org/TR/css-fonts-4/#propdef-font-size"},
-"https://www.w3.org/TR/css-images-3/#natural-size": {"displayText":"natural size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-images","spec":"css-images-3","status":"snapshot","text":"natural size","type":"dfn","url":"https://www.w3.org/TR/css-images-3/#natural-size"},
-"https://www.w3.org/TR/css-page-3/#at-ruledef-page": {"displayText":"@page","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-page","spec":"css-page-3","status":"snapshot","text":"@page","type":"at-rule","url":"https://www.w3.org/TR/css-page-3/#at-ruledef-page"},
-"https://www.w3.org/TR/css-transforms-1/#propdef-transform": {"displayText":"transform","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-transforms","spec":"css-transforms-1","status":"snapshot","text":"transform","type":"property","url":"https://www.w3.org/TR/css-transforms-1/#propdef-transform"},
-"https://www.w3.org/TR/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"|","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#comb-one"},
-"https://www.w3.org/TR/css-values-4/#length-value": {"displayText":"<length>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"<length>","type":"type","url":"https://www.w3.org/TR/css-values-4/#length-value"},
-"https://www.w3.org/TR/css-values-4/#number-value": {"displayText":"<number>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"<number>","type":"type","url":"https://www.w3.org/TR/css-values-4/#number-value"},
-"https://www.w3.org/TR/css-values-4/#percentage-value": {"displayText":"<percentage>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"<percentage>","type":"type","url":"https://www.w3.org/TR/css-values-4/#percentage-value"},
-"https://www.w3.org/TR/css-values-4/#px": {"displayText":"px","export":true,"for_":["<length>"],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"px","type":"value","url":"https://www.w3.org/TR/css-values-4/#px"},
-"https://www.w3.org/TR/css-viewport-1/#initial-viewport": {"displayText":"initial viewport","export":false,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"snapshot","text":"initial viewport","type":"dfn","url":"https://www.w3.org/TR/css-viewport-1/#initial-viewport"},
-"https://www.w3.org/TR/css-writing-modes-3/#propdef-direction": {"displayText":"direction","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-3","status":"snapshot","text":"direction","type":"property","url":"https://www.w3.org/TR/css-writing-modes-3/#propdef-direction"},
-"https://www.w3.org/TR/cssom-1/#dom-window-getcomputedstyle": {"displayText":"getComputedStyle(elt)","export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"snapshot","text":"getComputedStyle(elt)","type":"method","url":"https://www.w3.org/TR/cssom-1/#dom-window-getcomputedstyle"},
-"https://www.w3.org/TR/cssom-view-1/#dom-element-getboundingclientrect": {"displayText":"getBoundingClientRect()","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"snapshot","text":"getBoundingClientRect()","type":"method","url":"https://www.w3.org/TR/cssom-view-1/#dom-element-getboundingclientrect"},
-"https://www.w3.org/TR/cssom-view-1/#dom-element-getclientrects": {"displayText":"getClientRects()","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"snapshot","text":"getClientRects()","type":"method","url":"https://www.w3.org/TR/cssom-view-1/#dom-element-getclientrects"},
-"https://www.w3.org/TR/cssom-view-1/#dom-element-scrolltop": {"displayText":"scrollTop","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"snapshot","text":"scrollTop","type":"attribute","url":"https://www.w3.org/TR/cssom-view-1/#dom-element-scrolltop"},
-"https://www.w3.org/TR/cssom-view-1/#dom-window-devicepixelratio": {"displayText":"devicePixelRatio","export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"snapshot","text":"devicePixelRatio","type":"attribute","url":"https://www.w3.org/TR/cssom-view-1/#dom-window-devicepixelratio"},
-"https://www.w3.org/TR/cssom-view-1/#eventdef-window-resize": {"displayText":"resize","export":true,"for_":["Window","VisualViewport"],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"snapshot","text":"resize","type":"event","url":"https://www.w3.org/TR/cssom-view-1/#eventdef-window-resize"},
-"https://www.w3.org/TR/cssom-view-1/#visual-viewport": {"displayText":"visual viewport","export":false,"for_":[],"level":"1","normative":true,"shortname":"cssom-view","spec":"cssom-view-1","status":"snapshot","text":"visual viewport","type":"dfn","url":"https://www.w3.org/TR/cssom-view-1/#visual-viewport"},
-"https://www.w3.org/TR/device-posture/#dfn-posture": {"displayText":"posture","export":true,"for_":[],"level":"1","normative":true,"shortname":"device-posture","spec":"device-posture","status":"snapshot","text":"posture","type":"dfn","url":"https://www.w3.org/TR/device-posture/#dfn-posture"},
-"https://www.w3.org/TR/device-posture/#dom-deviceposture-onchange": {"displayText":"onchange","export":true,"for_":["DevicePosture"],"level":"1","normative":true,"shortname":"device-posture","spec":"device-posture","status":"snapshot","text":"onchange","type":"attribute","url":"https://www.w3.org/TR/device-posture/#dom-deviceposture-onchange"},
-"https://www.w3.org/TR/geometry-1/#domrect": {"displayText":"DOMRect","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"snapshot","text":"DOMRect","type":"interface","url":"https://www.w3.org/TR/geometry-1/#domrect"},
-"https://www.w3.org/TR/intersection-observer/#intersectionobserver": {"displayText":"IntersectionObserver","export":true,"for_":[],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"snapshot","text":"IntersectionObserver","type":"interface","url":"https://www.w3.org/TR/intersection-observer/#intersectionobserver"},
-"https://www.w3.org/TR/mediaqueries-5/#continuous-media": {"displayText":"continuous media","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"snapshot","text":"continuous media","type":"dfn","url":"https://www.w3.org/TR/mediaqueries-5/#continuous-media"},
-"https://www.w3.org/TR/mediaqueries-5/#paged-media": {"displayText":"paged media","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"snapshot","text":"paged media","type":"dfn","url":"https://www.w3.org/TR/mediaqueries-5/#paged-media"},
-"https://www.w3.org/TR/screen-orientation/#dom-screenorientation-onchange": {"displayText":"onchange","export":true,"for_":["ScreenOrientation"],"level":"1","normative":true,"shortname":"screen-orientation","spec":"screen-orientation","status":"snapshot","text":"onchange","type":"attribute","url":"https://www.w3.org/TR/screen-orientation/#dom-screenorientation-onchange"},
-"https://www.w3.org/TR/webdriver-bidi/#modules-session": {"displayText":"session","export":true,"for_":["modules"],"level":"1","normative":true,"shortname":"webdriver-bidi","spec":"webdriver-bidi","status":"snapshot","text":"session","type":"dfn","url":"https://www.w3.org/TR/webdriver-bidi/#modules-session"},
-"https://www.w3.org/TR/webdriver2/#dfn-current-browsing-context": {"displayText":"current browsing context","export":false,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"current browsing context","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-current-browsing-context"},
-"https://www.w3.org/TR/webdriver2/#dfn-error": {"displayText":"error","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"error","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-error"},
-"https://www.w3.org/TR/webdriver2/#dfn-error-code": {"displayText":"error code","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"error code","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-error-code"},
-"https://www.w3.org/TR/webdriver2/#dfn-extension-command-uri-template": {"displayText":"extension command URI Template","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"extension command uri template","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-extension-command-uri-template"},
-"https://www.w3.org/TR/webdriver2/#dfn-extension-commands": {"displayText":"extension commands","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"extension commands","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-extension-commands"},
-"https://www.w3.org/TR/webdriver2/#dfn-getting-properties": {"displayText":"getting a property","export":false,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"getting a property","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-getting-properties"},
-"https://www.w3.org/TR/webdriver2/#dfn-invalid-argument": {"displayText":"invalid argument","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"invalid argument","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-invalid-argument"},
-"https://www.w3.org/TR/webdriver2/#dfn-local-ends": {"displayText":"local end","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"local end","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-local-ends"},
-"https://www.w3.org/TR/webdriver2/#dfn-remote-end-steps": {"displayText":"remote end steps","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"remote end steps","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-remote-end-steps"},
-"https://www.w3.org/TR/webdriver2/#dfn-success": {"displayText":"success","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"snapshot","text":"success","type":"dfn","url":"https://www.w3.org/TR/webdriver2/#dfn-success"},
 };
 
 function mkRefHint(link, ref) {

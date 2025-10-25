@@ -3,11 +3,14 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>CSS Anchor Positioning Module Level 2</title>
-  <meta content="FPWD" name="w3c-status">
+  <meta content="ED" name="w3c-status">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://www.w3.org/TR/css-anchor-position-2/" rel="canonical">
-  <meta content="34d7f5cbb1214cff98133749406513edb8a1af40" name="revision">
+  <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="d1c88e9a832880e2bd3beec17be6b9d92627fd33" name="revision">
   <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
     color: var(--a-normal-text);
@@ -684,8 +687,143 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
 }
 </style>
-  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-WD" rel="stylesheet">
-  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
+<style>/* Boilerplate: style-wpt */
+:root {
+    --wpt-border: hsl(0, 0%, 60%);
+    --wpt-bg: hsl(0, 0%, 95%);
+    --wpt-text: var(--text);
+    --wptheading-text: hsl(0, 0%, 30%);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --wpt-border: hsl(0, 0%, 30%);
+        --wpt-bg: var(--borderedblock-bg);
+        --wpt-text: var(--text);
+        --wptheading-text: hsl(0, 0%, 60%);
+    }
+}
+.wpt-tests-block {
+    list-style: none;
+    border-left: .5em solid var(--wpt-border);
+    background: var(--wpt-bg);
+    color: var(--wpt-text);
+    margin: 1em auto;
+    padding: .5em;
+}
+.wpt-tests-block summary {
+    color: var(--wptheading-text);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.wpt-tests-block summary::marker{
+    color: var(--wpt-border);
+}
+.wpt-tests-block summary:hover::marker{
+    color: var(--wpt-text);
+}
+/*
+   The only content  of a wpt test block in its closed state is the <summary>,
+   which contains the word TESTS,
+   and that is absolutely positioned.
+   In that closed state, wpt test blocks are styled
+   to have a top margin whose height is exactly equal
+   to the height of the absolutely positioned <summary>,
+   and no other background/padding/margin/border.
+   The wpt test block elements will therefore allow the maring
+   of the previous/next block elements
+   to collapse through them;
+   if this combined margin would be larger than its own top margin,
+   it stays as is,
+   and therefore the pre-existing vertical rhythm of the document is undisturbed.
+   If that combined margin would be smaller, it is grown to that size.
+   This means that the wpt test block ensures
+   that there's always enough vertical space to insert the summary,
+   without adding more than is needed.
+*/
+.wpt-tests-block:not([open]){
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.75em;
+    line-height: 1;
+    position: relative;
+    margin: 1em 0 0;
+}
+.wpt-tests-block:not([open]) summary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*
+   It is possible that both the last child of a block element
+   and the block element itself
+   would be annotated with a <wpt> block each.
+   If the block element has a padding or a border,
+   that's fine, but otherwise
+   the bottom margin of the block and of its last child would collapse
+   and both <wpt> elements would overlap, being both placed there.
+   To avoid that, add 1px of padding to the <wpt> element annotating the last child
+   to prevent the bottom margin of the block and of its last child from collapsing
+   (and as much negative margin,
+   as wel only want to prevent margin collapsing,
+   but are not trying to actually take more space).
+*/
+.wpt-tests-block:not([open]):last-child {
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+}
+/*
+   Exception to the previous rule:
+   don't do that in non-last list items,
+   because it's not necessary,
+   and would therefore consume more space than strictly needed.
+   Lists must have list items as children, not <wpt> elements,
+   so a <wpt> element cannot be a sibling of a list item,
+   and the collision that the previous rule avoids cannot happen.
+*/
+li:not(:last-child) > .wpt-tests-block:not([open]):last-child,
+dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.wpt-tests-block:not([open]):not(:hover){
+    opacity: 0.5;
+}
+.wpt-tests-list {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr max-content auto auto;
+    grid-column-gap: .5em;
+}
+.wpt-tests-block hr:last-child {
+    display: none;
+}
+.wpt-test {
+    display: contents;
+}
+.wpt-test > a {
+    text-decoration: underline;
+    border: none;
+}
+.wpt-test > .wpt-name { grid-column: 1; }
+.wpt-test > .wpt-results { grid-column: 2; }
+.wpt-test > .wpt-live { grid-column: 3; }
+.wpt-test > .wpt-source { grid-column: 4; }
+
+.wpt-test > .wpt-results {
+    display: flex;
+    gap: .1em;
+}
+.wpt-test .wpt-result {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+}
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
@@ -693,20 +831,16 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </a>
 </p>
    <h1 class="p-name no-ref" id="title">CSS Anchor Positioning Module Level 2</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#FPWD">W3C First Public Working Draft</a>,
-    <time class="dt-updated" datetime="2025-10-17">17 October 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2025-10-24">24 October 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
      <dl>
       <dt>This version:
-      <dd><a class="u-url" href="https://www.w3.org/TR/2025/FPWD-css-anchor-position-2-20251017/">https://www.w3.org/TR/2025/FPWD-css-anchor-position-2-20251017/</a>
+      <dd><a class="u-url" href="https://drafts.csswg.org/css-anchor-position-2/">https://drafts.csswg.org/css-anchor-position-2/</a>
       <dt>Latest published version:
       <dd><a href="https://www.w3.org/TR/css-anchor-position-2/">https://www.w3.org/TR/css-anchor-position-2/</a>
-      <dt>Editor's Draft:
-      <dd><a href="https://drafts.csswg.org/css-anchor-position-2/">https://drafts.csswg.org/css-anchor-position-2/</a>
-      <dt>History:
-      <dd><a class="u-url" href="https://www.w3.org/standards/history/css-anchor-position-2/">https://www.w3.org/standards/history/css-anchor-position-2/</a>
       <dt>Feedback:
       <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-anchor-position-2">CSSWG Issues Repository</a>
       <dt class="editor">Editors:
@@ -727,7 +861,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>This specification defines <a data-link-type="dfn" href="https://www.w3.org/TR/css-anchor-position-1/#anchor-positioning" id="ref-for-anchor-positioning">anchor positioning</a>,
+   <p>This specification defines <a data-link-type="dfn" href="https://drafts.csswg.org/css-anchor-position-1/#anchor-positioning" id="ref-for-anchor-positioning">anchor positioning</a>,
 where an positioned element can size and position itself
 relative to one or more anchor elements elsewhere on the page.</p>
    
@@ -741,26 +875,11 @@ on screen, on paper, etc.
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p><em>This section describes the status of this document at the time of its publication.
-	A list of current W3C publications
-	and the latest revision of this technical report
-	can be found in the <a href="https://www.w3.org/TR/">W3C standards and drafts index.</a></em>
-
-</p>
    <p>
-	This document was published
-	by the <a href="https://www.w3.org/groups/wg/css">CSS Working Group</a>
-	as a <strong>First Public Working Draft</strong> using the <a href="https://www.w3.org/policies/process/20250818/#recs-and-notes">Recommendation
-      track</a>.
-	Publication as a First Public Working Draft
-	does not imply endorsement by <abbr title="World Wide Web Consortium">W3C</abbr> and its Members.
-
-</p>
-   <p>
-	This is a draft document
-	and may be updated, replaced
-	or obsoleted by other documents at any time.
-	It is inappropriate to cite this document as other than a work in progress.
+	This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress.
 
 </p>
    <p>Please send feedback
@@ -774,18 +893,6 @@ on screen, on paper, etc.
 </p>
    <p>This document is governed by the
 	<a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
-
-</p>
-   <p>This document was produced by a group operating under the
-	<a href="https://www.w3.org/policies/patent-policy/20200915/">W3C Patent Policy</a>.
-	W3C maintains a
-	<a href="https://www.w3.org/groups/wg/css/ipr" rel="disclosure">public list of any patent disclosures</a>
-	made in connection with the deliverables of the group;
-	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent that the individual believes
-	contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a>
-	must disclose the information in accordance with
-	<a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
 
 </p>
   </div>
@@ -852,49 +959,49 @@ Non-experimental implementations</span></a>
    <p>This is a delta specification, meaning that it currently contains
 	only the differences from CSS Anchor Positioning Level 1 <a data-link-type="biblio" href="#biblio-css-anchor-position-1" title="CSS Anchor Positioning">[CSS-ANCHOR-POSITION-1]</a>.</p>
    <h2 class="heading settled" data-level="2" id="anchored-container-queries"><span class="secno">2. </span><span class="content">Container Queries for Anchor Positioning</span><a class="self-link" href="#anchored-container-queries"></a></h2>
-   <p>This section extends <a data-link-type="dfn" href="https://www.w3.org/TR/css-conditional-5/#container-query" id="ref-for-container-query">container queries</a> from <a data-link-type="biblio" href="#biblio-css-conditional-5" title="CSS Conditional Rules Module Level 5">[css-conditional-5]</a> to allow
-	querying certain aspects of elements using <a data-link-type="dfn" href="https://www.w3.org/TR/css-anchor-position-1/#anchor-positioning" id="ref-for-anchor-positioning①">anchor positioning</a>.</p>
-   <h3 class="heading settled" data-level="2.1" id="container-type-anchored"><span class="secno">2.1. </span><span class="content">Extending <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-conditional-5/#propdef-container-type" id="ref-for-propdef-container-type">container-type</a> with <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored">anchored</a></span><a class="self-link" href="#container-type-anchored"></a></h3>
+   <p>This section extends <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-5/#container-query" id="ref-for-container-query">container queries</a> from <a data-link-type="biblio" href="#biblio-css-conditional-5" title="CSS Conditional Rules Module Level 5">[css-conditional-5]</a> to allow
+	querying certain aspects of elements using <a data-link-type="dfn" href="https://drafts.csswg.org/css-anchor-position-1/#anchor-positioning" id="ref-for-anchor-positioning①">anchor positioning</a>.</p>
+   <h3 class="heading settled" data-level="2.1" id="container-type-anchored"><span class="secno">2.1. </span><span class="content">Extending <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-type" id="ref-for-propdef-container-type">container-type</a> with <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored">anchored</a></span><a class="self-link" href="#container-type-anchored"></a></h3>
    <p>This specification extends the <span class="css">container-type</span> property defined in
-	<a href="https://www.w3.org/TR/css-conditional-5/#container-type"><cite>CSS Conditional 5</cite> § 5.1 Creating Query Containers: the container-type property</a> with a new	<a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored①">anchored</a> keyword.
+	<a href="https://drafts.csswg.org/css-conditional-5/#container-type"><cite>CSS Conditional 5</cite> § 5.1 Creating Query Containers: the container-type property</a> with a new	<a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored①">anchored</a> keyword.
 	<span class="css" id="ref-for-valdef-container-type-anchored②">anchored</span> can be combined with existing container types such as
-	<a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-conditional-5/#valdef-container-type-scroll-state" id="ref-for-valdef-container-type-scroll-state">scroll-state</a> and <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-conditional-5/#valdef-container-type-size" id="ref-for-valdef-container-type-size">size</a>:</p>
-<pre class="prod">normal <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one">|</a> [ [ size <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> inline-size ] <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any">||</a> scroll-state <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> anchored ]</pre>
+	<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-5/#valdef-container-type-scroll-state" id="ref-for-valdef-container-type-scroll-state">scroll-state</a> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-5/#valdef-container-type-size" id="ref-for-valdef-container-type-size">size</a>:</p>
+<pre class="prod">normal <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> [ [ size <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> inline-size ] <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any">||</a> scroll-state <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> anchored ]</pre>
    <dl>
     <dt><dfn class="dfn-paneled css" data-dfn-for="container-type" data-dfn-type="value" data-export id="valdef-container-type-anchored">anchored</dfn>
 		
     <dd>
      
-			Establishes a <a data-link-type="dfn" href="https://www.w3.org/TR/css-conditional-5/#query-container" id="ref-for-query-container">query container</a> for <a data-link-type="dfn" href="https://www.w3.org/TR/css-conditional-5/#container-query" id="ref-for-container-query①">container queries</a>,
+			Establishes a <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-5/#query-container" id="ref-for-query-container">query container</a> for <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-5/#container-query" id="ref-for-container-query①">container queries</a>,
 			allowing for descendants of an anchor positioned element to be styled
 			based on certain features of the anchoring. 
-			(Currently, limited to which of the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks">position-try-fallbacks</a> are applied, if any.)
+			(Currently, limited to which of the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks">position-try-fallbacks</a> are applied, if any.)
 
 
-     <p>The <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored③">anchored</a> container-type applies <a data-link-type="dfn" href="https://www.w3.org/TR/css-contain-2/#style-containment" id="ref-for-style-containment">style containment</a> to the
-			<a data-link-type="dfn" href="https://www.w3.org/TR/css-conditional-5/#query-container" id="ref-for-query-container①">query container</a>.</p>
+     <p>The <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored③">anchored</a> container-type applies <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#style-containment" id="ref-for-style-containment">style containment</a> to the
+			<a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-5/#query-container" id="ref-for-query-container①">query container</a>.</p>
      <div class="note" role="note">
       
-			NOTE: <a data-link-type="dfn" href="https://www.w3.org/TR/css-contain-2/#style-containment" id="ref-for-style-containment①">Style containment</a> is necessary to avoid a layout cycle for the
+			NOTE: <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#style-containment" id="ref-for-style-containment①">Style containment</a> is necessary to avoid a layout cycle for the
 			following case using <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/generate.html#counters" id="ref-for-counters">counters</a>:
 
       <ul>
        <li data-md>
         <p>We have an <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored④">anchored</a> container</p>
        <li data-md>
-        <p>A <a data-link-type="dfn" href="https://www.w3.org/TR/css-lists-3/#counter" id="ref-for-counter">counter</a> is incremented by a descendant of the anchored container
+        <p>A <a data-link-type="dfn" href="https://drafts.csswg.org/css-lists-3/#counter" id="ref-for-counter">counter</a> is incremented by a descendant of the anchored container
 based on a fallback query.</p>
        <li data-md>
-        <p>An <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#in-flow" id="ref-for-in-flow">in-flow</a> element, following the anchored container in tree order,
+        <p>An <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow">in-flow</a> element, following the anchored container in tree order,
 generates content, with the counter, affecting the size of the <span id="ref-for-in-flow①">in-flow</span>
 element.</p>
        <li data-md>
-        <p>The <a data-link-type="dfn" href="https://www.w3.org/TR/css-display-4/#in-flow" id="ref-for-in-flow②">in-flow</a> element affects the position / size of the
-<a data-link-type="dfn" href="https://www.w3.org/TR/css-anchor-position-1/#anchor-element" id="ref-for-anchor-element">anchor element</a>. In fact,
+        <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#in-flow" id="ref-for-in-flow②">in-flow</a> element affects the position / size of the
+<a data-link-type="dfn" href="https://drafts.csswg.org/css-anchor-position-1/#anchor-element" id="ref-for-anchor-element">anchor element</a>. In fact,
 the <span id="ref-for-in-flow③">in-flow</span> may be the <span id="ref-for-anchor-element①">anchor element</span>
 itself.</p>
        <li data-md>
-        <p>The changed position / size of the <a data-link-type="dfn" href="https://www.w3.org/TR/css-anchor-position-1/#anchor-element" id="ref-for-anchor-element②">anchor element</a>
+        <p>The changed position / size of the <a data-link-type="dfn" href="https://drafts.csswg.org/css-anchor-position-1/#anchor-element" id="ref-for-anchor-element②">anchor element</a>
 may change which fallback is chosen, which in turn affects the anchored query evaluation,
 hence the counter increment.</p>
       </ul>
@@ -909,23 +1016,23 @@ hence the counter increment.</p>
 #anchored-size <c- p>{</c-> <c- k>container-type</c-><c- p>:</c-> anchored inline-size<c- p>;</c-> <c- p>}</c->
 </pre>
    </div>
-   <h3 class="heading settled" data-level="2.2" id="container-rule-anchored"><span class="secno">2.2. </span><span class="content">Extending <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container">@container</a> syntax for <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored⑥">anchored</a> queries</span><a class="self-link" href="#container-rule-anchored"></a></h3>
+   <h3 class="heading settled" data-level="2.2" id="container-rule-anchored"><span class="secno">2.2. </span><span class="content">Extending <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container">@container</a> syntax for <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored⑥">anchored</a> queries</span><a class="self-link" href="#container-rule-anchored"></a></h3>
    <p>To query an <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored⑦">anchored</a> container, a new <code>anchored()</code> function is
-	added to the <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container①">@container</a> syntax. It extends the container query syntax by adding the
-	following production to the '<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-conditional-5/#typedef-query-in-parens" id="ref-for-typedef-query-in-parens">&lt;query-in-parens></a>' grammar:</p>
-<pre class="def prod"><a class="production" data-link-type="type" href="https://www.w3.org/TR/css-conditional-5/#typedef-query-in-parens" id="ref-for-typedef-query-in-parens①">&lt;query-in-parens></a> = ...
-                  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> anchored( <a class="production" data-link-type="type" href="#typedef-anchored-query" id="ref-for-typedef-anchored-query">&lt;anchored-query></a> )
+	added to the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container①">@container</a> syntax. It extends the container query syntax by adding the
+	following production to the '<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-conditional-5/#typedef-query-in-parens" id="ref-for-typedef-query-in-parens">&lt;query-in-parens></a>' grammar:</p>
+<pre class="def prod"><a class="production" data-link-type="type" href="https://drafts.csswg.org/css-conditional-5/#typedef-query-in-parens" id="ref-for-typedef-query-in-parens①">&lt;query-in-parens></a> = ...
+                  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> anchored( <a class="production" data-link-type="type" href="#typedef-anchored-query" id="ref-for-typedef-anchored-query">&lt;anchored-query></a> )
 
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-anchored-query"><a class="production" data-link-type="type" href="#typedef-anchored-query" id="ref-for-typedef-anchored-query①">&lt;anchored-query></a></dfn> = not <a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens">&lt;anchored-in-parens></a>
-                <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens①">&lt;anchored-in-parens></a> [ [ and <a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens②">&lt;anchored-in-parens></a> ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus">*</a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> [ or <a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens③">&lt;anchored-in-parens></a> ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus①">*</a> ]
-                <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> <u class="production link-error" data-lt="<anchored-feature>" title="LINK ERROR: No &apos;type&apos; refs found for &apos;<anchored-feature>&apos;.">&lt;anchored-feature></u>
+                <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens①">&lt;anchored-in-parens></a> [ [ and <a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens②">&lt;anchored-in-parens></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus">*</a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> [ or <a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens③">&lt;anchored-in-parens></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus①">*</a> ]
+                <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> <u class="production link-error" data-lt="<anchored-feature>" title="LINK ERROR: No &apos;type&apos; refs found for &apos;<anchored-feature>&apos;.">&lt;anchored-feature></u>
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-anchored-in-parens"><a class="production" data-link-type="type" href="#typedef-anchored-in-parens" id="ref-for-typedef-anchored-in-parens④">&lt;anchored-in-parens></a></dfn> = ( <a class="production" data-link-type="type" href="#typedef-anchored-query" id="ref-for-typedef-anchored-query②">&lt;anchored-query></a> )
-                    <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> ( <u class="production link-error" data-lt="<anchored-feature>" title="LINK ERROR: No &apos;type&apos; refs found for &apos;<anchored-feature>&apos;.">&lt;anchored-feature></u> )
-                    <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦">|</a> <a class="production" data-link-type="type" href="https://www.w3.org/TR/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed">&lt;general-enclosed></a>
+                    <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> ( <u class="production link-error" data-lt="<anchored-feature>" title="LINK ERROR: No &apos;type&apos; refs found for &apos;<anchored-feature>&apos;.">&lt;anchored-feature></u> )
+                    <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed">&lt;general-enclosed></a>
 </pre>
    <h3 class="heading settled" data-level="2.3" id="anchored-container"><span class="secno">2.3. </span><span class="content">Anchored Container Features</span><a class="self-link" href="#anchored-container"></a></h3>
    <h4 class="heading settled" data-level="2.3.1" id="anchored"><span class="secno">2.3.1. </span><span class="content">
-Applied <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks①">position-try-fallbacks</a>: the <a class="property" data-link-type="propdesc" href="#descdef-container-fallback" id="ref-for-descdef-container-fallback">fallback</a> feature</span><a class="self-link" href="#anchored"></a></h4>
+Applied <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks①">position-try-fallbacks</a>: the <a class="property" data-link-type="propdesc" href="#descdef-container-fallback" id="ref-for-descdef-container-fallback">fallback</a> feature</span><a class="self-link" href="#anchored"></a></h4>
    <table class="def descdef mq">
     <tbody>
      <tr>
@@ -933,48 +1040,48 @@ Applied <a class="property css" data-link-type="property" href="https://www.w3.o
       <td><dfn class="dfn-paneled css" data-dfn-for="@container" data-dfn-type="descriptor" data-export id="descdef-container-fallback">fallback</dfn>
      <tr>
       <th>For:
-      <td><a class="css" data-link-type="at-rule" href="https://www.w3.org/TR/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container②">@container</a>	
+      <td><a class="css" data-link-type="at-rule" href="https://drafts.csswg.org/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container②">@container</a>	
      <tr>
       <th>Value:
-      <td class="prod">none <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> [ [<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident">&lt;dashed-ident></a> <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any②">||</a> <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic">&lt;try-tactic></a>] <span id="ref-for-comb-one⑨">|</span> <a class="production css" data-link-type="type" href="#typedef-position-area-query" id="ref-for-typedef-position-area-query">&lt;position-area-query></a> ]	
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑧">|</a> [ [<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident">&lt;dashed-ident></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any②">||</a> <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic">&lt;try-tactic></a>] <span id="ref-for-comb-one⑨">|</span> <a class="production css" data-link-type="type" href="#typedef-position-area-query" id="ref-for-typedef-position-area-query">&lt;position-area-query></a> ]	
      <tr>
       <th>Type:
       <td>discrete	
    </table>
-   <p>The <a class="property" data-link-type="propdesc" href="#descdef-container-fallback" id="ref-for-descdef-container-fallback①">fallback</a> <a data-link-type="dfn" href="https://www.w3.org/TR/css-conditional-5/#container-feature" id="ref-for-container-feature">container feature</a> queries whether an anchor
-	positioned element has any of its computed <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks②">position-try-fallbacks</a> options
+   <p>The <a class="property" data-link-type="propdesc" href="#descdef-container-fallback" id="ref-for-descdef-container-fallback①">fallback</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-5/#container-feature" id="ref-for-container-feature">container feature</a> queries whether an anchor
+	positioned element has any of its computed <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks②">position-try-fallbacks</a> options
 	applied.</p>
    <dl>
     <dt><dfn class="dfn-paneled css" data-dfn-for="@container/fallback" data-dfn-type="value" data-export id="valdef-container-fallback-none">none</dfn>
 		
     <dd>
-			The <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored⑧">anchored</a> container does not have any <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks③">position-try-fallbacks</a>
+			The <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored⑧">anchored</a> container does not have any <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks③">position-try-fallbacks</a>
 			applied.
 		
-    <dt><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①">&lt;dashed-ident></a> || <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic①">&lt;try-tactic></a>
+    <dt><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①">&lt;dashed-ident></a> || <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic①">&lt;try-tactic></a>
     <dd>
      
 			The <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored⑨">anchored</a> container matches a combination of
-			<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident②">&lt;dashed-ident></a> and <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic②">&lt;try-tactic></a> applied from <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks④">position-try-fallbacks</a>.
-			If any of the <span class="css"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident③">&lt;dashed-ident></a></span> or <span class="css"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic③">&lt;try-tactic></a></span> are left out of
+			<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident②">&lt;dashed-ident></a> and <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic②">&lt;try-tactic></a> applied from <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks④">position-try-fallbacks</a>.
+			If any of the <span class="css"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident③">&lt;dashed-ident></a></span> or <span class="css"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic③">&lt;try-tactic></a></span> are left out of
 			the query value, they need to be left out in the applied value from
 			<span class="property" id="ref-for-propdef-position-try-fallbacks⑤">position-try-fallbacks</span>, and vice versa, in order to match.
 
 
-     <p>The <span class="css"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident④">&lt;dashed-ident></a></span> try rule name is not considered to be a
+     <p>The <span class="css"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident④">&lt;dashed-ident></a></span> try rule name is not considered to be a
 			<a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name" id="ref-for-css-tree-scoped-name">tree-scoped name</a> for the sake of matching <a class="property" data-link-type="propdesc" href="#descdef-container-fallback" id="ref-for-descdef-container-fallback②">fallback</a>.</p>
-     <p>The order of <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic④">&lt;try-tactic></a>s is significant. For instance
+     <p>The order of <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic④">&lt;try-tactic></a>s is significant. For instance
 			<code>flip-start flip-block</code> is not the same as
 			<code>flip-block flip-start</code>. Hence, the order must match for
 			<a class="property" data-link-type="propdesc" href="#descdef-container-fallback" id="ref-for-descdef-container-fallback③">fallback</a> queries.</p>
     <dt><a class="production css" data-link-type="type" href="#typedef-position-area-query" id="ref-for-typedef-position-area-query①">&lt;position-area-query></a>
     <dd>
      
-			The <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored①⓪">anchored</a> container has a <span class="css"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area">&lt;position-area></a></span>
-			applied from <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks⑥">position-try-fallbacks</a>. The query matches if the applied
-			<span class="css"><a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area①">&lt;position-area></a></span> from the fallback and the query value represent the
+			The <a class="css" data-link-type="maybe" href="#valdef-container-type-anchored" id="ref-for-valdef-container-type-anchored①⓪">anchored</a> container has a <span class="css"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area">&lt;position-area></a></span>
+			applied from <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks" id="ref-for-propdef-position-try-fallbacks⑥">position-try-fallbacks</a>. The query matches if the applied
+			<span class="css"><a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area①">&lt;position-area></a></span> from the fallback and the query value represent the
 			same physical area. That is, <a class="css" data-link-type="maybe" href="#valdef-position-area-query-block-start" id="ref-for-valdef-position-area-query-block-start">block-start</a> will match
-			<a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-anchor-position-1/#valdef-position-area-top" id="ref-for-valdef-position-area-top">top</a> when the <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode">writing-mode</a> is <a class="css" data-link-type="maybe" href="https://www.w3.org/TR/css-writing-modes-4/#valdef-writing-mode-horizontal-tb" id="ref-for-valdef-writing-mode-horizontal-tb">horizontal-tb</a>.
+			<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-anchor-position-1/#valdef-position-area-top" id="ref-for-valdef-position-area-top">top</a> when the <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode">writing-mode</a> is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-writing-modes-4/#valdef-writing-mode-horizontal-tb" id="ref-for-valdef-writing-mode-horizontal-tb">horizontal-tb</a>.
 
 
      <p>A query value of <a class="css" data-link-type="maybe" href="#valdef-position-area-query-any" id="ref-for-valdef-position-area-query-any">any</a> always matches for the given axis.</p>
@@ -1001,7 +1108,7 @@ Applied <a class="property css" data-link-type="property" href="https://www.w3.o
    </div>
    <div class="example" id="example-0b6cbf04">
     <a class="self-link" href="#example-0b6cbf04"></a>
-		Matching named fallback option with '<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic⑤">&lt;try-tactic></a>':
+		Matching named fallback option with '<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic" id="ref-for-typedef-position-try-fallbacks-try-tactic⑤">&lt;try-tactic></a>':
 
 		
 <pre class="lang-css highlight">.anchored <c- p>{</c->
@@ -1021,7 +1128,7 @@ Applied <a class="property css" data-link-type="property" href="https://www.w3.o
    </div>
    <div class="example" id="example-0393addf">
     <a class="self-link" href="#example-0393addf"></a>
-		Matching '<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area②">&lt;position-area></a>' fallback option in vertical <a class="property css" data-link-type="property" href="https://www.w3.org/TR/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode①">writing-mode</a>:
+		Matching '<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area②">&lt;position-area></a>' fallback option in vertical <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode" id="ref-for-propdef-writing-mode①">writing-mode</a>:
 
 		
 <pre class="lang-css highlight">.anchored <c- p>{</c->
@@ -1040,7 +1147,7 @@ Applied <a class="property css" data-link-type="property" href="https://www.w3.o
    </div>
    <div class="example" id="example-8666306e">
     <a class="self-link" href="#example-8666306e"></a>
-		Matching '<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area③">&lt;position-area></a>' fallback option with <a class="css" data-link-type="maybe" href="#valdef-position-area-query-any" id="ref-for-valdef-position-area-query-any①">any</a>:
+		Matching '<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area③">&lt;position-area></a>' fallback option with <a class="css" data-link-type="maybe" href="#valdef-position-area-query-any" id="ref-for-valdef-position-area-query-any①">any</a>:
 
 		
 <pre class="lang-css highlight">.anchored <c- p>{</c->
@@ -1062,33 +1169,33 @@ Applied <a class="property css" data-link-type="property" href="https://www.w3.o
    </div>
    <h4 class="heading settled" data-level="2.3.2" id="position-area-query-syntax"><span class="secno">2.3.2. </span><span class="content">
 Syntax of <a class="production css" data-link-type="type" href="#typedef-position-area-query" id="ref-for-typedef-position-area-query②">&lt;position-area-query></a> Values</span><a class="self-link" href="#position-area-query-syntax"></a></h4>
-   <p>Values for querying position-area fallbacks have the same syntax as <a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area④">&lt;position-area></a>,
+   <p>Values for querying position-area fallbacks have the same syntax as <a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area④">&lt;position-area></a>,
 with an additional <a class="css" data-link-type="maybe" href="#valdef-position-area-query-any" id="ref-for-valdef-position-area-query-any②">any</a> keyword added to every production:</p>
 <pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-position-area-query">&lt;position-area-query></dfn> = [
-  [ left <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> right <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> span-left <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> span-right
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①④">|</a> x-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①⑤">|</a> x-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①⑥">|</a> span-x-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①⑦">|</a> span-x-end
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①⑧">|</a> self-x-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one①⑨">|</a> self-x-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②⓪">|</a> span-self-x-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②①">|</a> span-self-x-end
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②②">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②③">|</a> any ]
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any③">||</a>
-  [ top <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②④">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②⑤">|</a> bottom <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②⑥">|</a> span-top <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②⑦">|</a> span-bottom
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②⑧">|</a> y-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one②⑨">|</a> y-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③⓪">|</a> span-y-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③①">|</a> span-y-end
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③②">|</a> self-y-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③③">|</a> self-y-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③④">|</a> span-self-y-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③⑤">|</a> span-self-y-end
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③⑥">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③⑦">|</a> any ]
-<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③⑧">|</a>
-  [ block-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one③⑨">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④⓪">|</a> block-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④①">|</a> span-block-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④②">|</a> span-block-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④③">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④④">|</a> any ]
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any④">||</a>
-  [ inline-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④⑤">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④⑥">|</a> inline-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④⑦">|</a> span-inline-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④⑧">|</a> span-inline-end
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one④⑨">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤⓪">|</a> any ]
-<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤①">|</a>
-  [ self-block-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤②">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤③">|</a> self-block-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤④">|</a> span-self-block-start
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤⑤">|</a> span-self-block-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤⑥">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤⑦">|</a> any ]
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-any" id="ref-for-comb-any⑤">||</a>
-  [ self-inline-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤⑧">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑤⑨">|</a> self-inline-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥⓪">|</a> span-self-inline-start
-  <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥①">|</a> span-self-inline-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥②">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥③">|</a> any ]
-<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥④">|</a>
-  [ start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥⑤">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥⑥">|</a> end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥⑦">|</a> span-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥⑧">|</a> span-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑥⑨">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦⓪">|</a> any ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a>
-<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦①">|</a>
-  [ self-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦②">|</a> center <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦③">|</a> self-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦④">|</a> span-self-start <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦⑤">|</a> span-self-end <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦⑥">|</a> span-all <a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#comb-one" id="ref-for-comb-one⑦⑦">|</a> any ]<a data-link-type="grammar" href="https://www.w3.org/TR/css-values-4/#mult-num-range" id="ref-for-mult-num-range①">{1,2}</a>
+  [ left <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> right <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> span-left <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> span-right
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①④">|</a> x-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑤">|</a> x-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑥">|</a> span-x-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑦">|</a> span-x-end
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑧">|</a> self-x-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑨">|</a> self-x-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⓪">|</a> span-self-x-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②①">|</a> span-self-x-end
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②②">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②③">|</a> any ]
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any③">||</a>
+  [ top <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②④">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⑤">|</a> bottom <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⑥">|</a> span-top <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⑦">|</a> span-bottom
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⑧">|</a> y-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⑨">|</a> y-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③⓪">|</a> span-y-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③①">|</a> span-y-end
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③②">|</a> self-y-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③③">|</a> self-y-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③④">|</a> span-self-y-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③⑤">|</a> span-self-y-end
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③⑥">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③⑦">|</a> any ]
+<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③⑧">|</a>
+  [ block-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③⑨">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④⓪">|</a> block-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④①">|</a> span-block-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④②">|</a> span-block-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④③">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④④">|</a> any ]
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any④">||</a>
+  [ inline-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④⑤">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④⑥">|</a> inline-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④⑦">|</a> span-inline-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④⑧">|</a> span-inline-end
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④⑨">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤⓪">|</a> any ]
+<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤①">|</a>
+  [ self-block-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤②">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤③">|</a> self-block-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤④">|</a> span-self-block-start
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤⑤">|</a> span-self-block-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤⑥">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤⑦">|</a> any ]
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any⑤">||</a>
+  [ self-inline-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤⑧">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤⑨">|</a> self-inline-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥⓪">|</a> span-self-inline-start
+  <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥①">|</a> span-self-inline-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥②">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥③">|</a> any ]
+<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥④">|</a>
+  [ start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥⑤">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥⑥">|</a> end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥⑦">|</a> span-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥⑧">|</a> span-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥⑨">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦⓪">|</a> any ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a>
+<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦①">|</a>
+  [ self-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦②">|</a> center <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦③">|</a> self-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦④">|</a> span-self-start <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦⑤">|</a> span-self-end <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦⑥">|</a> span-all <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑦⑦">|</a> any ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-num-range" id="ref-for-mult-num-range①">{1,2}</a>
 ]
 </pre>
    <dl>
@@ -1096,7 +1203,7 @@ with an additional <a class="css" data-link-type="maybe" href="#valdef-position-
     <dd data-md>
      <p><a class="css" data-link-type="maybe" href="#valdef-position-area-query-any" id="ref-for-valdef-position-area-query-any③">any</a> can be used for one or both of the axes. It is ambiguous about which
 axis it refers to, and is handled like other ambiguous keywords for
-'<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area⑤">&lt;position-area></a>' such as <a class="css" data-link-type="maybe" href="#valdef-position-area-query-start" id="ref-for-valdef-position-area-query-start">start</a> or <a class="css" data-link-type="maybe" href="#valdef-position-area-query-center" id="ref-for-valdef-position-area-query-center">center</a> when it comes to assigning
+'<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area⑤">&lt;position-area></a>' such as <a class="css" data-link-type="maybe" href="#valdef-position-area-query-start" id="ref-for-valdef-position-area-query-start">start</a> or <a class="css" data-link-type="maybe" href="#valdef-position-area-query-center" id="ref-for-valdef-position-area-query-center">center</a> when it comes to assigning
 axis and duplicating single keyword values.</p>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-start">start</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-end">end</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-self-start">self-start</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-self-end">self-end</dfn>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-top">top</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-bottom">bottom</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-left">left</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-right">right</dfn>
@@ -1113,11 +1220,11 @@ axis and duplicating single keyword values.</p>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-span-inline-start">span-inline-start</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-span-inline-end">span-inline-end</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-span-self-inline-start">span-self-inline-start</dfn>, <dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-span-self-inline-end">span-self-inline-end</dfn>
     <dt data-md><dfn class="dfn-paneled css" data-dfn-for="<position-area-query>" data-dfn-type="value" data-export id="valdef-position-area-query-span-all">span-all</dfn>
     <dd data-md>
-     <p>See respective definitions for '<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area⑥">&lt;position-area></a>'.</p>
+     <p>See respective definitions for '<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area⑥">&lt;position-area></a>'.</p>
    </dl>
    <p>If only a single keyword is given, '<a class="production css" data-link-type="type" href="#typedef-position-area-query" id="ref-for-typedef-position-area-query③">&lt;position-area-query></a>' behaves as if the
 second keyword is <a class="css" data-link-type="maybe" href="#valdef-position-area-query-any" id="ref-for-valdef-position-area-query-any④">any</a> if the given keyword is unambigous about its axis.
-This is different from how single keywords are handled for '<a class="production css" data-link-type="type" href="https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area⑦">&lt;position-area></a>',
+This is different from how single keywords are handled for '<a class="production css" data-link-type="type" href="https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area" id="ref-for-typedef-position-area⑦">&lt;position-area></a>',
 which behaves as if the second keyword is <a class="css" data-link-type="maybe" href="#valdef-position-area-query-span-all" id="ref-for-valdef-position-area-query-span-all">span-all</a>.
 Otherwise, '<span class="production" id="ref-for-typedef-position-area-query④">&lt;position-area-query></span>' behaves as '<span class="production" id="ref-for-typedef-position-area⑧">&lt;position-area></span>'
 when it comes to assigning axes.</p>
@@ -1163,6 +1270,14 @@ Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3
     <strong class="advisement">
         UAs MUST provide an accessible alternative.
     </strong></p>
+  <details class="wpt-tests-block" dir="ltr" lang="en" open>
+   <summary>Tests</summary>
+   <p>Tests relating to the content of this specification
+                     may be documented in “Tests” blocks like this one.
+                     Any such block is non-normative.</p>
+   <ul class="wpt-tests-list"></ul>
+   <hr>
+  </details>
   <h3 class="no-ref heading settled" id="w3c-conformance-classes"><span class="content">
 Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
   <p>Conformance to this specification
@@ -1171,18 +1286,18 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
   <dl>
    <dt>style sheet
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
             style sheet</a>.
         
    <dt>renderer
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that interprets the semantics of a style sheet and renders
             documents that use them.
         
    <dt>authoring tool
             
-   <dd>A <a href="https://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
             that writes a style sheet.
     
   </dl>
@@ -1213,7 +1328,7 @@ Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"><
 Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <p>So that authors can exploit the forward-compatible parsing rules to
     assign fallback values, CSS renderers <strong>must</strong>
-    treat as invalid (and <a href="https://www.w3.org/TR/CSS21/conform.html#ignore">ignore
+    treat as invalid (and <a href="http://www.w3.org/TR/CSS21/conform.html#ignore">ignore
     as appropriate</a>) any at-rules, properties, property values, keywords,
     and other syntactic constructs for which they have no usable level of
     support. In particular, user agents <strong>must not</strong> selectively
@@ -1224,7 +1339,7 @@ Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
   <h4 class="heading settled" id="w3c-conform-future-proofing"><span class="content">
 Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#w3c-conform-future-proofing"></a></h4>
   <p>To avoid clashes with future stable CSS features,
-        the CSSWG recommends <a href="https://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="https://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="https://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
+        the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
 
 </p>
   <h3 class="no-ref heading settled" id="w3c-testing"><span class="content">
@@ -1246,9 +1361,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     </p>
   <p>Further information on submitting testcases and implementation reports
     can be found from on the CSS Working Group’s website at
-    <a href="https://www.w3.org/Style/CSS/Test/">https://www.w3.org/Style/CSS/Test/</a>.
+    <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
     Questions should be directed to the
-    <a href="https://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
+    <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
     mailing list.</p>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
@@ -1317,39 +1432,39 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-ANCHOR-POSITION-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="38c7c07f">&lt;position-area></span>
-     <li><span class="dfn-paneled" id="64d59ee9">&lt;try-tactic></span>
-     <li><span class="dfn-paneled" id="799a3ae7">anchor element</span>
-     <li><span class="dfn-paneled" id="9de4b565">anchor positioning</span>
-     <li><span class="dfn-paneled" id="161c63cd">position-try-fallbacks</span>
-     <li><span class="dfn-paneled" id="f7a88ae7">top</span>
+     <li><span class="dfn-paneled" id="e8ba0567">&lt;position-area></span>
+     <li><span class="dfn-paneled" id="d77fb8d3">&lt;try-tactic></span>
+     <li><span class="dfn-paneled" id="f347dc52">anchor element</span>
+     <li><span class="dfn-paneled" id="6d9d68e5">anchor positioning</span>
+     <li><span class="dfn-paneled" id="5d165b36">position-try-fallbacks</span>
+     <li><span class="dfn-paneled" id="c39136f8">top</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-CONDITIONAL-5]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="6da975d2">&lt;query-in-parens></span>
-     <li><span class="dfn-paneled" id="d56fefb4">@container</span>
-     <li><span class="dfn-paneled" id="e2be1733">container feature</span>
-     <li><span class="dfn-paneled" id="8d4f0c0e">container query</span>
-     <li><span class="dfn-paneled" id="065f9cf5">container-type</span>
-     <li><span class="dfn-paneled" id="a0097d26">query container</span>
-     <li><span class="dfn-paneled" id="07026a05">scroll-state</span>
-     <li><span class="dfn-paneled" id="9e92cec9">size</span>
+     <li><span class="dfn-paneled" id="bf4318cd">&lt;query-in-parens></span>
+     <li><span class="dfn-paneled" id="4ecd1e40">@container</span>
+     <li><span class="dfn-paneled" id="3c08f662">container feature</span>
+     <li><span class="dfn-paneled" id="e5f6bb8f">container query</span>
+     <li><span class="dfn-paneled" id="c1bccc47">container-type</span>
+     <li><span class="dfn-paneled" id="eff2e8e8">query container</span>
+     <li><span class="dfn-paneled" id="8142f29e">scroll-state</span>
+     <li><span class="dfn-paneled" id="d40536b6">size</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-CONTAIN-2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="3dc278d0">style containment</span>
+     <li><span class="dfn-paneled" id="9b54ada7">style containment</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-DISPLAY-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="6658d41f">in-flow</span>
+     <li><span class="dfn-paneled" id="99cabd32">in-flow</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-LISTS-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="10574fee">counter</span>
+     <li><span class="dfn-paneled" id="98911036">counter</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-SCOPING-1]</a> defines the following terms:
@@ -1359,17 +1474,17 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="ef9f8297">*</span>
-     <li><span class="dfn-paneled" id="f5b34cad">&lt;dashed-ident></span>
-     <li><span class="dfn-paneled" id="3bafef5e">{A,B}</span>
-     <li><span class="dfn-paneled" id="4eb9d37e">|</span>
-     <li><span class="dfn-paneled" id="a0336d84">||</span>
+     <li><span class="dfn-paneled" id="68150e76">*</span>
+     <li><span class="dfn-paneled" id="8a427103">&lt;dashed-ident></span>
+     <li><span class="dfn-paneled" id="938ba280">{A,B}</span>
+     <li><span class="dfn-paneled" id="6ec67710">|</span>
+     <li><span class="dfn-paneled" id="8a82fda1">||</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-WRITING-MODES-4]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="8ebdd273">horizontal-tb</span>
-     <li><span class="dfn-paneled" id="37bb38a0">writing-mode</span>
+     <li><span class="dfn-paneled" id="b4da59cc">horizontal-tb</span>
+     <li><span class="dfn-paneled" id="385326d7">writing-mode</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS2]</a> defines the following terms:
@@ -1379,41 +1494,41 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[MEDIAQUERIES-5]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="b9b36bfc">&lt;general-enclosed></span>
+     <li><span class="dfn-paneled" id="c4f8137c">&lt;general-enclosed></span>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-css-anchor-position-1">[CSS-ANCHOR-POSITION-1]
-   <dd>Tab Atkins Jr.; Elika Etemad; Ian Kilpatrick. <a href="https://www.w3.org/TR/css-anchor-position-1/"><cite>CSS Anchor Positioning</cite></a>. 7 October 2025. WD. URL: <a href="https://www.w3.org/TR/css-anchor-position-1/">https://www.w3.org/TR/css-anchor-position-1/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Ian Kilpatrick. <a href="https://drafts.csswg.org/css-anchor-position-1/"><cite>CSS Anchor Positioning</cite></a>. URL: <a href="https://drafts.csswg.org/css-anchor-position-1/">https://drafts.csswg.org/css-anchor-position-1/</a>
    <dt id="biblio-css-conditional-5">[CSS-CONDITIONAL-5]
-   <dd>Chris Lilley; et al. <a href="https://www.w3.org/TR/css-conditional-5/"><cite>CSS Conditional Rules Module Level 5</cite></a>. 5 November 2024. WD. URL: <a href="https://www.w3.org/TR/css-conditional-5/">https://www.w3.org/TR/css-conditional-5/</a>
+   <dd>Chris Lilley; et al. <a href="https://drafts.csswg.org/css-conditional-5/"><cite>CSS Conditional Rules Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-conditional-5/">https://drafts.csswg.org/css-conditional-5/</a>
    <dt id="biblio-css-contain-2">[CSS-CONTAIN-2]
-   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://www.w3.org/TR/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. 17 September 2022. WD. URL: <a href="https://www.w3.org/TR/css-contain-2/">https://www.w3.org/TR/css-contain-2/</a>
+   <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://drafts.csswg.org/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. URL: <a href="https://drafts.csswg.org/css-contain-2/">https://drafts.csswg.org/css-contain-2/</a>
    <dt id="biblio-css-scoping-1">[CSS-SCOPING-1]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-scoping-1/"><cite>CSS Scoping Module Level 1</cite></a>. 3 April 2014. FPWD. URL: <a href="https://www.w3.org/TR/css-scoping-1/">https://www.w3.org/TR/css-scoping-1/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-scoping/"><cite>CSS Scoping Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-scoping/">https://drafts.csswg.org/css-scoping/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://www.w3.org/TR/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. 12 March 2024. WD. URL: <a href="https://www.w3.org/TR/css-values-4/">https://www.w3.org/TR/css-values-4/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
    <dt id="biblio-css-writing-modes-4">[CSS-WRITING-MODES-4]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://www.w3.org/TR/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. 30 July 2019. CR. URL: <a href="https://www.w3.org/TR/css-writing-modes-4/">https://www.w3.org/TR/css-writing-modes-4/</a>
+   <dd>Elika Etemad; Koji Ishii. <a href="https://drafts.csswg.org/css-writing-modes-4/"><cite>CSS Writing Modes Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-writing-modes-4/">https://drafts.csswg.org/css-writing-modes-4/</a>
    <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
-   <dd>Dean Jackson; et al. <a href="https://www.w3.org/TR/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. 18 December 2021. WD. URL: <a href="https://www.w3.org/TR/mediaqueries-5/">https://www.w3.org/TR/mediaqueries-5/</a>
+   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-css-display-4">[CSS-DISPLAY-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-display-4/"><cite>CSS Display Module Level 4</cite></a>. 19 December 2024. FPWD. URL: <a href="https://www.w3.org/TR/css-display-4/">https://www.w3.org/TR/css-display-4/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-display/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-display/">https://drafts.csswg.org/css-display/</a>
    <dt id="biblio-css-lists-3">[CSS-LISTS-3]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://www.w3.org/TR/css-lists-3/"><cite>CSS Lists and Counters Module Level 3</cite></a>. 17 November 2020. WD. URL: <a href="https://www.w3.org/TR/css-lists-3/">https://www.w3.org/TR/css-lists-3/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-lists-3/"><cite>CSS Lists and Counters Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-lists-3/">https://drafts.csswg.org/css-lists-3/</a>
    <dt id="biblio-css2">[CSS2]
-   <dd>Bert Bos; et al. <a href="https://www.w3.org/TR/CSS2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. 7 June 2011. REC. URL: <a href="https://www.w3.org/TR/CSS2/">https://www.w3.org/TR/CSS2/</a>
+   <dd>Bert Bos; et al. <a href="https://drafts.csswg.org/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://drafts.csswg.org/css2/">https://drafts.csswg.org/css2/</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <p>No properties defined.</p>
-  <h3 class="no-num no-ref heading settled" id="container-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="https://www.w3.org/TR/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container③">@container</a> Descriptors</span><a class="self-link" href="#container-descriptor-table"></a></h3>
+  <h3 class="no-num no-ref heading settled" id="container-descriptor-table"><span class="content"><a class="css" data-link-type="at-rule" href="https://drafts.csswg.org/css-conditional-5/#at-ruledef-container" id="ref-for-at-ruledef-container③">@container</a> Descriptors</span><a class="self-link" href="#container-descriptor-table"></a></h3>
   <div class="big-element-wrapper">
    <table class="index">
     <thead>
@@ -1630,34 +1745,34 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"065f9cf5": {"dfnID":"065f9cf5","dfnText":"container-type","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-container-type"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-conditional-5/#propdef-container-type"},
-"07026a05": {"dfnID":"07026a05","dfnText":"scroll-state","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-container-type-scroll-state"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-conditional-5/#valdef-container-type-scroll-state"},
-"10574fee": {"dfnID":"10574fee","dfnText":"counter","external":true,"refSections":[{"refs":[{"id":"ref-for-counter"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-lists-3/#counter"},
-"161c63cd": {"dfnID":"161c63cd","dfnText":"position-try-fallbacks","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-position-try-fallbacks"}],"title":"2.1. Extending container-type with anchored"},{"refs":[{"id":"ref-for-propdef-position-try-fallbacks\u2460"},{"id":"ref-for-propdef-position-try-fallbacks\u2461"},{"id":"ref-for-propdef-position-try-fallbacks\u2462"},{"id":"ref-for-propdef-position-try-fallbacks\u2463"},{"id":"ref-for-propdef-position-try-fallbacks\u2464"},{"id":"ref-for-propdef-position-try-fallbacks\u2465"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks"},
-"37bb38a0": {"dfnID":"37bb38a0","dfnText":"writing-mode","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-writing-mode"},{"id":"ref-for-propdef-writing-mode\u2460"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-writing-modes-4/#propdef-writing-mode"},
-"38c7c07f": {"dfnID":"38c7c07f","dfnText":"<position-area>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-position-area"},{"id":"ref-for-typedef-position-area\u2460"},{"id":"ref-for-typedef-position-area\u2461"},{"id":"ref-for-typedef-position-area\u2462"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"},{"refs":[{"id":"ref-for-typedef-position-area\u2463"},{"id":"ref-for-typedef-position-area\u2464"},{"id":"ref-for-typedef-position-area\u2465"},{"id":"ref-for-typedef-position-area\u2466"},{"id":"ref-for-typedef-position-area\u2467"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area"},
-"3bafef5e": {"dfnID":"3bafef5e","dfnText":"{A,B}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num-range"},{"id":"ref-for-mult-num-range\u2460"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://www.w3.org/TR/css-values-4/#mult-num-range"},
-"3dc278d0": {"dfnID":"3dc278d0","dfnText":"style containment","external":true,"refSections":[{"refs":[{"id":"ref-for-style-containment"},{"id":"ref-for-style-containment\u2460"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-contain-2/#style-containment"},
-"4eb9d37e": {"dfnID":"4eb9d37e","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"}],"title":"2.1. Extending container-type with anchored"},{"refs":[{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"}],"title":"2.2. Extending @container syntax for anchored queries"},{"refs":[{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"},{"refs":[{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"},{"id":"ref-for-comb-one\u2460\u2465"},{"id":"ref-for-comb-one\u2460\u2466"},{"id":"ref-for-comb-one\u2460\u2467"},{"id":"ref-for-comb-one\u2460\u2468"},{"id":"ref-for-comb-one\u2461\u24ea"},{"id":"ref-for-comb-one\u2461\u2460"},{"id":"ref-for-comb-one\u2461\u2461"},{"id":"ref-for-comb-one\u2461\u2462"},{"id":"ref-for-comb-one\u2461\u2463"},{"id":"ref-for-comb-one\u2461\u2464"},{"id":"ref-for-comb-one\u2461\u2465"},{"id":"ref-for-comb-one\u2461\u2466"},{"id":"ref-for-comb-one\u2461\u2467"},{"id":"ref-for-comb-one\u2461\u2468"},{"id":"ref-for-comb-one\u2462\u24ea"},{"id":"ref-for-comb-one\u2462\u2460"},{"id":"ref-for-comb-one\u2462\u2461"},{"id":"ref-for-comb-one\u2462\u2462"},{"id":"ref-for-comb-one\u2462\u2463"},{"id":"ref-for-comb-one\u2462\u2464"},{"id":"ref-for-comb-one\u2462\u2465"},{"id":"ref-for-comb-one\u2462\u2466"},{"id":"ref-for-comb-one\u2462\u2467"},{"id":"ref-for-comb-one\u2462\u2468"},{"id":"ref-for-comb-one\u2463\u24ea"},{"id":"ref-for-comb-one\u2463\u2460"},{"id":"ref-for-comb-one\u2463\u2461"},{"id":"ref-for-comb-one\u2463\u2462"},{"id":"ref-for-comb-one\u2463\u2463"},{"id":"ref-for-comb-one\u2463\u2464"},{"id":"ref-for-comb-one\u2463\u2465"},{"id":"ref-for-comb-one\u2463\u2466"},{"id":"ref-for-comb-one\u2463\u2467"},{"id":"ref-for-comb-one\u2463\u2468"},{"id":"ref-for-comb-one\u2464\u24ea"},{"id":"ref-for-comb-one\u2464\u2460"},{"id":"ref-for-comb-one\u2464\u2461"},{"id":"ref-for-comb-one\u2464\u2462"},{"id":"ref-for-comb-one\u2464\u2463"},{"id":"ref-for-comb-one\u2464\u2464"},{"id":"ref-for-comb-one\u2464\u2465"},{"id":"ref-for-comb-one\u2464\u2466"},{"id":"ref-for-comb-one\u2464\u2467"},{"id":"ref-for-comb-one\u2464\u2468"},{"id":"ref-for-comb-one\u2465\u24ea"},{"id":"ref-for-comb-one\u2465\u2460"},{"id":"ref-for-comb-one\u2465\u2461"},{"id":"ref-for-comb-one\u2465\u2462"},{"id":"ref-for-comb-one\u2465\u2463"},{"id":"ref-for-comb-one\u2465\u2464"},{"id":"ref-for-comb-one\u2465\u2465"},{"id":"ref-for-comb-one\u2465\u2466"},{"id":"ref-for-comb-one\u2465\u2467"},{"id":"ref-for-comb-one\u2465\u2468"},{"id":"ref-for-comb-one\u2466\u24ea"},{"id":"ref-for-comb-one\u2466\u2460"},{"id":"ref-for-comb-one\u2466\u2461"},{"id":"ref-for-comb-one\u2466\u2462"},{"id":"ref-for-comb-one\u2466\u2463"},{"id":"ref-for-comb-one\u2466\u2464"},{"id":"ref-for-comb-one\u2466\u2465"},{"id":"ref-for-comb-one\u2466\u2466"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://www.w3.org/TR/css-values-4/#comb-one"},
-"64d59ee9": {"dfnID":"64d59ee9","dfnText":"<try-tactic>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-position-try-fallbacks-try-tactic"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2460"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2461"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2462"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2463"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2464"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic"},
-"6658d41f": {"dfnID":"6658d41f","dfnText":"in-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-in-flow"},{"id":"ref-for-in-flow\u2460"},{"id":"ref-for-in-flow\u2461"},{"id":"ref-for-in-flow\u2462"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-display-4/#in-flow"},
-"6da975d2": {"dfnID":"6da975d2","dfnText":"<query-in-parens>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-query-in-parens"},{"id":"ref-for-typedef-query-in-parens\u2460"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"https://www.w3.org/TR/css-conditional-5/#typedef-query-in-parens"},
+"385326d7": {"dfnID":"385326d7","dfnText":"writing-mode","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-writing-mode"},{"id":"ref-for-propdef-writing-mode\u2460"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode"},
+"3c08f662": {"dfnID":"3c08f662","dfnText":"container feature","external":true,"refSections":[{"refs":[{"id":"ref-for-container-feature"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-conditional-5/#container-feature"},
+"4ecd1e40": {"dfnID":"4ecd1e40","dfnText":"@container","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-container"},{"id":"ref-for-at-ruledef-container\u2460"}],"title":"2.2. Extending @container syntax for anchored queries"},{"refs":[{"id":"ref-for-at-ruledef-container\u2461"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-container"},
+"5d165b36": {"dfnID":"5d165b36","dfnText":"position-try-fallbacks","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-position-try-fallbacks"}],"title":"2.1. Extending container-type with anchored"},{"refs":[{"id":"ref-for-propdef-position-try-fallbacks\u2460"},{"id":"ref-for-propdef-position-try-fallbacks\u2461"},{"id":"ref-for-propdef-position-try-fallbacks\u2462"},{"id":"ref-for-propdef-position-try-fallbacks\u2463"},{"id":"ref-for-propdef-position-try-fallbacks\u2464"},{"id":"ref-for-propdef-position-try-fallbacks\u2465"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks"},
+"68150e76": {"dfnID":"68150e76","dfnText":"*","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-zero-plus"},{"id":"ref-for-mult-zero-plus\u2460"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"https://drafts.csswg.org/css-values-4/#mult-zero-plus"},
+"6d9d68e5": {"dfnID":"6d9d68e5","dfnText":"anchor positioning","external":true,"refSections":[{"refs":[{"id":"ref-for-anchor-positioning"}],"title":"Unnumbered Section"},{"refs":[{"id":"ref-for-anchor-positioning\u2460"}],"title":"2. Container Queries for Anchor Positioning"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#anchor-positioning"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"}],"title":"2.1. Extending container-type with anchored"},{"refs":[{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"}],"title":"2.2. Extending @container syntax for anchored queries"},{"refs":[{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"},{"refs":[{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"},{"id":"ref-for-comb-one\u2460\u2465"},{"id":"ref-for-comb-one\u2460\u2466"},{"id":"ref-for-comb-one\u2460\u2467"},{"id":"ref-for-comb-one\u2460\u2468"},{"id":"ref-for-comb-one\u2461\u24ea"},{"id":"ref-for-comb-one\u2461\u2460"},{"id":"ref-for-comb-one\u2461\u2461"},{"id":"ref-for-comb-one\u2461\u2462"},{"id":"ref-for-comb-one\u2461\u2463"},{"id":"ref-for-comb-one\u2461\u2464"},{"id":"ref-for-comb-one\u2461\u2465"},{"id":"ref-for-comb-one\u2461\u2466"},{"id":"ref-for-comb-one\u2461\u2467"},{"id":"ref-for-comb-one\u2461\u2468"},{"id":"ref-for-comb-one\u2462\u24ea"},{"id":"ref-for-comb-one\u2462\u2460"},{"id":"ref-for-comb-one\u2462\u2461"},{"id":"ref-for-comb-one\u2462\u2462"},{"id":"ref-for-comb-one\u2462\u2463"},{"id":"ref-for-comb-one\u2462\u2464"},{"id":"ref-for-comb-one\u2462\u2465"},{"id":"ref-for-comb-one\u2462\u2466"},{"id":"ref-for-comb-one\u2462\u2467"},{"id":"ref-for-comb-one\u2462\u2468"},{"id":"ref-for-comb-one\u2463\u24ea"},{"id":"ref-for-comb-one\u2463\u2460"},{"id":"ref-for-comb-one\u2463\u2461"},{"id":"ref-for-comb-one\u2463\u2462"},{"id":"ref-for-comb-one\u2463\u2463"},{"id":"ref-for-comb-one\u2463\u2464"},{"id":"ref-for-comb-one\u2463\u2465"},{"id":"ref-for-comb-one\u2463\u2466"},{"id":"ref-for-comb-one\u2463\u2467"},{"id":"ref-for-comb-one\u2463\u2468"},{"id":"ref-for-comb-one\u2464\u24ea"},{"id":"ref-for-comb-one\u2464\u2460"},{"id":"ref-for-comb-one\u2464\u2461"},{"id":"ref-for-comb-one\u2464\u2462"},{"id":"ref-for-comb-one\u2464\u2463"},{"id":"ref-for-comb-one\u2464\u2464"},{"id":"ref-for-comb-one\u2464\u2465"},{"id":"ref-for-comb-one\u2464\u2466"},{"id":"ref-for-comb-one\u2464\u2467"},{"id":"ref-for-comb-one\u2464\u2468"},{"id":"ref-for-comb-one\u2465\u24ea"},{"id":"ref-for-comb-one\u2465\u2460"},{"id":"ref-for-comb-one\u2465\u2461"},{"id":"ref-for-comb-one\u2465\u2462"},{"id":"ref-for-comb-one\u2465\u2463"},{"id":"ref-for-comb-one\u2465\u2464"},{"id":"ref-for-comb-one\u2465\u2465"},{"id":"ref-for-comb-one\u2465\u2466"},{"id":"ref-for-comb-one\u2465\u2467"},{"id":"ref-for-comb-one\u2465\u2468"},{"id":"ref-for-comb-one\u2466\u24ea"},{"id":"ref-for-comb-one\u2466\u2460"},{"id":"ref-for-comb-one\u2466\u2461"},{"id":"ref-for-comb-one\u2466\u2462"},{"id":"ref-for-comb-one\u2466\u2463"},{"id":"ref-for-comb-one\u2466\u2464"},{"id":"ref-for-comb-one\u2466\u2465"},{"id":"ref-for-comb-one\u2466\u2466"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "778f8dbd": {"dfnID":"778f8dbd","dfnText":"tree-scoped name","external":true,"refSections":[{"refs":[{"id":"ref-for-css-tree-scoped-name"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name"},
-"799a3ae7": {"dfnID":"799a3ae7","dfnText":"anchor element","external":true,"refSections":[{"refs":[{"id":"ref-for-anchor-element"},{"id":"ref-for-anchor-element\u2460"},{"id":"ref-for-anchor-element\u2461"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-anchor-position-1/#anchor-element"},
-"8d4f0c0e": {"dfnID":"8d4f0c0e","dfnText":"container query","external":true,"refSections":[{"refs":[{"id":"ref-for-container-query"}],"title":"2. Container Queries for Anchor Positioning"},{"refs":[{"id":"ref-for-container-query\u2460"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-conditional-5/#container-query"},
-"8ebdd273": {"dfnID":"8ebdd273","dfnText":"horizontal-tb","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-writing-mode-horizontal-tb"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-writing-modes-4/#valdef-writing-mode-horizontal-tb"},
-"9de4b565": {"dfnID":"9de4b565","dfnText":"anchor positioning","external":true,"refSections":[{"refs":[{"id":"ref-for-anchor-positioning"}],"title":"Unnumbered Section"},{"refs":[{"id":"ref-for-anchor-positioning\u2460"}],"title":"2. Container Queries for Anchor Positioning"}],"url":"https://www.w3.org/TR/css-anchor-position-1/#anchor-positioning"},
-"9e92cec9": {"dfnID":"9e92cec9","dfnText":"size","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-container-type-size"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-conditional-5/#valdef-container-type-size"},
-"a0097d26": {"dfnID":"a0097d26","dfnText":"query container","external":true,"refSections":[{"refs":[{"id":"ref-for-query-container"},{"id":"ref-for-query-container\u2460"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/css-conditional-5/#query-container"},
-"a0336d84": {"dfnID":"a0336d84","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"}],"title":"2.1. Extending container-type with anchored"},{"refs":[{"id":"ref-for-comb-any\u2461"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"},{"refs":[{"id":"ref-for-comb-any\u2462"},{"id":"ref-for-comb-any\u2463"},{"id":"ref-for-comb-any\u2464"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://www.w3.org/TR/css-values-4/#comb-any"},
+"8142f29e": {"dfnID":"8142f29e","dfnText":"scroll-state","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-container-type-scroll-state"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-conditional-5/#valdef-container-type-scroll-state"},
+"8a427103": {"dfnID":"8a427103","dfnText":"<dashed-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-dashed-ident"},{"id":"ref-for-typedef-dashed-ident\u2460"},{"id":"ref-for-typedef-dashed-ident\u2461"},{"id":"ref-for-typedef-dashed-ident\u2462"},{"id":"ref-for-typedef-dashed-ident\u2463"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident"},
+"8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"}],"title":"2.1. Extending container-type with anchored"},{"refs":[{"id":"ref-for-comb-any\u2461"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"},{"refs":[{"id":"ref-for-comb-any\u2462"},{"id":"ref-for-comb-any\u2463"},{"id":"ref-for-comb-any\u2464"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
+"938ba280": {"dfnID":"938ba280","dfnText":"{A,B}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num-range"},{"id":"ref-for-mult-num-range\u2460"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://drafts.csswg.org/css-values-4/#mult-num-range"},
+"98911036": {"dfnID":"98911036","dfnText":"counter","external":true,"refSections":[{"refs":[{"id":"ref-for-counter"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-lists-3/#counter"},
+"99cabd32": {"dfnID":"99cabd32","dfnText":"in-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-in-flow"},{"id":"ref-for-in-flow\u2460"},{"id":"ref-for-in-flow\u2461"},{"id":"ref-for-in-flow\u2462"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-display-4/#in-flow"},
+"9b54ada7": {"dfnID":"9b54ada7","dfnText":"style containment","external":true,"refSections":[{"refs":[{"id":"ref-for-style-containment"},{"id":"ref-for-style-containment\u2460"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-contain-2/#style-containment"},
 "ace68224": {"dfnID":"ace68224","dfnText":"counters","external":true,"refSections":[{"refs":[{"id":"ref-for-counters"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://www.w3.org/TR/CSS2/generate.html#counters"},
-"b9b36bfc": {"dfnID":"b9b36bfc","dfnText":"<general-enclosed>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-general-enclosed"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"https://www.w3.org/TR/mediaqueries-5/#typedef-general-enclosed"},
-"d56fefb4": {"dfnID":"d56fefb4","dfnText":"@container","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-container"},{"id":"ref-for-at-ruledef-container\u2460"}],"title":"2.2. Extending @container syntax for anchored queries"},{"refs":[{"id":"ref-for-at-ruledef-container\u2461"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-conditional-5/#at-ruledef-container"},
+"b4da59cc": {"dfnID":"b4da59cc","dfnText":"horizontal-tb","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-writing-mode-horizontal-tb"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#valdef-writing-mode-horizontal-tb"},
+"bf4318cd": {"dfnID":"bf4318cd","dfnText":"<query-in-parens>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-query-in-parens"},{"id":"ref-for-typedef-query-in-parens\u2460"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"https://drafts.csswg.org/css-conditional-5/#typedef-query-in-parens"},
+"c1bccc47": {"dfnID":"c1bccc47","dfnText":"container-type","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-container-type"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-conditional-5/#propdef-container-type"},
+"c39136f8": {"dfnID":"c39136f8","dfnText":"top","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-position-area-top"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#valdef-position-area-top"},
+"c4f8137c": {"dfnID":"c4f8137c","dfnText":"<general-enclosed>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-general-enclosed"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed"},
+"d40536b6": {"dfnID":"d40536b6","dfnText":"size","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-container-type-size"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-conditional-5/#valdef-container-type-size"},
+"d77fb8d3": {"dfnID":"d77fb8d3","dfnText":"<try-tactic>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-position-try-fallbacks-try-tactic"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2460"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2461"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2462"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2463"},{"id":"ref-for-typedef-position-try-fallbacks-try-tactic\u2464"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic"},
 "descdef-container-fallback": {"dfnID":"descdef-container-fallback","dfnText":"fallback","external":false,"refSections":[{"refs":[{"id":"ref-for-descdef-container-fallback"},{"id":"ref-for-descdef-container-fallback\u2460"},{"id":"ref-for-descdef-container-fallback\u2461"},{"id":"ref-for-descdef-container-fallback\u2462"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"#descdef-container-fallback"},
-"e2be1733": {"dfnID":"e2be1733","dfnText":"container feature","external":true,"refSections":[{"refs":[{"id":"ref-for-container-feature"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-conditional-5/#container-feature"},
-"ef9f8297": {"dfnID":"ef9f8297","dfnText":"*","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-zero-plus"},{"id":"ref-for-mult-zero-plus\u2460"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"https://www.w3.org/TR/css-values-4/#mult-zero-plus"},
-"f5b34cad": {"dfnID":"f5b34cad","dfnText":"<dashed-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-dashed-ident"},{"id":"ref-for-typedef-dashed-ident\u2460"},{"id":"ref-for-typedef-dashed-ident\u2461"},{"id":"ref-for-typedef-dashed-ident\u2462"},{"id":"ref-for-typedef-dashed-ident\u2463"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-values-4/#typedef-dashed-ident"},
-"f7a88ae7": {"dfnID":"f7a88ae7","dfnText":"top","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-position-area-top"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"}],"url":"https://www.w3.org/TR/css-anchor-position-1/#valdef-position-area-top"},
+"e5f6bb8f": {"dfnID":"e5f6bb8f","dfnText":"container query","external":true,"refSections":[{"refs":[{"id":"ref-for-container-query"}],"title":"2. Container Queries for Anchor Positioning"},{"refs":[{"id":"ref-for-container-query\u2460"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-conditional-5/#container-query"},
+"e8ba0567": {"dfnID":"e8ba0567","dfnText":"<position-area>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-position-area"},{"id":"ref-for-typedef-position-area\u2460"},{"id":"ref-for-typedef-position-area\u2461"},{"id":"ref-for-typedef-position-area\u2462"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"},{"refs":[{"id":"ref-for-typedef-position-area\u2463"},{"id":"ref-for-typedef-position-area\u2464"},{"id":"ref-for-typedef-position-area\u2465"},{"id":"ref-for-typedef-position-area\u2466"},{"id":"ref-for-typedef-position-area\u2467"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area"},
+"eff2e8e8": {"dfnID":"eff2e8e8","dfnText":"query container","external":true,"refSections":[{"refs":[{"id":"ref-for-query-container"},{"id":"ref-for-query-container\u2460"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-conditional-5/#query-container"},
+"f347dc52": {"dfnID":"f347dc52","dfnText":"anchor element","external":true,"refSections":[{"refs":[{"id":"ref-for-anchor-element"},{"id":"ref-for-anchor-element\u2460"},{"id":"ref-for-anchor-element\u2461"}],"title":"2.1. Extending container-type with anchored"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#anchor-element"},
 "typedef-anchored-in-parens": {"dfnID":"typedef-anchored-in-parens","dfnText":"<anchored-in-parens>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-anchored-in-parens"},{"id":"ref-for-typedef-anchored-in-parens\u2460"},{"id":"ref-for-typedef-anchored-in-parens\u2461"},{"id":"ref-for-typedef-anchored-in-parens\u2462"},{"id":"ref-for-typedef-anchored-in-parens\u2463"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"#typedef-anchored-in-parens"},
 "typedef-anchored-query": {"dfnID":"typedef-anchored-query","dfnText":"<anchored-query>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-anchored-query"},{"id":"ref-for-typedef-anchored-query\u2460"},{"id":"ref-for-typedef-anchored-query\u2461"}],"title":"2.2. Extending @container syntax for anchored queries"}],"url":"#typedef-anchored-query"},
 "typedef-position-area-query": {"dfnID":"typedef-position-area-query","dfnText":"<position-area-query>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-position-area-query"},{"id":"ref-for-typedef-position-area-query\u2460"}],"title":"2.3.1. \nApplied position-try-fallbacks: the fallback feature"},{"refs":[{"id":"ref-for-typedef-position-area-query\u2461"},{"id":"ref-for-typedef-position-area-query\u2462"},{"id":"ref-for-typedef-position-area-query\u2463"}],"title":"2.3.2. \nSyntax of <position-area-query> Values"}],"url":"#typedef-position-area-query"},
@@ -2130,33 +2245,33 @@ let refsData = {
 "#valdef-position-area-query-center": {"displayText":"center","export":true,"for_":["<position-area-query>"],"level":"2","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-2","status":"local","text":"center","type":"value","url":"#valdef-position-area-query-center"},
 "#valdef-position-area-query-span-all": {"displayText":"span-all","export":true,"for_":["<position-area-query>"],"level":"2","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-2","status":"local","text":"span-all","type":"value","url":"#valdef-position-area-query-span-all"},
 "#valdef-position-area-query-start": {"displayText":"start","export":true,"for_":["<position-area-query>"],"level":"2","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-2","status":"local","text":"start","type":"value","url":"#valdef-position-area-query-start"},
+"https://drafts.csswg.org/css-anchor-position-1/#anchor-element": {"displayText":"anchor element","export":false,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor element","type":"dfn","url":"https://drafts.csswg.org/css-anchor-position-1/#anchor-element"},
+"https://drafts.csswg.org/css-anchor-position-1/#anchor-positioning": {"displayText":"anchor positioning","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor positioning","type":"dfn","url":"https://drafts.csswg.org/css-anchor-position-1/#anchor-positioning"},
+"https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks": {"displayText":"position-try-fallbacks","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"position-try-fallbacks","type":"property","url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-position-try-fallbacks"},
+"https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area": {"displayText":"<position-area>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"<position-area>","type":"type","url":"https://drafts.csswg.org/css-anchor-position-1/#typedef-position-area"},
+"https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic": {"displayText":"<try-tactic>","export":true,"for_":["position-try-fallbacks"],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"<try-tactic>","type":"type","url":"https://drafts.csswg.org/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic"},
+"https://drafts.csswg.org/css-anchor-position-1/#valdef-position-area-top": {"displayText":"top","export":true,"for_":["position-area","<position-area>"],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"top","type":"value","url":"https://drafts.csswg.org/css-anchor-position-1/#valdef-position-area-top"},
+"https://drafts.csswg.org/css-conditional-5/#at-ruledef-container": {"displayText":"@container","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"@container","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-container"},
+"https://drafts.csswg.org/css-conditional-5/#container-feature": {"displayText":"container feature","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"container feature","type":"dfn","url":"https://drafts.csswg.org/css-conditional-5/#container-feature"},
+"https://drafts.csswg.org/css-conditional-5/#container-query": {"displayText":"container query","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"container query","type":"dfn","url":"https://drafts.csswg.org/css-conditional-5/#container-query"},
+"https://drafts.csswg.org/css-conditional-5/#propdef-container-type": {"displayText":"container-type","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"container-type","type":"property","url":"https://drafts.csswg.org/css-conditional-5/#propdef-container-type"},
+"https://drafts.csswg.org/css-conditional-5/#query-container": {"displayText":"query container","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"query container","type":"dfn","url":"https://drafts.csswg.org/css-conditional-5/#query-container"},
+"https://drafts.csswg.org/css-conditional-5/#typedef-query-in-parens": {"displayText":"<query-in-parens>","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"<query-in-parens>","type":"type","url":"https://drafts.csswg.org/css-conditional-5/#typedef-query-in-parens"},
+"https://drafts.csswg.org/css-conditional-5/#valdef-container-type-scroll-state": {"displayText":"scroll-state","export":true,"for_":["container-type"],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"scroll-state","type":"value","url":"https://drafts.csswg.org/css-conditional-5/#valdef-container-type-scroll-state"},
+"https://drafts.csswg.org/css-conditional-5/#valdef-container-type-size": {"displayText":"size","export":true,"for_":["container-type"],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"size","type":"value","url":"https://drafts.csswg.org/css-conditional-5/#valdef-container-type-size"},
+"https://drafts.csswg.org/css-contain-2/#style-containment": {"displayText":"style containment","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-contain","spec":"css-contain-2","status":"current","text":"style containment","type":"dfn","url":"https://drafts.csswg.org/css-contain-2/#style-containment"},
+"https://drafts.csswg.org/css-display-4/#in-flow": {"displayText":"in-flow","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"in-flow","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#in-flow"},
+"https://drafts.csswg.org/css-lists-3/#counter": {"displayText":"counter","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"current","text":"counter","type":"dfn","url":"https://drafts.csswg.org/css-lists-3/#counter"},
 "https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name": {"displayText":"tree-scoped name","export":true,"for_":["CSS"],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"current","text":"tree-scoped name","type":"dfn","url":"https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name"},
+"https://drafts.csswg.org/css-values-4/#comb-any": {"displayText":"||","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"||","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-any"},
+"https://drafts.csswg.org/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"https://drafts.csswg.org/css-values-4/#mult-num-range": {"displayText":"{A,B}","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"{a,b}","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-num-range"},
+"https://drafts.csswg.org/css-values-4/#mult-zero-plus": {"displayText":"*","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"*","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-zero-plus"},
+"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident": {"displayText":"<dashed-ident>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<dashed-ident>","type":"type","url":"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident"},
+"https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode": {"displayText":"writing-mode","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"writing-mode","type":"property","url":"https://drafts.csswg.org/css-writing-modes-4/#propdef-writing-mode"},
+"https://drafts.csswg.org/css-writing-modes-4/#valdef-writing-mode-horizontal-tb": {"displayText":"horizontal-tb","export":true,"for_":["writing-mode"],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"horizontal-tb","type":"value","url":"https://drafts.csswg.org/css-writing-modes-4/#valdef-writing-mode-horizontal-tb"},
+"https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed": {"displayText":"<general-enclosed>","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"<general-enclosed>","type":"type","url":"https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed"},
 "https://www.w3.org/TR/CSS2/generate.html#counters": {"displayText":"counters","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"counters","type":"dfn","url":"https://www.w3.org/TR/CSS2/generate.html#counters"},
-"https://www.w3.org/TR/css-anchor-position-1/#anchor-element": {"displayText":"anchor element","export":false,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"snapshot","text":"anchor element","type":"dfn","url":"https://www.w3.org/TR/css-anchor-position-1/#anchor-element"},
-"https://www.w3.org/TR/css-anchor-position-1/#anchor-positioning": {"displayText":"anchor positioning","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"snapshot","text":"anchor positioning","type":"dfn","url":"https://www.w3.org/TR/css-anchor-position-1/#anchor-positioning"},
-"https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks": {"displayText":"position-try-fallbacks","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"snapshot","text":"position-try-fallbacks","type":"property","url":"https://www.w3.org/TR/css-anchor-position-1/#propdef-position-try-fallbacks"},
-"https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area": {"displayText":"<position-area>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"snapshot","text":"<position-area>","type":"type","url":"https://www.w3.org/TR/css-anchor-position-1/#typedef-position-area"},
-"https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic": {"displayText":"<try-tactic>","export":true,"for_":["position-try-fallbacks"],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"snapshot","text":"<try-tactic>","type":"type","url":"https://www.w3.org/TR/css-anchor-position-1/#typedef-position-try-fallbacks-try-tactic"},
-"https://www.w3.org/TR/css-anchor-position-1/#valdef-position-area-top": {"displayText":"top","export":true,"for_":["position-area","<position-area>"],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"snapshot","text":"top","type":"value","url":"https://www.w3.org/TR/css-anchor-position-1/#valdef-position-area-top"},
-"https://www.w3.org/TR/css-conditional-5/#at-ruledef-container": {"displayText":"@container","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"@container","type":"at-rule","url":"https://www.w3.org/TR/css-conditional-5/#at-ruledef-container"},
-"https://www.w3.org/TR/css-conditional-5/#container-feature": {"displayText":"container feature","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"container feature","type":"dfn","url":"https://www.w3.org/TR/css-conditional-5/#container-feature"},
-"https://www.w3.org/TR/css-conditional-5/#container-query": {"displayText":"container query","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"container query","type":"dfn","url":"https://www.w3.org/TR/css-conditional-5/#container-query"},
-"https://www.w3.org/TR/css-conditional-5/#propdef-container-type": {"displayText":"container-type","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"container-type","type":"property","url":"https://www.w3.org/TR/css-conditional-5/#propdef-container-type"},
-"https://www.w3.org/TR/css-conditional-5/#query-container": {"displayText":"query container","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"query container","type":"dfn","url":"https://www.w3.org/TR/css-conditional-5/#query-container"},
-"https://www.w3.org/TR/css-conditional-5/#typedef-query-in-parens": {"displayText":"<query-in-parens>","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"<query-in-parens>","type":"type","url":"https://www.w3.org/TR/css-conditional-5/#typedef-query-in-parens"},
-"https://www.w3.org/TR/css-conditional-5/#valdef-container-type-scroll-state": {"displayText":"scroll-state","export":true,"for_":["container-type"],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"scroll-state","type":"value","url":"https://www.w3.org/TR/css-conditional-5/#valdef-container-type-scroll-state"},
-"https://www.w3.org/TR/css-conditional-5/#valdef-container-type-size": {"displayText":"size","export":true,"for_":["container-type"],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"snapshot","text":"size","type":"value","url":"https://www.w3.org/TR/css-conditional-5/#valdef-container-type-size"},
-"https://www.w3.org/TR/css-contain-2/#style-containment": {"displayText":"style containment","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-contain","spec":"css-contain-2","status":"snapshot","text":"style containment","type":"dfn","url":"https://www.w3.org/TR/css-contain-2/#style-containment"},
-"https://www.w3.org/TR/css-display-4/#in-flow": {"displayText":"in-flow","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"snapshot","text":"in-flow","type":"dfn","url":"https://www.w3.org/TR/css-display-4/#in-flow"},
-"https://www.w3.org/TR/css-lists-3/#counter": {"displayText":"counter","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"snapshot","text":"counter","type":"dfn","url":"https://www.w3.org/TR/css-lists-3/#counter"},
-"https://www.w3.org/TR/css-values-4/#comb-any": {"displayText":"||","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"||","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#comb-any"},
-"https://www.w3.org/TR/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"|","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#comb-one"},
-"https://www.w3.org/TR/css-values-4/#mult-num-range": {"displayText":"{A,B}","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"{a,b}","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#mult-num-range"},
-"https://www.w3.org/TR/css-values-4/#mult-zero-plus": {"displayText":"*","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"*","type":"grammar","url":"https://www.w3.org/TR/css-values-4/#mult-zero-plus"},
-"https://www.w3.org/TR/css-values-4/#typedef-dashed-ident": {"displayText":"<dashed-ident>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"snapshot","text":"<dashed-ident>","type":"type","url":"https://www.w3.org/TR/css-values-4/#typedef-dashed-ident"},
-"https://www.w3.org/TR/css-writing-modes-4/#propdef-writing-mode": {"displayText":"writing-mode","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"snapshot","text":"writing-mode","type":"property","url":"https://www.w3.org/TR/css-writing-modes-4/#propdef-writing-mode"},
-"https://www.w3.org/TR/css-writing-modes-4/#valdef-writing-mode-horizontal-tb": {"displayText":"horizontal-tb","export":true,"for_":["writing-mode"],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"snapshot","text":"horizontal-tb","type":"value","url":"https://www.w3.org/TR/css-writing-modes-4/#valdef-writing-mode-horizontal-tb"},
-"https://www.w3.org/TR/mediaqueries-5/#typedef-general-enclosed": {"displayText":"<general-enclosed>","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"snapshot","text":"<general-enclosed>","type":"type","url":"https://www.w3.org/TR/mediaqueries-5/#typedef-general-enclosed"},
 };
 
 function mkRefHint(link, ref) {
