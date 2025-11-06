@@ -36,6 +36,10 @@ spec:css-color-4; type:value; text:transparent
 spec:selectors-3; type:selector; text: ::first-letter
 spec:selectors-3; type:selector; text: ::first-line
 spec:css-values-3; type:type; text:<position>
+spec:html; type:element; text:body
+spec:css-sizing-3; type:dfn; text:size
+spec:css-sizing-3; type:dfn; text:width
+spec:css-sizing-3; type:dfn; text:height
 </pre>
 
 <h2 id="introduction">Introduction</h2>
@@ -947,8 +951,28 @@ Painting Area: the 'background-clip' property</h3>
 		background-clip-color.html
 		background-clip-content-box-001.html
 		background-clip-content-box-002.html
+		background-clip-content-box-with-border-radius-002.html
+		background-clip-content-box-with-border-radius-003.html
+		background-clip-padding-box-with-border-radius-002.html
+		background-clip-padding-box-with-border-radius-003.html
 		background-clip-padding-box-001.html
 		background-clip-padding-box-with-border-radius.html
+		background-clip/clip-border-area-background-geometry.html
+		background-clip/clip-border-area-border-image.html
+		background-clip/clip-border-area-border-on-top.html
+		background-clip/clip-border-area-box-decoration-break.html
+		background-clip/clip-border-area-multiple-backgrounds.html
+		background-clip/clip-border-area-on-body-not-propagated-to-root.html
+		background-clip/clip-border-area-on-body-propagated-to-root.html
+		background-clip/clip-border-area-on-root.html
+		background-clip/clip-border-area.html
+		background-clip/clip-text-ellipsis.html
+		background-clip/clip-text-on-body-not-propagated-to-root.html
+		background-clip/clip-text-on-body-propagated-to-root.html
+		background-clip/clip-text-on-root.html
+		background-clip/clip-text-out-of-flow-child.html
+		background-clip/clip-text-text-decorations.html
+		background-clip/clip-text-text-emphasis.html
 		background-clip/clip-rounded-corner.html
 		background-clip/clip-text-animated-text.html
 		background-clip/clip-text-dynamic-2.html
@@ -2455,6 +2479,13 @@ Corner Shaping</h3>
 	calculates its radius by <em>adding</em> the corresponding margin thickness
 	to each border radius, with the corresponding [=outset-adjusted border radius=] applied.
 
+	<wpt>
+		background-clip-content-box-with-border-radius-002.html
+		background-clip-content-box-with-border-radius-003.html
+		background-clip-padding-box-with-border-radius-002.html
+		background-clip-padding-box-with-border-radius-003.html
+	</wpt>
+
 <div algorithm="border-radius-outset">
 
 	When expanding an [=edge=] that has a [=border radius=], e.g. for computing the [=margin edge=], 'box-shadow' spread, or 'overflow-clip-margin',
@@ -2757,6 +2788,11 @@ Border Images</h2>
 		}
 		</pre>
 	</div>
+
+	<wpt>
+		border-image-021.html
+		border-image-outset-004.html
+	</wpt>
 
 <h3 id="border-image-source" oldids="the-border-image-source">
 Image Source: the 'border-image-source' property</h3>
@@ -3562,9 +3598,13 @@ Shadow Shape, Spread, and Knockout</h4>
 	from the border-box (padding-box) radii by adding (subtracting)
 	the [=spread distance=] (and flooring at zero).
 	For outer shadows, the [=border-radius=] is then [=outset-adjusted border radius|adjusted=], independently in each dimension,
-	to preseve the sharpness of rounded corners.
+	to preserve the sharpness of rounded corners.
 
 	The 'border-image' does not affect the shape of the box-shadow.
+
+	<wpt>
+		box-shadow-radius-generated.html
+	</wpt>
 
 <h4 id="shadow-blur">
 Blurring Shadow Edges</h4>
@@ -3663,6 +3703,22 @@ Level 3</h3>
 <h2 id="changes">
 Changes</h2>
 
+<h3 id="changes-2024-03">
+Changes since the 11 March 2024 Candidate Recommendation Draft</h3>
+
+	<ul>
+		<!-- to 5 Nov 2025 -->
+		<li>Altered the border-radius outset adjustment,
+			so the radius reduction factor in the
+			minimum radius percentage of the corner, makes it less pronounced
+			the closer the corner's border-radius gets to 50%.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/7103">Issue 7103</a>)
+		</li>
+		<li>Fixed syntax of 'box-shadow' to avoid allowing negative blur radii,
+			aligning it with the prose.
+		<li>Cross linked to 'ink overflow' terminology</li>
+	</ul>
+
 <h3 id="changes-2023-02">
 Changes since the 14 February 2023 Candidate Recommendation Snapshot</h3>
 
@@ -3687,8 +3743,6 @@ Changes since the 14 February 2023 Candidate Recommendation Snapshot</h3>
 			[=CSS/value definition syntax=].
 		<li>Fixed the definition for where box shadows apply.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/9286">Issue 9286</a>)
-		<li>Fixed syntax of 'box-shadow' to avoid allowing negative blur radii,
-			aligning it with the prose.
 	</ul>
 
 
@@ -4140,4 +4194,7 @@ Changes Since the 17 December 2009 Candidate Recommendation</h3>
 	color-mix-currentcolor-outline-repaint-parent.html
 	color-mix-currentcolor-outline-repaint.html
 	first-letter-space-not-selected.html
+	animations/background-color-animation-custom-property.html
+	animations/background-color-animation-custom-timing-function-reverse.html
+	animations/background-color-animation-custom-timing-function.html
 </wpt>

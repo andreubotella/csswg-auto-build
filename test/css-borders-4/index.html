@@ -5,10 +5,10 @@
   <title>CSS Borders and Box Decorations Module Level 4</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version cca139221, updated Tue Nov 4 20:24:37 2025 +0000" name="generator">
+  <meta content="Bikeshed version 1453201ca, updated Wed Nov 5 21:01:59 2025 +0000" name="generator">
   <link href="https://www.w3.org/TR/css-borders-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="845ca6aacc3c7d18a016ea0cbae4f61c5cce53b4" name="revision">
+  <meta content="e2454662b0d40b5b7fd557c6f1561f9d55c9a991" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -875,7 +875,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Borders and Box Decorations Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-11-02">2 November 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-05">5 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1999,13 +1999,35 @@ border-top-right-radius: 100%; }
    </figure>
    <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#margin-edge" id="ref-for-margin-edge">margin edge</a>, being outside the <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-edge" id="ref-for-border-edge">border edge</a>,
 	calculates its radius by <em>adding</em> the corresponding margin thickness
-	to each border radius.
-	However, in order to create a sharper corner when the border radius is small
-	(and thus ensure continuity between round and sharp corners),
-	when the <a data-link-type="dfn" href="#border-radii" id="ref-for-border-radii">border radius</a> is less than the margin,
-	the margin is multiplied by the proportion 1 + (<var>r</var>-1)<sup>3</sup>,
-	where <var>r</var> is the ratio of the border radius to the margin,
-	in calculating the corner radii of the margin box shape.</p>
+	to each border radius, with the corresponding <a data-link-type="dfn" href="#outset-adjusted-border-radius" id="ref-for-outset-adjusted-border-radius">outset-adjusted border radius</a> applied.</p>
+   <div class="algorithm" data-algorithm="border-radius-outset">
+    <p>When expanding an <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#box-box-edge" id="ref-for-box-box-edge">edge</a> that has a <a data-link-type="dfn" href="#border-radii" id="ref-for-border-radii">border radius</a>, e.g. for computing the <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#margin-edge" id="ref-for-margin-edge①">margin edge</a>, <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow①">box-shadow</a> spread, or <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin">overflow-clip-margin</a>,
+	the different <span id="ref-for-border-radii①">border radius</span> values are adjusted so that a small rounded corner with a big outset does not appear to be disproportionally round.</p>
+    <p>This is done by computing the corresponding <a data-link-type="dfn" href="#outset-adjusted-border-radius" id="ref-for-outset-adjusted-border-radius①">outset-adjusted border radius</a>.</p>
+    <p>To compute the <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="outset-adjusted-border-radius">outset-adjusted border radius</dfn> given the 2-dimensional <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#size" id="ref-for-size">size</a>s <var>edge</var>, <var>radius</var>, and <var>outset</var>:</p>
+    <ol>
+     <li data-md>
+      <p>Let <var>coverage</var> be <code>2 * min(<var>radius</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#width" id="ref-for-width">width</a> / <var>edge</var>’s <span id="ref-for-width①">width</span>, <var>radius</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#height" id="ref-for-height">height</a> / <var>edge</var>’s <span id="ref-for-height①">height</span>)</code>.</p>
+     <li data-md>
+      <p>Let <var>adustedRadiusWidth</var> be the <a data-link-type="dfn" href="#adjusted-radius-dimension" id="ref-for-adjusted-radius-dimension">adjusted radius dimension</a> given <var>coverage</var>, <var>radius</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#width" id="ref-for-width②">width</a>, and <var>outset</var>’s <span id="ref-for-width③">width</span>.</p>
+     <li data-md>
+      <p>Let <var>adustedRadiusHeight</var> be the <a data-link-type="dfn" href="#adjusted-radius-dimension" id="ref-for-adjusted-radius-dimension①">adjusted radius dimension</a> given <var>coverage</var>, <var>radius</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#height" id="ref-for-height②">height</a>, and <var>outset</var>’s <span id="ref-for-height③">height</span>.</p>
+     <li data-md>
+      <p>Return (<var>adustedRadiusWidth</var>, <var>adustedRadiusHeight</var>).</p>
+    </ol>
+    <p>To compute the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="adjusted-radius-dimension">adjusted radius dimension</dfn> given numbers <var>coverage</var>, <var>radius</var>, and <var>outset</var>:</p>
+    <ol>
+     <li data-md>
+      <p>If <var>radius</var> is greater than <var>spread</var>, or if <var>coverage</var> is greater than 1, then return <code><var>radius</var> + <var>outset</var></code>.</p>
+     <li data-md>
+      <p>Let <var>ratio</var> be <code><var>radius</var> / <var>outset</var></code>.</p>
+     <li data-md>
+      <p>Return <code><var>radius</var> + <var>outset</var> * (1 - (1 - <var>ratio</var>)<sup>3</sup> * (1 - <var>coverage</var><sup>3</sup>))</code>.</p>
+    </ol>
+    <p class="note" role="note"><span class="marker">Note:</span> this algorithm is designed to reduce the effect of the <var>outset</var> (or spread) on the shape of the corner.
+		The <var>coverage</var> factor makes this reduction more pronounced for rectangular shapes (where the <u class="link-error" data-lt="border-radius" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;border-radius&apos;.">border-radius</u> is close to 0),
+		and less pronounced for elliptical shapes (where the <u class="link-error" data-lt="border-radius" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;border-radius&apos;.">border-radius</u> is close to 50%).</p>
+   </div>
    <h3 class="heading settled" data-level="3.1" id="corner-clipping"><span class="secno">3.1. </span><span class="content">
 Corner Clipping</span><a class="self-link" href="#corner-clipping"></a></h3>
    <p>Although <a href="#border-image">border images</a>
@@ -2727,7 +2749,7 @@ etc.</p>
 	with a nearly consistent distance from the outer edge throughout,
 	(or a linearly increasing distance
 	if the <a class="css property" data-link-type="property" href="#propdef-border-width" id="ref-for-propdef-border-width⑦">border-width</a> of the two border edges meeting at the the corner are not uniform).</p>
-   <p><span class="css">corner-*-shape</span> also affects the rendering of <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow①">box-shadow</a>,
+   <p><span class="css">corner-*-shape</span> also affects the rendering of <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow②">box-shadow</a>,
 	and how the <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-4/#overflow-clip-edge" id="ref-for-overflow-clip-edge">overflow clip edge</a> is shaped when it’s extended from the box,
 	but these do not directly follow the <span class="css">corner-*-shape</span> path
 	like the inner border edge does.
@@ -2936,9 +2958,9 @@ The <a class="css property" data-link-type="property" href="#propdef-corner" id=
    <h4 class="heading settled" data-level="3.9.4" id="corner-shape-rendering"><span class="secno">3.9.4. </span><span class="content">
 Rendering <a class="css property" data-link-type="property" href="#propdef-corner-shape" id="ref-for-propdef-corner-shape①①">corner-shape</a></span><a class="self-link" href="#corner-shape-rendering"></a></h4>
    <p>When rendering elements with shaped corners, the element’s path needs to be offset,
-based on <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border" id="ref-for-border⑤">border</a>, <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/ui.html#x2" id="ref-for-x2">outline</a>, <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow②">box-shadow</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin">overflow-clip-margin</a> and more.</p>
+based on <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border" id="ref-for-border⑤">border</a>, <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/ui.html#x2" id="ref-for-x2">outline</a>, <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow③">box-shadow</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin①">overflow-clip-margin</a> and more.</p>
    <p>When rendering borders or outlines, the offset is aligned to the curve of the element’s shape,
-while when rendering <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow③">box-shadow</a> or offsetting for <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin①">overflow-clip-margin</a>, the offset is aligned to the axis.</p>
+while when rendering <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow④">box-shadow</a> or offsetting for <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin②">overflow-clip-margin</a>, the offset is aligned to the axis.</p>
    <figure>
     
 	<img alt="Adjusting corner shapes" src="images/corner-shape-adjusting.svg" style="background: white;" width="600">
@@ -2951,11 +2973,11 @@ while when rendering <a class="css property" data-link-type="property" href="#pr
    <p>An <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element③">element</a>’s <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/ui.html#x2" id="ref-for-x2①">outline</a> follows the <a data-link-type="dfn" href="#outer-contour" id="ref-for-outer-contour①">outer contour</a> with the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value①">used</a> <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-width" id="ref-for-propdef-outline-width">outline-width</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-offset" id="ref-for-propdef-outline-offset">outline-offset</a>.
 The precise way in which it is rendered is implementation-defined.</p>
    <p>An <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element④">element</a>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-3/#overflow" id="ref-for-overflow①">overflow</a> area is shaped by its <a data-link-type="dfn" href="#inner-contour" id="ref-for-inner-contour①">inner contour</a>.
-An <span id="ref-for-concept-element⑤">element</span>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-4/#overflow-clip-edge" id="ref-for-overflow-clip-edge①">overflow clip edge</a> is shaped by the <a data-link-type="dfn" href="#border-contour-path" id="ref-for-border-contour-path②">border contour path</a> given <var>element</var>, and <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#padding-edge" id="ref-for-padding-edge⑦">padding edge</a>, and <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value②">used</a> <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin②">overflow-clip-margin</a>.</p>
+An <span id="ref-for-concept-element⑤">element</span>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-overflow-4/#overflow-clip-edge" id="ref-for-overflow-clip-edge①">overflow clip edge</a> is shaped by the <a data-link-type="dfn" href="#border-contour-path" id="ref-for-border-contour-path②">border contour path</a> given <var>element</var>, and <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#padding-edge" id="ref-for-padding-edge⑦">padding edge</a>, and <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value②">used</a> <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin" id="ref-for-propdef-overflow-clip-margin③">overflow-clip-margin</a>.</p>
    <p>Each shadow of <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element⑥">element</a>’s 'box shadow' is shaped by the <a data-link-type="dfn" href="#border-contour-path" id="ref-for-border-contour-path③">border contour path</a> given <var>element</var>, and <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-edge" id="ref-for-border-edge⑤">border edge</a>, and the shadow’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value③">used</a> <a class="css property" data-link-type="property" href="#propdef-box-shadow-spread" id="ref-for-propdef-box-shadow-spread">box-shadow-spread</a>.</p>
    <div class="algorithm" data-algorithm="adjust-border-inner-path-for-corner-shape">
     
-To compute an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element⑦">element</a> <var>element</var>’s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="border-contour-path">border contour path</dfn> given an <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#box-box-edge" id="ref-for-box-box-edge">edge</a> <var>targetEdge</var> and an optional number <var>spread</var> (default 0):
+To compute an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element" id="ref-for-concept-element⑦">element</a> <var>element</var>’s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="border-contour-path">border contour path</dfn> given an <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#box-box-edge" id="ref-for-box-box-edge①">edge</a> <var>targetEdge</var> and an optional number <var>spread</var> (default 0):
 
     <ol>
      <li data-md>
@@ -2963,7 +2985,7 @@ To compute an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept
      <li data-md>
       <p>Let <var>topLeftHorizontalRadius</var>, <var>topLeftVericalRadius</var>, <var>topRightHorizontalRadius</var>, <var>topRightVerticalRadius</var>, <var>bottomRightHorizontalRadius</var>,
 <var>bottomRightVerticalRadius</var>, <var>bottomLeftHorizontalRadius</var>, and <var>bottomLeftVerticalRadius</var> be <var>element</var> <a data-link-type="dfn" href="https://drafts.csswg.org/css-box-4/#border-edge" id="ref-for-border-edge⑦">border edge</a>’s radii,
-scaled by <var>element</var>’s <a data-link-type="dfn" href="#opposite-corner-scale-factor" id="ref-for-opposite-corner-scale-factor">opposite corner scale factor</a> and <a data-link-type="dfn" href="https://drafts.csswg.org/css-backgrounds-3/#outset-adjusted-border-radius" id="ref-for-outset-adjusted-border-radius">outset-adjusted</a>.</p>
+scaled by <var>element</var>’s <a data-link-type="dfn" href="#opposite-corner-scale-factor" id="ref-for-opposite-corner-scale-factor">opposite corner scale factor</a> and <a data-link-type="dfn" href="#outset-adjusted-border-radius" id="ref-for-outset-adjusted-border-radius②">outset-adjusted</a>.</p>
      <li data-md>
       <p>Let <var>topLeftShape</var>, <var>topRightShape</var>, <var>bottomRightShape</var>, and <var>bottomLeftShape</var> be <var>element</var>’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#computed-value" id="ref-for-computed-value">computed</a> <span class="css">corner-*-shape</span> values.</p>
      <li data-md>
@@ -4711,7 +4733,7 @@ Spreading shadows: the <a class="css property" data-link-type="property" href="#
     </details>
    </p>
    <h3 class="heading settled" data-level="6.6" id="box-shadow"><span class="secno">6.6. </span><span class="bs-old-id" id="the-box-shadow"></span><span class="content">
-Drop Shadows Shorthand: the <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow④">box-shadow</a> property</span><a class="self-link" href="#box-shadow"></a></h3>
+Drop Shadows Shorthand: the <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow⑤">box-shadow</a> property</span><a class="self-link" href="#box-shadow"></a></h3>
    <table class="def propdef" data-link-for-hint="box-shadow">
     <tbody>
      <tr>
@@ -4742,7 +4764,7 @@ Drop Shadows Shorthand: the <a class="css property" data-link-type="property" hr
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>see individual properties	
    </table>
-   <p>The <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow⑤">box-shadow</a> property attaches one or more drop-shadows to the box.
+   <p>The <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow⑥">box-shadow</a> property attaches one or more drop-shadows to the box.
 	The property accepts a comma-separated list of shadows,
 	ordered front to back.
 
@@ -4872,19 +4894,8 @@ height: 144px;
 	the corner radii of the shadow are also increased (decreased, for inner shadows)
 	from the border-box (padding-box) radii by adding (subtracting)
 	the <a data-link-type="dfn" href="https://drafts.csswg.org/css-backgrounds-3/#box-shadow-spread-distance" id="ref-for-box-shadow-spread-distance②">spread distance</a> (and flooring at zero).
-	However, in order to create a sharper corner when the border radius is small
-	(and thus ensure continuity between round and sharp corners),
-	when the <a data-link-type="dfn" href="#border-radii" id="ref-for-border-radii①">border radius</a> is less than the <span id="ref-for-box-shadow-spread-distance③">spread distance</span>
-	(or in the case of an inner shadow,
-	less than the absolute value of a negative <span id="ref-for-box-shadow-spread-distance④">spread distance</span>),
-	the <span id="ref-for-box-shadow-spread-distance⑤">spread distance</span>
-	is first multiplied by the proportion 1 + (<var>r</var>-1)<sup>3</sup>,
-	where <var>r</var> is the ratio of the border radius to the <span id="ref-for-box-shadow-spread-distance⑥">spread distance</span>,
-	in calculating the corner radii of the spread shadow shape.
-	For example, if the border radius is 10px and the <span id="ref-for-box-shadow-spread-distance⑦">spread distance</span> is 20px (<var>r</var> = .5),
-	the corner radius of the shadow shape will be 10px + 20px × (1 + (.5 - 1)<sup>3</sup>) = 27.5px
-	rather than 30px.
-	This adjustment is applied independently to the radii in each dimension.</p>
+	For outer shadows, the <u class="link-error" data-lt="border-radius" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;border-radius&apos;.">border-radius</u> is then <a data-link-type="dfn" href="#outset-adjusted-border-radius" id="ref-for-outset-adjusted-border-radius③">adjusted</a>, independently in each dimension,
+	to preserve the sharpness of rounded corners.</p>
    <p>The <a class="css property" data-link-type="property" href="#propdef-border-image" id="ref-for-propdef-border-image⑦">border-image</a> does not affect the shape of the box-shadow.</p>
    <h4 class="heading settled" data-level="6.6.2" id="shadow-blur"><span class="secno">6.6.2. </span><span class="content">
 Blurring Shadow Edges</span><a class="self-link" href="#shadow-blur"></a></h4>
@@ -5054,7 +5065,7 @@ Additions since <a data-link-type="biblio" href="#biblio-css3bg" title="CSS Back
     <li data-md>
      <p>added <a href="#partial-borders">partial borders</a> via <a class="css property" data-link-type="property" href="#propdef-border-limit" id="ref-for-propdef-border-limit②">border-limit</a> and <span class="css">border-*-clip</span> properties</p>
     <li data-md>
-     <p>added <span class="css">box-shadow-*</span> longhands and turned <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow⑥">box-shadow</a> into a shorthand</p>
+     <p>added <span class="css">box-shadow-*</span> longhands and turned <a class="css property" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow⑦">box-shadow</a> into a shorthand</p>
     <li data-md>
      <p>moved logical border properties from <a data-link-type="biblio" href="#biblio-css-logical-1" title="CSS Logical Properties and Values Level 1">[CSS-LOGICAL-1]</a> to this spec.</p>
    </ul>
@@ -5211,6 +5222,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#shadow-offset-x">1st &lt;length></a><span>, in § 6.2</span>
    <li><a href="#shadow-offset-y">2nd &lt;length></a><span>, in § 6.2</span>
    <li><a href="#add-corner-to-path">add corner to path</a><span>, in § 3.9.4</span>
+   <li><a href="#adjusted-radius-dimension">adjusted radius dimension</a><span>, in § 3</span>
    <li><a href="#aligned-corner-point">aligned corner point</a><span>, in § 3.9.4</span>
    <li><a href="#valdef-border-limit-all">all</a><span>, in § 5.1</span>
    <li><a href="#valdef-border-image-width-auto">auto</a><span>, in § 4.3</span>
@@ -5393,6 +5405,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><a href="#valdef-line-style-outset">value for &lt;line-style>, border-style, border-top-style, border-left-style, border-bottom-style, border-right-style, border</a><span>, in § 2.2</span>
      <li><a href="#valdef-box-shadow-position-outset">value for box-shadow-position</a><span>, in § 6.5</span>
     </ul>
+   <li><a href="#outset-adjusted-border-radius">outset-adjusted border radius</a><span>, in § 3</span>
    <li><a href="#valdef-border-image-slice-percentage-0">&lt;percentage [0,∞]></a><span>, in § 4.2</span>
    <li><a href="#border-image-region">region</a><span>, in § 4.3</span>
    <li><a href="#relevant-side-for-border-shape">relevant side for border shape</a><span>, in § 7.1</span>
@@ -5540,6 +5553,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS-SIZING-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="68019d7a">height</span>
+     <li><span class="dfn-paneled" id="0b8b3969">size</span>
      <li><span class="dfn-paneled" id="88643fe0">width</span>
     </ul>
    <li>
@@ -5613,7 +5627,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="664ea88d">blur radius</span>
      <li><span class="dfn-paneled" id="d53dc980">inner box-shadow</span>
      <li><span class="dfn-paneled" id="2c299d7c">outer box-shadow</span>
-     <li><span class="dfn-paneled" id="ea42c0b6">outset-adjusted border radius</span>
      <li><span class="dfn-paneled" id="991fe159">round</span>
      <li><span class="dfn-paneled" id="99d126af">spread distance</span>
     </ul>
@@ -5678,6 +5691,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Alan Stearns; Rossen Atanassov; Noam Rosenthal. <a href="https://drafts.csswg.org/css-shapes/"><cite>CSS Shapes Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-shapes/">https://drafts.csswg.org/css-shapes/</a>
    <dt id="biblio-css-shapes-2">[CSS-SHAPES-2]
    <dd><a href="https://drafts.csswg.org/css-shapes-2/"><cite>CSS Shapes Module Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/css-shapes-2/">https://drafts.csswg.org/css-shapes-2/</a>
+   <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-sizing-3/">https://drafts.csswg.org/css-sizing-3/</a>
    <dt id="biblio-css-text-4">[CSS-TEXT-4]
    <dd>Elika Etemad; et al. <a href="https://drafts.csswg.org/css-text-4/"><cite>CSS Text Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a>
    <dt id="biblio-css-transforms-1">[CSS-TRANSFORMS-1]
@@ -5711,8 +5726,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <dl>
    <dt id="biblio-css-logical-1">[CSS-LOGICAL-1]
    <dd>Rossen Atanassov; Elika Etemad. <a href="https://drafts.csswg.org/css-logical-1/"><cite>CSS Logical Properties and Values Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-logical-1/">https://drafts.csswg.org/css-logical-1/</a>
-   <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
-   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-sizing-3/">https://drafts.csswg.org/css-sizing-3/</a>
    <dt id="biblio-css1">[CSS1]
    <dd>Håkon Wium Lie; Bert Bos. <a href="https://www.w3.org/TR/CSS1/"><cite>Cascading Style Sheets, level 1</cite></a>. 13 September 2018. REC. URL: <a href="https://www.w3.org/TR/CSS1/">https://www.w3.org/TR/CSS1/</a>
    <dt id="biblio-css3grid">[CSS3GRID]
@@ -6598,7 +6611,7 @@ or a computed &lt;length-percentage> value
       <td>see individual properties
       <td>
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow⑦">box-shadow</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-box-shadow" id="ref-for-propdef-box-shadow⑧">box-shadow</a>
       <td>&lt;spread-shadow>#
       <td>none
       <td>all elements
@@ -7258,6 +7271,7 @@ let dfnPanelData = {
 "0812e39f": {"dfnID":"0812e39f","dfnText":"ink overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-ink-overflow"}],"title":"4.4. \nEdge Overhang: the border-image-outset property"}],"url":"https://drafts.csswg.org/css-overflow-3/#ink-overflow"},
 "09057a05": {"dfnID":"09057a05","dfnText":"table-cell","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-table-cell"}],"title":"3.4. \nEffect on Tables"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-table-cell"},
 "09696240": {"dfnID":"09696240","dfnText":"unshaped edge","external":true,"refSections":[{"refs":[{"id":"ref-for-unshaped-edge"},{"id":"ref-for-unshaped-edge\u2460"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-box-4/#unshaped-edge"},
+"0b8b3969": {"dfnID":"0b8b3969","dfnText":"size","external":true,"refSections":[{"refs":[{"id":"ref-for-size"}],"title":"3. \nCorners"}],"url":"https://drafts.csswg.org/css-sizing-3/#size"},
 "0cab481d": {"dfnID":"0cab481d","dfnText":"box-decoration-break","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-box-decoration-break"}],"title":"6.7. \nLayering, Layout, and Other Details"}],"url":"https://drafts.csswg.org/css-break-4/#propdef-box-decoration-break"},
 "101119a4": {"dfnID":"101119a4","dfnText":"<geometry-box>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-geometry-box"},{"id":"ref-for-typedef-geometry-box\u2460"},{"id":"ref-for-typedef-geometry-box\u2461"}],"title":"7.1. \nThe border-shape property"}],"url":"https://drafts.fxtf.org/css-masking-1/#typedef-geometry-box"},
 "1370dad0": {"dfnID":"1370dad0","dfnText":"block-start","external":true,"refSections":[{"refs":[{"id":"ref-for-block-start"},{"id":"ref-for-block-start\u2460"},{"id":"ref-for-block-start\u2461"},{"id":"ref-for-block-start\u2462"}],"title":"7.1. \nThe border-shape property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-start"},
@@ -7297,12 +7311,12 @@ let dfnPanelData = {
 "73ea1d43": {"dfnID":"73ea1d43","dfnText":"color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-color"},{"id":"ref-for-propdef-color\u2460"}],"title":"2.4. \nBorder Shorthand Properties"}],"url":"https://drafts.csswg.org/css-color-4/#propdef-color"},
 "75bfa627": {"dfnID":"75bfa627","dfnText":"::first-line","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-first-line"},{"id":"ref-for-selectordef-first-line\u2460"},{"id":"ref-for-selectordef-first-line\u2461"}],"title":"1.1. \nModule Interactions"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line"},
 "7bc19a34": {"dfnID":"7bc19a34","dfnText":"end","external":true,"refSections":[{"refs":[{"id":"ref-for-css-end"},{"id":"ref-for-css-end\u2460"}],"title":"2.1. \nLine Colors: the border-color properties"},{"refs":[{"id":"ref-for-css-end\u2461"},{"id":"ref-for-css-end\u2462"}],"title":"2.2. \nLine Patterns: the border-style properties"},{"refs":[{"id":"ref-for-css-end\u2463"},{"id":"ref-for-css-end\u2464"}],"title":"2.3. \nLine Thickness: the border-width properties"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-end"},
-"7d2d5e05": {"dfnID":"7d2d5e05","dfnText":"overflow-clip-margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-clip-margin"},{"id":"ref-for-propdef-overflow-clip-margin\u2460"},{"id":"ref-for-propdef-overflow-clip-margin\u2461"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin"},
-"7fb2c729": {"dfnID":"7fb2c729","dfnText":"margin edge","external":true,"refSections":[{"refs":[{"id":"ref-for-margin-edge"}],"title":"3. \nCorners"}],"url":"https://drafts.csswg.org/css-box-4/#margin-edge"},
+"7d2d5e05": {"dfnID":"7d2d5e05","dfnText":"overflow-clip-margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-clip-margin"}],"title":"3. \nCorners"},{"refs":[{"id":"ref-for-propdef-overflow-clip-margin\u2460"},{"id":"ref-for-propdef-overflow-clip-margin\u2461"},{"id":"ref-for-propdef-overflow-clip-margin\u2462"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-overflow-4/#propdef-overflow-clip-margin"},
+"7fb2c729": {"dfnID":"7fb2c729","dfnText":"margin edge","external":true,"refSections":[{"refs":[{"id":"ref-for-margin-edge"},{"id":"ref-for-margin-edge\u2460"}],"title":"3. \nCorners"}],"url":"https://drafts.csswg.org/css-box-4/#margin-edge"},
 "7ffa1652": {"dfnID":"7ffa1652","dfnText":"outline-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-outline-width"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-width"},
 "8067deca": {"dfnID":"8067deca","dfnText":"start","external":true,"refSections":[{"refs":[{"id":"ref-for-css-start"},{"id":"ref-for-css-start\u2460"}],"title":"2.1. \nLine Colors: the border-color properties"},{"refs":[{"id":"ref-for-css-start\u2461"},{"id":"ref-for-css-start\u2462"}],"title":"2.2. \nLine Patterns: the border-style properties"},{"refs":[{"id":"ref-for-css-start\u2463"},{"id":"ref-for-css-start\u2464"}],"title":"2.3. \nLine Thickness: the border-width properties"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-start"},
 "80eb9508": {"dfnID":"80eb9508","dfnText":"principal box","external":true,"refSections":[{"refs":[{"id":"ref-for-principal-box"}],"title":"6.7. \nLayering, Layout, and Other Details"}],"url":"https://drafts.csswg.org/css-display-4/#principal-box"},
-"838620fd": {"dfnID":"838620fd","dfnText":"edge","external":true,"refSections":[{"refs":[{"id":"ref-for-box-box-edge"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-box-4/#box-box-edge"},
+"838620fd": {"dfnID":"838620fd","dfnText":"edge","external":true,"refSections":[{"refs":[{"id":"ref-for-box-box-edge"}],"title":"3. \nCorners"},{"refs":[{"id":"ref-for-box-box-edge\u2460"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-box-4/#box-box-edge"},
 "88643fe0": {"dfnID":"88643fe0","dfnText":"width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-width"}],"title":"3.3. \nOverlapping Curves"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-width"},
 "8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"},{"id":"ref-for-comb-any\u2461"},{"id":"ref-for-comb-any\u2462"}],"title":"2.4. \nBorder Shorthand Properties"},{"refs":[{"id":"ref-for-comb-any\u2463"}],"title":"3.9.1. \nSizing & shaping a corner:\nThe corner-top-left, corner-top-right,\ncorner-bottom-right, corner-bottom-left,\ncorner-start-start, corner-start-end,\ncorner-end-start, corner-end-end shorthands"},{"refs":[{"id":"ref-for-comb-any\u2464"}],"title":"3.9.2. \nSizing & shaping rhe Corners Of One Side:\nThe corner-top, corner-right,\ncorner-bottom, corner-left,\ncorner-block-start, corner-block-end,\ncorner-inline-start, corner-inline-end shorthands"},{"refs":[{"id":"ref-for-comb-any\u2465"}],"title":"3.9.3. \nSizing & Shaping All Corners At Once:\nThe corner shorthand"},{"refs":[{"id":"ref-for-comb-any\u2466"},{"id":"ref-for-comb-any\u2467"}],"title":"4.7. \nBorder Image Shorthand: the border-image property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
 "8b0b38d9": {"dfnID":"8b0b38d9","dfnText":"quadrilateral","external":true,"refSections":[{"refs":[{"id":"ref-for-quadrilateral"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.fxtf.org/geometry-1/#quadrilateral"},
@@ -7310,7 +7324,7 @@ let dfnPanelData = {
 "938ba280": {"dfnID":"938ba280","dfnText":"{A,B}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num-range"},{"id":"ref-for-mult-num-range\u2460"}],"title":"2.1. \nLine Colors: the border-color properties"},{"refs":[{"id":"ref-for-mult-num-range\u2461"},{"id":"ref-for-mult-num-range\u2462"}],"title":"2.2. \nLine Patterns: the border-style properties"},{"refs":[{"id":"ref-for-mult-num-range\u2463"},{"id":"ref-for-mult-num-range\u2464"}],"title":"2.3. \nLine Thickness: the border-width properties"},{"refs":[{"id":"ref-for-mult-num-range\u2465"}],"title":"3.5. \nCorner Sizing: the border-*-*-radius properties"},{"refs":[{"id":"ref-for-mult-num-range\u2466"},{"id":"ref-for-mult-num-range\u2467"}],"title":"3.6.1. \nSizing The Corners Of One Side:\nThe border-top-radius, border-right-radius,\nborder-bottom-radius, border-left-radius,\nborder-block-start-radius, border-block-end-radius,\nborder-inline-start-radius, border-inline-end-radius shorthands"},{"refs":[{"id":"ref-for-mult-num-range\u2468"},{"id":"ref-for-mult-num-range\u2460\u24ea"}],"title":"3.6.2. \nSizing All Corners At Once:\nThe border-radius shorthand"},{"refs":[{"id":"ref-for-mult-num-range\u2460\u2460"}],"title":"3.8.1. \nShaping The Corners Of One Side:\nThe corner-*-shape shorthands:"},{"refs":[{"id":"ref-for-mult-num-range\u2460\u2461"}],"title":"3.8.2. \nShaping All Corners At Once:\nThe corner-shape shorthand"},{"refs":[{"id":"ref-for-mult-num-range\u2460\u2462"}],"title":"4.2. \nImage Slicing: the border-image-slice property"},{"refs":[{"id":"ref-for-mult-num-range\u2460\u2463"}],"title":"4.3. \nDrawing Areas: the border-image-width property"},{"refs":[{"id":"ref-for-mult-num-range\u2460\u2464"}],"title":"4.4. \nEdge Overhang: the border-image-outset property"},{"refs":[{"id":"ref-for-mult-num-range\u2460\u2465"}],"title":"4.5. \nImage Tiling: the border-image-repeat property"},{"refs":[{"id":"ref-for-mult-num-range\u2460\u2466"}],"title":"7.1. \nThe border-shape property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-num-range"},
 "991fe159": {"dfnID":"991fe159","dfnText":"round","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-background-repeat-round"}],"title":"4.6. \nDrawing the Border Image"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-background-repeat-round"},
 "998b9e6e": {"dfnID":"998b9e6e","dfnText":"<image>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-image"},{"id":"ref-for-typedef-image\u2460"}],"title":"4.1. \nImage Source: the border-image-source property"}],"url":"https://drafts.csswg.org/css-images-3/#typedef-image"},
-"99d126af": {"dfnID":"99d126af","dfnText":"spread distance","external":true,"refSections":[{"refs":[{"id":"ref-for-box-shadow-spread-distance"},{"id":"ref-for-box-shadow-spread-distance\u2460"},{"id":"ref-for-box-shadow-spread-distance\u2461"},{"id":"ref-for-box-shadow-spread-distance\u2462"},{"id":"ref-for-box-shadow-spread-distance\u2463"},{"id":"ref-for-box-shadow-spread-distance\u2464"},{"id":"ref-for-box-shadow-spread-distance\u2465"},{"id":"ref-for-box-shadow-spread-distance\u2466"}],"title":"6.6.1. \nShadow Shape, Spread, and Knockout"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-spread-distance"},
+"99d126af": {"dfnID":"99d126af","dfnText":"spread distance","external":true,"refSections":[{"refs":[{"id":"ref-for-box-shadow-spread-distance"},{"id":"ref-for-box-shadow-spread-distance\u2460"},{"id":"ref-for-box-shadow-spread-distance\u2461"}],"title":"6.6.1. \nShadow Shape, Spread, and Knockout"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-spread-distance"},
 "9b0fa0e9": {"dfnID":"9b0fa0e9","dfnText":"background-clip","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-background-clip"}],"title":"3.1. \nCorner Clipping"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background-clip"},
 "9bfc28f6": {"dfnID":"9bfc28f6","dfnText":"pseudo-element","external":true,"refSections":[{"refs":[{"id":"ref-for-pseudo-element"},{"id":"ref-for-pseudo-element\u2460"}],"title":"1.1. \nModule Interactions"}],"url":"https://drafts.csswg.org/selectors-4/#pseudo-element"},
 "9cd25054": {"dfnID":"9cd25054","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"}],"title":"3.9.4. \nRendering corner-shape"},{"refs":[{"id":"ref-for-computed-value\u2460"},{"id":"ref-for-computed-value\u2461"},{"id":"ref-for-computed-value\u2462"},{"id":"ref-for-computed-value\u2463"},{"id":"ref-for-computed-value\u2464"},{"id":"ref-for-computed-value\u2465"},{"id":"ref-for-computed-value\u2466"},{"id":"ref-for-computed-value\u2467"},{"id":"ref-for-computed-value\u2468"},{"id":"ref-for-computed-value\u2460\u24ea"},{"id":"ref-for-computed-value\u2460\u2460"},{"id":"ref-for-computed-value\u2460\u2461"}],"title":"3.9.5. \nConstraining opposite radii"},{"refs":[{"id":"ref-for-computed-value\u2460\u2462"},{"id":"ref-for-computed-value\u2460\u2463"},{"id":"ref-for-computed-value\u2460\u2464"},{"id":"ref-for-computed-value\u2460\u2465"},{"id":"ref-for-computed-value\u2460\u2466"},{"id":"ref-for-computed-value\u2460\u2467"},{"id":"ref-for-computed-value\u2460\u2468"}],"title":"7.1. \nThe border-shape property"}],"url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
@@ -7324,6 +7338,7 @@ let dfnPanelData = {
 "abb2bed7": {"dfnID":"abb2bed7","dfnText":"table","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-table"}],"title":"3.4. \nEffect on Tables"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-table"},
 "ad2bb926": {"dfnID":"ad2bb926","dfnText":"shape-inside","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-shape-inside"}],"title":"7.1. \nThe border-shape property"}],"url":"https://drafts.csswg.org/css-shapes-2/#propdef-shape-inside"},
 "add-corner-to-path": {"dfnID":"add-corner-to-path","dfnText":"add corner to path","external":false,"refSections":[{"refs":[{"id":"ref-for-add-corner-to-path"},{"id":"ref-for-add-corner-to-path\u2460"},{"id":"ref-for-add-corner-to-path\u2461"},{"id":"ref-for-add-corner-to-path\u2462"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"#add-corner-to-path"},
+"adjusted-radius-dimension": {"dfnID":"adjusted-radius-dimension","dfnText":"adjusted radius dimension","external":false,"refSections":[{"refs":[{"id":"ref-for-adjusted-radius-dimension"},{"id":"ref-for-adjusted-radius-dimension\u2460"}],"title":"3. \nCorners"}],"url":"#adjusted-radius-dimension"},
 "aeae03b8": {"dfnID":"aeae03b8","dfnText":"x coordinate","external":true,"refSections":[{"refs":[{"id":"ref-for-rectangle-x-coordinate"},{"id":"ref-for-rectangle-x-coordinate\u2460"},{"id":"ref-for-rectangle-x-coordinate\u2461"},{"id":"ref-for-rectangle-x-coordinate\u2462"},{"id":"ref-for-rectangle-x-coordinate\u2463"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.fxtf.org/geometry-1/#rectangle-x-coordinate"},
 "aligned-corner-point": {"dfnID":"aligned-corner-point","dfnText":"aligned corner point","external":false,"refSections":[{"refs":[{"id":"ref-for-aligned-corner-point"},{"id":"ref-for-aligned-corner-point\u2460"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"#aligned-corner-point"},
 "b0d8ebd9": {"dfnID":"b0d8ebd9","dfnText":"{A}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num"}],"title":"6.2. \nOffsetting shadows: the box-shadow-offset property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-num"},
@@ -7340,7 +7355,7 @@ let dfnPanelData = {
 "border-image-dfn": {"dfnID":"border-image-dfn","dfnText":"border image","external":false,"refSections":[{"refs":[{"id":"ref-for-border-image-dfn"}],"title":"4.3. \nDrawing Areas: the border-image-width property"},{"refs":[{"id":"ref-for-border-image-dfn\u2460"}],"title":"4.5. \nImage Tiling: the border-image-repeat property"},{"refs":[{"id":"ref-for-border-image-dfn\u2461"}],"title":"4.6. \nDrawing the Border Image"}],"url":"#border-image-dfn"},
 "border-image-region": {"dfnID":"border-image-region","dfnText":"regions","external":false,"refSections":[{"refs":[{"id":"ref-for-border-image-region"},{"id":"ref-for-border-image-region\u2460"},{"id":"ref-for-border-image-region\u2461"},{"id":"ref-for-border-image-region\u2462"}],"title":"4.5. \nImage Tiling: the border-image-repeat property"},{"refs":[{"id":"ref-for-border-image-region\u2463"},{"id":"ref-for-border-image-region\u2464"},{"id":"ref-for-border-image-region\u2465"},{"id":"ref-for-border-image-region\u2466"}],"title":"4.6. \nDrawing the Border Image"}],"url":"#border-image-region"},
 "border-image-slice-fill": {"dfnID":"border-image-slice-fill","dfnText":"fill","external":false,"refSections":[{"refs":[{"id":"ref-for-border-image-slice-fill"}],"title":"4.1. \nImage Source: the border-image-source property"},{"refs":[{"id":"ref-for-border-image-slice-fill\u2460"},{"id":"ref-for-border-image-slice-fill\u2461"},{"id":"ref-for-border-image-slice-fill\u2462"}],"title":"4.2. \nImage Slicing: the border-image-slice property"},{"refs":[{"id":"ref-for-border-image-slice-fill\u2463"}],"title":"4.6. \nDrawing the Border Image"}],"url":"#border-image-slice-fill"},
-"border-radii": {"dfnID":"border-radii","dfnText":"radii","external":false,"refSections":[{"refs":[{"id":"ref-for-border-radii"}],"title":"3. \nCorners"},{"refs":[{"id":"ref-for-border-radii\u2460"}],"title":"6.6.1. \nShadow Shape, Spread, and Knockout"}],"url":"#border-radii"},
+"border-radii": {"dfnID":"border-radii","dfnText":"radii","external":false,"refSections":[{"refs":[{"id":"ref-for-border-radii"},{"id":"ref-for-border-radii\u2460"}],"title":"3. \nCorners"}],"url":"#border-radii"},
 "border-style-dfn": {"dfnID":"border-style-dfn","dfnText":"style","external":false,"refSections":[{"refs":[{"id":"ref-for-border-style-dfn"}],"title":"7.1. \nThe border-shape property"}],"url":"#border-style-dfn"},
 "border-width-dfn": {"dfnID":"border-width-dfn","dfnText":"border width","external":false,"refSections":[{"refs":[{"id":"ref-for-border-width-dfn"}],"title":"3.2. \nColor and Style Transitions"},{"refs":[{"id":"ref-for-border-width-dfn\u2460"}],"title":"7.1. \nThe border-shape property"}],"url":"#border-width-dfn"},
 "c1b73c63": {"dfnID":"c1b73c63","dfnText":"padding","external":true,"refSections":[{"refs":[{"id":"ref-for-padding"}],"title":"3. \nCorners"}],"url":"https://drafts.csswg.org/css-box-4/#padding"},
@@ -7358,7 +7373,6 @@ let dfnPanelData = {
 "d53dc980": {"dfnID":"d53dc980","dfnText":"inner box-shadow","external":true,"refSections":[{"refs":[{"id":"ref-for-box-shadow-inner-box-shadow"},{"id":"ref-for-box-shadow-inner-box-shadow\u2460"}],"title":"6.6.1. \nShadow Shape, Spread, and Knockout"},{"refs":[{"id":"ref-for-box-shadow-inner-box-shadow\u2461"}],"title":"7.1. \nThe border-shape property"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-inner-box-shadow"},
 "d84118c0": {"dfnID":"d84118c0","dfnText":"outline-offset","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-outline-offset"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-offset"},
 "d9c76793": {"dfnID":"d9c76793","dfnText":"physical","external":true,"refSections":[{"refs":[{"id":"ref-for-physical"}],"title":"2.1. \nLine Colors: the border-color properties"},{"refs":[{"id":"ref-for-physical\u2460"}],"title":"2.2. \nLine Patterns: the border-style properties"},{"refs":[{"id":"ref-for-physical\u2461"}],"title":"2.3. \nLine Thickness: the border-width properties"},{"refs":[{"id":"ref-for-physical\u2462"}],"title":"2.4. \nBorder Shorthand Properties"},{"refs":[{"id":"ref-for-physical\u2463"}],"title":"3.5. \nCorner Sizing: the border-*-*-radius properties"},{"refs":[{"id":"ref-for-physical\u2464"}],"title":"3.7. \nCorner Shaping: the corner-*-shape properties"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#physical"},
-"ea42c0b6": {"dfnID":"ea42c0b6","dfnText":"outset-adjusted border radius","external":true,"refSections":[{"refs":[{"id":"ref-for-outset-adjusted-border-radius"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#outset-adjusted-border-radius"},
 "ed3eb665": {"dfnID":"ed3eb665","dfnText":"natural size","external":true,"refSections":[{"refs":[{"id":"ref-for-natural-size"}],"title":"4.3. \nDrawing Areas: the border-image-width property"}],"url":"https://drafts.csswg.org/css-images-3/#natural-size"},
 "eeb579de": {"dfnID":"eeb579de","dfnText":"coordinating list property group","external":true,"refSections":[{"refs":[{"id":"ref-for-coordinating-list-property"}],"title":"6.7. \nLayering, Layout, and Other Details"}],"url":"https://drafts.csswg.org/css-values-4/#coordinating-list-property"},
 "f0809abc": {"dfnID":"f0809abc","dfnText":"&&","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-all"}],"title":"4.2. \nImage Slicing: the border-image-slice property"},{"refs":[{"id":"ref-for-comb-all\u2460"},{"id":"ref-for-comb-all\u2461"}],"title":"6.6. \nDrop Shadows Shorthand: the box-shadow property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-all"},
@@ -7374,6 +7388,7 @@ let dfnPanelData = {
 "normalized-superellipse-half-corner": {"dfnID":"normalized-superellipse-half-corner","dfnText":"normalized superellipse half corner","external":false,"refSections":[{"refs":[{"id":"ref-for-normalized-superellipse-half-corner"}],"title":"3.9.4. \nRendering corner-shape"},{"refs":[{"id":"ref-for-normalized-superellipse-half-corner\u2460"},{"id":"ref-for-normalized-superellipse-half-corner\u2461"}],"title":"3.9.6. \nInterpolating corner shapes"}],"url":"#normalized-superellipse-half-corner"},
 "opposite-corner-scale-factor": {"dfnID":"opposite-corner-scale-factor","dfnText":"opposite corner scale factor","external":false,"refSections":[{"refs":[{"id":"ref-for-opposite-corner-scale-factor"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"#opposite-corner-scale-factor"},
 "outer-contour": {"dfnID":"outer-contour","dfnText":"outer contour","external":false,"refSections":[{"refs":[{"id":"ref-for-outer-contour"},{"id":"ref-for-outer-contour\u2460"}],"title":"3.9.4. \nRendering corner-shape"}],"url":"#outer-contour"},
+"outset-adjusted-border-radius": {"dfnID":"outset-adjusted-border-radius","dfnText":"outset-adjusted border radius","external":false,"refSections":[{"refs":[{"id":"ref-for-outset-adjusted-border-radius"},{"id":"ref-for-outset-adjusted-border-radius\u2460"}],"title":"3. \nCorners"},{"refs":[{"id":"ref-for-outset-adjusted-border-radius\u2461"}],"title":"3.9.4. \nRendering corner-shape"},{"refs":[{"id":"ref-for-outset-adjusted-border-radius\u2462"}],"title":"6.6.1. \nShadow Shape, Spread, and Knockout"}],"url":"#outset-adjusted-border-radius"},
 "propdef-border": {"dfnID":"propdef-border","dfnText":"border","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-border"},{"id":"ref-for-propdef-border\u2460"},{"id":"ref-for-propdef-border\u2461"},{"id":"ref-for-propdef-border\u2462"},{"id":"ref-for-propdef-border\u2463"},{"id":"ref-for-propdef-border\u2464"},{"id":"ref-for-propdef-border\u2465"}],"title":"2.4. \nBorder Shorthand Properties"},{"refs":[{"id":"ref-for-propdef-border\u2466"}],"title":"4. \nBorder Images"}],"url":"#propdef-border"},
 "propdef-border-block": {"dfnID":"propdef-border-block","dfnText":"border-block","external":false,"refSections":[],"url":"#propdef-border-block"},
 "propdef-border-block-color": {"dfnID":"propdef-border-block-color","dfnText":"border-block-color","external":false,"refSections":[],"url":"#propdef-border-block-color"},
@@ -7452,7 +7467,7 @@ let dfnPanelData = {
 "propdef-border-top-style": {"dfnID":"propdef-border-top-style","dfnText":"border-top-style","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-border-top-style"},{"id":"ref-for-propdef-border-top-style\u2460"},{"id":"ref-for-propdef-border-top-style\u2461"}],"title":"2.2. \nLine Patterns: the border-style properties"}],"url":"#propdef-border-top-style"},
 "propdef-border-top-width": {"dfnID":"propdef-border-top-width","dfnText":"border-top-width","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-border-top-width"},{"id":"ref-for-propdef-border-top-width\u2460"},{"id":"ref-for-propdef-border-top-width\u2461"}],"title":"2.3. \nLine Thickness: the border-width properties"}],"url":"#propdef-border-top-width"},
 "propdef-border-width": {"dfnID":"propdef-border-width","dfnText":"border-width","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-border-width"}],"title":"2. \nBorders"},{"refs":[{"id":"ref-for-propdef-border-width\u2460"}],"title":"2.2. \nLine Patterns: the border-style properties"},{"refs":[{"id":"ref-for-propdef-border-width\u2461"},{"id":"ref-for-propdef-border-width\u2462"},{"id":"ref-for-propdef-border-width\u2463"}],"title":"2.3. \nLine Thickness: the border-width properties"},{"refs":[{"id":"ref-for-propdef-border-width\u2464"},{"id":"ref-for-propdef-border-width\u2465"}],"title":"2.4. \nBorder Shorthand Properties"},{"refs":[{"id":"ref-for-propdef-border-width\u2466"}],"title":"3.7. \nCorner Shaping: the corner-*-shape properties"},{"refs":[{"id":"ref-for-propdef-border-width\u2467"},{"id":"ref-for-propdef-border-width\u2468"}],"title":"4. \nBorder Images"},{"refs":[{"id":"ref-for-propdef-border-width\u2460\u24ea"}],"title":"4.3. \nDrawing Areas: the border-image-width property"},{"refs":[{"id":"ref-for-propdef-border-width\u2460\u2460"},{"id":"ref-for-propdef-border-width\u2460\u2461"}],"title":"7.1. \nThe border-shape property"}],"url":"#propdef-border-width"},
-"propdef-box-shadow": {"dfnID":"propdef-box-shadow","dfnText":"box-shadow","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-box-shadow"}],"title":"1.1. \nModule Interactions"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2460"}],"title":"3.7. \nCorner Shaping: the corner-*-shape properties"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2461"},{"id":"ref-for-propdef-box-shadow\u2462"}],"title":"3.9.4. \nRendering corner-shape"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2463"},{"id":"ref-for-propdef-box-shadow\u2464"}],"title":"6.6. \nDrop Shadows Shorthand: the box-shadow property"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2465"}],"title":"\nAdditions since [CSS3BG]"}],"url":"#propdef-box-shadow"},
+"propdef-box-shadow": {"dfnID":"propdef-box-shadow","dfnText":"box-shadow","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-box-shadow"}],"title":"1.1. \nModule Interactions"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2460"}],"title":"3. \nCorners"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2461"}],"title":"3.7. \nCorner Shaping: the corner-*-shape properties"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2462"},{"id":"ref-for-propdef-box-shadow\u2463"}],"title":"3.9.4. \nRendering corner-shape"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2464"},{"id":"ref-for-propdef-box-shadow\u2465"}],"title":"6.6. \nDrop Shadows Shorthand: the box-shadow property"},{"refs":[{"id":"ref-for-propdef-box-shadow\u2466"}],"title":"\nAdditions since [CSS3BG]"}],"url":"#propdef-box-shadow"},
 "propdef-box-shadow-blur": {"dfnID":"propdef-box-shadow-blur","dfnText":"box-shadow-blur","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-box-shadow-blur"},{"id":"ref-for-propdef-box-shadow-blur\u2460"},{"id":"ref-for-propdef-box-shadow-blur\u2461"}],"title":"6.3. \nBlurring shadows: the box-shadow-blur property"},{"refs":[{"id":"ref-for-propdef-box-shadow-blur\u2462"},{"id":"ref-for-propdef-box-shadow-blur\u2463"}],"title":"6.6. \nDrop Shadows Shorthand: the box-shadow property"}],"url":"#propdef-box-shadow-blur"},
 "propdef-box-shadow-color": {"dfnID":"propdef-box-shadow-color","dfnText":"box-shadow-color","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-box-shadow-color"},{"id":"ref-for-propdef-box-shadow-color\u2460"},{"id":"ref-for-propdef-box-shadow-color\u2461"}],"title":"6.1. \nColoring shadows: the box-shadow-color property"},{"refs":[{"id":"ref-for-propdef-box-shadow-color\u2462"},{"id":"ref-for-propdef-box-shadow-color\u2463"}],"title":"6.6. \nDrop Shadows Shorthand: the box-shadow property"}],"url":"#propdef-box-shadow-color"},
 "propdef-box-shadow-offset": {"dfnID":"propdef-box-shadow-offset","dfnText":"box-shadow-offset","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-box-shadow-offset"},{"id":"ref-for-propdef-box-shadow-offset\u2460"},{"id":"ref-for-propdef-box-shadow-offset\u2461"}],"title":"6.2. \nOffsetting shadows: the box-shadow-offset property"},{"refs":[{"id":"ref-for-propdef-box-shadow-offset\u2462"},{"id":"ref-for-propdef-box-shadow-offset\u2463"}],"title":"6.6. \nDrop Shadows Shorthand: the box-shadow property"},{"refs":[{"id":"ref-for-propdef-box-shadow-offset\u2464"}],"title":"6.7. \nLayering, Layout, and Other Details"}],"url":"#propdef-box-shadow-offset"},
@@ -7958,6 +7973,7 @@ document.addEventListener("DOMContentLoaded", setTypeTitles);
 {
 let refsData = {
 "#add-corner-to-path": {"displayText":"add corner to path","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"add corner to path","type":"dfn","url":"#add-corner-to-path"},
+"#adjusted-radius-dimension": {"displayText":"adjusted radius dimension","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"adjusted radius dimension","type":"dfn","url":"#adjusted-radius-dimension"},
 "#aligned-corner-point": {"displayText":"aligned corner point","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"aligned corner point","type":"dfn","url":"#aligned-corner-point"},
 "#border-contour-path": {"displayText":"border contour path","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"border contour path","type":"dfn","url":"#border-contour-path"},
 "#border-image-area": {"displayText":"border image area","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"border image area","type":"dfn","url":"#border-image-area"},
@@ -7976,6 +7992,7 @@ let refsData = {
 "#normalized-superellipse-half-corner": {"displayText":"normalized superellipse half corner","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"normalized superellipse half corner","type":"dfn","url":"#normalized-superellipse-half-corner"},
 "#opposite-corner-scale-factor": {"displayText":"opposite corner scale factor","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"opposite corner scale factor","type":"dfn","url":"#opposite-corner-scale-factor"},
 "#outer-contour": {"displayText":"outer contour","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"outer contour","type":"dfn","url":"#outer-contour"},
+"#outset-adjusted-border-radius": {"displayText":"outset-adjusted border radius","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"outset-adjusted border radius","type":"dfn","url":"#outset-adjusted-border-radius"},
 "#propdef-border": {"displayText":"border","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"border","type":"property","url":"#propdef-border"},
 "#propdef-border-block": {"displayText":"border-block","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"border-block","type":"property","url":"#propdef-border-block"},
 "#propdef-border-block-color": {"displayText":"border-block-color","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"local","text":"border-block-color","type":"property","url":"#propdef-border-block-color"},
@@ -8136,7 +8153,6 @@ let refsData = {
 "https://drafts.csswg.org/css-backgrounds-3/#box-shadow-inner-box-shadow": {"displayText":"inner box-shadow","export":true,"for_":["box-shadow"],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"inner box-shadow","type":"dfn","url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-inner-box-shadow"},
 "https://drafts.csswg.org/css-backgrounds-3/#box-shadow-outer-box-shadow": {"displayText":"outer box-shadow","export":true,"for_":["box-shadow"],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"outer box-shadow","type":"dfn","url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-outer-box-shadow"},
 "https://drafts.csswg.org/css-backgrounds-3/#box-shadow-spread-distance": {"displayText":"spread distance","export":true,"for_":["box-shadow"],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"spread distance","type":"dfn","url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-spread-distance"},
-"https://drafts.csswg.org/css-backgrounds-3/#outset-adjusted-border-radius": {"displayText":"outset-adjusted border radius","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"outset-adjusted border radius","type":"dfn","url":"https://drafts.csswg.org/css-backgrounds-3/#outset-adjusted-border-radius"},
 "https://drafts.csswg.org/css-backgrounds-3/#propdef-background-clip": {"displayText":"background-clip","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"background-clip","type":"property","url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background-clip"},
 "https://drafts.csswg.org/css-backgrounds-3/#propdef-background-image": {"displayText":"background-image","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"background-image","type":"property","url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background-image"},
 "https://drafts.csswg.org/css-backgrounds-3/#propdef-background-repeat": {"displayText":"background-repeat","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"background-repeat","type":"property","url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background-repeat"},
@@ -8190,8 +8206,11 @@ let refsData = {
 "https://drafts.csswg.org/css-shapes-1/#typedef-basic-shape": {"displayText":"<basic-shape>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"<basic-shape>","type":"type","url":"https://drafts.csswg.org/css-shapes-1/#typedef-basic-shape"},
 "https://drafts.csswg.org/css-shapes-1/#valdef-shape-box-half-border-box": {"displayText":"half-border-box","export":true,"for_":["<shape-box>","shape-outside"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"half-border-box","type":"value","url":"https://drafts.csswg.org/css-shapes-1/#valdef-shape-box-half-border-box"},
 "https://drafts.csswg.org/css-shapes-2/#propdef-shape-inside": {"displayText":"shape-inside","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-shapes","spec":"css-shapes-2","status":"current","text":"shape-inside","type":"property","url":"https://drafts.csswg.org/css-shapes-2/#propdef-shape-inside"},
+"https://drafts.csswg.org/css-sizing-3/#height": {"displayText":"height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"height","type":"dfn","url":"https://drafts.csswg.org/css-sizing-3/#height"},
 "https://drafts.csswg.org/css-sizing-3/#propdef-height": {"displayText":"height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"height","type":"property","url":"https://drafts.csswg.org/css-sizing-3/#propdef-height"},
 "https://drafts.csswg.org/css-sizing-3/#propdef-width": {"displayText":"width","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"width","type":"property","url":"https://drafts.csswg.org/css-sizing-3/#propdef-width"},
+"https://drafts.csswg.org/css-sizing-3/#size": {"displayText":"size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"size","type":"dfn","url":"https://drafts.csswg.org/css-sizing-3/#size"},
+"https://drafts.csswg.org/css-sizing-3/#width": {"displayText":"width","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"width","type":"dfn","url":"https://drafts.csswg.org/css-sizing-3/#width"},
 "https://drafts.csswg.org/css-text-4/#valdef-white-space-collapse-collapse": {"displayText":"collapse","export":true,"for_":["white-space-collapse"],"level":"4","normative":true,"shortname":"css-text","spec":"css-text-4","status":"current","text":"collapse","type":"value","url":"https://drafts.csswg.org/css-text-4/#valdef-white-space-collapse-collapse"},
 "https://drafts.csswg.org/css-transforms-1/#transformation-matrix": {"displayText":"transformation matrix","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-transforms","spec":"css-transforms-1","status":"current","text":"transformation matrix","type":"dfn","url":"https://drafts.csswg.org/css-transforms-1/#transformation-matrix"},
 "https://drafts.csswg.org/css-ui-4/#propdef-outline-offset": {"displayText":"outline-offset","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"current","text":"outline-offset","type":"property","url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-offset"},
