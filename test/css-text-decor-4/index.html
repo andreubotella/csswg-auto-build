@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 7b3ff057a, updated Sun Nov 9 18:39:50 2025 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-text-decor-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="2f59a3a736a12e958d4ee79f59f516b59cdfb082" name="revision">
+  <meta content="a84830bb9f39f4b82ad0c91ad250a9393b9137f8" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -1056,7 +1056,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Text Decoration Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-10-29">29 October 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-11">11 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1169,8 +1169,8 @@ Using Font Metrics for Automatic Positioning</span></a>
        <a href="#text-line-constancy"><span class="secno">2.9</span> <span class="content">
 Text Decoration Line Uniformity</span></a>
        <ol class="toc">
-        <li><a href="#text-decoration-skip-inset-property"><span class="secno">2.9.1</span> <span class="content">
-Text Decoration Line Trimming and Extension: the <span class="property">text-decoration-trim</span> property</span></a>
+        <li><a href="#text-decoration-inset-property"><span class="secno">2.9.1</span> <span class="content">
+Trimming, Expanding, and Shifting Text Decoration Lines: the <span class="property">text-decoration-inset</span> property</span></a>
        </ol>
       <li>
        <a href="#text-decoration-skipping"><span class="secno">2.10</span> <span class="content">
@@ -2214,13 +2214,13 @@ Text Decoration Line Uniformity</span><a class="self-link" href="#text-line-cons
 		                   vs. underline applied to <abbr title="element containing an element with &apos;vertical-align&apos; or &apos;font-variant-position&apos; applied">text containing a superscript</abbr>
 	</p>
    </div>
-   <h4 class="heading settled" data-level="2.9.1" id="text-decoration-skip-inset-property"><span class="secno">2.9.1. </span><span class="content">
-Text Decoration Line Trimming and Extension: the <a class="css property" data-link-type="property" href="#propdef-text-decoration-trim" id="ref-for-propdef-text-decoration-trim">text-decoration-trim</a> property</span><a class="self-link" href="#text-decoration-skip-inset-property"></a></h4>
-   <table class="def propdef" data-link-for-hint="text-decoration-trim">
+   <h4 class="heading settled" data-level="2.9.1" id="text-decoration-inset-property"><span class="secno">2.9.1. </span><span class="content">
+Trimming, Expanding, and Shifting Text Decoration Lines: the <a class="css property" data-link-type="property" href="#propdef-text-decoration-inset" id="ref-for-propdef-text-decoration-inset">text-decoration-inset</a> property</span><a class="self-link" href="#text-decoration-inset-property"></a></h4>
+   <table class="def propdef" data-link-for-hint="text-decoration-inset">
     <tbody>
      <tr>
       <th>Name:
-      <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-text-decoration-trim">text-decoration-trim</dfn>
+      <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-text-decoration-inset">text-decoration-inset</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
       <td class="prod"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value">&lt;length></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①③">|</a> auto	
@@ -2246,61 +2246,62 @@ Text Decoration Line Trimming and Extension: the <a class="css property" data-li
       <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
       <td>by computed value	
    </table>
-   <p>This property adjusts the start and end points of line decorations,
-	allowing the author to shorten, lengthen, or shift the decoration
-	with respect to the text.
-	It controls all text decoration lines drawn by this <a data-link-type="dfn" href="#decorating-box" id="ref-for-decorating-box①②">decorating box</a>,
+   <p>This property adjusts the start and end endpoints of line decorations.
+	Positive values move an endpoint inward, trimming the decoration;
+	negative values move it outward, extending the decoration.</p>
+   <p>It controls all text decoration lines drawn by this <a data-link-type="dfn" href="#decorating-box" id="ref-for-decorating-box①②">decorating box</a>,
 	but not any text decoration lines drawn by its ancestors.
 	If two component values are given,
 	the first applies to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#css-start" id="ref-for-css-start">start</a> and the second to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#css-end" id="ref-for-css-end">end</a>.
 	Values have the following meanings:</p>
    <dl>
-    <dt><dfn class="css dfn-paneled" data-dfn-for="text-decoration-skip-inset" data-dfn-type="value" data-export id="valdef-text-decoration-skip-inset-length"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value①">&lt;length></a></dfn>
+    <dt><dfn class="css dfn-paneled" data-dfn-for="text-decoration-inset" data-dfn-type="value" data-export id="valdef-text-decoration-inset-length"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value①">&lt;length></a></dfn>
     <dd>
      
-			Inset (positive) or outset (negative)
-			the start/end of the affected line decorations.
+			Adjusts the start or end endpoint of the affected line decorations.
+			Positive values move the endpoint inward (trimming),
+			negative values move it outward (extending).
 
 			
-     <div class="example" id="example-c5358edb">
-      <a class="self-link" href="#example-c5358edb"></a>
+     <div class="example" id="example-0593cd67">
+      <a class="self-link" href="#example-0593cd67"></a>
 				
       <p>The following example offsets an extra thick underline
 				1em endwards with respect to the text
 				</p>
 <pre>h1 {
   text-decoration: underline 0.3em rgba(36,148,187,0.25);
-  text-decoration-trim: 1em -1em;
+  text-decoration-inset: 1em -1em;
 }
 </pre>
      </div>
-    <dt><dfn class="css dfn-paneled" data-dfn-for="text-decoration-skip-inset" data-dfn-type="value" data-export id="valdef-text-decoration-skip-inset-auto">auto</dfn>
+    <dt><dfn class="css dfn-paneled" data-dfn-for="text-decoration-inset" data-dfn-type="value" data-export id="valdef-text-decoration-inset-auto">auto</dfn>
     <dd>
      
-			The UA chooses a trim amount that ensures that
+			The UA chooses an inset amount that ensures that
 			if two identical underlined elements appear side-by-side
 			they do not appear to have a single underline.
 			(This is important in Chinese, where underlining is a form of punctuation.)
 
 			
      <div class="figure">
-      <p><img alt="An underline below a series of Chinese characters has a gap between two adjacent underlining elements." height="77" src="images/decoration-skip-inset.png" title="text-decoration-skip-inset: auto" width="223">
+      <p><img alt="An underline below a series of Chinese characters has a gap between two adjacent underlining elements." height="77" src="images/decoration-skip-inset.png" title="text-decoration-inset: auto" width="223">
 				</p>
-      <p class="caption"><a class="css" data-link-type="propdesc" href="https://www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset" id="ref-for-propdef-text-decoration-skip-inset">text-decoration-skip-inset: auto</a> for <code>&lt;u>石井&lt;/u>&lt;u>艾俐俐&lt;/u></code>
+      <p class="caption"><a class="css" data-link-type="propdesc" href="#propdef-text-decoration-inset" id="ref-for-propdef-text-decoration-inset①">text-decoration-inset: auto</a> for <code>&lt;u>石井&lt;/u>&lt;u>艾俐俐&lt;/u></code>
 </p>
      </div>
    </dl>
-   <p>Text decoration trimming is subject to <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-break-4/#propdef-box-decoration-break" id="ref-for-propdef-box-decoration-break">box-decoration-break</a>:</p>
+   <p>The adjustment of the text decoration’s endpoints is subject to <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-break-4/#propdef-box-decoration-break" id="ref-for-propdef-box-decoration-break">box-decoration-break</a>:</p>
    <ul>
     <li data-md>
      <p>for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-break-4/#valdef-box-decoration-break-slice" id="ref-for-valdef-box-decoration-break-slice">slice</a> (the default)
-trimming is only applied to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#css-start" id="ref-for-css-start①">start</a> edge of the first fragment
+endpoint adjustment is only applied to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#css-start" id="ref-for-css-start①">start</a> edge of the first fragment
 and the <a data-link-type="dfn" href="https://drafts.csswg.org/css-writing-modes-4/#css-end" id="ref-for-css-end①">end</a> edge of the last fragment,
-and may accumulate to other fragments if the amount of the trim
+and may accumulate to other fragments if the amount of the inset
 is more than the length of the fragment.</p>
     <li data-md>
      <p>for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-break-4/#valdef-box-decoration-break-clone" id="ref-for-valdef-box-decoration-break-clone">clone</a>
-trimming is applied to each fragment independently.</p>
+endpoint adjustment is applied to each fragment independently.</p>
    </ul>
    <h3 class="heading settled" data-level="2.10" id="text-decoration-skipping"><span class="secno">2.10. </span><span class="content">
 Text Decoration Line Continuity: the <a class="css property" data-link-type="property" href="#propdef-text-decoration-skip" id="ref-for-propdef-text-decoration-skip②">text-decoration-skip</a> shorthand and its sub-properties</span><a class="self-link" href="#text-decoration-skipping"></a></h3>
@@ -2343,7 +2344,6 @@ Text Decoration Line Continuity: the <a class="css property" data-link-type="pro
    <p>The <a class="css property" data-link-type="property" href="#propdef-text-decoration-skip" id="ref-for-propdef-text-decoration-skip③">text-decoration-skip</a> property and its sub-properties
 	(<a class="css property" data-link-type="property" href="#propdef-text-decoration-skip-self" id="ref-for-propdef-text-decoration-skip-self">text-decoration-skip-self</a>,
 	<a class="css property" data-link-type="property" href="#propdef-text-decoration-skip-box" id="ref-for-propdef-text-decoration-skip-box">text-decoration-skip-box</a>,
-	<a class="css property" data-link-type="property" href="https://www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset" id="ref-for-propdef-text-decoration-skip-inset①">text-decoration-skip-inset</a>,
 	<a class="css property" data-link-type="property" href="#propdef-text-decoration-skip-spaces" id="ref-for-propdef-text-decoration-skip-spaces">text-decoration-skip-spaces</a>,
 	<a class="css property" data-link-type="property" href="#propdef-text-decoration-skip-ink" id="ref-for-propdef-text-decoration-skip-ink①">text-decoration-skip-ink</a>)
 	control interruptions in line decorations
@@ -3551,7 +3551,7 @@ Changes since the 4 May 2022 Working Draft</span><a class="self-link" href="#cha
     <li>Redesigned <a class="css property" data-link-type="property" href="#propdef-text-decoration-skip-self" id="ref-for-propdef-text-decoration-skip-self②">text-decoration-skip-self</a>.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/2885">Issue 2885</a>)
 		
-    <li>Replaced <span class="css">text-decoration-skip-edges</span> with <a class="css property" data-link-type="property" href="#propdef-text-decoration-trim" id="ref-for-propdef-text-decoration-trim①">text-decoration-trim</a>.
+    <li>Replaced <span class="css">text-decoration-skip-edges</span> with <a class="css property" data-link-type="property" href="#propdef-text-decoration-inset" id="ref-for-propdef-text-decoration-inset②">text-decoration-inset</a>.
 			(<a href="https://github.com/w3c/csswg-drafts/issues/4557">Issue 4557</a>)
 		
     <li>Redefined <a data-link-type="dfn" href="#spacer" id="ref-for-spacer④">spacers</a> for <a class="css property" data-link-type="property" href="#propdef-text-decoration-skip-spaces" id="ref-for-propdef-text-decoration-skip-spaces②">text-decoration-skip-spaces</a> to reference <a data-link-type="dfn" href="https://drafts.csswg.org/css-text-4/#unicode-general-category" id="ref-for-unicode-general-category③">Unicode General Category</a> <code>Zs</code>
@@ -3752,9 +3752,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     auto
     <ul>
+     <li><a href="#valdef-text-decoration-inset-auto">value for text-decoration-inset</a><span>, in § 2.9.1</span>
      <li><a href="#valdef-text-decoration-skip-auto">value for text-decoration-skip</a><span>, in § 2.10</span>
      <li><a href="#valdef-text-decoration-skip-ink-auto">value for text-decoration-skip-ink</a><span>, in § 2.10.4</span>
-     <li><a href="#valdef-text-decoration-skip-inset-auto">value for text-decoration-skip-inset</a><span>, in § 2.9.1</span>
      <li><a href="#valdef-text-decoration-skip-self-auto">value for text-decoration-skip-self</a><span>, in § 2.10.1</span>
      <li><a href="#valdef-text-decoration-thickness-auto">value for text-decoration-thickness</a><span>, in § 2.4</span>
      <li><a href="#valdef-text-underline-offset-auto">value for text-underline-offset</a><span>, in § 2.8</span>
@@ -3783,7 +3783,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><a href="#valdef-text-emphasis-position-left">value for text-emphasis-position</a><span>, in § 3.4</span>
      <li><a href="#underline-left">value for text-underline-position</a><span>, in § 2.7</span>
     </ul>
-   <li><a href="#valdef-text-decoration-skip-inset-length">&lt;length></a><span>, in § 2.9.1</span>
+   <li><a href="#valdef-text-decoration-inset-length">&lt;length></a><span>, in § 2.9.1</span>
    <li>
     &lt;length-percentage>
     <ul>
@@ -3827,6 +3827,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#valdef-text-emphasis-skip-symbols">symbols</a><span>, in § 3.5</span>
    <li><a href="#propdef-text-decoration">text-decoration</a><span>, in § 2.6</span>
    <li><a href="#propdef-text-decoration-color">text-decoration-color</a><span>, in § 2.3</span>
+   <li><a href="#propdef-text-decoration-inset">text-decoration-inset</a><span>, in § 2.9.1</span>
    <li><a href="#propdef-text-decoration-line">text-decoration-line</a><span>, in § 2.1</span>
    <li><a href="#propdef-text-decoration-skip">text-decoration-skip</a><span>, in § 2.10</span>
    <li><a href="#propdef-text-decoration-skip-box">text-decoration-skip-box</a><span>, in § 2.10.2</span>
@@ -3835,7 +3836,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#propdef-text-decoration-skip-spaces">text-decoration-skip-spaces</a><span>, in § 2.10.3</span>
    <li><a href="#propdef-text-decoration-style">text-decoration-style</a><span>, in § 2.2</span>
    <li><a href="#propdef-text-decoration-thickness">text-decoration-thickness</a><span>, in § 2.4</span>
-   <li><a href="#propdef-text-decoration-trim">text-decoration-trim</a><span>, in § 2.9.1</span>
    <li><a href="#propdef-text-emphasis">text-emphasis</a><span>, in § 3.3</span>
    <li><a href="#propdef-text-emphasis-color">text-emphasis-color</a><span>, in § 3.2</span>
    <li><a href="#propdef-text-emphasis-position">text-emphasis-position</a><span>, in § 3.4</span>
@@ -3971,11 +3971,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="b2356074">word-spacing</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-TEXT-DECOR-4]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="b0978033">text-decoration-skip-inset</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[CSS-UI-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="906edadd">accent-color</span>
@@ -4052,8 +4047,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad; Koji Ishii; Florian Rivoal. <a href="https://drafts.csswg.org/css-text-3/"><cite>CSS Text Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-text-3/">https://drafts.csswg.org/css-text-3/</a>
    <dt id="biblio-css-text-4">[CSS-TEXT-4]
    <dd>Elika Etemad; et al. <a href="https://drafts.csswg.org/css-text-4/"><cite>CSS Text Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a>
-   <dt id="biblio-css-text-decor-4">[CSS-TEXT-DECOR-4]
-   <dd>Elika Etemad; Koji Ishii. <a href="https://drafts.csswg.org/css-text-decor-4/"><cite>CSS Text Decoration Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-text-decor-4/">https://drafts.csswg.org/css-text-decor-4/</a>
    <dt id="biblio-css-ui-4">[CSS-UI-4]
    <dd>Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
    <dt id="biblio-css-values-3">[CSS-VALUES-3]
@@ -4121,6 +4114,16 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>by computed value type
       <td>per grammar
       <td>computed color
+     <tr>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-text-decoration-inset" id="ref-for-propdef-text-decoration-inset③">text-decoration-inset</a>
+      <td>&lt;length>{1,2} | auto
+      <td>0
+      <td>all elements
+      <td>no
+      <td>N/A
+      <td>by computed value
+      <td>per grammar
+      <td>specified keyword or absolute length
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-text-decoration-line" id="ref-for-propdef-text-decoration-line①⓪">text-decoration-line</a>
       <td>none | [ underline || overline || line-through || blink ] | spelling-error | grammar-error
@@ -4201,16 +4204,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>by computed value
       <td>per grammar
       <td>as specified, with &lt;length-percentage> values computed
-     <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-text-decoration-trim" id="ref-for-propdef-text-decoration-trim②">text-decoration-trim</a>
-      <td>&lt;length>{1,2} | auto
-      <td>0
-      <td>all elements
-      <td>no
-      <td>N/A
-      <td>by computed value
-      <td>per grammar
-      <td>specified keyword or absolute length
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-text-emphasis" id="ref-for-propdef-text-emphasis③">text-emphasis</a>
       <td>&lt;'text-emphasis-style'> || &lt;'text-emphasis-color'>
@@ -4623,7 +4616,7 @@ let dfnPanelData = {
 "0812e39f": {"dfnID":"0812e39f","dfnText":"ink overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-ink-overflow"}],"title":"5.2. \nOverflow of Text Decorations"}],"url":"https://drafts.csswg.org/css-overflow-3/#ink-overflow"},
 "083ffe5f": {"dfnID":"083ffe5f","dfnText":"inline box","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-box"},{"id":"ref-for-inline-box\u2460"},{"id":"ref-for-inline-box\u2461"},{"id":"ref-for-inline-box\u2462"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#inline-box"},
 "09e4de67": {"dfnID":"09e4de67","dfnText":"vertical writing mode","external":true,"refSections":[{"refs":[{"id":"ref-for-vertical-writing-mode"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#vertical-writing-mode"},
-"0cab481d": {"dfnID":"0cab481d","dfnText":"box-decoration-break","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-box-decoration-break"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"}],"url":"https://drafts.csswg.org/css-break-4/#propdef-box-decoration-break"},
+"0cab481d": {"dfnID":"0cab481d","dfnText":"box-decoration-break","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-box-decoration-break"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"}],"url":"https://drafts.csswg.org/css-break-4/#propdef-box-decoration-break"},
 "12f8fb07": {"dfnID":"12f8fb07","dfnText":"visibility","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-visibility"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-visibility"},
 "1548047a": {"dfnID":"1548047a","dfnText":"<color>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-color"}],"title":"2.3. \nText Decoration Color: the text-decoration-color property"},{"refs":[{"id":"ref-for-typedef-color\u2460"}],"title":"3.2. \nEmphasis Mark Color: the text-emphasis-color property"}],"url":"https://drafts.csswg.org/css-color-5/#typedef-color"},
 "16b27b2a": {"dfnID":"16b27b2a","dfnText":"typographic letter unit","external":true,"refSections":[{"refs":[{"id":"ref-for-typographic-letter-unit"}],"title":"1.3. Terminology"}],"url":"https://drafts.csswg.org/css-text-4/#typographic-letter-unit"},
@@ -4640,21 +4633,21 @@ let dfnPanelData = {
 "5879b11d": {"dfnID":"5879b11d","dfnText":"content language","external":true,"refSections":[{"refs":[{"id":"ref-for-content-language"}],"title":"1.3. Terminology"}],"url":"https://drafts.csswg.org/css-text-4/#content-language"},
 "68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"4. \nText Shadows: the text-shadow property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
 "6916104d": {"dfnID":"6916104d","dfnText":"box-shadow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-box-shadow"},{"id":"ref-for-propdef-box-shadow\u2460"},{"id":"ref-for-propdef-box-shadow\u2461"},{"id":"ref-for-propdef-box-shadow\u2462"}],"title":"4. \nText Shadows: the text-shadow property"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-box-shadow"},
-"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"},{"refs":[{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"}],"title":"2.2. \nText Decoration Style: the text-decoration-style property"},{"refs":[{"id":"ref-for-comb-one\u2466"},{"id":"ref-for-comb-one\u2467"}],"title":"2.4. \nText Decoration Line Thickness: the text-decoration-thickness property"},{"refs":[{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2461"}],"title":"2.8. \nText Underline Offset: the text-underline-offset property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2462"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2463"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-comb-one\u2460\u2464"},{"id":"ref-for-comb-one\u2460\u2465"},{"id":"ref-for-comb-one\u2460\u2466"}],"title":"2.10.1. \nSkipping Spaces: the text-decoration-skip-self property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2467"}],"title":"2.10.2. \nSkipping Spaces: the text-decoration-skip-box property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2468"},{"id":"ref-for-comb-one\u2461\u24ea"}],"title":"2.10.3. \nSkipping Spaces: the text-decoration-skip-spaces property"},{"refs":[{"id":"ref-for-comb-one\u2461\u2460"},{"id":"ref-for-comb-one\u2461\u2461"}],"title":"2.10.4. \nSkipping Glyphs: the text-decoration-skip-ink property"},{"refs":[{"id":"ref-for-comb-one\u2461\u2462"},{"id":"ref-for-comb-one\u2461\u2463"},{"id":"ref-for-comb-one\u2461\u2464"},{"id":"ref-for-comb-one\u2461\u2465"},{"id":"ref-for-comb-one\u2461\u2466"},{"id":"ref-for-comb-one\u2461\u2467"},{"id":"ref-for-comb-one\u2461\u2468"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"},{"refs":[{"id":"ref-for-comb-one\u2462\u24ea"},{"id":"ref-for-comb-one\u2462\u2460"}],"title":"3.4. \nEmphasis Mark Position: the text-emphasis-position property"},{"refs":[{"id":"ref-for-comb-one\u2462\u2461"}],"title":"4. \nText Shadows: the text-shadow property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"},{"refs":[{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"}],"title":"2.2. \nText Decoration Style: the text-decoration-style property"},{"refs":[{"id":"ref-for-comb-one\u2466"},{"id":"ref-for-comb-one\u2467"}],"title":"2.4. \nText Decoration Line Thickness: the text-decoration-thickness property"},{"refs":[{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2461"}],"title":"2.8. \nText Underline Offset: the text-underline-offset property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2462"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2463"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-comb-one\u2460\u2464"},{"id":"ref-for-comb-one\u2460\u2465"},{"id":"ref-for-comb-one\u2460\u2466"}],"title":"2.10.1. \nSkipping Spaces: the text-decoration-skip-self property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2467"}],"title":"2.10.2. \nSkipping Spaces: the text-decoration-skip-box property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2468"},{"id":"ref-for-comb-one\u2461\u24ea"}],"title":"2.10.3. \nSkipping Spaces: the text-decoration-skip-spaces property"},{"refs":[{"id":"ref-for-comb-one\u2461\u2460"},{"id":"ref-for-comb-one\u2461\u2461"}],"title":"2.10.4. \nSkipping Glyphs: the text-decoration-skip-ink property"},{"refs":[{"id":"ref-for-comb-one\u2461\u2462"},{"id":"ref-for-comb-one\u2461\u2463"},{"id":"ref-for-comb-one\u2461\u2464"},{"id":"ref-for-comb-one\u2461\u2465"},{"id":"ref-for-comb-one\u2461\u2466"},{"id":"ref-for-comb-one\u2461\u2467"},{"id":"ref-for-comb-one\u2461\u2468"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"},{"refs":[{"id":"ref-for-comb-one\u2462\u24ea"},{"id":"ref-for-comb-one\u2462\u2460"}],"title":"3.4. \nEmphasis Mark Position: the text-emphasis-position property"},{"refs":[{"id":"ref-for-comb-one\u2462\u2461"}],"title":"4. \nText Shadows: the text-shadow property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "73ea1d43": {"dfnID":"73ea1d43","dfnText":"color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-color"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"},{"refs":[{"id":"ref-for-propdef-color\u2460"},{"id":"ref-for-propdef-color\u2461"},{"id":"ref-for-propdef-color\u2462"}],"title":"3.2. \nEmphasis Mark Color: the text-emphasis-color property"}],"url":"https://drafts.csswg.org/css-color-4/#propdef-color"},
 "75bfa627": {"dfnID":"75bfa627","dfnText":"::first-line","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-first-line"}],"title":"1.1. \nModule Interactions"}],"url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line"},
 "7b82c9e5": {"dfnID":"7b82c9e5","dfnText":"pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-x22"}],"title":"1.1. \nModule Interactions"}],"url":"https://www.w3.org/TR/CSS2/selector.html#x22"},
-"7ba18305": {"dfnID":"7ba18305","dfnText":"slice","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-box-decoration-break-slice"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"}],"url":"https://drafts.csswg.org/css-break-4/#valdef-box-decoration-break-slice"},
+"7ba18305": {"dfnID":"7ba18305","dfnText":"slice","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-box-decoration-break-slice"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"}],"url":"https://drafts.csswg.org/css-break-4/#valdef-box-decoration-break-slice"},
 "7ba1e996": {"dfnID":"7ba1e996","dfnText":"out-of-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-out-of-flow"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#out-of-flow"},
-"7bc19a34": {"dfnID":"7bc19a34","dfnText":"end","external":true,"refSections":[{"refs":[{"id":"ref-for-css-end"},{"id":"ref-for-css-end\u2460"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-end"},
-"8067deca": {"dfnID":"8067deca","dfnText":"start","external":true,"refSections":[{"refs":[{"id":"ref-for-css-start"},{"id":"ref-for-css-start\u2460"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-start"},
+"7bc19a34": {"dfnID":"7bc19a34","dfnText":"end","external":true,"refSections":[{"refs":[{"id":"ref-for-css-end"},{"id":"ref-for-css-end\u2460"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-end"},
+"8067deca": {"dfnID":"8067deca","dfnText":"start","external":true,"refSections":[{"refs":[{"id":"ref-for-css-start"},{"id":"ref-for-css-start\u2460"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#css-start"},
 "8379845e": {"dfnID":"8379845e","dfnText":"block-level","external":true,"refSections":[{"refs":[{"id":"ref-for-block-level"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#block-level"},
 "86f91454": {"dfnID":"86f91454","dfnText":"word separator","external":true,"refSections":[{"refs":[{"id":"ref-for-word-separator"}],"title":"2.10.3. \nSkipping Spaces: the text-decoration-skip-spaces property"}],"url":"https://drafts.csswg.org/css-text-4/#word-separator"},
 "881c2f72": {"dfnID":"881c2f72","dfnText":"box","external":true,"refSections":[{"refs":[{"id":"ref-for-box"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"},{"refs":[{"id":"ref-for-box\u2460"}],"title":"5.2. \nOverflow of Text Decorations"}],"url":"https://drafts.csswg.org/css-display-4/#box"},
 "890a8358": {"dfnID":"890a8358","dfnText":"fill","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-fill"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"}],"url":"https://drafts.fxtf.org/fill-stroke-3/#propdef-fill"},
 "8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"},{"id":"ref-for-comb-any\u2461"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"},{"refs":[{"id":"ref-for-comb-any\u2462"},{"id":"ref-for-comb-any\u2463"},{"id":"ref-for-comb-any\u2464"}],"title":"2.6. \nText Decoration Shorthand: the text-decoration property"},{"refs":[{"id":"ref-for-comb-any\u2465"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-comb-any\u2466"},{"id":"ref-for-comb-any\u2467"}],"title":"2.10.1. \nSkipping Spaces: the text-decoration-skip-self property"},{"refs":[{"id":"ref-for-comb-any\u2468"}],"title":"2.10.3. \nSkipping Spaces: the text-decoration-skip-spaces property"},{"refs":[{"id":"ref-for-comb-any\u2460\u24ea"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"},{"refs":[{"id":"ref-for-comb-any\u2460\u2460"}],"title":"3.3. \nEmphasis Mark Shorthand: the text-emphasis property"},{"refs":[{"id":"ref-for-comb-any\u2460\u2461"},{"id":"ref-for-comb-any\u2460\u2462"},{"id":"ref-for-comb-any\u2460\u2463"}],"title":"3.5. \nEmphasis Mark Skip: the text-emphasis-skip property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
 "906edadd": {"dfnID":"906edadd","dfnText":"accent-color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-accent-color"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-accent-color"},
-"938ba280": {"dfnID":"938ba280","dfnText":"{A,B}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num-range"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-num-range"},
+"938ba280": {"dfnID":"938ba280","dfnText":"{A,B}","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-num-range"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-num-range"},
 "977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
 "99cabd32": {"dfnID":"99cabd32","dfnText":"in-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-in-flow"},{"id":"ref-for-in-flow\u2460"},{"id":"ref-for-in-flow\u2461"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#in-flow"},
 "99d126af": {"dfnID":"99d126af","dfnText":"spread distance","external":true,"refSections":[{"refs":[{"id":"ref-for-box-shadow-spread-distance"}],"title":"4. \nText Shadows: the text-shadow property"},{"refs":[{"id":"ref-for-box-shadow-spread-distance\u2460"}],"title":"\nChanges since the 6 May 2020 Working Draft"},{"refs":[{"id":"ref-for-box-shadow-spread-distance\u2461"}],"title":"\nAdditions Since Level 3"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#box-shadow-spread-distance"},
@@ -4669,7 +4662,6 @@ let dfnPanelData = {
 "a24756d2": {"dfnID":"a24756d2","dfnText":"under","external":true,"refSections":[{"refs":[{"id":"ref-for-under"},{"id":"ref-for-under\u2460"},{"id":"ref-for-under\u2461"},{"id":"ref-for-under\u2462"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"},{"refs":[{"id":"ref-for-under\u2463"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-under\u2464"},{"id":"ref-for-under\u2465"},{"id":"ref-for-under\u2466"},{"id":"ref-for-under\u2467"}],"title":"2.8.1. \nUnderline Offset Origin (Zero Position)"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#under"},
 "a2eb821e": {"dfnID":"a2eb821e","dfnText":"first available font","external":true,"refSections":[{"refs":[{"id":"ref-for-first-available-font"}],"title":"2.4. \nText Decoration Line Thickness: the text-decoration-thickness property"},{"refs":[{"id":"ref-for-first-available-font\u2460"}],"title":"2.7. \nText Underline Position: the text-underline-position property"}],"url":"https://drafts.csswg.org/css-fonts-4/#first-available-font"},
 "a73617e0": {"dfnID":"a73617e0","dfnText":"writing mode","external":true,"refSections":[{"refs":[{"id":"ref-for-writing-mode"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#writing-mode"},
-"b0978033": {"dfnID":"b0978033","dfnText":"text-decoration-skip-inset","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-skip-inset"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"},{"refs":[{"id":"ref-for-propdef-text-decoration-skip-inset\u2460"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"}],"url":"https://www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset"},
 "b2356074": {"dfnID":"b2356074","dfnText":"word-spacing","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-word-spacing"},{"id":"ref-for-propdef-word-spacing\u2460"},{"id":"ref-for-propdef-word-spacing\u2461"}],"title":"2.10.3. \nSkipping Spaces: the text-decoration-skip-spaces property"}],"url":"https://drafts.csswg.org/css-text-4/#propdef-word-spacing"},
 "b8f126f1": {"dfnID":"b8f126f1","dfnText":"inline formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-formatting-context"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#inline-formatting-context"},
 "be8bf61d": {"dfnID":"be8bf61d","dfnText":"Unicode General Category","external":true,"refSections":[{"refs":[{"id":"ref-for-unicode-general-category"}],"title":"2.10.3. \nSkipping Spaces: the text-decoration-skip-spaces property"},{"refs":[{"id":"ref-for-unicode-general-category\u2460"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"},{"refs":[{"id":"ref-for-unicode-general-category\u2461"}],"title":"3.5. \nEmphasis Mark Skip: the text-emphasis-skip property"},{"refs":[{"id":"ref-for-unicode-general-category\u2462"}],"title":"\nChanges since the 4 May 2022 Working Draft"}],"url":"https://drafts.csswg.org/css-text-4/#unicode-general-category"},
@@ -4684,23 +4676,24 @@ let dfnPanelData = {
 "character": {"dfnID":"character","dfnText":"character","external":false,"refSections":[{"refs":[{"id":"ref-for-character"},{"id":"ref-for-character\u2460"},{"id":"ref-for-character\u2461"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"},{"refs":[{"id":"ref-for-character\u2462"},{"id":"ref-for-character\u2463"}],"title":"3.5. \nEmphasis Mark Skip: the text-emphasis-skip property"}],"url":"#character"},
 "considered-text": {"dfnID":"considered-text","dfnText":"considered text","external":false,"refSections":[{"refs":[{"id":"ref-for-considered-text"},{"id":"ref-for-considered-text\u2460"},{"id":"ref-for-considered-text\u2461"},{"id":"ref-for-considered-text\u2462"},{"id":"ref-for-considered-text\u2463"},{"id":"ref-for-considered-text\u2464"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"}],"url":"#considered-text"},
 "d7fa3e1c": {"dfnID":"d7fa3e1c","dfnText":"inline-level","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-level"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#inline-level"},
-"dda96a64": {"dfnID":"dda96a64","dfnText":"clone","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-box-decoration-break-clone"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"}],"url":"https://drafts.csswg.org/css-break-4/#valdef-box-decoration-break-clone"},
+"dda96a64": {"dfnID":"dda96a64","dfnText":"clone","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-box-decoration-break-clone"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"}],"url":"https://drafts.csswg.org/css-break-4/#valdef-box-decoration-break-clone"},
 "de6d76c2": {"dfnID":"de6d76c2","dfnText":"cascade","external":true,"refSections":[{"refs":[{"id":"ref-for-cascade"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"}],"url":"https://drafts.csswg.org/css-cascade-6/#cascade"},
 "de9e224f": {"dfnID":"de9e224f","dfnText":"stroke","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-stroke"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"}],"url":"https://drafts.fxtf.org/fill-stroke-3/#propdef-stroke"},
-"decorating-box": {"dfnID":"decorating-box","dfnText":"decorating box","external":false,"refSections":[{"refs":[{"id":"ref-for-decorating-box"},{"id":"ref-for-decorating-box\u2460"},{"id":"ref-for-decorating-box\u2461"},{"id":"ref-for-decorating-box\u2462"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"},{"refs":[{"id":"ref-for-decorating-box\u2463"},{"id":"ref-for-decorating-box\u2464"},{"id":"ref-for-decorating-box\u2465"},{"id":"ref-for-decorating-box\u2466"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"},{"refs":[{"id":"ref-for-decorating-box\u2467"},{"id":"ref-for-decorating-box\u2468"},{"id":"ref-for-decorating-box\u2460\u24ea"},{"id":"ref-for-decorating-box\u2460\u2460"}],"title":"2.9. \nText Decoration Line Uniformity"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2461"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2462"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2463"}],"title":"2.10.1. \nSkipping Spaces: the text-decoration-skip-self property"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2464"},{"id":"ref-for-decorating-box\u2460\u2465"},{"id":"ref-for-decorating-box\u2460\u2466"}],"title":"2.10.2. \nSkipping Spaces: the text-decoration-skip-box property"}],"url":"#decorating-box"},
+"decorating-box": {"dfnID":"decorating-box","dfnText":"decorating box","external":false,"refSections":[{"refs":[{"id":"ref-for-decorating-box"},{"id":"ref-for-decorating-box\u2460"},{"id":"ref-for-decorating-box\u2461"},{"id":"ref-for-decorating-box\u2462"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"},{"refs":[{"id":"ref-for-decorating-box\u2463"},{"id":"ref-for-decorating-box\u2464"},{"id":"ref-for-decorating-box\u2465"},{"id":"ref-for-decorating-box\u2466"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"},{"refs":[{"id":"ref-for-decorating-box\u2467"},{"id":"ref-for-decorating-box\u2468"},{"id":"ref-for-decorating-box\u2460\u24ea"},{"id":"ref-for-decorating-box\u2460\u2460"}],"title":"2.9. \nText Decoration Line Uniformity"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2461"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2462"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2463"}],"title":"2.10.1. \nSkipping Spaces: the text-decoration-skip-self property"},{"refs":[{"id":"ref-for-decorating-box\u2460\u2464"},{"id":"ref-for-decorating-box\u2460\u2465"},{"id":"ref-for-decorating-box\u2460\u2466"}],"title":"2.10.2. \nSkipping Spaces: the text-decoration-skip-box property"}],"url":"#decorating-box"},
 "e0b6ed58": {"dfnID":"e0b6ed58","dfnText":"vertical-align","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-vertical-align"},{"id":"ref-for-propdef-vertical-align\u2460"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"},{"refs":[{"id":"ref-for-propdef-vertical-align\u2461"}],"title":"2.9. \nText Decoration Line Uniformity"}],"url":"https://drafts.csswg.org/css-inline-3/#propdef-vertical-align"},
 "e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "f0809abc": {"dfnID":"f0809abc","dfnText":"&&","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-all"}],"title":"3.4. \nEmphasis Mark Position: the text-emphasis-position property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-all"},
 "f3d0feab": {"dfnID":"f3d0feab","dfnText":"over","external":true,"refSections":[{"refs":[{"id":"ref-for-over"},{"id":"ref-for-over\u2460"},{"id":"ref-for-over\u2461"},{"id":"ref-for-over\u2462"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"},{"refs":[{"id":"ref-for-over\u2463"}],"title":"2.8.1. \nUnderline Offset Origin (Zero Position)"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#over"},
 "f65dadda": {"dfnID":"f65dadda","dfnText":"<shadow>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-shadow"}],"title":"4. \nText Shadows: the text-shadow property"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#typedef-shadow"},
 "f952f01b": {"dfnID":"f952f01b","dfnText":"non-replaced","external":true,"refSections":[{"refs":[{"id":"ref-for-non-replaced"},{"id":"ref-for-non-replaced\u2460"}],"title":"2. \nLine Decoration: Underline, Overline, and Strike-Through"}],"url":"https://drafts.csswg.org/css-display-4/#non-replaced"},
-"fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
+"fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "fb12b38c": {"dfnID":"fb12b38c","dfnText":"typographic mode","external":true,"refSections":[{"refs":[{"id":"ref-for-typographic-mode"},{"id":"ref-for-typographic-mode\u2460"},{"id":"ref-for-typographic-mode\u2461"},{"id":"ref-for-typographic-mode\u2462"},{"id":"ref-for-typographic-mode\u2463"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-typographic-mode\u2464"},{"id":"ref-for-typographic-mode\u2465"},{"id":"ref-for-typographic-mode\u2466"},{"id":"ref-for-typographic-mode\u2467"}],"title":"3.1. \nEmphasis Mark Style: the text-emphasis-style property"},{"refs":[{"id":"ref-for-typographic-mode\u2468"},{"id":"ref-for-typographic-mode\u2460\u24ea"},{"id":"ref-for-typographic-mode\u2460\u2460"},{"id":"ref-for-typographic-mode\u2460\u2461"}],"title":"3.4. \nEmphasis Mark Position: the text-emphasis-position property"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#typographic-mode"},
 "fdf6efd5": {"dfnID":"fdf6efd5","dfnText":"font-size","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-size"},{"id":"ref-for-propdef-font-size\u2460"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size"},
 "inner-text-shadows": {"dfnID":"inner-text-shadows","dfnText":"Inner text shadows","external":false,"refSections":[{"refs":[{"id":"ref-for-inner-text-shadows"}],"title":"4. \nText Shadows: the text-shadow property"}],"url":"#inner-text-shadows"},
 "outer-text-shadows": {"dfnID":"outer-text-shadows","dfnText":"Outer text shadows","external":false,"refSections":[{"refs":[{"id":"ref-for-outer-text-shadows"}],"title":"4. \nText Shadows: the text-shadow property"}],"url":"#outer-text-shadows"},
 "propdef-text-decoration": {"dfnID":"propdef-text-decoration","dfnText":"text-decoration","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration"},{"id":"ref-for-propdef-text-decoration\u2460"},{"id":"ref-for-propdef-text-decoration\u2461"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2462"}],"title":"2.2. \nText Decoration Style: the text-decoration-style property"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2463"}],"title":"2.3. \nText Decoration Color: the text-decoration-color property"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2464"}],"title":"2.4. \nText Decoration Line Thickness: the text-decoration-thickness property"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2465"},{"id":"ref-for-propdef-text-decoration\u2466"}],"title":"2.6. \nText Decoration Shorthand: the text-decoration property"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2467"},{"id":"ref-for-propdef-text-decoration\u2468"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2460\u24ea"}],"title":"2.8. \nText Underline Offset: the text-underline-offset property"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2460\u2460"},{"id":"ref-for-propdef-text-decoration\u2460\u2461"},{"id":"ref-for-propdef-text-decoration\u2460\u2462"}],"title":"5.1. \nPainting Order of Text Decorations"},{"refs":[{"id":"ref-for-propdef-text-decoration\u2460\u2463"}],"title":"\nChanges since the 4 May 2022 Working Draft"}],"url":"#propdef-text-decoration"},
 "propdef-text-decoration-color": {"dfnID":"propdef-text-decoration-color","dfnText":"text-decoration-color","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-color"}],"title":"2.3. \nText Decoration Color: the text-decoration-color property"},{"refs":[{"id":"ref-for-propdef-text-decoration-color\u2460"},{"id":"ref-for-propdef-text-decoration-color\u2461"}],"title":"2.6. \nText Decoration Shorthand: the text-decoration property"}],"url":"#propdef-text-decoration-color"},
+"propdef-text-decoration-inset": {"dfnID":"propdef-text-decoration-inset","dfnText":"text-decoration-inset","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-inset"},{"id":"ref-for-propdef-text-decoration-inset\u2460"}],"title":"2.9.1. \nTrimming, Expanding, and Shifting Text Decoration Lines: the text-decoration-inset property"},{"refs":[{"id":"ref-for-propdef-text-decoration-inset\u2461"}],"title":"\nChanges since the 4 May 2022 Working Draft"}],"url":"#propdef-text-decoration-inset"},
 "propdef-text-decoration-line": {"dfnID":"propdef-text-decoration-line","dfnText":"text-decoration-line","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-line"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2460"}],"title":"2.2. \nText Decoration Style: the text-decoration-style property"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2461"}],"title":"2.3. \nText Decoration Color: the text-decoration-color property"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2462"}],"title":"2.4. \nText Decoration Line Thickness: the text-decoration-thickness property"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2463"},{"id":"ref-for-propdef-text-decoration-line\u2464"}],"title":"2.6. \nText Decoration Shorthand: the text-decoration property"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2465"}],"title":"2.8. \nText Underline Offset: the text-underline-offset property"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2466"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2467"}],"title":"\nAppendix B: Default UA Stylesheet"},{"refs":[{"id":"ref-for-propdef-text-decoration-line\u2468"}],"title":"\nAdditions Since Level 3"}],"url":"#propdef-text-decoration-line"},
 "propdef-text-decoration-skip": {"dfnID":"propdef-text-decoration-skip","dfnText":"text-decoration-skip","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-skip"},{"id":"ref-for-propdef-text-decoration-skip\u2460"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"},{"refs":[{"id":"ref-for-propdef-text-decoration-skip\u2461"},{"id":"ref-for-propdef-text-decoration-skip\u2462"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-propdef-text-decoration-skip\u2463"}],"title":"2.10.2. \nSkipping Spaces: the text-decoration-skip-box property"},{"refs":[{"id":"ref-for-propdef-text-decoration-skip\u2464"}],"title":"\nAdditions Since Level 3"}],"url":"#propdef-text-decoration-skip"},
 "propdef-text-decoration-skip-box": {"dfnID":"propdef-text-decoration-skip-box","dfnText":"text-decoration-skip-box","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-skip-box"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-propdef-text-decoration-skip-box\u2460"}],"title":"2.10.2. \nSkipping Spaces: the text-decoration-skip-box property"}],"url":"#propdef-text-decoration-skip-box"},
@@ -4709,7 +4702,6 @@ let dfnPanelData = {
 "propdef-text-decoration-skip-spaces": {"dfnID":"propdef-text-decoration-skip-spaces","dfnText":"text-decoration-skip-spaces","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-skip-spaces"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-propdef-text-decoration-skip-spaces\u2460"}],"title":"2.10.3. \nSkipping Spaces: the text-decoration-skip-spaces property"},{"refs":[{"id":"ref-for-propdef-text-decoration-skip-spaces\u2461"}],"title":"\nChanges since the 4 May 2022 Working Draft"}],"url":"#propdef-text-decoration-skip-spaces"},
 "propdef-text-decoration-style": {"dfnID":"propdef-text-decoration-style","dfnText":"text-decoration-style","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-style"}],"title":"2.2. \nText Decoration Style: the text-decoration-style property"},{"refs":[{"id":"ref-for-propdef-text-decoration-style\u2460"},{"id":"ref-for-propdef-text-decoration-style\u2461"}],"title":"2.6. \nText Decoration Shorthand: the text-decoration property"}],"url":"#propdef-text-decoration-style"},
 "propdef-text-decoration-thickness": {"dfnID":"propdef-text-decoration-thickness","dfnText":"text-decoration-thickness","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-thickness"}],"title":"2.4. \nText Decoration Line Thickness: the text-decoration-thickness property"},{"refs":[{"id":"ref-for-propdef-text-decoration-thickness\u2460"}],"title":"2.5. \nDetermining the Position and Thickness of Line Decorations"},{"refs":[{"id":"ref-for-propdef-text-decoration-thickness\u2461"},{"id":"ref-for-propdef-text-decoration-thickness\u2462"}],"title":"2.6. \nText Decoration Shorthand: the text-decoration property"},{"refs":[{"id":"ref-for-propdef-text-decoration-thickness\u2463"}],"title":"2.9. \nText Decoration Line Uniformity"},{"refs":[{"id":"ref-for-propdef-text-decoration-thickness\u2464"}],"title":"\nAdditions Since Level 3"}],"url":"#propdef-text-decoration-thickness"},
-"propdef-text-decoration-trim": {"dfnID":"propdef-text-decoration-trim","dfnText":"text-decoration-trim","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-decoration-trim"}],"title":"2.9.1. \nText Decoration Line Trimming and Extension: the text-decoration-trim property"},{"refs":[{"id":"ref-for-propdef-text-decoration-trim\u2460"}],"title":"\nChanges since the 4 May 2022 Working Draft"}],"url":"#propdef-text-decoration-trim"},
 "propdef-text-emphasis": {"dfnID":"propdef-text-emphasis","dfnText":"text-emphasis","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-emphasis"}],"title":"3. \nAdditional Controls for Emphasis Marks"},{"refs":[{"id":"ref-for-propdef-text-emphasis\u2460"}],"title":"3.3. \nEmphasis Mark Shorthand: the text-emphasis property"},{"refs":[{"id":"ref-for-propdef-text-emphasis\u2461"}],"title":"5.1. \nPainting Order of Text Decorations"}],"url":"#propdef-text-emphasis"},
 "propdef-text-emphasis-color": {"dfnID":"propdef-text-emphasis-color","dfnText":"text-emphasis-color","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-emphasis-color"}],"title":"3. \nAdditional Controls for Emphasis Marks"},{"refs":[{"id":"ref-for-propdef-text-emphasis-color\u2460"},{"id":"ref-for-propdef-text-emphasis-color\u2461"}],"title":"3.2. \nEmphasis Mark Color: the text-emphasis-color property"},{"refs":[{"id":"ref-for-propdef-text-emphasis-color\u2462"},{"id":"ref-for-propdef-text-emphasis-color\u2463"}],"title":"3.3. \nEmphasis Mark Shorthand: the text-emphasis property"}],"url":"#propdef-text-emphasis-color"},
 "propdef-text-emphasis-position": {"dfnID":"propdef-text-emphasis-position","dfnText":"text-emphasis-position","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-text-emphasis-position"}],"title":"3. \nAdditional Controls for Emphasis Marks"},{"refs":[{"id":"ref-for-propdef-text-emphasis-position\u2460"}],"title":"3.3. \nEmphasis Mark Shorthand: the text-emphasis property"},{"refs":[{"id":"ref-for-propdef-text-emphasis-position\u2461"},{"id":"ref-for-propdef-text-emphasis-position\u2462"}],"title":"3.4. \nEmphasis Mark Position: the text-emphasis-position property"}],"url":"#propdef-text-emphasis-position"},
@@ -4724,6 +4716,8 @@ let dfnPanelData = {
 "underline-right": {"dfnID":"underline-right","dfnText":"right","external":false,"refSections":[{"refs":[{"id":"ref-for-underline-right"},{"id":"ref-for-underline-right\u2460"},{"id":"ref-for-underline-right\u2461"},{"id":"ref-for-underline-right\u2462"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-underline-right\u2463"}],"title":"2.8.1. \nUnderline Offset Origin (Zero Position)"}],"url":"#underline-right"},
 "underline-under": {"dfnID":"underline-under","dfnText":"under","external":false,"refSections":[{"refs":[{"id":"ref-for-underline-under"},{"id":"ref-for-underline-under\u2460"},{"id":"ref-for-underline-under\u2461"},{"id":"ref-for-underline-under\u2462"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-underline-under\u2463"}],"title":"2.8.1. \nUnderline Offset Origin (Zero Position)"}],"url":"#underline-under"},
 "underline-zero-position": {"dfnID":"underline-zero-position","dfnText":"zero position","external":false,"refSections":[{"refs":[{"id":"ref-for-underline-zero-position"}],"title":"2.7. \nText Underline Position: the text-underline-position property"},{"refs":[{"id":"ref-for-underline-zero-position\u2460"}],"title":"2.8. \nText Underline Offset: the text-underline-offset property"}],"url":"#underline-zero-position"},
+"valdef-text-decoration-inset-auto": {"dfnID":"valdef-text-decoration-inset-auto","dfnText":"auto","external":false,"refSections":[],"url":"#valdef-text-decoration-inset-auto"},
+"valdef-text-decoration-inset-length": {"dfnID":"valdef-text-decoration-inset-length","dfnText":"<length>","external":false,"refSections":[],"url":"#valdef-text-decoration-inset-length"},
 "valdef-text-decoration-line-blink": {"dfnID":"valdef-text-decoration-line-blink","dfnText":"blink","external":false,"refSections":[],"url":"#valdef-text-decoration-line-blink"},
 "valdef-text-decoration-line-grammar-error": {"dfnID":"valdef-text-decoration-line-grammar-error","dfnText":"grammar-error","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-text-decoration-line-grammar-error"}],"title":"2.1. \nText Decoration Lines: the text-decoration-line property"},{"refs":[{"id":"ref-for-valdef-text-decoration-line-grammar-error\u2460"}],"title":"2.8. \nText Underline Offset: the text-underline-offset property"},{"refs":[{"id":"ref-for-valdef-text-decoration-line-grammar-error\u2461"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"},{"refs":[{"id":"ref-for-valdef-text-decoration-line-grammar-error\u2462"}],"title":"\nChanges since the 4 May 2022 Working Draft"},{"refs":[{"id":"ref-for-valdef-text-decoration-line-grammar-error\u2463"}],"title":"\nAdditions Since Level 3"}],"url":"#valdef-text-decoration-line-grammar-error"},
 "valdef-text-decoration-line-line-through": {"dfnID":"valdef-text-decoration-line-line-through","dfnText":"line-through","external":false,"refSections":[],"url":"#valdef-text-decoration-line-line-through"},
@@ -4737,8 +4731,6 @@ let dfnPanelData = {
 "valdef-text-decoration-skip-ink-all": {"dfnID":"valdef-text-decoration-skip-ink-all","dfnText":"all","external":false,"refSections":[],"url":"#valdef-text-decoration-skip-ink-all"},
 "valdef-text-decoration-skip-ink-auto": {"dfnID":"valdef-text-decoration-skip-ink-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-text-decoration-skip-ink-auto"},{"id":"ref-for-valdef-text-decoration-skip-ink-auto\u2460"},{"id":"ref-for-valdef-text-decoration-skip-ink-auto\u2461"},{"id":"ref-for-valdef-text-decoration-skip-ink-auto\u2462"},{"id":"ref-for-valdef-text-decoration-skip-ink-auto\u2463"}],"title":"2.10.4. \nSkipping Glyphs: the text-decoration-skip-ink property"}],"url":"#valdef-text-decoration-skip-ink-auto"},
 "valdef-text-decoration-skip-ink-none": {"dfnID":"valdef-text-decoration-skip-ink-none","dfnText":"none","external":false,"refSections":[],"url":"#valdef-text-decoration-skip-ink-none"},
-"valdef-text-decoration-skip-inset-auto": {"dfnID":"valdef-text-decoration-skip-inset-auto","dfnText":"auto","external":false,"refSections":[],"url":"#valdef-text-decoration-skip-inset-auto"},
-"valdef-text-decoration-skip-inset-length": {"dfnID":"valdef-text-decoration-skip-inset-length","dfnText":"<length>","external":false,"refSections":[],"url":"#valdef-text-decoration-skip-inset-length"},
 "valdef-text-decoration-skip-none": {"dfnID":"valdef-text-decoration-skip-none","dfnText":"none","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-text-decoration-skip-none"},{"id":"ref-for-valdef-text-decoration-skip-none\u2460"}],"title":"2.10. \nText Decoration Line Continuity: the text-decoration-skip shorthand and its sub-properties"}],"url":"#valdef-text-decoration-skip-none"},
 "valdef-text-decoration-skip-self-auto": {"dfnID":"valdef-text-decoration-skip-self-auto","dfnText":"auto","external":false,"refSections":[],"url":"#valdef-text-decoration-skip-self-auto"},
 "valdef-text-decoration-skip-self-no-skip": {"dfnID":"valdef-text-decoration-skip-self-no-skip","dfnText":"no-skip","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-text-decoration-skip-self-no-skip"}],"title":"2.10.1. \nSkipping Spaces: the text-decoration-skip-self property"}],"url":"#valdef-text-decoration-skip-self-no-skip"},
@@ -5245,6 +5237,7 @@ let refsData = {
 "#outer-text-shadows": {"displayText":"outer text shadows","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"outer text shadows","type":"dfn","url":"#outer-text-shadows"},
 "#propdef-text-decoration": {"displayText":"text-decoration","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration","type":"property","url":"#propdef-text-decoration"},
 "#propdef-text-decoration-color": {"displayText":"text-decoration-color","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-color","type":"property","url":"#propdef-text-decoration-color"},
+"#propdef-text-decoration-inset": {"displayText":"text-decoration-inset","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-inset","type":"property","url":"#propdef-text-decoration-inset"},
 "#propdef-text-decoration-line": {"displayText":"text-decoration-line","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-line","type":"property","url":"#propdef-text-decoration-line"},
 "#propdef-text-decoration-skip": {"displayText":"text-decoration-skip","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-skip","type":"property","url":"#propdef-text-decoration-skip"},
 "#propdef-text-decoration-skip-box": {"displayText":"text-decoration-skip-box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-skip-box","type":"property","url":"#propdef-text-decoration-skip-box"},
@@ -5253,7 +5246,6 @@ let refsData = {
 "#propdef-text-decoration-skip-spaces": {"displayText":"text-decoration-skip-spaces","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-skip-spaces","type":"property","url":"#propdef-text-decoration-skip-spaces"},
 "#propdef-text-decoration-style": {"displayText":"text-decoration-style","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-style","type":"property","url":"#propdef-text-decoration-style"},
 "#propdef-text-decoration-thickness": {"displayText":"text-decoration-thickness","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-thickness","type":"property","url":"#propdef-text-decoration-thickness"},
-"#propdef-text-decoration-trim": {"displayText":"text-decoration-trim","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-decoration-trim","type":"property","url":"#propdef-text-decoration-trim"},
 "#propdef-text-emphasis": {"displayText":"text-emphasis","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-emphasis","type":"property","url":"#propdef-text-emphasis"},
 "#propdef-text-emphasis-color": {"displayText":"text-emphasis-color","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-emphasis-color","type":"property","url":"#propdef-text-emphasis-color"},
 "#propdef-text-emphasis-position": {"displayText":"text-emphasis-position","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"local","text":"text-emphasis-position","type":"property","url":"#propdef-text-emphasis-position"},
@@ -5357,7 +5349,6 @@ let refsData = {
 "https://drafts.fxtf.org/fill-stroke-3/#propdef-fill": {"displayText":"fill","export":true,"for_":[],"level":"3","normative":true,"shortname":"fill-stroke","spec":"fill-stroke-3","status":"current","text":"fill","type":"property","url":"https://drafts.fxtf.org/fill-stroke-3/#propdef-fill"},
 "https://drafts.fxtf.org/fill-stroke-3/#propdef-stroke": {"displayText":"stroke","export":true,"for_":[],"level":"3","normative":true,"shortname":"fill-stroke","spec":"fill-stroke-3","status":"current","text":"stroke","type":"property","url":"https://drafts.fxtf.org/fill-stroke-3/#propdef-stroke"},
 "https://www.w3.org/TR/CSS2/selector.html#x22": {"displayText":"pseudo-elements","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"pseudo-elements","type":"dfn","url":"https://www.w3.org/TR/CSS2/selector.html#x22"},
-"https://www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset": {"displayText":"text-decoration-skip-inset","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text-decor","spec":"css-text-decor-4","status":"snapshot","text":"text-decoration-skip-inset","type":"property","url":"https://www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset"},
 };
 
 function mkRefHint(link, ref) {

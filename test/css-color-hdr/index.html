@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 7b3ff057a, updated Sun Nov 9 18:39:50 2025 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-hdr-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="2f59a3a736a12e958d4ee79f59f516b59cdfb082" name="revision">
+  <meta content="a84830bb9f39f4b82ad0c91ad250a9393b9137f8" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -2454,6 +2454,61 @@ and both place HDR reference white at a component value of 1.0.</p>
     <c- k>return</c-> <c- p>[</c->Jz<c- p>,</c-> az<c- p>,</c-> bz<c- p>];</c->
 <c- p>}</c->
 
+<c- a>function</c-> Jzazbz_to_XYZ <c- p>(</c->Jzazbz<c- p>)</c-> <c- p>{</c->
+    <c- c1>// convert an array of JzAzBz to D65 XYZ</c->
+    <c- c1>// such that [0,0,0] is black and</c->
+    <c- c1>// media white is [0.2220, -0.00016, -0.0001]</c->
+
+    <c- a>const</c-> b <c- o>=</c-> <c- mf>1.15</c-><c- p>;</c->
+    <c- a>const</c-> g <c- o>=</c-> <c- mf>0.66</c-><c- p>;</c->
+    <c- a>const</c-> M <c- o>=</c-> <c- p>[</c->
+        <c- p>[</c->  <c- mf>1.9242264357876067</c-><c- p>,</c->  <c- o>-</c-><c- mf>1.0047923125953657</c-><c- p>,</c->  <c- mf>0.037651404030618</c->   <c- p>],</c->
+        <c- p>[</c->  <c- mf>0.35031676209499907</c-><c- p>,</c->  <c- mf>0.7264811939316552</c-><c- p>,</c-> <c- o>-</c-><c- mf>0.06538442294808501</c-> <c- p>],</c->
+        <c- p>[</c-> <c- o>-</c-><c- mf>0.09098281098284752</c-><c- p>,</c-> <c- o>-</c-><c- mf>0.3127282905230739</c-><c- p>,</c->  <c- mf>1.5227665613052603</c->  <c- p>],</c->
+    <c- p>];</c->
+
+    <c- a>let</c-> LMS <c- o>=</c-> Jzazbz_to_LMS <c- p>(</c->Jzazbz<c- p>);</c->
+    <c- c1>// modified absolute XYZ</c->
+	<c- a>let</c-> <c- p>[</c->Xm<c- p>,</c-> Ym<c- p>,</c-> Za<c- p>]</c-> <c- o>=</c-> multiplyMatrices<c- p>(</c->LMS<c- p>,</c-> M<c- p>);</c->
+
+    <c- c1>// un-modify X and Y to get D65 XYZ, relative to media white</c->
+    <c- a>let</c-> Xa <c- o>=</c-> <c- p>(</c->Xm <c- o>+</c-> <c- p>(</c->b <c- o>-</c-> <c- mf>1</c-><c- p>)</c-> <c- o>*</c-> Za<c- p>)</c-> <c- o>/</c-> b<c- p>;</c->
+    <c- a>let</c-> Ya <c- o>=</c-> <c- p>(</c->Ym <c- o>+</c-> <c- p>(</c->g <c- o>-</c-> <c- mf>1</c-><c- p>)</c-> <c- o>*</c-> Xa<c- p>)</c-> <c- o>/</c-> g<c- p>;</c->
+    <c- k>return</c-> <c- p>[</c->Xa<c- p>,</c-> Ya<c- p>,</c-> Za<c- p>];</c->
+<c- p>}</c->
+
+<c- a>function</c-> Jzazbz_to_LMS <c- p>(</c->Jzazbz<c- p>)</c-> <c- p>{</c->
+
+    <c- a>const</c-> d <c- o>=</c-> <c- o>-</c-><c- mf>0.56</c-><c- p>;</c->
+    <c- a>const</c-> d0 <c- o>=</c-> <c- mf>1.6295499532821566e-11</c-><c- p>;</c->
+    <c- a>const</c-> c1 <c- o>=</c-> <c- mf>3424</c-> <c- o>/</c-> <c- mf>2</c-> <c- o>**</c-> <c- mf>12</c-><c- p>;</c->
+    <c- a>const</c-> c2 <c- o>=</c-> <c- mf>2413</c-> <c- o>/</c-> <c- mf>2</c-> <c- o>**</c-> <c- mf>7</c-><c- p>;</c->
+    <c- a>const</c-> c3 <c- o>=</c-> <c- mf>2392</c-> <c- o>/</c-> <c- mf>2</c-> <c- o>**</c-> <c- mf>7</c-><c- p>;</c->
+    <c- a>const</c-> pinv <c- o>=</c-> <c- mf>2</c-> <c- o>**</c-> <c- mf>5</c-> <c- o>/</c-> <c- p>(</c-><c- mf>1.7</c-> <c- o>*</c-> <c- mf>2523</c-><c- p>);</c->
+    <c- a>const</c-> M <c- o>=</c-> <c- p>[</c->
+        <c- p>[</c-> <c- mf>1</c-><c- p>,</c->  <c- mf>0.13860504327153927</c-><c- p>,</c->   <c- mf>0.05804731615611883</c->  <c- p>],</c->
+        <c- p>[</c-> <c- mf>1</c-><c- p>,</c-> <c- o>-</c-><c- mf>0.1386050432715393</c-><c- p>,</c->   <c- o>-</c-><c- mf>0.058047316156118904</c-> <c- p>],</c->
+        <c- p>[</c-> <c- mf>1</c-><c- p>,</c-> <c- o>-</c-><c- mf>0.09601924202631895</c-><c- p>,</c->  <c- o>-</c-><c- mf>0.81189189605603900</c->  <c- p>],</c->
+    <c- p>];</c->
+
+    <c- a>let</c-> <c- p>[</c->Jz<c- p>,</c-> az<c- p>,</c-> bz<c- p>]</c-> <c- o>=</c-> Jzazbz<c- p>;</c->
+	<c- a>let</c-> Iz <c- o>=</c-> <c- p>(</c->Jz <c- o>+</c-> d0<c- p>)</c-> <c- o>/</c-> <c- p>(</c-><c- mf>1</c-> <c- o>+</c-> d <c- o>-</c-> d <c- o>*</c-> <c- p>(</c->Jz <c- o>+</c-> d0<c- p>));</c->
+
+    <c- c1>// bring into LMS cone domain</c->
+	<c- a>let</c-> PQLMS <c- o>=</c-> multiplyMatrices<c- p>([</c->Iz<c- p>,</c-> az<c- p>,</c-> bz<c- p>],</c-> M<c- p>);</c->
+
+    <c- c1>// convert from PQ-coded to linear-light LMS</c->
+    <c- a>let</c-> LMS <c- o>=</c-> <c- p>(</c->
+        PQLMS<c- p>.</c->map<c- p>(</c-><c- a>function</c-> <c- p>(</c->val<c- p>)</c-> <c- p>{</c->
+            <c- a>let</c-> num <c- o>=</c-> c1 <c- o>-</c-> spow<c- p>(</c->val<c- p>,</c-> pinv<c- p>);</c->
+            <c- a>let</c-> denom <c- o>=</c-> c3 <c- o>*</c-> spow<c- p>(</c->val<c- p>,</c-> pinv<c- p>)</c-> <c- o>-</c-> c2<c- p>;</c->
+            <c- a>let</c-> x <c- o>=</c-> <c- mf>10000</c-> <c- o>*</c-> spow<c- p>(</c->num <c- o>/</c-> denom<c- p>,</c-> ninv<c- p>);</c->
+
+            <c- k>return</c-> x<c- p>;</c-> <c- c1>// luminance relative to diffuse white, [0, 70 or so].</c->
+        <c- p>})</c->
+    <c- p>);</c->
+    <c- k>return</c-> LMS<c- p>;</c->
+<c- p>}</c->
 </pre>
    <h3 class="heading settled" data-level="11.5" id="ictcp_code"><span class="secno">11.5. </span><span class="content">
 	Sample code for <span class="css">ICtCp</span>
