@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 7b3ff057a, updated Sun Nov 9 18:39:50 2025 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-multicol-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="a84830bb9f39f4b82ad0c91ad250a9393b9137f8" name="revision">
+  <meta content="4199e952a2d43c256fae89192c75bb2f2acac0ce" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -1068,7 +1068,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Multi-column Layout Module Level 2</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-11-11">11 November 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-13">13 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1168,11 +1168,8 @@ Styling Columns: the <span class="css">::column</span> pseudo-element</span></a>
      <ol class="toc">
       <li><a href="#cg"><span class="secno">5.1</span> <span class="content">Gutters Between Columns: the <span class="property">column-gap</span> property</span></a>
       <li><a href="#cg①"><span class="secno">5.2</span> <span class="content">Gutters Between Rows: the <span class="property">row-gap</span> property</span></a>
-      <li><a href="#crc"><span class="secno">5.3</span> <span class="content">The Color of Column Rules: the
-<span class="property">column-rule-color</span> property</span></a>
-      <li><a href="#crs"><span class="secno">5.4</span> <span class="content">The Style Of Column Rules: the <span class="property">column-rule-style</span> property</span></a>
-      <li><a href="#crw"><span class="secno">5.5</span> <span class="content">The Width Of Column Rules: the <span class="property">column-rule-width</span> property</span></a>
-      <li><a href="#cr"><span class="secno">5.6</span> <span class="content">Column Rule Shorthand: the <span class="property">column-rule</span> property</span></a>
+      <li><a href="#crc"><span class="secno">5.3</span> <span class="content">The Color, Width, and Style of Column Rules: the
+gap decoration properties</span></a>
      </ol>
     <li>
      <a href="#column-breaks"><span class="secno">6</span> <span class="content">
@@ -1285,49 +1282,30 @@ Introduction</span><a class="self-link" href="#introduction"></a></h2>
     <p>In this case, the number of columns is fixed
 		and the column widths will vary depending on the available width.</p>
    </div>
-   <p>The shorthand <a class="css property" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns">columns</a> property can be used to set either,
-	or both, properties in one declaration.</p>
-   <div class="example" id="example-6c6d6717">
-    <a class="self-link" href="#example-6c6d6717"></a>
+   <p>If a <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height">column-height</a> is set,
+	and there is more content that will fit in one row of columns at the specified height,
+	multiple rows of columns are created in the block direction.</p>
+   <div class="example" id="example-60019cf7">
+    <a class="self-link" href="#example-60019cf7"></a>
+		
+<pre class="highlight">body <c- p>{</c-> <c- k>column-height</c-><c- p>:</c-> <c- m>10</c-><c- k>em</c-><c- p>;</c-> <c- k>column-count</c-><c- p>:</c-> <c- m>3</c-> <c- p>}</c-></pre>
+    <p>In this case, the number of columns is fixed
+		and the column widths will vary depending on the available width.
+		If there is more content than will fit into three columns of height 10em,
+		a new row of columns is created in the block direction.</p>
+   </div>
+   <p>The shorthand <a class="css property" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns">columns</a> property can be used to set all three properties in one declaration.</p>
+   <div class="example" id="example-88fed3c3">
+    <a class="self-link" href="#example-88fed3c3"></a>
 		In these examples, the number of columns, the width of columns, and
-		both the number and width are set, respectively:
+		both the number and width of columns,
+		and the width and height of columns are set, respectively:
 
 		
 <pre class="highlight">body <c- p>{</c-> <c- k>columns</c-><c- p>:</c-> <c- m>2</c-> <c- p>}</c->
 body <c- p>{</c-> <c- k>columns</c-><c- p>:</c-> <c- m>12</c-><c- k>em</c-> <c- p>}</c->
 body <c- p>{</c-> <c- k>columns</c-><c- p>:</c-> <c- m>2</c-> <c- m>12</c-><c- k>em</c-> <c- p>}</c->
-</pre>
-   </div>
-   <p>Another group of properties introduced in this module describe
-	gaps and rules between columns.</p>
-   <div class="example" id="example-21b75f3b">
-    <a class="self-link" href="#example-21b75f3b"></a>
-		
-<pre class="highlight">body <c- p>{</c->
-  <c- k>column-gap</c-><c- p>:</c-> <c- m>1</c-><c- k>em</c-><c- p>;</c->
-  <c- k>column-rule</c-><c- p>:</c-> thin solid black<c- p>;</c->
-<c- p>}</c->
-</pre>
-    <p>The first declaration in the example above sets the gap
-		between two adjacent columns to be 1em.
-		Column gaps are similar to padding areas.
-		In the middle of the gap there will be a rule
-		which is described by the <a class="css property" data-link-type="property" href="#propdef-column-rule" id="ref-for-propdef-column-rule">column-rule</a> property.</p>
-   </div>
-   <p>The values of the <a class="css property" data-link-type="property" href="#propdef-column-rule" id="ref-for-propdef-column-rule①">column-rule</a> property are similar to those of the CSS <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> properties.
-	Like <span class="property" id="ref-for-propdef-border①">border</span>, <span class="property" id="ref-for-propdef-column-rule②">column-rule</span> is a shorthand property.</p>
-   <div class="example" id="example-968144c8">
-    <a class="self-link" href="#example-968144c8"></a>
-		In this example, the shorthand <a class="css property" data-link-type="property" href="#propdef-column-rule" id="ref-for-propdef-column-rule③">column-rule</a> declaration from the
-		above example has been expanded:
-
-		
-<pre class="highlight">body <c- p>{</c->
-  <c- k>column-gap</c-><c- p>:</c-> <c- m>1</c-><c- k>em</c-><c- p>;</c->
-  <c- k>column-rule-width</c-><c- p>:</c-> thin<c- p>;</c->
-  <c- k>column-rule-style</c-><c- p>:</c-> solid<c- p>;</c->
-  <c- k>column-rule-color</c-><c- p>:</c-> black<c- p>;</c->
-<c- p>}</c->
+body <c- p>{</c-> <c- k>columns</c-><c- p>:</c-> <c- m>12</c-><c- k>em</c-> / <c- m>14</c-><c- k>em</c-> <c- p>}</c->
 </pre>
    </div>
    <p>The <a class="css property" data-link-type="property" href="#propdef-column-fill" id="ref-for-propdef-column-fill">column-fill</a> and <a class="css property" data-link-type="property" href="#propdef-column-span" id="ref-for-propdef-column-span">column-span</a> properties
@@ -1349,8 +1327,6 @@ h2 <c- p>{</c-> <c- k>column-span</c-><c- p>:</c-> all <c- p>}</c->
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-fill-balance-029.html" title="css/css-multicol/multicol-fill-balance-029.html">multicol-fill-balance-029.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-fill-balance-029.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-fill-balance-029.html"><small>(source)</small></a>
     </ul>
    </details>
-   <p>This specification introduces ten new properties,
-	all of which are used in the examples above.</p>
    <p>If all column properties have their initial value,
 	the layout of an element will be identical
 	to a multi-column layout with only one column.</p>
@@ -1397,7 +1373,7 @@ In addition, once final, it will replace and supersede the following:</p>
    </ul>
    <h2 class="heading settled" data-level="3" id="the-multi-column-model"><span class="secno">3. </span><span class="content">
 The multi-column model</span><a class="self-link" href="#the-multi-column-model"></a></h2>
-   <p>An element whose <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width">column-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count">column-count</a>, or <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height">column-height</a> property is not <a class="css" data-link-type="maybe" href="#valdef-column-width-auto" id="ref-for-valdef-column-width-auto">auto</a>
+   <p>An element whose <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width">column-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count">column-count</a>, or <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①">column-height</a> property is not <a class="css" data-link-type="maybe" href="#valdef-column-width-auto" id="ref-for-valdef-column-width-auto">auto</a>
 	establishes a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="multi-column container|multicol container" id="multi-column-container"><span class="bs-old-id" id="multi-column-element"></span>multi-column container</dfn>
 	(or <i>multicol container</i> for short),
 	and therefore acts as a container for <a data-link-type="dfn" href="#multi-column-layout" id="ref-for-multi-column-layout">multi-column layout</a>.</p>
@@ -1771,11 +1747,11 @@ img <c- p>{</c->
 	constrained by the page and the content continues in a new line of
 	column boxes on the next page; a column box never splits across pages.</p>
    <p>If a multi-column container in continuous media is set to wrap,
-	the height of each column is defined by the <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①">column-height</a> property.
+	the height of each column is defined by the <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height②">column-height</a> property.
 	If there is more content than will fit in a single row a new multicol row is created
-	in the block direction, with columns of the size defined by the <span class="property" id="ref-for-propdef-column-height②">column-height</span> property.
+	in the block direction, with columns of the size defined by the <span class="property" id="ref-for-propdef-column-height③">column-height</span> property.
 	If a row is only partially filled with content,
-	the size defined by <span class="property" id="ref-for-propdef-column-height③">column-height</span> is still maintained with empty space following the content.</p>
+	the size defined by <span class="property" id="ref-for-propdef-column-height④">column-height</span> is still maintained with empty space following the content.</p>
    <p>When a <i>spanning element</i> divides the
 	multi-column container: a new multicol line is created.
 	The columns before the spanning element are
@@ -1901,10 +1877,10 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
    <ul>
     <li><a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count①">column-count</a>
     <li><a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width②">column-width</a>
-    <li><a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height④">column-height</a>
+    <li><a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑤">column-height</a>
    </ul>
    <p>A fourth property, <a class="css property" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns①">columns</a>, is a shorthand property which sets all of
-        <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width③">column-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑤">column-height</a>, and <a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count②">column-count</a>.</p>
+        <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width③">column-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑥">column-height</a>, and <a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count②">column-count</a>.</p>
    <p>Other factors, such as explicit column breaks, content, column wrapping,
         and size constraints, may influence the actual number and size of columns.</p>
    <h3 class="heading settled" data-level="4.1" id="cw"><span class="secno">4.1. </span><span class="content">The Inline Size of Columns: the <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width④">column-width</a> property</span><a class="self-link" href="#cw"></a></h3>
@@ -2025,7 +2001,7 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
 	To set an exact column width,
 	the column gap and the width of the multicol container (assuming horizontal text)
 	must also be specified.</p>
-   <h3 class="heading settled" data-level="4.2" id="ch"><span class="secno">4.2. </span><span class="content">The Block Size of Columns: the <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑥">column-height</a> property</span><a class="self-link" href="#ch"></a></h3>
+   <h3 class="heading settled" data-level="4.2" id="ch"><span class="secno">4.2. </span><span class="content">The Block Size of Columns: the <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑦">column-height</a> property</span><a class="self-link" href="#ch"></a></h3>
    <table class="def propdef" data-link-for-hint="column-height">
     <tbody>
      <tr>
@@ -2071,10 +2047,10 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
 			Negative values are not allowed.
 		
    </dl>
-   <p>If you set <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑦">column-height</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> on a multicol container,
+   <p>If you set <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑧">column-height</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> on a multicol container,
 	you may end up with some additional space.
 	The properties defined in the <a data-link-type="biblio" href="#biblio-css-align" title="CSS Box Alignment Module Level 3">[CSS-ALIGN]</a> specification detail how to deal with it.</p>
-   <p>When <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑧">column-height</a> is not <u class="link-error property" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> the size in the block direction is not flexible.
+   <p>When <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑨">column-height</a> is not <u class="link-error property" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> the size in the block direction is not flexible.
 	If there is not enough content to fill a row of columns at the set size,
 	empty space is left.</p>
    <p>If a spanner is introduced that is taller than the set size,
@@ -2191,13 +2167,13 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
       <td>discrete	
    </table>
    <p>The column-wrap property controls the behavior of overflow columns.
-	Overflow columns occur when there is more content than will fit in a single row of columns at the specified <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height⑨">column-height</a>,
+	Overflow columns occur when there is more content than will fit in a single row of columns at the specified <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⓪">column-height</a>,
 	or inside a height defined by the multicol container.</p>
    <dl>
     <dt><dfn class="css dfn-paneled" data-dfn-for="column-wrap" data-dfn-type="value" data-export id="valdef-column-wrap-auto">auto</dfn>
 		
     <dd>
-			If <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⓪">column-height</a> is not <u class="link-error property" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> behaves as the value <u class="link-error property" data-lt="wrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;wrap&apos;.">wrap</u> otherwise acts as <u class="link-error property" data-lt="nowrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;nowrap&apos;.">nowrap</u>.
+			If <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①①">column-height</a> is not <u class="link-error property" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> behaves as the value <u class="link-error property" data-lt="wrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;wrap&apos;.">wrap</u> otherwise acts as <u class="link-error property" data-lt="nowrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;nowrap&apos;.">nowrap</u>.
 		
 		
     <dt><dfn class="css dfn-paneled" data-dfn-for="column-wrap" data-dfn-type="value" data-export id="valdef-column-wrap-nowrap">nowrap</dfn>
@@ -2250,11 +2226,11 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
 	Authors should ensure that it’s clear to a reader how the content flows,
 	particularly in situations where multiple rows are displayed on screen.</p>
    <p class="issue" id="issue-0c1febd5"><a class="self-link" href="#issue-0c1febd5"></a> The issue relating to the addition of this property is still open due to debate as to whether it’s required. <a href="https://github.com/w3c/csswg-drafts/issues/11754">[Issue #11754]</a></p>
-   <p class="issue" id="issue-efb0c119"><a class="self-link" href="#issue-efb0c119"></a> What happens if you set a height on the multicol container, 'column-wrap: wrap' but no <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①①">column-height</a>?
+   <p class="issue" id="issue-efb0c119"><a class="self-link" href="#issue-efb0c119"></a> What happens if you set a height on the multicol container, 'column-wrap: wrap' but no <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①②">column-height</a>?
 	Options are 1: The <a class="css property" data-link-type="property" href="#propdef-column-wrap" id="ref-for-propdef-column-wrap①">column-wrap</a> property is ignored. 2: 'column-height: auto' resolves to the available space
 	in the multicol container and new rows of that size are created for the overflow,
 	thus honoring the <u class="link-error property" data-lt="wrap" title="LINK ERROR: No &apos;property&apos; refs found for &apos;wrap&apos;.">wrap</u> value. <a href="https://github.com/w3c/csswg-drafts/issues/11754">[Issue #11754]</a></p>
-   <h3 class="heading settled" data-level="4.5" id="columns"><span class="secno">4.5. </span><span class="content">The <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width⑨">column-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑥">column-count</a>, and <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①②">column-height</a> Shorthand: The <a class="css property" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns②">columns</a> Property</span><a class="self-link" href="#columns"></a></h3>
+   <h3 class="heading settled" data-level="4.5" id="columns"><span class="secno">4.5. </span><span class="content">The <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width⑨">column-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑥">column-count</a>, and <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①③">column-height</a> Shorthand: The <a class="css property" data-link-type="property" href="#propdef-columns" id="ref-for-propdef-columns②">columns</a> Property</span><a class="self-link" href="#columns"></a></h3>
    <table class="def propdef" data-link-for-hint="columns">
     <tbody>
      <tr>
@@ -2262,7 +2238,7 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-columns">columns</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ <a class="css production" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①⓪">&lt;'column-width'></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any">||</a> <a class="css production" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑦">&lt;'column-count'></a> ] [ / <a class="css production" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①③">&lt;'column-height'></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a>	
+      <td class="prod">[ <a class="css production" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①⓪">&lt;'column-width'></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any">||</a> <a class="css production" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑦">&lt;'column-count'></a> ] [ / <a class="css production" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①④">&lt;'column-height'></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a>	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties	
@@ -2286,7 +2262,7 @@ The number and size of columns</span><a class="self-link" href="#the-number-and-
       <td>per grammar	
    </table>
    <p>This is a shorthand property for setting <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①①">column-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-count" id="ref-for-propdef-column-count⑧">column-count</a>,
-	and <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①④">column-height</a>.
+	and <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⑤">column-height</a>.
 	Omitted values are set to their initial values.
 	This property also resets the <a class="css property" data-link-type="property" href="#propdef-column-wrap" id="ref-for-propdef-column-wrap②">column-wrap</a> property to its initial value.</p>
    <div class="example" id="example-dfe011c2">
@@ -2345,7 +2321,7 @@ columns: <c- m>12</c-><c- k>em</c-> / <c- m>14</c-><c- k>em</c-><c- p>;</c-> <c-
     </ul>
    </details>
    <p>The <code>floor(X)</code> function returns the largest integer Y ≤ X.</p>
-<pre>(01)  if ((column-width = auto) and (column-count = auto)) then
+<pre>(01)  if ((column-width = auto) and (column-count = auto) and (column-height = auto)) then
 (02)      exit; /* not a multicol container */
 (03)  if column-width = auto then
 (04)      N := column-count
@@ -2487,21 +2463,6 @@ without caring about the <em>contents</em>.</p>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-nested-balancing-003.html" title="css/css-multicol/multicol-rule-nested-balancing-003.html">multicol-rule-nested-balancing-003.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-nested-balancing-003.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-nested-balancing-003.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-nested-balancing-004.html" title="css/css-multicol/multicol-rule-nested-balancing-004.html">multicol-rule-nested-balancing-004.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-nested-balancing-004.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-nested-balancing-004.html"><small>(source)</small></a>
     </ul>
-   </details>
-   <p>A <a data-link-type="dfn" href="#column-rule" id="ref-for-column-rule①">column rule</a> is drawn in the middle of the <a data-link-type="dfn" href="#column-gap" id="ref-for-column-gap①">column gap</a>
-	with the endpoints at opposing content edges of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⑥">multicol container</a>.
-	Column rules do not take up space.
-	That is, the presence or thickness of a <span id="ref-for-column-rule②">column rule</span> will not alter the placement of anything else.
-	If a <span id="ref-for-column-rule③">column rule</span> is wider than its gap,
-	the adjacent column boxes will overlap the rule,
-	and the rule may possibly extend outside the box of the <span id="ref-for-multi-column-container①⑦">multicol container</span>.
-	Column rules are painted just above the border of the <span id="ref-for-multi-column-container①⑧">multicol container</span>.
-	For scrollable multicol containers,
-	note that while the border and background of the <span id="ref-for-multi-column-container①⑨">multicol container</span> obviously aren’t scrolled,
-	the rules need to scroll along with the columns.
-	Column rules are only drawn between two columns that both have content.</p>
-   <details class="wpt-tests-block" dir="ltr" lang="en">
-    <summary>Tests</summary>
     <p>Basic column rule tests</p>
     <ul class="wpt-tests-list">
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-003.xht" title="css/css-multicol/multicol-rule-003.xht">multicol-rule-003.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-003.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-003.xht"><small>(source)</small></a>
@@ -2576,46 +2537,15 @@ without caring about the <em>contents</em>.</p>
 	the used value of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-align-3/#valdef-row-gap-normal" id="ref-for-valdef-row-gap-normal①">normal</a> for the <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-row-gap" id="ref-for-propdef-row-gap③">row-gap</a> property is <span class="css">1em</span>.
 	If there is a rule between rows,
 	it will appear in the middle of the gap.</p>
-   <h3 class="heading settled" data-level="5.3" id="crc"><span class="secno">5.3. </span><span class="content">The Color of Column Rules: the
-<a class="css property" data-link-type="property" href="#propdef-column-rule-color" id="ref-for-propdef-column-rule-color">column-rule-color</a> property</span><a class="self-link" href="#crc"></a></h3>
-   <table class="def propdef" data-link-for-hint="column-rule-color">
-    <tbody>
-     <tr>
-      <th>Name:
-      <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-column-rule-color">column-rule-color</dfn>
-     <tr class="value">
-      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-color-5/#typedef-color" id="ref-for-typedef-color">&lt;color></a>	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>currentcolor	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td>multicol containers	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
-      <td>no	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>N/A	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>computed color	
-     <tr>
-      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
-      <td>per grammar	
-     <tr>
-      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
-      <td>by computed value type	
-   </table>
-   <dl>
-    <dt><dfn class="css dfn-paneled" data-dfn-for="column-rule-color" data-dfn-type="value" data-export id="valdef-column-rule-color-color"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-color-5/#typedef-color" id="ref-for-typedef-color①">&lt;color></a></dfn>
-    <dd>
-			Specifies the color of the <a data-link-type="dfn" href="#column-rule" id="ref-for-column-rule④">column rule</a>.
-		
-   </dl>
+   <h3 class="heading settled" data-level="5.3" id="crc"><span class="secno">5.3. </span><span class="content">The Color, Width, and Style of Column Rules: the
+gap decoration properties</span><a class="self-link" href="#crc"></a></h3>
+   <p>The gap decoration properties of <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-column-rule" id="ref-for-propdef-column-rule">column-rule</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-row-rule" id="ref-for-propdef-row-rule">row-rule</a>,
+	along with their longhands <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-color" id="ref-for-propdef-column-rule-color">column-rule-color</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-color" id="ref-for-propdef-row-rule-color">row-rule-color</a>,
+	<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-style" id="ref-for-propdef-column-rule-style">column-rule-style</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-style" id="ref-for-propdef-row-rule-style">row-rule-style</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-width" id="ref-for-propdef-column-rule-width">column-rule-width</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-width" id="ref-for-propdef-row-rule-width">row-rule-width</a>
+	are defined in <a data-link-type="biblio" href="#biblio-css-gaps" title="CSS Gap Decorations Module Level 1">[CSS-GAPS]</a>.</p>
    <details class="wpt-tests-block" dir="ltr" lang="en">
     <summary>Tests</summary>
+    <p>Tests for column-rule-color in multicol</p>
     <ul class="wpt-tests-list">
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-color-001.xht" title="css/css-multicol/multicol-rule-color-001.xht">multicol-rule-color-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-color-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-color-001.xht"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-color-inherit-001.xht" title="css/css-multicol/multicol-rule-color-inherit-001.xht">multicol-rule-color-inherit-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-color-inherit-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-color-inherit-001.xht"><small>(source)</small></a>
@@ -2625,133 +2555,15 @@ without caring about the <em>contents</em>.</p>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-color-invalid.html" title="css/css-multicol/parsing/column-rule-color-invalid.html">column-rule-color-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-color-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-color-invalid.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/animation/column-rule-color-interpolation.html" title="css/css-multicol/animation/column-rule-color-interpolation.html">column-rule-color-interpolation.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/animation/column-rule-color-interpolation.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/animation/column-rule-color-interpolation.html"><small>(source)</small></a>
     </ul>
-   </details>
-   <h3 class="heading settled" data-level="5.4" id="crs"><span class="secno">5.4. </span><span class="content">The Style Of Column Rules: the <a class="css property" data-link-type="property" href="#propdef-column-rule-style" id="ref-for-propdef-column-rule-style">column-rule-style</a> property</span><a class="self-link" href="#crs"></a></h3>
-   <table class="def propdef" data-link-for-hint="column-rule-style">
-    <tbody>
-     <tr>
-      <th>Name:
-      <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-column-rule-style">column-rule-style</dfn>
-     <tr class="value">
-      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-backgrounds-3/#typedef-line-style" id="ref-for-typedef-line-style">&lt;line-style></a>	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>none	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td>multicol containers	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
-      <td>no	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>N/A	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>specified keyword	
-     <tr>
-      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
-      <td>per grammar	
-     <tr>
-      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
-      <td>discrete	
-   </table>
-   <p>The <a class="css property" data-link-type="property" href="#propdef-column-rule-style" id="ref-for-propdef-column-rule-style①">column-rule-style</a> property sets the style of the rule between columns of an element.
-	The <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-backgrounds-3/#typedef-line-style" id="ref-for-typedef-line-style①">&lt;line-style></a> values are interpreted as in the <a href="https://www.w3.org/TR/CSS2/tables.html#collapsing-borders">collapsing border model</a>.</p>
-   <details class="wpt-tests-block" dir="ltr" lang="en">
-    <summary>Tests</summary>
+    <hr>
+    <p>Tests for column-rule-style in multicol.</p>
     <ul class="wpt-tests-list">
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-style-computed.html" title="css/css-multicol/parsing/column-rule-style-computed.html">column-rule-style-computed.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-style-computed.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-style-computed.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-style-valid.html" title="css/css-multicol/parsing/column-rule-style-valid.html">column-rule-style-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-style-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-style-valid.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-style-invalid.html" title="css/css-multicol/parsing/column-rule-style-invalid.html">column-rule-style-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-style-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-style-invalid.html"><small>(source)</small></a>
     </ul>
-   </details>
-   <p>The <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-none" id="ref-for-valdef-line-style-none">none</a> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-hidden" id="ref-for-valdef-line-style-hidden">hidden</a> values force the used value of <a class="css property" data-link-type="property" href="#propdef-column-rule-width" id="ref-for-propdef-column-rule-width">column-rule-width</a> to be <span class="css">0</span>.</p>
-   <h3 class="heading settled" data-level="5.5" id="crw"><span class="secno">5.5. </span><span class="content">The Width Of Column Rules: the <a class="css property" data-link-type="property" href="#propdef-column-rule-width" id="ref-for-propdef-column-rule-width①">column-rule-width</a> property</span><a class="self-link" href="#crw"></a></h3>
-   <table class="def propdef" data-link-for-hint="column-rule-width">
-    <tbody>
-     <tr>
-      <th>Name:
-      <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-column-rule-width">column-rule-width</dfn>
-     <tr class="value">
-      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-backgrounds-3/#typedef-line-width" id="ref-for-typedef-line-width">&lt;line-width></a>	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>medium	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td>multicol containers	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
-      <td>no	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>N/A	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>absolute length, <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#snap-a-length-as-a-border-width" id="ref-for-snap-a-length-as-a-border-width">snapped as a border width</a>	
-     <tr>
-      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
-      <td>per grammar	
-     <tr>
-      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
-      <td>by computed value type	
-   </table>
-   <p>This property sets the width of the rule between columns.
-	Negative values are not allowed.</p>
-   <details class="wpt-tests-block" dir="ltr" lang="en">
-    <summary>Tests</summary>
-    <ul class="wpt-tests-list">
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-fraction-001.xht" title="css/css-multicol/multicol-rule-fraction-001.xht">multicol-rule-fraction-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-fraction-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-fraction-001.xht"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-fraction-003.xht" title="css/css-multicol/multicol-rule-fraction-003.xht">multicol-rule-fraction-003.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-fraction-003.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-fraction-003.xht"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-px-001.xht" title="css/css-multicol/multicol-rule-px-001.xht">multicol-rule-px-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-px-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-px-001.xht"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-percent-001.xht" title="css/css-multicol/multicol-rule-percent-001.xht">multicol-rule-percent-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-percent-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-percent-001.xht"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/subpixel-column-rule-width.tentative.html" title="css/css-multicol/subpixel-column-rule-width.tentative.html">subpixel-column-rule-width.tentative.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/subpixel-column-rule-width.tentative.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/subpixel-column-rule-width.tentative.html"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-width-computed.html" title="css/css-multicol/parsing/column-rule-width-computed.html">column-rule-width-computed.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-width-computed.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-width-computed.html"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-width-invalid.html" title="css/css-multicol/parsing/column-rule-width-invalid.html">column-rule-width-invalid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-width-invalid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-width-invalid.html"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-width-valid.html" title="css/css-multicol/parsing/column-rule-width-valid.html">column-rule-width-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-width-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-width-valid.html"><small>(source)</small></a>
-     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/animation/column-rule-width-interpolation.html" title="css/css-multicol/animation/column-rule-width-interpolation.html">column-rule-width-interpolation.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/animation/column-rule-width-interpolation.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/animation/column-rule-width-interpolation.html"><small>(source)</small></a>
-    </ul>
-   </details>
-   <h3 class="heading settled" data-level="5.6" id="cr"><span class="secno">5.6. </span><span class="content">Column Rule Shorthand: the <a class="css property" data-link-type="property" href="#propdef-column-rule" id="ref-for-propdef-column-rule④">column-rule</a> property</span><a class="self-link" href="#cr"></a></h3>
-   <table class="def propdef" data-link-for-hint="column-rule">
-    <tbody>
-     <tr>
-      <th>Name:
-      <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-column-rule">column-rule</dfn>
-     <tr class="value">
-      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="css production" data-link-type="property" href="#propdef-column-rule-width" id="ref-for-propdef-column-rule-width②">&lt;'column-rule-width'></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> <a class="css production" data-link-type="property" href="#propdef-column-rule-style" id="ref-for-propdef-column-rule-style②">&lt;'column-rule-style'></a> <span id="ref-for-comb-any②">||</span> <a class="css production" data-link-type="property" href="#propdef-column-rule-color" id="ref-for-propdef-column-rule-color①">&lt;'column-rule-color'></a>	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
-      <td>see individual properties	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
-      <td>see individual properties	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
-      <td>see individual properties	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
-      <td>see individual properties	
-     <tr>
-      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
-      <td>see individual properties	
-     <tr>
-      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
-      <td>see individual properties	
-     <tr>
-      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
-      <td>per grammar	
-   </table>
-   <p>This property is a shorthand for setting
-	<a class="css property" data-link-type="property" href="#propdef-column-rule-width" id="ref-for-propdef-column-rule-width③">column-rule-width</a>, <a class="css property" data-link-type="property" href="#propdef-column-rule-style" id="ref-for-propdef-column-rule-style③">column-rule-style</a>, and <a class="css property" data-link-type="property" href="#propdef-column-rule-color" id="ref-for-propdef-column-rule-color②">column-rule-color</a>
-	at the same place in the style sheet.
-	Omitted values are set to their initial values.</p>
-   <details class="wpt-tests-block" dir="ltr" lang="en">
-    <summary>Tests</summary>
+    <hr>
+    <p>Tests for column-rule-style in multicol.</p>
     <ul class="wpt-tests-list">
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-shorthand-001.xht" title="css/css-multicol/multicol-shorthand-001.xht">multicol-shorthand-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-shorthand-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-shorthand-001.xht"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-shorthand-001.xht" title="css/css-multicol/multicol-rule-shorthand-001.xht">multicol-rule-shorthand-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-shorthand-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-shorthand-001.xht"><small>(source)</small></a>
@@ -2773,35 +2585,13 @@ without caring about the <em>contents</em>.</p>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-valid.html" title="css/css-multicol/parsing/column-rule-valid.html">column-rule-valid.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-valid.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-valid.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/parsing/column-rule-shorthand.html" title="css/css-multicol/parsing/column-rule-shorthand.html">column-rule-shorthand.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/parsing/column-rule-shorthand.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/parsing/column-rule-shorthand.html"><small>(source)</small></a>
     </ul>
+    <hr>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/equal-gap-and-rule.html" title="css/css-multicol/equal-gap-and-rule.html">equal-gap-and-rule.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/equal-gap-and-rule.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/equal-gap-and-rule.html"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-samelength-001.xht" title="css/css-multicol/multicol-rule-samelength-001.xht">multicol-rule-samelength-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-samelength-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-samelength-001.xht"><small>(source)</small></a>
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/fixed-size-child-with-overflow.html" title="css/css-multicol/fixed-size-child-with-overflow.html">fixed-size-child-with-overflow.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/fixed-size-child-with-overflow.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/fixed-size-child-with-overflow.html"><small>(source)</small></a>
+    </ul>
    </details>
-   <div class="example" id="example-ef50cfc6">
-    <a class="self-link" href="#example-ef50cfc6"></a>
-		In this example, the <a data-link-type="dfn" href="#column-rule" id="ref-for-column-rule⑤">column rule</a> and the <a data-link-type="dfn" href="#column-gap" id="ref-for-column-gap②">column gap</a> have the same width.
-		Therefore, they will occupy exactly the same space.
-
-		
-<pre class="highlight">body <c- p>{</c->
-  <c- k>column-gap</c-><c- p>:</c-> <c- m>35</c-><c- k>px</c-><c- p>;</c->
-  <c- k>column-rule-width</c-><c- p>:</c-> <c- m>35</c-><c- k>px</c-><c- p>;</c->
-  <c- k>column-rule-style</c-><c- p>:</c-> solid<c- p>;</c->
-  <c- k>column-rule-color</c-><c- p>:</c-> black<c- p>;</c->
-<c- p>}</c->
-</pre>
-    <figure>
-     
-			<img alt="The rule completely covers any gap." src="images/rule-same-width-as-gap.svg">
-			
-     <figcaption>The column rule and column gap occupy the same space.</figcaption>
-    </figure>
-    <details class="wpt-tests-block" dir="ltr" lang="en">
-     <summary>Tests</summary>
-     <ul class="wpt-tests-list">
-      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/equal-gap-and-rule.html" title="css/css-multicol/equal-gap-and-rule.html">equal-gap-and-rule.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/equal-gap-and-rule.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/equal-gap-and-rule.html"><small>(source)</small></a>
-      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/multicol-rule-samelength-001.xht" title="css/css-multicol/multicol-rule-samelength-001.xht">multicol-rule-samelength-001.xht</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/multicol-rule-samelength-001.xht"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/multicol-rule-samelength-001.xht"><small>(source)</small></a>
-      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-multicol/fixed-size-child-with-overflow.html" title="css/css-multicol/fixed-size-child-with-overflow.html">fixed-size-child-with-overflow.html</a> <a class="wpt-live" href="http://wpt.live/css/css-multicol/fixed-size-child-with-overflow.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-multicol/fixed-size-child-with-overflow.html"><small>(source)</small></a>
-     </ul>
-    </details>
-   </div>
    <h2 class="heading settled" data-level="6" id="column-breaks"><span class="secno">6. </span><span class="content">
 Column Breaks</span><a class="self-link" href="#column-breaks"></a></h2>
    <p>When content is laid out in multiple columns,
@@ -3008,7 +2798,7 @@ Spanning columns</span><a class="self-link" href="#spanning-columns"></a></h2>
      
 			The number of columns spanned by the element
 			depends on its <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#min-content" id="ref-for-min-content">min-content</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#outer-size" id="ref-for-outer-size">outer size</a>
-			in the inline direction of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⓪">multi-column container</a>.
+			in the inline direction of the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⑥">multi-column container</a>.
 			If it is smaller than the used value of <a class="css property" data-link-type="property" href="#propdef-column-width" id="ref-for-propdef-column-width①④">column-width</a>,
 			this is the same as if <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span⑦">column-span: none</a> had been specified.
 			Otherwise, the number of columns spanned is the smallest positive integer <var>n</var>
@@ -3024,11 +2814,11 @@ Spanning columns</span><a class="self-link" href="#spanning-columns"></a></h2>
    </dl>
    <p>An element that spans more than one column is called a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="spanning element" id="multi-column-spanning-element">multi-column spanning element</dfn>
 	and the box it creates is called a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="spanner" id="multi-column-spanner">multi-column spanner</dfn>.</p>
-   <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block②">containing block</a> of the <a data-link-type="dfn" href="#multi-column-spanner" id="ref-for-multi-column-spanner②">spanner</a> is the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②①">multicol container</a> itself.
+   <p>The <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block" id="ref-for-containing-block②">containing block</a> of the <a data-link-type="dfn" href="#multi-column-spanner" id="ref-for-multi-column-spanner②">spanner</a> is the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container①⑦">multicol container</a> itself.
 	Consequently, in cases where the spanner itself does not establish
 	a <span id="ref-for-containing-block③">containing block</span> for <a data-link-type="dfn" href="https://drafts.csswg.org/css-position-3/#absolute-position" id="ref-for-absolute-position①">absolutely positioned boxes</a> inside the spanner,
-	their <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block-chain" id="ref-for-containing-block-chain">containing block chain</a> skips directly to the <span id="ref-for-multi-column-container②②">multicol container</span>
-	(skipping any ancestors between the <span id="ref-for-multi-column-spanner③">spanner</span> and the <span id="ref-for-multi-column-container②③">multicol container</span>).</p>
+	their <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#containing-block-chain" id="ref-for-containing-block-chain">containing block chain</a> skips directly to the <span id="ref-for-multi-column-container①⑧">multicol container</span>
+	(skipping any ancestors between the <span id="ref-for-multi-column-spanner③">spanner</span> and the <span id="ref-for-multi-column-container①⑨">multicol container</span>).</p>
    <p>Although the spanner is taken <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#out-of-flow" id="ref-for-out-of-flow②">out-of-flow</a>,
 	this does not affect the <a href="https://www.w3.org/TR/CSS2/zindex.html">painting order</a> <a data-link-type="biblio" href="#biblio-css21" title="Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification">[CSS21]</a> of the spanning element.</p>
    <div class="example" id="example-b640c5a3">
@@ -3050,12 +2840,12 @@ Spanning columns</span><a class="self-link" href="#spanning-columns"></a></h2>
      <figcaption>The h2 element is set to column-span: all</figcaption>
     </figure>
     <p>Note that because the spanner splits the <a data-link-type="dfn" href="#multi-column-line" id="ref-for-multi-column-line⑥">multi-column line</a>,
-		it also interrupts any <a data-link-type="dfn" href="#column-rule" id="ref-for-column-rule⑥">column rules</a>
+		it also interrupts any <a data-link-type="dfn" href="#column-rule" id="ref-for-column-rule①">column rules</a>
 		(which are only drawn between <a data-link-type="dfn" href="#column-box" id="ref-for-column-box⑥">columns</a> in a <span id="ref-for-multi-column-line⑦">multi-column line</span>).</p>
    </div>
    <p>A spanning element may be lower than the first level of descendants
 	as long as they are part of the same <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#formatting-context" id="ref-for-formatting-context①">formatting context</a>,
-	and there is nothing between the spanning element and <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②④">multicol container</a> that establishes a containing block for fixed position descendants.</p>
+	and there is nothing between the spanning element and <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⓪">multicol container</a> that establishes a containing block for fixed position descendants.</p>
    <div class="example" id="example-c35d3254">
     <a class="self-link" href="#example-c35d3254"></a>
 		In this example, the element with <a class="css" data-link-type="propdesc" href="#propdef-column-span" id="ref-for-propdef-column-span①④">column-span: all</a> is inside an element with <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform">transform: rotate(90deg)</a>. 
@@ -3096,7 +2886,7 @@ section <c- p>{</c->
 	the top margin/border/padding is above the spanning element, as an empty <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#fragment" id="ref-for-fragment①">fragment</a>.</p>
    <div class="example" id="example-fa0001d6">
     <a class="self-link" href="#example-fa0001d6"></a>
-		In this example the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②⑤">multicol container</a> is the <code>article</code> element.
+		In this example the <a data-link-type="dfn" href="#multi-column-container" id="ref-for-multi-column-container②①">multicol container</a> is the <code>article</code> element.
 		Inside this parent is a paragraph and then a section element.
 		The section contains an <code>h2</code> heading set to <a class="css" data-link-type="maybe" href="#valdef-column-span-all" id="ref-for-valdef-column-span-all②">all</a>
 		this spans all three columns while the containing section remains inside the column boxes.
@@ -3728,13 +3518,13 @@ Pagination and Overflow Outside Multicol Containers</span><a class="self-link" h
    <p>This appendix is <em>informative</em>.</p>
    <h3 class="heading settled" id><span class="content">Changes from the <a href="https://www.w3.org/TR/2024/WD-css-multicol-2-20241219/">First Public Working Draft</a> of 19 December 2024</span><a class="self-link" href="#"></a></h3>
    <ul>
-    <li>Removed the special case of <a class="css property" data-link-type="property" href="#propdef-column-rule-width" id="ref-for-propdef-column-rule-width④">column-rule-width</a> having a computed value of <span class="css">0</span> when <a class="css property" data-link-type="property" href="#propdef-column-rule-style" id="ref-for-propdef-column-rule-style④">column-rule-style</a> is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-none" id="ref-for-valdef-line-style-none①">none</a> or <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-hidden" id="ref-for-valdef-line-style-hidden①">hidden</a>.
+    <li>Removed the special case of <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-width" id="ref-for-propdef-column-rule-width①">column-rule-width</a> having a computed value of <span class="css">0</span> when <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-style" id="ref-for-propdef-column-rule-style①">column-rule-style</a> is <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-none" id="ref-for-valdef-line-style-none">none</a> or <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-hidden" id="ref-for-valdef-line-style-hidden">hidden</a>.
 		(<a href="https://github.com/w3c/csswg-drafts/issues/11494">Issue 11494</a>)
 
    </ul>
    <h3 class="heading settled" id="changes-from-multicol1"><span class="content">Changes from the <a href="https://www.w3.org/TR/2024/CR-css-multicol-1-20240516/">Candidate Recommendation (CR) of CSS-MULTICOL-1 of 16 May 2024</a></span><a class="self-link" href="#changes-from-multicol1"></a></h3>
    <ul>
-    <li>Defines that the size of the columns in the block direction is maintained when <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⑤">column-height</a> is set, even if there’s not enough content to fill a row.
+    <li>Defines that the size of the columns in the block direction is maintained when <a class="css property" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⑥">column-height</a> is set, even if there’s not enough content to fill a row.
 	<a href="https://github.com/w3c/csswg-drafts/issues/11976#issuecomment-3206088562">Resolved 20 August 2025</a>
     <li>Defines that spanners only span the current row of columns when wrapping.
 	<a href="https://github.com/w3c/csswg-drafts/issues/11976#issuecomment-3206088562">Resolved 20 August 2025</a>
@@ -3945,7 +3735,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     </ul>
    <li><a href="#valdef-column-fill-balance">balance</a><span>, in § 8.1</span>
    <li><a href="#valdef-column-fill-balance-all">balance-all</a><span>, in § 8.1</span>
-   <li><a href="#valdef-column-rule-color-color">&lt;color></a><span>, in § 5.3</span>
    <li><a href="#selectordef-column">::column</a><span>, in § 4.8</span>
    <li><a href="#column-box">column</a><span>, in § 3</span>
    <li><a href="#column-box">column box</a><span>, in § 3</span>
@@ -3955,10 +3744,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#column-height">column height</a><span>, in § 3</span>
    <li><a href="#propdef-column-height">column-height</a><span>, in § 4.2</span>
    <li><a href="#column-rule">column rule</a><span>, in § 3</span>
-   <li><a href="#propdef-column-rule">column-rule</a><span>, in § 5.6</span>
-   <li><a href="#propdef-column-rule-color">column-rule-color</a><span>, in § 5.3</span>
-   <li><a href="#propdef-column-rule-style">column-rule-style</a><span>, in § 5.4</span>
-   <li><a href="#propdef-column-rule-width">column-rule-width</a><span>, in § 5.5</span>
    <li><a href="#propdef-columns">columns</a><span>, in § 4.5</span>
    <li><a href="#propdef-column-span">column-span</a><span>, in § 7.1</span>
    <li><a href="#column-width">column width</a><span>, in § 3</span>
@@ -4002,9 +3787,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[CSS-BACKGROUNDS-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="957ec3c1">&lt;line-style></span>
-     <li><span class="dfn-paneled" id="ceaa27cc">&lt;line-width></span>
-     <li><span class="dfn-paneled" id="a9734ee4">border</span>
      <li><span class="dfn-paneled" id="7594868a">hidden</span>
      <li><span class="dfn-paneled" id="55617484">none</span>
     </ul>
@@ -4023,11 +3805,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="b6730ce5">widows</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-COLOR-5]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="1548047a">&lt;color></span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[CSS-DISPLAY-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="43b15e47">anonymous box</span>
@@ -4043,6 +3820,18 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="a46ac4e1">out of flow</span>
      <li><span class="dfn-paneled" id="7ba1e996">out-of-flow</span>
      <li><span class="dfn-paneled" id="80eb9508">principal box</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-GAPS]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="a8620b3d">column-rule</span>
+     <li><span class="dfn-paneled" id="da1de473">column-rule-color</span>
+     <li><span class="dfn-paneled" id="e12bd6bc">column-rule-style</span>
+     <li><span class="dfn-paneled" id="df0e018a">column-rule-width</span>
+     <li><span class="dfn-paneled" id="01d9d724">row-rule</span>
+     <li><span class="dfn-paneled" id="60b68786">row-rule-color</span>
+     <li><span class="dfn-paneled" id="577d2293">row-rule-style</span>
+     <li><span class="dfn-paneled" id="22e41651">row-rule-width</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-GRID-2]</a> defines the following terms:
@@ -4091,7 +3880,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="fb030e6c">&lt;length></span>
      <li><span class="dfn-paneled" id="537cf076">?</span>
      <li><span class="dfn-paneled" id="358fd6ff">CSS-wide keywords</span>
-     <li><span class="dfn-paneled" id="4a142214">snap as a border width</span>
      <li><span class="dfn-paneled" id="6ec67710">|</span>
      <li><span class="dfn-paneled" id="8a82fda1">||</span>
     </ul>
@@ -4147,10 +3935,10 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad. <a href="https://drafts.csswg.org/css-box-4/"><cite>CSS Box Model Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-box-4/">https://drafts.csswg.org/css-box-4/</a>
    <dt id="biblio-css-break-4">[CSS-BREAK-4]
    <dd>Rossen Atanassov; Elika Etemad. <a href="https://drafts.csswg.org/css-break-4/"><cite>CSS Fragmentation Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-break-4/">https://drafts.csswg.org/css-break-4/</a>
-   <dt id="biblio-css-color-5">[CSS-COLOR-5]
-   <dd>Chris Lilley; et al. <a href="https://drafts.csswg.org/css-color-5/"><cite>CSS Color Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-color-5/">https://drafts.csswg.org/css-color-5/</a>
    <dt id="biblio-css-display-4">[CSS-DISPLAY-4]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-display-4/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-display-4/">https://drafts.csswg.org/css-display-4/</a>
+   <dt id="biblio-css-gaps">[CSS-GAPS]
+   <dd>Kevin Babbitt. <a href="https://drafts.csswg.org/css-gaps-1/"><cite>CSS Gap Decorations Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-gaps-1/">https://drafts.csswg.org/css-gaps-1/</a>
    <dt id="biblio-css-grid-2">[CSS-GRID-2]
    <dd>Tab Atkins Jr.; et al. <a href="https://drafts.csswg.org/css-grid-2/"><cite>CSS Grid Layout Module Level 2</cite></a>. URL: <a href="https://drafts.csswg.org/css-grid-2/">https://drafts.csswg.org/css-grid-2/</a>
    <dt id="biblio-css-overflow-3">[CSS-OVERFLOW-3]
@@ -4229,7 +4017,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>per grammar
       <td>specified keyword
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⑥">column-height</a>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-height" id="ref-for-propdef-column-height①⑦">column-height</a>
       <td>auto | &lt;length [0,∞]>
       <td>auto
       <td>block containers except table wrapper boxes
@@ -4238,46 +4026,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>by computed value type
       <td>per grammar
       <td>the keyword auto or an absolute length
-     <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-rule" id="ref-for-propdef-column-rule⑤">column-rule</a>
-      <td>&lt;'column-rule-width'> || &lt;'column-rule-style'> || &lt;'column-rule-color'>
-      <td>see individual properties
-      <td>see individual properties
-      <td>see individual properties
-      <td>see individual properties
-      <td>see individual properties
-      <td>per grammar
-      <td>see individual properties
-     <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-rule-color" id="ref-for-propdef-column-rule-color③">column-rule-color</a>
-      <td>&lt;color>
-      <td>currentcolor
-      <td>multicol containers
-      <td>no
-      <td>N/A
-      <td>by computed value type
-      <td>per grammar
-      <td>computed color
-     <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-rule-style" id="ref-for-propdef-column-rule-style⑤">column-rule-style</a>
-      <td>&lt;line-style>
-      <td>none
-      <td>multicol containers
-      <td>no
-      <td>N/A
-      <td>discrete
-      <td>per grammar
-      <td>specified keyword
-     <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-rule-width" id="ref-for-propdef-column-rule-width⑤">column-rule-width</a>
-      <td>&lt;line-width>
-      <td>medium
-      <td>multicol containers
-      <td>no
-      <td>N/A
-      <td>by computed value type
-      <td>per grammar
-      <td>absolute length, snapped as a border width
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-column-span" id="ref-for-propdef-column-span①⑦">column-span</a>
       <td>none | &lt;integer [1,∞]> | all | auto
@@ -4440,38 +4188,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <summary><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></summary>
    <div class="feature">
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-color" title="The column-rule-color CSS property sets the color of the line drawn between columns in a multi-column layout.">column-rule-color</a></p>
-    <p class="all-engines-text">In all current engines.</p>
-    <div class="support">
-     <span class="firefox yes"><span>Firefox</span><span>52+</span></span><span class="safari yes"><span>Safari</span><span>9+</span></span><span class="chrome yes"><span>Chrome</span><span>50+</span></span>
-     <hr>
-     <span class="opera yes"><span>Opera</span><span>11.1+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
-     <hr>
-     <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>10+</span></span>
-     <hr>
-     <span class="firefox_android yes"><span>Firefox for Android</span><span>52+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>9+</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android yes"><span>Android WebView</span><span>50+</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>11.1+</span></span>
-    </div>
-   </div>
-  </details>
-  <details class="mdn-anno unpositioned" data-anno-for="crs">
-   <summary><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></summary>
-   <div class="feature">
-    <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-style" title="The column-rule-style CSS property sets the style of the line drawn between columns in a multi-column layout.">column-rule-style</a></p>
-    <p class="all-engines-text">In all current engines.</p>
-    <div class="support">
-     <span class="firefox yes"><span>Firefox</span><span>52+</span></span><span class="safari yes"><span>Safari</span><span>9+</span></span><span class="chrome yes"><span>Chrome</span><span>50+</span></span>
-     <hr>
-     <span class="opera yes"><span>Opera</span><span>11.1+</span></span><span class="edge_blink yes"><span>Edge</span><span>79+</span></span>
-     <hr>
-     <span class="edge yes"><span>Edge (Legacy)</span><span>12+</span></span><span class="ie yes"><span>IE</span><span>10+</span></span>
-     <hr>
-     <span class="firefox_android yes"><span>Firefox for Android</span><span>52+</span></span><span class="safari_ios yes"><span>iOS Safari</span><span>9+</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="webview_android yes"><span>Android WebView</span><span>50+</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="opera_android yes"><span>Opera Mobile</span><span>11.1+</span></span>
-    </div>
-   </div>
-  </details>
-  <details class="mdn-anno unpositioned" data-anno-for="crw">
-   <summary><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></summary>
-   <div class="feature">
-    <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-width" title="The column-rule-width CSS property sets the width of the line drawn between columns in a multi-column layout.">column-rule-width</a></p>
     <p class="all-engines-text">In all current engines.</p>
     <div class="support">
      <span class="firefox yes"><span>Firefox</span><span>52+</span></span><span class="safari yes"><span>Safari</span><span>9+</span></span><span class="chrome yes"><span>Chrome</span><span>50+</span></span>
@@ -4763,6 +4479,7 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
+"01d9d724": {"dfnID":"01d9d724","dfnText":"row-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-row-rule"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule"},
 "024acc43": {"dfnID":"024acc43","dfnText":"scroll-snap-align","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-snap-align"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-snap-align"},
 "07cc8d20": {"dfnID":"07cc8d20","dfnText":"column-gap","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-gap"},{"id":"ref-for-propdef-column-gap\u2460"},{"id":"ref-for-propdef-column-gap\u2461"}],"title":"5.1. Gutters Between Columns: the column-gap property"},{"refs":[{"id":"ref-for-propdef-column-gap\u2462"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-align-3/#propdef-column-gap"},
 "08011fc6": {"dfnID":"08011fc6","dfnText":"scroll-margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-margin"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin"},
@@ -4770,24 +4487,25 @@ let dfnPanelData = {
 "0bc73d68": {"dfnID":"0bc73d68","dfnText":"formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-formatting-context"},{"id":"ref-for-formatting-context\u2460"},{"id":"ref-for-formatting-context\u2461"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-display-4/#formatting-context"},
 "1044d688": {"dfnID":"1044d688","dfnText":"grid item","external":true,"refSections":[{"refs":[{"id":"ref-for-grid-item"}],"title":"1. \nIntroduction"}],"url":"https://drafts.csswg.org/css-grid-2/#grid-item"},
 "11ee6625": {"dfnID":"11ee6625","dfnText":"available space","external":true,"refSections":[{"refs":[{"id":"ref-for-available"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-sizing-3/#available"},
-"1548047a": {"dfnID":"1548047a","dfnText":"<color>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-color"},{"id":"ref-for-typedef-color\u2460"}],"title":"5.3. The Color of Column Rules: the\ncolumn-rule-color property"}],"url":"https://drafts.csswg.org/css-color-5/#typedef-color"},
+"22e41651": {"dfnID":"22e41651","dfnText":"row-rule-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-row-rule-width"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-width"},
 "2589df91": {"dfnID":"2589df91","dfnText":"orphans","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-orphans"}],"title":"8. \nFilling Columns"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-orphans"},
 "358fd6ff": {"dfnID":"358fd6ff","dfnText":"CSS-wide keywords","external":true,"refSections":[{"refs":[{"id":"ref-for-css-wide-keywords"}],"title":"1.1. \nValue Definitions"}],"url":"https://drafts.csswg.org/css-values-4/#css-wide-keywords"},
 "40060954": {"dfnID":"40060954","dfnText":"fragmentation container","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-container"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-container"},
 "43667deb": {"dfnID":"43667deb","dfnText":"inline axis","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-axis"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-axis"},
 "43b15e47": {"dfnID":"43b15e47","dfnText":"anonymous box","external":true,"refSections":[{"refs":[{"id":"ref-for-anonymous"},{"id":"ref-for-anonymous\u2460"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-display-4/#anonymous"},
 "46c6a718": {"dfnID":"46c6a718","dfnText":"content box","external":true,"refSections":[{"refs":[{"id":"ref-for-content-box"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-box-4/#content-box"},
-"4a142214": {"dfnID":"4a142214","dfnText":"snap as a border width","external":true,"refSections":[{"refs":[{"id":"ref-for-snap-a-length-as-a-border-width"}],"title":"5.5. The Width Of Column Rules: the column-rule-width property"}],"url":"https://drafts.csswg.org/css-values-4/#snap-a-length-as-a-border-width"},
 "537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
-"55617484": {"dfnID":"55617484","dfnText":"none","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-line-style-none"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"},{"refs":[{"id":"ref-for-valdef-line-style-none\u2460"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-none"},
+"55617484": {"dfnID":"55617484","dfnText":"none","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-line-style-none"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-none"},
+"577d2293": {"dfnID":"577d2293","dfnText":"row-rule-style","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-row-rule-style"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-style"},
 "58157ca0": {"dfnID":"58157ca0","dfnText":"containing block chain","external":true,"refSections":[{"refs":[{"id":"ref-for-containing-block-chain"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-display-4/#containing-block-chain"},
 "5a8907c4": {"dfnID":"5a8907c4","dfnText":"::scroll-marker","external":true,"refSections":[{"refs":[{"id":"ref-for-selectordef-scroll-marker"},{"id":"ref-for-selectordef-scroll-marker\u2460"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-overflow-5/#selectordef-scroll-marker"},
+"60b68786": {"dfnID":"60b68786","dfnText":"row-rule-color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-row-rule-color"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-color"},
 "68019d7a": {"dfnID":"68019d7a","dfnText":"height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-height"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-propdef-height\u2460"}],"title":"9.2. \nPagination and Overflow Outside Multicol Containers"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-height"},
 "6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-comb-one\u2460"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-comb-one\u2461"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"}],"title":"4.4. The overflow direction: the column-wrap property"},{"refs":[{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"}],"title":"7.1. \ncolumn-span"},{"refs":[{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"}],"title":"8.1. Column Balancing: the column-fill property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "6fad7548": {"dfnID":"6fad7548","dfnText":"row-gap","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-row-gap"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-propdef-row-gap\u2460"},{"id":"ref-for-propdef-row-gap\u2461"},{"id":"ref-for-propdef-row-gap\u2462"}],"title":"5.2. Gutters Between Rows: the row-gap property"}],"url":"https://drafts.csswg.org/css-align-3/#propdef-row-gap"},
 "70c9f859": {"dfnID":"70c9f859","dfnText":"<integer>","external":true,"refSections":[{"refs":[{"id":"ref-for-integer-value"},{"id":"ref-for-integer-value\u2460"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-integer-value\u2461"}],"title":"7. \nSpanning columns"},{"refs":[{"id":"ref-for-integer-value\u2462"},{"id":"ref-for-integer-value\u2463"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-values-4/#integer-value"},
 "758665a5": {"dfnID":"758665a5","dfnText":"paged media","external":true,"refSections":[{"refs":[{"id":"ref-for-paged-media"}],"title":"4.6. The Pseudo-algorithm"},{"refs":[{"id":"ref-for-paged-media\u2460"}],"title":"7.1. \ncolumn-span"},{"refs":[{"id":"ref-for-paged-media\u2461"}],"title":"9.2. \nPagination and Overflow Outside Multicol Containers"}],"url":"https://drafts.csswg.org/mediaqueries-5/#paged-media"},
-"7594868a": {"dfnID":"7594868a","dfnText":"hidden","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-line-style-hidden"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"},{"refs":[{"id":"ref-for-valdef-line-style-hidden\u2460"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-hidden"},
+"7594868a": {"dfnID":"7594868a","dfnText":"hidden","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-line-style-hidden"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-hidden"},
 "7ba1e996": {"dfnID":"7ba1e996","dfnText":"out-of-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-out-of-flow"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-out-of-flow\u2460"},{"id":"ref-for-out-of-flow\u2461"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-display-4/#out-of-flow"},
 "80eb9508": {"dfnID":"80eb9508","dfnText":"principal box","external":true,"refSections":[{"refs":[{"id":"ref-for-principal-box"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-display-4/#principal-box"},
 "8141cabb": {"dfnID":"8141cabb","dfnText":"independent formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-independent-formatting-context"},{"id":"ref-for-independent-formatting-context\u2460"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-independent-formatting-context\u2461"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-display-4/#independent-formatting-context"},
@@ -4796,10 +4514,9 @@ let dfnPanelData = {
 "86928bde": {"dfnID":"86928bde","dfnText":"overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow"}],"title":"9.2. \nPagination and Overflow Outside Multicol Containers"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
 "88643fe0": {"dfnID":"88643fe0","dfnText":"width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-width"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-width"},
 "887c0c5c": {"dfnID":"887c0c5c","dfnText":"inline base direction","external":true,"refSections":[{"refs":[{"id":"ref-for-inline-base-direction"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#inline-base-direction"},
-"8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"},{"refs":[{"id":"ref-for-comb-any\u2460"},{"id":"ref-for-comb-any\u2461"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
+"8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
 "94972927": {"dfnID":"94972927","dfnText":"scroll-snap-stop","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-snap-stop"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-snap-stop"},
 "9522389e": {"dfnID":"9522389e","dfnText":"break-inside","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-break-inside"}],"title":"6. \nColumn Breaks"},{"refs":[{"id":"ref-for-propdef-break-inside\u2460"},{"id":"ref-for-propdef-break-inside\u2461"}],"title":"6.1. Controlling Fragmentation: the break-before, break-after, break-inside properties"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-break-inside"},
-"957ec3c1": {"dfnID":"957ec3c1","dfnText":"<line-style>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-line-style"},{"id":"ref-for-typedef-line-style\u2460"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-style"},
 "994d0e36": {"dfnID":"994d0e36","dfnText":"table wrapper box","external":true,"refSections":[{"refs":[{"id":"ref-for-table-wrapper-box"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-table-wrapper-box\u2460"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-table-wrapper-box\u2461"}],"title":"4.3. The Number of Columns: the column-count property"}],"url":"https://drafts.csswg.org/css-tables-3/#table-wrapper-box"},
 "99cabd32": {"dfnID":"99cabd32","dfnText":"in-flow","external":true,"refSections":[{"refs":[{"id":"ref-for-in-flow"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-display-4/#in-flow"},
 "9bdefa58": {"dfnID":"9bdefa58","dfnText":"fragment","external":true,"refSections":[{"refs":[{"id":"ref-for-fragment"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-fragment\u2460"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-break-4/#fragment"},
@@ -4807,19 +4524,21 @@ let dfnPanelData = {
 "9f3d4f17": {"dfnID":"9f3d4f17","dfnText":"block container","external":true,"refSections":[{"refs":[{"id":"ref-for-block-container"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-block-container\u2460"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-block-container\u2461"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-block-container\u2462"}],"title":"4.3. The Number of Columns: the column-count property"}],"url":"https://drafts.csswg.org/css-display-4/#block-container"},
 "a270c80d": {"dfnID":"a270c80d","dfnText":"fragmentation context","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation-context"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation-context"},
 "a46ac4e1": {"dfnID":"a46ac4e1","dfnText":"out of flow","external":true,"refSections":[{"refs":[{"id":"ref-for-out-of-flow"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-out-of-flow\u2460"},{"id":"ref-for-out-of-flow\u2461"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-display-4/#out-of-flow"},
-"a9734ee4": {"dfnID":"a9734ee4","dfnText":"border","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border"},{"id":"ref-for-propdef-border\u2460"}],"title":"1. \nIntroduction"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border"},
+"a8620b3d": {"dfnID":"a8620b3d","dfnText":"column-rule","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule"},
 "b6730ce5": {"dfnID":"b6730ce5","dfnText":"widows","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-widows"}],"title":"8. \nFilling Columns"}],"url":"https://drafts.csswg.org/css-break-4/#propdef-widows"},
 "b8a0ba74": {"dfnID":"b8a0ba74","dfnText":"position","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-position"},{"id":"ref-for-propdef-position\u2460"},{"id":"ref-for-propdef-position\u2461"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-position-3/#propdef-position"},
 "bb9778e3": {"dfnID":"bb9778e3","dfnText":"fragmentation","external":true,"refSections":[{"refs":[{"id":"ref-for-fragmentation"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-break-4/#fragmentation"},
 "c1654d36": {"dfnID":"c1654d36","dfnText":"break-before","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-break-before"}],"title":"6. \nColumn Breaks"},{"refs":[{"id":"ref-for-propdef-break-before\u2460"},{"id":"ref-for-propdef-break-before\u2461"}],"title":"6.1. Controlling Fragmentation: the break-before, break-after, break-inside properties"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-break-before"},
 "ca960d4f": {"dfnID":"ca960d4f","dfnText":"block formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-block-formatting-context"},{"id":"ref-for-block-formatting-context\u2460"},{"id":"ref-for-block-formatting-context\u2461"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-block-formatting-context\u2462"},{"id":"ref-for-block-formatting-context\u2463"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-display-4/#block-formatting-context"},
-"ceaa27cc": {"dfnID":"ceaa27cc","dfnText":"<line-width>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-line-width"}],"title":"5.5. The Width Of Column Rules: the column-rule-width property"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-width"},
 "column-box": {"dfnID":"column-box","dfnText":"column boxes","external":false,"refSections":[{"refs":[{"id":"ref-for-column-box"},{"id":"ref-for-column-box\u2460"},{"id":"ref-for-column-box\u2461"},{"id":"ref-for-column-box\u2462"},{"id":"ref-for-column-box\u2463"},{"id":"ref-for-column-box\u2464"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-column-box\u2465"}],"title":"7.1. \ncolumn-span"},{"refs":[{"id":"ref-for-column-box\u2466"}],"title":"9.1. \nOverflow Inside Multicol Containers"}],"url":"#column-box"},
-"column-gap": {"dfnID":"column-gap","dfnText":"column gap","external":false,"refSections":[{"refs":[{"id":"ref-for-column-gap"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-column-gap\u2460"}],"title":"5. Column Gaps and Rules"},{"refs":[{"id":"ref-for-column-gap\u2461"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"#column-gap"},
+"column-gap": {"dfnID":"column-gap","dfnText":"column gap","external":false,"refSections":[{"refs":[{"id":"ref-for-column-gap"}],"title":"1. \nIntroduction"}],"url":"#column-gap"},
 "column-height": {"dfnID":"column-height","dfnText":"column height","external":false,"refSections":[],"url":"#column-height"},
-"column-rule": {"dfnID":"column-rule","dfnText":"column rule","external":false,"refSections":[{"refs":[{"id":"ref-for-column-rule"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-column-rule\u2460"},{"id":"ref-for-column-rule\u2461"},{"id":"ref-for-column-rule\u2462"}],"title":"5. Column Gaps and Rules"},{"refs":[{"id":"ref-for-column-rule\u2463"}],"title":"5.3. The Color of Column Rules: the\ncolumn-rule-color property"},{"refs":[{"id":"ref-for-column-rule\u2464"}],"title":"5.6. Column Rule Shorthand: the column-rule property"},{"refs":[{"id":"ref-for-column-rule\u2465"}],"title":"7.1. \ncolumn-span"}],"url":"#column-rule"},
+"column-rule": {"dfnID":"column-rule","dfnText":"column rule","external":false,"refSections":[{"refs":[{"id":"ref-for-column-rule"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-column-rule\u2460"}],"title":"7.1. \ncolumn-span"}],"url":"#column-rule"},
 "column-width": {"dfnID":"column-width","dfnText":"column width","external":false,"refSections":[],"url":"#column-width"},
 "d0e23e1f": {"dfnID":"d0e23e1f","dfnText":"outer size","external":true,"refSections":[{"refs":[{"id":"ref-for-outer-size"},{"id":"ref-for-outer-size\u2460"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-sizing-3/#outer-size"},
+"da1de473": {"dfnID":"da1de473","dfnText":"column-rule-color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-color"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-color"},
+"df0e018a": {"dfnID":"df0e018a","dfnText":"column-rule-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-width"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"},{"refs":[{"id":"ref-for-propdef-column-rule-width\u2460"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-width"},
+"e12bd6bc": {"dfnID":"e12bd6bc","dfnText":"column-rule-style","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-style"}],"title":"5.3. The Color, Width, and Style of Column Rules: the\ngap decoration properties"},{"refs":[{"id":"ref-for-propdef-column-rule-style\u2460"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-style"},
 "e1ab41b7": {"dfnID":"e1ab41b7","dfnText":"block axis","external":true,"refSections":[{"refs":[{"id":"ref-for-block-axis"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-block-axis\u2460"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-axis"},
 "e2e08d07": {"dfnID":"e2e08d07","dfnText":"transform","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-transform"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-transforms-1/#propdef-transform"},
 "e66d392c": {"dfnID":"e66d392c","dfnText":"min-content","external":true,"refSections":[{"refs":[{"id":"ref-for-min-content"},{"id":"ref-for-min-content\u2460"}],"title":"7.1. \ncolumn-span"}],"url":"https://drafts.csswg.org/css-sizing-3/#min-content"},
@@ -4830,7 +4549,7 @@ let dfnPanelData = {
 "f0f00e3a": {"dfnID":"f0f00e3a","dfnText":"normal","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-row-gap-normal"}],"title":"5.1. Gutters Between Columns: the column-gap property"},{"refs":[{"id":"ref-for-valdef-row-gap-normal\u2460"}],"title":"5.2. Gutters Between Rows: the row-gap property"}],"url":"https://drafts.csswg.org/css-align-3/#valdef-row-gap-normal"},
 "fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-length-value\u2461"},{"id":"ref-for-length-value\u2462"}],"title":"4.2. The Block Size of Columns: the column-height property"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "fd9aa8f7": {"dfnID":"fd9aa8f7","dfnText":"block-level box","external":true,"refSections":[{"refs":[{"id":"ref-for-block-level-box"},{"id":"ref-for-block-level-box\u2460"}],"title":"3. \nThe multi-column model"}],"url":"https://drafts.csswg.org/css-display-4/#block-level-box"},
-"multi-column-container": {"dfnID":"multi-column-container","dfnText":"multi-column container","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"},{"id":"ref-for-multi-column-container\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-multi-column-container\u2461"},{"id":"ref-for-multi-column-container\u2462"},{"id":"ref-for-multi-column-container\u2463"},{"id":"ref-for-multi-column-container\u2464"},{"id":"ref-for-multi-column-container\u2465"},{"id":"ref-for-multi-column-container\u2466"},{"id":"ref-for-multi-column-container\u2467"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-container\u2468"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u24ea"},{"id":"ref-for-multi-column-container\u2460\u2460"},{"id":"ref-for-multi-column-container\u2460\u2461"},{"id":"ref-for-multi-column-container\u2460\u2462"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u2463"},{"id":"ref-for-multi-column-container\u2460\u2464"},{"id":"ref-for-multi-column-container\u2460\u2465"},{"id":"ref-for-multi-column-container\u2460\u2466"},{"id":"ref-for-multi-column-container\u2460\u2467"},{"id":"ref-for-multi-column-container\u2460\u2468"}],"title":"5. Column Gaps and Rules"},{"refs":[{"id":"ref-for-multi-column-container\u2461\u24ea"},{"id":"ref-for-multi-column-container\u2461\u2460"},{"id":"ref-for-multi-column-container\u2461\u2461"},{"id":"ref-for-multi-column-container\u2461\u2462"},{"id":"ref-for-multi-column-container\u2461\u2463"},{"id":"ref-for-multi-column-container\u2461\u2464"}],"title":"7.1. \ncolumn-span"}],"url":"#multi-column-container"},
+"multi-column-container": {"dfnID":"multi-column-container","dfnText":"multi-column container","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-container"},{"id":"ref-for-multi-column-container\u2460"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-multi-column-container\u2461"},{"id":"ref-for-multi-column-container\u2462"},{"id":"ref-for-multi-column-container\u2463"},{"id":"ref-for-multi-column-container\u2464"},{"id":"ref-for-multi-column-container\u2465"},{"id":"ref-for-multi-column-container\u2466"},{"id":"ref-for-multi-column-container\u2467"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-container\u2468"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u24ea"},{"id":"ref-for-multi-column-container\u2460\u2460"},{"id":"ref-for-multi-column-container\u2460\u2461"},{"id":"ref-for-multi-column-container\u2460\u2462"}],"title":"4.8. \nStyling Columns: the ::column pseudo-element"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u2463"},{"id":"ref-for-multi-column-container\u2460\u2464"}],"title":"5. Column Gaps and Rules"},{"refs":[{"id":"ref-for-multi-column-container\u2460\u2465"},{"id":"ref-for-multi-column-container\u2460\u2466"},{"id":"ref-for-multi-column-container\u2460\u2467"},{"id":"ref-for-multi-column-container\u2460\u2468"},{"id":"ref-for-multi-column-container\u2461\u24ea"},{"id":"ref-for-multi-column-container\u2461\u2460"}],"title":"7.1. \ncolumn-span"}],"url":"#multi-column-container"},
 "multi-column-formatting-context": {"dfnID":"multi-column-formatting-context","dfnText":"multi-column formatting context","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-formatting-context"}],"title":"5.1. Gutters Between Columns: the column-gap property"},{"refs":[{"id":"ref-for-multi-column-formatting-context\u2460"}],"title":"5.2. Gutters Between Rows: the row-gap property"}],"url":"#multi-column-formatting-context"},
 "multi-column-layout": {"dfnID":"multi-column-layout","dfnText":"multi-column layout","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-layout"}],"title":"3. \nThe multi-column model"}],"url":"#multi-column-layout"},
 "multi-column-line": {"dfnID":"multi-column-line","dfnText":"multicol line","external":false,"refSections":[{"refs":[{"id":"ref-for-multi-column-line"},{"id":"ref-for-multi-column-line\u2460"},{"id":"ref-for-multi-column-line\u2461"},{"id":"ref-for-multi-column-line\u2462"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-multi-column-line\u2463"},{"id":"ref-for-multi-column-line\u2464"},{"id":"ref-for-multi-column-line\u2465"},{"id":"ref-for-multi-column-line\u2466"}],"title":"7.1. \ncolumn-span"},{"refs":[{"id":"ref-for-multi-column-line\u2467"}],"title":"8.1. Column Balancing: the column-fill property"}],"url":"#multi-column-line"},
@@ -4840,11 +4559,7 @@ let dfnPanelData = {
 "overflow-columns": {"dfnID":"overflow-columns","dfnText":"overflow columns","external":false,"refSections":[],"url":"#overflow-columns"},
 "propdef-column-count": {"dfnID":"propdef-column-count","dfnText":"column-count","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-count"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-count\u2460"},{"id":"ref-for-propdef-column-count\u2461"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-column-count\u2462"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-propdef-column-count\u2463"},{"id":"ref-for-propdef-column-count\u2464"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-propdef-column-count\u2465"},{"id":"ref-for-propdef-column-count\u2466"},{"id":"ref-for-propdef-column-count\u2467"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"},{"refs":[{"id":"ref-for-propdef-column-count\u2468"},{"id":"ref-for-propdef-column-count\u2460\u24ea"},{"id":"ref-for-propdef-column-count\u2460\u2460"}],"title":"4.6. The Pseudo-algorithm"}],"url":"#propdef-column-count"},
 "propdef-column-fill": {"dfnID":"propdef-column-fill","dfnText":"column-fill","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-fill"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-column-fill\u2460"}],"title":"8.1. Column Balancing: the column-fill property"}],"url":"#propdef-column-fill"},
-"propdef-column-height": {"dfnID":"propdef-column-height","dfnText":"column-height","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-height"},{"id":"ref-for-propdef-column-height\u2460"},{"id":"ref-for-propdef-column-height\u2461"},{"id":"ref-for-propdef-column-height\u2462"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-height\u2463"},{"id":"ref-for-propdef-column-height\u2464"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-column-height\u2465"},{"id":"ref-for-propdef-column-height\u2466"},{"id":"ref-for-propdef-column-height\u2467"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-propdef-column-height\u2468"},{"id":"ref-for-propdef-column-height\u2460\u24ea"},{"id":"ref-for-propdef-column-height\u2460\u2460"}],"title":"4.4. The overflow direction: the column-wrap property"},{"refs":[{"id":"ref-for-propdef-column-height\u2460\u2461"},{"id":"ref-for-propdef-column-height\u2460\u2462"},{"id":"ref-for-propdef-column-height\u2460\u2463"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"},{"refs":[{"id":"ref-for-propdef-column-height\u2460\u2464"}],"title":"Changes from the Candidate Recommendation (CR) of CSS-MULTICOL-1 of 16 May 2024"}],"url":"#propdef-column-height"},
-"propdef-column-rule": {"dfnID":"propdef-column-rule","dfnText":"column-rule","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule"},{"id":"ref-for-propdef-column-rule\u2460"},{"id":"ref-for-propdef-column-rule\u2461"},{"id":"ref-for-propdef-column-rule\u2462"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-column-rule\u2463"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"#propdef-column-rule"},
-"propdef-column-rule-color": {"dfnID":"propdef-column-rule-color","dfnText":"column-rule-color","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-color"}],"title":"5.3. The Color of Column Rules: the\ncolumn-rule-color property"},{"refs":[{"id":"ref-for-propdef-column-rule-color\u2460"},{"id":"ref-for-propdef-column-rule-color\u2461"}],"title":"5.6. Column Rule Shorthand: the column-rule property"}],"url":"#propdef-column-rule-color"},
-"propdef-column-rule-style": {"dfnID":"propdef-column-rule-style","dfnText":"column-rule-style","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-style"},{"id":"ref-for-propdef-column-rule-style\u2460"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"},{"refs":[{"id":"ref-for-propdef-column-rule-style\u2461"},{"id":"ref-for-propdef-column-rule-style\u2462"}],"title":"5.6. Column Rule Shorthand: the column-rule property"},{"refs":[{"id":"ref-for-propdef-column-rule-style\u2463"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"#propdef-column-rule-style"},
-"propdef-column-rule-width": {"dfnID":"propdef-column-rule-width","dfnText":"column-rule-width","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-rule-width"}],"title":"5.4. The Style Of Column Rules: the column-rule-style property"},{"refs":[{"id":"ref-for-propdef-column-rule-width\u2460"}],"title":"5.5. The Width Of Column Rules: the column-rule-width property"},{"refs":[{"id":"ref-for-propdef-column-rule-width\u2461"},{"id":"ref-for-propdef-column-rule-width\u2462"}],"title":"5.6. Column Rule Shorthand: the column-rule property"},{"refs":[{"id":"ref-for-propdef-column-rule-width\u2463"}],"title":"Changes from the First Public Working Draft of 19 December 2024"}],"url":"#propdef-column-rule-width"},
+"propdef-column-height": {"dfnID":"propdef-column-height","dfnText":"column-height","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-height"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-column-height\u2460"},{"id":"ref-for-propdef-column-height\u2461"},{"id":"ref-for-propdef-column-height\u2462"},{"id":"ref-for-propdef-column-height\u2463"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-height\u2464"},{"id":"ref-for-propdef-column-height\u2465"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-column-height\u2466"},{"id":"ref-for-propdef-column-height\u2467"},{"id":"ref-for-propdef-column-height\u2468"}],"title":"4.2. The Block Size of Columns: the column-height property"},{"refs":[{"id":"ref-for-propdef-column-height\u2460\u24ea"},{"id":"ref-for-propdef-column-height\u2460\u2460"},{"id":"ref-for-propdef-column-height\u2460\u2461"}],"title":"4.4. The overflow direction: the column-wrap property"},{"refs":[{"id":"ref-for-propdef-column-height\u2460\u2462"},{"id":"ref-for-propdef-column-height\u2460\u2463"},{"id":"ref-for-propdef-column-height\u2460\u2464"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"},{"refs":[{"id":"ref-for-propdef-column-height\u2460\u2465"}],"title":"Changes from the Candidate Recommendation (CR) of CSS-MULTICOL-1 of 16 May 2024"}],"url":"#propdef-column-height"},
 "propdef-column-span": {"dfnID":"propdef-column-span","dfnText":"column-span","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-span"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-propdef-column-span\u2460"}],"title":"7. \nSpanning columns"},{"refs":[{"id":"ref-for-propdef-column-span\u2461"},{"id":"ref-for-propdef-column-span\u2462"},{"id":"ref-for-propdef-column-span\u2463"},{"id":"ref-for-propdef-column-span\u2464"},{"id":"ref-for-propdef-column-span\u2465"},{"id":"ref-for-propdef-column-span\u2466"},{"id":"ref-for-propdef-column-span\u2467"},{"id":"ref-for-propdef-column-span\u2468"},{"id":"ref-for-propdef-column-span\u2460\u24ea"},{"id":"ref-for-propdef-column-span\u2460\u2460"},{"id":"ref-for-propdef-column-span\u2460\u2461"},{"id":"ref-for-propdef-column-span\u2460\u2462"},{"id":"ref-for-propdef-column-span\u2460\u2463"},{"id":"ref-for-propdef-column-span\u2460\u2464"},{"id":"ref-for-propdef-column-span\u2460\u2465"}],"title":"7.1. \ncolumn-span"}],"url":"#propdef-column-span"},
 "propdef-column-width": {"dfnID":"propdef-column-width","dfnText":"column-width","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-width"},{"id":"ref-for-propdef-column-width\u2460"}],"title":"3. \nThe multi-column model"},{"refs":[{"id":"ref-for-propdef-column-width\u2461"},{"id":"ref-for-propdef-column-width\u2462"}],"title":"4. \nThe number and size of columns"},{"refs":[{"id":"ref-for-propdef-column-width\u2463"},{"id":"ref-for-propdef-column-width\u2464"},{"id":"ref-for-propdef-column-width\u2465"}],"title":"4.1. The Inline Size of Columns: the column-width property"},{"refs":[{"id":"ref-for-propdef-column-width\u2466"},{"id":"ref-for-propdef-column-width\u2467"}],"title":"4.3. The Number of Columns: the column-count property"},{"refs":[{"id":"ref-for-propdef-column-width\u2468"},{"id":"ref-for-propdef-column-width\u2460\u24ea"},{"id":"ref-for-propdef-column-width\u2460\u2460"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"},{"refs":[{"id":"ref-for-propdef-column-width\u2460\u2461"},{"id":"ref-for-propdef-column-width\u2460\u2462"}],"title":"4.6. The Pseudo-algorithm"},{"refs":[{"id":"ref-for-propdef-column-width\u2460\u2463"},{"id":"ref-for-propdef-column-width\u2460\u2464"}],"title":"7.1. \ncolumn-span"}],"url":"#propdef-column-width"},
 "propdef-column-wrap": {"dfnID":"propdef-column-wrap","dfnText":"column-wrap","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-column-wrap"},{"id":"ref-for-propdef-column-wrap\u2460"}],"title":"4.4. The overflow direction: the column-wrap property"},{"refs":[{"id":"ref-for-propdef-column-wrap\u2461"}],"title":"4.5. The column-width, column-count, and column-height Shorthand: The columns Property"}],"url":"#propdef-column-wrap"},
@@ -4859,7 +4574,6 @@ let dfnPanelData = {
 "valdef-column-fill-balance-all": {"dfnID":"valdef-column-fill-balance-all","dfnText":"balance-all","external":false,"refSections":[],"url":"#valdef-column-fill-balance-all"},
 "valdef-column-height-auto": {"dfnID":"valdef-column-height-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-column-height-auto"}],"title":"4.2. The Block Size of Columns: the column-height property"}],"url":"#valdef-column-height-auto"},
 "valdef-column-height-length-0": {"dfnID":"valdef-column-height-length-0","dfnText":"<length [0,\u221e]>","external":false,"refSections":[],"url":"#valdef-column-height-length-0"},
-"valdef-column-rule-color-color": {"dfnID":"valdef-column-rule-color-color","dfnText":"<color>","external":false,"refSections":[],"url":"#valdef-column-rule-color-color"},
 "valdef-column-span-all": {"dfnID":"valdef-column-span-all","dfnText":"all","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-column-span-all"},{"id":"ref-for-valdef-column-span-all\u2460"},{"id":"ref-for-valdef-column-span-all\u2461"}],"title":"7.1. \ncolumn-span"}],"url":"#valdef-column-span-all"},
 "valdef-column-span-auto": {"dfnID":"valdef-column-span-auto","dfnText":"auto","external":false,"refSections":[],"url":"#valdef-column-span-auto"},
 "valdef-column-span-integer-1": {"dfnID":"valdef-column-span-integer-1","dfnText":"<integer [1,\u221e]>","external":false,"refSections":[],"url":"#valdef-column-span-integer-1"},
@@ -5257,9 +4971,6 @@ function genLinkingSyntaxes(dfn) {
 "use strict";
 {
 let linkTitleData = {
-"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-style": "Expands to: dashed | dotted | double | groove | hidden | inset | none | outset | ridge | solid",
-"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-width": "Expands to: medium | thick | thin",
-"https://drafts.csswg.org/css-color-5/#typedef-color": "Expands to: <alpha-value> | aliceblue | antiquewhite | aqua | aquamarine | azure | beige | bisque | black | blanchedalmond | blue | blueviolet | brown | burlywood | cadetblue | chartreuse | chocolate | coral | cornflowerblue | cornsilk | crimson | currentcolor | cyan | darkblue | darkcyan | darkgoldenrod | darkgray | darkgreen | darkgrey | darkkhaki | darkmagenta | darkolivegreen | darkorange | darkorchid | darkred | darksalmon | darkseagreen | darkslateblue | darkslategray | darkslategrey | darkturquoise | darkviolet | deeppink | deepskyblue | dimgray | dimgrey | dodgerblue | firebrick | floralwhite | forestgreen | fuchsia | gainsboro | ghostwhite | gold | goldenrod | gray | green | greenyellow | grey | honeydew | hotpink | indianred | indigo | ivory | khaki | lavender | lavenderblush | lawngreen | lemonchiffon | lightblue | lightcoral | lightcyan | lightgoldenrodyellow | lightgray | lightgreen | lightgrey | lightpink | lightsalmon | lightseagreen | lightskyblue | lightslategray | lightslategrey | lightsteelblue | lightyellow | lime | limegreen | linen | magenta | maroon | mediumaquamarine | mediumblue | mediumorchid | mediumpurple | mediumseagreen | mediumslateblue | mediumspringgreen | mediumturquoise | mediumvioletred | midnightblue | mintcream | mistyrose | moccasin | navajowhite | navy | none | oldlace | olive | olivedrab | orange | orangered | orchid | palegoldenrod | palegreen | paleturquoise | palevioletred | papayawhip | peachpuff | peru | pink | plum | powderblue | purple | rebeccapurple | red | rosybrown | royalblue | saddlebrown | salmon | sandybrown | seagreen | seashell | sienna | silver | skyblue | slateblue | slategray | slategrey | snow | springgreen | steelblue | tan | teal | thistle | tomato | transparent | turquoise | violet | wheat | white | whitesmoke | yellow | yellowgreen",
 "https://drafts.csswg.org/css-values-4/#length-value": "Expands to: advance measure | cap | ch | cm | dvb | dvh | dvi | dvmax | dvmin | dvw | em | ex | ic | in | lh | lvb | lvh | lvi | lvmax | lvmin | lvw | mm | pc | pt | px | rcap | rch | rem | rex | ric | rlh | svb | svh | svi | svmax | svmin | svw | vb | vh | vi | vmax | vmin | vw",
 };
 
@@ -5347,10 +5058,6 @@ let refsData = {
 "#propdef-column-count": {"displayText":"column-count","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-count","type":"property","url":"#propdef-column-count"},
 "#propdef-column-fill": {"displayText":"column-fill","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-fill","type":"property","url":"#propdef-column-fill"},
 "#propdef-column-height": {"displayText":"column-height","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-height","type":"property","url":"#propdef-column-height"},
-"#propdef-column-rule": {"displayText":"column-rule","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-rule","type":"property","url":"#propdef-column-rule"},
-"#propdef-column-rule-color": {"displayText":"column-rule-color","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-rule-color","type":"property","url":"#propdef-column-rule-color"},
-"#propdef-column-rule-style": {"displayText":"column-rule-style","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-rule-style","type":"property","url":"#propdef-column-rule-style"},
-"#propdef-column-rule-width": {"displayText":"column-rule-width","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-rule-width","type":"property","url":"#propdef-column-rule-width"},
 "#propdef-column-span": {"displayText":"column-span","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-span","type":"property","url":"#propdef-column-span"},
 "#propdef-column-width": {"displayText":"column-width","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-width","type":"property","url":"#propdef-column-width"},
 "#propdef-column-wrap": {"displayText":"column-wrap","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-multicol","spec":"css-multicol-2","status":"local","text":"column-wrap","type":"property","url":"#propdef-column-wrap"},
@@ -5363,9 +5070,6 @@ let refsData = {
 "https://drafts.csswg.org/css-align-3/#propdef-column-gap": {"displayText":"column-gap","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"column-gap","type":"property","url":"https://drafts.csswg.org/css-align-3/#propdef-column-gap"},
 "https://drafts.csswg.org/css-align-3/#propdef-row-gap": {"displayText":"row-gap","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"row-gap","type":"property","url":"https://drafts.csswg.org/css-align-3/#propdef-row-gap"},
 "https://drafts.csswg.org/css-align-3/#valdef-row-gap-normal": {"displayText":"normal","export":true,"for_":["row-gap","column-gap","gap"],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"normal","type":"value","url":"https://drafts.csswg.org/css-align-3/#valdef-row-gap-normal"},
-"https://drafts.csswg.org/css-backgrounds-3/#propdef-border": {"displayText":"border","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"border","type":"property","url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border"},
-"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-style": {"displayText":"<line-style>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"<line-style>","type":"type","url":"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-style"},
-"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-width": {"displayText":"<line-width>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"<line-width>","type":"type","url":"https://drafts.csswg.org/css-backgrounds-3/#typedef-line-width"},
 "https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-hidden": {"displayText":"hidden","export":true,"for_":["<line-style>","border-style","border-top-style","border-left-style","border-bottom-style","border-right-style","border"],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"hidden","type":"value","url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-hidden"},
 "https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-none": {"displayText":"none","export":true,"for_":["<line-style>","border-style","border-top-style","border-left-style","border-bottom-style","border-right-style","border"],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"none","type":"value","url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-none"},
 "https://drafts.csswg.org/css-box-4/#content-box": {"displayText":"content box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-box","spec":"css-box-4","status":"current","text":"content box","type":"dfn","url":"https://drafts.csswg.org/css-box-4/#content-box"},
@@ -5378,7 +5082,6 @@ let refsData = {
 "https://drafts.csswg.org/css-break-4/#fragmentation-container": {"displayText":"fragmentation container","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-break","spec":"css-break-4","status":"current","text":"fragmentation container","type":"dfn","url":"https://drafts.csswg.org/css-break-4/#fragmentation-container"},
 "https://drafts.csswg.org/css-break-4/#fragmentation-context": {"displayText":"fragmentation context","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-break","spec":"css-break-4","status":"current","text":"fragmentation context","type":"dfn","url":"https://drafts.csswg.org/css-break-4/#fragmentation-context"},
 "https://drafts.csswg.org/css-break-4/#propdef-widows": {"displayText":"widows","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-break","spec":"css-break-4","status":"current","text":"widows","type":"property","url":"https://drafts.csswg.org/css-break-4/#propdef-widows"},
-"https://drafts.csswg.org/css-color-5/#typedef-color": {"displayText":"<color>","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-color","spec":"css-color-5","status":"current","text":"<color>","type":"type","url":"https://drafts.csswg.org/css-color-5/#typedef-color"},
 "https://drafts.csswg.org/css-display-4/#anonymous": {"displayText":"anonymous box","export":true,"for_":["CSS"],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"anonymous box","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#anonymous"},
 "https://drafts.csswg.org/css-display-4/#block-container": {"displayText":"block container","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"block container","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#block-container"},
 "https://drafts.csswg.org/css-display-4/#block-formatting-context": {"displayText":"block formatting context","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"block formatting context","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#block-formatting-context"},
@@ -5391,6 +5094,14 @@ let refsData = {
 "https://drafts.csswg.org/css-display-4/#out-of-flow": {"displayText":"out-of-flow","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"out-of-flow","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#out-of-flow"},
 "https://drafts.csswg.org/css-display-4/#principal-box": {"displayText":"principal box","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"principal box","type":"dfn","url":"https://drafts.csswg.org/css-display-4/#principal-box"},
 "https://drafts.csswg.org/css-display-4/#propdef-display": {"displayText":"display","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"display","type":"property","url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule": {"displayText":"column-rule","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"column-rule","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-color": {"displayText":"column-rule-color","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"column-rule-color","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-color"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-style": {"displayText":"column-rule-style","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"column-rule-style","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-style"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-width": {"displayText":"column-rule-width","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"column-rule-width","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-column-rule-width"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule": {"displayText":"row-rule","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"row-rule","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-color": {"displayText":"row-rule-color","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"row-rule-color","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-color"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-style": {"displayText":"row-rule-style","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"row-rule-style","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-style"},
+"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-width": {"displayText":"row-rule-width","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-gaps","spec":"css-gaps-1","status":"current","text":"row-rule-width","type":"property","url":"https://drafts.csswg.org/css-gaps-1/#propdef-row-rule-width"},
 "https://drafts.csswg.org/css-grid-2/#grid-container": {"displayText":"grid container","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-grid","spec":"css-grid-2","status":"current","text":"grid container","type":"dfn","url":"https://drafts.csswg.org/css-grid-2/#grid-container"},
 "https://drafts.csswg.org/css-grid-2/#grid-item": {"displayText":"grid item","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-grid","spec":"css-grid-2","status":"current","text":"grid item","type":"dfn","url":"https://drafts.csswg.org/css-grid-2/#grid-item"},
 "https://drafts.csswg.org/css-overflow-3/#propdef-overflow": {"displayText":"overflow","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-overflow","spec":"css-overflow-3","status":"current","text":"overflow","type":"property","url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
@@ -5415,7 +5126,6 @@ let refsData = {
 "https://drafts.csswg.org/css-values-4/#integer-value": {"displayText":"<integer>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<integer>","type":"type","url":"https://drafts.csswg.org/css-values-4/#integer-value"},
 "https://drafts.csswg.org/css-values-4/#length-value": {"displayText":"<length>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<length>","type":"type","url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "https://drafts.csswg.org/css-values-4/#mult-opt": {"displayText":"?","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"?","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
-"https://drafts.csswg.org/css-values-4/#snap-a-length-as-a-border-width": {"displayText":"snap as a border width","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"snap as a border width","type":"dfn","url":"https://drafts.csswg.org/css-values-4/#snap-a-length-as-a-border-width"},
 "https://drafts.csswg.org/css-writing-modes-4/#block-axis": {"displayText":"block axis","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"block axis","type":"dfn","url":"https://drafts.csswg.org/css-writing-modes-4/#block-axis"},
 "https://drafts.csswg.org/css-writing-modes-4/#inline-axis": {"displayText":"inline axis","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"inline axis","type":"dfn","url":"https://drafts.csswg.org/css-writing-modes-4/#inline-axis"},
 "https://drafts.csswg.org/css-writing-modes-4/#inline-base-direction": {"displayText":"inline base direction","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-writing-modes","spec":"css-writing-modes-4","status":"current","text":"inline base direction","type":"dfn","url":"https://drafts.csswg.org/css-writing-modes-4/#inline-base-direction"},
