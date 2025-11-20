@@ -1,0 +1,2270 @@
+<!doctype html><html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title>CSS Route Matching</title>
+  <meta content="ED" name="w3c-status">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
+  <meta content="Bikeshed version 86e3be07a, updated Tue Nov 18 16:58:08 2025 +0000" name="generator">
+  <link href="https://drafts.csswg.org/css-navigation-1/" rel="canonical">
+  <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="607e8b375e8cb91a09c9d01833e3c1dd654a750e" name="revision">
+  <meta content="dark light" name="color-scheme">
+  <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
+<style>/* Boilerplate: style-autolinks */
+.css.css, .property.property, .descriptor.descriptor {
+    color: var(--a-normal-text);
+    font-size: inherit;
+    font-family: inherit;
+}
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
+}
+.css::after, .property::after, .descriptor::after {
+    content: "’";
+}
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
+[data-link-type="property"]::before,
+[data-link-type="propdesc"]::before,
+[data-link-type="descriptor"]::before,
+[data-link-type="value"]::before,
+[data-link-type="function"]::before,
+[data-link-type="at-rule"]::before,
+[data-link-type="selector"]::before,
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
+[data-link-type="property"]::after,
+[data-link-type="propdesc"]::after,
+[data-link-type="descriptor"]::after,
+[data-link-type="value"]::after,
+[data-link-type="function"]::after,
+[data-link-type="at-rule"]::after,
+[data-link-type="selector"]::after,
+[data-link-type="maybe"]::after {
+    content: "’";
+}
+
+[data-link-type].production::before,
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
+
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
+[data-link-type=element]::before { content: "<" }
+[data-link-type=element]::after  { content: ">" }
+
+[data-link-type=biblio] {
+    white-space: pre;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --selflink-text: black;
+        --selflink-bg: silver;
+        --selflink-hover-text: white;
+    }
+}
+</style>
+<style>/* Boilerplate: style-colors */
+/* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
+:root {
+    color-scheme: light dark;
+
+    --text: black;
+    --bg: white;
+
+    --unofficial-watermark: url(https://www.w3.org/StyleSheets/TR/2016/logos/UD-watermark);
+
+    --logo-bg: #1a5e9a;
+    --logo-active-bg: #c00;
+    --logo-text: white;
+
+    --tocnav-normal-text: #707070;
+    --tocnav-normal-bg: var(--bg);
+    --tocnav-hover-text: var(--tocnav-normal-text);
+    --tocnav-hover-bg: #f8f8f8;
+    --tocnav-active-text: #c00;
+    --tocnav-active-bg: var(--tocnav-normal-bg);
+
+    --tocsidebar-text: var(--text);
+    --tocsidebar-bg: #f7f8f9;
+    --tocsidebar-shadow: rgba(0,0,0,.1);
+    --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+    --toclink-text: var(--text);
+    --toclink-underline: #3980b5;
+    --toclink-visited-text: var(--toclink-text);
+    --toclink-visited-underline: #054572;
+
+    --heading-text: #005a9c;
+
+    --hr-text: var(--text);
+
+    --algo-border: #def;
+
+    --del-text: red;
+    --del-bg: transparent;
+    --ins-text: #080;
+    --ins-bg: transparent;
+
+    --a-normal-text: #034575;
+    --a-normal-underline: #bbb;
+    --a-visited-text: var(--a-normal-text);
+    --a-visited-underline: #707070;
+    --a-hover-bg: rgba(75%, 75%, 75%, .25);
+    --a-active-text: #c00;
+    --a-active-underline: #c00;
+
+    --blockquote-border: silver;
+    --blockquote-bg: transparent;
+    --blockquote-text: currentcolor;
+
+    --issue-border: #e05252;
+    --issue-bg: #fbe9e9;
+    --issue-text: var(--text);
+    --issueheading-text: #831616;
+
+    --example-border: #e0cb52;
+    --example-bg: #fcfaee;
+    --example-text: var(--text);
+    --exampleheading-text: #574b0f;
+
+    --note-border: #52e052;
+    --note-bg: #e9fbe9;
+    --note-text: var(--text);
+    --noteheading-text: hsl(120, 70%, 30%);
+    --notesummary-underline: silver;
+
+    --assertion-border: #aaa;
+    --assertion-bg: #eee;
+    --assertion-text: black;
+
+    --advisement-border: orange;
+    --advisement-bg: #fec;
+    --advisement-text: var(--text);
+    --advisementheading-text: #b35f00;
+
+    --warning-border: red;
+    --warning-bg: hsla(40,100%,50%,0.95);
+    --warning-text: var(--text);
+
+    --amendment-border: #330099;
+    --amendment-bg: #F5F0FF;
+    --amendment-text: var(--text);
+    --amendmentheading-text: #220066;
+
+    --def-border: #8ccbf2;
+    --def-bg: #def;
+    --def-text: var(--text);
+    --defrow-border: #bbd7e9;
+
+    --datacell-border: silver;
+
+    --indexinfo-text: #707070;
+
+    --indextable-hover-text: black;
+    --indextable-hover-bg: #f7f8f9;
+
+    --outdatedspec-bg: rgba(0, 0, 0, .5);
+    --outdatedspec-text: black;
+    --outdated-bg: maroon;
+    --outdated-text: white;
+    --outdated-shadow: red;
+
+    --editedrec-bg: darkorange;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text: #ddd;
+        --bg: black;
+
+        --unofficial-watermark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cg fill='%23100808' transform='translate(200 200) rotate(-45) translate(-200 -200)' stroke='%23100808' stroke-width='3'%3E%3Ctext x='50%25' y='220' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EUNOFFICIAL%3C/text%3E%3Ctext x='50%25' y='305' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EDRAFT%3C/text%3E%3C/g%3E%3C/svg%3E");
+
+        --logo-bg: #1a5e9a;
+        --logo-active-bg: #c00;
+        --logo-text: white;
+
+        --tocnav-normal-text: #999;
+        --tocnav-normal-bg: var(--bg);
+        --tocnav-hover-text: var(--tocnav-normal-text);
+        --tocnav-hover-bg: #080808;
+        --tocnav-active-text: #f44;
+        --tocnav-active-bg: var(--tocnav-normal-bg);
+
+        --tocsidebar-text: var(--text);
+        --tocsidebar-bg: #080808;
+        --tocsidebar-shadow: rgba(255,255,255,.1);
+        --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+        --toclink-text: var(--text);
+        --toclink-underline: #6af;
+        --toclink-visited-text: var(--toclink-text);
+        --toclink-visited-underline: #054572;
+
+        --heading-text: #8af;
+
+        --hr-text: var(--text);
+
+        --algo-border: #456;
+
+        --del-text: #f44;
+        --del-bg: transparent;
+        --ins-text: #4a4;
+        --ins-bg: transparent;
+
+        --a-normal-text: #6af;
+        --a-normal-underline: #555;
+        --a-visited-text: var(--a-normal-text);
+        --a-visited-underline: var(--a-normal-underline);
+        --a-hover-bg: rgba(25%, 25%, 25%, .2);
+        --a-active-text: #f44;
+        --a-active-underline: var(--a-active-text);
+
+        --borderedblock-bg: rgba(255, 255, 255, .05);
+
+        --blockquote-border: silver;
+        --blockquote-bg: var(--borderedblock-bg);
+        --blockquote-text: currentcolor;
+
+        --issue-border: #e05252;
+        --issue-bg: var(--borderedblock-bg);
+        --issue-text: var(--text);
+        --issueheading-text: hsl(0deg, 70%, 70%);
+
+        --example-border: hsl(50deg, 90%, 60%);
+        --example-bg: var(--borderedblock-bg);
+        --example-text: var(--text);
+        --exampleheading-text: hsl(50deg, 70%, 70%);
+
+        --note-border: hsl(120deg, 100%, 35%);
+        --note-bg: var(--borderedblock-bg);
+        --note-text: var(--text);
+        --noteheading-text: hsl(120, 70%, 70%);
+        --notesummary-underline: silver;
+
+        --assertion-border: #444;
+        --assertion-bg: var(--borderedblock-bg);
+        --assertion-text: var(--text);
+
+        --advisement-border: orange;
+        --advisement-bg: #222218;
+        --advisement-text: var(--text);
+        --advisementheading-text: #f84;
+
+        --warning-border: red;
+        --warning-bg: hsla(40,100%,20%,0.95);
+        --warning-text: var(--text);
+
+        --amendment-border: #330099;
+        --amendment-bg: #080010;
+        --amendment-text: var(--text);
+        --amendmentheading-text: #cc00ff;
+
+        --def-border: #8ccbf2;
+        --def-bg: #080818;
+        --def-text: var(--text);
+        --defrow-border: #136;
+
+        --datacell-border: silver;
+
+        --indexinfo-text: #aaa;
+
+        --indextable-hover-text: var(--text);
+        --indextable-hover-bg: #181818;
+
+        --outdatedspec-bg: rgba(255, 255, 255, .5);
+        --outdatedspec-text: black;
+        --outdated-bg: maroon;
+        --outdated-text: white;
+        --outdated-shadow: red;
+
+        --editedrec-bg: darkorange;
+    }
+    /* In case a transparent-bg image doesn't expect to be on a dark bg,
+       which is quite common in practice... */
+    img { background: white; }
+}
+</style>
+<style>/* Boilerplate: style-counters */
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example " counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}
+</style>
+<style>/* Boilerplate: style-dfn-panel */
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+    --dfnpanel-target-bg: #ffc;
+    --dfnpanel-target-outline: orange;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dfnpanel-bg: #222;
+        --dfnpanel-text: var(--text);
+        --dfnpanel-target-bg: #333;
+        --dfnpanel-target-outline: silver;
+    }
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel a:focus {
+    outline: 5px auto Highlight;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
+.dfn-panel li a {
+    max-width: calc(300px - 1.5em - 1em);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: 8px;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+    transition: left 1s ease-out, bottom 1s ease-out;
+}
+
+.dfn-panel .link-item:hover {
+    text-decoration: underline;
+}
+.dfn-panel .link-item .copy-icon {
+    opacity: 0;
+}
+.dfn-panel .link-item:hover .copy-icon,
+.dfn-panel .link-item .copy-icon:focus {
+    opacity: 1;
+}
+
+.dfn-panel .copy-icon {
+    display: inline-block;
+    margin-right: 0.5em;
+    width: 0.85em;
+    height: 1em;
+    border-radius: 3px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.dfn-panel .copy-icon .icon {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dfn-panel .copy-icon .icon::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    background-color: #ccc;
+    opacity: 0.25;
+    transform: translate(3px, -3px);
+}
+
+.dfn-panel .copy-icon:active .icon::before {
+    opacity: 1;
+}
+
+.dfn-paneled[role="button"] { cursor: help; }
+
+.highlighted {
+    animation: target-fade 3s;
+}
+
+@keyframes target-fade {
+    from {
+        background-color: var(--dfnpanel-target-bg);
+        outline: 5px solid var(--dfnpanel-target-outline);
+    }
+    to {
+        color: var(--a-normal-text);
+        background-color: transparent;
+        outline: transparent;
+    }
+}
+</style>
+<style>/* Boilerplate: style-issues */
+a[href].issue-return {
+    float: right;
+    float: inline-end;
+    color: var(--issueheading-text);
+    font-weight: bold;
+    text-decoration: none;
+}
+</style>
+<style>/* Boilerplate: style-md-lists */
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}
+</style>
+<style>/* Boilerplate: style-ref-hints */
+:root {
+    --ref-hint-bg: #ddd;
+    --ref-hint-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ref-hint-bg: #222;
+        --ref-hint-text: var(--text);
+    }
+}
+
+.ref-hint {
+    display: inline-block;
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.5em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--ref-hint-bg);
+    color: var(--ref-hint-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+
+.ref-hint * { margin: 0; padding: 0; text-indent: 0; }
+
+.ref-hint ul { padding: 0 0 0 1em; list-style: none; }
+</style>
+<style>/* Boilerplate: style-selflinks */
+:root {
+    --selflink-text: white;
+    --selflink-bg: gray;
+    --selflink-hover-text: black;
+}
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+.example > a.self-link,
+.note > a.self-link,
+.issue > a.self-link {
+    /* These blocks are overflow:auto, so positioning outside
+       doesn't work. */
+    left: auto;
+    right: 0;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--selflink-bg);
+    color: var(--selflink-text);
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: var(--selflink-hover-text);
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }
+</style>
+<style>/* Boilerplate: style-wpt */
+:root {
+    --wpt-border: hsl(0, 0%, 60%);
+    --wpt-bg: hsl(0, 0%, 95%);
+    --wpt-text: var(--text);
+    --wptheading-text: hsl(0, 0%, 30%);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --wpt-border: hsl(0, 0%, 30%);
+        --wpt-bg: var(--borderedblock-bg);
+        --wpt-text: var(--text);
+        --wptheading-text: hsl(0, 0%, 60%);
+    }
+}
+.wpt-tests-block {
+    list-style: none;
+    border-left: .5em solid var(--wpt-border);
+    background: var(--wpt-bg);
+    color: var(--wpt-text);
+    margin: 1em auto;
+    padding: .5em;
+}
+.wpt-tests-block summary {
+    color: var(--wptheading-text);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.wpt-tests-block summary::marker{
+    color: var(--wpt-border);
+}
+.wpt-tests-block summary:hover::marker{
+    color: var(--wpt-text);
+}
+/*
+   The only content  of a wpt test block in its closed state is the <summary>,
+   which contains the word TESTS,
+   and that is absolutely positioned.
+   In that closed state, wpt test blocks are styled
+   to have a top margin whose height is exactly equal
+   to the height of the absolutely positioned <summary>,
+   and no other background/padding/margin/border.
+   The wpt test block elements will therefore allow the maring
+   of the previous/next block elements
+   to collapse through them;
+   if this combined margin would be larger than its own top margin,
+   it stays as is,
+   and therefore the pre-existing vertical rhythm of the document is undisturbed.
+   If that combined margin would be smaller, it is grown to that size.
+   This means that the wpt test block ensures
+   that there's always enough vertical space to insert the summary,
+   without adding more than is needed.
+*/
+.wpt-tests-block:not([open]){
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.75em;
+    line-height: 1;
+    position: relative;
+    margin: 1em 0 0;
+}
+.wpt-tests-block:not([open]) summary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*
+   It is possible that both the last child of a block element
+   and the block element itself
+   would be annotated with a <wpt> block each.
+   If the block element has a padding or a border,
+   that's fine, but otherwise
+   the bottom margin of the block and of its last child would collapse
+   and both <wpt> elements would overlap, being both placed there.
+   To avoid that, add 1px of padding to the <wpt> element annotating the last child
+   to prevent the bottom margin of the block and of its last child from collapsing
+   (and as much negative margin,
+   as wel only want to prevent margin collapsing,
+   but are not trying to actually take more space).
+*/
+.wpt-tests-block:not([open]):last-child {
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+}
+/*
+   Exception to the previous rule:
+   don't do that in non-last list items,
+   because it's not necessary,
+   and would therefore consume more space than strictly needed.
+   Lists must have list items as children, not <wpt> elements,
+   so a <wpt> element cannot be a sibling of a list item,
+   and the collision that the previous rule avoids cannot happen.
+*/
+li:not(:last-child) > .wpt-tests-block:not([open]):last-child,
+dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.wpt-tests-block:not([open]):not(:hover){
+    opacity: 0.5;
+}
+.wpt-tests-list {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr max-content auto auto;
+    grid-column-gap: .5em;
+}
+.wpt-tests-block hr:last-child {
+    display: none;
+}
+.wpt-test {
+    display: contents;
+}
+.wpt-test > a {
+    text-decoration: underline;
+    border: none;
+}
+.wpt-test > .wpt-name { grid-column: 1; }
+.wpt-test > .wpt-results { grid-column: 2; }
+.wpt-test > .wpt-live { grid-column: 3; }
+.wpt-test > .wpt-source { grid-column: 4; }
+
+.wpt-test > .wpt-results {
+    display: flex;
+    gap: .1em;
+}
+.wpt-test .wpt-result {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+}
+</style>
+ <body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
+    <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+</a>
+</p>
+   <h1 class="no-ref p-name" id="title">CSS Route Matching</h1>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2025-11-19">19 November 2025</time></p>
+   <details open>
+    <summary>More details about this document</summary>
+    <div data-fill-with="spec-metadata">
+     <dl>
+      <dt>This version:
+      <dd><a class="u-url" href="https://drafts.csswg.org/css-navigation-1/">https://drafts.csswg.org/css-navigation-1/</a>
+      <dt>Issue Tracking:
+      <dd><a href="https://github.com/w3c/csswg-drafts/labels/css-navigation-1">CSSWG Issues Repository</a>
+      <dd><a href="#issues-index">Inline In Spec</a>
+      <dd><a href="https://github.com/w3c/csswg-drafts/issues/12594">w3c/csswg-drafts#12594</a>
+      <dt class="editor">Editors:
+      <dd class="editor h-card p-author vcard" data-editor-id="15393"><a class="fn p-name u-url url" href="https://dbaron.org/">L. David Baron</a> (<a class="org p-org" href="https://www.google.com/">Google</a>)
+      <dd class="editor h-card p-author vcard" data-editor-id="121539"><span class="fn p-name">Noam Rosenthal</span> (<a class="org p-org" href="https://www.google.com/">Google</a>)
+      <dt>Suggest an Edit for this Spec:
+      <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/css-navigation-1/Overview.bs">GitHub Editor</a>
+     </dl>
+    </div>
+   </details>
+   <div data-fill-with="warning"></div>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+</p>
+   <hr title="Separator for header">
+  </div>
+  <div class="p-summary" data-fill-with="abstract">
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
+   <p>This module contains conditional CSS rules for styling conditioned on the current URL
+or conditioned on the status of navigating between particular URLs.</p>
+   
+
+
+<a href="https://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents
+(such as HTML and XML)
+on screen, on paper, etc.
+
+
+  </div>
+  <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p>
+	This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress.
+
+</p>
+   <p>Please send feedback
+	by <a href="https://github.com/w3c/csswg-drafts/issues">filing issues in GitHub</a> (preferred),
+	including the spec code “css-navigation” in the title, like this:
+	“[css-navigation] <i>…summary of comment…</i>”.
+	All issues and comments are <a href="https://lists.w3.org/Archives/Public/public-css-archive/">archived</a>.
+	Alternately, feedback can be sent to the (<a href="https://lists.w3.org/Archives/Public/www-style/">archived</a>) public mailing list
+	<a href="mailto:www-style@w3.org?Subject=%5Bcss-navigation%5D%20PUT%20SUBJECT%20HERE">www-style@w3.org</a>.
+
+</p>
+   <p>This document is governed by the
+	<a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
+
+</p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <nav data-fill-with="table-of-contents" id="toc">
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
+   <ol class="toc" role="directory">
+    <li>
+     <a href="#condional-navigation-queries"><span class="secno">1</span> <span class="content">Conditional rules for navigation queries</span></a>
+     <ol class="toc">
+      <li><a href="#at-navigation"><span class="secno">1.1</span> <span class="content">Navigation queries: the <span class="css">@navigation</span> rule</span></a>
+      <li><a href="#navigation-when-function"><span class="secno">1.2</span> <span class="content">The <span class="css">navigation()</span> function for <span class="css">@when</span></span></a>
+      <li><a href="#navigation-if-function"><span class="secno">1.3</span> <span class="content">The <span class="css">navigation()</span> function for <span class="css">if()</span></span></a>
+     </ol>
+    <li><a href="#link-navigation-pseudo-classes"><span class="secno">2</span> <span class="content">Pseudo-classes for navigation-related links</span></a>
+    <li><a href="#urlpattern-function"><span class="secno">3</span> <span class="content">The <span class="css">urlpattern()</span> function</span></a>
+    <li>
+     <a href="#w3c-conformance"><span class="secno"></span> <span class="content">
+Conformance</span></a>
+     <ol class="toc">
+      <li><a href="#w3c-conventions"><span class="secno"></span> <span class="content">
+Document conventions</span></a>
+      <li><a href="#w3c-conformance-classes"><span class="secno"></span> <span class="content">
+Conformance classes</span></a>
+      <li>
+       <a href="#w3c-partial"><span class="secno"></span> <span class="content">
+Partial implementations</span></a>
+       <ol class="toc">
+        <li><a href="#w3c-conform-future-proofing"><span class="secno"></span> <span class="content">
+Implementations of Unstable and Proprietary Features</span></a>
+       </ol>
+      <li><a href="#w3c-testing"><span class="secno"></span> <span class="content">
+Non-experimental implementations</span></a>
+     </ol>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </ol>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ol class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+     </ol>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
+   </ol>
+  </nav>
+  <main>
+   <h2 class="heading settled" data-level="1" id="condional-navigation-queries"><span class="secno">1. </span><span class="content">Conditional rules for navigation queries</span><a class="self-link" href="#condional-navigation-queries"></a></h2>
+   <h3 class="heading settled" data-level="1.1" id="at-navigation"><span class="secno">1.1. </span><span class="content">Navigation queries: the <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation">@navigation</a> rule</span><a class="self-link" href="#at-navigation"></a></h3>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="at-rule" data-export id="at-ruledef-navigation">@navigation</dfn> rule
+is a conditional group rule
+whose condition tests
+characteristics of the current URL
+or of the state of navigation between two URLs.
+These queries are called <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="navigation-queries">navigation queries</dfn>.</p>
+   <p>Authors can use it to:</p>
+   <ul>
+    <li data-md>
+     <p>write style sheets that apply to multiple pages
+but behave somewhat differently between those pages,</p>
+    <li data-md>
+     <p>write style sheets that apply to
+single page applications
+that change their URL over time,
+so that style changes when the URL changes, and</p>
+    <li data-md>
+     <p>write style sheets that declaratively start view transitions
+(or make other appropriate style changes)
+in response to navigations.</p>
+   </ul>
+   <p>The syntax of the condition in the <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation①">@navigation</a> rule
+is similar to that defined for
+<a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition" id="ref-for-typedef-supports-condition">&lt;supports-condition></a> in <a data-link-type="biblio" href="#biblio-css-conditional-3" title="CSS Conditional Rules Module Level 3">[CSS-CONDITIONAL-3]</a>.
+Negation, conjunction, and disjunction are all needed
+so that authors can specify the interaction of multiple styles
+in ways that are most intuitive and require the simplest code.</p>
+   <p>The syntax of the <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation②">@navigation</a> rule is:</p>
+<pre class="def prod">@navigation <a class="production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition">&lt;navigation-condition></a> {
+  <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-syntax-3/#typedef-rule-list" id="ref-for-typedef-rule-list">&lt;rule-list></a>
+}
+</pre>
+   <p>with <a class="css production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition①">&lt;navigation-condition></a> defined as:</p>
+<pre class="def prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-condition"><a class="production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition②">&lt;navigation-condition></a></dfn> = not <a class="production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens">&lt;navigation-in-parens></a>
+                     <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one">|</a> <a class="production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens①">&lt;navigation-in-parens></a> [ and <a class="production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens②">&lt;navigation-in-parens></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus">*</a>
+                     <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①">|</a> <a class="production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens③">&lt;navigation-in-parens></a> [ or <a class="production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens④">&lt;navigation-in-parens></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus①">*</a>
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-in-parens"><a class="production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens⑤">&lt;navigation-in-parens></a></dfn> = ( <a class="production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition③">&lt;navigation-condition></a> ) <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> ( <a class="production" data-link-type="type" href="#typedef-navigation-test" id="ref-for-typedef-navigation-test">&lt;navigation-test></a> ) <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed">&lt;general-enclosed></a>
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-test"><a class="production" data-link-type="type" href="#typedef-navigation-test" id="ref-for-typedef-navigation-test①">&lt;navigation-test></a></dfn> = <a class="production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location">&lt;navigation-location></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> <a class="production" data-link-type="type" href="#typedef-navigation-keyword" id="ref-for-typedef-navigation-keyword">&lt;navigation-keyword></a> : <a class="production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①">&lt;navigation-location></a>
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-keyword"><a class="production" data-link-type="type" href="#typedef-navigation-keyword" id="ref-for-typedef-navigation-keyword①">&lt;navigation-keyword></a></dfn> = at <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑤">|</a> from <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> to
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-location"><a class="production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location②">&lt;navigation-location></a></dfn> = <a class="production" data-link-type="function" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern">&lt;urlpattern()></a>
+</pre>
+   <p>The above grammar is purposely very loose for forwards-compatibility reasons,
+since the <a class="css production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed①">&lt;general-enclosed></a> production
+allows for substantial future extensibility.
+Any <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation③">@navigation</a> rule that does not parse according to the grammar above
+(that is, a rule that does not match this loose grammar
+which includes the <span class="production" id="ref-for-typedef-general-enclosed②">&lt;general-enclosed></span> production)
+is invalid.
+Style sheets <strong>must not</strong> use such a rule and
+processors <strong>must</strong> ignore such a rule (including all of its contents).</p>
+   <p>Many of these grammar terms are associated with a boolean result,
+as follows:</p>
+   <dl>
+    <dt data-md><a class="css production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition④">&lt;navigation-condition></a>
+    <dd data-md>
+     <dl>
+      <dt data-md>not <a class="css production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens⑥">&lt;navigation-in-parens></a>
+      <dd data-md>
+       <p>The result is the negation of the <a class="css production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens⑦">&lt;navigation-in-parens></a> term.</p>
+      <dt data-md><a class="css production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens⑧">&lt;navigation-in-parens></a> [ and <span class="production" id="ref-for-typedef-navigation-in-parens⑨">&lt;navigation-in-parens></span> ]*
+      <dd data-md>
+       <p>The result is true if all of the <a class="css production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens①⓪">&lt;navigation-in-parens></a> child terms are true,
+and false otherwise.</p>
+      <dt data-md><a class="css production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens①①">&lt;navigation-in-parens></a> [ or <span class="production" id="ref-for-typedef-navigation-in-parens①②">&lt;navigation-in-parens></span> ]*
+      <dd data-md>
+       <p>The result is false if all of the <a class="css production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens①③">&lt;navigation-in-parens></a> child terms are false,
+and true otherwise.</p>
+     </dl>
+    <dt data-md><a class="css production" data-link-type="type" href="#typedef-navigation-in-parens" id="ref-for-typedef-navigation-in-parens①④">&lt;navigation-in-parens></a>
+    <dd data-md>
+     <p>The result is the result of the child subexpression.</p>
+    <dt data-md><a class="css production" data-link-type="type" href="#typedef-navigation-test" id="ref-for-typedef-navigation-test②">&lt;navigation-test></a>
+    <dd data-md>
+     <dl>
+      <dt data-md><a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location③">&lt;navigation-location></a>
+      <dt data-md>at: <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location④">&lt;navigation-location></a>
+      <dd data-md>
+       <p>The result is true if
+the document’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url">URL</a> <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match">matches</a>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑤">&lt;navigation-location></a>.</p>
+      <dt data-md>from: <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑥">&lt;navigation-location></a>
+      <dd data-md>
+       <p>The result is true if
+the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api">document’s navigation API</a> of the document
+is non-null, and either:</p>
+       <ul>
+        <li data-md>
+         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition" id="ref-for-concept-navigation-transition">transition</a> is non-null,
+its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from" id="ref-for-concept-navigationtransition-from">from entry</a>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url">url</a></code>
+is non-null and
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match①">matches</a>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern①">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑦">&lt;navigation-location></a>.</p>
+        <li data-md>
+         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation" id="ref-for-navigation-activation">activation</a> is non-null,
+the document’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed">has been revealed</a> is false or
+was false at the start of the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-task" id="ref-for-concept-task">task</a>,
+and the activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from" id="ref-for-dom-navigationactivation-from">from</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url①">url</a></code>’s
+is non-null and
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match②">matches</a>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern②">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑧">&lt;navigation-location></a>.</p>
+       </ul>
+      <dt data-md>to: <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑨">&lt;navigation-location></a>
+      <dd data-md>
+       <p>The result is true if
+the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api①">document’s navigation API</a> of the document
+is non-null, and either:</p>
+       <ul>
+        <li data-md>
+         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event">ongoing navigate event</a> is non-null,
+and its <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination" id="ref-for-dom-navigateevent-destination">destination</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url" id="ref-for-dom-navigationdestination-url">url</a></code>
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match③">matches</a>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern③">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①⓪">&lt;navigation-location></a>.</p>
+         <p class="issue" id="issue-879c611d"><a class="self-link" href="#issue-879c611d"></a> This assumes that the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event①">ongoing navigate event</a>
+and the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition" id="ref-for-concept-navigation-transition①">transition</a> have the same lifetime,
+but this isn’t really
+true if the event is intercepted.
+After
+<a href="https://github.com/whatwg/html/issues/11690">whatwg/html#11690</a> /
+<a href="https://github.com/whatwg/html/pull/11692">whatwg/html#11692</a>.
+we could probably define this more like "from" above.
+But which lifetime is the one we want?</p>
+        <li data-md>
+         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation" id="ref-for-navigation-activation①">activation</a> is non-null,
+the document’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed①">has been revealed</a> is false or
+was false at the start of the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-task" id="ref-for-concept-task①">task</a>,
+and the activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry" id="ref-for-dom-navigationactivation-entry">entry</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url②">url</a></code>’s
+is non-null and
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match④">matches</a>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern④">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①①">&lt;navigation-location></a>.</p>
+       </ul>
+       <p>TODO: Update this definition to handle redirects better.
+In particular, we’d like the <span class="css">to:</span> URL to change
+at only a single time,
+from the original URL of the navigation to the final one.
+There is already a well-defined definition and processing model
+that we can depend on.</p>
+     </dl>
+     <p class="issue" id="issue-8de45772"><a class="self-link" href="#issue-8de45772"></a> The above definitions of from and to apparently don’t work right
+if you start a same-document navigation (e.g., with <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate" id="ref-for-dom-history-pushstate">pushState</a></code>)
+in the middle of a cross-document navigation.</p>
+     <p class="issue" id="issue-3df86670"><a class="self-link" href="#issue-3df86670"></a> Improve integration with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed②">has been revealed</a> rather than monkeypatching it.</p>
+    <dt data-md><a class="css production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed③">&lt;general-enclosed></a>
+    <dd data-md>
+     <p>The result is false.</p>
+     <p>Authors must not use <a class="css production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed④">&lt;general-enclosed></a> in their stylesheets.
+<span class="note">It exists only for future-compatibility,
+so that new syntax additions do not invalidate too much of a <a class="css production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition⑤">&lt;navigation-condition></a> in older user agents.</span></p>
+   </dl>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="navigation-location-url-pattern">navigation location URL pattern</dfn> of a <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①②">&lt;navigation-location></a>
+depends on the type of <span class="production" id="ref-for-typedef-navigation-location①③">&lt;navigation-location></span>:</p>
+   <dl>
+    <dt data-md><a class="css production" data-link-type="function" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern①">&lt;urlpattern()></a>
+    <dd data-md>
+     <p>The <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern" id="ref-for-url-pattern">URL pattern</a> represented by the function; see
+<a data-link-type="dfn" href="#create-a-url-pattern-for-urlpattern" id="ref-for-create-a-url-pattern-for-urlpattern">create a URL pattern for urlpattern()</a>.</p>
+   </dl>
+   <p class="issue" id="issue-536c7e9d"><a class="self-link" href="#issue-536c7e9d"></a> There is currently only one type of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①④">&lt;navigation-location></a>
+but we should consider adding another,
+which would be just a name that references
+a name defined in a routemap.
+See the
+<a href="https://github.com/WICG/declarative-partial-updates/blob/main/route-matching-explainer.md">route matching explainer</a>
+for details.</p>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="documents-navigation-api">document’s navigation API</dfn> is
+the result of the following steps on <var>document</var>:</p>
+   <ol>
+    <li data-md>
+     <p>Let <var>window</var> be the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window">Window</a></code> whose <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window" id="ref-for-concept-document-window">associated Document</a> is <var>document</var>, or null if there is no such <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①">Window</a></code>.</p>
+    <li data-md>
+     <p>If <var>window</var> is null, return null.</p>
+    <li data-md>
+     <p>Return <var>window</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigation-api" id="ref-for-window-navigation-api">navigation API</a>.</p>
+   </ol>
+   <p>The condition of the <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation④">@navigation</a> rule
+is the result of the <a class="css production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition⑥">&lt;navigation-condition></a> in its prelude.</p>
+   <h3 class="heading settled" data-level="1.2" id="navigation-when-function"><span class="secno">1.2. </span><span class="content">The <a class="css" data-link-type="maybe" href="#funcdef-when-navigation" id="ref-for-funcdef-when-navigation">navigation()</a> function for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-5/#at-ruledef-when" id="ref-for-at-ruledef-when">@when</a></span><a class="self-link" href="#navigation-when-function"></a></h3>
+   <p>This specification defines an additional function for the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-5/#at-ruledef-when" id="ref-for-at-ruledef-when①">@when</a> rule:</p>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-for="@when" data-dfn-type="function" data-export id="funcdef-when-navigation">navigation()</dfn> = navigation( <a class="production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition⑦">&lt;navigation-condition></a> )
+</pre>
+   <p>The <a class="css" data-link-type="maybe" href="#funcdef-when-navigation" id="ref-for-funcdef-when-navigation①">navigation()</a> function is associated with the boolean result that
+its contained condition is associated with.</p>
+   <h3 class="heading settled" data-level="1.3" id="navigation-if-function"><span class="secno">1.3. </span><span class="content">The <a class="css" data-link-type="maybe" href="#funcdef-if-navigation" id="ref-for-funcdef-if-navigation">navigation()</a> function for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-5/#funcdef-if" id="ref-for-funcdef-if">if()</a></span><a class="self-link" href="#navigation-if-function"></a></h3>
+   <p>This specification defines an additional function for the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-5/#funcdef-if" id="ref-for-funcdef-if①">if()</a> function’s
+<a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-5/#typedef-if-test" id="ref-for-typedef-if-test">&lt;if-test></a> production:</p>
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-for="if()" data-dfn-type="function" data-export id="funcdef-if-navigation">navigation()</dfn> = navigation( <a class="production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition⑧">&lt;navigation-condition></a> )
+</pre>
+   <p class="issue" id="issue-14849ff8"><a class="self-link" href="#issue-14849ff8"></a> This should probably have a more formal definition of the function,
+but I can’t find the formal definitions of the existing <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-5/#funcdef-if" id="ref-for-funcdef-if②">if()</a> functions
+to model it after.</p>
+   <h2 class="heading settled" data-level="2" id="link-navigation-pseudo-classes"><span class="secno">2. </span><span class="content">Pseudo-classes for navigation-related links</span><a class="self-link" href="#link-navigation-pseudo-classes"></a></h2>
+   <p>TODO: To be written.</p>
+   <h2 class="heading settled" data-level="3" id="urlpattern-function"><span class="secno">3. </span><span class="content">The <a class="css" data-link-type="maybe" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern②">urlpattern()</a> function</span><a class="self-link" href="#urlpattern-function"></a></h2>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="function" data-export id="funcdef-urlpattern">urlpattern()</dfn> function represents a <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern" id="ref-for-url-pattern①">URL pattern</a>,
+which can be used to match URLs.</p>
+<pre class="def prod"><a class="production" data-link-type="function" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern③">&lt;urlpattern()></a> = urlpattern( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value">&lt;string></a> )
+</pre>
+   <p>This function represents a <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern" id="ref-for-url-pattern②">URL pattern</a> that can be created
+using the steps of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-a-url-pattern-for-urlpattern">create a URL pattern for urlpattern()</dfn> algorithm:</p>
+   <ol>
+    <li data-md>
+     <p>Let <var>arg</var> be the <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value①">&lt;string></a> argument to the <a class="css" data-link-type="maybe" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern④">urlpattern()</a> function.</p>
+    <li data-md>
+     <p>Let <var>baseURL</var> be the <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#style-resource-base-url" id="ref-for-style-resource-base-url">style resource base URL</a> of
+the rule or declaration block containing the <a class="css" data-link-type="maybe" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern⑤">urlpattern()</a> function.</p>
+     <div class="issue" id="issue-99826f8b">
+      <a class="self-link" href="#issue-99826f8b"></a>
+Do we want this to be the base URL all the time?
+For use of <a class="css" data-link-type="maybe" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern⑥">urlpattern()</a> in <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation⑤">@navigation</a>,
+it’s likely more useful for the base URL
+to be the document URL rather than the style sheet URL.
+However, it would be very awkward for <span class="css" id="ref-for-funcdef-urlpattern⑦">urlpattern()</span>
+to be inconsistent with <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url">url()</a>.
+
+
+      <p>Should we allow the base URL of <a class="css" data-link-type="maybe" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern⑧">urlpattern()</a>
+to be defined by the consumer?
+Should we introduce <code>document-urlpattern()</code>?
+Should we do something similar to
+<a href="https://drafts.csswg.org/css-images-3/#ambiguous-urls"><cite>CSS Images 3</cite> § 2.1.1 Ambiguous Reference-or-Image URLs</a>
+(see <a href="https://github.com/w3c/csswg-drafts/issues/383">w3c/csswg-drafts issue #383</a>)?</p>
+      <p>Also see other proposed uses of <code class="idl"><a data-link-type="idl" href="https://urlpattern.spec.whatwg.org/#urlpattern" id="ref-for-urlpattern">URLPattern</a></code> in CSS
+in <a href="https://github.com/w3c/csswg-drafts/issues/10975">w3c/csswg-drafts issue #10975</a>,
+for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-5/#local-link-pseudo" id="ref-for-local-link-pseudo">:local-link</a>.</p>
+     </div>
+    <li data-md>
+     <p>Return the result of <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-create" id="ref-for-url-pattern-create">create a URL pattern</a> given
+<var>arg</var>, <var>baseURL</var>, and an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a>.</p>
+   </ol>
+   <p class="note" role="note"><span class="marker">NOTE:</span>  This function requires that its argument is quoted.
+This differs from the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url①">url()</a> function,
+which allows its argument to be quoted or unquoted.</p>
+   <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="serialize-a-urlpattern-function">serialize a <a class="css" data-link-type="maybe" href="#funcdef-urlpattern" id="ref-for-funcdef-urlpattern⑨">urlpattern()</a> function</dfn> <var>f</var>,
+<a data-link-type="dfn" href="https://drafts.csswg.org/cssom-1/#css-serialize-a-function" id="ref-for-css-serialize-a-function">serialize a function</a> <var>f</var>,
+using <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-1/#serialize-a-string" id="ref-for-serialize-a-string">serialize a string</a> on the single argument
+to serialize <var>f</var>’s contents.</p>
+   <p class="note" role="note"><span class="marker">NOTE:</span> This is defined this way because <code class="idl"><a data-link-type="idl" href="https://urlpattern.spec.whatwg.org/#urlpattern" id="ref-for-urlpattern①">URLPattern</a></code>
+intentionally does not provide a serialization.</p>
+  </main>
+  <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">
+Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+  <h3 class="heading no-ref settled" id="w3c-conventions"><span class="content">
+Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+  <p>Conformance requirements are expressed with a combination of
+    descriptive assertions and RFC 2119 terminology. The key words “MUST”,
+    “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
+    “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
+    document are to be interpreted as described in RFC 2119.
+    However, for readability, these words do not appear in all uppercase
+    letters in this specification.
+
+    </p>
+  <p>All of the text of this specification is normative except sections
+    explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a></p>
+  <p>Examples in this specification are introduced with the words “for example”
+    or are set apart from the normative text with <code>class="example"</code>,
+    like this:
+
+    </p>
+  <div class="example" id="w3c-example">
+   <a class="self-link" href="#w3c-example"></a>
+        
+   <p>This is an example of an informative example.</p>
+  </div>
+  <p>Informative notes begin with the word “Note” and are set apart from the
+    normative text with <code>class="note"</code>, like this:
+
+    </p>
+  <p class="note" role="note">Note, this is an informative note.</p>
+  <p>Advisements are normative sections styled to evoke special attention and are
+    set apart from other normative text with <code>&lt;strong class="advisement"></code>, like
+    this:
+
+    <strong class="advisement">
+        UAs MUST provide an accessible alternative.
+    </strong></p>
+  <details class="wpt-tests-block" dir="ltr" lang="en" open>
+   <summary>Tests</summary>
+   <p>Tests relating to the content of this specification
+                     may be documented in “Tests” blocks like this one.
+                     Any such block is non-normative.</p>
+   <ul class="wpt-tests-list"></ul>
+   <hr>
+  </details>
+  <h3 class="heading no-ref settled" id="w3c-conformance-classes"><span class="content">
+Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
+  <p>Conformance to this specification
+    is defined for three conformance classes:
+    </p>
+  <dl>
+   <dt>style sheet
+            
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#style-sheet">CSS
+            style sheet</a>.
+        
+   <dt>renderer
+            
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+            that interprets the semantics of a style sheet and renders
+            documents that use them.
+        
+   <dt>authoring tool
+            
+   <dd>A <a href="http://www.w3.org/TR/CSS21/conform.html#user-agent">UA</a>
+            that writes a style sheet.
+    
+  </dl>
+  <p>A style sheet is conformant to this specification
+    if all of its statements that use syntax defined in this module are valid
+    according to the generic CSS grammar and the individual grammars of each
+    feature defined in this module.
+
+    </p>
+  <p>A renderer is conformant to this specification
+    if, in addition to interpreting the style sheet as defined by the
+    appropriate specifications, it supports all the features defined
+    by this specification by parsing them correctly
+    and rendering the document accordingly. However, the inability of a
+    UA to correctly render a document due to limitations of the device
+    does not make the UA non-conformant. (For example, a UA is not
+    required to render color on a monochrome monitor.)
+
+    </p>
+  <p>An authoring tool is conformant to this specification
+    if it writes style sheets that are syntactically correct according to the
+    generic CSS grammar and the individual grammars of each feature in
+    this module, and meet all other conformance requirements of style sheets
+    as described in this module.
+
+</p>
+  <h3 class="heading no-ref settled" id="w3c-partial"><span class="content">
+Partial implementations</span><a class="self-link" href="#w3c-partial"></a></h3>
+  <p>So that authors can exploit the forward-compatible parsing rules to
+    assign fallback values, CSS renderers <strong>must</strong>
+    treat as invalid (and <a href="http://www.w3.org/TR/CSS21/conform.html#ignore">ignore
+    as appropriate</a>) any at-rules, properties, property values, keywords,
+    and other syntactic constructs for which they have no usable level of
+    support. In particular, user agents <strong>must not</strong> selectively
+    ignore unsupported component values and honor supported values in a single
+    multi-value property declaration: if any value is considered invalid
+    (as unsupported values must be), CSS requires that the entire declaration
+    be ignored.</p>
+  <h4 class="heading settled" id="w3c-conform-future-proofing"><span class="content">
+Implementations of Unstable and Proprietary Features</span><a class="self-link" href="#w3c-conform-future-proofing"></a></h4>
+  <p>To avoid clashes with future stable CSS features,
+        the CSSWG recommends <a href="http://www.w3.org/TR/CSS/#future-proofing">following best practices</a> for the implementation of <a href="http://www.w3.org/TR/CSS/#unstable">unstable</a> features and <a href="http://www.w3.org/TR/CSS/#proprietary-extension">proprietary extensions</a> to CSS.
+
+</p>
+  <h3 class="heading no-ref settled" id="w3c-testing"><span class="content">
+Non-experimental implementations</span><a class="self-link" href="#w3c-testing"></a></h3>
+  <p>Once a specification reaches the Candidate Recommendation stage,
+    non-experimental implementations are possible, and implementors should
+    release an unprefixed implementation of any CR-level feature they
+    can demonstrate to be correctly implemented according to spec.
+
+    </p>
+  <p>To establish and maintain the interoperability of CSS across
+    implementations, the CSS Working Group requests that non-experimental
+    CSS renderers submit an implementation report (and, if necessary, the
+    testcases used for that implementation report) to the W3C before
+    releasing an unprefixed implementation of any CSS features. Testcases
+    submitted to W3C are subject to review and correction by the CSS
+    Working Group.
+
+    </p>
+  <p>Further information on submitting testcases and implementation reports
+    can be found from on the CSS Working Group’s website at
+    <a href="http://www.w3.org/Style/CSS/Test/">http://www.w3.org/Style/CSS/Test/</a>.
+    Questions should be directed to the
+    <a href="http://lists.w3.org/Archives/Public/public-css-testsuite">public-css-testsuite@w3.org</a>
+    mailing list.</p>
+  <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="index">
+   <li><a href="#create-a-url-pattern-for-urlpattern">create a URL pattern for urlpattern()</a><span>, in § 3</span>
+   <li><a href="#documents-navigation-api">document’s navigation API</a><span>, in § 1.1</span>
+   <li><a href="#at-ruledef-navigation">@navigation</a><span>, in § 1.1</span>
+   <li>
+    navigation()
+    <ul>
+     <li><a href="#funcdef-when-navigation">function for @when</a><span>, in § 1.2</span>
+     <li><a href="#funcdef-if-navigation">function for if()</a><span>, in § 1.3</span>
+    </ul>
+   <li><a href="#typedef-navigation-condition">&lt;navigation-condition></a><span>, in § 1.1</span>
+   <li><a href="#typedef-navigation-in-parens">&lt;navigation-in-parens></a><span>, in § 1.1</span>
+   <li><a href="#typedef-navigation-keyword">&lt;navigation-keyword></a><span>, in § 1.1</span>
+   <li><a href="#typedef-navigation-location">&lt;navigation-location></a><span>, in § 1.1</span>
+   <li><a href="#navigation-location-url-pattern">navigation location URL pattern</a><span>, in § 1.1</span>
+   <li><a href="#navigation-queries">navigation queries</a><span>, in § 1.1</span>
+   <li><a href="#typedef-navigation-test">&lt;navigation-test></a><span>, in § 1.1</span>
+   <li><a href="#serialize-a-urlpattern-function">serialize a urlpattern() function</a><span>, in § 3</span>
+   <li><a href="#funcdef-urlpattern">urlpattern()</a><span>, in § 3</span>
+  </ul>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[CSS-CONDITIONAL-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="12432dcb">&lt;supports-condition></span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-CONDITIONAL-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="a25b060b">@when</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-SYNTAX-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="65c9f2cf">&lt;rule-list></span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="68150e76">*</span>
+     <li><span class="dfn-paneled" id="977d3003">&lt;string></span>
+     <li><span class="dfn-paneled" id="b511103c">style resource base URL</span>
+     <li><span class="dfn-paneled" id="5a2f7ea1">url()</span>
+     <li><span class="dfn-paneled" id="6ec67710">|</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-VALUES-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="61e3d51c">&lt;if-test></span>
+     <li><span class="dfn-paneled" id="6e13c5fc">if()</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSSOM-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="1f9310ca">serialize a function</span>
+     <li><span class="dfn-paneled" id="45b74284">serialize a string</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[DOM]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="347e8fe9">URL</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[HTML]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="5d7209e9">Window</span>
+     <li><span class="dfn-paneled" id="2d8ceef2">activation</span>
+     <li><span class="dfn-paneled" id="3349d69f">associated Document</span>
+     <li><span class="dfn-paneled" id="12eb7c09">destination</span>
+     <li><span class="dfn-paneled" id="6b631d3b">entry</span>
+     <li><span class="dfn-paneled" id="b33508ca">from</span>
+     <li><span class="dfn-paneled" id="00583f87">from entry</span>
+     <li><span class="dfn-paneled" id="6a40c011">has been revealed</span>
+     <li><span class="dfn-paneled" id="8b6678c3">navigation API</span>
+     <li><span class="dfn-paneled" id="c8c5d31a">ongoing navigate event</span>
+     <li><span class="dfn-paneled" id="87806adf">pushState(data, unused, url)</span>
+     <li><span class="dfn-paneled" id="e270bd2a">task</span>
+     <li><span class="dfn-paneled" id="05d605be">transition</span>
+     <li><span class="dfn-paneled" id="78fedd4c">url <small>(for NavigationDestination)</small></span>
+     <li><span class="dfn-paneled" id="bf4f3896">url <small>(for NavigationHistoryEntry)</small></span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[INFRA]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="3fca5a9e">map</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[MEDIAQUERIES-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="c4f8137c">&lt;general-enclosed></span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[SELECTORS-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="f55ffdf2">:local-link</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[URLPATTERN]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="1b28d572">URLPattern</span>
+     <li><span class="dfn-paneled" id="bf9f0d4e">create</span>
+     <li><span class="dfn-paneled" id="5c4f772b">match</span>
+     <li><span class="dfn-paneled" id="60393e82">URL pattern</span>
+    </ul>
+  </ul>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-css-conditional-3">[CSS-CONDITIONAL-3]
+   <dd>Chris Lilley; David Baron; Elika Etemad. <a href="https://drafts.csswg.org/css-conditional-3/"><cite>CSS Conditional Rules Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-conditional-3/">https://drafts.csswg.org/css-conditional-3/</a>
+   <dt id="biblio-css-conditional-5">[CSS-CONDITIONAL-5]
+   <dd>Chris Lilley; et al. <a href="https://drafts.csswg.org/css-conditional-5/"><cite>CSS Conditional Rules Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-conditional-5/">https://drafts.csswg.org/css-conditional-5/</a>
+   <dt id="biblio-css-images-3">[CSS-IMAGES-3]
+   <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://drafts.csswg.org/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-3/">https://drafts.csswg.org/css-images-3/</a>
+   <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://drafts.csswg.org/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-syntax/">https://drafts.csswg.org/css-syntax/</a>
+   <dt id="biblio-css-values-4">[CSS-VALUES-4]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
+   <dt id="biblio-css-values-5">[CSS-VALUES-5]
+   <dd>Tab Atkins Jr.; Elika Etemad; Miriam Suzanne. <a href="https://drafts.csswg.org/css-values-5/"><cite>CSS Values and Units Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-5/">https://drafts.csswg.org/css-values-5/</a>
+   <dt id="biblio-cssom-1">[CSSOM-1]
+   <dd>Daniel Glazman; Emilio Cobos Álvarez. <a href="https://drafts.csswg.org/cssom/"><cite>CSS Object Model (CSSOM)</cite></a>. URL: <a href="https://drafts.csswg.org/cssom/">https://drafts.csswg.org/cssom/</a>
+   <dt id="biblio-dom">[DOM]
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dt id="biblio-html">[HTML]
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-infra">[INFRA]
+   <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
+   <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
+   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
+   <dt id="biblio-rfc2119">[RFC2119]
+   <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   <dt id="biblio-selectors-5">[SELECTORS-5]
+   <dd><a href="https://drafts.csswg.org/selectors-5/"><cite>Selectors Level 5</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/selectors-5/">https://drafts.csswg.org/selectors-5/</a>
+   <dt id="biblio-urlpattern">[URLPATTERN]
+   <dd>Ben Kelly; Jeremy Roman; 宍戸俊哉 (Shunya Shishido). <a href="https://urlpattern.spec.whatwg.org/"><cite>URL Pattern Standard</cite></a>. Living Standard. URL: <a href="https://urlpattern.spec.whatwg.org/">https://urlpattern.spec.whatwg.org/</a>
+  </dl>
+  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> This assumes that the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event">ongoing navigate event</a>
+and the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition">transition</a> have the same lifetime,
+but this isn’t really
+true if the event is intercepted.
+After
+<a href="https://github.com/whatwg/html/issues/11690">whatwg/html#11690</a> /
+<a href="https://github.com/whatwg/html/pull/11692">whatwg/html#11692</a>.
+we could probably define this more like "from" above.
+But which lifetime is the one we want? <a class="issue-return" href="#issue-879c611d" title="Jump to section">↵</a></div>
+   <div class="issue"> The above definitions of from and to apparently don’t work right
+if you start a same-document navigation (e.g., with <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate">pushState</a></code>)
+in the middle of a cross-document navigation. <a class="issue-return" href="#issue-8de45772" title="Jump to section">↵</a></div>
+   <div class="issue"> Improve integration with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed">has been revealed</a> rather than monkeypatching it. <a class="issue-return" href="#issue-3df86670" title="Jump to section">↵</a></div>
+   <div class="issue"> There is currently only one type of <a class="css production" data-link-type="type" href="#typedef-navigation-location">&lt;navigation-location></a>
+but we should consider adding another,
+which would be just a name that references
+a name defined in a routemap.
+See the
+<a href="https://github.com/WICG/declarative-partial-updates/blob/main/route-matching-explainer.md">route matching explainer</a>
+for details. <a class="issue-return" href="#issue-536c7e9d" title="Jump to section">↵</a></div>
+   <div class="issue"> This should probably have a more formal definition of the function,
+but I can’t find the formal definitions of the existing <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-5/#funcdef-if">if()</a> functions
+to model it after. <a class="issue-return" href="#issue-14849ff8" title="Jump to section">↵</a></div>
+   <div class="issue">
+    
+Do we want this to be the base URL all the time?
+For use of <a class="css" data-link-type="maybe" href="#funcdef-urlpattern">urlpattern()</a> in <a class="css" data-link-type="maybe" href="#at-ruledef-navigation">@navigation</a>,
+it’s likely more useful for the base URL
+to be the document URL rather than the style sheet URL.
+However, it would be very awkward for <span class="css">urlpattern()</span>
+to be inconsistent with <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url">url()</a>.
+
+
+    <p>Should we allow the base URL of <a class="css" data-link-type="maybe" href="#funcdef-urlpattern">urlpattern()</a>
+to be defined by the consumer?
+Should we introduce <code>document-urlpattern()</code>?
+Should we do something similar to
+<a href="https://drafts.csswg.org/css-images-3/#ambiguous-urls"><cite>CSS Images 3</cite> § 2.1.1 Ambiguous Reference-or-Image URLs</a>
+(see <a href="https://github.com/w3c/csswg-drafts/issues/383">w3c/csswg-drafts issue #383</a>)?</p>
+    <p>Also see other proposed uses of <code class="idl"><a data-link-type="idl" href="https://urlpattern.spec.whatwg.org/#urlpattern">URLPattern</a></code> in CSS
+in <a href="https://github.com/w3c/csswg-drafts/issues/10975">w3c/csswg-drafts issue #10975</a>,
+for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-5/#local-link-pseudo">:local-link</a>.</p>
+    
+ <a class="issue-return" href="#issue-99826f8b" title="Jump to section">↵</a>
+   </div>
+  </div>
+<script>/* Boilerplate: script-dom-helper */
+"use strict";
+function query(sel) { return document.querySelector(sel); }
+
+function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
+
+function iter(obj) {
+	if(!obj) return [];
+	var it = obj[Symbol.iterator];
+	if(it) return it;
+	return Object.entries(obj);
+}
+
+function mk(tagname, attrs, ...children) {
+	const el = document.createElement(tagname);
+	for(const [k,v] of iter(attrs)) {
+		if(k.slice(0,3) == "_on") {
+			const eventName = k.slice(3);
+			el.addEventListener(eventName, v);
+		} else if(k[0] == "_") {
+			// property, not attribute
+			el[k.slice(1)] = v;
+		} else {
+			if(v === false || v == null) {
+        continue;
+      } else if(v === true) {
+        el.setAttribute(k, "");
+        continue;
+      } else {
+  			el.setAttribute(k, v);
+      }
+		}
+	}
+	append(el, children);
+	return el;
+}
+
+/* Create shortcuts for every known HTML element */
+[
+  "a",
+  "abbr",
+  "acronym",
+  "address",
+  "applet",
+  "area",
+  "article",
+  "aside",
+  "audio",
+  "b",
+  "base",
+  "basefont",
+  "bdo",
+  "big",
+  "blockquote",
+  "body",
+  "br",
+  "button",
+  "canvas",
+  "caption",
+  "center",
+  "cite",
+  "code",
+  "col",
+  "colgroup",
+  "datalist",
+  "dd",
+  "del",
+  "details",
+  "dfn",
+  "dialog",
+  "div",
+  "dl",
+  "dt",
+  "em",
+  "embed",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "font",
+  "footer",
+  "form",
+  "frame",
+  "frameset",
+  "head",
+  "header",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "hr",
+  "html",
+  "i",
+  "iframe",
+  "img",
+  "input",
+  "ins",
+  "kbd",
+  "label",
+  "legend",
+  "li",
+  "link",
+  "main",
+  "map",
+  "mark",
+  "meta",
+  "meter",
+  "nav",
+  "nobr",
+  "noscript",
+  "object",
+  "ol",
+  "optgroup",
+  "option",
+  "output",
+  "p",
+  "param",
+  "pre",
+  "progress",
+  "q",
+  "s",
+  "samp",
+  "script",
+  "section",
+  "select",
+  "small",
+  "source",
+  "span",
+  "strike",
+  "strong",
+  "style",
+  "sub",
+  "summary",
+  "sup",
+  "table",
+  "tbody",
+  "td",
+  "template",
+  "textarea",
+  "tfoot",
+  "th",
+  "thead",
+  "time",
+  "title",
+  "tr",
+  "u",
+  "ul",
+  "var",
+  "video",
+  "wbr",
+  "xmp",
+].forEach(tagname=>{
+	mk[tagname] = (...args) => mk(tagname, ...args);
+});
+
+function* nodesFromChildList(children) {
+	for(const child of children.flat(Infinity)) {
+		if(child instanceof Node) {
+			yield child;
+		} else {
+			yield new Text(child);
+		}
+	}
+}
+function append(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		if(el instanceof Node) el.appendChild(child);
+		else el.push(child);
+	}
+	return el;
+}
+
+function insertAfter(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		el.parentNode.insertBefore(child, el.nextSibling);
+	}
+	return el;
+}
+
+function clearContents(el) {
+	el.innerHTML = "";
+	return el;
+}
+
+function parseHTML(markup) {
+	if(markup.toLowerCase().trim().indexOf('<!doctype') === 0) {
+		const doc = document.implementation.createHTMLDocument("");
+		doc.documentElement.innerHTML = markup;
+		return doc;
+	} else {
+		const el = mk.template({});
+		el.innerHTML = markup;
+		return el.content;
+	}
+}</script>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+let dfnPanelData = {
+"00583f87": {"dfnID":"00583f87","dfnText":"from entry","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-navigationtransition-from"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from"},
+"05d605be": {"dfnID":"05d605be","dfnText":"transition","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-navigation-transition"},{"id":"ref-for-concept-navigation-transition\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition"},
+"12432dcb": {"dfnID":"12432dcb","dfnText":"<supports-condition>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-supports-condition"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
+"12eb7c09": {"dfnID":"12eb7c09","dfnText":"destination","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigateevent-destination"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination"},
+"1b28d572": {"dfnID":"1b28d572","dfnText":"URLPattern","external":true,"refSections":[{"refs":[{"id":"ref-for-urlpattern"},{"id":"ref-for-urlpattern\u2460"}],"title":"3. The urlpattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#urlpattern"},
+"1f9310ca": {"dfnID":"1f9310ca","dfnText":"serialize a function","external":true,"refSections":[{"refs":[{"id":"ref-for-css-serialize-a-function"}],"title":"3. The urlpattern() function"}],"url":"https://drafts.csswg.org/cssom-1/#css-serialize-a-function"},
+"2d8ceef2": {"dfnID":"2d8ceef2","dfnText":"activation","external":true,"refSections":[{"refs":[{"id":"ref-for-navigation-activation"},{"id":"ref-for-navigation-activation\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation"},
+"3349d69f": {"dfnID":"3349d69f","dfnText":"associated Document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-window"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window"},
+"347e8fe9": {"dfnID":"347e8fe9","dfnText":"URL","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-url"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://dom.spec.whatwg.org/#concept-document-url"},
+"3fca5a9e": {"dfnID":"3fca5a9e","dfnText":"map","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-map"}],"title":"3. The urlpattern() function"}],"url":"https://infra.spec.whatwg.org/#ordered-map"},
+"45b74284": {"dfnID":"45b74284","dfnText":"serialize a string","external":true,"refSections":[{"refs":[{"id":"ref-for-serialize-a-string"}],"title":"3. The urlpattern() function"}],"url":"https://drafts.csswg.org/cssom-1/#serialize-a-string"},
+"5a2f7ea1": {"dfnID":"5a2f7ea1","dfnText":"url()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-url"},{"id":"ref-for-funcdef-url\u2460"}],"title":"3. The urlpattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#funcdef-url"},
+"5c4f772b": {"dfnID":"5c4f772b","dfnText":"match","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern-match"},{"id":"ref-for-url-pattern-match\u2460"},{"id":"ref-for-url-pattern-match\u2461"},{"id":"ref-for-url-pattern-match\u2462"},{"id":"ref-for-url-pattern-match\u2463"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern-match"},
+"5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"},{"id":"ref-for-window\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"60393e82": {"dfnID":"60393e82","dfnText":"URL pattern","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern"}],"title":"1.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-url-pattern\u2460"},{"id":"ref-for-url-pattern\u2461"}],"title":"3. The urlpattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern"},
+"61e3d51c": {"dfnID":"61e3d51c","dfnText":"<if-test>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-if-test"}],"title":"1.3. The navigation() function for if()"}],"url":"https://drafts.csswg.org/css-values-5/#typedef-if-test"},
+"65c9f2cf": {"dfnID":"65c9f2cf","dfnText":"<rule-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-rule-list"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-rule-list"},
+"68150e76": {"dfnID":"68150e76","dfnText":"*","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-zero-plus"},{"id":"ref-for-mult-zero-plus\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-values-4/#mult-zero-plus"},
+"6a40c011": {"dfnID":"6a40c011","dfnText":"has been revealed","external":true,"refSections":[{"refs":[{"id":"ref-for-has-been-revealed"},{"id":"ref-for-has-been-revealed\u2460"},{"id":"ref-for-has-been-revealed\u2461"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed"},
+"6b631d3b": {"dfnID":"6b631d3b","dfnText":"entry","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationactivation-entry"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry"},
+"6e13c5fc": {"dfnID":"6e13c5fc","dfnText":"if()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-if"},{"id":"ref-for-funcdef-if\u2460"},{"id":"ref-for-funcdef-if\u2461"}],"title":"1.3. The navigation() function for if()"}],"url":"https://drafts.csswg.org/css-values-5/#funcdef-if"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"78fedd4c": {"dfnID":"78fedd4c","dfnText":"url (for NavigationDestination)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationdestination-url"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url"},
+"87806adf": {"dfnID":"87806adf","dfnText":"pushState(data, unused, url)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-history-pushstate"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate"},
+"8b6678c3": {"dfnID":"8b6678c3","dfnText":"navigation API","external":true,"refSections":[{"refs":[{"id":"ref-for-window-navigation-api"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigation-api"},
+"977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"}],"title":"3. The urlpattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
+"a25b060b": {"dfnID":"a25b060b","dfnText":"@when","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-when"},{"id":"ref-for-at-ruledef-when\u2460"}],"title":"1.2. The navigation() function for @when"}],"url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-when"},
+"at-ruledef-navigation": {"dfnID":"at-ruledef-navigation","dfnText":"@navigation","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-navigation"},{"id":"ref-for-at-ruledef-navigation\u2460"},{"id":"ref-for-at-ruledef-navigation\u2461"},{"id":"ref-for-at-ruledef-navigation\u2462"},{"id":"ref-for-at-ruledef-navigation\u2463"}],"title":"1.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-at-ruledef-navigation\u2464"}],"title":"3. The urlpattern() function"}],"url":"#at-ruledef-navigation"},
+"b33508ca": {"dfnID":"b33508ca","dfnText":"from","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationactivation-from"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from"},
+"b511103c": {"dfnID":"b511103c","dfnText":"style resource base URL","external":true,"refSections":[{"refs":[{"id":"ref-for-style-resource-base-url"}],"title":"3. The urlpattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#style-resource-base-url"},
+"bf4f3896": {"dfnID":"bf4f3896","dfnText":"url (for NavigationHistoryEntry)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationhistoryentry-url"},{"id":"ref-for-dom-navigationhistoryentry-url\u2460"},{"id":"ref-for-dom-navigationhistoryentry-url\u2461"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url"},
+"bf9f0d4e": {"dfnID":"bf9f0d4e","dfnText":"create","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern-create"}],"title":"3. The urlpattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern-create"},
+"c4f8137c": {"dfnID":"c4f8137c","dfnText":"<general-enclosed>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-general-enclosed"},{"id":"ref-for-typedef-general-enclosed\u2460"},{"id":"ref-for-typedef-general-enclosed\u2461"},{"id":"ref-for-typedef-general-enclosed\u2462"},{"id":"ref-for-typedef-general-enclosed\u2463"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed"},
+"c8c5d31a": {"dfnID":"c8c5d31a","dfnText":"ongoing navigate event","external":true,"refSections":[{"refs":[{"id":"ref-for-ongoing-navigate-event"},{"id":"ref-for-ongoing-navigate-event\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event"},
+"create-a-url-pattern-for-urlpattern": {"dfnID":"create-a-url-pattern-for-urlpattern","dfnText":"create a URL pattern for urlpattern()","external":false,"refSections":[{"refs":[{"id":"ref-for-create-a-url-pattern-for-urlpattern"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"#create-a-url-pattern-for-urlpattern"},
+"documents-navigation-api": {"dfnID":"documents-navigation-api","dfnText":"document\u2019s navigation API","external":false,"refSections":[{"refs":[{"id":"ref-for-documents-navigation-api"},{"id":"ref-for-documents-navigation-api\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"#documents-navigation-api"},
+"e270bd2a": {"dfnID":"e270bd2a","dfnText":"task","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-task"},{"id":"ref-for-concept-task\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task"},
+"f55ffdf2": {"dfnID":"f55ffdf2","dfnText":":local-link","external":true,"refSections":[{"refs":[{"id":"ref-for-local-link-pseudo"}],"title":"3. The urlpattern() function"}],"url":"https://drafts.csswg.org/selectors-5/#local-link-pseudo"},
+"funcdef-if-navigation": {"dfnID":"funcdef-if-navigation","dfnText":"navigation()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-if-navigation"}],"title":"1.3. The navigation() function for if()"}],"url":"#funcdef-if-navigation"},
+"funcdef-urlpattern": {"dfnID":"funcdef-urlpattern","dfnText":"urlpattern()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-urlpattern"},{"id":"ref-for-funcdef-urlpattern\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-funcdef-urlpattern\u2461"},{"id":"ref-for-funcdef-urlpattern\u2462"},{"id":"ref-for-funcdef-urlpattern\u2463"},{"id":"ref-for-funcdef-urlpattern\u2464"},{"id":"ref-for-funcdef-urlpattern\u2465"},{"id":"ref-for-funcdef-urlpattern\u2466"},{"id":"ref-for-funcdef-urlpattern\u2467"},{"id":"ref-for-funcdef-urlpattern\u2468"}],"title":"3. The urlpattern() function"}],"url":"#funcdef-urlpattern"},
+"funcdef-when-navigation": {"dfnID":"funcdef-when-navigation","dfnText":"navigation()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-when-navigation"},{"id":"ref-for-funcdef-when-navigation\u2460"}],"title":"1.2. The navigation() function for @when"}],"url":"#funcdef-when-navigation"},
+"navigation-location-url-pattern": {"dfnID":"navigation-location-url-pattern","dfnText":"navigation location URL pattern","external":false,"refSections":[{"refs":[{"id":"ref-for-navigation-location-url-pattern"},{"id":"ref-for-navigation-location-url-pattern\u2460"},{"id":"ref-for-navigation-location-url-pattern\u2461"},{"id":"ref-for-navigation-location-url-pattern\u2462"},{"id":"ref-for-navigation-location-url-pattern\u2463"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"#navigation-location-url-pattern"},
+"navigation-queries": {"dfnID":"navigation-queries","dfnText":"navigation queries","external":false,"refSections":[],"url":"#navigation-queries"},
+"serialize-a-urlpattern-function": {"dfnID":"serialize-a-urlpattern-function","dfnText":"serialize a urlpattern() function","external":false,"refSections":[],"url":"#serialize-a-urlpattern-function"},
+"typedef-navigation-condition": {"dfnID":"typedef-navigation-condition","dfnText":"<navigation-condition>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-condition"},{"id":"ref-for-typedef-navigation-condition\u2460"},{"id":"ref-for-typedef-navigation-condition\u2461"},{"id":"ref-for-typedef-navigation-condition\u2462"},{"id":"ref-for-typedef-navigation-condition\u2463"},{"id":"ref-for-typedef-navigation-condition\u2464"},{"id":"ref-for-typedef-navigation-condition\u2465"}],"title":"1.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-typedef-navigation-condition\u2466"}],"title":"1.2. The navigation() function for @when"},{"refs":[{"id":"ref-for-typedef-navigation-condition\u2467"}],"title":"1.3. The navigation() function for if()"}],"url":"#typedef-navigation-condition"},
+"typedef-navigation-in-parens": {"dfnID":"typedef-navigation-in-parens","dfnText":"<navigation-in-parens>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-in-parens"},{"id":"ref-for-typedef-navigation-in-parens\u2460"},{"id":"ref-for-typedef-navigation-in-parens\u2461"},{"id":"ref-for-typedef-navigation-in-parens\u2462"},{"id":"ref-for-typedef-navigation-in-parens\u2463"},{"id":"ref-for-typedef-navigation-in-parens\u2464"},{"id":"ref-for-typedef-navigation-in-parens\u2465"},{"id":"ref-for-typedef-navigation-in-parens\u2466"},{"id":"ref-for-typedef-navigation-in-parens\u2467"},{"id":"ref-for-typedef-navigation-in-parens\u2468"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u24ea"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2460"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2461"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2462"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2463"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"#typedef-navigation-in-parens"},
+"typedef-navigation-keyword": {"dfnID":"typedef-navigation-keyword","dfnText":"<navigation-keyword>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-keyword"},{"id":"ref-for-typedef-navigation-keyword\u2460"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"#typedef-navigation-keyword"},
+"typedef-navigation-location": {"dfnID":"typedef-navigation-location","dfnText":"<navigation-location>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-location"},{"id":"ref-for-typedef-navigation-location\u2460"},{"id":"ref-for-typedef-navigation-location\u2461"},{"id":"ref-for-typedef-navigation-location\u2462"},{"id":"ref-for-typedef-navigation-location\u2463"},{"id":"ref-for-typedef-navigation-location\u2464"},{"id":"ref-for-typedef-navigation-location\u2465"},{"id":"ref-for-typedef-navigation-location\u2466"},{"id":"ref-for-typedef-navigation-location\u2467"},{"id":"ref-for-typedef-navigation-location\u2468"},{"id":"ref-for-typedef-navigation-location\u2460\u24ea"},{"id":"ref-for-typedef-navigation-location\u2460\u2460"},{"id":"ref-for-typedef-navigation-location\u2460\u2461"},{"id":"ref-for-typedef-navigation-location\u2460\u2462"},{"id":"ref-for-typedef-navigation-location\u2460\u2463"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"#typedef-navigation-location"},
+"typedef-navigation-test": {"dfnID":"typedef-navigation-test","dfnText":"<navigation-test>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-test"},{"id":"ref-for-typedef-navigation-test\u2460"},{"id":"ref-for-typedef-navigation-test\u2461"}],"title":"1.1. Navigation queries: the @navigation rule"}],"url":"#typedef-navigation-test"},
+};
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    genAllDfnPanels();
+
+    document.body.addEventListener("click", (e) => {
+        // If not handled already, just hide all dfn panels.
+        hideAllDfnPanels();
+    });
+});
+
+window.addEventListener("resize", () => {
+    // Pin any visible dfn panel
+    queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>positionDfnPanel(el));
+});
+
+function genAllDfnPanels() {
+    for(const panelData of Object.values(dfnPanelData)) {
+        const dfnID = panelData.dfnID;
+        const dfn = document.getElementById(dfnID);
+        if(!dfn) {
+            console.log(`Can't find dfn#${dfnID}.`, panelData);
+            continue;
+        }
+        dfn.panelData = panelData;
+        insertDfnPopupAction(dfn);
+    }
+}
+
+function genDfnPanel(dfn, { dfnID, url, dfnText, refSections, external }) {
+    const dfnPanel = mk.aside({
+        class: "dfn-panel on",
+        id: `infopanel-for-${dfnID}`,
+        "data-for": dfnID,
+        "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
+        },
+        mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+            `Info about the '${dfnText}' ${external?"external":""} reference.`),
+        mk.a({href:url, class:"dfn-link"}, url),
+        refSections.length == 0 ? [] :
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({ href: `#${ref.id}` },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        genLinkingSyntaxes(dfn),
+    );
+
+    dfnPanel.addEventListener('click', (event) => {
+        if (event.target.nodeName == 'A') {
+            scrollToTargetAndHighlight(event);
+            pinDfnPanel(dfnPanel);
+        }
+        event.stopPropagation();
+        refocusOnTarget(event);
+    });
+    dfnPanel.addEventListener('keydown', (event) => {
+        if(event.keyCode == 27) { // Escape key
+            hideDfnPanel({dfnPanel});
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+
+    dfnPanel.dfn = dfn;
+    dfn.dfnPanel = dfnPanel;
+    return dfnPanel;
+}
+
+
+
+function hideAllDfnPanels() {
+    // Delete the currently-active dfn panel.
+    queryAll(".dfn-panel").forEach(dfnPanel=>hideDfnPanel({dfnPanel}));
+}
+
+function showDfnPanel(dfn) {
+    hideAllDfnPanels(); // Only display one at a time.
+
+    dfn.setAttribute("aria-expanded", "true");
+
+    const dfnPanel = genDfnPanel(dfn, dfn.panelData);
+
+    // Give the dfn a unique tabindex, and then
+    // give all the tabbable panel bits successive indexes.
+    let tabIndex = 100;
+    dfn.tabIndex = tabIndex++;
+    const tabbable = dfnPanel.querySelectorAll(":is(a, button)");
+    for (const el of tabbable) {
+        el.tabIndex = tabIndex++;
+    }
+
+    append(document.body, dfnPanel);
+    positionDfnPanel(dfnPanel);
+}
+
+function positionDfnPanel(dfnPanel) {
+    const dfn = dfnPanel.dfn;
+    const dfnPos = getBounds(dfn);
+    dfnPanel.style.top = dfnPos.bottom + "px";
+    dfnPanel.style.left = dfnPos.left + "px";
+
+    const panelPos = dfnPanel.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, dfnPos.left - overflowAmount);
+        dfnPanel.style.left = newLeft + "px";
+    }
+}
+
+function pinDfnPanel(dfnPanel) {
+    // Switch it to "activated" state, which pins it.
+    dfnPanel.classList.add("activated");
+    dfnPanel.style.position = "fixed";
+    dfnPanel.style.left = null;
+    dfnPanel.style.top = null;
+}
+
+function hideDfnPanel({dfn, dfnPanel}) {
+    if(!dfnPanel) dfnPanel = dfn.dfnPanel;
+    if(!dfn) dfn = dfnPanel.dfn;
+    dfn.dfnPanel = undefined;
+    dfnPanel.dfn = undefined;
+    dfn.setAttribute("aria-expanded", "false");
+    dfn.tabIndex = undefined;
+    dfnPanel.remove()
+}
+
+function toggleDfnPanel(dfn) {
+    if(dfn.dfnPanel) {
+        hideDfnPanel(dfn);
+    } else {
+        showDfnPanel(dfn);
+    }
+}
+
+function insertDfnPopupAction(dfn) {
+    dfn.setAttribute('role', 'button');
+    dfn.setAttribute('aria-expanded', 'false')
+    dfn.tabIndex = 0;
+    dfn.classList.add('has-dfn-panel');
+    dfn.addEventListener('click', (event) => {
+        toggleDfnPanel(dfn);
+        event.stopPropagation();
+    });
+    dfn.addEventListener('keypress', (event) => {
+        const kc = event.keyCode;
+        // 32->Space, 13->Enter
+        if(kc == 32 || kc == 13) {
+            toggleDfnPanel(dfn);
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    });
+}
+
+function refocusOnTarget(event) {
+    const target = event.target;
+    setTimeout(() => {
+        // Refocus on the event.target element.
+        // This is needed after browser scrolls to the destination.
+        target.focus();
+    });
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function scrollToTargetAndHighlight(event) {
+    let hash = event.target.hash;
+    if (hash) {
+        hash = decodeURIComponent(hash.substring(1));
+        const dest = document.getElementById(hash);
+        if (dest) {
+            dest.classList.add('highlighted');
+            setTimeout(() => dest.classList.remove('highlighted'), 1000);
+        }
+    }
+}
+
+// Functions, divided by link type, that wrap an autolink's
+// contents with the appropriate outer syntax.
+// Alternately, a string naming another type they format
+// the same as.
+function needsFor(type) {
+    switch(type) {
+        case "descriptor":
+        case "value":
+        case "element-attr":
+        case "attr-value":
+        case "element-state":
+        case "method":
+        case "constructor":
+        case "argument":
+        case "attribute":
+        case "const":
+        case "dict-member":
+        case "event":
+        case "enum-value":
+        case "stringifier":
+        case "serializer":
+        case "iterator":
+        case "maplike":
+        case "setlike":
+        case "state":
+        case "mode":
+        case "context":
+        case "facet": return true;
+
+        default: return false;
+    }
+}
+function refusesFor(type) {
+    switch(type) {
+        case "property":
+        case "element":
+        case "interface":
+        case "namespace":
+        case "callback":
+        case "dictionary":
+        case "enum":
+        case "exception":
+        case "typedef":
+        case "http-header":
+        case "permission": return true;
+
+        default: return false;
+    }
+}
+function linkFormatterFromType(type) {
+    switch(type) {
+        case 'scheme':
+        case 'permission':
+        case 'dfn': return (text) => `[=${text}=]`;
+
+        case 'abstract-op': return (text) => `[\$${text}\$]`;
+
+        case 'function':
+        case 'at-rule':
+        case 'selector':
+        case 'value': return (text) => `''${text}''`;
+
+        case 'http-header': return (text) => `[:${text}:]`;
+
+        case 'interface':
+        case 'constructor':
+        case 'method':
+        case 'argument':
+        case 'attribute':
+        case 'callback':
+        case 'dictionary':
+        case 'dict-member':
+        case 'enum':
+        case 'enum-value':
+        case 'exception':
+        case 'const':
+        case 'typedef':
+        case 'stringifier':
+        case 'serializer':
+        case 'iterator':
+        case 'maplike':
+        case 'setlike':
+        case 'extended-attribute':
+        case 'event':
+        case 'idl': return (text) => `{{${text}}}`;
+
+        case 'element-state':
+        case 'element-attr':
+        case 'attr-value':
+        case 'element': return (element) => `<{${element}}>`;
+
+        case 'grammar': return (text) => `${text} (within a <pre class=prod>)`;
+
+        case 'type': return (text)=> `<<${text}>>`;
+
+        case 'descriptor':
+        case 'property': return (text) => `'${text}'`;
+
+        default: return;
+    };
+};
+
+function genLinkingSyntaxes(dfn) {
+    if(dfn.tagName != "DFN") return;
+
+    const type = dfn.getAttribute('data-dfn-type');
+    if(!type) {
+        console.log(`<dfn> doesn't have a data-dfn-type:`, dfn);
+        return [];
+    }
+
+    // Return a function that wraps link text based on the type
+    const linkFormatter = linkFormatterFromType(type);
+    if(!linkFormatter) {
+        console.log(`<dfn> has an unknown data-dfn-type:`, dfn);
+        return [];
+    }
+
+    let ltAlts;
+    if(dfn.hasAttribute('data-lt')) {
+        ltAlts = dfn.getAttribute('data-lt')
+            .split("|")
+            .map(x=>x.trim());
+    } else {
+        ltAlts = [dfn.textContent.trim()];
+    }
+    if(type == "type") {
+        // lt of "<foo>", but "foo" is the interior;
+        // <<foo/bar>> is how you write it with a for,
+        // not <foo/<bar>> or whatever.
+        for(var i = 0; i < ltAlts.length; i++) {
+            const lt = ltAlts[i];
+            const match = /<(.*)>/.exec(lt);
+            if(match) { ltAlts[i] = match[1]; }
+        }
+    }
+
+    let forAlts;
+    if(dfn.hasAttribute('data-dfn-for')) {
+        forAlts = dfn.getAttribute('data-dfn-for')
+            .split(",")
+            .map(x=>x.trim());
+    } else {
+        forAlts = [''];
+    }
+
+    let linkingSyntaxes = [];
+    if(!needsFor(type)) {
+        for(const lt of ltAlts) {
+            linkingSyntaxes.push(linkFormatter(lt));
+        }
+    }
+    if(!refusesFor(type)) {
+        for(const f of forAlts) {
+            linkingSyntaxes.push(linkFormatter(`${f}/${ltAlts[0]}`))
+        }
+    }
+    return [
+        mk.b({}, 'Possible linking syntaxes:'),
+        mk.ul({},
+            ...linkingSyntaxes.map(link => {
+                const copyLink = async () =>
+                    await navigator.clipboard.writeText(link);
+                return mk.li({},
+                    mk.div({ class: 'link-item' },
+                        mk.button({
+                            class: 'copy-icon', title: 'Copy',
+                            type: 'button',
+                            _onclick: copyLink,
+                            tabindex: 0,
+                        }, mk.span({ class: 'icon' }) ),
+                        mk.span({}, link)
+                    )
+                );
+            })
+        )
+    ];
+}
+}
+</script>
+<script>/* Boilerplate: script-ref-hints */
+"use strict";
+{
+let refsData = {
+"#at-ruledef-navigation": {"displayText":"@navigation","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"@navigation","type":"at-rule","url":"#at-ruledef-navigation"},
+"#create-a-url-pattern-for-urlpattern": {"displayText":"create a url pattern for urlpattern()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"create a url pattern for urlpattern()","type":"dfn","url":"#create-a-url-pattern-for-urlpattern"},
+"#documents-navigation-api": {"displayText":"document's navigation api","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"document's navigation api","type":"dfn","url":"#documents-navigation-api"},
+"#funcdef-if-navigation": {"displayText":"navigation()","export":true,"for_":["if()"],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"navigation()","type":"function","url":"#funcdef-if-navigation"},
+"#funcdef-urlpattern": {"displayText":"urlpattern()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"urlpattern()","type":"function","url":"#funcdef-urlpattern"},
+"#funcdef-when-navigation": {"displayText":"navigation()","export":true,"for_":["@when"],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"navigation()","type":"function","url":"#funcdef-when-navigation"},
+"#navigation-location-url-pattern": {"displayText":"navigation location url pattern","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"navigation location url pattern","type":"dfn","url":"#navigation-location-url-pattern"},
+"#typedef-navigation-condition": {"displayText":"<navigation-condition>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<navigation-condition>","type":"type","url":"#typedef-navigation-condition"},
+"#typedef-navigation-in-parens": {"displayText":"<navigation-in-parens>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<navigation-in-parens>","type":"type","url":"#typedef-navigation-in-parens"},
+"#typedef-navigation-keyword": {"displayText":"<navigation-keyword>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<navigation-keyword>","type":"type","url":"#typedef-navigation-keyword"},
+"#typedef-navigation-location": {"displayText":"<navigation-location>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<navigation-location>","type":"type","url":"#typedef-navigation-location"},
+"#typedef-navigation-test": {"displayText":"<navigation-test>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<navigation-test>","type":"type","url":"#typedef-navigation-test"},
+"https://dom.spec.whatwg.org/#concept-document-url": {"displayText":"URL","export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"url","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document-url"},
+"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition": {"displayText":"<supports-condition>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"<supports-condition>","type":"type","url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
+"https://drafts.csswg.org/css-conditional-5/#at-ruledef-when": {"displayText":"@when","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"@when","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-when"},
+"https://drafts.csswg.org/css-syntax-3/#typedef-rule-list": {"displayText":"<rule-list>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<rule-list>","type":"type","url":"https://drafts.csswg.org/css-syntax-3/#typedef-rule-list"},
+"https://drafts.csswg.org/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"https://drafts.csswg.org/css-values-4/#funcdef-url": {"displayText":"url()","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"url()","type":"function","url":"https://drafts.csswg.org/css-values-4/#funcdef-url"},
+"https://drafts.csswg.org/css-values-4/#mult-zero-plus": {"displayText":"*","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"*","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#mult-zero-plus"},
+"https://drafts.csswg.org/css-values-4/#string-value": {"displayText":"<string>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<string>","type":"type","url":"https://drafts.csswg.org/css-values-4/#string-value"},
+"https://drafts.csswg.org/css-values-4/#style-resource-base-url": {"displayText":"style resource base URL","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"style resource base url","type":"dfn","url":"https://drafts.csswg.org/css-values-4/#style-resource-base-url"},
+"https://drafts.csswg.org/css-values-5/#funcdef-if": {"displayText":"if()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-values","spec":"css-values-5","status":"current","text":"if()","type":"function","url":"https://drafts.csswg.org/css-values-5/#funcdef-if"},
+"https://drafts.csswg.org/css-values-5/#typedef-if-test": {"displayText":"<if-test>","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-values","spec":"css-values-5","status":"current","text":"<if-test>","type":"type","url":"https://drafts.csswg.org/css-values-5/#typedef-if-test"},
+"https://drafts.csswg.org/cssom-1/#css-serialize-a-function": {"displayText":"serialize a function","export":true,"for_":["CSS"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"serialize a function","type":"dfn","url":"https://drafts.csswg.org/cssom-1/#css-serialize-a-function"},
+"https://drafts.csswg.org/cssom-1/#serialize-a-string": {"displayText":"serialize a string","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"serialize a string","type":"dfn","url":"https://drafts.csswg.org/cssom-1/#serialize-a-string"},
+"https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed": {"displayText":"<general-enclosed>","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"<general-enclosed>","type":"type","url":"https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed"},
+"https://drafts.csswg.org/selectors-5/#local-link-pseudo": {"displayText":":local-link","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"current","text":":local-link","type":"selector","url":"https://drafts.csswg.org/selectors-5/#local-link-pseudo"},
+"https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed": {"displayText":"has been revealed","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"has been revealed","type":"dfn","url":"https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window": {"displayText":"associated Document","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"associated document","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition": {"displayText":"transition","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"transition","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from": {"displayText":"from entry","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"from entry","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate": {"displayText":"pushState(data, unused, url)","export":true,"for_":["History"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"pushState(data, unused, url)","type":"method","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination": {"displayText":"destination","export":true,"for_":["NavigateEvent"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"destination","type":"attribute","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry": {"displayText":"entry","export":true,"for_":["NavigationActivation"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"entry","type":"attribute","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from": {"displayText":"from","export":true,"for_":["NavigationActivation"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"from","type":"attribute","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url": {"displayText":"url","export":true,"for_":["NavigationDestination"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"url","type":"attribute","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url": {"displayText":"url","export":true,"for_":["NavigationHistoryEntry"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"url","type":"attribute","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation": {"displayText":"activation","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"activation","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event": {"displayText":"ongoing navigate event","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"ongoing navigate event","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window": {"displayText":"Window","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Window","type":"interface","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigation-api": {"displayText":"navigation API","export":true,"for_":[],"level":"","normative":true,"shortname":"html","spec":"html","status":"anchor-block","text":"navigation api","type":"dfn","url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigation-api"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task": {"displayText":"task","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task"},
+"https://infra.spec.whatwg.org/#ordered-map": {"displayText":"map","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"map","type":"dfn","url":"https://infra.spec.whatwg.org/#ordered-map"},
+"https://urlpattern.spec.whatwg.org/#url-pattern": {"displayText":"URL pattern","export":true,"for_":[],"level":"1","normative":true,"shortname":"urlpattern","spec":"urlpattern","status":"current","text":"url pattern","type":"dfn","url":"https://urlpattern.spec.whatwg.org/#url-pattern"},
+"https://urlpattern.spec.whatwg.org/#url-pattern-create": {"displayText":"create","export":true,"for_":["URL pattern"],"level":"1","normative":true,"shortname":"urlpattern","spec":"urlpattern","status":"current","text":"create","type":"dfn","url":"https://urlpattern.spec.whatwg.org/#url-pattern-create"},
+"https://urlpattern.spec.whatwg.org/#url-pattern-match": {"displayText":"match","export":true,"for_":["URL pattern"],"level":"1","normative":true,"shortname":"urlpattern","spec":"urlpattern","status":"current","text":"match","type":"dfn","url":"https://urlpattern.spec.whatwg.org/#url-pattern-match"},
+"https://urlpattern.spec.whatwg.org/#urlpattern": {"displayText":"URLPattern","export":true,"for_":[],"level":"1","normative":true,"shortname":"urlpattern","spec":"urlpattern","status":"current","text":"URLPattern","type":"interface","url":"https://urlpattern.spec.whatwg.org/#urlpattern"},
+};
+
+function mkRefHint(link, ref) {
+    const linkText = link.textContent;
+    let dfnTextElements = '';
+    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
+        // Give the original term if it's being displayed in a different way.
+        // But allow casing differences, they're insignificant.
+        dfnTextElements =
+            mk.li({},
+                mk.b({}, "Term: "),
+                mk.span({}, ref.displayText)
+            );
+    }
+    const forList = ref.for_;
+    let forListElements;
+    if(forList.length == 0) {
+        forListElements = [];
+    } else if(forList.length == 1) {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.span({}, forList[0]),
+        );
+    } else {
+        forListElements = mk.li({},
+            mk.b({}, "For: "),
+            mk.ul({},
+                ...forList.map(forItem =>
+                    mk.li({},
+                        mk.span({}, forItem)
+                    ),
+                ),
+            ),
+        );
+    }
+    const url = ref.url;
+    const safeUrl = encodeURIComponent(url);
+    const hintPanel = mk.aside({
+        class: "ref-hint",
+        id: `ref-hint-for-${safeUrl}`,
+        "data-for": url,
+        "aria-labelled-by": `ref-hint-for-${safeUrl}`,
+    },
+        mk.ul({},
+            dfnTextElements,
+            mk.li({},
+                mk.b({}, "URL: "),
+                mk.a({ href: url, class: "ref" }, url),
+            ),
+            mk.li({},
+                mk.b({}, "Type: "),
+                mk.span({}, `${ref.type}`),
+            ),
+            mk.li({},
+                mk.b({}, "Spec: "),
+                mk.span({}, `${ref.spec ? ref.spec : ''}`),
+            ),
+            forListElements
+        ),
+    );
+    hintPanel.forLink = link;
+    setupRefHintEventListeners(link, hintPanel);
+    return hintPanel;
+}
+
+function hideAllRefHints() {
+    queryAll(".ref-hint").forEach(el=>hideRefHint(el));
+}
+
+function hideRefHint(refHint) {
+    const link = refHint.forLink;
+    link.setAttribute("aria-expanded", "false");
+    if(refHint.teardownEventListeners) {
+        refHint.teardownEventListeners();
+    }
+    refHint.remove();
+}
+
+function showRefHint(link) {
+    if(link.classList.contains("dfn-link")) return;
+    const url = link.getAttribute("href");
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
+    if(!ref) return;
+
+    hideAllRefHints(); // Only display one at this time.
+
+    const refHint = mkRefHint(link, ref);
+    append(document.body, refHint);
+    link.setAttribute("aria-expanded", "true");
+    positionRefHint(refHint);
+}
+
+function setupRefHintEventListeners(link, refHint) {
+    if (refHint.teardownEventListeners) return;
+    // Add event handlers to hide the refHint after the user moves away
+    // from both the link and refHint, if not hovering either within one second.
+    let timeout = null;
+    const startHidingRefHint = (event) => {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            hideRefHint(refHint);
+        }, 1000);
+    }
+    const resetHidingRefHint = (event) => {
+        if (timeout) clearTimeout(timeout);
+        timeout = null;
+    };
+    link.addEventListener("mouseleave", startHidingRefHint);
+    link.addEventListener("mouseenter", resetHidingRefHint);
+    link.addEventListener("blur", startHidingRefHint);
+    link.addEventListener("focus", resetHidingRefHint);
+    refHint.addEventListener("mouseleave", startHidingRefHint);
+    refHint.addEventListener("mouseenter", resetHidingRefHint);
+    refHint.addEventListener("blur", startHidingRefHint);
+    refHint.addEventListener("focus", resetHidingRefHint);
+
+    refHint.teardownEventListeners = () => {
+        // remove event listeners
+        resetHidingRefHint();
+        link.removeEventListener("mouseleave", startHidingRefHint);
+        link.removeEventListener("mouseenter", resetHidingRefHint);
+        link.removeEventListener("blur", startHidingRefHint);
+        link.removeEventListener("focus", resetHidingRefHint);
+        refHint.removeEventListener("mouseleave", startHidingRefHint);
+        refHint.removeEventListener("mouseenter", resetHidingRefHint);
+        refHint.removeEventListener("blur", startHidingRefHint);
+        refHint.removeEventListener("focus", resetHidingRefHint);
+    };
+}
+
+function positionRefHint(refHint) {
+    const link = refHint.forLink;
+    const linkPos = getBounds(link);
+    refHint.style.top = linkPos.bottom + "px";
+    refHint.style.left = linkPos.left + "px";
+
+    const panelPos = refHint.getBoundingClientRect();
+    const panelMargin = 8;
+    const maxRight = document.body.parentNode.clientWidth - panelMargin;
+    if (panelPos.right > maxRight) {
+        const overflowAmount = panelPos.right - maxRight;
+        const newLeft = Math.max(panelMargin, linkPos.left - overflowAmount);
+        refHint.style.left = newLeft + "px";
+    }
+}
+
+// TODO: shared util
+// Returns the root-level absolute position {left and top} of element.
+function getBounds(el, relativeTo=document.body) {
+    const relativeRect = relativeTo.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const top = elRect.top - relativeRect.top;
+    const left = elRect.left - relativeRect.left;
+    return {
+        top,
+        left,
+        bottom: top + elRect.height,
+        right: left + elRect.width,
+    }
+}
+
+function showRefHintListener(e) {
+    // If the target isn't in a link (or is a link),
+    // just ignore it.
+    let link = e.target.closest("a");
+    if(!link) return;
+
+    // If the target is in a ref-hint panel
+    // (aka a link in the already-open one),
+    // also just ignore it.
+    if(link.closest(".ref-hint")) return;
+
+    // Otherwise, show the panel for the link.
+    showRefHint(link);
+}
+
+function hideAllHintsListener(e) {
+    // If the click is inside a ref-hint panel, ignore it.
+    if(e.target.closest(".ref-hint")) return;
+    // Otherwise, close all the current panels.
+    hideAllRefHints();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("mousedown", showRefHintListener);
+    document.body.addEventListener("focus", showRefHintListener);
+
+    document.body.addEventListener("click", hideAllHintsListener);
+});
+
+window.addEventListener("resize", () => {
+    // Hide any open ref hint.
+    hideAllRefHints();
+});
+}
+</script>
