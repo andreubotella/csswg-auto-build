@@ -79,7 +79,7 @@ with <<navigation-condition>> defined as:
 	<dfn><<navigation-in-parens>></dfn> = ( <<navigation-condition>> ) | ( <<navigation-test>> ) | <<general-enclosed>>
 	<dfn><<navigation-test>></dfn> = <<navigation-location>> | <<navigation-keyword>> : <<navigation-location>>
 	<dfn><<navigation-keyword>></dfn> = at | from | to
-	<dfn><<navigation-location>></dfn> = <<urlpattern()>>
+	<dfn><<navigation-location>></dfn> = <<url-pattern()>>
 </pre>
 
 The above grammar is purposely very loose for forwards-compatibility reasons,
@@ -130,6 +130,8 @@ as follows:
 			[=URL pattern/match|matches=]
 			the [=navigation location URL pattern=] of <<navigation-location>>.
 
+			NOTE: This part handles <code>from:</code> when it matches in the old page.
+
 		* its [=activation=] is non-null,
 			the document's [=has been revealed=] is false or
 			was false at the start of the current [=task=],
@@ -139,16 +141,36 @@ as follows:
 			[=URL pattern/match|matches=]
 			the [=navigation location URL pattern=] of <<navigation-location>>.
 
+			NOTE: This part handles <code>from:</code> when it matches in the new page.
+
 	: to: <<navigation-location>>
 	:: The result is true if
 		the [=document's navigation API=] of the document
 		is non-null, and either:
 
 		* its [=ongoing navigate event=] is non-null,
-			and its {{NavigateEvent/destination}}'s
-			{{NavigationDestination/url}}
+			and the [=current to url=]
 			[=URL pattern/match|matches=]
-			the [=navigation location URL pattern=] of <<navigation-location>>.
+			the [=navigation location URL pattern=] of <<navigation-location>>,
+			where the <dfn>current to url</dfn> is defined as:
+
+			* if the {{pageswap}} event has fired since that navigation began,
+				and its {{PageSwapEvent/activation}} was non-null,
+				and that {{PageSwapEvent/activation}}'s
+				{{NavigationActivation/entry}}'s
+				{{NavigationHistoryEntry/url}} is non-null,
+				then that
+				{{NavigationHistoryEntry/url}}.
+
+				NOTE: This part <em>does</em> expose the result of redirects.
+
+				ISSUE: Is the final "non-null" check needed?
+
+			* otherwise, the [=ongoing navigate event=]'s
+				{{NavigateEvent/destination}}'s
+				{{NavigationDestination/url}}
+
+				NOTE: This part does <em>not</em> expose the result of redirects.
 
 			ISSUE: This assumes that the [=ongoing navigate event=]
 			and the [=transition=] have the same lifetime,
@@ -160,6 +182,8 @@ as follows:
 			we could probably define this more like "from" above.
 			But which lifetime is the one we want?
 
+			NOTE: This part handles <code>to:</code> when it matches in the old page.
+
 		* its [=activation=] is non-null,
 			the document's [=has been revealed=] is false or
 			was false at the start of the current [=task=],
@@ -169,18 +193,17 @@ as follows:
 			[=URL pattern/match|matches=]
 			the [=navigation location URL pattern=] of <<navigation-location>>.
 
-		TODO: Update this definition to handle redirects better.
-		In particular, we'd like the ''to:'' URL to change
-		at only a single time,
-		from the original URL of the navigation to the final one.
-		There is already a well-defined definition and processing model
-		that we can depend on.
+			NOTE: This part handles <code>to:</code> when it matches in the new page.
 
 	ISSUE: The above definitions of from and to apparently don't work right
 	if you start a same-document navigation (e.g., with {{History/pushState}})
 	in the middle of a cross-document navigation.
 
-	ISSUE: Improve integration with [=has been revealed=] rather than monkeypatching it.
+	ISSUE: Generally improve integration with the HTML spec for these definitions,
+	instead of monkeypatching.
+	This includes the interaction with [=has been revealed=]
+	and the interaction with the {{pageswap}} event,
+	and other things where this section links to non-exported definitions.
 
 : <<general-enclosed>>
 ::
@@ -193,9 +216,9 @@ as follows:
 The <dfn>navigation location URL pattern</dfn> of a <<navigation-location>>
 depends on the type of <<navigation-location>>:
 
-: <<urlpattern()>>
+: <<url-pattern()>>
 ::	The [=URL pattern=] represented by the function; see
-	[=create a URL pattern for urlpattern()=].
+	[=create a URL pattern for url-pattern()=].
 
 ISSUE: There is currently only one type of <<navigation-location>>
 but we should consider adding another,
@@ -245,7 +268,7 @@ to model it after.
 
 TODO: To be written.
 
-<h2 id="urlpattern-function">The ''urlpattern()'' function</h2>
+<h2 id="url-pattern-function">The ''url-pattern()'' function</h2>
 
 <!--
 
@@ -256,32 +279,32 @@ exported any more, since it was exported for this definition.
 
 -->
 
-The <dfn export function>urlpattern()</dfn> function represents a [=URL pattern=],
+The <dfn export function>url-pattern()</dfn> function represents a [=URL pattern=],
 which can be used to match URLs.
 
 <pre class="prod def">
-<<urlpattern()>> = urlpattern( <<string>> )
+<<url-pattern()>> = url-pattern( <<string>> )
 </pre>
 
 This function represents a [=URL pattern=] that can be created
-using the steps of the <dfn>create a URL pattern for urlpattern()</dfn> algorithm:
+using the steps of the <dfn>create a URL pattern for url-pattern()</dfn> algorithm:
 
-1. Let <var>arg</var> be the <<string>> argument to the ''urlpattern()'' function.
+1. Let <var>arg</var> be the <<string>> argument to the ''url-pattern()'' function.
 
 1. Let <var>baseURL</var> be the [=style resource base URL=] of
-	the rule or declaration block containing the ''urlpattern()'' function.
+	the rule or declaration block containing the ''url-pattern()'' function.
 
 	<div class="issue">
 	Do we want this to be the base URL all the time?
-	For use of ''urlpattern()'' in ''@navigation'',
+	For use of ''url-pattern()'' in ''@navigation'',
 	it's likely more useful for the base URL
 	to be the document URL rather than the style sheet URL.
-	However, it would be very awkward for ''urlpattern()''
+	However, it would be very awkward for ''url-pattern()''
 	to be inconsistent with ''url()''.
 
-	Should we allow the base URL of ''urlpattern()''
+	Should we allow the base URL of ''url-pattern()''
 	to be defined by the consumer?
-	Should we introduce <code>document-urlpattern()</code>?
+	Should we introduce <code>document-url-pattern()</code>?
 	Should we do something similar to
 	[[css-images-3#ambiguous-urls]]
 	(see <w3c/csswg-drafts#383>)?
@@ -298,7 +321,7 @@ NOTE:  This function requires that its argument is quoted.
 This differs from the ''url()'' function,
 which allows its argument to be quoted or unquoted.
 
-To <dfn export>serialize a ''urlpattern()'' function</dfn> <var>f</var>,
+To <dfn export>serialize a ''url-pattern()'' function</dfn> <var>f</var>,
 [=serialize a function=] <var>f</var>,
 using [=serialize a string=] on the single argument
 to serialize <var>f</var>'s contents.
