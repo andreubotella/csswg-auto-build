@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 86e3be07a, updated Tue Nov 18 16:58:08 2025 +0000" name="generator">
   <link href="https://www.w3.org/TR/css-sizing-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="93da5257077744e994f4a7b98a186f1d3f943f45" name="revision">
+  <meta content="fdc08f79a22f0b6cda2ac823b1c7a2f8b1004445" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -1056,7 +1056,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Box Sizing Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-11-05">5 November 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-26">26 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1177,7 +1177,9 @@ Overriding Contained Intrinsic Sizes: the <span class="css">contain-intrinsic-*<
        <ol class="toc">
         <li><a href="#last-remembered"><span class="secno">5.2.1</span> <span class="content">
 Last Remembered Size</span></a>
-        <li><a href="#cis-scrollbars"><span class="secno">5.2.2</span> <span class="content">
+        <li><a href="#responsive-iframes"><span class="secno">5.2.2</span> <span class="content">
+Responsively-sized iframes</span></a>
+        <li><a href="#cis-scrollbars"><span class="secno">5.2.3</span> <span class="content">
 Interaction With <span class="css">overflow: auto</span></span></a>
        </ol>
       <li><a href="#intrinsic-contribution"><span class="secno">5.3</span> <span class="content">
@@ -1666,7 +1668,7 @@ Overriding Contained Intrinsic Sizes: the <span class="css">contain-intrinsic-*<
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-contain-intrinsic-width">contain-intrinsic-width</dfn>, <dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-contain-intrinsic-height">contain-intrinsic-height</dfn>, <dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-contain-intrinsic-block-size">contain-intrinsic-block-size</dfn>, <dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-contain-intrinsic-inline-size">contain-intrinsic-inline-size</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">auto<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> [ none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value">&lt;length [0,∞]></a> ]	
+      <td class="prod">[ auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②">|</a> from-element ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> [ none <span id="ref-for-comb-one③">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value">&lt;length [0,∞]></a> ]	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>none	
@@ -1704,33 +1706,50 @@ Overriding Contained Intrinsic Sizes: the <span class="css">contain-intrinsic-*<
 	would still size according to the specified grid,
 	usually ending up with a larger content size than specified.</p>
    <dl>
-    <dt data-md><dfn class="css dfn-paneled" data-dfn-for="contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size, contain-intrinsic-size" data-dfn-type="value" data-export id="valdef-contain-intrinsic-width-auto">auto</dfn>? [ <dfn class="css dfn-paneled" data-dfn-for="contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size, contain-intrinsic-size" data-dfn-type="value" data-export id="valdef-contain-intrinsic-width-none">none</dfn> | <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value②">&lt;length></a> ]
+    <dt data-md><dfn class="css dfn-paneled" data-dfn-for="contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size, contain-intrinsic-size" data-dfn-type="value" data-export id="valdef-contain-intrinsic-width-none">none</dfn> | <dfn class="css dfn-paneled" data-dfn-for="contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size, contain-intrinsic-size" data-dfn-type="value" data-export id="valdef-contain-intrinsic-width-length"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value②">&lt;length></a></dfn>
     <dd data-md>
-     <p>If <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto">auto</a> is specified
+     <p>If no other <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①">contain-intrinsic-size</a> value
+(such as <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto">auto</a>)
+is providing an <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size②">explicit intrinsic inner size</a>,
+the corresponding axis either doesn’t have an <span id="ref-for-explicit-intrinsic-inner-size③">explicit intrinsic inner size</span>
+(if <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-none" id="ref-for-valdef-contain-intrinsic-width-none">none</a> is specified)
+or has an <span id="ref-for-explicit-intrinsic-inner-size④">explicit intrinsic inner size</span> of the specified <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value③">&lt;length></a>.</p>
+    <dt data-md><dfn class="css dfn-paneled" data-dfn-for="contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size, contain-intrinsic-size" data-dfn-type="value" data-export id="valdef-contain-intrinsic-width-auto">auto</dfn>
+    <dd data-md>
+     <p>If <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto①">auto</a> is specified
 and the element has a <a data-link-type="dfn" href="#last-remembered" id="ref-for-last-remembered">last remembered size</a>
 and is currently <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#skips-its-contents" id="ref-for-skips-its-contents">skipping its contents</a>,
-its <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size②">explicit intrinsic inner size</a> in the corresponding axis
+its <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size⑤">explicit intrinsic inner size</a> in the corresponding axis
 is the <span id="ref-for-last-remembered①">last remembered size</span> in that axis.</p>
      <p class="note" role="note"><span class="marker">Note:</span> This occurs, for example,
 when an element with <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-contain-2/#propdef-content-visibility" id="ref-for-propdef-content-visibility">content-visibility: auto</a>
 is off-screen.</p>
-     <p>Otherwise,
-the corresponding axis either doesn’t have an <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size③">explicit intrinsic inner size</a>
-(if <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-none" id="ref-for-valdef-contain-intrinsic-width-none">none</a> is specified)
-or has an <span id="ref-for-explicit-intrinsic-inner-size④">explicit intrinsic inner size</span> of the specified <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value③">&lt;length></a>.</p>
      <details class="wpt-tests-block" dir="ltr" lang="en">
       <summary>Tests</summary>
       <ul class="wpt-tests-list">
        <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-contain/content-visibility/content-visibility-058.html" title="css/css-contain/content-visibility/content-visibility-058.html">content-visibility-058.html</a> <a class="wpt-live" href="http://wpt.live/css/css-contain/content-visibility/content-visibility-058.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-contain/content-visibility/content-visibility-058.html"><small>(source)</small></a>
       </ul>
      </details>
+    <dt data-md><dfn class="css dfn-paneled" data-dfn-for="contain-intrinsic-width, contain-intrinsic-height, contain-intrinsic-block-size, contain-intrinsic-inline-size, contain-intrinsic-size" data-dfn-type="value" data-export id="valdef-contain-intrinsic-width-from-element">from-element</dfn>
+    <dd data-md>
+     <p>If <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-from-element" id="ref-for-valdef-contain-intrinsic-width-from-element">from-element</a> is specified
+and the element is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#replaced-element" id="ref-for-replaced-element⑦">replaced element</a>
+with an <a data-link-type="dfn" href="#internal-layout-intrinsic-size" id="ref-for-internal-layout-intrinsic-size">internal layout intrinsic size</a>,
+its <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size⑥">explicit intrinsic inner size</a> in the corresponding axis
+is that size.</p>
+     <p class="note" role="note"><span class="marker">Note:</span> Whether a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#replaced-element" id="ref-for-replaced-element⑧">replaced element</a>
+has an <a data-link-type="dfn" href="#internal-layout-intrinsic-size" id="ref-for-internal-layout-intrinsic-size①">internal layout intrinsic size</a>
+is defined by the <a data-link-type="dfn" href="https://w3c.github.io/aria/#dfn-host-language" id="ref-for-dfn-host-language">host language</a>.
+In HTML, only <u class="link-error production" data-lt="<iframe>" title="LINK ERROR: No &apos;type&apos; refs found for &apos;<iframe>&apos;.">&lt;iframe></u>s do so.</p>
+     <p class="issue" id="issue-5c01ad14"><a class="self-link" href="#issue-5c01ad14"></a> Should this apply even when <span class="css">contain:layout</span> isn’t specified?</p>
+     <p class="issue" id="issue-c75256ef"><a class="self-link" href="#issue-c75256ef"></a> The name needs further discussion.</p>
    </dl>
-   <p>If an element has an <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size⑤">explicit intrinsic inner size</a> in an axis,
+   <p>If an element has an <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size⑦">explicit intrinsic inner size</a> in an axis,
 	then after laying out the element as normal for <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#size-containment" id="ref-for-size-containment②">size containment</a>,
-	the size of the contents in that axis are instead treated as being the <span id="ref-for-explicit-intrinsic-inner-size⑥">explicit intrinsic inner size</span>
+	the size of the contents in that axis are instead treated as being the <span id="ref-for-explicit-intrinsic-inner-size⑧">explicit intrinsic inner size</span>
 	instead of what was calculated in layout,
 	and layout is performed again if necessary.
-	(If it has an <span id="ref-for-explicit-intrinsic-inner-size⑦">explicit intrinsic inner size</span> in both axises,
+	(If it has an <span id="ref-for-explicit-intrinsic-inner-size⑨">explicit intrinsic inner size</span> in both axises,
 	this implies the first layout can be skipped.)</p>
    <p>These four properties are part of a <a data-link-type="dfn" href="https://drafts.csswg.org/css-logical-1/#logical-property-group" id="ref-for-logical-property-group">logical property group</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> An element with <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#size-containment" id="ref-for-size-containment③">size containment</a> is laid out as if it had no contents <a data-link-type="biblio" href="#biblio-css-contain-1" title="CSS Containment Module Level 1">[CSS-CONTAIN-1]</a>,
@@ -1742,7 +1761,7 @@ or has an <span id="ref-for-explicit-intrinsic-inner-size④">explicit intrinsic
 	than an implicit content-based height.
 	The element thus might lay out substantially differently than it would have
 	were it simply filled with content up to that height.
-	Providing an <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size⑧">explicit intrinsic inner size</a> for the element
+	Providing an <a data-link-type="dfn" href="#explicit-intrinsic-inner-size" id="ref-for-explicit-intrinsic-inner-size①⓪">explicit intrinsic inner size</a> for the element
 	preserves the performance benefits of ignoring its contents for layout
 	while still allowing it to size as if it had content.</p>
    <table class="def propdef" data-link-for-hint="contain-intrinsic-size">
@@ -1752,7 +1771,7 @@ or has an <span id="ref-for-explicit-intrinsic-inner-size④">explicit intrinsic
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-contain-intrinsic-size">contain-intrinsic-size</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ auto<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> [ none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one③">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value④">&lt;length></a> ] ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a>	
+      <td class="prod">[ [ auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> from-element ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> [ none <span id="ref-for-comb-one⑤">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value④">&lt;length [0,∞]></a> ] ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-num-range" id="ref-for-mult-num-range">{1,2}</a>	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties	
@@ -1775,7 +1794,7 @@ or has an <span id="ref-for-explicit-intrinsic-inner-size④">explicit intrinsic
       <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
       <td>per grammar	
    </table>
-   <p><a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①">contain-intrinsic-size</a> is a shorthand property
+   <p><a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size②">contain-intrinsic-size</a> is a shorthand property
 	that sets the <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-width" id="ref-for-propdef-contain-intrinsic-width">contain-intrinsic-width</a> and <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-height" id="ref-for-propdef-contain-intrinsic-height">contain-intrinsic-height</a> properties.</p>
    <p>The first value represents the <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-width" id="ref-for-propdef-contain-intrinsic-width①">contain-intrinsic-width</a> value,
 	and the second represents the <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-height" id="ref-for-propdef-contain-intrinsic-height①">contain-intrinsic-height</a> value.
@@ -1791,7 +1810,7 @@ Last Remembered Size</span><a class="self-link" href="#last-remembered" id="ref-
 	if this guess is incorrect,
 	even slightly,
 	it can cause unsightly scrollbars or accidentally-hidden content.</p>
-   <p>The <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto①">auto</a> keyword of <span class="css">contain-intrinsic-size</span> allows a middle-ground:
+   <p>The <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto②">auto</a> keyword of <span class="css">contain-intrinsic-size</span> allows a middle-ground:
 	if an element is ever <em>not</em> <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#size-containment" id="ref-for-size-containment⑤">size-contained</a>,
 	this value causes the element to remember its size
 	(calculated as normal by layout);
@@ -1808,7 +1827,7 @@ Last Remembered Size</span><a class="self-link" href="#last-remembered" id="ref-
     <ul>
      <li data-md>
       <p>At the time that <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/resize-observer-1/#resizeobserver" id="ref-for-resizeobserver①">ResizeObserver</a></code> events are determined and delivered,
-if an element has a <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto②">auto</a> keyword in <span class="css">contain-intrinsic-size</span> property,
+if an element has a <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto③">auto</a> keyword in <span class="css">contain-intrinsic-size</span> property,
 is capable of being a <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/resize-observer-1/#resizeobserver" id="ref-for-resizeobserver②">ResizeObserver</a></code> target,
 but does not have <a data-link-type="dfn" href="https://drafts.csswg.org/css-contain-2/#size-containment" id="ref-for-size-containment⑧">size containment</a>,
 record the current inner dimensions of its <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#principal-box" id="ref-for-principal-box">principal box</a>
@@ -1816,24 +1835,75 @@ as its <a data-link-type="dfn" href="#last-remembered" id="ref-for-last-remember
      <li data-md>
       <p>At the time that <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/resize-observer-1/#resizeobserver" id="ref-for-resizeobserver③">ResizeObserver</a></code> events are determined and delivered,
 if an element has a <a data-link-type="dfn" href="#last-remembered" id="ref-for-last-remembered⑤">last remembered size</a>
-but does <em>not</em> have <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto③">auto</a> keyword in <span class="css">contain-intrinsic-size</span> property,
+but does <em>not</em> have <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto④">auto</a> keyword in <span class="css">contain-intrinsic-size</span> property,
 remove its <span id="ref-for-last-remembered⑥">last remembered size</span>.</p>
     </ul>
     <p class="note" role="note"><span class="marker">Note:</span> The <a data-link-type="dfn" href="#last-remembered" id="ref-for-last-remembered⑦">last remembered size</a> is state attached to the <em>element</em>,
 		not any particular box generated by the element.
-		So long as the element retains <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto④">auto</a> keyword in <span class="css">contain-intrinsic-size</span> property,
+		So long as the element retains <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto⑤">auto</a> keyword in <span class="css">contain-intrinsic-size</span> property,
 		it will remember its <span id="ref-for-last-remembered⑧">last remembered size</span>
 		even across changes such as going to/from <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-display-4/#propdef-display" id="ref-for-propdef-display">display: none</a>.</p>
    </div>
-   <h4 class="heading settled" data-level="5.2.2" id="cis-scrollbars"><span class="secno">5.2.2. </span><span class="content">
+   <h4 class="dfn-paneled heading settled" data-dfn-type="dfn" data-export data-level="5.2.2" data-lt="responsively-sized iframe" id="responsive-iframes"><span class="secno">5.2.2. </span><span class="content">
+Responsively-sized iframes</span><a class="self-link" href="#responsive-iframes" id="ref-for-responsive-iframes"></a></h4>
+   <p>Some <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#replaced-element" id="ref-for-replaced-element⑨">replaced elements</a> can contain "normal" flowed content,
+	such as HTML <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element①">iframe</a></code>s.
+	For privacy and security reasons,
+	these elements do not, by default,
+	expose any information about their internal contents' sizing
+	to the outside page,
+	instead just using a static, predetermined intrinsic size,
+	and making their contents scrollable.
+	The <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-from-element" id="ref-for-valdef-contain-intrinsic-width-from-element①">from-element</a> value of <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size③">contain-intrinsic-size</a>
+	allows these elements to opt into exposing their actual content size,
+	known as their <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="internal-layout-intrinsic-size">internal layout intrinsic size</dfn>.</p>
+   <p>Which elements have an <a data-link-type="dfn" href="#internal-layout-intrinsic-size" id="ref-for-internal-layout-intrinsic-size②">internal layout intrinsic size</a>,
+	and how it’s determined,
+	are decided by the host language.
+	In HTML, only <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element②">iframe</a></code> elements can have an <span id="ref-for-internal-layout-intrinsic-size③">internal layout intrinsic size</span>,
+	and further,
+	only when the contained document has also opted in
+	via a <code>&lt;meta name=responsize-embedded-sizing></code> element.</p>
+   <p>An <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element③">iframe</a></code> initially doesn’t have an <a data-link-type="dfn" href="#internal-layout-intrinsic-size" id="ref-for-internal-layout-intrinsic-size④">internal layout intrinsic size</a>.
+	When an <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element④">iframe</a></code>’s internal document is loaded,
+	if the required <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/semantics.html#meta" id="ref-for-meta">meta</a></code> element is present
+	at the time of the <code>DOMContentLoaded</code> and <code>load</code> events,
+	the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element⑤">iframe</a></code>’s <span id="ref-for-internal-layout-intrinsic-size⑤">internal layout intrinsic size</span>’s height
+	is set to the <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natural-height" id="ref-for-natural-height①">natural height</a> of the embedded document.
+	Subsequent changes to content, styling or layout of the embedded document
+	do not affect the <span id="ref-for-internal-layout-intrinsic-size⑥">internal layout intrinsic size</span>.</p>
+   <div class="example" id="example-162569fe">
+    <a class="self-link" href="#example-162569fe"></a>
+		When the embedded document has the following HTML:
+
+	  
+<pre class="highlight"><c- p>&lt;</c-><c- f>meta</c-> <c- e>name</c-><c- o>=</c-><c- s>"responsive-embedded-sizing"</c-><c- p>></c->
+<c- p>&lt;</c-><c- f>div</c-> <c- e>style</c-><c- o>=</c-><c- s>"height: 500px"</c-><c- p>>&lt;/</c-><c- f>div</c-><c- p>></c->
+</pre>
+    <p>and the embedding document has the following CSS:</p>
+<pre class="highlight">iframe <c- p>{</c->
+  <c- k>contain-intrinsic-block-size</c-><c- p>:</c-> from-element <c- m>150</c-><c- k>px</c-><c- p>;</c->
+<c- p>}</c->
+</pre>
+    <p>The height of the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element" id="ref-for-the-iframe-element⑥">iframe</a></code> will initially be <span class="css">150px</span>,
+		but will be updated to <span class="css">500px</span> once the iframe’s document loads.</p>
+   </div>
+   <p>In addition,
+	the internal document can call <code class="idl"><u class="link-error" data-lt="requestResize()" title="LINK ERROR: No &apos;idl&apos; refs found for &apos;requestResize()&apos;.">window.requestResize()</u></code>;
+	if the document still has the required <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/semantics.html#meta" id="ref-for-meta①">meta</a></code> element,
+	its <a data-link-type="dfn" href="#internal-layout-intrinsic-size" id="ref-for-internal-layout-intrinsic-size⑦">internal layout intrinsic size</a>’s height
+	is updated to its new current <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natural-height" id="ref-for-natural-height②">natural height</a>.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> If the required <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/semantics.html#meta" id="ref-for-meta②">meta</a></code> element is not present,
+	the call throws a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#notallowederror" id="ref-for-notallowederror">NotAllowedError</a></code> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMException" id="ref-for-idl-DOMException">DOMException</a></code> instead.</p>
+   <h4 class="heading settled" data-level="5.2.3" id="cis-scrollbars"><span class="secno">5.2.3. </span><span class="content">
 Interaction With <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-overflow-3/#propdef-overflow" id="ref-for-propdef-overflow①">overflow: auto</a></span><a class="self-link" href="#cis-scrollbars"></a></h4>
-   <p>The <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size②">contain-intrinsic-size</a> property provides an estimate
+   <p>The <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size④">contain-intrinsic-size</a> property provides an estimate
 	of how large the author expects the content of an element to be,
 	but this estimate is not actual content
 	and does not represent anything that needs to be shown to the user.
 	Therefore, an element with <a class="css" data-link-type="propdesc" href="https://drafts.csswg.org/css-overflow-3/#propdef-overflow" id="ref-for-propdef-overflow②">overflow: auto</a> must not generate scrollbars
-	as a consequence of <span class="property" id="ref-for-propdef-contain-intrinsic-size③">contain-intrinsic-size</span>.</p>
-   <p>However, if <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size④">contain-intrinsic-size</a> indicates a size large enough
+	as a consequence of <span class="property" id="ref-for-propdef-contain-intrinsic-size⑤">contain-intrinsic-size</span>.</p>
+   <p>However, if <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑥">contain-intrinsic-size</a> indicates a size large enough
 	that the element would generate scrollbars
 	if it contained actual content of that size,
 	then the element must be <em>sized</em> as if it generated those scrollbar(s)
@@ -1850,7 +1920,7 @@ Interaction With <a class="css" data-link-type="propdesc" href="https://drafts.c
 <c- p>}</c->
 </pre>
     <p>The element ends up being <span class="css">100px</span> wide and <span class="css">100px</span> tall:
-		<a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑤">contain-intrinsic-size</a> provides the max-content width,
+		<a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑦">contain-intrinsic-size</a> provides the max-content width,
 		and also the height.</p>
     <p>If the element then ended up with content that was <span class="css">150px</span> tall,
 		it would show a vertical scrollbar;
@@ -1861,7 +1931,7 @@ Interaction With <a class="css" data-link-type="propdesc" href="https://drafts.c
 		for the content to flow into.
 		(See <a href="https://drafts.csswg.org/css-overflow-3/#scrollbar-layout"><cite>CSS Overflow 3</cite> § 4 Scrollbars and Layout</a>.)</p>
     <p>Even though there’s now less than <span class="css">100px</span> of horizontal space available for the content,
-		it will not generate a horizontal scrollbar just because <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑥">contain-intrinsic-size</a> indicates a <span class="css">100px</span> width;
+		it will not generate a horizontal scrollbar just because <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑧">contain-intrinsic-size</a> indicates a <span class="css">100px</span> width;
 		that would only happen if the actual content
 		had something unbreakable
 		and wider than the remaining space.</p>
@@ -1879,12 +1949,12 @@ Interaction With <a class="css" data-link-type="propdesc" href="https://drafts.c
 <c- p>}</c->
 </pre>
     <p>The element has a fixed <span class="css">50px</span> height,
-		but <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑦">contain-intrinsic-size</a> indicates a <span class="css">100px</span> “estimated content height”.
+		but <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑨">contain-intrinsic-size</a> indicates a <span class="css">100px</span> “estimated content height”.
 		The element thus assumes that it will need a vertical scrollbar
 		when it’s filled with actual content,
 		resulting in a max-content width a little more than <span class="css">100px</span>
 		(roughly <span class="css">116px</span>, typically),
-		to accommodate the estimated <span class="css">100px</span> of max-content width from <span class="property" id="ref-for-propdef-contain-intrinsic-size⑧">contain-intrinsic-size</span>,
+		to accommodate the estimated <span class="css">100px</span> of max-content width from <span class="property" id="ref-for-propdef-contain-intrinsic-size①⓪">contain-intrinsic-size</span>,
 		and as well as the vertical scrollbar width (roughly <span class="css">16px</span>, typically).</p>
     <p>However, even though the element reserves space on the assumption of needing a scrollbar,
 		it will not actually generate one
@@ -1905,7 +1975,7 @@ Zeroing Min-Content Size Contributions: the <a class="css property" data-link-ty
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-min-intrinsic-sizing">min-intrinsic-sizing</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">legacy <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one④">|</a> zero-if-scroll <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> zero-if-extrinsic	
+      <td class="prod">legacy <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑥">|</a> zero-if-scroll <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-any" id="ref-for-comb-any①">||</a> zero-if-extrinsic	
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>legacy	
@@ -1957,7 +2027,7 @@ Zeroing Min-Content Size Contributions: the <a class="css property" data-link-ty
 			<a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#preferred-size" id="ref-for-preferred-size⑥">preferred</a> or <a data-link-type="dfn" href="https://drafts.csswg.org/css-sizing-3/#max-width" id="ref-for-max-width④">maximum</a> size.
 
 
-     <p class="note" role="note"><span class="marker">Note:</span> This is the default behavior of most <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#replaced-element" id="ref-for-replaced-element⑦">replaced elements</a>.</p>
+     <p class="note" role="note"><span class="marker">Note:</span> This is the default behavior of most <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#replaced-element" id="ref-for-replaced-element①⓪">replaced elements</a>.</p>
    </dl>
    <div class="example" id="example-3141cd7d">
     <a class="self-link" href="#example-3141cd7d"></a>
@@ -2136,10 +2206,10 @@ to better control the min-content contributions of scroll containers.
 (<a href="https://github.com/w3c/csswg-drafts/issues/1865">Issue 1865</a>,
  <a href="https://github.com/w3c/csswg-drafts/issues/4585">Issue 4585</a>)</p>
     <li data-md>
-     <p>Added longhands to <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size⑨">contain-intrinsic-size</a> for controlling each axis independently.
+     <p>Added longhands to <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①①">contain-intrinsic-size</a> for controlling each axis independently.
 (<a href="https://github.com/w3c/csswg-drafts/issues/5432">Issue 5432</a>)</p>
     <li data-md>
-     <p>Drafted <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto⑤">auto</a> value to <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①⓪">contain-intrinsic-size</a>
+     <p>Drafted <a class="css" data-link-type="maybe" href="#valdef-contain-intrinsic-width-auto" id="ref-for-valdef-contain-intrinsic-width-auto⑥">auto</a> value to <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①②">contain-intrinsic-size</a>
 to allow “remembering” the previously-calculated size.
 (<a href="https://github.com/w3c/csswg-drafts/issues/5668">Issue 5668</a>,
  <a href="https://github.com/w3c/csswg-drafts/issues/5815">Issue 5815</a>)</p>
@@ -2154,7 +2224,7 @@ to allow “remembering” the previously-calculated size.
 aligning the behavior to not conflict with behavior defined by CSS2 / CSS Flex Layout / etc.
 (<a href="https://github.com/w3c/csswg-drafts/issues/6071">Issue 6071</a>)</p>
     <li data-md>
-     <p>Added <a class="css" data-link-type="propdesc" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①①">contain-intrinsic-size: auto none</a> syntax.</p>
+     <p>Added <a class="css" data-link-type="propdesc" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①③">contain-intrinsic-size: auto none</a> syntax.</p>
    </ul>
    <p>Significant changes since the <a href="https://www.w3.org/TR/2020/WD-css-sizing-4-20200526/">26 May 2020 First Public Working Draft</a> include:</p>
    <ul>
@@ -2192,7 +2262,7 @@ as well as by the transferred minimum, if any.</p>
 	without violating any sizes specified explicitly on that affected axis.</p>
      </blockquote>
     <li data-md>
-     <p>Clarify that <a class="css property" data-link-type="property" href="#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio⑥">aspect-ratio</a> on a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#replaced-element" id="ref-for-replaced-element⑧">replaced element</a> with only one <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natural-size" id="ref-for-natural-size①">natural size</a> determines the other dimension.
+     <p>Clarify that <a class="css property" data-link-type="property" href="#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio⑥">aspect-ratio</a> on a <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#replaced-element" id="ref-for-replaced-element①①">replaced element</a> with only one <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natural-size" id="ref-for-natural-size①">natural size</a> determines the other dimension.
 (<a href="https://github.com/w3c/csswg-drafts/issues/5306">Issue 5306</a>)</p>
      <blockquote>
       <p>If a replaced element’s only natural dimension
@@ -2221,7 +2291,7 @@ Additions Since Level 3</span><a class="self-link" href="#additions-L3"></a></h3
 		
     <li>Added <a class="css property" data-link-type="property" href="#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio⑧">aspect-ratio</a> property.
 		
-    <li>Added <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①②">contain-intrinsic-size</a> property.
+    <li>Added <a class="css property" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①④">contain-intrinsic-size</a> property.
 	
    </ul>
    <h2 class="heading no-num settled" id="acknowledgments"><span class="content">
@@ -2390,14 +2460,18 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#propdef-contain-intrinsic-width">contain-intrinsic-width</a><span>, in § 5.2</span>
    <li><a href="#explicit-intrinsic-inner-size">explicit intrinsic inner size</a><span>, in § 5.2</span>
    <li><a href="#valdef-width-fit-content">fit-content</a><span>, in § 3.2</span>
+   <li><a href="#valdef-contain-intrinsic-width-from-element">from-element</a><span>, in § 5.2</span>
+   <li><a href="#internal-layout-intrinsic-size">internal layout intrinsic size</a><span>, in § 5.2.2</span>
    <li><a href="#last-remembered">last remembered size</a><span>, in § 5.2</span>
    <li><a href="#valdef-min-intrinsic-sizing-legacy">legacy</a><span>, in § 5.4</span>
+   <li><a href="#valdef-contain-intrinsic-width-length">&lt;length></a><span>, in § 5.2</span>
    <li><a href="#propdef-min-intrinsic-sizing">min-intrinsic-sizing</a><span>, in § 5.4</span>
    <li><a href="#valdef-contain-intrinsic-width-none">none</a><span>, in § 5.2</span>
    <li><a href="#preferred-aspect-ratio">preferred aspect ratio</a><span>, in § 4.1</span>
    <li><a href="#valdef-aspect-ratio-ratio">&lt;ratio></a><span>, in § 4.1</span>
    <li><a href="#ratio-dependent-axis">ratio-dependent axis</a><span>, in § 4.2</span>
    <li><a href="#ratio-determining-axis">ratio-determining axis</a><span>, in § 4.2</span>
+   <li><a href="#responsive-iframes">responsively-sized iframe</a><span>, in § 5.2.1</span>
    <li><a href="#valdef-width-stretch">stretch</a><span>, in § 3.2</span>
    <li><a href="#valdef-min-intrinsic-sizing-zero-if-extrinsic">zero-if-extrinsic</a><span>, in § 5.4</span>
    <li><a href="#valdef-min-intrinsic-sizing-zero-if-scroll">zero-if-scroll</a><span>, in § 5.4</span>
@@ -2561,11 +2635,23 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="87fcd40c">iframe</span>
+     <li><span class="dfn-paneled" id="64b89595">meta</span>
     </ul>
    <li>
     <a data-link-type="biblio">[RESIZE-OBSERVER-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="72646e78">ResizeObserver</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WAI-ARIA-1.2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="f00338b8">host language</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="dca2de17">DOMException</span>
+     <li><span class="dfn-paneled" id="ba556545">NotAllowedError</span>
     </ul>
   </ul>
   <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2607,6 +2693,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Bert Bos; et al. <a href="https://drafts.csswg.org/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://drafts.csswg.org/css2/">https://drafts.csswg.org/css2/</a>
    <dt id="biblio-css3col">[CSS3COL]
    <dd>Florian Rivoal; Rachel Andrew. <a href="https://drafts.csswg.org/css-multicol/"><cite>CSS Multi-column Layout Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-multicol/">https://drafts.csswg.org/css-multicol/</a>
+   <dt id="biblio-html">[HTML]
+   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-resize-observer-1">[RESIZE-OBSERVER-1]
    <dd>Aleks Totic; Greg Whitworth. <a href="https://drafts.csswg.org/resize-observer/"><cite>Resize Observer</cite></a>. URL: <a href="https://drafts.csswg.org/resize-observer/">https://drafts.csswg.org/resize-observer/</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -2620,8 +2708,10 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-position-3/"><cite>CSS Positioned Layout Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-position-3/">https://drafts.csswg.org/css-position-3/</a>
    <dt id="biblio-css-values-5">[CSS-VALUES-5]
    <dd>Tab Atkins Jr.; Elika Etemad; Miriam Suzanne. <a href="https://drafts.csswg.org/css-values-5/"><cite>CSS Values and Units Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-5/">https://drafts.csswg.org/css-values-5/</a>
-   <dt id="biblio-html">[HTML]
-   <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-wai-aria-12">[WAI-ARIA-1.2]
+   <dd>Joanmarie Diggs; et al. <a href="https://w3c.github.io/aria/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.2</cite></a>. URL: <a href="https://w3c.github.io/aria/">https://w3c.github.io/aria/</a>
+   <dt id="biblio-webidl">[WEBIDL]
+   <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
   <h2 class="heading no-num no-ref settled" id="property-index"><span class="content">Property Index</span><a class="self-link" href="#property-index"></a></h2>
   <div class="big-element-wrapper">
@@ -2652,7 +2742,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-contain-intrinsic-block-size" id="ref-for-propdef-contain-intrinsic-block-size">contain-intrinsic-block-size</a>
-      <td>auto? [ none | &lt;length [0,∞]> ]
+      <td>[ auto | from-element ]? [ none | &lt;length [0,∞]> ]
       <td>none
       <td>elements with size containment
       <td>no
@@ -2663,7 +2753,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>contain-intrinsic-size
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-contain-intrinsic-height" id="ref-for-propdef-contain-intrinsic-height②">contain-intrinsic-height</a>
-      <td>auto? [ none | &lt;length [0,∞]> ]
+      <td>[ auto | from-element ]? [ none | &lt;length [0,∞]> ]
       <td>none
       <td>elements with size containment
       <td>no
@@ -2674,7 +2764,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>contain-intrinsic-size
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-contain-intrinsic-inline-size" id="ref-for-propdef-contain-intrinsic-inline-size">contain-intrinsic-inline-size</a>
-      <td>auto? [ none | &lt;length [0,∞]> ]
+      <td>[ auto | from-element ]? [ none | &lt;length [0,∞]> ]
       <td>none
       <td>elements with size containment
       <td>no
@@ -2684,8 +2774,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>as specified, with &lt;length> values computed
       <td>contain-intrinsic-size
      <tr>
-      <th scope="row"><a class="css" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①③">contain-intrinsic-size</a>
-      <td>[ auto? [ none | &lt;length> ] ]{1,2}
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-contain-intrinsic-size" id="ref-for-propdef-contain-intrinsic-size①⑤">contain-intrinsic-size</a>
+      <td>[ [ auto | from-element ]? [ none | &lt;length [0,∞]> ] ]{1,2}
       <td>see individual properties
       <td>see individual properties
       <td>see individual properties
@@ -2696,7 +2786,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
       <td>
      <tr>
       <th scope="row"><a class="css" data-link-type="property" href="#propdef-contain-intrinsic-width" id="ref-for-propdef-contain-intrinsic-width②">contain-intrinsic-width</a>
-      <td>auto? [ none | &lt;length [0,∞]> ]
+      <td>[ auto | from-element ]? [ none | &lt;length [0,∞]> ]
       <td>none
       <td>elements with size containment
       <td>no
@@ -2751,6 +2841,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 	and then applied to each axis independently without regards to aspect-ratio. <a class="issue-return" href="#issue-36f34fa3" title="Jump to section">↵</a></div>
    <div class="issue"> This section might not be written correctly. <a href="https://github.com/w3c/csswg-drafts/issues/6071">[Issue #6071]</a> <a class="issue-return" href="#issue-0273742f" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://drafts.csswg.org/css-sizing-3/#intrinsic-sizes"><cite>CSS Sizing 3</cite> § 5.1 Intrinsic Sizes</a> <a class="issue-return" href="#issue-d41d8cd9②" title="Jump to section">↵</a></div>
+   <div class="issue"> Should this apply even when <span class="css">contain:layout</span> isn’t specified? <a class="issue-return" href="#issue-5c01ad14" title="Jump to section">↵</a></div>
+   <div class="issue"> The name needs further discussion. <a class="issue-return" href="#issue-c75256ef" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://drafts.csswg.org/css-sizing-3/#intrinsic-contribution"><cite>CSS Sizing 3</cite> § 5.2 Intrinsic Contributions</a> <a class="issue-return" href="#issue-d41d8cd9③" title="Jump to section">↵</a></div>
    <div class="issue"> This property seriously needs some name bikeshedding. <a class="issue-return" href="#issue-b731f1ac" title="Jump to section">↵</a></div>
    <div class="issue"> <a href="https://drafts.csswg.org/css-sizing-3/#extrinsic"><cite>CSS Sizing 3</cite> § 4 Extrinsic Size Determination</a> <a class="issue-return" href="#issue-d41d8cd9④" title="Jump to section">↵</a></div>
@@ -3125,22 +3217,23 @@ let dfnPanelData = {
 "537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
 "5ec54e9f": {"dfnID":"5ec54e9f","dfnText":"behaves as auto","external":true,"refSections":[{"refs":[{"id":"ref-for-behave-as-auto"}],"title":"4.4. \nMin/Max Size Transfers"},{"refs":[{"id":"ref-for-behave-as-auto\u2460"},{"id":"ref-for-behave-as-auto\u2461"},{"id":"ref-for-behave-as-auto\u2462"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#behave-as-auto"},
 "5f1936e9": {"dfnID":"5f1936e9","dfnText":"skipping its contents","external":true,"refSections":[{"refs":[{"id":"ref-for-skips-its-contents"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"https://drafts.csswg.org/css-contain-2/#skips-its-contents"},
+"64b89595": {"dfnID":"64b89595","dfnText":"meta","external":true,"refSections":[{"refs":[{"id":"ref-for-meta"},{"id":"ref-for-meta\u2460"},{"id":"ref-for-meta\u2461"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"https://html.spec.whatwg.org/multipage/semantics.html#meta"},
 "65a738ee": {"dfnID":"65a738ee","dfnText":"definite","external":true,"refSections":[{"refs":[{"id":"ref-for-definite"},{"id":"ref-for-definite\u2460"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-definite\u2461"},{"id":"ref-for-definite\u2462"},{"id":"ref-for-definite\u2463"},{"id":"ref-for-definite\u2464"}],"title":"4.4. \nMin/Max Size Transfers"},{"refs":[{"id":"ref-for-definite\u2465"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"},{"refs":[{"id":"ref-for-definite\u2466"},{"id":"ref-for-definite\u2467"},{"id":"ref-for-definite\u2468"},{"id":"ref-for-definite\u2460\u24ea"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-sizing-3/#definite"},
 "668e27c9": {"dfnID":"668e27c9","dfnText":"preferred size","external":true,"refSections":[{"refs":[{"id":"ref-for-preferred-size"},{"id":"ref-for-preferred-size\u2460"},{"id":"ref-for-preferred-size\u2461"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-preferred-size\u2462"},{"id":"ref-for-preferred-size\u2463"},{"id":"ref-for-preferred-size\u2464"}],"title":"4.4. \nMin/Max Size Transfers"},{"refs":[{"id":"ref-for-preferred-size\u2465"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"},{"refs":[{"id":"ref-for-preferred-size\u2466"},{"id":"ref-for-preferred-size\u2467"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-sizing-3/#preferred-size"},
 "68019d7a": {"dfnID":"68019d7a","dfnText":"height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-height"}],"title":"1.1. \nModule interactions"},{"refs":[{"id":"ref-for-propdef-height\u2460"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-propdef-height\u2461"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-propdef-height\u2462"},{"id":"ref-for-propdef-height\u2463"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-propdef-height\u2464"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-height"},
 "688eb8fe": {"dfnID":"688eb8fe","dfnText":"max-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-max-width"}],"title":"1.1. \nModule interactions"},{"refs":[{"id":"ref-for-propdef-max-width\u2460"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-propdef-max-width\u2461"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"},{"refs":[{"id":"ref-for-propdef-max-width\u2462"}],"title":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio"}],"url":"https://drafts.csswg.org/css2/#propdef-max-width"},
-"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-comb-one\u2463"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-comb-one\u2465"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "711c7d81": {"dfnID":"711c7d81","dfnText":"background-size","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-background-size"}],"title":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background-size"},
 "72646e78": {"dfnID":"72646e78","dfnText":"ResizeObserver","external":true,"refSections":[{"refs":[{"id":"ref-for-resizeobserver"},{"id":"ref-for-resizeobserver\u2460"},{"id":"ref-for-resizeobserver\u2461"},{"id":"ref-for-resizeobserver\u2462"}],"title":"5.2.1. \nLast Remembered Size"}],"url":"https://drafts.csswg.org/resize-observer-1/#resizeobserver"},
-"75563977": {"dfnID":"75563977","dfnText":"natural height","external":true,"refSections":[{"refs":[{"id":"ref-for-natural-height"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"}],"url":"https://drafts.csswg.org/css-images-3/#natural-height"},
+"75563977": {"dfnID":"75563977","dfnText":"natural height","external":true,"refSections":[{"refs":[{"id":"ref-for-natural-height"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-natural-height\u2460"},{"id":"ref-for-natural-height\u2461"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"https://drafts.csswg.org/css-images-3/#natural-height"},
 "75e46141": {"dfnID":"75e46141","dfnText":"box-sizing","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-box-sizing"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-propdef-box-sizing\u2460"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-box-sizing"},
 "774e7ef7": {"dfnID":"774e7ef7","dfnText":"calc-size()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-calc-size"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"}],"url":"https://drafts.csswg.org/css-values-5/#funcdef-calc-size"},
 "80eb9508": {"dfnID":"80eb9508","dfnText":"principal box","external":true,"refSections":[{"refs":[{"id":"ref-for-principal-box"}],"title":"5.2.1. \nLast Remembered Size"},{"refs":[{"id":"ref-for-principal-box\u2460"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-display-4/#principal-box"},
 "8141cabb": {"dfnID":"8141cabb","dfnText":"independent formatting context","external":true,"refSections":[{"refs":[{"id":"ref-for-independent-formatting-context"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-display-4/#independent-formatting-context"},
 "86923d07": {"dfnID":"86923d07","dfnText":"scroll container","external":true,"refSections":[{"refs":[{"id":"ref-for-scroll-container"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-scroll-container\u2460"},{"id":"ref-for-scroll-container\u2461"},{"id":"ref-for-scroll-container\u2462"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"}],"url":"https://drafts.csswg.org/css-overflow-3/#scroll-container"},
-"86928bde": {"dfnID":"86928bde","dfnText":"overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-propdef-overflow\u2460"},{"id":"ref-for-propdef-overflow\u2461"}],"title":"5.2.2. \nInteraction With overflow: auto"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
+"86928bde": {"dfnID":"86928bde","dfnText":"overflow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-propdef-overflow\u2460"},{"id":"ref-for-propdef-overflow\u2461"}],"title":"5.2.3. \nInteraction With overflow: auto"}],"url":"https://drafts.csswg.org/css-overflow-3/#propdef-overflow"},
 "876bb33c": {"dfnID":"876bb33c","dfnText":"self-alignment properties","external":true,"refSections":[{"refs":[{"id":"ref-for-self-alignment-properties"},{"id":"ref-for-self-alignment-properties\u2460"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-align-3/#self-alignment-properties"},
-"87fcd40c": {"dfnID":"87fcd40c","dfnText":"iframe","external":true,"refSections":[{"refs":[{"id":"ref-for-the-iframe-element"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
+"87fcd40c": {"dfnID":"87fcd40c","dfnText":"iframe","external":true,"refSections":[{"refs":[{"id":"ref-for-the-iframe-element"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-the-iframe-element\u2460"},{"id":"ref-for-the-iframe-element\u2461"},{"id":"ref-for-the-iframe-element\u2462"},{"id":"ref-for-the-iframe-element\u2463"},{"id":"ref-for-the-iframe-element\u2464"},{"id":"ref-for-the-iframe-element\u2465"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
 "88643fe0": {"dfnID":"88643fe0","dfnText":"width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-width"}],"title":"1.1. \nModule interactions"},{"refs":[{"id":"ref-for-propdef-width\u2460"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-propdef-width\u2461"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-propdef-width\u2462"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-propdef-width\u2463"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-width"},
 "8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-comb-any\u2460"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
 "8e39589a": {"dfnID":"8e39589a","dfnText":"block box","external":true,"refSections":[{"refs":[{"id":"ref-for-block-box"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-display-4/#block-box"},
@@ -3152,11 +3245,12 @@ let dfnPanelData = {
 "9f13b712": {"dfnID":"9f13b712","dfnText":"behave as auto","external":true,"refSections":[{"refs":[{"id":"ref-for-behave-as-auto"}],"title":"4.4. \nMin/Max Size Transfers"},{"refs":[{"id":"ref-for-behave-as-auto\u2460"},{"id":"ref-for-behave-as-auto\u2461"},{"id":"ref-for-behave-as-auto\u2462"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#behave-as-auto"},
 "a0e35b6d": {"dfnID":"a0e35b6d","dfnText":"sizing property","external":true,"refSections":[{"refs":[{"id":"ref-for-sizing-property"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"},{"refs":[{"id":"ref-for-sizing-property\u2460"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#sizing-property"},
 "a3d4c150": {"dfnID":"a3d4c150","dfnText":"min size property","external":true,"refSections":[{"refs":[{"id":"ref-for-min-size-properties"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#min-size-properties"},
-"a8485ff4": {"dfnID":"a8485ff4","dfnText":"replaced element","external":true,"refSections":[{"refs":[{"id":"ref-for-replaced-element"}],"title":"4. \nAspect Ratios"},{"refs":[{"id":"ref-for-replaced-element\u2460"},{"id":"ref-for-replaced-element\u2461"},{"id":"ref-for-replaced-element\u2462"},{"id":"ref-for-replaced-element\u2463"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-replaced-element\u2464"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-replaced-element\u2465"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-replaced-element\u2466"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"},{"refs":[{"id":"ref-for-replaced-element\u2467"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-display-4/#replaced-element"},
+"a8485ff4": {"dfnID":"a8485ff4","dfnText":"replaced element","external":true,"refSections":[{"refs":[{"id":"ref-for-replaced-element"}],"title":"4. \nAspect Ratios"},{"refs":[{"id":"ref-for-replaced-element\u2460"},{"id":"ref-for-replaced-element\u2461"},{"id":"ref-for-replaced-element\u2462"},{"id":"ref-for-replaced-element\u2463"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-replaced-element\u2464"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-replaced-element\u2465"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-replaced-element\u2466"},{"id":"ref-for-replaced-element\u2467"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-replaced-element\u2468"}],"title":"5.2.2. \nResponsively-sized iframes"},{"refs":[{"id":"ref-for-replaced-element\u2460\u24ea"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"},{"refs":[{"id":"ref-for-replaced-element\u2460\u2460"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-display-4/#replaced-element"},
 "a9734ee4": {"dfnID":"a9734ee4","dfnText":"border","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border"},
 "b5418f3e": {"dfnID":"b5418f3e","dfnText":"padding","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-padding"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-box-4/#propdef-padding"},
 "b713cb30": {"dfnID":"b713cb30","dfnText":"automatic size","external":true,"refSections":[{"refs":[{"id":"ref-for-automatic-size"},{"id":"ref-for-automatic-size\u2460"},{"id":"ref-for-automatic-size\u2461"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-automatic-size\u2462"}],"title":"4.4. \nMin/Max Size Transfers"}],"url":"https://drafts.csswg.org/css-sizing-3/#automatic-size"},
 "b8850feb": {"dfnID":"b8850feb","dfnText":"start","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-self-position-start"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"}],"url":"https://drafts.csswg.org/css-align-3/#valdef-self-position-start"},
+"ba556545": {"dfnID":"ba556545","dfnText":"NotAllowedError","external":true,"refSections":[{"refs":[{"id":"ref-for-notallowederror"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"https://webidl.spec.whatwg.org/#notallowederror"},
 "cde9ab5b": {"dfnID":"cde9ab5b","dfnText":"automatic minimum size","external":true,"refSections":[{"refs":[{"id":"ref-for-automatic-minimum-size"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"}],"url":"https://drafts.csswg.org/css-sizing-3/#automatic-minimum-size"},
 "ce83935f": {"dfnID":"ce83935f","dfnText":"contain","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-object-fit-contain"}],"title":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio"}],"url":"https://drafts.csswg.org/css-images-4/#valdef-object-fit-contain"},
 "contain-fit-sizing": {"dfnID":"contain-fit-sizing","dfnText":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio","external":false,"refSections":[{"refs":[{"id":"ref-for-contain-fit-sizing"},{"id":"ref-for-contain-fit-sizing"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-contain-fit-sizing"}],"title":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio"}],"url":"#contain-fit-sizing"},
@@ -3166,6 +3260,7 @@ let dfnPanelData = {
 "daf2c48f": {"dfnID":"daf2c48f","dfnText":"maximum size","external":true,"refSections":[{"refs":[{"id":"ref-for-max-width"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-max-width\u2460"},{"id":"ref-for-max-width\u2461"},{"id":"ref-for-max-width\u2462"}],"title":"4.4. \nMin/Max Size Transfers"},{"refs":[{"id":"ref-for-max-width\u2463"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"},{"refs":[{"id":"ref-for-max-width\u2464"},{"id":"ref-for-max-width\u2465"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-sizing-3/#max-width"},
 "db77d8f9": {"dfnID":"db77d8f9","dfnText":"inner height","external":true,"refSections":[{"refs":[{"id":"ref-for-inner-size"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#inner-size"},
 "db91c914": {"dfnID":"db91c914","dfnText":"min-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-min-height"}],"title":"1.1. \nModule interactions"},{"refs":[{"id":"ref-for-propdef-min-height\u2460"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-propdef-min-height\u2461"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-propdef-min-height\u2462"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"},{"refs":[{"id":"ref-for-propdef-min-height\u2463"}],"title":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio"}],"url":"https://drafts.csswg.org/css2/#propdef-min-height"},
+"dca2de17": {"dfnID":"dca2de17","dfnText":"DOMException","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMException"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMException"},
 "dd1ccb1e": {"dfnID":"dd1ccb1e","dfnText":"max-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-max-height"}],"title":"1.1. \nModule interactions"},{"refs":[{"id":"ref-for-propdef-max-height\u2460"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-propdef-max-height\u2461"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"},{"refs":[{"id":"ref-for-propdef-max-height\u2462"}],"title":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio"}],"url":"https://drafts.csswg.org/css2/#propdef-max-height"},
 "e1ab41b7": {"dfnID":"e1ab41b7","dfnText":"block axis","external":true,"refSections":[{"refs":[{"id":"ref-for-block-axis"}],"title":"4.2.1. \nMargin-collapsing"},{"refs":[{"id":"ref-for-block-axis\u2460"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"},{"refs":[{"id":"ref-for-block-axis\u2461"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-writing-modes-4/#block-axis"},
 "e43f2460": {"dfnID":"e43f2460","dfnText":"outer height","external":true,"refSections":[{"refs":[{"id":"ref-for-outer-size"},{"id":"ref-for-outer-size\u2460"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-sizing-3/#outer-size"},
@@ -3174,27 +3269,32 @@ let dfnPanelData = {
 "ea663a43": {"dfnID":"ea663a43","dfnText":"containing block","external":true,"refSections":[{"refs":[{"id":"ref-for-containing-block"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-containing-block\u2460"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"}],"url":"https://drafts.csswg.org/css-display-4/#containing-block"},
 "eb3aa672": {"dfnID":"eb3aa672","dfnText":"logical property group","external":true,"refSections":[{"refs":[{"id":"1cb7bf200"},{"id":"ref-for-logical-property-group"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"https://drafts.csswg.org/css-logical-1/#logical-property-group"},
 "ed3eb665": {"dfnID":"ed3eb665","dfnText":"natural size","external":true,"refSections":[{"refs":[{"id":"ref-for-natural-size"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-natural-size\u2460"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-images-3/#natural-size"},
-"explicit-intrinsic-inner-size": {"dfnID":"explicit-intrinsic-inner-size","dfnText":"explicit intrinsic inner size","external":false,"refSections":[{"refs":[{"id":"ref-for-explicit-intrinsic-inner-size"},{"id":"ref-for-explicit-intrinsic-inner-size\u2460"},{"id":"ref-for-explicit-intrinsic-inner-size\u2461"},{"id":"ref-for-explicit-intrinsic-inner-size\u2462"},{"id":"ref-for-explicit-intrinsic-inner-size\u2463"},{"id":"ref-for-explicit-intrinsic-inner-size\u2464"},{"id":"ref-for-explicit-intrinsic-inner-size\u2465"},{"id":"ref-for-explicit-intrinsic-inner-size\u2466"},{"id":"ref-for-explicit-intrinsic-inner-size\u2467"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"#explicit-intrinsic-inner-size"},
+"explicit-intrinsic-inner-size": {"dfnID":"explicit-intrinsic-inner-size","dfnText":"explicit intrinsic inner size","external":false,"refSections":[{"refs":[{"id":"ref-for-explicit-intrinsic-inner-size"},{"id":"ref-for-explicit-intrinsic-inner-size\u2460"},{"id":"ref-for-explicit-intrinsic-inner-size\u2461"},{"id":"ref-for-explicit-intrinsic-inner-size\u2462"},{"id":"ref-for-explicit-intrinsic-inner-size\u2463"},{"id":"ref-for-explicit-intrinsic-inner-size\u2464"},{"id":"ref-for-explicit-intrinsic-inner-size\u2465"},{"id":"ref-for-explicit-intrinsic-inner-size\u2466"},{"id":"ref-for-explicit-intrinsic-inner-size\u2467"},{"id":"ref-for-explicit-intrinsic-inner-size\u2468"},{"id":"ref-for-explicit-intrinsic-inner-size\u2460\u24ea"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"#explicit-intrinsic-inner-size"},
+"f00338b8": {"dfnID":"f00338b8","dfnText":"host language","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-host-language"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"https://w3c.github.io/aria/#dfn-host-language"},
 "f005b2f6": {"dfnID":"f005b2f6","dfnText":"grid container","external":true,"refSections":[{"refs":[{"id":"ref-for-grid-container"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"https://drafts.csswg.org/css-grid-2/#grid-container"},
 "f0c46389": {"dfnID":"f0c46389","dfnText":"block-size","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-block-size"}],"title":"4.2.1. \nMargin-collapsing"},{"refs":[{"id":"ref-for-propdef-block-size\u2460"}],"title":"\nRecent Changes"}],"url":"https://drafts.csswg.org/css-logical-1/#propdef-block-size"},
 "f8cff8d7": {"dfnID":"f8cff8d7","dfnText":"column-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-column-width"}],"title":"1.1. \nModule interactions"}],"url":"https://drafts.csswg.org/css-multicol-2/#propdef-column-width"},
 "f952f01b": {"dfnID":"f952f01b","dfnText":"non-replaced","external":true,"refSections":[{"refs":[{"id":"ref-for-non-replaced"},{"id":"ref-for-non-replaced\u2460"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-non-replaced\u2461"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"}],"url":"https://drafts.csswg.org/css-display-4/#non-replaced"},
 "fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"},{"id":"ref-for-length-value\u2461"},{"id":"ref-for-length-value\u2462"},{"id":"ref-for-length-value\u2463"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
+"internal-layout-intrinsic-size": {"dfnID":"internal-layout-intrinsic-size","dfnText":"internal layout intrinsic size","external":false,"refSections":[{"refs":[{"id":"ref-for-internal-layout-intrinsic-size"},{"id":"ref-for-internal-layout-intrinsic-size\u2460"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-internal-layout-intrinsic-size\u2461"},{"id":"ref-for-internal-layout-intrinsic-size\u2462"},{"id":"ref-for-internal-layout-intrinsic-size\u2463"},{"id":"ref-for-internal-layout-intrinsic-size\u2464"},{"id":"ref-for-internal-layout-intrinsic-size\u2465"},{"id":"ref-for-internal-layout-intrinsic-size\u2466"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"#internal-layout-intrinsic-size"},
 "last-remembered": {"dfnID":"last-remembered","dfnText":"5.2.1. \nLast Remembered Size","external":false,"refSections":[{"refs":[{"id":"ref-for-last-remembered"},{"id":"ref-for-last-remembered\u2460"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-last-remembered"},{"id":"ref-for-last-remembered\u2461"},{"id":"ref-for-last-remembered\u2462"},{"id":"ref-for-last-remembered\u2463"},{"id":"ref-for-last-remembered\u2464"},{"id":"ref-for-last-remembered\u2465"},{"id":"ref-for-last-remembered\u2466"},{"id":"ref-for-last-remembered\u2467"}],"title":"5.2.1. \nLast Remembered Size"}],"url":"#last-remembered"},
 "preferred-aspect-ratio": {"dfnID":"preferred-aspect-ratio","dfnText":"preferred aspect ratio","external":false,"refSections":[{"refs":[{"id":"ref-for-preferred-aspect-ratio"},{"id":"ref-for-preferred-aspect-ratio\u2460"},{"id":"ref-for-preferred-aspect-ratio\u2461"}],"title":"3.2. \nNew Sizing Values: the stretch, fit-content, and contain keywords"},{"refs":[{"id":"ref-for-preferred-aspect-ratio\u2462"}],"title":"4. \nAspect Ratios"},{"refs":[{"id":"ref-for-preferred-aspect-ratio\u2463"},{"id":"ref-for-preferred-aspect-ratio\u2464"},{"id":"ref-for-preferred-aspect-ratio\u2465"},{"id":"ref-for-preferred-aspect-ratio\u2466"},{"id":"ref-for-preferred-aspect-ratio\u2467"},{"id":"ref-for-preferred-aspect-ratio\u2468"},{"id":"ref-for-preferred-aspect-ratio\u2460\u24ea"},{"id":"ref-for-preferred-aspect-ratio\u2460\u2460"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-preferred-aspect-ratio\u2460\u2461"},{"id":"ref-for-preferred-aspect-ratio\u2460\u2462"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-preferred-aspect-ratio\u2460\u2463"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-preferred-aspect-ratio\u2460\u2464"}],"title":"4.4. \nMin/Max Size Transfers"},{"refs":[{"id":"ref-for-preferred-aspect-ratio\u2460\u2465"},{"id":"ref-for-preferred-aspect-ratio\u2460\u2466"}],"title":"6.2. \nContain-fit Sizing: stretching while maintaining an aspect ratio"},{"refs":[{"id":"ref-for-preferred-aspect-ratio\u2460\u2467"},{"id":"ref-for-preferred-aspect-ratio\u2460\u2468"},{"id":"ref-for-preferred-aspect-ratio\u2461\u24ea"}],"title":"\nRecent Changes"}],"url":"#preferred-aspect-ratio"},
 "propdef-aspect-ratio": {"dfnID":"propdef-aspect-ratio","dfnText":"aspect-ratio","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-aspect-ratio"}],"title":"4. \nAspect Ratios"},{"refs":[{"id":"ref-for-propdef-aspect-ratio\u2460"},{"id":"ref-for-propdef-aspect-ratio\u2461"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"},{"refs":[{"id":"ref-for-propdef-aspect-ratio\u2462"}],"title":"6.1. \nStretch-fit Sizing: filling the containing block"},{"refs":[{"id":"ref-for-propdef-aspect-ratio\u2463"},{"id":"ref-for-propdef-aspect-ratio\u2464"},{"id":"ref-for-propdef-aspect-ratio\u2465"},{"id":"ref-for-propdef-aspect-ratio\u2466"}],"title":"\nRecent Changes"},{"refs":[{"id":"ref-for-propdef-aspect-ratio\u2467"}],"title":"\nAdditions Since Level 3"}],"url":"#propdef-aspect-ratio"},
 "propdef-contain-intrinsic-block-size": {"dfnID":"propdef-contain-intrinsic-block-size","dfnText":"contain-intrinsic-block-size","external":false,"refSections":[],"url":"#propdef-contain-intrinsic-block-size"},
 "propdef-contain-intrinsic-height": {"dfnID":"propdef-contain-intrinsic-height","dfnText":"contain-intrinsic-height","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-contain-intrinsic-height"},{"id":"ref-for-propdef-contain-intrinsic-height\u2460"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"#propdef-contain-intrinsic-height"},
 "propdef-contain-intrinsic-inline-size": {"dfnID":"propdef-contain-intrinsic-inline-size","dfnText":"contain-intrinsic-inline-size","external":false,"refSections":[],"url":"#propdef-contain-intrinsic-inline-size"},
-"propdef-contain-intrinsic-size": {"dfnID":"propdef-contain-intrinsic-size","dfnText":"contain-intrinsic-size","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size"},{"id":"ref-for-propdef-contain-intrinsic-size\u2460"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size\u2461"},{"id":"ref-for-propdef-contain-intrinsic-size\u2462"},{"id":"ref-for-propdef-contain-intrinsic-size\u2463"},{"id":"ref-for-propdef-contain-intrinsic-size\u2464"},{"id":"ref-for-propdef-contain-intrinsic-size\u2465"},{"id":"ref-for-propdef-contain-intrinsic-size\u2466"},{"id":"ref-for-propdef-contain-intrinsic-size\u2467"}],"title":"5.2.2. \nInteraction With overflow: auto"},{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size\u2468"},{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u24ea"},{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u2460"}],"title":"\nRecent Changes"},{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u2461"}],"title":"\nAdditions Since Level 3"}],"url":"#propdef-contain-intrinsic-size"},
+"propdef-contain-intrinsic-size": {"dfnID":"propdef-contain-intrinsic-size","dfnText":"contain-intrinsic-size","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size"},{"id":"ref-for-propdef-contain-intrinsic-size\u2460"},{"id":"ref-for-propdef-contain-intrinsic-size\u2461"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size\u2462"}],"title":"5.2.2. \nResponsively-sized iframes"},{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size\u2463"},{"id":"ref-for-propdef-contain-intrinsic-size\u2464"},{"id":"ref-for-propdef-contain-intrinsic-size\u2465"},{"id":"ref-for-propdef-contain-intrinsic-size\u2466"},{"id":"ref-for-propdef-contain-intrinsic-size\u2467"},{"id":"ref-for-propdef-contain-intrinsic-size\u2468"},{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u24ea"}],"title":"5.2.3. \nInteraction With overflow: auto"},{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u2460"},{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u2461"},{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u2462"}],"title":"\nRecent Changes"},{"refs":[{"id":"ref-for-propdef-contain-intrinsic-size\u2460\u2463"}],"title":"\nAdditions Since Level 3"}],"url":"#propdef-contain-intrinsic-size"},
 "propdef-contain-intrinsic-width": {"dfnID":"propdef-contain-intrinsic-width","dfnText":"contain-intrinsic-width","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-contain-intrinsic-width"},{"id":"ref-for-propdef-contain-intrinsic-width\u2460"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"#propdef-contain-intrinsic-width"},
 "propdef-min-intrinsic-sizing": {"dfnID":"propdef-min-intrinsic-sizing","dfnText":"min-intrinsic-sizing","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-min-intrinsic-sizing"}],"title":"5.4. \nZeroing Min-Content Size Contributions: the min-intrinsic-sizing property"},{"refs":[{"id":"ref-for-propdef-min-intrinsic-sizing\u2460"}],"title":"\nRecent Changes"}],"url":"#propdef-min-intrinsic-sizing"},
 "ratio-dependent-axis": {"dfnID":"ratio-dependent-axis","dfnText":"ratio-dependent axis","external":false,"refSections":[{"refs":[{"id":"ref-for-ratio-dependent-axis"}],"title":"4.2. \nEffects of Preferred Aspect Ratio on Automatic Sizes"},{"refs":[{"id":"ref-for-ratio-dependent-axis\u2460"}],"title":"4.2.1. \nMargin-collapsing"},{"refs":[{"id":"ref-for-ratio-dependent-axis\u2461"}],"title":"4.3. \nAutomatic Content-based Minimum Sizes"},{"refs":[{"id":"ref-for-ratio-dependent-axis\u2462"}],"title":"4.4. \nMin/Max Size Transfers"},{"refs":[{"id":"ref-for-ratio-dependent-axis\u2463"}],"title":"\nRecent Changes"}],"url":"#ratio-dependent-axis"},
 "ratio-determining-axis": {"dfnID":"ratio-determining-axis","dfnText":"ratio-determining axis","external":false,"refSections":[{"refs":[{"id":"ref-for-ratio-determining-axis"}],"title":"\nRecent Changes"}],"url":"#ratio-determining-axis"},
+"responsive-iframes": {"dfnID":"responsive-iframes","dfnText":"5.2.2. \nResponsively-sized iframes","external":false,"refSections":[{"refs":[{"id":"ref-for-responsive-iframes"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"#responsive-iframes"},
 "valdef-aspect-ratio-auto": {"dfnID":"valdef-aspect-ratio-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-aspect-ratio-auto"},{"id":"ref-for-valdef-aspect-ratio-auto\u2460"},{"id":"ref-for-valdef-aspect-ratio-auto\u2461"}],"title":"4.1. \nPreferred Aspect Ratios: the aspect-ratio property"}],"url":"#valdef-aspect-ratio-auto"},
 "valdef-aspect-ratio-auto--ratio": {"dfnID":"valdef-aspect-ratio-auto--ratio","dfnText":"auto && <ratio>","external":false,"refSections":[],"url":"#valdef-aspect-ratio-auto--ratio"},
 "valdef-aspect-ratio-ratio": {"dfnID":"valdef-aspect-ratio-ratio","dfnText":"<ratio>","external":false,"refSections":[],"url":"#valdef-aspect-ratio-ratio"},
-"valdef-contain-intrinsic-width-auto": {"dfnID":"valdef-contain-intrinsic-width-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-auto"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2460"},{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2461"},{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2462"},{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2463"}],"title":"5.2.1. \nLast Remembered Size"},{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2464"}],"title":"\nRecent Changes"}],"url":"#valdef-contain-intrinsic-width-auto"},
+"valdef-contain-intrinsic-width-auto": {"dfnID":"valdef-contain-intrinsic-width-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-auto"},{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2460"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2461"},{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2462"},{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2463"},{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2464"}],"title":"5.2.1. \nLast Remembered Size"},{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-auto\u2465"}],"title":"\nRecent Changes"}],"url":"#valdef-contain-intrinsic-width-auto"},
+"valdef-contain-intrinsic-width-from-element": {"dfnID":"valdef-contain-intrinsic-width-from-element","dfnText":"from-element","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-from-element"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"},{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-from-element\u2460"}],"title":"5.2.2. \nResponsively-sized iframes"}],"url":"#valdef-contain-intrinsic-width-from-element"},
+"valdef-contain-intrinsic-width-length": {"dfnID":"valdef-contain-intrinsic-width-length","dfnText":"<length>","external":false,"refSections":[],"url":"#valdef-contain-intrinsic-width-length"},
 "valdef-contain-intrinsic-width-none": {"dfnID":"valdef-contain-intrinsic-width-none","dfnText":"none","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-contain-intrinsic-width-none"}],"title":"5.2. \nOverriding Contained Intrinsic Sizes: the contain-intrinsic-* properties"}],"url":"#valdef-contain-intrinsic-width-none"},
 "valdef-min-intrinsic-sizing-legacy": {"dfnID":"valdef-min-intrinsic-sizing-legacy","dfnText":"legacy","external":false,"refSections":[],"url":"#valdef-min-intrinsic-sizing-legacy"},
 "valdef-min-intrinsic-sizing-zero-if-extrinsic": {"dfnID":"valdef-min-intrinsic-sizing-zero-if-extrinsic","dfnText":"zero-if-extrinsic","external":false,"refSections":[],"url":"#valdef-min-intrinsic-sizing-zero-if-extrinsic"},
@@ -3667,6 +3767,7 @@ window.addEventListener("resize", repositionAnnoPanels);
 let refsData = {
 "#contain-fit-sizing": {"displayText":"contain-fit sizing","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"contain-fit sizing","type":"dfn","url":"#contain-fit-sizing"},
 "#explicit-intrinsic-inner-size": {"displayText":"explicit intrinsic inner size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"explicit intrinsic inner size","type":"dfn","url":"#explicit-intrinsic-inner-size"},
+"#internal-layout-intrinsic-size": {"displayText":"internal layout intrinsic size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"internal layout intrinsic size","type":"dfn","url":"#internal-layout-intrinsic-size"},
 "#last-remembered": {"displayText":"last remembered size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"last remembered size","type":"dfn","url":"#last-remembered"},
 "#preferred-aspect-ratio": {"displayText":"preferred aspect ratio","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"preferred aspect ratio","type":"dfn","url":"#preferred-aspect-ratio"},
 "#propdef-aspect-ratio": {"displayText":"aspect-ratio","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"aspect-ratio","type":"property","url":"#propdef-aspect-ratio"},
@@ -3680,6 +3781,7 @@ let refsData = {
 "#ratio-determining-axis": {"displayText":"ratio-determining axis","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"ratio-determining axis","type":"dfn","url":"#ratio-determining-axis"},
 "#valdef-aspect-ratio-auto": {"displayText":"auto","export":true,"for_":["aspect-ratio"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"auto","type":"value","url":"#valdef-aspect-ratio-auto"},
 "#valdef-contain-intrinsic-width-auto": {"displayText":"auto","export":true,"for_":["contain-intrinsic-block-size","contain-intrinsic-height","contain-intrinsic-inline-size","contain-intrinsic-size","contain-intrinsic-width"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"auto","type":"value","url":"#valdef-contain-intrinsic-width-auto"},
+"#valdef-contain-intrinsic-width-from-element": {"displayText":"from-element","export":true,"for_":["contain-intrinsic-block-size","contain-intrinsic-height","contain-intrinsic-inline-size","contain-intrinsic-size","contain-intrinsic-width"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"from-element","type":"value","url":"#valdef-contain-intrinsic-width-from-element"},
 "#valdef-contain-intrinsic-width-none": {"displayText":"none","export":true,"for_":["contain-intrinsic-block-size","contain-intrinsic-height","contain-intrinsic-inline-size","contain-intrinsic-size","contain-intrinsic-width"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"none","type":"value","url":"#valdef-contain-intrinsic-width-none"},
 "#valdef-min-intrinsic-sizing-zero-if-scroll": {"displayText":"zero-if-scroll","export":true,"for_":["min-intrinsic-sizing"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"zero-if-scroll","type":"value","url":"#valdef-min-intrinsic-sizing-zero-if-scroll"},
 "#valdef-width-contain": {"displayText":"contain","export":true,"for_":["block-size","height","inline-size","max-block-size","max-height","max-inline-size","max-width","min-block-size","min-height","min-inline-size","min-width","width"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"local","text":"contain","type":"value","url":"#valdef-width-contain"},
@@ -3766,6 +3868,10 @@ let refsData = {
 "https://drafts.csswg.org/css2/#propdef-min-width": {"displayText":"min-width","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"min-width","type":"property","url":"https://drafts.csswg.org/css2/#propdef-min-width"},
 "https://drafts.csswg.org/resize-observer-1/#resizeobserver": {"displayText":"ResizeObserver","export":true,"for_":[],"level":"1","normative":true,"shortname":"resize-observer","spec":"resize-observer-1","status":"current","text":"ResizeObserver","type":"interface","url":"https://drafts.csswg.org/resize-observer-1/#resizeobserver"},
 "https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element": {"displayText":"iframe","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"iframe","type":"element","url":"https://html.spec.whatwg.org/multipage/iframe-embed-object.html#the-iframe-element"},
+"https://html.spec.whatwg.org/multipage/semantics.html#meta": {"displayText":"meta","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"meta","type":"element","url":"https://html.spec.whatwg.org/multipage/semantics.html#meta"},
+"https://w3c.github.io/aria/#dfn-host-language": {"displayText":"host language","export":true,"for_":[],"level":"1","normative":true,"shortname":"wai-aria","spec":"wai-aria-1.2","status":"current","text":"host language","type":"dfn","url":"https://w3c.github.io/aria/#dfn-host-language"},
+"https://webidl.spec.whatwg.org/#idl-DOMException": {"displayText":"DOMException","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"DOMException","type":"interface","url":"https://webidl.spec.whatwg.org/#idl-DOMException"},
+"https://webidl.spec.whatwg.org/#notallowederror": {"displayText":"NotAllowedError","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"NotAllowedError","type":"exception","url":"https://webidl.spec.whatwg.org/#notallowederror"},
 };
 
 function mkRefHint(link, ref) {

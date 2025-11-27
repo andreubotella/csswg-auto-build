@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 86e3be07a, updated Tue Nov 18 16:58:08 2025 +0000" name="generator">
   <link href="https://drafts.csswg.org/css-navigation-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="93da5257077744e994f4a7b98a186f1d3f943f45" name="revision">
+  <meta content="fdc08f79a22f0b6cda2ac823b1c7a2f8b1004445" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -832,7 +832,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Route Matching</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-11-25">25 November 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-26">26 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -905,7 +905,8 @@ on screen, on paper, etc.
       <li><a href="#navigation-if-function"><span class="secno">2.3</span> <span class="content">The <span class="css">navigation()</span> function for <span class="css">if()</span></span></a>
      </ol>
     <li><a href="#link-navigation-pseudo-classes"><span class="secno">3</span> <span class="content">Pseudo-class for navigation-related links: <span class="css">:link-to()</span></span></a>
-    <li><a href="#url-pattern-function"><span class="secno">4</span> <span class="content">The <span class="css">url-pattern()</span> function</span></a>
+    <li><a href="#current-nav-urls"><span class="secno">4</span> <span class="content">Current navigation URLs</span></a>
+    <li><a href="#url-pattern-function"><span class="secno">5</span> <span class="content">The <span class="css">url-pattern()</span> function</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a>
@@ -967,13 +968,13 @@ matches the route named by the keyword.</p>
     <dd data-md>
      <p>in this case the URL pattern represented is
 the one represented by the <a class="css production" data-link-type="function" href="#funcdef-url-pattern" id="ref-for-funcdef-url-pattern①">&lt;url-pattern()></a> function
-    given as the descriptor’s value.</p>
+given as the descriptor’s value.</p>
     <dt data-md>with the other descriptors named by <a class="css production" data-link-type="type" href="#typedef-init-descriptor-name" id="ref-for-typedef-init-descriptor-name②">&lt;init-descriptor-name></a>
     <dd data-md>
      <p>In this case the URL pattern represented is the result of invoking
-    <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-create" id="ref-for-url-pattern-create">create a URL pattern</a> given
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-create" id="ref-for-url-pattern-create">create a URL pattern</a> given
 <var>input</var> as <code class="idl"><a data-link-type="idl" href="https://urlpattern.spec.whatwg.org/#dictdef-urlpatterninit" id="ref-for-dictdef-urlpatterninit">URLPatternInit</a></code>
-    constructed from the descriptors and their values;
+constructed from the descriptors and their values;
 if a <code>baseURL</code> descriptor is not given then one is created from
 the <a data-link-type="dfn" href="https://drafts.csswg.org/css-values-4/#style-resource-base-url" id="ref-for-style-resource-base-url">style resource base URL</a> of the rule.</p>
    </dl>
@@ -1120,103 +1121,25 @@ and true otherwise.</p>
        <p>The result is whether the result of
 <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match">match a URL pattern</a> is non-null
 given <var>urlPattern</var> as
-the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑤">&lt;navigation-location></a>,
-<var>input</var> as the document’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url">URL</a>.</p>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑤">&lt;navigation-location></a>
+and <var>input</var> as the document’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-url" id="ref-for-concept-document-url">URL</a>.</p>
       <dt data-md>from: <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑥">&lt;navigation-location></a>
       <dd data-md>
        <p>The result is true if
-the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api">document’s navigation API</a> of the document
-is non-null, and either:</p>
-       <ul>
-        <li data-md>
-         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition" id="ref-for-concept-navigation-transition">transition</a> is non-null,
-its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from" id="ref-for-concept-navigationtransition-from">from entry</a>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url">url</a></code>
-is non-null and
+the <a data-link-type="dfn" href="#current-from-url" id="ref-for-current-from-url">current from URL</a> <var>from</var> of the document is non-null and
 <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match①">match a URL pattern</a> is non-null when
 given <var>urlPattern</var> as
-the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern①">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑦">&lt;navigation-location></a>,
-<var>input</var> as that
-<span id="ref-for-concept-navigationtransition-from①">from entry</span>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url①">url</a></code>.</p>
-         <p class="note" role="note"><span class="marker">NOTE:</span> This part handles <code>from:</code> when it matches in the old page.</p>
-        <li data-md>
-         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation" id="ref-for-navigation-activation">activation</a> is non-null,
-the document’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed">has been revealed</a> is false or
-was false at the start of the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-task" id="ref-for-concept-task">task</a>,
-and the activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from" id="ref-for-dom-navigationactivation-from">from</a></code>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url②">url</a></code>
-is non-null and
-<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match②">match a URL pattern</a> is non-null when
-given <var>urlPattern</var> as
-the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern②">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑧">&lt;navigation-location></a>,
-<var>input</var> as that
-activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from" id="ref-for-dom-navigationactivation-from①">from</a></code>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url③">url</a></code>.</p>
-         <p class="note" role="note"><span class="marker">NOTE:</span> This part handles <code>from:</code> when it matches in the new page.</p>
-       </ul>
-      <dt data-md>to: <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑨">&lt;navigation-location></a>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern①">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑦">&lt;navigation-location></a>
+and <var>input</var> as <var>from</var>.</p>
+      <dt data-md>to: <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑧">&lt;navigation-location></a>
       <dd data-md>
        <p>The result is true if
-the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api①">document’s navigation API</a> of the document
-is non-null, and either:</p>
-       <ul>
-        <li data-md>
-         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event">ongoing navigate event</a> is non-null,
-<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match③">match a URL pattern</a> is non-null
+the <a data-link-type="dfn" href="#current-to-url" id="ref-for-current-to-url">current to URL</a> <var>to</var> of the document is non-null and
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match②">match a URL pattern</a> is non-null when
 given <var>urlPattern</var> as
-the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern③">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①⓪">&lt;navigation-location></a>,
-<var>input</var> as the <a data-link-type="dfn" href="#current-to-url" id="ref-for-current-to-url">current to url</a>,
-where the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="current-to-url">current to url</dfn> is defined as:</p>
-         <ul>
-          <li data-md>
-           <p>if the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/indices.html#event-pageswap" id="ref-for-event-pageswap">pageswap</a></code> event has fired since that navigation began,
-and its <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-pageswapevent-activation" id="ref-for-dom-pageswapevent-activation">activation</a></code> was non-null,
-and that <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-pageswapevent-activation" id="ref-for-dom-pageswapevent-activation①">activation</a></code>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry" id="ref-for-dom-navigationactivation-entry">entry</a></code>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url④">url</a></code> is non-null,
-then that
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url⑤">url</a></code>.</p>
-           <p class="note" role="note"><span class="marker">NOTE:</span> This part <em>does</em> expose the result of redirects.</p>
-           <p class="issue" id="issue-75c34c2e"><a class="self-link" href="#issue-75c34c2e"></a> Is the final "non-null" check needed?</p>
-          <li data-md>
-           <p>otherwise, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event①">ongoing navigate event</a>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination" id="ref-for-dom-navigateevent-destination">destination</a></code>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url" id="ref-for-dom-navigationdestination-url">url</a></code></p>
-           <p class="note" role="note"><span class="marker">NOTE:</span> This part does <em>not</em> expose the result of redirects.</p>
-         </ul>
-         <p class="issue" id="issue-879c611d"><a class="self-link" href="#issue-879c611d"></a> This assumes that the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event②">ongoing navigate event</a>
-and the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition" id="ref-for-concept-navigation-transition①">transition</a> have the same lifetime,
-but this isn’t really
-true if the event is intercepted.
-After
-<a href="https://github.com/whatwg/html/issues/11690">whatwg/html#11690</a> /
-<a href="https://github.com/whatwg/html/pull/11692">whatwg/html#11692</a>.
-we could probably define this more like "from" above.
-But which lifetime is the one we want?</p>
-         <p class="note" role="note"><span class="marker">NOTE:</span> This part handles <code>to:</code> when it matches in the old page.</p>
-        <li data-md>
-         <p>its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation" id="ref-for-navigation-activation①">activation</a> is non-null,
-the document’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed①">has been revealed</a> is false or
-was false at the start of the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-task" id="ref-for-concept-task①">task</a>,
-and the activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry" id="ref-for-dom-navigationactivation-entry①">entry</a></code>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url⑥">url</a></code>
-is non-null and
-<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match④">match a URL pattern</a> is non-null
-given <var>urlPattern</var> as
-the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern④">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①①">&lt;navigation-location></a>,
-<var>input</var> as that
-activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry" id="ref-for-dom-navigationactivation-entry②">entry</a></code>’s
-<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url⑦">url</a></code>.</p>
-         <p class="note" role="note"><span class="marker">NOTE:</span> This part handles <code>to:</code> when it matches in the new page.</p>
-       </ul>
+the <a data-link-type="dfn" href="#navigation-location-url-pattern" id="ref-for-navigation-location-url-pattern②">navigation location URL pattern</a> of <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location⑨">&lt;navigation-location></a>
+and <var>input</var> as <var>to</var>.</p>
      </dl>
-     <p class="issue" id="issue-8de45772"><a class="self-link" href="#issue-8de45772"></a> The above definitions of from and to apparently don’t work right
-if you start a same-document navigation (e.g., with <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate" id="ref-for-dom-history-pushstate">pushState</a></code>)
-in the middle of a cross-document navigation.</p>
-     <p class="issue" id="issue-124d14ee"><a class="self-link" href="#issue-124d14ee"></a> Generally improve integration with the HTML spec for these definitions,
-instead of monkeypatching.
-This includes the interaction with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed②">has been revealed</a>
-and the interaction with the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/indices.html#event-pageswap" id="ref-for-event-pageswap①">pageswap</a></code> event,
-and other things where this section links to non-exported definitions.</p>
     <dt data-md><a class="css production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed" id="ref-for-typedef-general-enclosed③">&lt;general-enclosed></a>
     <dd data-md>
      <p>The result is false.</p>
@@ -1224,8 +1147,8 @@ and other things where this section links to non-exported definitions.</p>
 <span class="note">It exists only for future-compatibility,
 so that new syntax additions do not invalidate too much of a <a class="css production" data-link-type="type" href="#typedef-navigation-condition" id="ref-for-typedef-navigation-condition⑤">&lt;navigation-condition></a> in older user agents.</span></p>
    </dl>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="navigation-location-url-pattern">navigation location URL pattern</dfn> of a <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①②">&lt;navigation-location></a>
-depends on the type of <span class="production" id="ref-for-typedef-navigation-location①③">&lt;navigation-location></span>:</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="navigation-location-url-pattern">navigation location URL pattern</dfn> of a <a class="css production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①⓪">&lt;navigation-location></a>
+depends on the type of <span class="production" id="ref-for-typedef-navigation-location①①">&lt;navigation-location></span>:</p>
    <dl>
     <dt data-md><a class="css production" data-link-type="type" href="#typedef-route-name" id="ref-for-typedef-route-name②">&lt;route-name></a>
     <dd data-md>
@@ -1281,8 +1204,8 @@ which matches any links that link to the site’s homepage:</p>
 <c- p>}</c->
 </pre>
    </div>
-   <div class="example" id="example-284e7e2e">
-    <a class="self-link" href="#example-284e7e2e"></a>
+   <div class="example" id="example-b5266f92">
+    <a class="self-link" href="#example-b5266f92"></a>
 
 
     <p>A more interesting example of the <span class="css">::link-to()</span> pseudo-class
@@ -1326,7 +1249,7 @@ by matching the relevant parts of the navigation URL to the link URL.</p>
 <c- c>   the match with the link’s target.</c->
 <c- c>   */</c->
 .movie-container:has<c- p>(</c->> .movie-title:link-to<c- p>(</c->
-  --movie-details with <c- p>(</c-><c- nf>navigation-param</c-><c- p>(</c->id<c- p>))))</c-> <c- p>{</c->
+  --movie-details with <c- nf>navigation-param</c-><c- p>(</c->id<c- p>)))</c-> <c- p>{</c->
 
   <c- k>view-transition-name</c-><c- p>:</c-> movie-container<c- p>;</c->
 
@@ -1348,20 +1271,18 @@ and the pseudo-class matches any element where:</p>
      <p>the target of link matches the <a class="css production" data-link-type="type" href="#typedef-link-condition" id="ref-for-typedef-link-condition①">&lt;link-condition></a>, as defined below.</p>
    </ul>
 <pre class="def prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-link-condition"><a class="production" data-link-type="type" href="#typedef-link-condition" id="ref-for-typedef-link-condition②">&lt;link-condition></a></dfn> = <a class="production" data-link-type="type" href="#typedef-link-condition-base" id="ref-for-typedef-link-condition-base">&lt;link-condition-base></a> [ with <a class="production" data-link-type="type" href="#typedef-navigation-param-expression" id="ref-for-typedef-navigation-param-expression">&lt;navigation-param-expression></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a>
-<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-link-condition-base"><a class="production" data-link-type="type" href="#typedef-link-condition-base" id="ref-for-typedef-link-condition-base①">&lt;link-condition-base></a></dfn> = <a class="production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①④">&lt;navigation-location></a>
-<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param-expression"><a class="production" data-link-type="type" href="#typedef-navigation-param-expression" id="ref-for-typedef-navigation-param-expression①">&lt;navigation-param-expression></a></dfn> = ( [ <a class="production" data-link-type="type" href="#typedef-navigation-param-and" id="ref-for-typedef-navigation-param-and">&lt;navigation-param-and></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑥">|</a>
-                                    <a class="production" data-link-type="type" href="#typedef-navigation-param-or" id="ref-for-typedef-navigation-param-or">&lt;navigation-param-or></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑦">|</a>
-                                    <a class="production" data-link-type="type" href="#typedef-navigation-param" id="ref-for-typedef-navigation-param">&lt;navigation-param></a> ] )
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-link-condition-base"><a class="production" data-link-type="type" href="#typedef-link-condition-base" id="ref-for-typedef-link-condition-base①">&lt;link-condition-base></a></dfn> = <a class="production" data-link-type="type" href="#typedef-navigation-location" id="ref-for-typedef-navigation-location①②">&lt;navigation-location></a>
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param-expression"><a class="production" data-link-type="type" href="#typedef-navigation-param-expression" id="ref-for-typedef-navigation-param-expression①">&lt;navigation-param-expression></a></dfn> = ( <a class="production" data-link-type="type" href="#typedef-navigation-param-and" id="ref-for-typedef-navigation-param-and">&lt;navigation-param-and></a> ) <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑥">|</a>
+                                ( <a class="production" data-link-type="type" href="#typedef-navigation-param-or" id="ref-for-typedef-navigation-param-or">&lt;navigation-param-or></a> ) <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑦">|</a>
+                                <a class="production" data-link-type="type" href="#typedef-navigation-param" id="ref-for-typedef-navigation-param">&lt;navigation-param></a>
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param-and"><a class="production" data-link-type="type" href="#typedef-navigation-param-and" id="ref-for-typedef-navigation-param-and①">&lt;navigation-param-and></a></dfn> = <a class="production" data-link-type="type" href="#typedef-navigation-param-expression" id="ref-for-typedef-navigation-param-expression②">&lt;navigation-param-expression></a>
                          [ "and" <a class="production" data-link-type="type" href="#typedef-navigation-param-expression" id="ref-for-typedef-navigation-param-expression③">&lt;navigation-param-expression></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus⑦">*</a>
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param-or"><a class="production" data-link-type="type" href="#typedef-navigation-param-or" id="ref-for-typedef-navigation-param-or①">&lt;navigation-param-or></a></dfn> = <a class="production" data-link-type="type" href="#typedef-navigation-param-expression" id="ref-for-typedef-navigation-param-expression④">&lt;navigation-param-expression></a>
                         [ "or" <a class="production" data-link-type="type" href="#typedef-navigation-param-expression" id="ref-for-typedef-navigation-param-expression⑤">&lt;navigation-param-expression></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-zero-plus" id="ref-for-mult-zero-plus⑧">*</a>
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param"><a class="production" data-link-type="type" href="#typedef-navigation-param" id="ref-for-typedef-navigation-param①">&lt;navigation-param></a></dfn> = <a class="production" data-link-type="type" href="#typedef-navigation-param-key-value" id="ref-for-typedef-navigation-param-key-value">&lt;navigation-param-key-value></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑧">|</a> <a class="production" data-link-type="type" href="#typedef-navigation-param-function" id="ref-for-typedef-navigation-param-function">&lt;navigation-param-function></a>
-<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param-key-value"><a class="production" data-link-type="type" href="#typedef-navigation-param-key-value" id="ref-for-typedef-navigation-param-key-value①">&lt;navigation-param-key-value></a></dfn> = <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-ident" id="ref-for-typedef-ident①">&lt;ident></a> : <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value①">&lt;string></a>
+<dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param-key-value"><a class="production" data-link-type="type" href="#typedef-navigation-param-key-value" id="ref-for-typedef-navigation-param-key-value①">&lt;navigation-param-key-value></a></dfn> = ( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-ident" id="ref-for-typedef-ident①">&lt;ident></a> : <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value①">&lt;string></a> )
 <dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-navigation-param-function"><a class="production" data-link-type="type" href="#typedef-navigation-param-function" id="ref-for-typedef-navigation-param-function①">&lt;navigation-param-function></a></dfn> = navigation-param( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-ident" id="ref-for-typedef-ident②">&lt;ident></a> )
 </pre>
-   <p class="issue" id="issue-8a43bab0"><a class="self-link" href="#issue-8a43bab0"></a> This grammar should be restructured so that
-it doesn’t require parentheses around a lone <a class="css production" data-link-type="type" href="#typedef-navigation-param-function" id="ref-for-typedef-navigation-param-function②">&lt;navigation-param-function></a>.</p>
    <p>A <a class="css production" data-link-type="type" href="#typedef-link-condition" id="ref-for-typedef-link-condition③">&lt;link-condition></a> matches the target of the link when both:</p>
    <ul>
     <li data-md>
@@ -1378,7 +1299,7 @@ represented by the <span class="production" id="ref-for-funcdef-url-pattern⑥">
 If it is a <a class="css production" data-link-type="type" href="#typedef-route-name" id="ref-for-typedef-route-name③">&lt;route-name></a>, then it represents the URL pattern
 represented by the <a class="css" data-link-type="maybe" href="#at-ruledef-route" id="ref-for-at-ruledef-route⑤">@route</a> rule.</p>
    <p>A <a class="css production" data-link-type="type" href="#typedef-link-condition-base" id="ref-for-typedef-link-condition-base⑥">&lt;link-condition-base></a> matches a URL
-when <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match⑤">match a URL pattern</a> is non-null
+when <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match③">match a URL pattern</a> is non-null
 given <var>urlPattern</var> as
 the <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern" id="ref-for-url-pattern④">URL pattern</a> that it represents and
 <var>input</var> as the given URL.</p>
@@ -1392,7 +1313,7 @@ if the following steps return true:</p>
    <ol>
     <li data-md>
      <p>Let <var>matchResult</var> be the result of
-<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match⑥">match a URL pattern</a>
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match④">match a URL pattern</a>
 given <var>urlPattern</var> and <var>input</var>.
 the <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern" id="ref-for-url-pattern⑥">URL pattern</a>
 represented by the <a class="css production" data-link-type="function" href="#funcdef-url-pattern" id="ref-for-funcdef-url-pattern⑦">&lt;url-pattern()></a> function in the <a class="css production" data-link-type="type" href="#typedef-link-condition-base" id="ref-for-typedef-link-condition-base⑦">&lt;link-condition-base></a>
@@ -1415,18 +1336,15 @@ return true if
 <var>entry</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-key" id="ref-for-map-key">key</a> is the <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-ident" id="ref-for-typedef-ident③">&lt;ident></a>
 and <var>entry</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-value" id="ref-for-map-value">value</a> is the <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value②">&lt;string></a>.</p>
         <li data-md>
-         <p>If <a class="css production" data-link-type="type" href="#typedef-navigation-param" id="ref-for-typedef-navigation-param⑤">&lt;navigation-param></a> is a <a class="css production" data-link-type="type" href="#typedef-navigation-param-function" id="ref-for-typedef-navigation-param-function③">&lt;navigation-param-function></a>,
+         <p>If <a class="css production" data-link-type="type" href="#typedef-navigation-param" id="ref-for-typedef-navigation-param⑤">&lt;navigation-param></a> is a <a class="css production" data-link-type="type" href="#typedef-navigation-param-function" id="ref-for-typedef-navigation-param-function②">&lt;navigation-param-function></a>,
 and <var>entry</var>’s <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-key" id="ref-for-map-key①">key</a> is the function’s <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-ident" id="ref-for-typedef-ident④">&lt;ident></a>,
 then for each <var>navigationUrl</var> of the
-current to URL
-and current from URL
-<span class="issue" id="issue-eb3cc09a"><a class="self-link" href="#issue-eb3cc09a"></a>extract "current to URL" and
-"current from URL" from <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation⑧">@navigation</a>
-definitions above and link to them</span>:</p>
+<a data-link-type="dfn" href="#current-to-url" id="ref-for-current-to-url①">current to URL</a>
+and <a data-link-type="dfn" href="#current-from-url" id="ref-for-current-from-url①">current from URL</a>:</p>
          <ol>
           <li data-md>
            <p>Let <var>navigationMatchResult</var> be the result of
-<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match⑦">match a URL pattern</a>
+<a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-match" id="ref-for-url-pattern-match⑤">match a URL pattern</a>
 given <var>urlPattern</var> and <var>navigationUrl</var>.</p>
           <li data-md>
            <p>If <var>navigationMatchResult</var> is null, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-continue" id="ref-for-iteration-continue">continue</a>.</p>
@@ -1437,17 +1355,96 @@ has an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-entry" i
 whose <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-key" id="ref-for-map-key②">key</a> is the same as <var>entry</var>’s key
 and whose <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#map-value" id="ref-for-map-value①">value</a> is the same as <var>entry</var>’s value.</p>
            <p class="note" role="note"><span class="marker">NOTE:</span> This step makes the <span class="css">navigation-param()</span> function
-                perform what is essentially a three-way match,
-                between the target of the link,
-                the provided URL pattern,
-                and the from or to URL of the current navigation.</p>
+perform what is essentially a three-way match,
+between the target of the link,
+the provided URL pattern,
+and the from or to URL of the current navigation.</p>
          </ol>
        </ol>
      </ol>
    </ol>
-   <p class="issue" id="issue-601041a2"><a class="self-link" href="#issue-601041a2"></a> A <a class="css production" data-link-type="type" href="#typedef-link-condition" id="ref-for-typedef-link-condition④">&lt;link-condition></a> should also be able to be a named route
-once those are added back to the spec.</p>
-   <h2 class="heading settled" data-level="4" id="url-pattern-function"><span class="secno">4. </span><span class="content">The <a class="css" data-link-type="maybe" href="#funcdef-url-pattern" id="ref-for-funcdef-url-pattern⑧">url-pattern()</a> function</span><a class="self-link" href="#url-pattern-function"></a></h2>
+   <h2 class="heading settled" data-level="4" id="current-nav-urls"><span class="secno">4. </span><span class="content">Current navigation URLs</span><a class="self-link" href="#current-nav-urls"></a></h2>
+   <p>Both the <a class="css" data-link-type="maybe" href="#at-ruledef-navigation" id="ref-for-at-ruledef-navigation⑧">@navigation</a> rule and the <a class="css" data-link-type="maybe" href="#link-to-pseudo" id="ref-for-link-to-pseudo⑤">:link-to()</a> pseudo-class
+rely on the following definitions of
+the <a data-link-type="dfn" href="#current-from-url" id="ref-for-current-from-url②">current from URL</a> and <a data-link-type="dfn" href="#current-to-url" id="ref-for-current-to-url②">current to URL</a>.</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="current-from-url">current from URL</dfn> of a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document">document</a> is a URL or null.
+It is defined as follows:</p>
+   <ol>
+    <li data-md>
+     <p>If the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api">document’s navigation API</a> of the document is non-null and
+its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition" id="ref-for-concept-navigation-transition">transition</a> is non-null,
+its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from" id="ref-for-concept-navigationtransition-from">from entry</a>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url">url</a></code>.</p>
+     <p class="note" role="note"><span class="marker">NOTE:</span> This part is for when the old document in the navigation
+is still the current document.</p>
+    <li data-md>
+     <p>If the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api①">document’s navigation API</a> of the document is non-null and
+its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation" id="ref-for-navigation-activation">activation</a> is non-null,
+the document’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed">has been revealed</a> is false or
+was false at the start of the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-task" id="ref-for-concept-task">task</a>,
+the activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from" id="ref-for-dom-navigationactivation-from">from</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url①">url</a></code>.</p>
+     <p class="note" role="note"><span class="marker">NOTE:</span> This part is for when the new document in the navigation
+has become the current document.</p>
+    <li data-md>
+     <p>Otherwise, null.</p>
+     <p class="note" role="note"><span class="marker">NOTE:</span> The previous two branches can also produce null results.</p>
+   </ol>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="current-to-url">current to URL</dfn> of a <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document①">document</a> is a URL or null.
+It is defined as follows:</p>
+   <ol>
+    <li data-md>
+     <p>If the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api②">document’s navigation API</a> of the document is non-null and
+its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event">ongoing navigate event</a> is non-null:</p>
+     <ol>
+      <li data-md>
+       <p>if the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/indices.html#event-pageswap" id="ref-for-event-pageswap">pageswap</a></code> event has fired since that navigation began,
+and its <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-pageswapevent-activation" id="ref-for-dom-pageswapevent-activation">activation</a></code> was non-null,
+and that <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-pageswapevent-activation" id="ref-for-dom-pageswapevent-activation①">activation</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry" id="ref-for-dom-navigationactivation-entry">entry</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url②">url</a></code> is non-null,
+then that
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url③">url</a></code>.</p>
+       <p class="note" role="note"><span class="marker">NOTE:</span> This part <em>does</em> expose the result of redirects.</p>
+       <p class="issue" id="issue-75c34c2e"><a class="self-link" href="#issue-75c34c2e"></a> Is the final "non-null" check needed?</p>
+      <li data-md>
+       <p>otherwise, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event①">ongoing navigate event</a>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination" id="ref-for-dom-navigateevent-destination">destination</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url" id="ref-for-dom-navigationdestination-url">url</a></code></p>
+       <p class="note" role="note"><span class="marker">NOTE:</span> This part does <em>not</em> expose the result of redirects.</p>
+     </ol>
+     <p class="issue" id="issue-879c611d"><a class="self-link" href="#issue-879c611d"></a> This assumes that the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event" id="ref-for-ongoing-navigate-event②">ongoing navigate event</a>
+and the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition" id="ref-for-concept-navigation-transition①">transition</a> have the same lifetime,
+but this isn’t really
+true if the event is intercepted.
+After
+<a href="https://github.com/whatwg/html/issues/11690">whatwg/html#11690</a> /
+<a href="https://github.com/whatwg/html/pull/11692">whatwg/html#11692</a>.
+we could probably define this more like "from" above.
+But which lifetime is the one we want?</p>
+     <p class="note" role="note"><span class="marker">NOTE:</span> This part is for when the old document in the navigation
+is still the current document.</p>
+    <li data-md>
+     <p>If the <a data-link-type="dfn" href="#documents-navigation-api" id="ref-for-documents-navigation-api③">document’s navigation API</a> of the document is non-null and
+its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation" id="ref-for-navigation-activation①">activation</a> is non-null,
+the document’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed①">has been revealed</a> is false or
+was false at the start of the current <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-task" id="ref-for-concept-task①">task</a>,
+and the activation’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry" id="ref-for-dom-navigationactivation-entry①">entry</a></code>’s
+<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url" id="ref-for-dom-navigationhistoryentry-url④">url</a></code>.</p>
+     <p class="note" role="note"><span class="marker">NOTE:</span> This part is for when the new document in the navigation
+has become the current document.</p>
+    <li data-md>
+     <p>Otherwise, null.</p>
+     <p class="note" role="note"><span class="marker">NOTE:</span> The previous two branches can also produce null results.</p>
+   </ol>
+   <p class="issue" id="issue-8de45772"><a class="self-link" href="#issue-8de45772"></a> The above definitions of from and to apparently don’t work right
+if you start a same-document navigation (e.g., with <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate" id="ref-for-dom-history-pushstate">pushState</a></code>)
+in the middle of a cross-document navigation.</p>
+   <p class="issue" id="issue-124d14ee"><a class="self-link" href="#issue-124d14ee"></a> Generally improve integration with the HTML spec for these definitions,
+instead of monkeypatching.
+This includes the interaction with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed" id="ref-for-has-been-revealed②">has been revealed</a>
+and the interaction with the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/indices.html#event-pageswap" id="ref-for-event-pageswap①">pageswap</a></code> event,
+and other things where this section links to non-exported definitions.</p>
+   <h2 class="heading settled" data-level="5" id="url-pattern-function"><span class="secno">5. </span><span class="content">The <a class="css" data-link-type="maybe" href="#funcdef-url-pattern" id="ref-for-funcdef-url-pattern⑧">url-pattern()</a> function</span><a class="self-link" href="#url-pattern-function"></a></h2>
    <p>The <dfn class="css dfn-paneled" data-dfn-type="function" data-export id="funcdef-url-pattern">url-pattern()</dfn> function represents a <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern" id="ref-for-url-pattern⑦">URL pattern</a>,
 which can be used to match URLs.</p>
 <pre class="def prod"><a class="production" data-link-type="function" href="#funcdef-url-pattern" id="ref-for-funcdef-url-pattern⑨">&lt;url-pattern()></a> = url-pattern( <a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value③">&lt;string></a> )
@@ -1484,7 +1481,7 @@ for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selecto
      <p>Return the result of <a data-link-type="dfn" href="https://urlpattern.spec.whatwg.org/#url-pattern-create" id="ref-for-url-pattern-create①">create a URL pattern</a> given
 <var>arg</var>, <var>baseURL</var>, and an empty <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-map" id="ref-for-ordered-map">map</a>.</p>
    </ol>
-   <p class="note" role="note"><span class="marker">NOTE:</span>  This function requires that its argument is quoted.
+   <p class="note" role="note"><span class="marker">NOTE:</span> This function requires that its argument is quoted.
 This differs from the <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-4/#funcdef-url" id="ref-for-funcdef-url①">url()</a> function,
 which allows its argument to be quoted or unquoted.</p>
    <p>To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="serialize-a-url-pattern-function">serialize a <a class="css" data-link-type="maybe" href="#funcdef-url-pattern" id="ref-for-funcdef-url-pattern①⑤">url-pattern()</a> function</dfn> <var>f</var>,
@@ -1630,8 +1627,9 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#create-a-url-pattern-for-url-pattern">create a URL pattern for url-pattern()</a><span>, in § 4</span>
-   <li><a href="#current-to-url">current to url</a><span>, in § 2.1</span>
+   <li><a href="#create-a-url-pattern-for-url-pattern">create a URL pattern for url-pattern()</a><span>, in § 5</span>
+   <li><a href="#current-from-url">current from URL</a><span>, in § 4</span>
+   <li><a href="#current-to-url">current to URL</a><span>, in § 4</span>
    <li><a href="#documents-navigation-api">document’s navigation API</a><span>, in § 2.1</span>
    <li><a href="#typedef-init-descriptor">&lt;init-descriptor></a><span>, in § 1</span>
    <li><a href="#typedef-init-descriptor-name">&lt;init-descriptor-name></a><span>, in § 1</span>
@@ -1663,8 +1661,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#typedef-pattern-descriptors">&lt;pattern-descriptors></a><span>, in § 1</span>
    <li><a href="#at-ruledef-route">@route</a><span>, in § 1</span>
    <li><a href="#typedef-route-name">&lt;route-name></a><span>, in § 2.1</span>
-   <li><a href="#serialize-a-url-pattern-function">serialize a url-pattern() function</a><span>, in § 4</span>
-   <li><a href="#funcdef-url-pattern">url-pattern()</a><span>, in § 4</span>
+   <li><a href="#serialize-a-url-pattern-function">serialize a url-pattern() function</a><span>, in § 5</span>
+   <li><a href="#funcdef-url-pattern">url-pattern()</a><span>, in § 5</span>
   </ul>
   <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
@@ -1717,6 +1715,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="a973e0fe">document</span>
      <li><span class="dfn-paneled" id="347e8fe9">URL</span>
     </ul>
    <li>
@@ -1822,6 +1821,14 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 for the route names? <a class="issue-return" href="#issue-b4129116" title="Jump to section">↵</a></div>
    <div class="issue"> Is there value in being able to provide a list of <a class="css production" data-link-type="function" href="#funcdef-url-pattern">&lt;url-pattern()></a>
 rather than just one? <a class="issue-return" href="#issue-d6fbe5f6" title="Jump to section">↵</a></div>
+   <div class="issue"> Should it also be possible to reference
+a name defined in a routemap?
+See the
+<a href="https://github.com/WICG/declarative-partial-updates/blob/main/route-matching-explainer.md">route matching explainer</a>
+for details. <a class="issue-return" href="#issue-4e88879d" title="Jump to section">↵</a></div>
+   <div class="issue"> This should probably have a more formal definition of the function,
+but I can’t find the formal definitions of the existing <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-5/#funcdef-if">if()</a> functions
+to model it after. <a class="issue-return" href="#issue-14849ff8" title="Jump to section">↵</a></div>
    <div class="issue"> Is the final "non-null" check needed? <a class="issue-return" href="#issue-75c34c2e" title="Jump to section">↵</a></div>
    <div class="issue"> This assumes that the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event">ongoing navigate event</a>
 and the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition">transition</a> have the same lifetime,
@@ -1840,21 +1847,6 @@ instead of monkeypatching.
 This includes the interaction with <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed">has been revealed</a>
 and the interaction with the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/indices.html#event-pageswap">pageswap</a></code> event,
 and other things where this section links to non-exported definitions. <a class="issue-return" href="#issue-124d14ee" title="Jump to section">↵</a></div>
-   <div class="issue"> Should it also be possible to reference
-a name defined in a routemap?
-See the
-<a href="https://github.com/WICG/declarative-partial-updates/blob/main/route-matching-explainer.md">route matching explainer</a>
-for details. <a class="issue-return" href="#issue-4e88879d" title="Jump to section">↵</a></div>
-   <div class="issue"> This should probably have a more formal definition of the function,
-but I can’t find the formal definitions of the existing <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-values-5/#funcdef-if">if()</a> functions
-to model it after. <a class="issue-return" href="#issue-14849ff8" title="Jump to section">↵</a></div>
-   <div class="issue"> This grammar should be restructured so that
-it doesn’t require parentheses around a lone <a class="css production" data-link-type="type" href="#typedef-navigation-param-function">&lt;navigation-param-function></a>. <a class="issue-return" href="#issue-8a43bab0" title="Jump to section">↵</a></div>
-   <div class="issue">extract "current to URL" and
-"current from URL" from <a class="css" data-link-type="maybe" href="#at-ruledef-navigation">@navigation</a>
-definitions above and link to them <a class="issue-return" href="#issue-eb3cc09a" title="Jump to section">↵</a></div>
-   <div class="issue"> A <a class="css production" data-link-type="type" href="#typedef-link-condition">&lt;link-condition></a> should also be able to be a named route
-once those are added back to the spec. <a class="issue-return" href="#issue-601041a2" title="Jump to section">↵</a></div>
    <div class="issue">
     
 Do we want this to be the base URL all the time?
@@ -2078,83 +2070,85 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"00583f87": {"dfnID":"00583f87","dfnText":"from entry","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-navigationtransition-from"},{"id":"ref-for-concept-navigationtransition-from\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from"},
-"05d605be": {"dfnID":"05d605be","dfnText":"transition","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-navigation-transition"},{"id":"ref-for-concept-navigation-transition\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition"},
-"0d02a1c8": {"dfnID":"0d02a1c8","dfnText":"activation (for PageSwapEvent)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-pageswapevent-activation"},{"id":"ref-for-dom-pageswapevent-activation\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-pageswapevent-activation"},
+"00583f87": {"dfnID":"00583f87","dfnText":"from entry","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-navigationtransition-from"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigationtransition-from"},
+"05d605be": {"dfnID":"05d605be","dfnText":"transition","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-navigation-transition"},{"id":"ref-for-concept-navigation-transition\u2460"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-navigation-transition"},
+"0d02a1c8": {"dfnID":"0d02a1c8","dfnText":"activation (for PageSwapEvent)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-pageswapevent-activation"},{"id":"ref-for-dom-pageswapevent-activation\u2460"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-pageswapevent-activation"},
 "1063ab6a": {"dfnID":"1063ab6a","dfnText":"view transitions","external":true,"refSections":[{"refs":[{"id":"ref-for-view-transitions"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-view-transitions-2/#view-transitions"},
 "12432dcb": {"dfnID":"12432dcb","dfnText":"<supports-condition>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-supports-condition"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
-"12eb7c09": {"dfnID":"12eb7c09","dfnText":"destination","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigateevent-destination"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination"},
-"1b28d572": {"dfnID":"1b28d572","dfnText":"URLPattern","external":true,"refSections":[{"refs":[{"id":"ref-for-urlpattern"},{"id":"ref-for-urlpattern\u2460"}],"title":"4. The url-pattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#urlpattern"},
-"1d314002": {"dfnID":"1d314002","dfnText":"pageswap","external":true,"refSections":[{"refs":[{"id":"ref-for-event-pageswap"},{"id":"ref-for-event-pageswap\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/indices.html#event-pageswap"},
-"1f9310ca": {"dfnID":"1f9310ca","dfnText":"serialize a function","external":true,"refSections":[{"refs":[{"id":"ref-for-css-serialize-a-function"}],"title":"4. The url-pattern() function"}],"url":"https://drafts.csswg.org/cssom-1/#css-serialize-a-function"},
-"2d8ceef2": {"dfnID":"2d8ceef2","dfnText":"activation","external":true,"refSections":[{"refs":[{"id":"ref-for-navigation-activation"},{"id":"ref-for-navigation-activation\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation"},
+"12eb7c09": {"dfnID":"12eb7c09","dfnText":"destination","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigateevent-destination"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigateevent-destination"},
+"1b28d572": {"dfnID":"1b28d572","dfnText":"URLPattern","external":true,"refSections":[{"refs":[{"id":"ref-for-urlpattern"},{"id":"ref-for-urlpattern\u2460"}],"title":"5. The url-pattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#urlpattern"},
+"1d314002": {"dfnID":"1d314002","dfnText":"pageswap","external":true,"refSections":[{"refs":[{"id":"ref-for-event-pageswap"},{"id":"ref-for-event-pageswap\u2460"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/indices.html#event-pageswap"},
+"1f9310ca": {"dfnID":"1f9310ca","dfnText":"serialize a function","external":true,"refSections":[{"refs":[{"id":"ref-for-css-serialize-a-function"}],"title":"5. The url-pattern() function"}],"url":"https://drafts.csswg.org/cssom-1/#css-serialize-a-function"},
+"2d8ceef2": {"dfnID":"2d8ceef2","dfnText":"activation","external":true,"refSections":[{"refs":[{"id":"ref-for-navigation-activation"},{"id":"ref-for-navigation-activation\u2460"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#navigation-activation"},
 "3349d69f": {"dfnID":"3349d69f","dfnText":"associated Document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-window"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window"},
 "347e8fe9": {"dfnID":"347e8fe9","dfnText":"URL","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-url"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://dom.spec.whatwg.org/#concept-document-url"},
 "3becdd91": {"dfnID":"3becdd91","dfnText":"groups","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-urlpatterncomponentresult-groups"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://urlpattern.spec.whatwg.org/#dom-urlpatterncomponentresult-groups"},
-"3fca5a9e": {"dfnID":"3fca5a9e","dfnText":"map","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-map"}],"title":"4. The url-pattern() function"}],"url":"https://infra.spec.whatwg.org/#ordered-map"},
-"45b74284": {"dfnID":"45b74284","dfnText":"serialize a string","external":true,"refSections":[{"refs":[{"id":"ref-for-serialize-a-string"}],"title":"4. The url-pattern() function"}],"url":"https://drafts.csswg.org/cssom-1/#serialize-a-string"},
+"3fca5a9e": {"dfnID":"3fca5a9e","dfnText":"map","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-map"}],"title":"5. The url-pattern() function"}],"url":"https://infra.spec.whatwg.org/#ordered-map"},
+"45b74284": {"dfnID":"45b74284","dfnText":"serialize a string","external":true,"refSections":[{"refs":[{"id":"ref-for-serialize-a-string"}],"title":"5. The url-pattern() function"}],"url":"https://drafts.csswg.org/cssom-1/#serialize-a-string"},
 "537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
-"5a2f7ea1": {"dfnID":"5a2f7ea1","dfnText":"url()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-url"},{"id":"ref-for-funcdef-url\u2460"}],"title":"4. The url-pattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#funcdef-url"},
-"5c4f772b": {"dfnID":"5c4f772b","dfnText":"match","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern-match"},{"id":"ref-for-url-pattern-match\u2460"},{"id":"ref-for-url-pattern-match\u2461"},{"id":"ref-for-url-pattern-match\u2462"},{"id":"ref-for-url-pattern-match\u2463"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-url-pattern-match\u2464"},{"id":"ref-for-url-pattern-match\u2465"},{"id":"ref-for-url-pattern-match\u2466"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern-match"},
+"5a2f7ea1": {"dfnID":"5a2f7ea1","dfnText":"url()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-url"},{"id":"ref-for-funcdef-url\u2460"}],"title":"5. The url-pattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#funcdef-url"},
+"5c4f772b": {"dfnID":"5c4f772b","dfnText":"match","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern-match"},{"id":"ref-for-url-pattern-match\u2460"},{"id":"ref-for-url-pattern-match\u2461"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-url-pattern-match\u2462"},{"id":"ref-for-url-pattern-match\u2463"},{"id":"ref-for-url-pattern-match\u2464"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern-match"},
 "5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"},{"id":"ref-for-window\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
-"60393e82": {"dfnID":"60393e82","dfnText":"URL pattern","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-url-pattern\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-url-pattern\u2461"},{"id":"ref-for-url-pattern\u2462"},{"id":"ref-for-url-pattern\u2463"},{"id":"ref-for-url-pattern\u2464"},{"id":"ref-for-url-pattern\u2465"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-url-pattern\u2466"},{"id":"ref-for-url-pattern\u2467"}],"title":"4. The url-pattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern"},
+"60393e82": {"dfnID":"60393e82","dfnText":"URL pattern","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-url-pattern\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-url-pattern\u2461"},{"id":"ref-for-url-pattern\u2462"},{"id":"ref-for-url-pattern\u2463"},{"id":"ref-for-url-pattern\u2464"},{"id":"ref-for-url-pattern\u2465"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-url-pattern\u2466"},{"id":"ref-for-url-pattern\u2467"}],"title":"5. The url-pattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern"},
 "61e3d51c": {"dfnID":"61e3d51c","dfnText":"<if-test>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-if-test"}],"title":"2.3. The navigation() function for if()"}],"url":"https://drafts.csswg.org/css-values-5/#typedef-if-test"},
 "65c9f2cf": {"dfnID":"65c9f2cf","dfnText":"<rule-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-rule-list"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-rule-list"},
 "68150e76": {"dfnID":"68150e76","dfnText":"*","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-zero-plus"},{"id":"ref-for-mult-zero-plus\u2460"},{"id":"ref-for-mult-zero-plus\u2461"},{"id":"ref-for-mult-zero-plus\u2462"},{"id":"ref-for-mult-zero-plus\u2463"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-mult-zero-plus\u2464"},{"id":"ref-for-mult-zero-plus\u2465"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-mult-zero-plus\u2466"},{"id":"ref-for-mult-zero-plus\u2467"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://drafts.csswg.org/css-values-4/#mult-zero-plus"},
-"6a40c011": {"dfnID":"6a40c011","dfnText":"has been revealed","external":true,"refSections":[{"refs":[{"id":"ref-for-has-been-revealed"},{"id":"ref-for-has-been-revealed\u2460"},{"id":"ref-for-has-been-revealed\u2461"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed"},
-"6b631d3b": {"dfnID":"6b631d3b","dfnText":"entry","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationactivation-entry"},{"id":"ref-for-dom-navigationactivation-entry\u2460"},{"id":"ref-for-dom-navigationactivation-entry\u2461"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry"},
+"6a40c011": {"dfnID":"6a40c011","dfnText":"has been revealed","external":true,"refSections":[{"refs":[{"id":"ref-for-has-been-revealed"},{"id":"ref-for-has-been-revealed\u2460"},{"id":"ref-for-has-been-revealed\u2461"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/browsing-the-web.html#has-been-revealed"},
+"6b631d3b": {"dfnID":"6b631d3b","dfnText":"entry","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationactivation-entry"},{"id":"ref-for-dom-navigationactivation-entry\u2460"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-entry"},
 "6e13c5fc": {"dfnID":"6e13c5fc","dfnText":"if()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-if"},{"id":"ref-for-funcdef-if\u2460"},{"id":"ref-for-funcdef-if\u2461"}],"title":"2.3. The navigation() function for if()"}],"url":"https://drafts.csswg.org/css-values-5/#funcdef-if"},
 "6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"},{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"},{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"},{"id":"ref-for-comb-one\u2466"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-comb-one\u2467"},{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"},{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-comb-one\u2460\u2465"},{"id":"ref-for-comb-one\u2460\u2466"},{"id":"ref-for-comb-one\u2460\u2467"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
-"78fedd4c": {"dfnID":"78fedd4c","dfnText":"url (for NavigationDestination)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationdestination-url"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url"},
+"78fedd4c": {"dfnID":"78fedd4c","dfnText":"url (for NavigationDestination)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationdestination-url"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationdestination-url"},
 "802b0fdd": {"dfnID":"802b0fdd","dfnText":"value","external":true,"refSections":[{"refs":[{"id":"ref-for-map-value"},{"id":"ref-for-map-value\u2460"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://infra.spec.whatwg.org/#map-value"},
-"87806adf": {"dfnID":"87806adf","dfnText":"pushState(data, unused, url)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-history-pushstate"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate"},
+"87806adf": {"dfnID":"87806adf","dfnText":"pushState(data, unused, url)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-history-pushstate"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-history-pushstate"},
 "8958b003": {"dfnID":"8958b003","dfnText":"entry","external":true,"refSections":[{"refs":[{"id":"ref-for-map-entry"},{"id":"ref-for-map-entry\u2460"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://infra.spec.whatwg.org/#map-entry"},
 "8a427103": {"dfnID":"8a427103","dfnText":"<dashed-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-dashed-ident"},{"id":"ref-for-typedef-dashed-ident\u2460"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2461"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident"},
 "8b6678c3": {"dfnID":"8b6678c3","dfnText":"navigation API","external":true,"refSections":[{"refs":[{"id":"ref-for-window-navigation-api"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-navigation-api"},
 "90f4193a": {"dfnID":"90f4193a","dfnText":"URLPatternInit","external":true,"refSections":[{"refs":[{"id":"ref-for-dictdef-urlpatterninit"}],"title":"1. Declaring named URL patterns: the @route rule"}],"url":"https://urlpattern.spec.whatwg.org/#dictdef-urlpatterninit"},
 "9213678e": {"dfnID":"9213678e","dfnText":"<ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-ident"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-typedef-ident\u2460"},{"id":"ref-for-typedef-ident\u2461"},{"id":"ref-for-typedef-ident\u2462"},{"id":"ref-for-typedef-ident\u2463"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-ident"},
-"977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-string-value\u2460"},{"id":"ref-for-string-value\u2461"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-string-value\u2462"},{"id":"ref-for-string-value\u2463"}],"title":"4. The url-pattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
+"977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-string-value\u2460"},{"id":"ref-for-string-value\u2461"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-string-value\u2462"},{"id":"ref-for-string-value\u2463"}],"title":"5. The url-pattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
 "a25b060b": {"dfnID":"a25b060b","dfnText":"@when","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-when"},{"id":"ref-for-at-ruledef-when\u2460"}],"title":"2.2. The navigation() function for @when"}],"url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-when"},
 "a6d5d47b": {"dfnID":"a6d5d47b","dfnText":":any-link","external":true,"refSections":[{"refs":[{"id":"ref-for-any-link-pseudo"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://drafts.csswg.org/selectors-4/#any-link-pseudo"},
-"at-ruledef-navigation": {"dfnID":"at-ruledef-navigation","dfnText":"@navigation","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-navigation"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-at-ruledef-navigation\u2460"},{"id":"ref-for-at-ruledef-navigation\u2461"},{"id":"ref-for-at-ruledef-navigation\u2462"},{"id":"ref-for-at-ruledef-navigation\u2463"},{"id":"ref-for-at-ruledef-navigation\u2464"},{"id":"ref-for-at-ruledef-navigation\u2465"},{"id":"ref-for-at-ruledef-navigation\u2466"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-at-ruledef-navigation\u2467"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-at-ruledef-navigation\u2468"}],"title":"4. The url-pattern() function"}],"url":"#at-ruledef-navigation"},
+"a973e0fe": {"dfnID":"a973e0fe","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document"},{"id":"ref-for-concept-document\u2460"}],"title":"4. Current navigation URLs"}],"url":"https://dom.spec.whatwg.org/#concept-document"},
+"at-ruledef-navigation": {"dfnID":"at-ruledef-navigation","dfnText":"@navigation","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-navigation"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-at-ruledef-navigation\u2460"},{"id":"ref-for-at-ruledef-navigation\u2461"},{"id":"ref-for-at-ruledef-navigation\u2462"},{"id":"ref-for-at-ruledef-navigation\u2463"},{"id":"ref-for-at-ruledef-navigation\u2464"},{"id":"ref-for-at-ruledef-navigation\u2465"},{"id":"ref-for-at-ruledef-navigation\u2466"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-at-ruledef-navigation\u2467"}],"title":"4. Current navigation URLs"},{"refs":[{"id":"ref-for-at-ruledef-navigation\u2468"}],"title":"5. The url-pattern() function"}],"url":"#at-ruledef-navigation"},
 "at-ruledef-route": {"dfnID":"at-ruledef-route","dfnText":"@route","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-route"},{"id":"ref-for-at-ruledef-route\u2460"},{"id":"ref-for-at-ruledef-route\u2461"},{"id":"ref-for-at-ruledef-route\u2462"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-at-ruledef-route\u2463"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-at-ruledef-route\u2464"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#at-ruledef-route"},
-"b33508ca": {"dfnID":"b33508ca","dfnText":"from","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationactivation-from"},{"id":"ref-for-dom-navigationactivation-from\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from"},
-"b511103c": {"dfnID":"b511103c","dfnText":"style resource base URL","external":true,"refSections":[{"refs":[{"id":"ref-for-style-resource-base-url"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-style-resource-base-url\u2460"}],"title":"4. The url-pattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#style-resource-base-url"},
+"b33508ca": {"dfnID":"b33508ca","dfnText":"from","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationactivation-from"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationactivation-from"},
+"b511103c": {"dfnID":"b511103c","dfnText":"style resource base URL","external":true,"refSections":[{"refs":[{"id":"ref-for-style-resource-base-url"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-style-resource-base-url\u2460"}],"title":"5. The url-pattern() function"}],"url":"https://drafts.csswg.org/css-values-4/#style-resource-base-url"},
 "bedd9d42": {"dfnID":"bedd9d42","dfnText":"+","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-one-plus"}],"title":"1. Declaring named URL patterns: the @route rule"}],"url":"https://drafts.csswg.org/css-values-4/#mult-one-plus"},
-"bf4f3896": {"dfnID":"bf4f3896","dfnText":"url (for NavigationHistoryEntry)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationhistoryentry-url"},{"id":"ref-for-dom-navigationhistoryentry-url\u2460"},{"id":"ref-for-dom-navigationhistoryentry-url\u2461"},{"id":"ref-for-dom-navigationhistoryentry-url\u2462"},{"id":"ref-for-dom-navigationhistoryentry-url\u2463"},{"id":"ref-for-dom-navigationhistoryentry-url\u2464"},{"id":"ref-for-dom-navigationhistoryentry-url\u2465"},{"id":"ref-for-dom-navigationhistoryentry-url\u2466"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url"},
-"bf9f0d4e": {"dfnID":"bf9f0d4e","dfnText":"create","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern-create"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-url-pattern-create\u2460"}],"title":"4. The url-pattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern-create"},
+"bf4f3896": {"dfnID":"bf4f3896","dfnText":"url (for NavigationHistoryEntry)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-navigationhistoryentry-url"},{"id":"ref-for-dom-navigationhistoryentry-url\u2460"},{"id":"ref-for-dom-navigationhistoryentry-url\u2461"},{"id":"ref-for-dom-navigationhistoryentry-url\u2462"},{"id":"ref-for-dom-navigationhistoryentry-url\u2463"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-navigationhistoryentry-url"},
+"bf9f0d4e": {"dfnID":"bf9f0d4e","dfnText":"create","external":true,"refSections":[{"refs":[{"id":"ref-for-url-pattern-create"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-url-pattern-create\u2460"}],"title":"5. The url-pattern() function"}],"url":"https://urlpattern.spec.whatwg.org/#url-pattern-create"},
 "c4f8137c": {"dfnID":"c4f8137c","dfnText":"<general-enclosed>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-general-enclosed"},{"id":"ref-for-typedef-general-enclosed\u2460"},{"id":"ref-for-typedef-general-enclosed\u2461"},{"id":"ref-for-typedef-general-enclosed\u2462"},{"id":"ref-for-typedef-general-enclosed\u2463"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://drafts.csswg.org/mediaqueries-5/#typedef-general-enclosed"},
-"c8c5d31a": {"dfnID":"c8c5d31a","dfnText":"ongoing navigate event","external":true,"refSections":[{"refs":[{"id":"ref-for-ongoing-navigate-event"},{"id":"ref-for-ongoing-navigate-event\u2460"},{"id":"ref-for-ongoing-navigate-event\u2461"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event"},
+"c8c5d31a": {"dfnID":"c8c5d31a","dfnText":"ongoing navigate event","external":true,"refSections":[{"refs":[{"id":"ref-for-ongoing-navigate-event"},{"id":"ref-for-ongoing-navigate-event\u2460"},{"id":"ref-for-ongoing-navigate-event\u2461"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#ongoing-navigate-event"},
 "create-a-url-pattern-for-url-pattern": {"dfnID":"create-a-url-pattern-for-url-pattern","dfnText":"create a URL pattern for url-pattern()","external":false,"refSections":[{"refs":[{"id":"ref-for-create-a-url-pattern-for-url-pattern"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-create-a-url-pattern-for-url-pattern\u2460"},{"id":"ref-for-create-a-url-pattern-for-url-pattern\u2461"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#create-a-url-pattern-for-url-pattern"},
-"current-to-url": {"dfnID":"current-to-url","dfnText":"current to url","external":false,"refSections":[{"refs":[{"id":"ref-for-current-to-url"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"#current-to-url"},
+"current-from-url": {"dfnID":"current-from-url","dfnText":"current from URL","external":false,"refSections":[{"refs":[{"id":"ref-for-current-from-url"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-current-from-url\u2460"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-current-from-url\u2461"}],"title":"4. Current navigation URLs"}],"url":"#current-from-url"},
+"current-to-url": {"dfnID":"current-to-url","dfnText":"current to URL","external":false,"refSections":[{"refs":[{"id":"ref-for-current-to-url"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-current-to-url\u2460"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-current-to-url\u2461"}],"title":"4. Current navigation URLs"}],"url":"#current-to-url"},
 "d14a6f26": {"dfnID":"d14a6f26","dfnText":"key","external":true,"refSections":[{"refs":[{"id":"ref-for-map-key"},{"id":"ref-for-map-key\u2460"},{"id":"ref-for-map-key\u2461"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://infra.spec.whatwg.org/#map-key"},
 "d2a9c6a8": {"dfnID":"d2a9c6a8","dfnText":"URLPatternComponentResult","external":true,"refSections":[{"refs":[{"id":"ref-for-dictdef-urlpatterncomponentresult"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://urlpattern.spec.whatwg.org/#dictdef-urlpatterncomponentresult"},
-"documents-navigation-api": {"dfnID":"documents-navigation-api","dfnText":"document\u2019s navigation API","external":false,"refSections":[{"refs":[{"id":"ref-for-documents-navigation-api"},{"id":"ref-for-documents-navigation-api\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"#documents-navigation-api"},
-"e270bd2a": {"dfnID":"e270bd2a","dfnText":"task","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-task"},{"id":"ref-for-concept-task\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task"},
+"documents-navigation-api": {"dfnID":"documents-navigation-api","dfnText":"document\u2019s navigation API","external":false,"refSections":[{"refs":[{"id":"ref-for-documents-navigation-api"},{"id":"ref-for-documents-navigation-api\u2460"},{"id":"ref-for-documents-navigation-api\u2461"},{"id":"ref-for-documents-navigation-api\u2462"}],"title":"4. Current navigation URLs"}],"url":"#documents-navigation-api"},
+"e270bd2a": {"dfnID":"e270bd2a","dfnText":"task","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-task"},{"id":"ref-for-concept-task\u2460"}],"title":"4. Current navigation URLs"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task"},
 "e274345c": {"dfnID":"e274345c","dfnText":"<custom-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-identifier-value"}],"title":"1. Declaring named URL patterns: the @route rule"}],"url":"https://drafts.csswg.org/css-values-4/#identifier-value"},
 "ef58eb12": {"dfnID":"ef58eb12","dfnText":"URLPatternResult","external":true,"refSections":[{"refs":[{"id":"ref-for-dictdef-urlpatternresult"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://urlpattern.spec.whatwg.org/#dictdef-urlpatternresult"},
-"f55ffdf2": {"dfnID":"f55ffdf2","dfnText":":local-link","external":true,"refSections":[{"refs":[{"id":"ref-for-local-link-pseudo"}],"title":"4. The url-pattern() function"}],"url":"https://drafts.csswg.org/selectors-5/#local-link-pseudo"},
+"f55ffdf2": {"dfnID":"f55ffdf2","dfnText":":local-link","external":true,"refSections":[{"refs":[{"id":"ref-for-local-link-pseudo"}],"title":"5. The url-pattern() function"}],"url":"https://drafts.csswg.org/selectors-5/#local-link-pseudo"},
 "f937b7b6": {"dfnID":"f937b7b6","dfnText":"continue","external":true,"refSections":[{"refs":[{"id":"ref-for-iteration-continue"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"https://infra.spec.whatwg.org/#iteration-continue"},
 "funcdef-if-navigation": {"dfnID":"funcdef-if-navigation","dfnText":"navigation()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-if-navigation"}],"title":"2.3. The navigation() function for if()"}],"url":"#funcdef-if-navigation"},
-"funcdef-url-pattern": {"dfnID":"funcdef-url-pattern","dfnText":"url-pattern()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-url-pattern"},{"id":"ref-for-funcdef-url-pattern\u2460"},{"id":"ref-for-funcdef-url-pattern\u2461"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-funcdef-url-pattern\u2462"},{"id":"ref-for-funcdef-url-pattern\u2463"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-funcdef-url-pattern\u2464"},{"id":"ref-for-funcdef-url-pattern\u2465"},{"id":"ref-for-funcdef-url-pattern\u2466"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-funcdef-url-pattern\u2467"},{"id":"ref-for-funcdef-url-pattern\u2468"},{"id":"ref-for-funcdef-url-pattern\u2460\u24ea"},{"id":"ref-for-funcdef-url-pattern\u2460\u2460"},{"id":"ref-for-funcdef-url-pattern\u2460\u2461"},{"id":"ref-for-funcdef-url-pattern\u2460\u2462"},{"id":"ref-for-funcdef-url-pattern\u2460\u2463"},{"id":"ref-for-funcdef-url-pattern\u2460\u2464"}],"title":"4. The url-pattern() function"}],"url":"#funcdef-url-pattern"},
+"funcdef-url-pattern": {"dfnID":"funcdef-url-pattern","dfnText":"url-pattern()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-url-pattern"},{"id":"ref-for-funcdef-url-pattern\u2460"},{"id":"ref-for-funcdef-url-pattern\u2461"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-funcdef-url-pattern\u2462"},{"id":"ref-for-funcdef-url-pattern\u2463"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-funcdef-url-pattern\u2464"},{"id":"ref-for-funcdef-url-pattern\u2465"},{"id":"ref-for-funcdef-url-pattern\u2466"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-funcdef-url-pattern\u2467"},{"id":"ref-for-funcdef-url-pattern\u2468"},{"id":"ref-for-funcdef-url-pattern\u2460\u24ea"},{"id":"ref-for-funcdef-url-pattern\u2460\u2460"},{"id":"ref-for-funcdef-url-pattern\u2460\u2461"},{"id":"ref-for-funcdef-url-pattern\u2460\u2462"},{"id":"ref-for-funcdef-url-pattern\u2460\u2463"},{"id":"ref-for-funcdef-url-pattern\u2460\u2464"}],"title":"5. The url-pattern() function"}],"url":"#funcdef-url-pattern"},
 "funcdef-when-navigation": {"dfnID":"funcdef-when-navigation","dfnText":"navigation()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-when-navigation"},{"id":"ref-for-funcdef-when-navigation\u2460"}],"title":"2.2. The navigation() function for @when"}],"url":"#funcdef-when-navigation"},
-"link-to-pseudo": {"dfnID":"link-to-pseudo","dfnText":":link-to()","external":false,"refSections":[{"refs":[{"id":"ref-for-link-to-pseudo"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-link-to-pseudo\u2460"},{"id":"ref-for-link-to-pseudo\u2461"},{"id":"ref-for-link-to-pseudo\u2462"},{"id":"ref-for-link-to-pseudo\u2463"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#link-to-pseudo"},
-"navigation-location-url-pattern": {"dfnID":"navigation-location-url-pattern","dfnText":"navigation location URL pattern","external":false,"refSections":[{"refs":[{"id":"ref-for-navigation-location-url-pattern"},{"id":"ref-for-navigation-location-url-pattern\u2460"},{"id":"ref-for-navigation-location-url-pattern\u2461"},{"id":"ref-for-navigation-location-url-pattern\u2462"},{"id":"ref-for-navigation-location-url-pattern\u2463"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"#navigation-location-url-pattern"},
+"link-to-pseudo": {"dfnID":"link-to-pseudo","dfnText":":link-to()","external":false,"refSections":[{"refs":[{"id":"ref-for-link-to-pseudo"}],"title":"1. Declaring named URL patterns: the @route rule"},{"refs":[{"id":"ref-for-link-to-pseudo\u2460"},{"id":"ref-for-link-to-pseudo\u2461"},{"id":"ref-for-link-to-pseudo\u2462"},{"id":"ref-for-link-to-pseudo\u2463"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"},{"refs":[{"id":"ref-for-link-to-pseudo\u2464"}],"title":"4. Current navigation URLs"}],"url":"#link-to-pseudo"},
+"navigation-location-url-pattern": {"dfnID":"navigation-location-url-pattern","dfnText":"navigation location URL pattern","external":false,"refSections":[{"refs":[{"id":"ref-for-navigation-location-url-pattern"},{"id":"ref-for-navigation-location-url-pattern\u2460"},{"id":"ref-for-navigation-location-url-pattern\u2461"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"#navigation-location-url-pattern"},
 "navigation-queries": {"dfnID":"navigation-queries","dfnText":"navigation queries","external":false,"refSections":[],"url":"#navigation-queries"},
 "serialize-a-url-pattern-function": {"dfnID":"serialize-a-url-pattern-function","dfnText":"serialize a url-pattern() function","external":false,"refSections":[],"url":"#serialize-a-url-pattern-function"},
 "typedef-init-descriptor": {"dfnID":"typedef-init-descriptor","dfnText":"<init-descriptor>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-init-descriptor"},{"id":"ref-for-typedef-init-descriptor\u2460"},{"id":"ref-for-typedef-init-descriptor\u2461"}],"title":"1. Declaring named URL patterns: the @route rule"}],"url":"#typedef-init-descriptor"},
 "typedef-init-descriptor-name": {"dfnID":"typedef-init-descriptor-name","dfnText":"<init-descriptor-name>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-init-descriptor-name"},{"id":"ref-for-typedef-init-descriptor-name\u2460"},{"id":"ref-for-typedef-init-descriptor-name\u2461"}],"title":"1. Declaring named URL patterns: the @route rule"}],"url":"#typedef-init-descriptor-name"},
 "typedef-init-descriptors": {"dfnID":"typedef-init-descriptors","dfnText":"<init-descriptors>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-init-descriptors"},{"id":"ref-for-typedef-init-descriptors\u2460"}],"title":"1. Declaring named URL patterns: the @route rule"}],"url":"#typedef-init-descriptors"},
-"typedef-link-condition": {"dfnID":"typedef-link-condition","dfnText":"<link-condition>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-link-condition"},{"id":"ref-for-typedef-link-condition\u2460"},{"id":"ref-for-typedef-link-condition\u2461"},{"id":"ref-for-typedef-link-condition\u2462"},{"id":"ref-for-typedef-link-condition\u2463"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-link-condition"},
+"typedef-link-condition": {"dfnID":"typedef-link-condition","dfnText":"<link-condition>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-link-condition"},{"id":"ref-for-typedef-link-condition\u2460"},{"id":"ref-for-typedef-link-condition\u2461"},{"id":"ref-for-typedef-link-condition\u2462"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-link-condition"},
 "typedef-link-condition-base": {"dfnID":"typedef-link-condition-base","dfnText":"<link-condition-base>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-link-condition-base"},{"id":"ref-for-typedef-link-condition-base\u2460"},{"id":"ref-for-typedef-link-condition-base\u2461"},{"id":"ref-for-typedef-link-condition-base\u2462"},{"id":"ref-for-typedef-link-condition-base\u2463"},{"id":"ref-for-typedef-link-condition-base\u2464"},{"id":"ref-for-typedef-link-condition-base\u2465"},{"id":"ref-for-typedef-link-condition-base\u2466"},{"id":"ref-for-typedef-link-condition-base\u2467"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-link-condition-base"},
 "typedef-navigation-condition": {"dfnID":"typedef-navigation-condition","dfnText":"<navigation-condition>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-condition"},{"id":"ref-for-typedef-navigation-condition\u2460"},{"id":"ref-for-typedef-navigation-condition\u2461"},{"id":"ref-for-typedef-navigation-condition\u2462"},{"id":"ref-for-typedef-navigation-condition\u2463"},{"id":"ref-for-typedef-navigation-condition\u2464"},{"id":"ref-for-typedef-navigation-condition\u2465"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-typedef-navigation-condition\u2466"}],"title":"2.2. The navigation() function for @when"},{"refs":[{"id":"ref-for-typedef-navigation-condition\u2467"}],"title":"2.3. The navigation() function for if()"}],"url":"#typedef-navigation-condition"},
 "typedef-navigation-in-parens": {"dfnID":"typedef-navigation-in-parens","dfnText":"<navigation-in-parens>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-in-parens"},{"id":"ref-for-typedef-navigation-in-parens\u2460"},{"id":"ref-for-typedef-navigation-in-parens\u2461"},{"id":"ref-for-typedef-navigation-in-parens\u2462"},{"id":"ref-for-typedef-navigation-in-parens\u2463"},{"id":"ref-for-typedef-navigation-in-parens\u2464"},{"id":"ref-for-typedef-navigation-in-parens\u2465"},{"id":"ref-for-typedef-navigation-in-parens\u2466"},{"id":"ref-for-typedef-navigation-in-parens\u2467"},{"id":"ref-for-typedef-navigation-in-parens\u2468"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u24ea"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2460"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2461"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2462"},{"id":"ref-for-typedef-navigation-in-parens\u2460\u2463"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"#typedef-navigation-in-parens"},
 "typedef-navigation-keyword": {"dfnID":"typedef-navigation-keyword","dfnText":"<navigation-keyword>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-keyword"},{"id":"ref-for-typedef-navigation-keyword\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"#typedef-navigation-keyword"},
-"typedef-navigation-location": {"dfnID":"typedef-navigation-location","dfnText":"<navigation-location>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-location"},{"id":"ref-for-typedef-navigation-location\u2460"},{"id":"ref-for-typedef-navigation-location\u2461"},{"id":"ref-for-typedef-navigation-location\u2462"},{"id":"ref-for-typedef-navigation-location\u2463"},{"id":"ref-for-typedef-navigation-location\u2464"},{"id":"ref-for-typedef-navigation-location\u2465"},{"id":"ref-for-typedef-navigation-location\u2466"},{"id":"ref-for-typedef-navigation-location\u2467"},{"id":"ref-for-typedef-navigation-location\u2468"},{"id":"ref-for-typedef-navigation-location\u2460\u24ea"},{"id":"ref-for-typedef-navigation-location\u2460\u2460"},{"id":"ref-for-typedef-navigation-location\u2460\u2461"},{"id":"ref-for-typedef-navigation-location\u2460\u2462"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-typedef-navigation-location\u2460\u2463"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-location"},
+"typedef-navigation-location": {"dfnID":"typedef-navigation-location","dfnText":"<navigation-location>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-location"},{"id":"ref-for-typedef-navigation-location\u2460"},{"id":"ref-for-typedef-navigation-location\u2461"},{"id":"ref-for-typedef-navigation-location\u2462"},{"id":"ref-for-typedef-navigation-location\u2463"},{"id":"ref-for-typedef-navigation-location\u2464"},{"id":"ref-for-typedef-navigation-location\u2465"},{"id":"ref-for-typedef-navigation-location\u2466"},{"id":"ref-for-typedef-navigation-location\u2467"},{"id":"ref-for-typedef-navigation-location\u2468"},{"id":"ref-for-typedef-navigation-location\u2460\u24ea"},{"id":"ref-for-typedef-navigation-location\u2460\u2460"}],"title":"2.1. Navigation queries: the @navigation rule"},{"refs":[{"id":"ref-for-typedef-navigation-location\u2460\u2461"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-location"},
 "typedef-navigation-param": {"dfnID":"typedef-navigation-param","dfnText":"<navigation-param>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-param"},{"id":"ref-for-typedef-navigation-param\u2460"},{"id":"ref-for-typedef-navigation-param\u2461"},{"id":"ref-for-typedef-navigation-param\u2462"},{"id":"ref-for-typedef-navigation-param\u2463"},{"id":"ref-for-typedef-navigation-param\u2464"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-param"},
 "typedef-navigation-param-and": {"dfnID":"typedef-navigation-param-and","dfnText":"<navigation-param-and>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-param-and"},{"id":"ref-for-typedef-navigation-param-and\u2460"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-param-and"},
 "typedef-navigation-param-expression": {"dfnID":"typedef-navigation-param-expression","dfnText":"<navigation-param-expression>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-param-expression"},{"id":"ref-for-typedef-navigation-param-expression\u2460"},{"id":"ref-for-typedef-navigation-param-expression\u2461"},{"id":"ref-for-typedef-navigation-param-expression\u2462"},{"id":"ref-for-typedef-navigation-param-expression\u2463"},{"id":"ref-for-typedef-navigation-param-expression\u2464"},{"id":"ref-for-typedef-navigation-param-expression\u2465"},{"id":"ref-for-typedef-navigation-param-expression\u2466"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-param-expression"},
-"typedef-navigation-param-function": {"dfnID":"typedef-navigation-param-function","dfnText":"<navigation-param-function>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-param-function"},{"id":"ref-for-typedef-navigation-param-function\u2460"},{"id":"ref-for-typedef-navigation-param-function\u2461"},{"id":"ref-for-typedef-navigation-param-function\u2462"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-param-function"},
+"typedef-navigation-param-function": {"dfnID":"typedef-navigation-param-function","dfnText":"<navigation-param-function>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-param-function"},{"id":"ref-for-typedef-navigation-param-function\u2460"},{"id":"ref-for-typedef-navigation-param-function\u2461"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-param-function"},
 "typedef-navigation-param-key-value": {"dfnID":"typedef-navigation-param-key-value","dfnText":"<navigation-param-key-value>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-param-key-value"},{"id":"ref-for-typedef-navigation-param-key-value\u2460"},{"id":"ref-for-typedef-navigation-param-key-value\u2461"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-param-key-value"},
 "typedef-navigation-param-or": {"dfnID":"typedef-navigation-param-or","dfnText":"<navigation-param-or>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-param-or"},{"id":"ref-for-typedef-navigation-param-or\u2460"}],"title":"3. Pseudo-class for navigation-related links: :link-to()"}],"url":"#typedef-navigation-param-or"},
 "typedef-navigation-test": {"dfnID":"typedef-navigation-test","dfnText":"<navigation-test>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-navigation-test"},{"id":"ref-for-typedef-navigation-test\u2460"},{"id":"ref-for-typedef-navigation-test\u2461"}],"title":"2.1. Navigation queries: the @navigation rule"}],"url":"#typedef-navigation-test"},
@@ -2552,6 +2546,7 @@ let refsData = {
 "#at-ruledef-navigation": {"displayText":"@navigation","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"@navigation","type":"at-rule","url":"#at-ruledef-navigation"},
 "#at-ruledef-route": {"displayText":"@route","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"@route","type":"at-rule","url":"#at-ruledef-route"},
 "#create-a-url-pattern-for-url-pattern": {"displayText":"create a url pattern for url-pattern()","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"create a url pattern for url-pattern()","type":"dfn","url":"#create-a-url-pattern-for-url-pattern"},
+"#current-from-url": {"displayText":"current from url","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"current from url","type":"dfn","url":"#current-from-url"},
 "#current-to-url": {"displayText":"current to url","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"current to url","type":"dfn","url":"#current-to-url"},
 "#documents-navigation-api": {"displayText":"document's navigation api","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"document's navigation api","type":"dfn","url":"#documents-navigation-api"},
 "#funcdef-if-navigation": {"displayText":"navigation()","export":true,"for_":["if()"],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"navigation()","type":"function","url":"#funcdef-if-navigation"},
@@ -2578,6 +2573,7 @@ let refsData = {
 "#typedef-pattern-descriptor": {"displayText":"<pattern-descriptor>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<pattern-descriptor>","type":"type","url":"#typedef-pattern-descriptor"},
 "#typedef-pattern-descriptors": {"displayText":"<pattern-descriptors>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<pattern-descriptors>","type":"type","url":"#typedef-pattern-descriptors"},
 "#typedef-route-name": {"displayText":"<route-name>","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-navigation","spec":"css-navigation-1","status":"local","text":"<route-name>","type":"type","url":"#typedef-route-name"},
+"https://dom.spec.whatwg.org/#concept-document": {"displayText":"document","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"document","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document"},
 "https://dom.spec.whatwg.org/#concept-document-url": {"displayText":"URL","export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"url","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document-url"},
 "https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition": {"displayText":"<supports-condition>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"<supports-condition>","type":"type","url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
 "https://drafts.csswg.org/css-conditional-5/#at-ruledef-when": {"displayText":"@when","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"@when","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-when"},
