@@ -5,10 +5,10 @@
   <title>CSSOM View Module Level 1</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 86e3be07a, updated Tue Nov 18 16:58:08 2025 +0000" name="generator">
+  <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://www.w3.org/TR/cssom-view-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="fdc08f79a22f0b6cda2ac823b1c7a2f8b1004445" name="revision">
+  <meta content="6fb99c813c19f21615378e43faf6da8d3ae86e31" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1347,7 +1347,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSSOM View Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-10-24">24 October 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-17">17 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1425,7 +1425,7 @@ on screen, on paper, etc.
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
-   <ol class="toc" role="directory">
+   <ol class="toc">
     <li><a href="#background"><span class="secno">1</span> <span class="content">Background</span></a>
     <li>
      <a href="#terminology"><span class="secno">2</span> <span class="content">Terminology</span></a>
@@ -1895,22 +1895,42 @@ pinch-zooming. e.g. The user agent may zooms in on a focused input element to ma
 protect the user’s privacy. In order to do so in a consistent manner across APIs, this specification
 defines the following terms, each having a width and a height, the origin being the top left
 corner, and the x- and y-coordinates increase rightwards and downwards, respectively.</p>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="web-exposed-screen-area">Web-exposed screen area</dfn> is one of the following:</p>
-   <ul>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="web-exposed-screen-area">Web-exposed screen area</dfn> must return the result of the following algorithm:</p>
+   <ol>
     <li data-md>
-     <p>The area of the output device, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px①">CSS pixels</a>.</p>
+     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc">browsing context</a>.</p>
     <li data-md>
-     <p>The area of the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0①⑥">viewport</a>, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px②">CSS pixels</a>.</p>
-   </ul>
-   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="web-exposed-available-screen-area">Web-exposed available screen area</dfn> is one of the following:</p>
-   <ul>
+     <p>Let <var>emulated screen area</var> be the <a data-link-type="dfn" href="https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-total-screen-area" id="ref-for-webdriver-bidi-emulated-total-screen-area">WebDriver BiDi emulated total screen area</a> of <var>target</var>.</p>
     <li data-md>
-     <p>The available area of the rendering surface of the output device, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px③">CSS pixels</a>.</p>
+     <p>If <var>emulated screen area</var> is not null, return <var>emulated screen area</var>.</p>
     <li data-md>
-     <p>The area of the output device, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px④">CSS pixels</a>.</p>
+     <p>Otherwise, return one of the following:</p>
+     <ul>
+      <li data-md>
+       <p>The area of the output device, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px①">CSS pixels</a>.</p>
+      <li data-md>
+       <p>The area of the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0①⑥">viewport</a>, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px②">CSS pixels</a>.</p>
+     </ul>
+   </ol>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="web-exposed-available-screen-area">Web-exposed available screen area</dfn> must return the result of the following algorithm:</p>
+   <ol>
     <li data-md>
-     <p>The area of the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0①⑦">viewport</a>, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px⑤">CSS pixels</a>.</p>
-   </ul>
+     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc①">browsing context</a>.</p>
+    <li data-md>
+     <p>Let <var>emulated screen area</var> be the <a data-link-type="dfn" href="https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-available-screen-area" id="ref-for-webdriver-bidi-emulated-available-screen-area">WebDriver BiDi emulated available screen area</a> for <var>target</var>.</p>
+    <li data-md>
+     <p>If <var>emulated screen area</var> is not null, return <var>emulated screen area</var>.</p>
+    <li data-md>
+     <p>Otherwise, return one of the following:</p>
+     <ul>
+      <li data-md>
+       <p>The available area of the rendering surface of the output device, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px③">CSS pixels</a>.</p>
+      <li data-md>
+       <p>The area of the output device, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px④">CSS pixels</a>.</p>
+      <li data-md>
+       <p>The area of the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0①⑦">viewport</a>, in <a class="css" data-link-type="value" href="https://drafts.csswg.org/css-values-4/#px" id="ref-for-px⑤">CSS pixels</a>.</p>
+     </ul>
+   </ol>
    <h2 class="heading settled" data-level="3" id="common-infrastructure"><span class="secno">3. </span><span class="content">Common Infrastructure</span><a class="self-link" href="#common-infrastructure"></a></h2>
    <p>This specification depends on the WHATWG Infra standard. <a data-link-type="biblio" href="#biblio-infra" title="Infra Standard">[INFRA]</a></p>
    <h3 class="heading settled" data-level="3.1" id="scrolling"><span class="secno">3.1. </span><span class="content">Scrolling</span><a class="self-link" href="#scrolling"></a></h3>
@@ -2113,7 +2133,7 @@ then <var>x</var> must be changed to the value <code>0</code>. <a data-link-type
  <var>query</var>.
  
     <li>Return a new <code class="idl"><a data-link-type="idl" href="#mediaquerylist" id="ref-for-mediaquerylist①">MediaQueryList</a></code> object,
- with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>’s
+ with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>’s
  <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#concept-document-window" id="ref-for-concept-document-window①">associated <code>Document</code></a>
  as the <a data-link-type="dfn" href="#mediaquerylist-document" id="ref-for-mediaquerylist-document">document</a>,
  with <var>parsed media query list</var> as its associated <a data-link-type="dfn" href="#mediaquerylist-media-query-list" id="ref-for-mediaquerylist-media-query-list">media query list</a>.
@@ -2150,7 +2170,7 @@ that VisualViewport must not reveal any information about the browsing context.<
     <li data-md>
      <p>Optionally, return.</p>
     <li data-md>
-     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc">browsing context</a>.</p>
+     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global②">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc②">browsing context</a>.</p>
     <li data-md>
      <p>If <var>target</var> is not an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#auxiliary-browsing-context" id="ref-for-auxiliary-browsing-context">auxiliary browsing context</a> that was created by a script (as opposed to by an action of the user), then return.</p>
     <li data-md>
@@ -2163,7 +2183,7 @@ that VisualViewport must not reveal any information about the browsing context.<
     <li data-md>
      <p>Optionally, return.</p>
     <li data-md>
-     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc①">browsing context</a>.</p>
+     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc③">browsing context</a>.</p>
     <li data-md>
      <p>If <var>target</var> is not an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#auxiliary-browsing-context" id="ref-for-auxiliary-browsing-context①">auxiliary browsing context</a> that was created by a script (as opposed to by an action of the user), then return.</p>
     <li data-md>
@@ -2176,7 +2196,7 @@ that VisualViewport must not reveal any information about the browsing context.<
     <li data-md>
      <p>Optionally, return.</p>
     <li data-md>
-     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global②">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc②">browsing context</a>.</p>
+     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global④">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc④">browsing context</a>.</p>
     <li data-md>
      <p>If <var>target</var> is not an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#auxiliary-browsing-context" id="ref-for-auxiliary-browsing-context②">auxiliary browsing context</a> that was created by a script (as opposed to by an action of the user), then return.</p>
     <li data-md>
@@ -2197,7 +2217,7 @@ that VisualViewport must not reveal any information about the browsing context.<
     <li data-md>
      <p>Optionally, return.</p>
     <li data-md>
-     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc③">browsing context</a>.</p>
+     <p>Let <var>target</var> be <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑤">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc" id="ref-for-window-bc⑤">browsing context</a>.</p>
     <li data-md>
      <p>If <var>target</var> is not an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#auxiliary-browsing-context" id="ref-for-auxiliary-browsing-context③">auxiliary browsing context</a> that was created by a script (as opposed to by an action of the user), then return.</p>
     <li data-md>
@@ -2559,7 +2579,7 @@ the associated <a data-link-type="dfn" href="#mediaquerylist-matches-state" id="
 when invoked, must run these steps:</p>
    <ol>
     <li data-md>
-     <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#add-an-event-listener" id="ref-for-add-an-event-listener">Add an event listener</a> with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>
+     <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#add-an-event-listener" id="ref-for-add-an-event-listener">Add an event listener</a> with <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>
 and an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-listener" id="ref-for-concept-event-listener">event listener</a> whose
 <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-listener-type" id="ref-for-event-listener-type">type</a> is <code>change</code>,
 and <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-listener-callback" id="ref-for-event-listener-callback">callback</a> is <var>callback</var>.</p>
@@ -2568,13 +2588,13 @@ and <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-listener-ca
 when invoked, must run these steps:</p>
    <ol>
     <li data-md>
-     <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#eventtarget-event-listener-list" id="ref-for-eventtarget-event-listener-list">event listener list</a>
+     <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#eventtarget-event-listener-list" id="ref-for-eventtarget-event-listener-list">event listener list</a>
 <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-listener" id="ref-for-concept-event-listener①">event listener</a> whose
 <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-listener-type" id="ref-for-event-listener-type①">type</a> is <code>change</code>,
 <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-listener-callback" id="ref-for-event-listener-callback①">callback</a> is <var>callback</var>,
 and <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#event-listener-capture" id="ref-for-event-listener-capture">capture</a> is false,
 then <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#remove-an-event-listener" id="ref-for-remove-an-event-listener">remove an event listener</a> with
-<span id="ref-for-this⑦">this</span> and that <span id="ref-for-concept-event-listener②">event listener</span>.</p>
+<span id="ref-for-this⑨">this</span> and that <span id="ref-for-concept-event-listener②">event listener</span>.</p>
    </ol>
    <p class="note" role="note"><span class="marker">Note:</span> This specification initially had a custom callback mechanism with <code class="idl"><a data-link-type="idl" href="#dom-mediaquerylist-addlistener" id="ref-for-dom-mediaquerylist-addlistener①">addListener()</a></code> and
 <code class="idl"><a data-link-type="idl" href="#dom-mediaquerylist-removelistener" id="ref-for-dom-mediaquerylist-removelistener①">removeListener()</a></code>, and the callback was invoked with the associated media query list as argument.
@@ -5393,6 +5413,12 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="c3469cd0">MouseEvent</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[WEBDRIVER-BIDI]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="77028b73">WebDriver BiDi emulated available screen area</span>
+     <li><span class="dfn-paneled" id="c097df09">WebDriver BiDi emulated total screen area</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="8855a9aa">DOMString</span>
@@ -5483,6 +5509,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Amelia Bellamy-Royds; et al. <a href="https://svgwg.org/svg2-draft/"><cite>Scalable Vector Graphics (SVG) 2</cite></a>. URL: <a href="https://svgwg.org/svg2-draft/">https://svgwg.org/svg2-draft/</a>
    <dt id="biblio-uievents">[UIEVENTS]
    <dd>Gary Kacmarcik; Travis Leithead. <a href="https://w3c.github.io/uievents/"><cite>UI Events</cite></a>. URL: <a href="https://w3c.github.io/uievents/">https://w3c.github.io/uievents/</a>
+   <dt id="biblio-webdriver-bidi">[WEBDRIVER-BIDI]
+   <dd>James Graham; Alex Rudenko; Maksim Sadym. <a href="https://w3c.github.io/webdriver-bidi/"><cite>WebDriver BiDi</cite></a>. URL: <a href="https://w3c.github.io/webdriver-bidi/">https://w3c.github.io/webdriver-bidi/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -7485,7 +7513,7 @@ let dfnPanelData = {
 "3d6a3d36": {"dfnID":"3d6a3d36","dfnText":"shadow-including inclusive ancestor","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-including-inclusive-ancestor"}],"title":"5. Extensions to the Document Interface"},{"refs":[{"id":"ref-for-concept-shadow-including-inclusive-ancestor\u2460"},{"id":"ref-for-concept-shadow-including-inclusive-ancestor\u2461"}],"title":"6.1. Element Scrolling Members"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-including-inclusive-ancestor"},
 "3edd98b4": {"dfnID":"3edd98b4","dfnText":"end node","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-end-node"}],"title":"5.1. The CaretPosition Interface"}],"url":"https://dom.spec.whatwg.org/#concept-range-end-node"},
 "3fca5a9e": {"dfnID":"3fca5a9e","dfnText":"map","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-map"}],"title":"4.1. The features argument to the open() method"}],"url":"https://infra.spec.whatwg.org/#ordered-map"},
-"4013a022": {"dfnID":"4013a022","dfnText":"this","external":true,"refSections":[{"refs":[{"id":"ref-for-this"},{"id":"ref-for-this\u2460"},{"id":"ref-for-this\u2461"},{"id":"ref-for-this\u2462"},{"id":"ref-for-this\u2463"}],"title":"4. Extensions to the Window Interface"},{"refs":[{"id":"ref-for-this\u2464"},{"id":"ref-for-this\u2465"},{"id":"ref-for-this\u2466"}],"title":"4.2. The MediaQueryList Interface"}],"url":"https://webidl.spec.whatwg.org/#this"},
+"4013a022": {"dfnID":"4013a022","dfnText":"this","external":true,"refSections":[{"refs":[{"id":"ref-for-this"},{"id":"ref-for-this\u2460"}],"title":"2.3. Web-exposed screen information"},{"refs":[{"id":"ref-for-this\u2461"},{"id":"ref-for-this\u2462"},{"id":"ref-for-this\u2463"},{"id":"ref-for-this\u2464"},{"id":"ref-for-this\u2465"}],"title":"4. Extensions to the Window Interface"},{"refs":[{"id":"ref-for-this\u2466"},{"id":"ref-for-this\u2467"},{"id":"ref-for-this\u2468"}],"title":"4.2. The MediaQueryList Interface"}],"url":"https://webidl.spec.whatwg.org/#this"},
 "4225558e": {"dfnID":"4225558e","dfnText":"inline-table","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-inline-table"}],"title":"6. \nExtensions to the Element Interface"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-inline-table"},
 "44a7708c": {"dfnID":"44a7708c","dfnText":"EventInit","external":true,"refSections":[{"refs":[{"id":"ref-for-dictdef-eventinit"}],"title":"4.2. The MediaQueryList Interface"}],"url":"https://dom.spec.whatwg.org/#dictdef-eventinit"},
 "483ca172": {"dfnID":"483ca172","dfnText":"DOMQuad","external":true,"refSections":[{"refs":[{"id":"ref-for-domquad"},{"id":"ref-for-domquad\u2460"},{"id":"ref-for-domquad\u2461"}],"title":"11.1. The GeometryUtils Interface"}],"url":"https://drafts.fxtf.org/geometry-1/#domquad"},
@@ -7517,10 +7545,11 @@ let dfnPanelData = {
 "6c88f67e": {"dfnID":"6c88f67e","dfnText":"start node","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-range-start-node"}],"title":"5.1. The CaretPosition Interface"}],"url":"https://dom.spec.whatwg.org/#concept-range-start-node"},
 "6cb219a5": {"dfnID":"6cb219a5","dfnText":"unscaled","external":true,"refSections":[{"refs":[{"id":"ref-for-unscaled"},{"id":"ref-for-unscaled\u2460"},{"id":"ref-for-unscaled\u2461"},{"id":"ref-for-unscaled\u2462"}],"title":"6. \nExtensions to the Element Interface"},{"refs":[{"id":"ref-for-unscaled\u2463"},{"id":"ref-for-unscaled\u2464"},{"id":"ref-for-unscaled\u2465"},{"id":"ref-for-unscaled\u2466"},{"id":"ref-for-unscaled\u2467"},{"id":"ref-for-unscaled\u2468"}],"title":"7. Extensions to the HTMLElement Interface"}],"url":"https://drafts.csswg.org/css-viewport/#unscaled"},
 "6cf6f82f": {"dfnID":"6cf6f82f","dfnText":"addEventListener(type, callback)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-eventtarget-addeventlistener"}],"title":"4.2. The MediaQueryList Interface"}],"url":"https://dom.spec.whatwg.org/#dom-eventtarget-addeventlistener"},
-"6d88ab2e": {"dfnID":"6d88ab2e","dfnText":"browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-window-bc"},{"id":"ref-for-window-bc\u2460"},{"id":"ref-for-window-bc\u2461"},{"id":"ref-for-window-bc\u2462"}],"title":"4. Extensions to the Window Interface"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc"},
+"6d88ab2e": {"dfnID":"6d88ab2e","dfnText":"browsing context","external":true,"refSections":[{"refs":[{"id":"ref-for-window-bc"},{"id":"ref-for-window-bc\u2460"}],"title":"2.3. Web-exposed screen information"},{"refs":[{"id":"ref-for-window-bc\u2461"},{"id":"ref-for-window-bc\u2462"},{"id":"ref-for-window-bc\u2463"},{"id":"ref-for-window-bc\u2464"}],"title":"4. Extensions to the Window Interface"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window-bc"},
 "721a6c78": {"dfnID":"721a6c78","dfnText":"scroll snap","external":true,"refSections":[{"refs":[{"id":"ref-for-scroll-snap"}],"title":"6.1. Element Scrolling Members"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#scroll-snap"},
 "7393da89": {"dfnID":"7393da89","dfnText":"same origin","external":true,"refSections":[{"refs":[{"id":"ref-for-same-origin"}],"title":"6.1. Element Scrolling Members"}],"url":"https://html.spec.whatwg.org/multipage/browsers.html#same-origin"},
 "73bc6606": {"dfnID":"73bc6606","dfnText":"pointer-events","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-pointer-events"}],"title":"5. Extensions to the Document Interface"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-pointer-events"},
+"77028b73": {"dfnID":"77028b73","dfnText":"WebDriver BiDi emulated available screen area","external":true,"refSections":[{"refs":[{"id":"ref-for-webdriver-bidi-emulated-available-screen-area"}],"title":"2.3. Web-exposed screen information"}],"url":"https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-available-screen-area"},
 "7a87d819": {"dfnID":"7a87d819","dfnText":"is","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"}],"title":"2. Terminology"}],"url":"https://infra.spec.whatwg.org/#string-is"},
 "7df798b5": {"dfnID":"7df798b5","dfnText":"skips its contents","external":true,"refSections":[{"refs":[{"id":"ref-for-skips-its-contents"}],"title":"6. \nExtensions to the Element Interface"}],"url":"https://drafts.csswg.org/css-contain-2/#skips-its-contents"},
 "7fb2c729": {"dfnID":"7fb2c729","dfnText":"margin edge","external":true,"refSections":[{"refs":[{"id":"ref-for-margin-edge"},{"id":"ref-for-margin-edge\u2460"},{"id":"ref-for-margin-edge\u2461"},{"id":"ref-for-margin-edge\u2462"},{"id":"ref-for-margin-edge\u2463"},{"id":"ref-for-margin-edge\u2464"},{"id":"ref-for-margin-edge\u2465"},{"id":"ref-for-margin-edge\u2466"},{"id":"ref-for-margin-edge\u2467"},{"id":"ref-for-margin-edge\u2468"},{"id":"ref-for-margin-edge\u2460\u24ea"},{"id":"ref-for-margin-edge\u2460\u2460"},{"id":"ref-for-margin-edge\u2460\u2461"},{"id":"ref-for-margin-edge\u2460\u2462"},{"id":"ref-for-margin-edge\u2460\u2463"},{"id":"ref-for-margin-edge\u2460\u2464"}],"title":"2. Terminology"}],"url":"https://drafts.csswg.org/css-box-4/#margin-edge"},
@@ -7574,6 +7603,7 @@ let dfnPanelData = {
 "bafd8e4b": {"dfnID":"bafd8e4b","dfnText":"border-left-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-left-width"}],"title":"6. \nExtensions to the Element Interface"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border-left-width"},
 "bdbd19d1": {"dfnID":"bdbd19d1","dfnText":"Promise","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-promise"},{"id":"ref-for-idl-promise\u2460"},{"id":"ref-for-idl-promise\u2461"},{"id":"ref-for-idl-promise\u2462"},{"id":"ref-for-idl-promise\u2463"}],"title":"3.1. Scrolling"},{"refs":[{"id":"ref-for-idl-promise\u2464"},{"id":"ref-for-idl-promise\u2465"},{"id":"ref-for-idl-promise\u2466"},{"id":"ref-for-idl-promise\u2467"},{"id":"ref-for-idl-promise\u2468"},{"id":"ref-for-idl-promise\u2460\u24ea"},{"id":"ref-for-idl-promise\u2460\u2460"},{"id":"ref-for-idl-promise\u2460\u2461"},{"id":"ref-for-idl-promise\u2460\u2462"},{"id":"ref-for-idl-promise\u2460\u2463"}],"title":"4. Extensions to the Window Interface"},{"refs":[{"id":"ref-for-idl-promise\u2460\u2464"},{"id":"ref-for-idl-promise\u2460\u2465"},{"id":"ref-for-idl-promise\u2460\u2466"},{"id":"ref-for-idl-promise\u2460\u2467"},{"id":"ref-for-idl-promise\u2460\u2468"},{"id":"ref-for-idl-promise\u2461\u24ea"},{"id":"ref-for-idl-promise\u2461\u2460"},{"id":"ref-for-idl-promise\u2461\u2461"},{"id":"ref-for-idl-promise\u2461\u2462"},{"id":"ref-for-idl-promise\u2461\u2463"},{"id":"ref-for-idl-promise\u2461\u2464"},{"id":"ref-for-idl-promise\u2461\u2465"},{"id":"ref-for-idl-promise\u2461\u2466"},{"id":"ref-for-idl-promise\u2461\u2467"},{"id":"ref-for-idl-promise\u2461\u2468"},{"id":"ref-for-idl-promise\u2462\u24ea"},{"id":"ref-for-idl-promise\u2462\u2460"}],"title":"6. \nExtensions to the Element Interface"},{"refs":[{"id":"ref-for-idl-promise\u2462\u2461"},{"id":"ref-for-idl-promise\u2462\u2462"},{"id":"ref-for-idl-promise\u2462\u2463"},{"id":"ref-for-idl-promise\u2462\u2464"},{"id":"ref-for-idl-promise\u2462\u2465"},{"id":"ref-for-idl-promise\u2462\u2466"},{"id":"ref-for-idl-promise\u2462\u2467"}],"title":"6.1. Element Scrolling Members"}],"url":"https://webidl.spec.whatwg.org/#idl-promise"},
 "beginning-edges": {"dfnID":"beginning-edges","dfnText":"beginning edges","external":false,"refSections":[{"refs":[{"id":"ref-for-beginning-edges"},{"id":"ref-for-beginning-edges\u2460"}],"title":"3.1. Scrolling"},{"refs":[{"id":"ref-for-beginning-edges\u2461"},{"id":"ref-for-beginning-edges\u2462"}],"title":"6.1. Element Scrolling Members"}],"url":"#beginning-edges"},
+"c097df09": {"dfnID":"c097df09","dfnText":"WebDriver BiDi emulated total screen area","external":true,"refSections":[{"refs":[{"id":"ref-for-webdriver-bidi-emulated-total-screen-area"}],"title":"2.3. Web-exposed screen information"}],"url":"https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-total-screen-area"},
 "c3469cd0": {"dfnID":"c3469cd0","dfnText":"MouseEvent","external":true,"refSections":[{"refs":[{"id":"ref-for-mouseevent"},{"id":"ref-for-mouseevent\u2460"}],"title":"10. Extensions to the MouseEvent Interface"},{"refs":[{"id":"ref-for-mouseevent\u2461"}],"title":"15. Privacy Considerations"},{"refs":[{"id":"ref-for-mouseevent\u2462"}],"title":"\nChanges since the 22 February 2008 Working Draft"}],"url":"https://w3c.github.io/uievents/#mouseevent"},
 "c3bd6e1d": {"dfnID":"c3bd6e1d","dfnText":"box fragment","external":true,"refSections":[{"refs":[{"id":"ref-for-box-fragment"}],"title":"6. \nExtensions to the Element Interface"}],"url":"https://drafts.csswg.org/css-break-4/#box-fragment"},
 "c51ad875": {"dfnID":"c51ad875","dfnText":"the body element","external":true,"refSections":[{"refs":[{"id":"ref-for-the-body-element-2"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-the-body-element-2\u2460"},{"id":"ref-for-the-body-element-2\u2461"},{"id":"ref-for-the-body-element-2\u2462"},{"id":"ref-for-the-body-element-2\u2463"},{"id":"ref-for-the-body-element-2\u2464"}],"title":"5. Extensions to the Document Interface"},{"refs":[{"id":"ref-for-the-body-element-2\u2465"},{"id":"ref-for-the-body-element-2\u2466"},{"id":"ref-for-the-body-element-2\u2467"},{"id":"ref-for-the-body-element-2\u2468"},{"id":"ref-for-the-body-element-2\u2460\u24ea"},{"id":"ref-for-the-body-element-2\u2460\u2460"},{"id":"ref-for-the-body-element-2\u2460\u2461"},{"id":"ref-for-the-body-element-2\u2460\u2462"},{"id":"ref-for-the-body-element-2\u2460\u2463"}],"title":"6. \nExtensions to the Element Interface"},{"refs":[{"id":"ref-for-the-body-element-2\u2460\u2464"},{"id":"ref-for-the-body-element-2\u2460\u2465"},{"id":"ref-for-the-body-element-2\u2460\u2466"},{"id":"ref-for-the-body-element-2\u2460\u2467"},{"id":"ref-for-the-body-element-2\u2460\u2468"}],"title":"7. Extensions to the HTMLElement Interface"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#the-body-element-2"},
@@ -7795,7 +7825,7 @@ let dfnPanelData = {
 "e135638f": {"dfnID":"e135638f","dfnText":"scroll snap position","external":true,"refSections":[{"refs":[{"id":"ref-for-scroll-snap-position"},{"id":"ref-for-scroll-snap-position\u2460"}],"title":"6.1. Element Scrolling Members"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#scroll-snap-position"},
 "e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"},{"id":"ref-for-propdef-display\u2460"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-propdef-display\u2461"}],"title":"6. \nExtensions to the Element Interface"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "e97a9688": {"dfnID":"e97a9688","dfnText":"unsigned long","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-unsigned-long"},{"id":"ref-for-idl-unsigned-long\u2460"}],"title":"4.3. The Screen Interface"},{"refs":[{"id":"ref-for-idl-unsigned-long\u2461"}],"title":"5.1. The CaretPosition Interface"}],"url":"https://webidl.spec.whatwg.org/#idl-unsigned-long"},
-"e99bd18e": {"dfnID":"e99bd18e","dfnText":"relevant global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-global"},{"id":"ref-for-concept-relevant-global\u2460"},{"id":"ref-for-concept-relevant-global\u2461"},{"id":"ref-for-concept-relevant-global\u2462"}],"title":"4. Extensions to the Window Interface"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
+"e99bd18e": {"dfnID":"e99bd18e","dfnText":"relevant global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-global"},{"id":"ref-for-concept-relevant-global\u2460"}],"title":"2.3. Web-exposed screen information"},{"refs":[{"id":"ref-for-concept-relevant-global\u2461"},{"id":"ref-for-concept-relevant-global\u2462"},{"id":"ref-for-concept-relevant-global\u2463"},{"id":"ref-for-concept-relevant-global\u2464"}],"title":"4. Extensions to the Window Interface"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
 "ea5623a4": {"dfnID":"ea5623a4","dfnText":"capture","external":true,"refSections":[{"refs":[{"id":"ref-for-event-listener-capture"}],"title":"4.2. The MediaQueryList Interface"}],"url":"https://dom.spec.whatwg.org/#event-listener-capture"},
 "ea663a43": {"dfnID":"ea663a43","dfnText":"containing block","external":true,"refSections":[{"refs":[{"id":"ref-for-containing-block"},{"id":"ref-for-containing-block\u2460"},{"id":"ref-for-containing-block\u2461"},{"id":"ref-for-containing-block\u2462"},{"id":"ref-for-containing-block\u2463"},{"id":"ref-for-containing-block\u2464"},{"id":"ref-for-containing-block\u2465"},{"id":"ref-for-containing-block\u2466"}],"title":"7. Extensions to the HTMLElement Interface"}],"url":"https://drafts.csswg.org/css-display-4/#containing-block"},
 "ef662a55": {"dfnID":"ef662a55","dfnText":"live","external":true,"refSections":[{"refs":[{"id":"ref-for-live"}],"title":"5. Extensions to the Document Interface"},{"refs":[{"id":"ref-for-live\u2460"}],"title":"5.1. The CaretPosition Interface"},{"refs":[{"id":"ref-for-live\u2461"},{"id":"ref-for-live\u2462"}],"title":"6. \nExtensions to the Element Interface"},{"refs":[{"id":"ref-for-live\u2463"},{"id":"ref-for-live\u2464"}],"title":"9. Extensions to the Range Interface"}],"url":"https://html.spec.whatwg.org/multipage/infrastructure.html#live"},
@@ -8637,6 +8667,8 @@ let refsData = {
 "https://infra.spec.whatwg.org/#tuple": {"displayText":"tuple","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"tuple","type":"dfn","url":"https://infra.spec.whatwg.org/#tuple"},
 "https://svgwg.org/svg2-draft/shapes.html#elementdef-rect": {"displayText":"rect","export":true,"for_":[],"level":"2","normative":true,"shortname":"svg","spec":"svg2","status":"current","text":"rect","type":"element","url":"https://svgwg.org/svg2-draft/shapes.html#elementdef-rect"},
 "https://w3c.github.io/uievents/#mouseevent": {"displayText":"MouseEvent","export":true,"for_":[],"level":"1","normative":true,"shortname":"uievents","spec":"uievents","status":"current","text":"MouseEvent","type":"interface","url":"https://w3c.github.io/uievents/#mouseevent"},
+"https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-available-screen-area": {"displayText":"WebDriver BiDi emulated available screen area","export":true,"for_":[],"level":"1","normative":true,"shortname":"webdriver-bidi","spec":"webdriver-bidi","status":"current","text":"webdriver bidi emulated available screen area","type":"dfn","url":"https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-available-screen-area"},
+"https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-total-screen-area": {"displayText":"WebDriver BiDi emulated total screen area","export":true,"for_":[],"level":"1","normative":true,"shortname":"webdriver-bidi","spec":"webdriver-bidi","status":"current","text":"webdriver bidi emulated total screen area","type":"dfn","url":"https://w3c.github.io/webdriver-bidi/#webdriver-bidi-emulated-total-screen-area"},
 "https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
 "https://webidl.spec.whatwg.org/#NewObject": {"displayText":"NewObject","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"NewObject","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#NewObject"},
 "https://webidl.spec.whatwg.org/#Replaceable": {"displayText":"Replaceable","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Replaceable","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Replaceable"},
