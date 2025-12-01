@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://www.w3.org/TR/css-transforms-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="67672fdada8ee633dbe2c6a70269d7d812e7cb1e" name="revision">
+  <meta content="95b3f7cdc96d9d857456b5fc5a221a5591176c1e" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -1124,7 +1124,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Transforms Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-06-05">5 June 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-30">30 November 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1249,7 +1249,8 @@ on screen, on paper, etc.
        </ol>
      </ol>
     <li><a href="#mathematical-description"><span class="secno">12</span> <span class="content">Mathematical Description of Transform Functions</span></a>
-    <li><a href="#priv-sec"><span class="secno">13</span> <span class="content">Privacy and Security Considerations</span></a>
+    <li><a href="#privacy"><span class="secno">13</span> <span class="content">Privacy Considerations</span></a>
+    <li><a href="#security"><span class="secno">14</span> <span class="content">Security Considerations</span></a>
     <li>
      <a href="#changes"><span class="secno"></span> <span class="content">Changes</span></a>
      <ol class="toc">
@@ -1695,13 +1696,14 @@ computed by the following algorithm:</p>
     <dt data-md><dfn class="css dfn-paneled" data-dfn-for="transform-box" data-dfn-type="value" data-export id="valdef-transform-box-view-box">view-box</dfn>
     <dd data-md>
      <p>Uses the nearest <a href="https://www.w3.org/TR/SVG11/intro.html#TermSVGViewport">SVG viewport</a> as reference box.</p>
-     <p>If a <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#__svg__SVGFitToViewBox__viewBox" id="ref-for-__svg__SVGFitToViewBox__viewBox">viewBox</a></code> attribute is specified for the <a href="https://www.w3.org/TR/SVG11/intro.html#TermSVGViewport">SVG viewport</a> creating element:</p>
-     <ul>
-      <li data-md>
-       <p>The reference box is positioned at the origin of the coordinate system established by the <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#__svg__SVGFitToViewBox__viewBox" id="ref-for-__svg__SVGFitToViewBox__viewBox①">viewBox</a></code> attribute.</p>
-      <li data-md>
-       <p>The dimension of the reference box is set to the <em>width</em> and <em>height</em> values of the <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#__svg__SVGFitToViewBox__viewBox" id="ref-for-__svg__SVGFitToViewBox__viewBox②">viewBox</a></code> attribute.</p>
-     </ul>
+    </dd>
+    <p>If a <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#__svg__SVGFitToViewBox__viewBox" id="ref-for-__svg__SVGFitToViewBox__viewBox">viewBox</a></code> attribute is specified for the <a href="https://www.w3.org/TR/SVG11/intro.html#TermSVGViewport">SVG viewport</a> creating element:</p>
+    <ul>
+     <li data-md>
+      <p>The reference box is positioned at the origin of the coordinate system established by the <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#__svg__SVGFitToViewBox__viewBox" id="ref-for-__svg__SVGFitToViewBox__viewBox①">viewBox</a></code> attribute.</p>
+     <li data-md>
+      <p>The dimension of the reference box is set to the <em>width</em> and <em>height</em> values of the <code class="idl"><a data-link-type="idl" href="https://svgwg.org/svg2-draft/types.html#__svg__SVGFitToViewBox__viewBox" id="ref-for-__svg__SVGFitToViewBox__viewBox②">viewBox</a></code> attribute.</p>
+    </ul>
    </dl>
    <p>For the SVG <code><a data-link-type="element" href="https://svgwg.org/svg2-draft/pservers.html#elementdef-pattern" id="ref-for-elementdef-pattern">pattern</a></code> element, the reference box gets defined by the <code><a data-link-type="element-sub" href="https://www.w3.org/TR/SVG/pservers.html#PatternElementPatternUnitsAttribute" id="ref-for-PatternElementPatternUnitsAttribute">patternUnits</a></code> attribute <a data-link-type="biblio" href="#biblio-svg2" title="Scalable Vector Graphics (SVG) 2">[SVG2]</a>.</p>
    <p>For the SVG <a data-link-type="element" href="https://svgwg.org/svg2-draft/pservers.html#elementdef-linearGradient" id="ref-for-elementdef-linearGradient">linearGradient</a> and <a data-link-type="element" href="https://svgwg.org/svg2-draft/pservers.html#elementdef-radialGradient" id="ref-for-elementdef-radialGradient">radialGradient</a> elements, the reference box gets defined by the <code><a data-link-type="element-sub" href="https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementGradientUnitsAttribute" id="ref-for-LinearGradientElementGradientUnitsAttribute">gradientUnits</a></code> attribute <a data-link-type="biblio" href="#biblio-svg2" title="Scalable Vector Graphics (SVG) 2">[SVG2]</a>.</p>
@@ -3373,7 +3375,8 @@ A percentage for vertical translations is relative to the height of the <span id
     <dt data-md><span class="prod"><dfn class="css dfn-paneled" data-dfn-for="transform" data-dfn-type="function" data-export id="funcdef-transform-skew">skew()</dfn> = skew( [ <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#angle-value" id="ref-for-angle-value⑤">&lt;angle></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②③">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#zero-value" id="ref-for-zero-value②">&lt;zero></a> ] <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-comma" id="ref-for-comb-comma②">,</a> [ <span class="production" id="ref-for-angle-value⑥">&lt;angle></span> <span id="ref-for-comb-one②④">|</span> <span class="production" id="ref-for-zero-value③">&lt;zero></span> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt④">?</a> )</span>
     <dd data-md>
      <p>specifies a <a href="#SkewDefined">2D skew</a> by [ax,ay] for X and Y. If the second parameter is not provided, it has a zero value.</p>
-     <p><strong class="advisement"> <a class="css" data-link-type="maybe" href="#funcdef-transform-skew" id="ref-for-funcdef-transform-skew①">skew()</a> exists for compatibility reasons, and should not be used in new content. Use <a class="css" data-link-type="maybe" href="#funcdef-transform-skewx" id="ref-for-funcdef-transform-skewx①">skewX()</a> or <a class="css" data-link-type="maybe" href="#funcdef-transform-skewy" id="ref-for-funcdef-transform-skewy①">skewY()</a> instead, noting that the behavior of <span class="css" id="ref-for-funcdef-transform-skew②">skew()</span> is different from multiplying <span class="css" id="ref-for-funcdef-transform-skewx②">skewX()</span> with <span class="css" id="ref-for-funcdef-transform-skewy②">skewY()</span>.</strong></p>
+    </dd>
+    <p><strong class="advisement"> <a class="css" data-link-type="maybe" href="#funcdef-transform-skew" id="ref-for-funcdef-transform-skew①">skew()</a> exists for compatibility reasons, and should not be used in new content. Use <a class="css" data-link-type="maybe" href="#funcdef-transform-skewx" id="ref-for-funcdef-transform-skewx①">skewX()</a> or <a class="css" data-link-type="maybe" href="#funcdef-transform-skewy" id="ref-for-funcdef-transform-skewy①">skewY()</a> instead, noting that the behavior of <span class="css" id="ref-for-funcdef-transform-skew②">skew()</span> is different from multiplying <span class="css" id="ref-for-funcdef-transform-skewx②">skewX()</span> with <span class="css" id="ref-for-funcdef-transform-skewy②">skewY()</span>.</strong></p>
     <dt data-md><span class="prod"><dfn class="css dfn-paneled" data-dfn-for="transform" data-dfn-type="function" data-export id="funcdef-transform-skewx">skewX()</dfn> = skewX( [ <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#angle-value" id="ref-for-angle-value⑦">&lt;angle></a> <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⑤">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#zero-value" id="ref-for-zero-value④">&lt;zero></a> ] )</span>
     <dd data-md>
      <p>specifies a <a href="#SkewXDefined">2D skew transformation along the X axis</a> by the given angle.</p>
@@ -3385,14 +3388,13 @@ A percentage for vertical translations is relative to the height of the <span id
    <p>Some transform functions can be represented by more generic transform functions. These transform functions are called derived transform functions, and the generic transform functions are called primitive transform functions. Two-dimensional primitives and their derived transform functions are:</p>
    <dl>
     <dt id="translate-primitive"><a class="self-link" href="#translate-primitive"></a><a class="css" data-link-type="maybe" href="#funcdef-transform-translate" id="ref-for-funcdef-transform-translate②">translate()</a>
-	
+    
     <dd>for <a class="css production" data-link-type="function" href="#funcdef-transform-translatex" id="ref-for-funcdef-transform-translatex①">&lt;translateX()></a>, <a class="css production" data-link-type="function" href="#funcdef-transform-translatey" id="ref-for-funcdef-transform-translatey①">&lt;translateY()></a> and <a class="css production" data-link-type="function" href="#funcdef-transform-translate" id="ref-for-funcdef-transform-translate③">&lt;translate()></a>.
 
-	
+    
     <dt id="scale-primitive"><a class="self-link" href="#scale-primitive"></a><a class="css" data-link-type="maybe" href="#funcdef-transform-scale" id="ref-for-funcdef-transform-scale②">scale()</a>
-	
+    
     <dd>for <a class="css production" data-link-type="function" href="#funcdef-transform-scalex" id="ref-for-funcdef-transform-scalex①">&lt;scaleX()></a>, <a class="css production" data-link-type="function" href="#funcdef-transform-scaley" id="ref-for-funcdef-transform-scaley①">&lt;scaleY()></a> and <a class="css production" data-link-type="function" href="#funcdef-transform-scale" id="ref-for-funcdef-transform-scale③">&lt;scale()></a>.
-
 
    </dl>
    <h2 class="heading settled" data-level="8" id="transform-function-lists"><span class="secno">8. </span><span class="content">The Transform Function Lists</span><a class="self-link" href="#transform-function-lists"></a></h2>
@@ -3831,13 +3833,12 @@ matrix[1][1] *= scale[1]
 </p>
      <p><img alt="\begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; 0 \\ \tan(\beta) &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix}" height="106" src="images/skewY.png" width="155"></p>
    </ul>
-   <h2 class="heading settled" data-level="13" id="priv-sec"><span class="secno">13. </span><span class="content">Privacy and Security Considerations</span><a class="self-link" href="#priv-sec"></a></h2>
-   
-UAs must implement transform operations in a way attackers can not infer information and mount a timing attack.
-
-
+   <h2 class="heading settled" data-level="13" id="privacy"><span class="secno">13. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+   <p>UAs must implement transform operations in a way attackers can not infer information and mount a timing attack.</p>
    <p>A timing attack is a method of obtaining information about content that is otherwise protected, based on studying the amount of time it takes for an operation to occur.</p>
-   <p>At this point there are no information about potential privacy or security concerns specific to this specification.</p>
+   <p>At this point there are no information about potential privacy concerns specific to this specification.</p>
+   <h2 class="heading settled" data-level="14" id="security"><span class="secno">14. </span><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+   <p>At this point there are no information about potential security concerns specific to this specification.</p>
    <h2 class="heading no-num settled" id="changes"><span class="content">Changes</span><a class="self-link" href="#changes"></a></h2>
    <h3 class="heading no-num settled" id="CR20190214"><span class="content">Since the <a href="https://www.w3.org/TR/2019/CR-css-transforms-1-20190214/">14 February 2019 Candidate Recommendation</a></span><a class="self-link" href="#CR20190214"></a></h3>
    <ul>
@@ -3849,6 +3850,8 @@ UAs must implement transform operations in a way attackers can not infer informa
      <p>Remove animation support of <a class="css property" data-link-type="property" href="#propdef-transform" id="ref-for-propdef-transform②⑧">transform</a> from <a data-link-type="element" href="https://svgwg.org/specs/animations/#elementdef-animate" id="ref-for-elementdef-animate">animate</a> and <a data-link-type="element" href="https://svgwg.org/specs/animations/#elementdef-set" id="ref-for-elementdef-set">set</a> elements.</p>
     <li data-md>
      <p>State that transforms do not transform backgrounds that are propagated to the canvas, and clarify some other interactions with background propagation.</p>
+    <li data-md>
+     <p>Split privacy and security section.</p>
     <li data-md>
      <p>Editorial changes.</p>
    </ul>
@@ -3865,7 +3868,7 @@ UAs must implement transform operations in a way attackers can not infer informa
     <li data-md>
      <p>Remove specification text that makes <a data-link-type="element-attr" href="https://www.w3.org/TR/SVG11/pservers.html#PatternElementPatternTransformAttribute" id="ref-for-PatternElementPatternTransformAttribute⑧">patternTransform</a>, <a data-link-type="element-attr" href="https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementGradientTransformAttribute" id="ref-for-LinearGradientElementGradientTransformAttribute⑧">gradientTransform</a> presentation attributes representing the <a class="css property" data-link-type="property" href="#propdef-transform" id="ref-for-propdef-transform②⑨">transform</a> property. That is going to get specified by SVG 2 <a data-link-type="biblio" href="#biblio-svg2" title="Scalable Vector Graphics (SVG) 2">[SVG2]</a>.</p>
     <li data-md>
-     <p>Added <a href="#priv-sec">privacy and security</a> section.</p>
+     <p>Added privacy and security section.</p>
     <li data-md>
      <p>Use <a data-link-type="biblio" href="#biblio-svg2" title="Scalable Vector Graphics (SVG) 2">[SVG2]</a> definitions for <a data-link-type="dfn" href="#transformable-element" id="ref-for-transformable-element⑤">transformable elements</a>.</p>
     <li data-md>
