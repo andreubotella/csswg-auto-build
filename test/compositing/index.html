@@ -5,10 +5,10 @@
   <title>Compositing and Blending Module Level 1</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
+  <meta content="Bikeshed version fd9c5ce66, updated Mon Dec 8 22:43:21 2025 +0000" name="generator">
   <link href="https://www.w3.org/TR/compositing-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="c390fbe8c506b79c6e8ace94ab6e589ae4d32ddf" name="revision">
+  <meta content="73ca7e1aab7aa088bc5019f490f2bb46941b7264" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -943,7 +943,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">Compositing and Blending Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-12-03">3 December 2025</time></p>
+    <time class="dt-updated" datetime="2025-12-08">8 December 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1536,7 +1536,6 @@ In CSS, a background image or the content of an <a data-link-type="element" href
     </ul>
    </details>
    <p>The <a class="css property" data-link-type="property" href="#propdef-background-blend-mode" id="ref-for-propdef-background-blend-mode③">background-blend-mode</a> list must be applied in the same order as <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-background-image" id="ref-for-propdef-background-image">background-image</a> <a data-link-type="biblio" href="#biblio-css3bg" title="CSS Backgrounds and Borders Module Level 3">[CSS3BG]</a>. This means that the first element in the list will apply to the layer that is on top. If a property doesn’t have enough comma-separated values to match the number of layers, the UA must calculate its used value by repeating the list of values until there are enough.</p>
-   <p></p>
    <p>If the <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-background" id="ref-for-propdef-background">background</a> <a data-link-type="biblio" href="#biblio-css3bg" title="CSS Backgrounds and Borders Module Level 3">[CSS3BG]</a> shorthand is used, the <a class="css property" data-link-type="property" href="#propdef-background-blend-mode" id="ref-for-propdef-background-blend-mode④">background-blend-mode</a>
 property for that element must be reset to its initial value.</p>
    <div class="example" id="ex-background-blend">
@@ -1646,7 +1645,6 @@ The formula for the resultant alpha of the composite is</p>
     <li>αb: the alpha value of the <a data-link-type="dfn" href="#backdrop" id="ref-for-backdrop⑤">backdrop</a>
 
    </ul>
-   <p></p>
    <div class="note" role="note">
     <p>
 Often, it can be more efficient to store a <code>pre-multiplied value</code> for the color and opacity.
@@ -1654,7 +1652,9 @@ The pre-multiplied value is given by
 </p>
 <pre>cs = Cs x αs
 </pre>
-    <p>with</p>
+    
+with
+
     <ul>
      <li>cs: the pre-multiplied value
 
@@ -1668,14 +1668,11 @@ Thus the formula for simple alpha compositing using pre-multiplied values become
 </p>
 <pre>co = cs + cb x (1 - αs)
 </pre>
-    <p></p>
-    <p></p>
     <p>
 To extract the color component of a pre-multiplied value, the formula is reversed:
 </p>
 <pre>Co = co / αo
 </pre>
-    <p></p>
    </div>
    <h4 class="heading settled" data-level="5.1.1" id="simplealphacompositingexamples"><span class="secno">5.1.1. </span><span class="content">Examples of simple alpha compositing</span><a class="self-link" href="#simplealphacompositingexamples"></a></h4>
    <div class="example" id="ex-basic-alpha">
@@ -1701,7 +1698,6 @@ co = RGB(1,0,0) x 1 + RGB(0,0,0) x 0 x (1 - 1)
 co = RGB(1,0,0) x 1
 co = RGB(1,0,0)
 </pre>
-    <p></p>
    </div>
    <div class="example" id="ex-shapes-intersect">
     <a class="self-link" href="#ex-shapes-intersect"></a>
@@ -1729,17 +1725,20 @@ co = RGB(0,0,1) x 1 + RGB(1,0,0) x 1 x 0
 co = RGB(0,0,1) x 1
 co = RGB(0,0,1)
 </pre>
-    <p>Calculating the alpha of the resultant composite</p>
+    
+Calculating the alpha of the resultant composite
+
 <pre>αo = αs + αb x (1 - αs)
 αo = 1 + 1 x (1 - 1)
 αo = 1
 </pre>
-    <p>Calculating the color component of the resultant composite</p>
+    
+Calculating the color component of the resultant composite
+
 <pre>Co = co / αo
 Co = RGB(0, 0, 1) / 1
 Co = RGB(0, 0, 1)
 </pre>
-    <p></p>
    </div>
    <div class="example" id="ex-transparent-over-opaque">
     <a class="self-link" href="#ex-transparent-over-opaque"></a>
@@ -1766,17 +1765,20 @@ co = RGB(0,0,1) x 0.5 + RGB(1,0,0) x 1 x (1 - 0.5)
 co = RGB(0,0,1) x 0.5 + RGB(1,0,0) x 0.5
 co = RGB(0.5,0,0.5)
 </pre>
-    <p>Calculating the alpha of the resultant composite</p>
+    
+Calculating the alpha of the resultant composite
+
 <pre>αo = αs + αb x (1 - αs)
 αo = 0.5 + 1 x (1 - 0.5)
 αo = 1
 </pre>
-    <p>Calculating the color component of the resultant composite</p>
+    
+Calculating the color component of the resultant composite
+
 <pre>Co = co / αo
 Co = RGB(0.5, 0, 0.5) / 1
 Co = RGB(0.5, 0, 0.5)
 </pre>
-    <p></p>
    </div>
    <div class="example" id="ex-two-transparent">
     <a class="self-link" href="#ex-two-transparent"></a>
@@ -1803,17 +1805,20 @@ co = RGB(0,0,1) x 0.5 + RGB(1,0,0) x 0.5 x (1 - 0.5)
 co = RGB(0,0,1) x 0.5 + RGB(1,0,0) x 0.25
 co = RGB(0.25, 0, 0.5)
 </pre>
-    <p>Calculating the alpha of the resultant composite</p>
+    
+Calculating the alpha of the resultant composite
+
 <pre>αo = αs + αb x (1 - αs)
 αo = 0.5 + 0.5 x (1 - 0.5)
 αo = 0.75
 </pre>
-    <p>Calculating the color component of the resultant composite</p>
+    
+Calculating the color component of the resultant composite
+
 <pre>Co = co / αo
 Co = RGB(0.25, 0, 0.5) / 0.75
 Co = RGB(0.33, 0, 0.66)
 </pre>
-    <p></p>
    </div>
    <h2 class="heading settled" data-level="6" id="generalformula"><span class="secno">6. </span><span class="content">General Formula for Compositing and Blending</span><a class="self-link" href="#generalformula"></a></h2>
    <p>The general formula for compositing and blending which allows for selection of the compositing operator and blending function comprises two steps.
@@ -1935,7 +1940,6 @@ for final compositing, but this is not required.
    <h2 class="heading settled" data-level="9" id="advancedcompositing"><span class="secno">9. </span><span class="content">Advanced compositing features</span><a class="self-link" href="#advancedcompositing"></a></h2>
    <p><a href="#simplealphacompositing">Simple alpha compositing</a> uses the <a href="#porterduffcompositingoperators_srcover">source-over</a> Porter Duff compositing operator. </p>
    <p>Porter Duff compositing is based on a model of a pixel in which two shapes (source and destination) may contribute to the final color of the pixel. The pixel is divided into 4 sub-pixel regions and each region represents a possible combination of source and destination. <a data-link-type="biblio" href="#biblio-porterduff" title="Compositing digital images">[PORTERDUFF]</a></p>
-   <p></p>
    <p>The four regions are:</p>
    <dl>
     <dt>Source Only
@@ -2220,9 +2224,10 @@ This example has a red rectangle with a blending mode that is placed on top of a
 Note how the top rectangle shifts more toward red as the opacity of the <a data-link-type="dfn" href="#backdrop" id="ref-for-backdrop①②">backdrop</a> gets smaller.
 </p>
    </div>
-   <p class="note" role="note">
+   <div class="note" role="note">
+    
 Note: The following formula gives the color value in the area where the source and backdrop intersects and then composites with the specified Porter Duff compositing formula. For simple alpha blending, the formula thus becomes:
-</p>
+
 <pre>simple alpha compositing:
     co = cs + cb x (1 - αs)
 written as non-premultiplied:
@@ -2231,7 +2236,7 @@ now substitute the result of blending for Cs:
     αo x Co = αs x ((1 - αb) x Cs + αb x B(Cb, Cs)) + (1 - αs) x αb x Cb
             = αs x (1 - αb) x Cs + αs x αb x B(Cb, Cs) + (1 - αs) x αb x Cb
 </pre>
-   <p></p>
+   </div>
    <h3 class="heading settled" data-level="10.1" id="blendingseparable"><span class="secno">10.1. </span><span class="content">Separable blend modes</span><a class="self-link" href="#blendingseparable"></a></h3>
    <p>A blend mode is termed separable if each component of the result color is completely determined by the corresponding components of the constituent <a data-link-type="dfn" href="#backdrop" id="ref-for-backdrop①③">backdrop</a> and source colors — that is, if the mixing formula is applied <strong>separately</strong> to each set of corresponding components.</p>
    <p>Each of the following blend modes will apply the blending function B(Cb, Cs) on each of the color components.
@@ -2251,7 +2256,6 @@ For simplicity, all the examples in this chapter use <a href="#porterduffcomposi
    <p>The resultant color is always at least as dark as either the source or destination color. Multiplying any color with black results in black. Multiplying any color with white preserves the original color.</p>
 <pre>B(Cb, Cs) = Cb x Cs
 </pre>
-   <p></p>
    <div class="figure">
     
 <img alt="example of multiply blending" height="200" src="examples/multiply.png" width="200">
@@ -2264,7 +2268,6 @@ For simplicity, all the examples in this chapter use <a href="#porterduffcomposi
 <pre>B(Cb, Cs) = 1 - [(1 - Cb) x (1 - Cs)]
           = Cb + Cs -(Cb x Cs)
 </pre>
-   <p></p>
    <div class="figure">
     
 <img alt="example of screen blending" height="200" src="examples/screen.png" width="200">
@@ -2373,7 +2376,6 @@ with
    <p>Painting with white inverts the <a data-link-type="dfn" href="#backdrop" id="ref-for-backdrop②⑦">backdrop</a> color; painting with black produces no change.</p>
 <pre>B(Cb, Cs) = | Cb - Cs |
 </pre>
-   <p></p>
    <div class="figure">
     
   <img alt="example of difference blending" height="200" src="examples/difference.png" width="200">
@@ -2384,7 +2386,6 @@ with
    <p>Produces an effect similar to that of the Difference mode but lower in contrast. Painting with white inverts the <a data-link-type="dfn" href="#backdrop" id="ref-for-backdrop②⑧">backdrop</a> color; painting with black produces no change</p>
 <pre>B(Cb, Cs) = Cb + Cs - 2 x Cb x Cs
 </pre>
-   <p></p>
    <div class="figure">
     
   <img alt="example of exclusion blending" height="200" src="examples/exclusion.png" width="200">
@@ -2480,13 +2481,11 @@ components having the minimum, middle, and maximum values upon entry to the func
    <div class="example" id="ex-isolated-group">
     <a class="self-link" href="#ex-isolated-group"></a>
 The airplane on the left is a normal group, the airplane on the right is an <a href="#isolatedgroups">isolated group</a>.
-    <p></p>
-    <p>
-In the isolated group, the elements within the group are composited onto an empty initial backdrop, this stops the elements within the group multiplying with the backdrop.
-In the normal group, the elements within the group are composited onto the initial backdrop containing the land and sky. Therefore the elements of the airplane multiply with the land and sky.
-In both instances, the result of the group composite is composited onto the land and sky using the normal mix-blend-mode (the default mix-blend-mode applied to the group).
 
-  </p>
+
+    <p>In the isolated group, the elements within the group are composited onto an empty initial backdrop, this stops the elements within the group multiplying with the backdrop.
+In the normal group, the elements within the group are composited onto the initial backdrop containing the land and sky. Therefore the elements of the airplane multiply with the land and sky.
+In both instances, the result of the group composite is composited onto the land and sky using the normal mix-blend-mode (the default mix-blend-mode applied to the group).</p>
     <div class="figure">
      
   <img alt="example of isolated group blending" height="200" src="examples/isolate_blend_example.png" width="506">
@@ -2500,7 +2499,6 @@ Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <h2 class="heading no-num settled" id="security"><span class="content">
 Security Considerations</span><a class="self-link" href="#security"></a></h2>
    <p>It is important that the timing to the blending and compositing operations is independent of the source and destination pixel. Operations must be implemented in such a way that they always take the same amount of time regardless of the pixel values.</p>
-   <p></p>
    <div class="note" role="note">
     <p>
 If this rule is not followed, an attacker could infer information and mount a timing attack.
