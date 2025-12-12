@@ -13,7 +13,7 @@ Former Editor: Mats Palmgren, Mozilla, mailto:mats@mozilla.com
 Editor: Jen Simmons, Apple, http://jensimmons.com/, w3cid 52801
 Editor: Brandon Stewart, Apple, https://brandonstewart.net, w3cid 138640
 Abstract: This module introduces masonry layout as an additional layout mode for <a href="https://www.w3.org/TR/css-grid-2/">CSS Grid</a> containers.
-WPT Path Prefix: css/css-grid/masonry/tentative/
+WPT Path Prefix: css/css-grid/grid-lanes/tentative/
 WPT Display: open
 Markup Shorthands: css yes
 Status Text: <strong>This specification represents two variations on the proposal for masonry layout. Feedback on the alternatives is welcome.</strong>
@@ -405,85 +405,60 @@ Declaring Masonry Track Templates: the 'grid-template-*' properties</h3>
 <h4 id=masonry-intrinsic-repeat>
 Intrinsic Tracks and repeat()</h4>
 
-	ISSUE(10915): Should we allow auto-repeated content-based tracks?
-	Is this a reasonable definition for them?
-	Should they work also in Grid Layout somehow?
+	Level 3 extends the ''repeat()'' notation to allow repetitions where
+	neither the [=min track sizing function=] nor the [=max tack sizing function=] is [=definite=];
+	in other words, the syntax for <<auto-repeat>> is relaxed to the following:
 
-	In Grid Layout,
-	all [=grid items=] are placed in the grid
-	<em>before</em> the grid tracks are sized.
-	This implies that ''repeat()/auto-fill''/''repeat()/auto-fit'' repetition
-	can't include intrinsically sized tracks such as ''grid-template-rows/auto''
-	(either in the ''repeat()'' function <em>or</em> alongside it
-	in the fixed portion of the track list),
-	as that would require the layout algorithm
-	to have already determined which items would go in those tracks,
-	to determine how large the tracks are,
-	to determine how many repetitions fit in the available space.
+	<pre class=prod>
+	<dfn><<auto-repeat>></dfn> = repeat(  [ auto-fill | auto-fit ] , [ <<line-names>>? <<track-size>> ]+ <<line-names>>? )
+	</pre>
 
-	In Masonry Layout,
-	as [=masonry item=] placement and layout are intertwined and somewhat simplified,
-	this restriction is no longer strictly required.
-	It requires a slightly heuristic definition of sizing,
-	but auto repetition <em>can</em> include intrinsically-sized tracks
-	in a [=masonry container=].
+	In order to resolve the number of repetitions,
+	a hypothetical size is calculated for such tracks
+	by initializing the track sizes (per [[css-grid-2#algo-init]])
+	and resolving intrinsic track sizes (per [[css-grid-2#algo-content]])
+	in accordance with [[#track-sizing]]
+	with the following assumptions:
 
-	<div algorithm="determine intrinsic repetitions">
-		To determine the number of repetitions
-		that a ''repeat()'' function resolves to,
-		resolve the repeated track sizing functions to definite sizes
-		by initializing the track sizes (per [[css-grid-2#algo-init]])
-		and resolving intrinsic track sizes (per [[css-grid-2#algo-content]])
-		in accordance with [[#track-sizing]]
-		with the following assumptions:
+	* Ignore explicit item placement.
+		(That is, assume all items have an [=automatic position=].)
+	* Do not [=collapsed grid track|collapse=] any tracks.
+	* Expand the repeated track listing to capture all possible automatic placements of each item,
+		i.e. repeat the track listing <code>2 + (<var ignore>largest span</var> - 2)/(<var ignore>number of tracks in repeat()</var>)</code> times,
+		rounded <em>down</em> to a whole number.
 
-		* Expand ''repeat()/auto-fill''/''repeat()/auto-fit'' repeat functions once.
-		* Ignore explicit item placement.
-			(That is, assume all items have an [=automatic position=].)
-		* Do not [=collapsed grid track|collapse=] any tracks.
-		* If a [=masonry item=] has a span larger than 1,
-			then for each of its intrinsic size contributions,
-			first subtract the combined size of the gaps it would span,
-			and divide by its span.
-			Then treat it as an item that has a span of 1
-			and these modified intrinsic size contributions.
+	The hypothetical size of each track in the ''repeat()'' listing
+	is given by the largest track corresponding to that entry (by index) in the listing.
 
-		All tracks are then treated as having the size
-		calculated by this simplified layout
-		(including those in ''repeat()'' arguments,
-		taking from their corresponding single repetition)
-		for the purpose of determining how many repetitions
-		the ''repeat()'' functions resolve to.
+	<div class=example>
+		For example,
+		given a template of ''repeat(auto-fill, 50px auto auto)''
+		and a largest spanner of 2,
+		you need to repeat the track listing twice,
+		giving ''50px auto auto 50px auto auto''.
+		After doing the hypothetical layout,
+		the 2nd and 5th tracks are maxed together to provide a hypothetical size for the first <css>auto</css>
+		and the 3rd and 6th tracks are maxed together to provide a hypothetical size for the second <css>auto</css>.
+		Those concrete sizes are then used to determine how many repetitions will fill the container.
 	</div>
 
-	<details class=note>
-		<summary>Motivation</summary>
+	ISSUE(10915): Should this work also in Grid Layout somehow, or fall back to a single repetition? If so, how?
 
-		This simplified layout heuristic is defined to be "good enough",
-		while remaining fast and consistent.
+	Note: This simplified layout heuristic is defined to be "good enough",
+	while remaining fast and consistent.
+	Ignoring placement is required just to make the concept coherent;
+	before you know how many repetitions you need,
+	you can't tell what track an item
+	(even one with a definite placement)
+	will end up in.
 
-		Ignoring placement is required just to make the concept coherent;
-		before you know how many repetitions you need,
-		you can't tell what track an item with a definite placement
-		will end up in.
-
-		By chopping spanning items into span-1 items,
-		this avoids the possible need to expand a repeat() multiple times,
-		and the incoherent possibility of getting different sizes
-		for the same keyword across the repetitions.
-
-		It also makes the layout as a whole significantly cheaper,
-		as you only need to consider each unique track size;
-		you don't even <em>really</em> need to do any repeat() expansion.
-		That is, in ''auto repeat(auto-fill, min-content auto)'',
-		both of the ''grid-template-rows/auto'' keywords
-		will resolve to the same size under this heuristic layout;
-		you can just figure out what
-		a ''grid-template-columns/auto''
-		and ''grid-template-columns/min-content'' track sizes
-		would each result in,
-		and use those sizes.
-	</details>
+	ISSUE: Technically, if your explicit placement does not enter or cross over the repetition,
+	we can know its placement prior to resolving the reptition.
+	Do we want to adjust the algorithm above to account for this?
+	That is, given ''auto repeat(auto-fill, ...) auto'',
+	if you explicitly place an item against line 1 or -1,
+	we could let it only affect that track
+	(rather than pretending it'll go in every track).
 
 <h3 id="subgrids">
 Subgrids</h3>
@@ -574,33 +549,6 @@ Track Repetition: the ''repeat()'' notation</h3>
 
 	This specification introduces new keywords and masonry-specific behavior
 	for the ''repeat()'' notation.
-
-<h4 id="repeat-auto-areas">
-repeat(auto-areas)</h4>
-
-	The new <dfn value for="repeat()">auto-areas</dfn> value for the ''repeat()'' notation
-	represents the number of repetitions necessary
-	for the total number of explicit tracks to match
-	the 'grid-template-areas' value
-	in effect in the corresponding axis.
-	If multiple tracks are listed for the repetition,
-	the final repetition is truncated as necessary
-	to produce the correct number of tracks.
-
-	Note: Unlike ''repeat()/auto-fit''--
-	which always repeats at least once and always repeats the track listing entirely--
-	the number of repetitions for ''repeat()/auto-areas'' can be zero
-	(if there are already enough explicit tracks),
-	and the final repetition can be partial.
-
-	If 'grid-template-areas' is ''grid-template-areas/none'',
-	this value behaves as ''auto-fit''.
-
-	Note: This value applies both to regular [=grid containers=] and to [=masonry containers=].
-
-	ISSUE(10854): It's unclear if we actually need this value.
-	Note that the explicit grid already takes values from 'grid-auto-columns'/'grid-auto-rows'
-	as needed to match the number of template areas.
 
 <h4 id="repeat-auto-fit">
 repeat(auto-fit)</h4>
@@ -745,15 +693,27 @@ Masonry Placement</h2>
 	into the “shortest” masonry track available.
 
 	<div class="example">
-		Here's a masonry layout <a href="examples/pinterest-with-span.html">example</a>
-		demonstrating placed and spanning items:
+		Here's a masonry layout demonstrating placed and spanning items:
+
+		<pre highlight=css>
+		.container {
+			grid-template-columns: repeat(3, auto);
+		}
+		.container > :nth-child(2) {
+			/* auto-placed, but spanning. */
+			grid-column: span 2;
+		}
+		.container > :nth-child(3) {
+			/* manually placed */
+			grid-column: 3;
+		}
+		/* all other children are auto-placed */
+		</pre>
 
 		<figure>
-			<img src="images/example-pinterest-with-span.png">
+			<img src="images/example-span-and-manual.png">
 			<figcaption>Rendering of the example above.</figcaption>
 		</figure>
-
-		ISSUE: Need a better example!!!
 	</div>
 
 <h3 id="masonry-placement-grid-option">
@@ -821,6 +781,25 @@ Placement Precision: the 'item-tolerance' property</h3>
 			instead of `infinite`.
 
 	</dl>
+
+	<div class=example>
+		In the following example,
+		when placing the 5th item,
+		the fourth column is the shortest,
+		but the first column is <em>almost</em> as short.
+
+		<figure>
+			<img src="images/tolerance.png" alt="An example Grid Lanes element with four columns. Each column is already partially filled to different heights, with the fourth column the shortest but the first column only slightly taller. Depending on the tolerance value, the next item to be placed can choose either the first or fourth column.">
+		</figure>
+
+		With the default tolerance of ''1em'',
+		both the first and fourth columns are considered to be "tied",
+		and so the first is chosen.
+
+		If, instead, the tolerance is set to ''0px'',
+		then there is no tie;
+		only the fourth column is a possible placement.
+	</div>
 
 	Issue: Is ''1em'' the right default?
 
@@ -1235,6 +1214,7 @@ Appendix A: Generic Layout Item Flow Controls: the 'item-*' properties</h2>
 	Issue: This section is likely to move to another spec,
 	such as [[css-display-4]],
 	since it affects multiple display types.
+	It is also still under discussion.
 
 	Multiple layout modes in CSS place their children
 	as atomic "items" organized into rows and/or colummns in their container,
@@ -1535,6 +1515,9 @@ Additions Since Level 2</h3>
 
 	<ul>
 		<li>Added [=masonry layout=].
+		<li>Expanded ''repeat(auto-fill)'' and ''repeat(auto-fit)'' to accept indefinite track sizing functions.
+			(<a href="https://github.com/w3c/csswg-drafts/issues/9321">Issue 9321</a>,
+			 <a href="https://github.com/w3c/csswg-drafts/issues/12899">Issue 12899</a>)
 		<li>Added the 'item-flow' property and its longhands,
 			as generic controls for item ordering and placement.
 			See [[#flow-control]].
@@ -1545,89 +1528,96 @@ Additions Since Level 2</h3>
 Recent Changes</h3>
 
 	The following changes have been made since the
-	<a href='https://www.w3.org/TR/2024/WD-css-grid-3-20241003/'>3 October 2024 Working Draft</a>:
+	<a href='https://www.w3.org/TR/2025/WD-css-grid-3-20250917/'>17 September 2025 Working Draft</a>:
 
-	* Dropped the masonry-specific track template and placement properties.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/11243">Issue 11243</a>)
-	* Introduced 'item-flow' and the 'item-*' longhands,
-		replacing <css>masonry-flow</css> and related properties.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/11480">Issue 11480</a>)
-	* Renamed <css>masonry-slack</css> to <css>item-slack</css>
-
-	The following changes have been made since the
-	<a href='https://www.w3.org/TR/2025/WD-css-grid-3-20250207/
-'>7 February 2025 Working Draft</a>:
-
-	* Renamed <css>item-slack</css> to 'item-tolerance'
-		and gave it an initial value of ''item-tolerance/normal''.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/10884">Issue 10884</a>,
-		 <a href="https://github.com/w3c/csswg-drafts/issues/12111">Issue 12111</a>)
-	* Added a placeholder for a [=masonry layout=] 'display' value.
+	* Defined a new inner display type, ''display/grid-lanes'', to establish [=masonry layout=].
 		(<a href="https://github.com/w3c/csswg-drafts/issues/12022">Issue 12022</a>)
-	* Defined [[#masonry-dense-packing|dense packing]] for [=masonry layout=].
-		(<a href="https://github.com/w3c/csswg-drafts/issues/9326">Issue 9326</a>)
-	* Tweaked baseline alignment to export the highest/lowest among the first/last items of every track.
-		(<a href="https://github.com/w3c/csswg-drafts/issues/9530">Issue 9530</a>)
+	* Dropped the unnecessary <css>auto-areas</css> value from ''repeat()''.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/10854">Issue 10854</a>)
+	* Adjusted heuristic for ''repeat(auto-fill)'' and ''repeat(auto-fit)'' with indefinite track sizing functions.
+		(<a href="https://github.com/w3c/csswg-drafts/issues/12899">Issue 12899</a>)
+
+
+	See also <a href="https://www.w3.org/TR/2025/WD-css-grid-3-20250917/#recent-changes">earlier changes</a>.
 
 <wpt hidden>
-abspos/column-masonry-alignment.html
-abspos/column-masonry-intrinsic-sizing-oof.html
-abspos/column-masonry-out-of-flow-001.html
-abspos/column-masonry-out-of-flow-002.html
-abspos/column-masonry-out-of-flow-003.html
-abspos/column-masonry-positioned-item-dynamic-change.html
-abspos/row-masonry-alignment.html
-abspos/row-masonry-intrinsic-sizing-oof.html
-abspos/row-masonry-out-of-flow-001.html
-abspos/row-masonry-out-of-flow-002.html
-abspos/row-masonry-out-of-flow-003.html
-abspos/row-masonry-positioned-item-dynamic-change.html
+abspos/column-grid-lanes-alignment.html
+abspos/column-grid-lanes-intrinsic-sizing-oof.html
+abspos/column-grid-lanes-out-of-flow-001.html
+abspos/column-grid-lanes-out-of-flow-002.html
+abspos/column-grid-lanes-out-of-flow-003.html
+abspos/column-grid-lanes-positioned-item-dynamic-change.html
+abspos/row-grid-lanes-alignment.html
+abspos/row-grid-lanes-intrinsic-sizing-oof.html
+abspos/row-grid-lanes-out-of-flow-001.html
+abspos/row-grid-lanes-out-of-flow-002.html
+abspos/row-grid-lanes-out-of-flow-003.html
+abspos/row-grid-lanes-positioned-item-dynamic-change.html
+alignment/column-grid-lanes-alignment-positioned-items-001.html
+alignment/column-grid-lanes-alignment-positioned-items-002.html
+alignment/column-grid-lanes-alignment-positioned-items-003.html
+alignment/column-grid-lanes-alignment-positioned-items-004.html
+alignment/column-grid-lanes-justify-self-001.html
+alignment/column-grid-lanes-justify-self-002.html
+alignment/column-grid-lanes-justify-self-003.html
 alignment/column-justify-items-center-001.html
 alignment/column-justify-items-end-justify-self-start-001.html
-alignment/column-masonry-alignment-positioned-items-001.html
-alignment/column-masonry-alignment-positioned-items-002.html
-alignment/column-masonry-alignment-positioned-items-003.html
-alignment/column-masonry-alignment-positioned-items-004.html
-alignment/column-masonry-justify-self-001.html
-alignment/column-masonry-justify-self-002.html
-alignment/column-masonry-justify-self-003.html
 alignment/column-overflow-alignment-001.html
-alignment/masonry-align-content-001.html
-alignment/masonry-align-content-002.html
-alignment/masonry-align-content-003.html
-alignment/masonry-align-content-004.html
-alignment/masonry-justify-content-001.html
-alignment/masonry-justify-content-002.html
-alignment/masonry-justify-content-003.html
-alignment/masonry-justify-content-004.html
+alignment/grid-lanes-align-content-001.html
+alignment/grid-lanes-align-content-002.html
+alignment/grid-lanes-align-content-003.html
+alignment/grid-lanes-align-content-004.html
+alignment/grid-lanes-justify-content-001.html
+alignment/grid-lanes-justify-content-002.html
+alignment/grid-lanes-justify-content-003.html
+alignment/grid-lanes-justify-content-004.html
 alignment/row-align-items-center-001.html
 alignment/row-align-items-end-align-self-start-001.html
-alignment/row-masonry-align-self-001.html
-alignment/row-masonry-align-self-002.html
-alignment/row-masonry-align-self-003.html
-alignment/row-masonry-alignment-positioned-items-001.html
-alignment/row-masonry-alignment-positioned-items-002.html
-alignment/row-masonry-alignment-positioned-items-003.html
-alignment/row-masonry-alignment-positioned-items-004.html
+alignment/row-grid-lanes-align-self-001.html
+alignment/row-grid-lanes-align-self-002.html
+alignment/row-grid-lanes-align-self-003.html
+alignment/row-grid-lanes-alignment-positioned-items-001.html
+alignment/row-grid-lanes-alignment-positioned-items-002.html
+alignment/row-grid-lanes-alignment-positioned-items-003.html
+alignment/row-grid-lanes-alignment-positioned-items-004.html
 alignment/row-overflow-alignment-001.html
-baseline/masonry-grid-item-content-baseline-001.html
-baseline/masonry-grid-item-self-baseline-001.html
-baseline/masonry-grid-item-self-baseline-002a.html
-baseline/masonry-grid-item-self-baseline-002b.html
-column-empty-masonry-container-001.html
-column-empty-masonry-container-002.html
-fragmentation/masonry-fragmentation-001.html
-fragmentation/masonry-fragmentation-002.html
-fragmentation/masonry-fragmentation-003.html
+baseline/column-grid-lanes-container-baseline-001a.html
+baseline/column-grid-lanes-container-baseline-001b.html
+baseline/column-grid-lanes-container-baseline-002a.html
+baseline/column-grid-lanes-container-baseline-002b.html
+baseline/column-grid-lanes-container-baseline-003a.html
+baseline/column-grid-lanes-container-baseline-003b.html
+baseline/column-grid-lanes-container-baseline-003c.html
+baseline/column-grid-lanes-container-baseline-004a.html
+baseline/column-grid-lanes-container-baseline-004b.html
+baseline/column-grid-lanes-container-baseline-005a.html
+baseline/column-grid-lanes-container-baseline-005b.html
+baseline/column-grid-lanes-container-baseline-006.html
+baseline/column-grid-lanes-container-baseline-007a.html
+baseline/column-grid-lanes-container-baseline-007b.html
+baseline/column-grid-lanes-container-baseline-008.html
+baseline/grid-lanes-grid-item-content-baseline-001.html
+baseline/grid-lanes-grid-item-self-baseline-001.html
+baseline/grid-lanes-grid-item-self-baseline-002a.html
+baseline/grid-lanes-grid-item-self-baseline-002b.html
+column-empty-grid-lanes-container-001.html
+column-empty-grid-lanes-container-002.html
+fragmentation/grid-lanes-fragmentation-001.html
+fragmentation/grid-lanes-fragmentation-002.html
+fragmentation/grid-lanes-fragmentation-003.html
 gap/column-gaps-001.html
-gap/masonry-gap-001.html
-gap/masonry-gap-002.html
+gap/grid-lanes-gap-001.html
+gap/grid-lanes-gap-002.html
 gap/row-gaps-001.html
+grid-lanes-columns-item-containing-block-is-grid-content-width.html
+grid-lanes-fieldset-crash.html
+grid-lanes-grid-template-columns-computed-withcontent.html
+grid-lanes-not-inhibited-001.html
 grid-placement/column-explicit-placement-001.html
 grid-placement/column-explicit-placement-002.html
 grid-placement/column-explicit-placement-003.html
-grid-placement/masonry-grid-placement-named-lines-001.html
-grid-placement/masonry-grid-placement-named-lines-002.html
+grid-placement/grid-lanes-grid-placement-named-lines-001.html
+grid-placement/grid-lanes-grid-placement-named-lines-002.html
 grid-placement/row-explicit-placement-001.html
 grid-placement/row-explicit-placement-002.html
 grid-placement/row-explicit-placement-003.html
@@ -1637,45 +1627,45 @@ grid-placement/row-explicit-placement-006.html
 grid-placement/row-explicit-placement-007.html
 grid-placement/row-explicit-placement-008.html
 intrinsic-sizing/column-intrinsic-inline-container-size.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-001-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-001-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-001-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-001-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-002-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-002-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-002-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-002-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-003-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-003-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-003-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-003-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-004-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-004-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-004-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-004-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-005.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-006.html
-intrinsic-sizing/masonry-intrinsic-sizing-cols-007.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-001-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-001-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-001-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-001-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-002-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-002-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-002-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-002-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-003-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-003-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-003-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-003-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-004-auto.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-004-fr.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-004-mix1.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-004-mix2.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-005.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-006.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-007-ref.html
-intrinsic-sizing/masonry-intrinsic-sizing-rows-007.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-001-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-001-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-001-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-001-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-002-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-002-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-002-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-002-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-003-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-003-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-003-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-003-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-004-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-004-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-004-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-004-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-005.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-006.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-cols-007.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-001-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-001-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-001-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-001-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-002-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-002-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-002-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-002-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-003-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-003-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-003-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-003-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-004-auto.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-004-fr.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-004-mix1.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-004-mix2.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-005.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-006.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-007-ref.html
+intrinsic-sizing/grid-lanes-intrinsic-sizing-rows-007.html
 intrinsic-sizing/row-defined-height.html
 intrinsic-sizing/row-intrinsic-inline-container-size.html
 item-placement/column-auto-placement-001.html
@@ -1683,6 +1673,12 @@ item-placement/column-negative-margin-001.html
 item-placement/column-reverse-001.html
 item-placement/column-reverse-002.html
 item-placement/column-reverse-003.html
+item-placement/column-reverse-dense-packing-001.html
+item-placement/column-reverse-dense-packing-multi-span-001.html
+item-placement/column-reverse-dense-packing-multi-span-002.html
+item-placement/column-reverse-dense-packing-multi-span-003.html
+item-placement/column-reverse-dense-packing-multi-span-004.html
+item-placement/column-reverse-dense-packing-multi-span-005.html
 item-placement/dense-packing/column-dense-packing-001.html
 item-placement/dense-packing/column-dense-packing-002.html
 item-placement/dense-packing/column-dense-packing-003.html
@@ -1706,19 +1702,27 @@ item-placement/dense-packing/row-dense-packing-multi-span-002.html
 item-placement/dense-packing/row-dense-packing-multi-span-003.html
 item-placement/dense-packing/row-dense-packing-multi-span-004.html
 item-placement/dense-packing/row-dense-packing-multi-span-005.html
+item-placement/grid-lanes-item-placement-001.html
+item-placement/grid-lanes-item-placement-002.html
+item-placement/grid-lanes-item-placement-003.html
+item-placement/grid-lanes-item-placement-004.html
+item-placement/grid-lanes-item-placement-005.html
+item-placement/grid-lanes-item-placement-006.html
+item-placement/grid-lanes-item-placement-007.html
+item-placement/grid-lanes-item-placement-008.html
+item-placement/grid-lanes-rows-with-grid-width-changed.html
 item-placement/item-tolerance/column-initial-item-tolerance.html
 item-placement/item-tolerance/column-item-tolerance-infinite.html
+item-placement/item-tolerance/item-tolerance-column-001.html
+item-placement/item-tolerance/item-tolerance-column-002.html
+item-placement/item-tolerance/item-tolerance-column-003.html
+item-placement/item-tolerance/item-tolerance-column-004.html
+item-placement/item-tolerance/item-tolerance-row-001.html
+item-placement/item-tolerance/item-tolerance-row-002.html
+item-placement/item-tolerance/item-tolerance-row-003.html
+item-placement/item-tolerance/item-tolerance-row-004.html
 item-placement/item-tolerance/row-initial-item-tolerance.html
 item-placement/item-tolerance/row-item-tolerance-infinite.html
-item-placement/masonry-item-placement-001.html
-item-placement/masonry-item-placement-002.html
-item-placement/masonry-item-placement-003.html
-item-placement/masonry-item-placement-004.html
-item-placement/masonry-item-placement-005.html
-item-placement/masonry-item-placement-006.html
-item-placement/masonry-item-placement-007.html
-item-placement/masonry-item-placement-008.html
-item-placement/masonry-rows-with-grid-width-changed.html
 item-placement/row-auto-placement-001.html
 item-placement/row-auto-placement-002.html
 item-placement/row-auto-placement-max-content.html
@@ -1727,6 +1731,12 @@ item-placement/row-negative-margin-001.html
 item-placement/row-reverse-001.html
 item-placement/row-reverse-002.html
 item-placement/row-reverse-003.html
+item-placement/row-reverse-dense-packing-001.html
+item-placement/row-reverse-dense-packing-multi-span-001.html
+item-placement/row-reverse-dense-packing-multi-span-002.html
+item-placement/row-reverse-dense-packing-multi-span-003.html
+item-placement/row-reverse-dense-packing-multi-span-004.html
+item-placement/row-reverse-dense-packing-multi-span-005.html
 items/column-automatic-minimum-for-auto.html
 items/column-fit-content-percentage.html
 items/column-flex-and-intrinsic-sizes.html
@@ -1761,29 +1771,66 @@ items/row-minimum-contribution-with-percentages.html
 items/row-minimum-size-grid-items-001.html
 items/row-minimum-size-grid-items-002.html
 items/row-minimum-size-grid-items-003.html
-masonry-columns-item-containing-block-is-grid-content-width.html
-masonry-fieldset-crash.html
-masonry-grid-template-columns-computed-withcontent.html
-masonry-not-inhibited-001.html
 order/column-order-property-auto-placement-001.html
 order/column-order-property-auto-placement-002.html
 order/column-order-property-auto-placement-003.html
 order/column-order-property-auto-placement-004.html
 order/column-order-property-auto-placement-005.html
-order/masonry-order-001.html
+order/grid-lanes-order-001.html
 order/row-order-property-auto-placement-001.html
 order/row-order-property-auto-placement-002.html
 order/row-order-property-auto-placement-003.html
 order/row-order-property-auto-placement-004.html
 order/row-order-property-auto-placement-005.html
-row-empty-masonry-container-001.html
-row-empty-masonry-container-002.html
+parsing/grid-lanes-direction-computed.html
+parsing/grid-lanes-direction-invalid.html
+parsing/grid-lanes-direction-valid.html
+parsing/grid-lanes-fill-computed.html
+parsing/grid-lanes-fill-invalid.html
+parsing/grid-lanes-fill-valid.html
+parsing/grid-lanes-flow-computed.html
+parsing/grid-lanes-flow-invalid.html
+parsing/grid-lanes-flow-valid.html
+parsing/grid-lanes-shorthand-computed.html
+parsing/grid-lanes-shorthand-invalid.html
+parsing/grid-lanes-shorthand-serialization.html
+parsing/grid-lanes-shorthand-valid.html
+parsing/item-tolerance-computed.html
+parsing/item-tolerance-invalid.html
+parsing/item-tolerance-valid.html
+row-empty-grid-lanes-container-001.html
+row-empty-grid-lanes-container-002.html
 row-min-max-content-container.html
-subgrid/masonry-subgrid-001.html
-subgrid/masonry-subgrid-002.html
-subgrid/track-sizing/masonry-subgrid-flex.html
-subgrid/track-sizing/masonry-subgrid-intrinsic-sizing.html
-subgrid/track-sizing/masonry-subgrid.html
+subgrid/column/grid-lanes-subgrid-001a.html
+subgrid/column/grid-lanes-subgrid-001b.html
+subgrid/column/grid-lanes-subgrid-001c.html
+subgrid/column/grid-lanes-subgrid-001d.html
+subgrid/column/grid-lanes-subgrid-001e.html
+subgrid/column/grid-lanes-subgrid-002a.html
+subgrid/column/grid-lanes-subgrid-002b.html
+subgrid/column/grid-lanes-subgrid-002c.html
+subgrid/column/grid-lanes-subgrid-002d.html
+subgrid/column/grid-lanes-subgrid-002e.html
+subgrid/column/grid-lanes-subgrid-002f.html
+subgrid/column/grid-lanes-subgrid-002g.html
+subgrid/column/grid-lanes-subgrid-002h.html
+subgrid/column/grid-lanes-subgrid-002i.html
+subgrid/row/grid-lanes-subgrid-001a.html
+subgrid/row/grid-lanes-subgrid-001b.html
+subgrid/row/grid-lanes-subgrid-001c.html
+subgrid/row/grid-lanes-subgrid-001d.html
+subgrid/row/grid-lanes-subgrid-002a.html
+subgrid/row/grid-lanes-subgrid-002b.html
+subgrid/row/grid-lanes-subgrid-002c.html
+subgrid/row/grid-lanes-subgrid-002d.html
+subgrid/row/grid-lanes-subgrid-002e.html
+subgrid/row/grid-lanes-subgrid-002f.html
+subgrid/row/grid-lanes-subgrid-002g.html
+subgrid/row/grid-lanes-subgrid-002h.html
+subgrid/row/grid-lanes-subgrid-002i.html
+subgrid/track-sizing/grid-lanes-subgrid-flex.html
+subgrid/track-sizing/grid-lanes-subgrid-intrinsic-sizing.html
+subgrid/track-sizing/grid-lanes-subgrid.html
 track-sizing/auto-repeat/auto-repeat-no-children-crash.html
 track-sizing/auto-repeat/column-auto-repeat-001.html
 track-sizing/auto-repeat/column-auto-repeat-002.html
@@ -1939,11 +1986,11 @@ track-sizing/column-track-sizing-003.html
 track-sizing/column-track-sizing-004.html
 track-sizing/column-track-sizing-005.html
 track-sizing/dynamic-grid-track-direction.html
-track-sizing/masonry-track-sizing-check-grid-height-on-resize.html
-track-sizing/masonry-track-sizing-explicit-block.html
-track-sizing/masonry-track-sizing-overflow-left-side.html
-track-sizing/masonry-track-sizing-overflow-right-side.html
-track-sizing/masonry-track-sizing-span-row.html
+track-sizing/grid-lanes-track-sizing-check-grid-height-on-resize.html
+track-sizing/grid-lanes-track-sizing-explicit-block.html
+track-sizing/grid-lanes-track-sizing-overflow-left-side.html
+track-sizing/grid-lanes-track-sizing-overflow-right-side.html
+track-sizing/grid-lanes-track-sizing-span-row.html
 track-sizing/row-track-sizing-001.html
 track-sizing/row-track-sizing-002.html
 track-sizing/row-track-sizing-003.html
