@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 9e651ddb3, updated Fri Dec 12 15:40:37 2025 -0800" name="generator">
   <link href="https://www.w3.org/TR/selectors-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="ad0143cd5a27f5cb4a1e8f68fe66a13892379ba0" name="revision">
+  <meta content="4e393db292d662e82e9bdc58648174f5f9c77d67" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -474,6 +474,230 @@ a[href].issue-return {
     margin-bottom: 0;
 }
 </style>
+<style>/* Boilerplate: style-mdn-anno */
+:root {
+	--mdn-bg: #EEE;
+	--mdn-shadow: #999;
+	--mdn-nosupport-text: #ccc;
+	--mdn-pass: green;
+	--mdn-fail: red;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--mdn-bg: #222;
+		--mdn-shadow: #444;
+		--mdn-nosupport-text: #666;
+		--mdn-pass: #690;
+		--mdn-fail: #d22;
+	}
+}
+.mdn-anno {
+	background: var(--mdn-bg, #EEE);
+	border-radius: .25em;
+	box-shadow: 0 0 3px var(--mdn-shadow, #999);
+	color: var(--text, black);
+	font: 1em sans-serif;
+	hyphens: none;
+	max-width: min-content;
+	overflow: hidden;
+	padding: 0.2em;
+	position: absolute;
+	right: 0.3em;
+	top: auto;
+	white-space: nowrap;
+	word-wrap: normal;
+	z-index: 8;
+}
+.mdn-anno.unpositioned {
+	display: none;
+}
+.mdn-anno.overlapping-main {
+	opacity: .2;
+	transition: opacity .1s;
+}
+.mdn-anno[open] {
+	opacity: 1;
+	z-index: 9;
+	min-width: 9em;
+}
+.mdn-anno:hover {
+	opacity: 1;
+	outline: var(--text, black) 1px solid;
+}
+.mdn-anno > summary {
+	font-weight: normal;
+	text-align: right;
+	cursor: pointer;
+	display: block;
+}
+.mdn-anno > summary > .less-than-two-engines-flag {
+	color: var(--mdn-fail);
+	padding-right: 2px;
+}
+.mdn-anno > summary > .all-engines-flag {
+	color: var(--mdn-pass);
+	padding-right: 2px;
+}
+.mdn-anno > summary > span {
+	color: #fff;
+	background-color: #000;
+	font-weight: normal;
+	font-family: zillaslab, Palatino, "Palatino Linotype", serif;
+	padding: 2px 3px 0px 3px;
+	line-height: 1.3em;
+	vertical-align: top;
+}
+.mdn-anno > .feature {
+	margin-top: 20px;
+}
+.mdn-anno > .feature:not(:first-of-type) {
+	border-top: 1px solid #999;
+	margin-top: 6px;
+	padding-top: 2px;
+}
+.mdn-anno > .feature > .less-than-two-engines-text {
+	color: var(--mdn-fail);
+}
+.mdn-anno > .feature > .all-engines-text {
+	color: var(--mdn-pass);
+}
+.mdn-anno > .feature > p {
+	font-size: .75em;
+	margin-top: 6px;
+	margin-bottom: 0;
+}
+.mdn-anno > .feature > p + p {
+	margin-top: 3px;
+}
+.mdn-anno > .feature > .support {
+	display: block;
+	font-size: 0.6em;
+	margin: 0;
+	padding: 0;
+	margin-top: 2px;
+}
+.mdn-anno > .feature > .support + div {
+	padding-top: 0.5em;
+}
+.mdn-anno > .feature > .support > hr {
+	display: block;
+	border: none;
+	border-top: 1px dotted #999;
+	padding: 3px 0px 0px 0px;
+	margin: 2px 3px 0px 3px;
+}
+.mdn-anno > .feature > .support > hr::before {
+	content: "";
+}
+.mdn-anno > .feature > .support > span {
+	padding: 0.2em 0;
+	display: block;
+	display: table;
+}
+.mdn-anno > .feature > .support > span.no {
+	color: var(--mdn-nosupport-text);
+	filter: grayscale(100%);
+}
+.mdn-anno > .feature > .support > span.no::before {
+	opacity: 0.5;
+}
+.mdn-anno > .feature > .support > span:first-of-type {
+	padding-top: 0.5em;
+}
+.mdn-anno > .feature > .support > span > span {
+	padding: 0 0.5em;
+	display: table-cell;
+}
+.mdn-anno > .feature > .support > span > span:first-child {
+	width: 100%;
+}
+.mdn-anno > .feature > .support > span > span:last-child {
+	width: 100%;
+	white-space: pre;
+	padding: 0;
+}
+.mdn-anno > .feature > .support > span::before {
+	content: ' ';
+	display: table-cell;
+	min-width: 1.5em;
+	height: 1.5em;
+	background: no-repeat center center;
+	background-size: contain;
+	text-align: right;
+	font-size: 0.75em;
+	font-weight: bold;
+}
+.mdn-anno > .feature > .support > .chrome_android::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg);
+}
+.mdn-anno > .feature > .support > .firefox_android::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/firefox.png);
+}
+.mdn-anno > .feature > .support > .chrome::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/chrome.svg);
+}
+.mdn-anno > .feature > .support > .edge_blink::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/edge.svg);
+}
+.mdn-anno > .feature > .support > .edge::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/edge_legacy.svg);
+}
+.mdn-anno > .feature > .support > .firefox::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/firefox.png);
+}
+.mdn-anno > .feature > .support > .ie::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/ie.png);
+}
+.mdn-anno > .feature > .support > .safari_ios::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/safari-ios.svg);
+}
+.mdn-anno > .feature > .support > .nodejs::before {
+	background-image: url(https://nodejs.org/favicon.ico);
+}
+.mdn-anno > .feature > .support > .opera_android::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/opera.svg);
+}
+.mdn-anno > .feature > .support > .opera::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/opera.svg);
+}
+.mdn-anno > .feature > .support > .safari::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/safari.png);
+}
+.mdn-anno > .feature > .support > .samsunginternet_android::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/samsung.svg);
+}
+.mdn-anno > .feature > .support > .webview_android::before {
+	background-image: url(https://resources.whatwg.org/browser-logos/android-webview.png);
+}
+.name-slug-mismatch {
+	color: red;
+}
+.caniuse-status:hover {
+	z-index: 9;
+}
+/* dt, li, .issue, .note, and .example are "position: relative", so to put annotation at right margin, must move to right of containing block */;
+.h-entry:not(.status-LS) dt > .mdn-anno, .h-entry:not(.status-LS) li > .mdn-anno, .h-entry:not(.status-LS) .issue > .mdn-anno, .h-entry:not(.status-LS) .note > .mdn-anno, .h-entry:not(.status-LS) .example > .mdn-anno {
+	right: -6.7em;
+}
+.h-entry p + .mdn-anno {
+	margin-top: 0;
+}
+ h2 + .mdn-anno.after {
+	margin: -48px 0 0 0;
+}
+ h3 + .mdn-anno.after {
+	margin: -46px 0 0 0;
+}
+ h4 + .mdn-anno.after {
+	margin: -42px 0 0 0;
+}
+ h5 + .mdn-anno.after {
+	margin: -40px 0 0 0;
+}
+ h6 + .mdn-anno.after {
+	margin: -40px 0 0 0;
+}
+</style>
 <style>/* Boilerplate: style-ref-hints */
 :root {
     --ref-hint-bg: #ddd;
@@ -711,7 +935,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">Selectors Level 5</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-10-28">28 October 2025</time></p>
+    <time class="dt-updated" datetime="2025-12-14">14 December 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -792,27 +1016,68 @@ Module Interactions</span></a>
 Location Pseudo-classes</span></a>
      <ol class="toc">
       <li><a href="#local-pseudo"><span class="secno">2.1</span> <span class="content">
-The local link pseudo-class <span class="css">:local-link</span></span></a>
+The Local Link Pseudo-class <span class="css">:local-link</span></span></a>
      </ol>
-    <li><a href="#custom-state"><span class="secno">3</span> <span class="content">
+    <li>
+     <a href="#useraction-pseudos"><span class="secno">3</span> <span class="content">
+User Action Pseudo-classes</span></a>
+     <ol class="toc">
+      <li><a href="#interest-pseudos"><span class="secno">3.1</span> <span class="content">
+The Interest Pseudo-classes: <span class="css">:interest-source</span> and <span class="css">:interest-target</span></span></a>
+     </ol>
+    <li>
+     <a href="#input-pseudos"><span class="secno">4</span> <span class="content">
+The Input Pseudo-classes</span></a>
+     <ol class="toc">
+      <li>
+       <a href="#ui-validity"><span class="secno">4.1</span> <span class="content">
+Input Value-checking</span></a>
+       <ol class="toc">
+        <li><a href="#blank"><span class="secno">4.1.1</span> <span class="content">
+The Empty-Value Pseudo-class: <span class="css">:blank</span></span></a>
+       </ol>
+     </ol>
+    <li>
+     <a href="#time-pseudos"><span class="secno">5</span> <span class="content">
+Time-dimensional Pseudo-classes</span></a>
+     <ol class="toc">
+      <li><a href="#the-current-pseudo"><span class="secno">5.1</span> <span class="content">
+The Current-element Pseudo-class: <span class="css">:current</span></span></a>
+      <li><a href="#the-past-pseudo"><span class="secno">5.2</span> <span class="content">
+The Past-element Pseudo-class: <span class="css">:past</span></span></a>
+      <li><a href="#the-future-pseudo"><span class="secno">5.3</span> <span class="content">
+The Future-element Pseudo-class: <span class="css">:future</span></span></a>
+     </ol>
+    <li><a href="#custom-state"><span class="secno">6</span> <span class="content">
 Exposing custom state: the <span class="css">:state()</span> pseudo-class</span></a>
-    <li><a href="#headings"><span class="secno">4</span> <span class="content">
+    <li><a href="#headings"><span class="secno">7</span> <span class="content">
 Heading Structures: the heading pseudo-classes <span class="css">:heading</span>, and <span class="css">:heading()</span></span></a>
     <li>
-     <a href="#combinators"><span class="secno">5</span> <span class="content">
+     <a href="#grid-structural-selectors"><span class="secno">8</span> <span class="content">
+Grid-Structural Selectors</span></a>
+     <ol class="toc">
+      <li><a href="#the-column-combinator"><span class="secno">8.1</span> <span class="content">
+Column combinator (<code>||</code>)</span></a>
+      <li><a href="#the-nth-col-pseudo"><span class="secno">8.2</span> <span class="content">
+<span class="css">:nth-col()</span> pseudo-class</span></a>
+      <li><a href="#the-nth-last-col-pseudo"><span class="secno">8.3</span> <span class="content">
+<span class="css">:nth-last-col()</span> pseudo-class</span></a>
+     </ol>
+    <li>
+     <a href="#combinators"><span class="secno">9</span> <span class="content">
 Combinators</span></a>
      <ol class="toc">
-      <li><a href="#idref-combinators"><span class="secno">5.1</span> <span class="content">
+      <li><a href="#idref-combinators"><span class="secno">9.1</span> <span class="content">
 Reference combinators <code>/ref/</code></span></a>
      </ol>
     <li>
-     <a href="#changes"><span class="secno">6</span> <span class="content">
+     <a href="#changes"><span class="secno">10</span> <span class="content">
 Changes</span></a>
      <ol class="toc">
-      <li><a href="#changes-level-4"><span class="secno">6.1</span> <span class="content">
+      <li><a href="#changes-level-4"><span class="secno">10.1</span> <span class="content">
 Changes Since Level 4</span></a>
      </ol>
-    <li><a href="#acknowledgements"><span class="secno">7</span> <span class="content">
+    <li><a href="#acknowledgements"><span class="secno">11</span> <span class="content">
 Acknowledgements</span></a>
     <li><a href="#privacy"><span class="secno"></span> <span class="content">Privacy Considerations</span></a>
     <li><a href="#security"><span class="secno"></span> <span class="content">Security Considerations</span></a>
@@ -861,7 +1126,7 @@ Module Interactions</span><a class="self-link" href="#placement"></a></h3>
    <h2 class="heading settled" data-level="2" id="location"><span class="secno">2. </span><span class="content">
 Location Pseudo-classes</span><a class="self-link" href="#location"></a></h2>
    <h3 class="heading settled" data-level="2.1" id="local-pseudo"><span class="secno">2.1. </span><span class="content">
-The local link pseudo-class <a class="css" data-link-type="maybe" href="#local-link-pseudo" id="ref-for-local-link-pseudo">:local-link</a></span><a class="self-link" href="#local-pseudo"></a></h3>
+The Local Link Pseudo-class <a class="css" data-link-type="maybe" href="#local-link-pseudo" id="ref-for-local-link-pseudo">:local-link</a></span><a class="self-link" href="#local-pseudo"></a></h3>
    <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="local-link-pseudo">:local-link</dfn> pseudo-class allows authors to style
 	<a href="https://drafts.csswg.org/selectors-4/#the-any-link-pseudo">hyperlinks</a>
 	based on the users current location within a site and to
@@ -976,7 +1241,133 @@ The local link pseudo-class <a class="css" data-link-type="maybe" href="#local-l
 		Should "null segments" count as matching, or not?
 
 </p>
-   <h2 class="heading settled" data-level="3" id="custom-state"><span class="secno">3. </span><span class="content">
+   <h2 class="heading settled" data-level="3" id="useraction-pseudos"><span class="secno">3. </span><span class="content">
+User Action Pseudo-classes</span><a class="self-link" href="#useraction-pseudos"></a></h2>
+   <h3 class="heading settled" data-level="3.1" id="interest-pseudos"><span class="secno">3.1. </span><span class="content">
+The Interest Pseudo-classes: <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source">:interest-source</a> and <a class="css" data-link-type="maybe" href="#selectordef-interest-target" id="ref-for-selectordef-interest-target">:interest-target</a></span><a class="self-link" href="#interest-pseudos"></a></h3>
+   <p>A common UI feature is the ability for the user to "show interest" in certain elements
+	(an <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="interest-source">interest source</dfn>),
+	and the UI to respond to that interest
+	by showing additional information in another element
+	(the <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="interest-target">interest target</dfn>),
+	typically a popup.
+	For example, hovering a username on a page
+	might bring up an information card for that user;
+	or long-pressing a link
+	might bring up a preview of the link’s destination.
+	Whenever this happens, the first element</p>
+   <p class="note" role="note"><span class="marker">Note:</span> Exactly what elements are capable of being <a data-link-type="dfn" href="#interest-source" id="ref-for-interest-source">interest sources</a>,
+	how they’re linked to <a data-link-type="dfn" href="#interest-target" id="ref-for-interest-target">interest targets</a>,
+	and how "interest" is shown
+	are all <a data-link-type="dfn" href="https://w3c.github.io/aria/#dfn-host-language" id="ref-for-dfn-host-language">host language</a>-defined.
+	In HTML, for example,
+	this is done with the <code><u class="link-error" data-lt="interestfor" title="LINK ERROR: No &apos;element-sub&apos; refs found for &apos;interestfor&apos;.">interestfor</u></code> attribute
+	to indicate an element capable of "showing interest"
+	(being an <span id="ref-for-interest-source①">interest source</span>,
+	and that attribute points to another element
+	intended to show the additional information
+	(the associated <span id="ref-for-interest-target①">interest target</span>)
+	(usually a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/popover.html#attr-popover" id="ref-for-attr-popover">popover</a></code> element).</p>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="selectordef-interest-source">:interest-source</dfn> pseudo-class
+	applies to an <a data-link-type="dfn" href="#interest-source" id="ref-for-interest-source②">interest source</a> element that the user is currently "showing interest" in,
+	and the <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="selectordef-interest-target">:interest-target</dfn> pseudo-class
+	applies to the associated <a data-link-type="dfn" href="#interest-target" id="ref-for-interest-target②">interest target</a>
+	of an element matching <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source①">:interest-source</a>.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source②">:interest-source</a> only matches an <a data-link-type="dfn" href="#interest-source" id="ref-for-interest-source③">interest source</a>
+	the user is <em>currently</em> interested in,
+	not any element that can <em>potentially</em> have interest shown in it.
+	In HTML, for example,
+	just having the <code><u class="link-error" data-lt="interestfor" title="LINK ERROR: No &apos;element-sub&apos; refs found for &apos;interestfor&apos;.">interestfor</u></code> attribute
+	does not make an element match this pseudo-class;
+	the user has to actually indicate interest in it too.
+	Similarly, <a class="css" data-link-type="maybe" href="#selectordef-interest-target" id="ref-for-selectordef-interest-target①">:interest-target</a> only matches an <a data-link-type="dfn" href="#interest-target" id="ref-for-interest-target③">interest target</a>
+	that is linked to an element the user is <em>currently</em> interested in,
+	not any element pointed to by an <code><u class="link-error" data-lt="interestfor" title="LINK ERROR: No &apos;element-sub&apos; refs found for &apos;interestfor&apos;.">interestfor</u></code> attribute.</p>
+   <h2 class="heading settled" data-level="4" id="input-pseudos"><span class="secno">4. </span><span class="content">
+The Input Pseudo-classes</span><a class="self-link" href="#input-pseudos"></a></h2>
+   <h3 class="heading settled" data-level="4.1" id="ui-validity"><span class="secno">4.1. </span><span class="content">
+Input Value-checking</span><a class="self-link" href="#ui-validity"></a></h3>
+   <h4 class="heading settled" data-level="4.1.1" id="blank"><span class="secno">4.1.1. </span><span class="content">
+The Empty-Value Pseudo-class: <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo">:blank</a></span><a class="self-link" href="#blank"></a></h4>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="blank-pseudo">:blank</dfn> pseudo-class
+	applies to user-input elements whose input value is empty
+	(consists of the empty string or otherwise null input).</p>
+   <div class="note" role="note">
+    
+		Roughly speaking, if a human looked at a printout of the form
+		and would say it’s blank,
+		it matches <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo①">:blank</a>.
+
+
+    <p>A rule of thumb for interpreting <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo②">:blank</a> on form controls is:</p>
+    <ul>
+     <li data-md>
+      <p>If the control always submits,
+and would do so with an empty string, it matches <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo③">:blank</a>.
+(Such as HTML’s <code>&lt;input type=text></code> when its value is empty.)</p>
+     <li data-md>
+      <p>If it sometimes submits, and is set to not submit, it matches <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo④">:blank</a>.
+(Such as HTML’s <code>&lt;input type=checkbox></code> when not checked.)</p>
+     <li data-md>
+      <p>If it’s an “action button”
+(rather than a “toggle button” that represents a state)
+such as <code>&lt;button></code>, <code>&lt;input type=submit></code>, etc.,
+it never matches <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo⑤">:blank</a>.</p>
+    </ul>
+    <p>Host languages can specify more precise rules
+		for when form controls match <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo⑥">:blank</a>.</p>
+   </div>
+   <h2 class="heading settled" data-level="5" id="time-pseudos"><span class="secno">5. </span><span class="content">
+Time-dimensional Pseudo-classes</span><a class="self-link" href="#time-pseudos"></a></h2>
+   <p>These pseudo-classes classify elements with respect to the
+	currently-displayed or active position in some timeline, such as
+	during speech rendering of a document, or during the display of
+	a video using WebVTT to render subtitles.</p>
+   <p>CSS does not define this timeline;
+	the host language must do so.
+	If there is no timeline defined for an element,
+	these pseudo-classes must not match the element.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> Ancestors of a <a class="css" data-link-type="maybe" href="#current-pseudo" id="ref-for-current-pseudo">:current</a> element are also <span class="css" id="ref-for-current-pseudo①">:current</span>,
+	but ancestors of a <a class="css" data-link-type="maybe" href="#past-pseudo" id="ref-for-past-pseudo">:past</a> or <a class="css" data-link-type="maybe" href="#future-pseudo" id="ref-for-future-pseudo">:future</a> element are not necessarily <span class="css" id="ref-for-past-pseudo①">:past</span> or <span class="css" id="ref-for-future-pseudo①">:future</span> as well.
+	A given element matches at most one of <span class="css" id="ref-for-current-pseudo②">:current</span>, <span class="css" id="ref-for-past-pseudo②">:past</span>, or <span class="css" id="ref-for-future-pseudo②">:future</span>.</p>
+   <h3 class="heading settled" data-level="5.1" id="the-current-pseudo"><span class="secno">5.1. </span><span class="content">
+The Current-element Pseudo-class: <a class="css" data-link-type="maybe" href="#current-pseudo" id="ref-for-current-pseudo③">:current</a></span><a class="self-link" href="#the-current-pseudo"></a></h3>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="current-pseudo">:current</dfn> pseudo-class represents the
+	element, or an ancestor of the element, that is currently being displayed.</p>
+   <p>Its alternate form <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="selectordef-current">:current()</dfn>
+	takes a list of <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#compound" id="ref-for-compound">compound selectors</a> as its argument:
+	it represents the <a class="css" data-link-type="maybe" href="#current-pseudo" id="ref-for-current-pseudo④">:current</a> element that matches the argument
+	or, if that does not match,
+	the innermost ancestor of the <span class="css" id="ref-for-current-pseudo⑤">:current</span> element that does.
+	(If neither the <span class="css" id="ref-for-current-pseudo⑥">:current</span> element nor its ancestors match the argument, then the selector does not represent anything.)</p>
+   <div class="example" id="example-34db2617">
+    <a class="self-link" href="#example-34db2617"></a>
+		For example, the following rule will highlight whichever paragraph
+		or list item is being read aloud in a speech rendering of the document:
+
+		
+<pre>:current(p, li, dt, dd) {
+  background: yellow;
+}
+</pre>
+   </div>
+   <h3 class="heading settled" data-level="5.2" id="the-past-pseudo"><span class="secno">5.2. </span><span class="content">
+The Past-element Pseudo-class: <a class="css" data-link-type="maybe" href="#past-pseudo" id="ref-for-past-pseudo③">:past</a></span><a class="self-link" href="#the-past-pseudo"></a></h3>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="past-pseudo">:past</dfn> pseudo-class represents any element that is
+	defined to occur entirely prior to a <a class="css" data-link-type="maybe" href="#current-pseudo" id="ref-for-current-pseudo⑦">:current</a> element.
+	For example, the WebVTT spec defines the <a class="css" data-link-type="maybe" href="#past-pseudo" id="ref-for-past-pseudo④">:past</a> pseudo-class <a href="http://dev.w3.org/html5/webvtt/#the-past-and-future-pseudo-classes">relative to the current playback position of a media element</a>.
+	If a time-based order of elements is not defined by the document language,
+	then this represents any element that is a (possibly indirect) previous
+	sibling of a <span class="css" id="ref-for-current-pseudo⑧">:current</span> element.</p>
+   <h3 class="heading settled" data-level="5.3" id="the-future-pseudo"><span class="secno">5.3. </span><span class="content">
+The Future-element Pseudo-class: <a class="css" data-link-type="maybe" href="#future-pseudo" id="ref-for-future-pseudo③">:future</a></span><a class="self-link" href="#the-future-pseudo"></a></h3>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="future-pseudo">:future</dfn> pseudo-class represents any element that is
+	defined to occur entirely after a <a class="css" data-link-type="maybe" href="#current-pseudo" id="ref-for-current-pseudo⑨">:current</a> element.
+	For example, the WebVTT spec defines the <a class="css" data-link-type="maybe" href="#future-pseudo" id="ref-for-future-pseudo④">:future</a> pseudo-class <a href="http://dev.w3.org/html5/webvtt/#the-past-and-future-pseudo-classes">relative to the current playback position of a media element</a>.
+	If a time-based order of elements is not defined by the document language,
+	then this represents any element that is a (possibly indirect) next
+	sibling of a <span class="css" id="ref-for-current-pseudo①⓪">:current</span> element.</p>
+   <h2 class="heading settled" data-level="6" id="custom-state"><span class="secno">6. </span><span class="content">
 Exposing custom state: the <a class="css" data-link-type="maybe" href="#state-pseudo" id="ref-for-state-pseudo">:state()</a> pseudo-class</span><a class="self-link" href="#custom-state"></a></h2>
    <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="state-pseudo">:state( <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-ident" id="ref-for-typedef-ident">&lt;ident></a> )</dfn> pseudo-class
 	matches <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element" id="ref-for-custom-element">custom elements</a>
@@ -997,7 +1388,7 @@ Exposing custom state: the <a class="css" data-link-type="maybe" href="#state-ps
 	link to the HTML definition;
 	see <a href="https://html.spec.whatwg.org/multipage/custom-elements.html#custom-state-pseudo-class">HTML’s definition</a> for more detail.
 	Other host languages must define how this pseudo-class matches.</p>
-   <h2 class="heading settled" data-level="4" id="headings"><span class="secno">4. </span><span class="content">
+   <h2 class="heading settled" data-level="7" id="headings"><span class="secno">7. </span><span class="content">
 Heading Structures: the heading pseudo-classes <a class="css" data-link-type="maybe" href="#heading-pseudo" id="ref-for-heading-pseudo">:heading</a>, and <a class="css" data-link-type="maybe" href="#heading-functional-pseudo" id="ref-for-heading-functional-pseudo">:heading()</a></span><a class="self-link" href="#headings"></a></h2>
    <p>The (non-functional) <dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="heading-pseudo">:heading</dfn> pseudo-class
 	matches an element which has a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/sections.html#heading-level" id="ref-for-heading-level">heading level</a>, with respect to the
@@ -1043,17 +1434,84 @@ Heading Structures: the heading pseudo-classes <a class="css" data-link-type="ma
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/selectors/parsing/parse-heading.html" title="css/selectors/parsing/parse-heading.html">parse-heading.html</a> <a class="wpt-live" href="http://wpt.live/css/selectors/parsing/parse-heading.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/selectors/parsing/parse-heading.html"><small>(source)</small></a>
     </ul>
    </details>
-   <h2 class="heading settled" data-level="5" id="combinators"><span class="secno">5. </span><span class="content">
+   <h2 class="heading settled" data-level="8" id="grid-structural-selectors"><span class="secno">8. </span><span class="bs-old-id" id="table-pseudos"></span><span class="content">
+Grid-Structural Selectors</span><a class="self-link" href="#grid-structural-selectors"></a></h2>
+   <p>The double-association of a cell in a 2D grid (to its row and column)
+	cannot be represented by parentage in a hierarchical markup language.
+	Only one of those associations can be represented hierarchically: the
+	other must be explicitly or implicitly defined in the document language
+	semantics. In both HTML and DocBook, two of the most common hierarchical
+	markup languages, the markup is row-primary (that is, the row associations
+	are represented hierarchically); the columns must be implied.
+	To be able to represent such implied column-based relationships, the
+	<a data-link-type="dfn" href="#column-combinator" id="ref-for-column-combinator">column combinator</a> and the
+	<a class="css" data-link-type="maybe" href="#nth-col-pseudo" id="ref-for-nth-col-pseudo">:nth-col()</a> and <a class="css" data-link-type="maybe" href="#nth-last-col-pseudo" id="ref-for-nth-last-col-pseudo">:nth-last-col()</a> pseudo-classes
+	are defined.
+	In a column-primary format, these pseudo-classes match against row associations instead.</p>
+   <h3 class="heading settled" data-level="8.1" id="the-column-combinator"><span class="secno">8.1. </span><span class="content">
+Column combinator (<code>||</code>)</span><a class="self-link" href="#the-column-combinator"></a></h3>
+   <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="column-combinator">column combinator</dfn>, which consists of two pipes (<dfn class="css dfn-paneled" data-dfn-type="selector" data-export id="selectordef-column">||</dfn>)
+	represents the relationship of a column element
+	to a cell element belonging to the column it represents.
+	Column membership is determined based on the semantics of the document language only:
+	whether and how the elements are presented is not considered.
+	If a cell element belongs to more than one column,
+	it is represented by a selector indicating membership in any of those columns.</p>
+   <div class="example" id="example-60f47339">
+    <a class="self-link" href="#example-60f47339"></a>
+		The following example makes cells C, E, and G gray.
+
+		
+<pre>col.selected || td {
+  background: gray;
+  color: white;
+  font-weight: bold;
+}
+</pre>
+<pre>&lt;table>
+  &lt;col span="2">
+  &lt;col class="selected">
+  &lt;tr>&lt;td>A &lt;td>B &lt;td>C
+  &lt;tr>&lt;td colspan="2">D &lt;td>E
+  &lt;tr>&lt;td>F &lt;td colspan="2">G
+&lt;/table>
+</pre>
+   </div>
+   <h3 class="heading settled" data-level="8.2" id="the-nth-col-pseudo"><span class="secno">8.2. </span><span class="content">
+<a class="css" data-link-type="maybe" href="#nth-col-pseudo" id="ref-for-nth-col-pseudo①">:nth-col()</a> pseudo-class</span><a class="self-link" href="#the-nth-col-pseudo"></a></h3>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export data-lt=":nth-col()" id="nth-col-pseudo">:nth-col(<var>An+B</var>)</dfn>
+	pseudo-class notation represents a cell element belonging to a column
+	that has <var>An+B</var>-1 columns
+	<strong>before</strong> it, for any positive
+	integer or zero value of <code>n</code>. Column membership is determined
+	based on the semantics of the document language only: whether and how the
+	elements are presented is not considered. If a cell element belongs to
+	more than one column, it is represented by a selector indicating any of
+	those columns.</p>
+   <p>The CSS Syntax Module <a data-link-type="biblio" href="#biblio-css3syn" title="CSS Syntax Module Level 3">[CSS3SYN]</a> defines the <a href="https://drafts.csswg.org/css-syntax/#anb"><var>An+B</var> notation</a>.</p>
+   <h3 class="heading settled" data-level="8.3" id="the-nth-last-col-pseudo"><span class="secno">8.3. </span><span class="content">
+<a class="css" data-link-type="maybe" href="#nth-last-col-pseudo" id="ref-for-nth-last-col-pseudo①">:nth-last-col()</a> pseudo-class</span><a class="self-link" href="#the-nth-last-col-pseudo"></a></h3>
+   <p>The <dfn class="css dfn-paneled" data-dfn-type="selector" data-export data-lt=":nth-last-col()" id="nth-last-col-pseudo">:nth-last-col(<var>An+B</var>)</dfn>
+	pseudo-class notation represents a cell element belonging to a column
+	that has <var>An+B</var>-1 columns
+	<strong>after</strong> it, for any positive
+	integer or zero value of <code>n</code>. Column membership is determined
+	based on the semantics of the document language only: whether and how the
+	elements are presented is not considered. If a cell element belongs to
+	more than one column, it is represented by a selector indicating any of
+	those columns.</p>
+   <p>The CSS Syntax Module <a data-link-type="biblio" href="#biblio-css3syn" title="CSS Syntax Module Level 3">[CSS3SYN]</a> defines the <a href="https://drafts.csswg.org/css-syntax/#anb"><var>An+B</var> notation</a>.</p>
+   <h2 class="heading settled" data-level="9" id="combinators"><span class="secno">9. </span><span class="content">
 Combinators</span><a class="self-link" href="#combinators"></a></h2>
-   <h3 class="heading settled" data-level="5.1" id="idref-combinators"><span class="secno">5.1. </span><span class="content">
+   <h3 class="heading settled" data-level="9.1" id="idref-combinators"><span class="secno">9.1. </span><span class="content">
 Reference combinators <code>/ref/</code></span><a class="self-link" href="#idref-combinators"></a></h3>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="reference-combinator">reference combinator</dfn> consists of two slashes
 	with an intervening <a href="http://www.w3.org/TR/css3-namespace/#css-qnames">CSS qualified name</a>,
-	and separates two <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#compound" id="ref-for-compound">compound selectors</a>,
+	and separates two <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#compound" id="ref-for-compound①">compound selectors</a>,
 	e.g. <span class="css">A /attr/ B</span>.
-	The element represented by the first <span id="ref-for-compound①">compound selector</span>
+	The element represented by the first <span id="ref-for-compound②">compound selector</span>
 	explicitly references
-	the element represented by the second <span id="ref-for-compound②">compound selector</span>.
+	the element represented by the second <span id="ref-for-compound③">compound selector</span>.
 	Unless the host language defines a different syntax for expressing this relationship,
 	this relationship is considered to exist if
 	the value of the specified attribute on the first element is an IDREF or an <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#id-selector" id="ref-for-id-selector">ID selector</a>
@@ -1072,20 +1530,29 @@ label:is(:hover, :focus):not([for]) input { /* association by containment */
 }
 </pre>
    </div>
-   <h2 class="heading settled" data-level="6" id="changes"><span class="secno">6. </span><span class="content">
+   <h2 class="heading settled" data-level="10" id="changes"><span class="secno">10. </span><span class="content">
 Changes</span><a class="self-link" href="#changes"></a></h2>
-   <h3 class="heading settled" data-level="6.1" id="changes-level-4"><span class="secno">6.1. </span><span class="content">
+   <h3 class="heading settled" data-level="10.1" id="changes-level-4"><span class="secno">10.1. </span><span class="content">
 Changes Since Level 4</span><a class="self-link" href="#changes-level-4"></a></h3>
    <p>Additions since <a href="https://www.w3.org/TR/selectors-4/">Level 4</a>:</p>
    <ul>
     <li>Reference combinators
-	        (deferred from an <a href="https://www.w3.org/TR/2013/WD-selectors4-20130502/">earlier draft</a> of Selectors 4)
+		(deferred from an <a href="https://www.w3.org/TR/2013/WD-selectors4-20130502/">earlier draft</a> of Selectors 4)
     <li>The functional form of the <a class="css" data-link-type="maybe" href="#local-link-pseudo" id="ref-for-local-link-pseudo②">:local-link</a> pseudo-class
-	        (deferred from an <a href="https://www.w3.org/TR/2013/WD-selectors4-20130502/">earlier draft</a> of Selectors 4)
+		(deferred from an <a href="https://www.w3.org/TR/2013/WD-selectors4-20130502/">earlier draft</a> of Selectors 4)
     <li>The <a class="css" data-link-type="maybe" href="#state-pseudo" id="ref-for-state-pseudo②">:state()</a> pseudo-class
     <li>The <a class="css" data-link-type="maybe" href="#heading-pseudo" id="ref-for-heading-pseudo②">:heading</a> and <a class="css" data-link-type="maybe" href="#heading-functional-pseudo" id="ref-for-heading-functional-pseudo②">:heading()</a> pseudo-classes
+    <li>The <a class="css" data-link-type="maybe" href="#local-link-pseudo" id="ref-for-local-link-pseudo③">:local-link</a> pseudo-class
+		(deferred from an <a href="https://www.w3.org/TR/2022/WD-selectors-4-20221111/">earlier draft</a> of Selectors 4)
+    <li>The <a class="css" data-link-type="maybe" href="#selectordef-interest-source" id="ref-for-selectordef-interest-source③">:interest-source</a> and <a class="css" data-link-type="maybe" href="#selectordef-interest-target" id="ref-for-selectordef-interest-target②">:interest-target</a> pseudo-classes
+    <li>The <a class="css" data-link-type="maybe" href="#blank-pseudo" id="ref-for-blank-pseudo⑦">:blank</a> pseudo-class
+		(deferred from an <a href="https://www.w3.org/TR/2022/WD-selectors-4-20221111/">earlier draft</a> of Selectors 4)
+    <li>The <a href="#grid-structural-selectors">grid-structural (column) selectors</a>
+		(deferred from an <a href="https://www.w3.org/TR/2022/WD-selectors-4-20221111/">earlier draft</a> of Selectors 4)
+    <li>The <a href="#time-pseudos">time-dimensional pseudo-classes</a>
+		(deferred from an <a href="https://www.w3.org/TR/2022/WD-selectors-4-20221111/">earlier draft</a> of Selectors 4)
    </ul>
-   <h2 class="heading settled" data-level="7" id="acknowledgements"><span class="secno">7. </span><span class="content">
+   <h2 class="heading settled" data-level="11" id="acknowledgements"><span class="secno">11. </span><span class="content">
 Acknowledgements</span><a class="self-link" href="#acknowledgements"></a></h2>
    <p>The CSS working group would like to thank everyone who contributed
 	to the <a href="https://www.w3.org/TR/selectors-4">previous Selectors</a> specifications over the years,
@@ -1234,20 +1701,28 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#heading-pseudo">:heading</a><span>, in § 4</span>
-   <li><a href="#heading-functional-pseudo">:heading()</a><span>, in § 4</span>
-   <li><a href="#typedef-level">&lt;level></a><span>, in § 4</span>
+   <li><a href="#selectordef-column">||</a><span>, in § 8.1</span>
+   <li><a href="#blank-pseudo">:blank</a><span>, in § 4.1.1</span>
+   <li><a href="#column-combinator">column combinator</a><span>, in § 8.1</span>
+   <li><a href="#current-pseudo">:current</a><span>, in § 5.1</span>
+   <li><a href="#selectordef-current">:current()</a><span>, in § 5.1</span>
+   <li><a href="#future-pseudo">:future</a><span>, in § 5.3</span>
+   <li><a href="#heading-pseudo">:heading</a><span>, in § 7</span>
+   <li><a href="#heading-functional-pseudo">:heading()</a><span>, in § 7</span>
+   <li><a href="#selectordef-interest-source">:interest-source</a><span>, in § 3.1</span>
+   <li><a href="#interest-source">interest source</a><span>, in § 3.1</span>
+   <li><a href="#selectordef-interest-target">:interest-target</a><span>, in § 3.1</span>
+   <li><a href="#interest-target">interest target</a><span>, in § 3.1</span>
+   <li><a href="#typedef-level">&lt;level></a><span>, in § 7</span>
    <li><a href="#local-link-pseudo">:local-link</a><span>, in § 2.1</span>
-   <li><a href="#reference-combinator">reference combinator</a><span>, in § 5.1</span>
-   <li><a href="#state-pseudo">:state( &lt;ident> )</a><span>, in § 3</span>
+   <li><a href="#nth-col-pseudo">:nth-col()</a><span>, in § 8.2</span>
+   <li><a href="#nth-last-col-pseudo">:nth-last-col()</a><span>, in § 8.3</span>
+   <li><a href="#past-pseudo">:past</a><span>, in § 5.2</span>
+   <li><a href="#reference-combinator">reference combinator</a><span>, in § 9.1</span>
+   <li><a href="#state-pseudo">:state( &lt;ident> )</a><span>, in § 6</span>
   </ul>
   <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
-   <li>
-    <a data-link-type="biblio">[CSS-SYNTAX-3]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="92700be8">&lt;number-token></span>
-    </ul>
    <li>
     <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
     <ul>
@@ -1255,11 +1730,17 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="9213678e">&lt;ident></span>
     </ul>
    <li>
+    <a data-link-type="biblio">[CSS3SYN]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="92700be8">&lt;number-token></span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="b6fb7a51">custom element</span>
      <li><span class="dfn-paneled" id="b87923a3">heading level</span>
      <li><span class="dfn-paneled" id="d7d642a2">input</span>
+     <li><span class="dfn-paneled" id="f4da6587">popover</span>
      <li><span class="dfn-paneled" id="141caf46">states set</span>
     </ul>
    <li>
@@ -1276,14 +1757,19 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="bb2056aa">specificity</span>
      <li><span class="dfn-paneled" id="32c45571">type selector</span>
     </ul>
+   <li>
+    <a data-link-type="biblio">[WAI-ARIA-1.2]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="f00338b8">host language</span>
+    </ul>
   </ul>
   <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
-   <dt id="biblio-css-syntax-3">[CSS-SYNTAX-3]
-   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://drafts.csswg.org/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-syntax/">https://drafts.csswg.org/css-syntax/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
+   <dt id="biblio-css3syn">[CSS3SYN]
+   <dd>Tab Atkins Jr.; Simon Sapin. <a href="https://drafts.csswg.org/css-syntax/"><cite>CSS Syntax Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-syntax/">https://drafts.csswg.org/css-syntax/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-infra">[INFRA]
@@ -1297,6 +1783,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <dl>
    <dt id="biblio-html5">[HTML5]
    <dd>Ian Hickson; et al. <a href="https://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 27 March 2018. REC. URL: <a href="https://www.w3.org/TR/html5/">https://www.w3.org/TR/html5/</a>
+   <dt id="biblio-wai-aria-12">[WAI-ARIA-1.2]
+   <dd>Joanmarie Diggs; et al. <a href="https://w3c.github.io/aria/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.2</cite></a>. URL: <a href="https://w3c.github.io/aria/">https://w3c.github.io/aria/</a>
   </dl>
   <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
@@ -1313,6 +1801,70 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 
  <a class="issue-return" href="#issue-dd3371ba" title="Jump to section">↵</a></div>
   </div>
+  <details class="mdn-anno unpositioned" data-anno-for="blank-pseudo">
+   <summary><b class="less-than-two-engines-flag" title="This feature is in less than two current engines.">⚠</b><span>MDN</span></summary>
+   <div class="feature">
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:blank" title="The :blank CSS pseudo-class selects empty user input elements (e.g. <input> or <textarea>).">:blank</a></p>
+    <p class="less-than-two-engines-text">In no current engines.</p>
+    <div class="support">
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome no"><span>Chrome</span><span>None</span></span>
+     <hr>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink no"><span>Edge</span><span>None</span></span>
+     <hr>
+     <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
+     <hr>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
+    </div>
+   </div>
+  </details>
+  <details class="mdn-anno unpositioned" data-anno-for="the-column-combinator">
+   <summary><b class="less-than-two-engines-flag" title="This feature is in less than two current engines.">⚠</b><span>MDN</span></summary>
+   <div class="feature">
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Column_combinator" title="The column combinator (||) is placed between two CSS selectors. It matches only those elements matched by the second selector that belong to the column elements matched by the first.">Column_combinator</a></p>
+    <p class="less-than-two-engines-text">In no current engines.</p>
+    <div class="support">
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="no safari"><span>Safari</span><span>None</span></span><span class="chrome no"><span>Chrome</span><span>None</span></span>
+     <hr>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink no"><span>Edge</span><span>None</span></span>
+     <hr>
+     <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
+     <hr>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
+    </div>
+   </div>
+  </details>
+  <details class="mdn-anno unpositioned" data-anno-for="the-future-pseudo">
+   <summary><b class="less-than-two-engines-flag" title="This feature is in less than two current engines.">⚠</b><span>MDN</span></summary>
+   <div class="feature">
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:future" title="The :future CSS pseudo-class selector is a time-dimensional pseudo-class that will match for any element which appears entirely after an element that matches :current. For example in a video with captions which are being displayed by WebVTT.">:future</a></p>
+    <p class="less-than-two-engines-text">In only one current engine.</p>
+    <div class="support">
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari yes"><span>Safari</span><span>7+</span></span><span class="chrome no"><span>Chrome</span><span>None</span></span>
+     <hr>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink no"><span>Edge</span><span>None</span></span>
+     <hr>
+     <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
+     <hr>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
+    </div>
+   </div>
+  </details>
+  <details class="mdn-anno unpositioned" data-anno-for="the-past-pseudo">
+   <summary><b class="less-than-two-engines-flag" title="This feature is in less than two current engines.">⚠</b><span>MDN</span></summary>
+   <div class="feature">
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:past" title="The :past CSS pseudo-class selector is a time-dimensional pseudo-class that will match for any element which appears entirely before an element that matches :current. For example in a video with captions which are being displayed by WebVTT.">:past</a></p>
+    <p class="less-than-two-engines-text">In only one current engine.</p>
+    <div class="support">
+     <span class="firefox no"><span>Firefox</span><span>None</span></span><span class="safari yes"><span>Safari</span><span>7+</span></span><span class="chrome no"><span>Chrome</span><span>None</span></span>
+     <hr>
+     <span class="no opera"><span>Opera</span><span>?</span></span><span class="edge_blink no"><span>Edge</span><span>None</span></span>
+     <hr>
+     <span class="edge no"><span>Edge (Legacy)</span><span>?</span></span><span class="ie no"><span>IE</span><span>None</span></span>
+     <hr>
+     <span class="firefox_android no"><span>Firefox for Android</span><span>?</span></span><span class="no safari_ios"><span>iOS Safari</span><span>?</span></span><span class="chrome_android no"><span>Chrome for Android</span><span>?</span></span><span class="no webview_android"><span>Android WebView</span><span>?</span></span><span class="no samsunginternet_android"><span>Samsung Internet</span><span>?</span></span><span class="no opera_android"><span>Opera Mobile</span><span>?</span></span>
+    </div>
+   </div>
+  </details>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
 function query(sel) { return document.querySelector(sel); }
@@ -1513,25 +2065,40 @@ function parseHTML(markup) {
 "use strict";
 {
 let dfnPanelData = {
-"141caf46": {"dfnID":"141caf46","dfnText":"states set","external":true,"refSections":[{"refs":[{"id":"ref-for-states-set"},{"id":"ref-for-states-set\u2460"}],"title":"3. \nExposing custom state: the :state() pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#states-set"},
-"24408a11": {"dfnID":"24408a11","dfnText":"compound selector","external":true,"refSections":[{"refs":[{"id":"ref-for-compound"},{"id":"ref-for-compound\u2460"},{"id":"ref-for-compound\u2461"}],"title":"5.1. \nReference combinators /ref/"}],"url":"https://drafts.csswg.org/selectors-4/#compound"},
-"32c45571": {"dfnID":"32c45571","dfnText":"type selector","external":true,"refSections":[{"refs":[{"id":"ref-for-type-selector"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/selectors-4/#type-selector"},
+"141caf46": {"dfnID":"141caf46","dfnText":"states set","external":true,"refSections":[{"refs":[{"id":"ref-for-states-set"},{"id":"ref-for-states-set\u2460"}],"title":"6. \nExposing custom state: the :state() pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#states-set"},
+"24408a11": {"dfnID":"24408a11","dfnText":"compound selector","external":true,"refSections":[{"refs":[{"id":"ref-for-compound"}],"title":"5.1. \nThe Current-element Pseudo-class: :current"},{"refs":[{"id":"ref-for-compound\u2460"},{"id":"ref-for-compound\u2461"},{"id":"ref-for-compound\u2462"}],"title":"9.1. \nReference combinators /ref/"}],"url":"https://drafts.csswg.org/selectors-4/#compound"},
+"32c45571": {"dfnID":"32c45571","dfnText":"type selector","external":true,"refSections":[{"refs":[{"id":"ref-for-type-selector"}],"title":"7. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/selectors-4/#type-selector"},
 "33cbcfca": {"dfnID":"33cbcfca","dfnText":"selector","external":true,"refSections":[{"refs":[{"id":"ref-for-selector"}],"title":"Unnumbered Section"}],"url":"https://drafts.csswg.org/selectors-4/#selector"},
-"679bc36f": {"dfnID":"679bc36f","dfnText":"ID selector","external":true,"refSections":[{"refs":[{"id":"ref-for-id-selector"}],"title":"5.1. \nReference combinators /ref/"}],"url":"https://drafts.csswg.org/selectors-4/#id-selector"},
-"68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
-"7a87d819": {"dfnID":"7a87d819","dfnText":"is","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"},{"id":"ref-for-string-is\u2460"}],"title":"3. \nExposing custom state: the :state() pseudo-class"}],"url":"https://infra.spec.whatwg.org/#string-is"},
-"9213678e": {"dfnID":"9213678e","dfnText":"<ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-ident"}],"title":"3. \nExposing custom state: the :state() pseudo-class"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-ident"},
-"92700be8": {"dfnID":"92700be8","dfnText":"<number-token>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-number-token"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-number-token"},
-"b6fb7a51": {"dfnID":"b6fb7a51","dfnText":"custom element","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-element"}],"title":"3. \nExposing custom state: the :state() pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element"},
-"b87923a3": {"dfnID":"b87923a3","dfnText":"heading level","external":true,"refSections":[{"refs":[{"id":"ref-for-heading-level"},{"id":"ref-for-heading-level\u2460"},{"id":"ref-for-heading-level\u2461"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://html.spec.whatwg.org/multipage/sections.html#heading-level"},
-"bb2056aa": {"dfnID":"bb2056aa","dfnText":"specificity","external":true,"refSections":[{"refs":[{"id":"ref-for-specificity"},{"id":"ref-for-specificity\u2460"}],"title":"4. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/selectors-4/#specificity"},
-"d7d642a2": {"dfnID":"d7d642a2","dfnText":"input","external":true,"refSections":[{"refs":[{"id":"ref-for-the-input-element"}],"title":"5.1. \nReference combinators /ref/"}],"url":"https://html.spec.whatwg.org/multipage/input.html#the-input-element"},
-"heading-functional-pseudo": {"dfnID":"heading-functional-pseudo","dfnText":":heading()","external":false,"refSections":[{"refs":[{"id":"ref-for-heading-functional-pseudo"},{"id":"ref-for-heading-functional-pseudo\u2460"}],"title":"4. Heading Structures: the heading pseudo-classes :heading, and :heading()"},{"refs":[{"id":"ref-for-heading-functional-pseudo\u2461"}],"title":"6.1. Changes Since Level 4"}],"url":"#heading-functional-pseudo"},
-"heading-pseudo": {"dfnID":"heading-pseudo","dfnText":":heading","external":false,"refSections":[{"refs":[{"id":"ref-for-heading-pseudo"},{"id":"ref-for-heading-pseudo\u2460"}],"title":"4. Heading Structures: the heading pseudo-classes :heading, and :heading()"},{"refs":[{"id":"ref-for-heading-pseudo\u2461"}],"title":"6.1. Changes Since Level 4"}],"url":"#heading-pseudo"},
-"local-link-pseudo": {"dfnID":"local-link-pseudo","dfnText":":local-link","external":false,"refSections":[{"refs":[{"id":"ref-for-local-link-pseudo"},{"id":"ref-for-local-link-pseudo\u2460"}],"title":"2.1. The local link pseudo-class :local-link"},{"refs":[{"id":"ref-for-local-link-pseudo\u2461"}],"title":"6.1. Changes Since Level 4"}],"url":"#local-link-pseudo"},
+"679bc36f": {"dfnID":"679bc36f","dfnText":"ID selector","external":true,"refSections":[{"refs":[{"id":"ref-for-id-selector"}],"title":"9.1. \nReference combinators /ref/"}],"url":"https://drafts.csswg.org/selectors-4/#id-selector"},
+"68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"7. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
+"7a87d819": {"dfnID":"7a87d819","dfnText":"is","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"},{"id":"ref-for-string-is\u2460"}],"title":"6. \nExposing custom state: the :state() pseudo-class"}],"url":"https://infra.spec.whatwg.org/#string-is"},
+"9213678e": {"dfnID":"9213678e","dfnText":"<ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-ident"}],"title":"6. \nExposing custom state: the :state() pseudo-class"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-ident"},
+"92700be8": {"dfnID":"92700be8","dfnText":"<number-token>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-number-token"}],"title":"7. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/css-syntax-3/#typedef-number-token"},
+"b6fb7a51": {"dfnID":"b6fb7a51","dfnText":"custom element","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-element"}],"title":"6. \nExposing custom state: the :state() pseudo-class"}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element"},
+"b87923a3": {"dfnID":"b87923a3","dfnText":"heading level","external":true,"refSections":[{"refs":[{"id":"ref-for-heading-level"},{"id":"ref-for-heading-level\u2460"},{"id":"ref-for-heading-level\u2461"}],"title":"7. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://html.spec.whatwg.org/multipage/sections.html#heading-level"},
+"bb2056aa": {"dfnID":"bb2056aa","dfnText":"specificity","external":true,"refSections":[{"refs":[{"id":"ref-for-specificity"},{"id":"ref-for-specificity\u2460"}],"title":"7. \nHeading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"https://drafts.csswg.org/selectors-4/#specificity"},
+"blank-pseudo": {"dfnID":"blank-pseudo","dfnText":":blank","external":false,"refSections":[{"refs":[{"id":"ref-for-blank-pseudo"},{"id":"ref-for-blank-pseudo\u2460"},{"id":"ref-for-blank-pseudo\u2461"},{"id":"ref-for-blank-pseudo\u2462"},{"id":"ref-for-blank-pseudo\u2463"},{"id":"ref-for-blank-pseudo\u2464"},{"id":"ref-for-blank-pseudo\u2465"}],"title":"4.1.1. The Empty-Value Pseudo-class: :blank"},{"refs":[{"id":"ref-for-blank-pseudo\u2466"}],"title":"10.1. Changes Since Level 4"}],"url":"#blank-pseudo"},
+"column-combinator": {"dfnID":"column-combinator","dfnText":"column combinator","external":false,"refSections":[{"refs":[{"id":"ref-for-column-combinator"}],"title":"8. Grid-Structural Selectors"}],"url":"#column-combinator"},
+"current-pseudo": {"dfnID":"current-pseudo","dfnText":":current","external":false,"refSections":[{"refs":[{"id":"ref-for-current-pseudo"},{"id":"ref-for-current-pseudo\u2460"},{"id":"ref-for-current-pseudo\u2461"}],"title":"5. Time-dimensional Pseudo-classes"},{"refs":[{"id":"ref-for-current-pseudo\u2462"},{"id":"ref-for-current-pseudo\u2463"},{"id":"ref-for-current-pseudo\u2464"},{"id":"ref-for-current-pseudo\u2465"}],"title":"5.1. The Current-element Pseudo-class: :current"},{"refs":[{"id":"ref-for-current-pseudo\u2466"},{"id":"ref-for-current-pseudo\u2467"}],"title":"5.2. The Past-element Pseudo-class: :past"},{"refs":[{"id":"ref-for-current-pseudo\u2468"},{"id":"ref-for-current-pseudo\u2460\u24ea"}],"title":"5.3. The Future-element Pseudo-class: :future"}],"url":"#current-pseudo"},
+"d7d642a2": {"dfnID":"d7d642a2","dfnText":"input","external":true,"refSections":[{"refs":[{"id":"ref-for-the-input-element"}],"title":"9.1. \nReference combinators /ref/"}],"url":"https://html.spec.whatwg.org/multipage/input.html#the-input-element"},
+"f00338b8": {"dfnID":"f00338b8","dfnText":"host language","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-host-language"}],"title":"3.1. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"https://w3c.github.io/aria/#dfn-host-language"},
+"f4da6587": {"dfnID":"f4da6587","dfnText":"popover","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-popover"}],"title":"3.1. \nThe Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"https://html.spec.whatwg.org/multipage/popover.html#attr-popover"},
+"future-pseudo": {"dfnID":"future-pseudo","dfnText":":future","external":false,"refSections":[{"refs":[{"id":"ref-for-future-pseudo"},{"id":"ref-for-future-pseudo\u2460"},{"id":"ref-for-future-pseudo\u2461"}],"title":"5. Time-dimensional Pseudo-classes"},{"refs":[{"id":"ref-for-future-pseudo\u2462"},{"id":"ref-for-future-pseudo\u2463"}],"title":"5.3. The Future-element Pseudo-class: :future"}],"url":"#future-pseudo"},
+"heading-functional-pseudo": {"dfnID":"heading-functional-pseudo","dfnText":":heading()","external":false,"refSections":[{"refs":[{"id":"ref-for-heading-functional-pseudo"},{"id":"ref-for-heading-functional-pseudo\u2460"}],"title":"7. Heading Structures: the heading pseudo-classes :heading, and :heading()"},{"refs":[{"id":"ref-for-heading-functional-pseudo\u2461"}],"title":"10.1. Changes Since Level 4"}],"url":"#heading-functional-pseudo"},
+"heading-pseudo": {"dfnID":"heading-pseudo","dfnText":":heading","external":false,"refSections":[{"refs":[{"id":"ref-for-heading-pseudo"},{"id":"ref-for-heading-pseudo\u2460"}],"title":"7. Heading Structures: the heading pseudo-classes :heading, and :heading()"},{"refs":[{"id":"ref-for-heading-pseudo\u2461"}],"title":"10.1. Changes Since Level 4"}],"url":"#heading-pseudo"},
+"interest-source": {"dfnID":"interest-source","dfnText":"interest source","external":false,"refSections":[{"refs":[{"id":"ref-for-interest-source"},{"id":"ref-for-interest-source\u2460"},{"id":"ref-for-interest-source\u2461"},{"id":"ref-for-interest-source\u2462"}],"title":"3.1. The Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#interest-source"},
+"interest-target": {"dfnID":"interest-target","dfnText":"interest target","external":false,"refSections":[{"refs":[{"id":"ref-for-interest-target"},{"id":"ref-for-interest-target\u2460"},{"id":"ref-for-interest-target\u2461"},{"id":"ref-for-interest-target\u2462"}],"title":"3.1. The Interest Pseudo-classes: :interest-source and :interest-target"}],"url":"#interest-target"},
+"local-link-pseudo": {"dfnID":"local-link-pseudo","dfnText":":local-link","external":false,"refSections":[{"refs":[{"id":"ref-for-local-link-pseudo"},{"id":"ref-for-local-link-pseudo\u2460"}],"title":"2.1. The Local Link Pseudo-class :local-link"},{"refs":[{"id":"ref-for-local-link-pseudo\u2461"},{"id":"ref-for-local-link-pseudo\u2462"}],"title":"10.1. Changes Since Level 4"}],"url":"#local-link-pseudo"},
+"nth-col-pseudo": {"dfnID":"nth-col-pseudo","dfnText":":nth-col(An+B)","external":false,"refSections":[{"refs":[{"id":"ref-for-nth-col-pseudo"}],"title":"8. Grid-Structural Selectors"},{"refs":[{"id":"ref-for-nth-col-pseudo\u2460"}],"title":"8.2. :nth-col() pseudo-class"}],"url":"#nth-col-pseudo"},
+"nth-last-col-pseudo": {"dfnID":"nth-last-col-pseudo","dfnText":":nth-last-col(An+B)","external":false,"refSections":[{"refs":[{"id":"ref-for-nth-last-col-pseudo"}],"title":"8. Grid-Structural Selectors"},{"refs":[{"id":"ref-for-nth-last-col-pseudo\u2460"}],"title":"8.3. :nth-last-col() pseudo-class"}],"url":"#nth-last-col-pseudo"},
+"past-pseudo": {"dfnID":"past-pseudo","dfnText":":past","external":false,"refSections":[{"refs":[{"id":"ref-for-past-pseudo"},{"id":"ref-for-past-pseudo\u2460"},{"id":"ref-for-past-pseudo\u2461"}],"title":"5. Time-dimensional Pseudo-classes"},{"refs":[{"id":"ref-for-past-pseudo\u2462"},{"id":"ref-for-past-pseudo\u2463"}],"title":"5.2. The Past-element Pseudo-class: :past"}],"url":"#past-pseudo"},
 "reference-combinator": {"dfnID":"reference-combinator","dfnText":"reference combinator","external":false,"refSections":[],"url":"#reference-combinator"},
-"state-pseudo": {"dfnID":"state-pseudo","dfnText":":state( <ident> )","external":false,"refSections":[{"refs":[{"id":"ref-for-state-pseudo"},{"id":"ref-for-state-pseudo\u2460"}],"title":"3. Exposing custom state: the :state() pseudo-class"},{"refs":[{"id":"ref-for-state-pseudo\u2461"}],"title":"6.1. Changes Since Level 4"}],"url":"#state-pseudo"},
-"typedef-level": {"dfnID":"typedef-level","dfnText":"<level>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-level"}],"title":"4. Heading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"#typedef-level"},
+"selectordef-column": {"dfnID":"selectordef-column","dfnText":"||","external":false,"refSections":[],"url":"#selectordef-column"},
+"selectordef-current": {"dfnID":"selectordef-current","dfnText":":current()","external":false,"refSections":[],"url":"#selectordef-current"},
+"selectordef-interest-source": {"dfnID":"selectordef-interest-source","dfnText":":interest-source","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-interest-source"},{"id":"ref-for-selectordef-interest-source\u2460"},{"id":"ref-for-selectordef-interest-source\u2461"}],"title":"3.1. The Interest Pseudo-classes: :interest-source and :interest-target"},{"refs":[{"id":"ref-for-selectordef-interest-source\u2462"}],"title":"10.1. Changes Since Level 4"}],"url":"#selectordef-interest-source"},
+"selectordef-interest-target": {"dfnID":"selectordef-interest-target","dfnText":":interest-target","external":false,"refSections":[{"refs":[{"id":"ref-for-selectordef-interest-target"},{"id":"ref-for-selectordef-interest-target\u2460"}],"title":"3.1. The Interest Pseudo-classes: :interest-source and :interest-target"},{"refs":[{"id":"ref-for-selectordef-interest-target\u2461"}],"title":"10.1. Changes Since Level 4"}],"url":"#selectordef-interest-target"},
+"state-pseudo": {"dfnID":"state-pseudo","dfnText":":state( <ident> )","external":false,"refSections":[{"refs":[{"id":"ref-for-state-pseudo"},{"id":"ref-for-state-pseudo\u2460"}],"title":"6. Exposing custom state: the :state() pseudo-class"},{"refs":[{"id":"ref-for-state-pseudo\u2461"}],"title":"10.1. Changes Since Level 4"}],"url":"#state-pseudo"},
+"typedef-level": {"dfnID":"typedef-level","dfnText":"<level>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-level"}],"title":"7. Heading Structures: the heading pseudo-classes :heading, and :heading()"}],"url":"#typedef-level"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -1916,13 +2483,81 @@ function genLinkingSyntaxes(dfn) {
 }
 }
 </script>
+<script>/* Boilerplate: script-position-annos */
+"use strict";
+{
+function repositionAnnoPanels(){
+    const panels = [...document.querySelectorAll("[data-anno-for]")];
+    hydratePanels(panels);
+    let vSoFar = 0;
+    for(const panel of panels.sort(cmpTops)) {
+        if(panel.top < vSoFar) {
+            panel.top = vSoFar;
+            panel.style.top = vSoFar + "px";
+        }
+        vSoFar = panel.top + panel.height + 15;
+    }
+}
+function hydratePanels(panels) {
+    const main = document.querySelector("main");
+    let mainRect;
+    if(main) mainRect = main.getBoundingClientRect();
+    // First display them all, if they're not already visible.
+    for(const panel of panels) {
+        panel.classList.remove("unpositioned");
+    }
+    // Measure them all
+    for(const panel of panels) {
+        const dfn = document.getElementById(panel.getAttribute("data-anno-for"));
+        if(!dfn) {
+            console.log("Can't find the annotation panel target:", panel);
+            continue;
+        }
+        panel.dfn = dfn;
+        panel.top = window.scrollY + dfn.getBoundingClientRect().top;
+        let panelRect = panel.getBoundingClientRect();
+        panel.height = panelRect.height;
+        if(main) {
+            panel.overlappingMain = panelRect.left < mainRect.right;
+        } else {
+            panel.overlappingMain = false;
+        }
+    }
+    // And finally position them
+    for(const panel of panels) {
+        const dfn = panel.dfn;
+        if(!dfn) continue;
+        panel.style.top = panel.top + "px";
+        panel.classList.toggle("overlapping-main", panel.overlappingMain);
+    }
+}
+
+function cmpTops(a,b) {
+    return a.top - b.top;
+}
+
+window.addEventListener("load", repositionAnnoPanels);
+window.addEventListener("resize", repositionAnnoPanels);
+}
+</script>
 <script>/* Boilerplate: script-ref-hints */
 "use strict";
 {
 let refsData = {
+"#blank-pseudo": {"displayText":":blank","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":blank","type":"selector","url":"#blank-pseudo"},
+"#column-combinator": {"displayText":"column combinator","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":"column combinator","type":"dfn","url":"#column-combinator"},
+"#current-pseudo": {"displayText":":current","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":current","type":"selector","url":"#current-pseudo"},
+"#future-pseudo": {"displayText":":future","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":future","type":"selector","url":"#future-pseudo"},
 "#heading-functional-pseudo": {"displayText":":heading()","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":heading()","type":"selector","url":"#heading-functional-pseudo"},
 "#heading-pseudo": {"displayText":":heading","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":heading","type":"selector","url":"#heading-pseudo"},
+"#interest-source": {"displayText":"interest source","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":"interest source","type":"dfn","url":"#interest-source"},
+"#interest-target": {"displayText":"interest target","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":"interest target","type":"dfn","url":"#interest-target"},
 "#local-link-pseudo": {"displayText":":local-link","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":local-link","type":"selector","url":"#local-link-pseudo"},
+"#nth-col-pseudo": {"displayText":":nth-col()","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":nth-col()","type":"selector","url":"#nth-col-pseudo"},
+"#nth-last-col-pseudo": {"displayText":":nth-last-col()","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":nth-last-col()","type":"selector","url":"#nth-last-col-pseudo"},
+"#past-pseudo": {"displayText":":past","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":past","type":"selector","url":"#past-pseudo"},
+"#selectordef-interest-source": {"displayText":":interest-source","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":interest-source","type":"selector","url":"#selectordef-interest-source"},
+"#selectordef-interest-target": {"displayText":":interest-target","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":interest-target","type":"selector","url":"#selectordef-interest-target"},
 "#state-pseudo": {"displayText":":state( <ident> )","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":":state( <ident> )","type":"selector","url":"#state-pseudo"},
 "#typedef-level": {"displayText":"<level>","export":true,"for_":[],"level":"5","normative":true,"shortname":"selectors","spec":"selectors-5","status":"local","text":"<level>","type":"type","url":"#typedef-level"},
 "https://drafts.csswg.org/css-syntax-3/#typedef-number-token": {"displayText":"<number-token>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-syntax","spec":"css-syntax-3","status":"current","text":"<number-token>","type":"type","url":"https://drafts.csswg.org/css-syntax-3/#typedef-number-token"},
@@ -1936,8 +2571,10 @@ let refsData = {
 "https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element": {"displayText":"custom element","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"custom element","type":"dfn","url":"https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element"},
 "https://html.spec.whatwg.org/multipage/custom-elements.html#states-set": {"displayText":"states set","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"states set","type":"dfn","url":"https://html.spec.whatwg.org/multipage/custom-elements.html#states-set"},
 "https://html.spec.whatwg.org/multipage/input.html#the-input-element": {"displayText":"input","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"input","type":"element","url":"https://html.spec.whatwg.org/multipage/input.html#the-input-element"},
+"https://html.spec.whatwg.org/multipage/popover.html#attr-popover": {"displayText":"popover","export":true,"for_":["html-global"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"popover","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/popover.html#attr-popover"},
 "https://html.spec.whatwg.org/multipage/sections.html#heading-level": {"displayText":"heading level","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"heading level","type":"dfn","url":"https://html.spec.whatwg.org/multipage/sections.html#heading-level"},
 "https://infra.spec.whatwg.org/#string-is": {"displayText":"is","export":true,"for_":["string"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"is","type":"dfn","url":"https://infra.spec.whatwg.org/#string-is"},
+"https://w3c.github.io/aria/#dfn-host-language": {"displayText":"host language","export":true,"for_":[],"level":"1","normative":true,"shortname":"wai-aria","spec":"wai-aria-1.2","status":"current","text":"host language","type":"dfn","url":"https://w3c.github.io/aria/#dfn-host-language"},
 };
 
 function mkRefHint(link, ref) {
