@@ -5,10 +5,10 @@
   <title>CSS Viewport Module Level 1</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 9e651ddb3, updated Fri Dec 12 15:40:37 2025 -0800" name="generator">
+  <meta content="Bikeshed version caf0aeb39, updated Mon Dec 15 22:51:46 2025 +0000" name="generator">
   <link href="http://www.w3.org/TR/css-viewport-1/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="9ad1da22ca8daa99d0187a3cd2f63ba90625a4ea" name="revision">
+  <meta content="095c472bed55760925771b79d3a6f6dd38e8ac37" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -871,7 +871,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Viewport Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-10-24">24 October 2025</time></p>
+    <time class="dt-updated" datetime="2025-12-15">15 December 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -949,7 +949,7 @@ Introduction</span></a>
      <a href="#the-viewport"><span class="secno">2</span> <span class="content">
 The viewport</span></a>
      <ol class="toc">
-      <li><a href="#display-feature"><span class="secno">2.1</span> <span class="content"><span>Display feature</span> definition</span></a>
+      <li><a href="#the-display-feature"><span class="secno">2.1</span> <span class="content">Display feature definition</span></a>
      </ol>
     <li>
      <a href="#viewport-meta"><span class="secno">3</span> <span class="content">
@@ -978,22 +978,20 @@ Parsing algorithm</span></a>
 </span></a>
      </ol>
     <li><a href="#extensions-to-the-window-interface"><span class="secno">5</span> <span class="content">Extensions to the <code class="idl"><span>Window</span></code> Interface</span></a>
-    <li>
-     <a href="#viewport"><span class="secno">6</span> <span class="content">Viewport</span></a>
-     <ol class="toc">
-      <li><a href="#the-viewport-interface"><span class="secno">6.1</span> <span class="content">The <code class="idl"><span>Viewport</span></code> Interface</span></a>
-     </ol>
+    <li><a href="#the-viewport-interface"><span class="secno">6</span> <span class="content">The <code class="idl"><span>Viewport</span></code> Interface</span></a>
     <li><a href="#segments"><span class="secno">7</span> <span class="content">
 	The <span><code>segments</code></span> property
 </span></a>
+    <li><a href="#privacy"><span class="secno"></span> <span class="content">Privacy Considerations</span></a>
+    <li><a href="#security"><span class="secno"></span> <span class="content">Security Considerations</span></a>
     <li>
      <a href="#changes"><span class="secno"></span> <span class="content">Appendix A. Changes</span></a>
      <ol class="toc">
-      <li><a href="#since-the-29-march-2016-working-draft"><span class="secno"></span> <span class="content">Since the 
+      <li><a href="#changes-20160329"><span class="secno"></span> <span class="content">Since the
 	<span>29 
 		March 2016 Working Draft</span>
 </span></a>
-      <li><a href="#since-the-15-september-2011-first-public-working-draft"><span class="secno"></span> <span class="content">Since the 
+      <li><a href="#changes-20110915"><span class="secno"></span> <span class="content">Since the
 	<span>15 
 		September 2011 First Public Working Draft</span>.
 </span></a>
@@ -1002,7 +1000,7 @@ Parsing algorithm</span></a>
      <a href="#automation"><span class="secno"></span> <span class="content">Appendix B. Automation</span></a>
      <ol class="toc">
       <li>
-       <a href="#automation-of-the-segments-property"><span class="secno"></span> <span class="content">Automation of the <code class="idl"><span>segments</span></code> property</span></a>
+       <a href="#automation-segments"><span class="secno"></span> <span class="content">Automation of the <code class="idl"><span>segments</span></code> property</span></a>
        <ol class="toc">
         <li><a href="#internal-slots"><span class="secno"></span> <span class="content">Internal slots</span></a>
         <li>
@@ -1096,13 +1094,13 @@ For <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-5/#paged
 The page area can be set through <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-page-3/#at-ruledef-page" id="ref-for-at-ruledef-page">@page</a> rules.</p>
    <p>This specification introduces a way of overriding the size of the viewport
 provided by the user agent (UA). Because of this, we need to introduce the
-difference between the <span class="css">initial viewport</span> and the <span class="css">actual viewport</span>.</p>
+difference between the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport">initial viewport</a> and the <a data-link-type="dfn" href="#actual-viewport" id="ref-for-actual-viewport">actual viewport</a>.</p>
    <dl>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="initial-viewport">initial viewport</dfn>
     <dd>
 		This refers to the viewport before any UA or author styles have
 		overridden the viewport given by the window or viewing area of the UA.
-		Note that the <span class="css">initial viewport</span> size will change with the
+		Note that the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport①">initial viewport</a> size will change with the
 		size of the window or viewing area.
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="actual-viewport">actual viewport</dfn>
     <dd>
@@ -1110,23 +1108,23 @@ difference between the <span class="css">initial viewport</span> and the <span c
 		<code>&lt;meta></code> tag.
 	
    </dl>
-   <p class="issue" id="issue-44630653"><a class="self-link" href="#issue-44630653"></a> Make <span class="css">actual viewport</span> the layout viewport, define visual viewport.</p>
-   <p>When the <span class="css">actual viewport</span> cannot fit inside the window or
-viewing area, either because the <span class="css">actual viewport</span> is
-larger than the <span class="css">initial viewport</span> or the zoom factor
-causes only parts of the <span class="css">actual viewport</span> to be visible,
+   <p class="issue" id="issue-44630653"><a class="self-link" href="#issue-44630653"></a> Make <a data-link-type="dfn" href="#actual-viewport" id="ref-for-actual-viewport①">actual viewport</a> the layout viewport, define visual viewport.</p>
+   <p>When the <a data-link-type="dfn" href="#actual-viewport" id="ref-for-actual-viewport②">actual viewport</a> cannot fit inside the window or
+viewing area, either because the <span id="ref-for-actual-viewport③">actual viewport</span> is
+larger than the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport②">initial viewport</a> or the zoom factor
+causes only parts of the <span id="ref-for-actual-viewport④">actual viewport</span> to be visible,
 the UA should offer a scrolling or panning mechanism.</p>
    <p>It is recommended that initially the upper-left corners of the
-<span class="css">actual viewport</span> and the window or viewing area are aligned if the
+<a data-link-type="dfn" href="#actual-viewport" id="ref-for-actual-viewport⑤">actual viewport</a> and the window or viewing area are aligned if the
 base direction of the document is ltr. Similarly, that the upper-right
 corners are aligned when the base direction is rtl. The base direction
 for a document is defined as the computed value of the <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-writing-modes-3/#propdef-direction" id="ref-for-propdef-direction">direction</a>
 property for the first <code class="html">&lt;BODY></code> element of
 an HTML or XHTML document. For other document types, it is the
 computed <span class="property" id="ref-for-propdef-direction①">direction</span> for the root element.</p>
-   <h3 class="heading settled" data-level="2.1" id="display-feature"><span class="secno">2.1. </span><span class="content"><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="display-feature①">Display feature</dfn> definition</span><a class="self-link" href="#display-feature"></a></h3>
+   <h3 class="heading settled" data-level="2.1" id="the-display-feature"><span class="secno">2.1. </span><span class="content">Display feature definition</span><a class="self-link" href="#the-display-feature"></a></h3>
    
-A display feature is a hardware feature that acts as a divider
+A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="display-feature">Display feature</dfn> is a hardware feature that acts as a divider
 and creates logically separate region of the viewport called <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments">segments</a></code>.
 It can be a fold area of a device with a foldable screen or a physical
 split occupying a logical space within the viewport for example some dual
@@ -1135,10 +1133,9 @@ screen models.
 
    <p>Below is an illustration describing the concept of display features and how
 they divide the viewport in <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments①">segments</a></code>:</p>
-   <p><img alt="Two images,
-showing two display feature configurations and the respective segments.
-One image is showing an vertical display feature, the other is showing
-an horizontal display feature" src="display_features_general.svg" style="width: 70%;height: auto; margin:auto; display: flex;"></p>
+   <p><img alt="Two images, showing two display feature configurations and the respective segments.
+	      One image is showing an vertical display feature, the other is showing
+	      an horizontal display feature" height="258" src="display_features_general.svg" style="width: 70%;height: auto; margin:auto; display: flex;" width="560"></p>
    <h2 class="heading settled" data-level="3" id="viewport-meta"><span class="secno">3. </span><span class="content">
 Viewport <code class="html">&lt;meta></code> element</span><a class="self-link" href="#viewport-meta"></a></h2>
    <p class="issue" id="issue-76355744"><a class="self-link" href="#issue-76355744"></a> Specify me</p>
@@ -1252,7 +1249,7 @@ viewport-resizing behavior:</p>
    <dl>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="overlays-content"><code>overlays-content</code></dfn>
     <dd>
-		Interactive UI widgets MUST NOT <a data-link-type="dfn" href="#resize" id="ref-for-resize">resize</a> the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport">initial viewport</a> nor
+		Interactive UI widgets MUST NOT <a data-link-type="dfn" href="#resize" id="ref-for-resize">resize</a> the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport③">initial viewport</a> nor
 		the <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport">visual viewport</a>. The user agent must perform the same steps
 		as when <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/virtual-keyboard#dom-virtualkeyboard-overlayscontent" id="ref-for-dom-virtualkeyboard-overlayscontent">VirtualKeyboard.overlaysContent</a></code> is set to
 		<code>true</code>.
@@ -1260,17 +1257,17 @@ viewport-resizing behavior:</p>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="resizes-content"><code>resizes-content</code></dfn>
     <dd>
      
-		Interactive UI widgets MUST <a data-link-type="dfn" href="#resize" id="ref-for-resize①">resize</a> the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport①">initial viewport</a> by the interactive widget.
+		Interactive UI widgets MUST <a data-link-type="dfn" href="#resize" id="ref-for-resize①">resize</a> the <a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport④">initial viewport</a> by the interactive widget.
 	
      <div class="note" role="note">
 		Since the <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport①">visual viewport</a>’s size is derived from the
-		<a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport②">initial viewport</a>, <a data-link-type="dfn" href="#resizes-content" id="ref-for-resizes-content">resizes-content</a> will cause a resize of both the initial and visual
+		<a data-link-type="dfn" href="#initial-viewport" id="ref-for-initial-viewport⑤">initial viewport</a>, <a data-link-type="dfn" href="#resizes-content" id="ref-for-resizes-content">resizes-content</a> will cause a resize of both the initial and visual
 		viewports.
 	</div>
     <dt><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="resizes-visual"><code>resizes-visual</code></dfn>
     <dd>
 		Interactive UI widgets MUST <a data-link-type="dfn" href="#resize" id="ref-for-resize②">resize</a> the <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-view-1/#visual-viewport" id="ref-for-visual-viewport②">visual viewport</a> but MUST
-		NOT <span id="ref-for-resize③">resize</span> the <a data-link-type="dfn" href="https://drafts.csswg.org/css-viewport/#initial-viewport" id="ref-for-initial-viewport③">initial viewport</a>.
+		NOT <span id="ref-for-resize③">resize</span> the <a data-link-type="dfn" href="https://drafts.csswg.org/css-viewport/#initial-viewport" id="ref-for-initial-viewport⑥">initial viewport</a>.
 	
    </dl>
    <p>If no value, or an invalid value, is set for <a data-link-type="dfn" href="#interactive-widget" id="ref-for-interactive-widget①">interactive-widget</a>, the behavior implied by
@@ -1308,7 +1305,7 @@ only the value previously set to it.</p>
 </span><a class="self-link" href="#zoom-property"></a></h2>
    <p>An element becomes zoomed when the <a class="css property" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom①">zoom</a> property has a positive computed value different than 1
 (or when a flat tree ancestor has zoom).</p>
-   <p>To apply zoom, the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value">used value</a> of a CSS property (including values inside of <u class="link-error" data-lt="path()" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;path()&apos;.">path()</u> strings) is pre-multiplied
+   <p>To apply zoom, the <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value">used value</a> of a CSS property (including values inside of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-path" id="ref-for-funcdef-basic-shape-path">path()</a> strings) is pre-multiplied
 (before any other steps in the <span id="ref-for-used-value①">used value</span> stage)
 by the <span id="ref-for-used-value②">used value</span> of <a class="css property" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom②">zoom</a> for the element.
 It also multiplies the <a data-link-type="dfn" href="https://drafts.csswg.org/css-images-3/#natural-size" id="ref-for-natural-size">natural size</a> of all replaced elements,
@@ -1321,7 +1318,7 @@ by the <span id="ref-for-used-value③">used value</span> of <span class="proper
 all inherited properties such as <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-line-height" id="ref-for-propdef-line-height">line-height</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-size" id="ref-for-propdef-font-size">font-size</a>.</p>
    <p>Nested values of <a class="css property" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom④">zoom</a> multiply, resulting in additional scaling of <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value">&lt;length></a> values.
 The <a data-link-type="dfn" href="https://drafts.csswg.org/css-cascade-5/#used-value" id="ref-for-used-value④">used value</a> for zoom is always its <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom">effective zoom</a>.</p>
-   <p>The <a class="css property" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑤">zoom</a> property has no effect on <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value①">&lt;length></a> property values with computed values that are <u class="link-error property" data-lt="auto" title="LINK ERROR: No &apos;property&apos; refs found for &apos;auto&apos;.">auto</u> or <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value">&lt;percentage></a>.</p>
+   <p>The <a class="css property" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑤">zoom</a> property has no effect on <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#length-value" id="ref-for-length-value①">&lt;length></a> property values with computed values that are <span class="css">auto</span> or <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value">&lt;percentage></a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> Unlike <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-transforms-1/#propdef-transform" id="ref-for-propdef-transform">transform</a>,
 scaling the <a class="css property" data-link-type="property" href="#propdef-zoom" id="ref-for-propdef-zoom⑥">zoom</a> property affects layout.</p>
    <p class="note" role="note"><span class="marker">Note:</span> The computed value of <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-size" id="ref-for-propdef-font-size①">font-size</a> is never <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#percentage-value" id="ref-for-percentage-value①">&lt;percentage></a>;
@@ -1413,8 +1410,7 @@ thus <a class="css property" data-link-type="property" href="#propdef-zoom" id="
 &lt;/style>
 </pre>
     <p>Here is an llustration of the before and after hover state of the message box element:
-	<img alt="Two images,
-	showing the zooming effect before and after zoom has applied. The second is 1.5 larger." height="240" src="css_zoom_hover_example.png" width="704"></p>
+	<img alt="Two images showing the zooming effect before and after zoom has applied. The second is 1.5 larger." height="270" src="css_zoom_hover_example.png" width="704"></p>
    </div>
    <div class="example" id="example-390a47c4">
     <a class="self-link" href="#example-390a47c4"></a>
@@ -1469,13 +1465,12 @@ in particular it includes zoom.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio" id="ref-for-dom-window-devicepixelratio①">devicePixelRatio</a></code> of a frame is multiplied by the <a data-link-type="dfn" href="#effective-zoom" id="ref-for-effective-zoom③">effective zoom</a> inherited by its parent frame.</p>
    <h2 class="heading settled" data-level="5" id="extensions-to-the-window-interface"><span class="secno">5. </span><span class="content">Extensions to the <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window">Window</a></code> Interface</span><a class="self-link" href="#extensions-to-the-window-interface"></a></h2>
 <pre class="def highlight idl"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①"><c- g>Window</c-></a> {
-[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Replaceable" id="ref-for-Replaceable"><c- g>Replaceable</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#viewport①" id="ref-for-viewport①"><c- n>Viewport</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export data-readonly data-type="Viewport" id="dom-window-viewport"><code><c- g>viewport</c-></code></dfn>;
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SameObject" id="ref-for-SameObject"><c- g>SameObject</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Replaceable" id="ref-for-Replaceable"><c- g>Replaceable</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#viewport" id="ref-for-viewport"><c- n>Viewport</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="Window" data-dfn-type="attribute" data-export data-readonly data-type="Viewport" id="dom-window-viewport"><code><c- g>viewport</c-></code></dfn>;
 };
 </pre>
-   <h2 class="heading settled" data-level="6" id="viewport"><span class="secno">6. </span><span class="content">Viewport</span><a class="self-link" href="#viewport"></a></h2>
-   <h3 class="heading settled" data-level="6.1" id="the-viewport-interface"><span class="secno">6.1. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①①">Viewport</a></code> Interface</span><a class="self-link" href="#the-viewport-interface"></a></h3>
+   <h2 class="heading settled" data-level="6" id="the-viewport-interface"><span class="secno">6. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="#viewport" id="ref-for-viewport①">Viewport</a></code> Interface</span><a class="self-link" href="#the-viewport-interface"></a></h2>
 <pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="viewport①"><code><c- g>Viewport</c-></code></dfn> {
+<c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="viewport"><code><c- g>Viewport</c-></code></dfn> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array" id="ref-for-idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="https://drafts.csswg.org/geometry/#domrect" id="ref-for-domrect"><c- n>DOMRect</c-></a>>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<DOMRect>?" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments②"><c- g>segments</c-></a>;
 };
 </pre>
@@ -1488,15 +1483,15 @@ Each <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/ge
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments④">segments</a></code> attribute getter steps are:</p>
    <ol>
     <li data-md>
-     <p>If the <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①②">Viewport</a></code>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active">fully active</a>, return null.</p>
+     <p>If the <code class="idl"><a data-link-type="idl" href="#viewport" id="ref-for-viewport②">Viewport</a></code>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active">fully active</a>, return null.</p>
     <li data-md>
      <p>Let <var>topLevelTraversable</var> be <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable">navigable</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#bc-traversable" id="ref-for-bc-traversable">top-level traversable</a>.</p>
     <li data-md>
-     <p>If <var>topLevelTraversable</var>.<a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride">[[DisplayFeaturesOverride]]</a> is non-null, return <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①③">Viewport</a></code>’s <a href="https://drafts.csswg.org/css-env-1/#viewport-segments">segments</a> array calculated from <var>topLevelTraversable</var>.<span id="ref-for-top-level-traversable-displayfeaturesoverride①">[[DisplayFeaturesOverride]]</span>.</p>
+     <p>If <var>topLevelTraversable</var>.<a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride">[[DisplayFeaturesOverride]]</a> is non-null, return <code class="idl"><a data-link-type="idl" href="#viewport" id="ref-for-viewport③">Viewport</a></code>’s <a href="https://drafts.csswg.org/css-env-1/#viewport-segments">segments</a> array calculated from <var>topLevelTraversable</var>.<span id="ref-for-top-level-traversable-displayfeaturesoverride①">[[DisplayFeaturesOverride]]</span>.</p>
     <li data-md>
-     <p>If there is only a single viewport segment (typically the size of the <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①④">Viewport</a></code>) return an array with that single segment.</p>
+     <p>If there is only a single viewport segment (typically the size of the <code class="idl"><a data-link-type="idl" href="#viewport" id="ref-for-viewport④">Viewport</a></code>) return an array with that single segment.</p>
     <li data-md>
-     <p>Otherwise, return the <code class="idl"><a data-link-type="idl" href="#viewport①" id="ref-for-viewport①⑤">Viewport</a></code>’s <a href="https://drafts.csswg.org/css-env-1/#viewport-segments">segments</a> array calculated from the hardware features.</p>
+     <p>Otherwise, return the <code class="idl"><a data-link-type="idl" href="#viewport" id="ref-for-viewport⑤">Viewport</a></code>’s <a href="https://drafts.csswg.org/css-env-1/#viewport-segments">segments</a> array calculated from the hardware features.</p>
    </ol>
    <div class="non-normative">
     
@@ -1510,22 +1505,26 @@ If a viewport of 400px by 400px is split horizontally into two side-by-side segm
 <code class="highlight"><c- p>[</c->DOMRect<c- p>(</c-><c- mf>0</c-><c- p>,</c-> <c- mf>0</c-><c- p>,</c-> <c- mf>400</c-><c- p>,</c-> <c- mf>200</c-><c- p>),</c-> DOMRect<c- p>(</c-><c- mf>0</c-><c- p>,</c-> <c- mf>200</c-><c- p>,</c-> <c- mf>400</c-><c- p>,</c-> <c- mf>200</c-><c- p>)]</c-></code>
 </div>
    </div>
+   <h2 class="heading no-num settled" id="privacy"><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
+   <p>No new privacy considerations have been reported on this specification.</p>
+   <h2 class="heading no-num settled" id="security"><span class="content">Security Considerations</span><a class="self-link" href="#security"></a></h2>
+   <p>No new security considerations have been reported on this specification.</p>
    <h2 class="heading no-num settled" id="changes"><span class="content">Appendix A. Changes</span><a class="self-link" href="#changes"></a></h2>
    <p>This appendix is <em>informative</em>.</p>
-   <h3 class="heading no-num settled" id="since-the-29-march-2016-working-draft"><span class="content">Since the 
+   <h3 class="heading no-num settled" id="changes-20160329"><span class="content">Since the
 	<a href="http://www.w3.org/TR/2016/WD-css-device-adapt-1-20160329/">29 
 		March 2016 Working Draft</a>
-</span><a class="self-link" href="#since-the-29-march-2016-working-draft"></a></h3>
+</span><a class="self-link" href="#changes-20160329"></a></h3>
    <ul>
-    <li>Added <u class="link-error property" data-lt="interactive-widgets" title="LINK ERROR: No &apos;property&apos; refs found for &apos;interactive-widgets&apos;.">interactive-widgets</u> property to viewport meta
-    <li>Removed @viewport rule
+    <li>Added <span class="css">interactive-widgets</span> property to viewport meta
+    <li>Removed <span class="css">@viewport</span> rule
     <li>Renamed spec from device-adapt to css-viewport
     <li>CSSViewportRule exposed to Window
    </ul>
-   <h3 class="heading no-num settled" id="since-the-15-september-2011-first-public-working-draft"><span class="content">Since the 
+   <h3 class="heading no-num settled" id="changes-20110915"><span class="content">Since the
 	<a href="https://www.w3.org/TR/2011/WD-css-device-adapt-20110915/">15 
 		September 2011 First Public Working Draft</a>.
-</span><a class="self-link" href="#since-the-15-september-2011-first-public-working-draft"></a></h3>
+</span><a class="self-link" href="#changes-20110915"></a></h3>
    <ul>
     <li>Made various editorial improvements and clarifications.
 	
@@ -1541,26 +1540,24 @@ If a viewport of 400px by 400px is split horizontally into two side-by-side segm
 	
     <li>Decouple width/height and zoom, introducing <span class="css">extend-to-zoom</span> value for meta viewport translation.
 	
-    <li>Made normative rules about interaction of @viewport and @media.
+    <li>Made normative rules about interaction of <span class="css">@viewport</span> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-3/#at-ruledef-media" id="ref-for-at-ruledef-media">@media</a>.
 	
-    <li>Allow 0 for <u class="link-error production" data-lt="<viewport-length>" title="LINK ERROR: No &apos;type&apos; refs found for &apos;<viewport-length>&apos;.">&lt;viewport-length></u> and <u class="link-error property" data-lt="zoom" title="LINK ERROR: No &apos;propdesc&apos; refs found for &apos;zoom&apos; with for=&apos;[&apos;@viewport&apos;]&apos;.">zoom</u> values
+    <li>Allow 0 for <span class="css">&lt;viewport-length></span> and <span class="css">zoom</span> values
 	
     <li>Removed support for device-width/height.
 	
-    <li>Apply @viewport to top level document only.
+    <li>Apply <span class="css">@viewport</span> to top level document only.
 	
-    <li>Extend <a data-link-type="biblio" href="#biblio-css3-conditional" title="CSS Conditional Rules Module Level 3">[CSS3-CONDITIONAL]</a> rather than CSS21 for nesting in @media.
-	
-    <li>Removed @viewport
+    <li>Extend <a data-link-type="biblio" href="#biblio-css3-conditional" title="CSS Conditional Rules Module Level 3">[CSS3-CONDITIONAL]</a> rather than CSS21 for nesting in <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-conditional-3/#at-ruledef-media" id="ref-for-at-ruledef-media①">@media</a>.
 
    </ul>
    <h2 class="heading no-num settled" id="automation"><span class="content">Appendix B. Automation</span><a class="self-link" href="#automation"></a></h2>
-   <h3 class="heading settled" id="automation-of-the-segments-property"><span class="content">Automation of the <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments⑧">segments</a></code> property</span><a class="self-link" href="#automation-of-the-segments-property"></a></h3>
+   <h3 class="heading settled" id="automation-segments"><span class="content">Automation of the <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments⑧">segments</a></code> property</span><a class="self-link" href="#automation-segments"></a></h3>
    
 The <code class="idl"><a data-link-type="idl" href="#dom-viewport-segments" id="ref-for-dom-viewport-segments⑨">segments</a></code> property poses a challenge to test authors, as exercising this property
 requires access to specific hardware devices. To address this challenge this document defines
 <a data-link-type="biblio" href="#biblio-webdriver2" title="WebDriver">[WEBDRIVER2]</a> <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-extension-commands" id="ref-for-dfn-extension-commands">extension commands</a> that allow users to control how the viewport is split by
-one or more <a data-link-type="dfn" href="#display-feature①" id="ref-for-display-feature①"> display features</a> (such as a fold or a hinge between two separate displays).
+one or more <a data-link-type="dfn" href="#display-feature" id="ref-for-display-feature"> display features</a> (such as a fold or a hinge between two separate displays).
 
 
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="display-feature-override">display feature override</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> encapsulating the result of a single display feature.
@@ -1631,9 +1628,7 @@ parameter.</p>
 };
 </pre>
     <p>Below is an illustration showing the various properties of a display feature:</p>
-    <p><img alt="Two images,
-	showing the meaning of each display feature attributes. One image is showing an
-	vertical display feature, the other is showing an horizontal display feature" src="display_features.svg" style="width: 70%;height: auto; margin:auto; display: flex;"></p>
+    <p><img alt="Two images showing the meaning of each display feature attributes. One image is showing a vertical display feature, the other is showing an horizontal display feature" height="258" src="display_features.svg" style="width: 70%;height: auto; margin:auto; display: flex;" width="560"></p>
     <div class="example" id="example-c5981ba4">
      <a class="self-link" href="#example-c5981ba4"></a>
 		To create a <a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride②">[[DisplayFeaturesOverride]]</a> in the <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-current-browsing-context" id="ref-for-dfn-current-browsing-context">current browsing context</a> of the <a data-link-type="dfn" href="https://w3c.github.io/webdriver-bidi/#modules-session" id="ref-for-modules-session">session</a> with ID 23,
@@ -1693,7 +1688,7 @@ The <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-remote-en
 	
     <li>Set <var>topLevelTraversable</var>.<a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride③">[[DisplayFeaturesOverride]]</a> to <var>parsedFeatures</var>.
 	
-    <li>Return <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#success" id="ref-for-success">success</a> with data <code>null</code>.
+    <li>Return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-success" id="ref-for-dfn-success">success</a> with data <code>null</code>.
 	
    </ol>
    <h5 class="heading settled" id="clear-display-features"><span class="content">Clear display features</span><a class="self-link" href="#clear-display-features"></a></h5>
@@ -1727,7 +1722,7 @@ The <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-remote-en
 	
     <li>Set <var>topLevelTraversable</var>. <a data-link-type="dfn" href="#top-level-traversable-displayfeaturesoverride" id="ref-for-top-level-traversable-displayfeaturesoverride④">[[DisplayFeaturesOverride]]</a> to <code>null</code>.
 	
-    <li>Return <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#success" id="ref-for-success①">success</a> with data <code>null</code>.
+    <li>Return <a data-link-type="dfn" href="https://w3c.github.io/webdriver/#dfn-success" id="ref-for-dfn-success①">success</a> with data <code>null</code>.
 	
    </ol>
   </main>
@@ -1868,7 +1863,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#actual-viewport">actual viewport</a><span>, in § 2</span>
-   <li><a href="#display-feature①">Display feature</a><span>, in § 2.1</span>
+   <li><a href="#display-feature">Display feature</a><span>, in § 2.1</span>
    <li><a href="#display-feature-override">display feature override</a><span>, in § Unnumbered section</span>
    <li><a href="#top-level-traversable-displayfeaturesoverride">[[DisplayFeaturesOverride]]</a><span>, in § Unnumbered section</span>
    <li><a href="#effective-zoom">effective zoom</a><span>, in § 4</span>
@@ -1886,7 +1881,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#scaled">scaled</a><span>, in § 4</span>
    <li><a href="#dom-viewport-segments">segments</a><span>, in § 7</span>
    <li><a href="#unscaled">unscaled</a><span>, in § 4</span>
-   <li><a href="#viewport①">Viewport</a><span>, in § 6.1</span>
+   <li><a href="#viewport">Viewport</a><span>, in § 6</span>
    <li><a href="#dom-window-viewport">viewport</a><span>, in § 5</span>
    <li><a href="#propdef-zoom">zoom</a><span>, in § 4</span>
   </ul>
@@ -1912,6 +1907,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS-PAGE-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="5ee7eb9e">@page</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-SHAPES-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="2e3e6cf6">path()</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-TRANSFORMS-1]</a> defines the following terms:
@@ -1941,6 +1941,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS21]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="ac54fbff">line-height</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS3-CONDITIONAL]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="5f1b7f60">@media</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSSOM-1]</a> defines the following terms:
@@ -1996,7 +2001,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="53275e46">append</span>
      <li><span class="dfn-paneled" id="649608b9">list</span>
      <li><span class="dfn-paneled" id="984221ca">struct</span>
-     <li><span class="dfn-paneled" id="98b32dd9">success</span>
     </ul>
    <li>
     <a data-link-type="biblio">[INTERSECTION-OBSERVER]</a> defines the following terms:
@@ -2041,6 +2045,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="8da4d1e3">invalid argument</span>
      <li><span class="dfn-paneled" id="9a707b42">local end</span>
      <li><span class="dfn-paneled" id="82c23298">remote end steps</span>
+     <li><span class="dfn-paneled" id="4be6272b">success</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -2062,6 +2067,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Tab Atkins Jr.; Elika Etemad; Lea Verou. <a href="https://drafts.csswg.org/css-images-3/"><cite>CSS Images Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-3/">https://drafts.csswg.org/css-images-3/</a>
    <dt id="biblio-css-page-3">[CSS-PAGE-3]
    <dd>Elika Etemad. <a href="https://drafts.csswg.org/css-page-3/"><cite>CSS Paged Media Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-page-3/">https://drafts.csswg.org/css-page-3/</a>
+   <dt id="biblio-css-shapes-1">[CSS-SHAPES-1]
+   <dd>Alan Stearns; Rossen Atanassov; Noam Rosenthal. <a href="https://drafts.csswg.org/css-shapes/"><cite>CSS Shapes Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-shapes/">https://drafts.csswg.org/css-shapes/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
    <dt id="biblio-css-viewport-1">[CSS-VIEWPORT-1]
@@ -2149,11 +2156,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   </div>
   <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
 <pre class="def highlight idl"><c- b>partial</c-> <c- b>interface</c-> <a class="idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"><c- g>Window</c-></a> {
-[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SameObject"><c- g>SameObject</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Replaceable"><c- g>Replaceable</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#viewport①"><c- n>Viewport</c-></a> <a data-readonly data-type="Viewport" href="#dom-window-viewport"><code><c- g>viewport</c-></code></a>;
+[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#SameObject"><c- g>SameObject</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Replaceable"><c- g>Replaceable</c-></a>] <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#viewport"><c- n>Viewport</c-></a> <a data-readonly data-type="Viewport" href="#dom-window-viewport"><code><c- g>viewport</c-></code></a>;
 };
 
 [<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
-<c- b>interface</c-> <a href="#viewport①"><code><c- g>Viewport</c-></code></a> {
+<c- b>interface</c-> <a href="#viewport"><code><c- g>Viewport</c-></code></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-frozen-array"><c- b>FrozenArray</c-></a>&lt;<a data-link-type="idl-name" href="https://drafts.csswg.org/geometry/#domrect"><c- n>DOMRect</c-></a>>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="FrozenArray<DOMRect>?" href="#dom-viewport-segments"><c- g>segments</c-></a>;
 };
 
@@ -2169,7 +2176,7 @@ See <a href="http://www.quirksmode.org/blog/archives/2015/09/a_new_device_ad.htm
 for a good discussion of these issues. <a class="issue-return" href="#issue-6c09d247" title="Jump to section">↵</a></div>
    <div class="issue"> Various issues about this specification and related specifications
 are listed in <a href="https://www.w3.org/Graphics/SVG/WG/wiki/Proposals/Investigation_of_APIs_for_Level_of_detail#The_issues_on_existing_APIs">this report</a>. <a class="issue-return" href="#issue-212a8da7" title="Jump to section">↵</a></div>
-   <div class="issue"> Make <span class="css">actual viewport</span> the layout viewport, define visual viewport. <a class="issue-return" href="#issue-44630653" title="Jump to section">↵</a></div>
+   <div class="issue"> Make <a data-link-type="dfn" href="#actual-viewport">actual viewport</a> the layout viewport, define visual viewport. <a class="issue-return" href="#issue-44630653" title="Jump to section">↵</a></div>
    <div class="issue"> Specify me <a class="issue-return" href="#issue-76355744" title="Jump to section">↵</a></div>
    <div class="issue"> Specify extend-to-zoom behavior by the viewport meta tag <a class="issue-return" href="#issue-275fe943" title="Jump to section">↵</a></div>
    <div class="issue"> Move the definition of <span class="css">visual viewport</span> from CSSOM-View to this spec. <a class="issue-return" href="#issue-e08318e1" title="Jump to section">↵</a></div>
@@ -2383,12 +2390,15 @@ let dfnPanelData = {
 "15f5b381": {"dfnID":"15f5b381","dfnText":"<percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-percentage-value"},{"id":"ref-for-percentage-value\u2460"},{"id":"ref-for-percentage-value\u2461"},{"id":"ref-for-percentage-value\u2462"},{"id":"ref-for-percentage-value\u2463"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-values-4/#percentage-value"},
 "16310992": {"dfnID":"16310992","dfnText":"<number>","external":true,"refSections":[{"refs":[{"id":"ref-for-number-value"},{"id":"ref-for-number-value\u2460"},{"id":"ref-for-number-value\u2461"},{"id":"ref-for-number-value\u2462"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-values-4/#number-value"},
 "1ec42261": {"dfnID":"1ec42261","dfnText":"posture","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-posture"}],"title":"7. \n\tThe segments property\n"}],"url":"https://w3c.github.io/device-posture/#dfn-posture"},
+"2e3e6cf6": {"dfnID":"2e3e6cf6","dfnText":"path()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-basic-shape-path"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-path"},
 "33b28eb1": {"dfnID":"33b28eb1","dfnText":"onchange","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-deviceposture-onchange"}],"title":"7. \n\tThe segments property\n"}],"url":"https://w3c.github.io/device-posture/#dom-deviceposture-onchange"},
+"4be6272b": {"dfnID":"4be6272b","dfnText":"success","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-success"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-success\u2460"}],"title":"Clear display features"}],"url":"https://w3c.github.io/webdriver/#dfn-success"},
 "53275e46": {"dfnID":"53275e46","dfnText":"append","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"Set display features"}],"url":"https://infra.spec.whatwg.org/#list-append"},
 "5b668531": {"dfnID":"5b668531","dfnText":"getting a property","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-getting-properties"},{"id":"ref-for-dfn-getting-properties\u2460"},{"id":"ref-for-dfn-getting-properties\u2461"},{"id":"ref-for-dfn-getting-properties\u2462"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-getting-properties"},
 "5bc8bd12": {"dfnID":"5bc8bd12","dfnText":"direction","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-direction"},{"id":"ref-for-propdef-direction\u2460"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/css-writing-modes-3/#propdef-direction"},
 "5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"},{"id":"ref-for-window\u2460"}],"title":"5. Extensions to the Window Interface"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
 "5ee7eb9e": {"dfnID":"5ee7eb9e","dfnText":"@page","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-page"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/css-page-3/#at-ruledef-page"},
+"5f1b7f60": {"dfnID":"5f1b7f60","dfnText":"@media","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-media"},{"id":"ref-for-at-ruledef-media\u2460"}],"title":"Since the\n\t15 \n\t\tSeptember 2011 First Public Working Draft.\n"}],"url":"https://drafts.csswg.org/css-conditional-3/#at-ruledef-media"},
 "5f9c7266": {"dfnID":"5f9c7266","dfnText":"Number","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-number-objects"},{"id":"ref-for-sec-number-objects\u2460"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects"},
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"Set display features"}],"url":"https://infra.spec.whatwg.org/#list"},
 "6c514f92": {"dfnID":"6c514f92","dfnText":"visual viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-visual-viewport"},{"id":"ref-for-visual-viewport\u2460"},{"id":"ref-for-visual-viewport\u2461"}],"title":"3.4. interactive-widget"}],"url":"https://drafts.csswg.org/cssom-view-1/#visual-viewport"},
@@ -2397,10 +2407,9 @@ let dfnPanelData = {
 "758665a5": {"dfnID":"758665a5","dfnText":"paged media","external":true,"refSections":[{"refs":[{"id":"ref-for-paged-media"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/mediaqueries-5/#paged-media"},
 "82c23298": {"dfnID":"82c23298","dfnText":"remote end steps","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-remote-end-steps"}],"title":"Set display features"},{"refs":[{"id":"ref-for-dfn-remote-end-steps\u2460"}],"title":"Clear display features"}],"url":"https://w3c.github.io/webdriver/#dfn-remote-end-steps"},
 "85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"}],"title":"7. \n\tThe segments property\n"}],"url":"https://dom.spec.whatwg.org/#document"},
-"889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"6.1. The Viewport Interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
+"889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"6. The Viewport Interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "8da4d1e3": {"dfnID":"8da4d1e3","dfnText":"invalid argument","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-invalid-argument"},{"id":"ref-for-dfn-invalid-argument\u2460"},{"id":"ref-for-dfn-invalid-argument\u2461"},{"id":"ref-for-dfn-invalid-argument\u2462"},{"id":"ref-for-dfn-invalid-argument\u2463"},{"id":"ref-for-dfn-invalid-argument\u2464"},{"id":"ref-for-dfn-invalid-argument\u2465"},{"id":"ref-for-dfn-invalid-argument\u2466"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-invalid-argument"},
 "984221ca": {"dfnID":"984221ca","dfnText":"struct","external":true,"refSections":[{"refs":[{"id":"ref-for-struct"}],"title":"Automation of the segments property"}],"url":"https://infra.spec.whatwg.org/#struct"},
-"98b32dd9": {"dfnID":"98b32dd9","dfnText":"success","external":true,"refSections":[{"refs":[{"id":"ref-for-success"}],"title":"Set display features"},{"refs":[{"id":"ref-for-success\u2460"}],"title":"Clear display features"}],"url":"https://infra.spec.whatwg.org/#success"},
 "9a707b42": {"dfnID":"9a707b42","dfnText":"local end","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-local-ends"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-local-ends"},
 "9be179f5": {"dfnID":"9be179f5","dfnText":"IntersectionObserver","external":true,"refSections":[{"refs":[{"id":"ref-for-intersectionobserver"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://w3c.github.io/IntersectionObserver/#intersectionobserver"},
 "9c19b7fc": {"dfnID":"9c19b7fc","dfnText":"navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-navigable"}],"title":"7. \n\tThe segments property\n"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#navigable"},
@@ -2412,8 +2421,8 @@ let dfnPanelData = {
 "a6e67972": {"dfnID":"a6e67972","dfnText":"Object","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-object-objects"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object-objects"},
 "aba1ccaf": {"dfnID":"aba1ccaf","dfnText":"continuous media","external":true,"refSections":[{"refs":[{"id":"ref-for-continuous-media"}],"title":"1. \nIntroduction"},{"refs":[{"id":"ref-for-continuous-media\u2460"},{"id":"ref-for-continuous-media\u2461"}],"title":"2. \nThe viewport"}],"url":"https://drafts.csswg.org/mediaqueries-5/#continuous-media"},
 "ac54fbff": {"dfnID":"ac54fbff","dfnText":"line-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-line-height"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css2/#propdef-line-height"},
-"actual-viewport": {"dfnID":"actual-viewport","dfnText":"actual viewport","external":false,"refSections":[],"url":"#actual-viewport"},
-"b1702c17": {"dfnID":"b1702c17","dfnText":"DOMRect","external":true,"refSections":[{"refs":[{"id":"ref-for-domrect"}],"title":"6.1. The Viewport Interface"},{"refs":[{"id":"ref-for-domrect\u2460"},{"id":"ref-for-domrect\u2461"}],"title":"7. \n\tThe segments property\n"}],"url":"https://drafts.csswg.org/geometry/#domrect"},
+"actual-viewport": {"dfnID":"actual-viewport","dfnText":"actual viewport","external":false,"refSections":[{"refs":[{"id":"ref-for-actual-viewport"},{"id":"ref-for-actual-viewport\u2460"},{"id":"ref-for-actual-viewport\u2461"},{"id":"ref-for-actual-viewport\u2462"},{"id":"ref-for-actual-viewport\u2463"},{"id":"ref-for-actual-viewport\u2464"}],"title":"2. The viewport"}],"url":"#actual-viewport"},
+"b1702c17": {"dfnID":"b1702c17","dfnText":"DOMRect","external":true,"refSections":[{"refs":[{"id":"ref-for-domrect"}],"title":"6. The Viewport Interface"},{"refs":[{"id":"ref-for-domrect\u2460"},{"id":"ref-for-domrect\u2461"}],"title":"7. \n\tThe segments property\n"}],"url":"https://drafts.csswg.org/geometry/#domrect"},
 "b203675a": {"dfnID":"b203675a","dfnText":"getComputedStyle(elt)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-getcomputedstyle"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle"},
 "bb4c269e": {"dfnID":"bb4c269e","dfnText":"error","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-error"},{"id":"ref-for-dfn-error\u2460"},{"id":"ref-for-dfn-error\u2461"},{"id":"ref-for-dfn-error\u2462"},{"id":"ref-for-dfn-error\u2463"},{"id":"ref-for-dfn-error\u2464"},{"id":"ref-for-dfn-error\u2465"},{"id":"ref-for-dfn-error\u2466"}],"title":"Set display features"}],"url":"https://w3c.github.io/webdriver/#dfn-error"},
 "c0159396": {"dfnID":"c0159396","dfnText":"devicePixelRatio","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-devicepixelratio"}],"title":"4. \n\tThe zoom property\n"},{"refs":[{"id":"ref-for-dom-window-devicepixelratio\u2460"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-window-devicepixelratio"},
@@ -2422,26 +2431,26 @@ let dfnPanelData = {
 "d38f9598": {"dfnID":"d38f9598","dfnText":"getBoundingClientRect()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-getboundingclientrect"}],"title":"4. \n\tThe zoom property\n"},{"refs":[{"id":"ref-for-dom-element-getboundingclientrect\u2460"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-element-getboundingclientrect"},
 "d9d0d16f": {"dfnID":"d9d0d16f","dfnText":"string","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-speechgrammarlist-addfromstring-string-weight-string"}],"title":"Set display features"}],"url":"https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string"},
 "dc0eaa56": {"dfnID":"dc0eaa56","dfnText":"scrollTop","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-element-scrolltop"}],"title":"4.1. \n\tDOM and CSSOM interaction\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#dom-element-scrolltop"},
-"dcf5fafa": {"dfnID":"dcf5fafa","dfnText":"FrozenArray","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-frozen-array"}],"title":"6.1. The Viewport Interface"}],"url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
+"dcf5fafa": {"dfnID":"dcf5fafa","dfnText":"FrozenArray","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-frozen-array"}],"title":"6. The Viewport Interface"}],"url":"https://webidl.spec.whatwg.org/#idl-frozen-array"},
+"display-feature": {"dfnID":"display-feature","dfnText":"Display feature","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature"}],"title":"Automation of the segments property"}],"url":"#display-feature"},
 "display-feature-override": {"dfnID":"display-feature-override","dfnText":"display feature override","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature-override"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-display-feature-override\u2460"},{"id":"ref-for-display-feature-override\u2461"},{"id":"ref-for-display-feature-override\u2462"},{"id":"ref-for-display-feature-override\u2463"}],"title":"Set display features"}],"url":"#display-feature-override"},
 "display-feature-override-mask-length": {"dfnID":"display-feature-override-mask-length","dfnText":"mask length","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature-override-mask-length"}],"title":"Set display features"}],"url":"#display-feature-override-mask-length"},
 "display-feature-override-offset": {"dfnID":"display-feature-override-offset","dfnText":"offset","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature-override-offset"}],"title":"Set display features"}],"url":"#display-feature-override-offset"},
 "display-feature-override-orientation": {"dfnID":"display-feature-override-orientation","dfnText":"orientation","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature-override-orientation"}],"title":"Set display features"}],"url":"#display-feature-override-orientation"},
-"display-feature①": {"dfnID":"display-feature\u2460","dfnText":"Display feature","external":false,"refSections":[{"refs":[{"id":"ref-for-display-feature\u2460"}],"title":"Automation of the segments property"}],"url":"#display-feature\u2460"},
-"dom-viewport-segments": {"dfnID":"dom-viewport-segments","dfnText":"segments","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-viewport-segments"},{"id":"ref-for-dom-viewport-segments\u2460"}],"title":"2.1. Display feature definition"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2461"}],"title":"6.1. The Viewport Interface"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2462"},{"id":"ref-for-dom-viewport-segments\u2463"},{"id":"ref-for-dom-viewport-segments\u2464"},{"id":"ref-for-dom-viewport-segments\u2465"},{"id":"ref-for-dom-viewport-segments\u2466"}],"title":"7. The segments property"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2467"},{"id":"ref-for-dom-viewport-segments\u2468"}],"title":"Automation of the segments property"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2460\u24ea"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2460\u2460"}],"title":"Set display features"}],"url":"#dom-viewport-segments"},
+"dom-viewport-segments": {"dfnID":"dom-viewport-segments","dfnText":"segments","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-viewport-segments"},{"id":"ref-for-dom-viewport-segments\u2460"}],"title":"2.1. Display feature definition"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2461"}],"title":"6. The Viewport Interface"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2462"},{"id":"ref-for-dom-viewport-segments\u2463"},{"id":"ref-for-dom-viewport-segments\u2464"},{"id":"ref-for-dom-viewport-segments\u2465"},{"id":"ref-for-dom-viewport-segments\u2466"}],"title":"7. The segments property"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2467"},{"id":"ref-for-dom-viewport-segments\u2468"}],"title":"Automation of the segments property"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2460\u24ea"}],"title":"Internal slots"},{"refs":[{"id":"ref-for-dom-viewport-segments\u2460\u2460"}],"title":"Set display features"}],"url":"#dom-viewport-segments"},
 "dom-window-viewport": {"dfnID":"dom-window-viewport","dfnText":"viewport","external":false,"refSections":[],"url":"#dom-window-viewport"},
 "e2e08d07": {"dfnID":"e2e08d07","dfnText":"transform","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-transform"},{"id":"ref-for-propdef-transform\u2460"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-transforms-1/#propdef-transform"},
 "e3fe45c5": {"dfnID":"e3fe45c5","dfnText":"overlaysContent","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-virtualkeyboard-overlayscontent"}],"title":"3.4. interactive-widget"},{"refs":[{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2460"},{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2461"},{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2462"},{"id":"ref-for-dom-virtualkeyboard-overlayscontent\u2463"}],"title":"3.4.1. \n\tInteraction with virtualKeyboard.overlaysContent\n"}],"url":"https://w3c.github.io/virtual-keyboard#dom-virtualkeyboard-overlayscontent"},
 "e99bd18e": {"dfnID":"e99bd18e","dfnText":"relevant global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-global"}],"title":"7. \n\tThe segments property\n"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global"},
 "ed3eb665": {"dfnID":"ed3eb665","dfnText":"natural size","external":true,"refSections":[{"refs":[{"id":"ref-for-natural-size"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-images-3/#natural-size"},
 "effective-zoom": {"dfnID":"effective-zoom","dfnText":"effective zoom","external":false,"refSections":[{"refs":[{"id":"ref-for-effective-zoom"},{"id":"ref-for-effective-zoom\u2460"},{"id":"ref-for-effective-zoom\u2461"}],"title":"4. The zoom property"},{"refs":[{"id":"ref-for-effective-zoom\u2462"}],"title":"4.1. DOM and CSSOM interaction"}],"url":"#effective-zoom"},
-"f242baf0": {"dfnID":"f242baf0","dfnText":"initial viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-initial-viewport\u2462"}],"title":"3.4. interactive-widget"}],"url":"https://drafts.csswg.org/css-viewport/#initial-viewport"},
+"f242baf0": {"dfnID":"f242baf0","dfnText":"initial viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-initial-viewport\u2465"}],"title":"3.4. interactive-widget"}],"url":"https://drafts.csswg.org/css-viewport/#initial-viewport"},
 "f426b2a9": {"dfnID":"f426b2a9","dfnText":"Array","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-array-objects"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects"},
 "fb030e6c": {"dfnID":"fb030e6c","dfnText":"<length>","external":true,"refSections":[{"refs":[{"id":"ref-for-length-value"},{"id":"ref-for-length-value\u2460"},{"id":"ref-for-length-value\u2461"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-values-4/#length-value"},
 "fb17617c": {"dfnID":"fb17617c","dfnText":"resize","external":true,"refSections":[{"refs":[{"id":"ref-for-eventdef-window-resize"}],"title":"7. \n\tThe segments property\n"}],"url":"https://drafts.csswg.org/cssom-view-1/#eventdef-window-resize"},
 "fd00e7b4": {"dfnID":"fd00e7b4","dfnText":"NaN","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-number.nan"},{"id":"ref-for-sec-number.nan\u2460"}],"title":"Set display features"}],"url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number.nan"},
 "fdf6efd5": {"dfnID":"fdf6efd5","dfnText":"font-size","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-size"},{"id":"ref-for-propdef-font-size\u2460"}],"title":"4. \n\tThe zoom property\n"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size"},
-"initial-viewport": {"dfnID":"initial-viewport","dfnText":"initial viewport","external":false,"refSections":[{"refs":[{"id":"ref-for-initial-viewport"},{"id":"ref-for-initial-viewport\u2460"},{"id":"ref-for-initial-viewport\u2461"}],"title":"3.4. interactive-widget"}],"url":"#initial-viewport"},
+"initial-viewport": {"dfnID":"initial-viewport","dfnText":"initial viewport","external":false,"refSections":[{"refs":[{"id":"ref-for-initial-viewport"},{"id":"ref-for-initial-viewport\u2460"},{"id":"ref-for-initial-viewport\u2461"}],"title":"2. The viewport"},{"refs":[{"id":"ref-for-initial-viewport\u2462"},{"id":"ref-for-initial-viewport\u2463"},{"id":"ref-for-initial-viewport\u2464"}],"title":"3.4. interactive-widget"}],"url":"#initial-viewport"},
 "interactive-widget": {"dfnID":"interactive-widget","dfnText":"interactive-widget","external":false,"refSections":[{"refs":[{"id":"ref-for-interactive-widget"},{"id":"ref-for-interactive-widget\u2460"}],"title":"3.4. interactive-widget"},{"refs":[{"id":"ref-for-interactive-widget\u2461"},{"id":"ref-for-interactive-widget\u2462"},{"id":"ref-for-interactive-widget\u2463"}],"title":"3.4.1. Interaction with virtualKeyboard.overlaysContent"}],"url":"#interactive-widget"},
 "overlays-content": {"dfnID":"overlays-content","dfnText":"overlays-content","external":false,"refSections":[{"refs":[{"id":"ref-for-overlays-content"}],"title":"3.4.1. Interaction with virtualKeyboard.overlaysContent"}],"url":"#overlays-content"},
 "propdef-zoom": {"dfnID":"propdef-zoom","dfnText":"zoom","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-zoom"},{"id":"ref-for-propdef-zoom\u2460"},{"id":"ref-for-propdef-zoom\u2461"},{"id":"ref-for-propdef-zoom\u2462"},{"id":"ref-for-propdef-zoom\u2463"},{"id":"ref-for-propdef-zoom\u2464"},{"id":"ref-for-propdef-zoom\u2465"},{"id":"ref-for-propdef-zoom\u2466"},{"id":"ref-for-propdef-zoom\u2467"},{"id":"ref-for-propdef-zoom\u2468"},{"id":"ref-for-propdef-zoom\u2460\u24ea"},{"id":"ref-for-propdef-zoom\u2460\u2460"},{"id":"ref-for-propdef-zoom\u2460\u2461"},{"id":"ref-for-propdef-zoom\u2460\u2462"}],"title":"4. The zoom property"}],"url":"#propdef-zoom"},
@@ -2453,7 +2462,7 @@ let dfnPanelData = {
 "unscaled": {"dfnID":"unscaled","dfnText":"unscaled","external":false,"refSections":[{"refs":[{"id":"ref-for-unscaled"},{"id":"ref-for-unscaled\u2460"}],"title":"4.1. DOM and CSSOM interaction"}],"url":"#unscaled"},
 "valdef-zoom-number": {"dfnID":"valdef-zoom-number","dfnText":"<number>","external":false,"refSections":[],"url":"#valdef-zoom-number"},
 "valdef-zoom-percentage": {"dfnID":"valdef-zoom-percentage","dfnText":"<percentage>","external":false,"refSections":[],"url":"#valdef-zoom-percentage"},
-"viewport①": {"dfnID":"viewport\u2460","dfnText":"Viewport","external":false,"refSections":[{"refs":[{"id":"ref-for-viewport\u2460"}],"title":"5. Extensions to the Window Interface"},{"refs":[{"id":"ref-for-viewport\u2460\u2460"}],"title":"6.1. The Viewport Interface"},{"refs":[{"id":"ref-for-viewport\u2460\u2461"},{"id":"ref-for-viewport\u2460\u2462"},{"id":"ref-for-viewport\u2460\u2463"},{"id":"ref-for-viewport\u2460\u2464"}],"title":"7. The segments property"}],"url":"#viewport\u2460"},
+"viewport": {"dfnID":"viewport","dfnText":"Viewport","external":false,"refSections":[{"refs":[{"id":"ref-for-viewport"}],"title":"5. Extensions to the Window Interface"},{"refs":[{"id":"ref-for-viewport\u2460"}],"title":"6. The Viewport Interface"},{"refs":[{"id":"ref-for-viewport\u2461"},{"id":"ref-for-viewport\u2462"},{"id":"ref-for-viewport\u2463"},{"id":"ref-for-viewport\u2464"}],"title":"7. The segments property"}],"url":"#viewport"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -2860,11 +2869,12 @@ document.addEventListener("DOMContentLoaded", setTypeTitles);
 "use strict";
 {
 let refsData = {
+"#actual-viewport": {"displayText":"actual viewport","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"actual viewport","type":"dfn","url":"#actual-viewport"},
+"#display-feature": {"displayText":"display feature","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"display feature","type":"dfn","url":"#display-feature"},
 "#display-feature-override": {"displayText":"display feature override","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"display feature override","type":"dfn","url":"#display-feature-override"},
 "#display-feature-override-mask-length": {"displayText":"mask length","export":true,"for_":["display feature override"],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"mask length","type":"dfn","url":"#display-feature-override-mask-length"},
 "#display-feature-override-offset": {"displayText":"offset","export":true,"for_":["display feature override"],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"offset","type":"dfn","url":"#display-feature-override-offset"},
 "#display-feature-override-orientation": {"displayText":"orientation","export":true,"for_":["display feature override"],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"orientation","type":"dfn","url":"#display-feature-override-orientation"},
-"#display-feature①": {"displayText":"display feature","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"display feature","type":"dfn","url":"#display-feature\u2460"},
 "#dom-viewport-segments": {"displayText":"segments","export":true,"for_":["Viewport"],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"segments","type":"attribute","url":"#dom-viewport-segments"},
 "#effective-zoom": {"displayText":"effective zoom","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"effective zoom","type":"dfn","url":"#effective-zoom"},
 "#initial-viewport": {"displayText":"initial viewport","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"initial viewport","type":"dfn","url":"#initial-viewport"},
@@ -2877,13 +2887,15 @@ let refsData = {
 "#scaled": {"displayText":"scaled","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"scaled","type":"dfn","url":"#scaled"},
 "#top-level-traversable-displayfeaturesoverride": {"displayText":"[[displayfeaturesoverride]]","export":true,"for_":["top-level traversable"],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"[[displayfeaturesoverride]]","type":"dfn","url":"#top-level-traversable-displayfeaturesoverride"},
 "#unscaled": {"displayText":"unscaled","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"unscaled","type":"dfn","url":"#unscaled"},
-"#viewport①": {"displayText":"Viewport","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"Viewport","type":"interface","url":"#viewport\u2460"},
+"#viewport": {"displayText":"Viewport","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-viewport","spec":"css-viewport-1","status":"local","text":"Viewport","type":"interface","url":"#viewport"},
 "https://dom.spec.whatwg.org/#document": {"displayText":"Document","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Document","type":"interface","url":"https://dom.spec.whatwg.org/#document"},
 "https://drafts.csswg.org/css-cascade-5/#computed-value": {"displayText":"computed value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"computed value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
 "https://drafts.csswg.org/css-cascade-5/#used-value": {"displayText":"used value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"used value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#used-value"},
+"https://drafts.csswg.org/css-conditional-3/#at-ruledef-media": {"displayText":"@media","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"@media","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-3/#at-ruledef-media"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-size": {"displayText":"font-size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-size","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size"},
 "https://drafts.csswg.org/css-images-3/#natural-size": {"displayText":"natural size","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-images","spec":"css-images-3","status":"current","text":"natural size","type":"dfn","url":"https://drafts.csswg.org/css-images-3/#natural-size"},
 "https://drafts.csswg.org/css-page-3/#at-ruledef-page": {"displayText":"@page","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-page","spec":"css-page-3","status":"current","text":"@page","type":"at-rule","url":"https://drafts.csswg.org/css-page-3/#at-ruledef-page"},
+"https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-path": {"displayText":"path()","export":true,"for_":["<basic-shape>"],"level":"1","normative":true,"shortname":"css-shapes","spec":"css-shapes-1","status":"current","text":"path()","type":"function","url":"https://drafts.csswg.org/css-shapes-1/#funcdef-basic-shape-path"},
 "https://drafts.csswg.org/css-transforms-1/#propdef-transform": {"displayText":"transform","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-transforms","spec":"css-transforms-1","status":"current","text":"transform","type":"property","url":"https://drafts.csswg.org/css-transforms-1/#propdef-transform"},
 "https://drafts.csswg.org/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "https://drafts.csswg.org/css-values-4/#length-value": {"displayText":"<length>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"<length>","type":"type","url":"https://drafts.csswg.org/css-values-4/#length-value"},
@@ -2911,7 +2923,6 @@ let refsData = {
 "https://infra.spec.whatwg.org/#list": {"displayText":"list","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"list","type":"dfn","url":"https://infra.spec.whatwg.org/#list"},
 "https://infra.spec.whatwg.org/#list-append": {"displayText":"append","export":true,"for_":["list"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"append","type":"dfn","url":"https://infra.spec.whatwg.org/#list-append"},
 "https://infra.spec.whatwg.org/#struct": {"displayText":"struct","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"struct","type":"dfn","url":"https://infra.spec.whatwg.org/#struct"},
-"https://infra.spec.whatwg.org/#success": {"displayText":"success","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"success","type":"dfn","url":"https://infra.spec.whatwg.org/#success"},
 "https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object-objects": {"displayText":"Object","export":true,"for_":[],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"Object","type":"interface","url":"https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object-objects"},
 "https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects": {"displayText":"Array","export":true,"for_":[],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"Array","type":"interface","url":"https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array-objects"},
 "https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects": {"displayText":"Number","export":true,"for_":[],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"Number","type":"interface","url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-number-objects"},
@@ -2931,6 +2942,7 @@ let refsData = {
 "https://w3c.github.io/webdriver/#dfn-invalid-argument": {"displayText":"invalid argument","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"invalid argument","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-invalid-argument"},
 "https://w3c.github.io/webdriver/#dfn-local-ends": {"displayText":"local end","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"local end","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-local-ends"},
 "https://w3c.github.io/webdriver/#dfn-remote-end-steps": {"displayText":"remote end steps","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"remote end steps","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-remote-end-steps"},
+"https://w3c.github.io/webdriver/#dfn-success": {"displayText":"success","export":true,"for_":[],"level":"2","normative":true,"shortname":"webdriver","spec":"webdriver2","status":"current","text":"success","type":"dfn","url":"https://w3c.github.io/webdriver/#dfn-success"},
 "https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string": {"displayText":"string","export":true,"for_":["SpeechGrammarList/addFromString(string, weight)","SpeechGrammarList/addFromString(string)"],"level":"1","normative":true,"shortname":"speech-api","spec":"speech-api","status":"current","text":"string","type":"argument","url":"https://webaudio.github.io/web-speech-api/#dom-speechgrammarlist-addfromstring-string-weight-string"},
 "https://webidl.spec.whatwg.org/#Exposed": {"displayText":"Exposed","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Exposed","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Exposed"},
 "https://webidl.spec.whatwg.org/#Replaceable": {"displayText":"Replaceable","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"Replaceable","type":"extended-attribute","url":"https://webidl.spec.whatwg.org/#Replaceable"},
