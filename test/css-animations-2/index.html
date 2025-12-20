@@ -8,7 +8,7 @@
   <meta content="Bikeshed version caf0aeb39, updated Mon Dec 15 22:51:46 2025 +0000" name="generator">
   <link href="https://www.w3.org/TR/css-animations-2/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="2761d5722b401ad028e19002082659aa57013c15" name="revision">
+  <meta content="8f59368a7638755d7f79443e2792a6fb25365891" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -1078,7 +1078,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Animations Module Level 2</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-11-20">20 November 2025</time></p>
+    <time class="dt-updated" datetime="2025-12-19">19 December 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1182,7 +1182,7 @@ The <span class="property">animation-trigger</span> property</span></a>
 Triggers</span></a>
      <ol class="toc">
       <li><a href="#trigger-scope"><span class="secno">5.1</span> <span class="content">
-Trigger Scope/Resolution</span></a>
+Trigger Name Scoping: the <span class="property">trigger-scope</span> property</span></a>
       <li>
        <a href="#timeline-triggers"><span class="secno">5.2</span> <span class="content">
 Timeline Triggers</span></a>
@@ -1933,7 +1933,7 @@ Its values are:</p>
      <p>The corresponding animation is a <a data-link-type="dfn" href="#triggered-animation" id="ref-for-triggered-animation②">triggered animation</a>,
 responding to the triggers named by each <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident④">&lt;dashed-ident></a>,
 and responding by taking the action named by the corresponding <a class="css production" data-link-type="type" href="#typedef-animation-action" id="ref-for-typedef-animation-action②">&lt;animation-action></a>.
-(See <a href="#trigger-scope">§ 5.1 Trigger Scope/Resolution</a> for how <span class="production" id="ref-for-typedef-dashed-ident⑤">&lt;dashed-ident></span>s are resolved to <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers">triggers</a>.)</p>
+(See <a href="#trigger-scope">§ 5.1 Trigger Name Scoping: the trigger-scope property</a> for how <span class="production" id="ref-for-typedef-dashed-ident⑤">&lt;dashed-ident></span>s are resolved to <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger">triggers</a>.)</p>
      <p>How many <a class="css production" data-link-type="type" href="#typedef-animation-action" id="ref-for-typedef-animation-action③">&lt;animation-action></a>s a trigger accepts,
 and what exactly activates them,
 is determined by the type of the trigger.
@@ -2043,7 +2043,7 @@ and even paused, restarted, or reset by triggers
 of what can be achieved with the Web Animations API in Javascript,
 allowing simple, common interaction patterns
 to be created and managed purely in CSS.</p>
-   <p>Currently, two types of <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export id="css-triggers">triggers</dfn> are defined:</p>
+   <p>Currently, two types of <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export data-lt="trigger" id="css-trigger">triggers</dfn> are defined:</p>
    <ul>
     <li data-md>
      <p><a data-link-type="dfn" href="#timeline-trigger" id="ref-for-timeline-trigger①">timeline triggers</a>, managed by the <a class="css property" data-link-type="property" href="#propdef-timeline-trigger" id="ref-for-propdef-timeline-trigger">timeline-trigger</a> properties,
@@ -2056,43 +2056,110 @@ without actually <em>driving</em> the animation with the scroll progress.)</p>
 which allow animations to be triggered by certain user-interaction events,
 such as clicking an element or pressing certain keys.</p>
    </ul>
-   <p>A <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers①">trigger</a> is <em>defined</em> on some specific triggering element.
-All triggers have a name,
+   <p>A <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger①">trigger</a> is <em>defined</em> on some specific triggering element.
+All triggers have a <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export id="css-trigger-name">trigger name</dfn>,
 and the specific type of trigger dictates how and when it’s activated.
 A trigger can define multiple "types" of activation.
 (For example, <a data-link-type="dfn" href="#timeline-trigger" id="ref-for-timeline-trigger②">timeline triggers</a> can do different things on entry and exit.)</p>
-   <p>A <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers②">trigger</a> is <em>used</em> on potentially any element,
+   <p>A <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger②">trigger</a> is <em>used</em> on potentially any element,
 creating a <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export id="css-trigger-instance">trigger instance</dfn> on the element.
 (For example, <a class="css property" data-link-type="property" href="#propdef-animation-trigger" id="ref-for-propdef-animation-trigger④">animation-trigger</a> associates a <a data-link-type="dfn" href="#css-trigger-instance" id="ref-for-css-trigger-instance">trigger instance</a>
 with a specific animation on the element.)
 The trigger-using element specifies what actions to take
-when the <span id="ref-for-css-triggers③">trigger</span> activates.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> This design for <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers④">triggers</a> and <a data-link-type="dfn" href="#css-trigger-instance" id="ref-for-css-trigger-instance①">trigger instances</a>,
+when the <span id="ref-for-css-trigger③">trigger</span> activates.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> This design for <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger④">triggers</a> and <a data-link-type="dfn" href="#css-trigger-instance" id="ref-for-css-trigger-instance①">trigger instances</a>,
 and the way they’re associated with <a data-link-type="dfn" href="#triggered-animation" id="ref-for-triggered-animation③">triggered animations</a> and <a class="css production" data-link-type="type" href="#typedef-animation-action" id="ref-for-typedef-animation-action⑤">&lt;animation-action></a>s,
 is intentionally somewhat generic,
-intended to support using <span id="ref-for-css-triggers⑤">triggers</span> for <em>other</em> purposes in the future.
+intended to support using <span id="ref-for-css-trigger⑤">triggers</span> for <em>other</em> purposes in the future.
 For now, though, <span id="ref-for-triggered-animation④">triggered animations</span> are the only user of this feature.</p>
-   <h3 class="heading settled" data-level="5.1" id="trigger-scope"><span class="secno">5.1. </span><span class="content">
-Trigger Scope/Resolution</span><a class="self-link" href="#trigger-scope"></a></h3>
-   <p>All <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers⑥">triggers</a> are document-global by default,
-similar to <a data-link-type="dfn" href="https://drafts.csswg.org/css-anchor-position-1/#anchor-name" id="ref-for-anchor-name">anchor names</a>.</p>
-   <p>If a single element attempts to define multiple <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers⑦">triggers</a> of different types
-with the same name,
-it only exposes one of them,
+   <p>If a single element attempts to define multiple <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger⑥">triggers</a> of different types
+with the same <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name">trigger name</a>,
+it only exposes one of the <span id="ref-for-css-trigger⑦">triggers</span>,
 with <a data-link-type="dfn" href="#event-trigger" id="ref-for-event-trigger②">event triggers</a> winning over <a data-link-type="dfn" href="#timeline-trigger" id="ref-for-timeline-trigger③">timeline triggers</a>.</p>
    <p class="note" role="note"><span class="marker">Note:</span> This order is completely arbitrary
 (based on alphabetic order of the concept name),
 as this is just an error case.</p>
-   <p>If multiple elements define <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers⑧">triggers</a> with the same name,
-the <span id="ref-for-css-triggers⑨">trigger</span> defined by the later element in <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-order" id="ref-for-concept-tree-order①">tree order</a> is used.</p>
-   <p class="note" role="note"><span class="marker">Note:</span> This behavior will be improved by a <span class="css">trigger-scope</span> property,
-not yet defined,
-letting you define triggers that are only visible to subtrees
-and references that only search in that subtree
-(just like <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope" id="ref-for-propdef-anchor-scope">anchor-scope</a>).</p>
+   <h3 class="heading settled" data-level="5.1" id="trigger-scope"><span class="secno">5.1. </span><span class="content">
+Trigger Name Scoping: the <a class="css property" data-link-type="property" href="#propdef-trigger-scope" id="ref-for-propdef-trigger-scope">trigger-scope</a> property</span><a class="self-link" href="#trigger-scope"></a></h3>
+   <p><a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name①">Trigger names</a> are global by default,
+usable by other elements regardless of their position.
+(Though they are <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name" id="ref-for-css-tree-scoped-name">tree-scoped names</a>,
+so have interactions with <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-element-shadow-root" id="ref-for-concept-element-shadow-root">shadow roots</a>).
+If multiple elements define <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger⑧">triggers</a> with the same <span id="ref-for-css-trigger-name②">trigger name</span>,
+the <span id="ref-for-css-trigger⑨">trigger</span> defined by the later element in <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-tree-order" id="ref-for-concept-tree-order①">tree order</a> is used.</p>
+   <p>The <a class="css property" data-link-type="property" href="#propdef-trigger-scope" id="ref-for-propdef-trigger-scope①">trigger-scope</a> property can limit the scope of a name
+to a subtree of the document,
+so elements outside won’t see the chosen <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name③">trigger name</a>,
+and elements inside will only see the version of the <span id="ref-for-css-trigger-name④">trigger name</span>
+defined inside the scope.</p>
+   <table class="def propdef" data-link-for-hint="trigger-scope">
+    <tbody>
+     <tr>
+      <th>Name:
+      <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-trigger-scope">trigger-scope</dfn>
+     <tr class="value">
+      <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> all <span id="ref-for-comb-one①⓪">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident⑦">&lt;dashed-ident></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma④">#</a>
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
+      <td>none
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#applies-to">Applies to:</a>
+      <td><a href="https://www.w3.org/TR/css-pseudo/#generated-content" title="Includes ::before and ::after pseudo-elements.">all elements</a>
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#inherited-property">Inherited:</a>
+      <td>no
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-values/#percentages">Percentages:</a>
+      <td>n/a
+     <tr>
+      <th><a href="https://www.w3.org/TR/css-cascade/#computed">Computed value:</a>
+      <td>as specified
+     <tr>
+      <th><a href="https://www.w3.org/TR/cssom/#serializing-css-values">Canonical order:</a>
+      <td>per grammar
+     <tr>
+      <th><a href="https://www.w3.org/TR/web-animations/#animation-type">Animation type:</a>
+      <td>not animatable
+   </table>
+   <p>This property scopes <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name⑤">trigger names</a> to the subtree of the matching element.
+Its values are:</p>
+   <dl>
+    <dt><dfn class="css dfn-paneled" data-dfn-for="trigger-scope" data-dfn-type="value" data-export id="valdef-trigger-scope-none">none</dfn>
+  
+    <dd>
+    No changes in <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name⑥">trigger name</a> scope.
+
+  
+    <dt><dfn class="css dfn-paneled" data-dfn-for="trigger-scope" data-dfn-type="value" data-export id="valdef-trigger-scope-all">all</dfn>
+  
+    <dd>
+     
+    Specifies that all <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name⑦">trigger names</a> defined by this element or its descendants—​whose scope is not already limited by a descendant using <a class="css property" data-link-type="property" href="#propdef-trigger-scope" id="ref-for-propdef-trigger-scope②">trigger-scope</a>—​to be in scope only for this element’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree">flat tree</a> descendants;
+    and limits descendants to only match <span id="ref-for-css-trigger-name⑧">trigger names</span>
+    to <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger①⓪">triggers</a> within this subtree.
+
+
+     <p>This value only affects <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name⑨">trigger names</a> in the same tree scope,
+    as if it were a <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#tree-scoped-name-strictly-matched" id="ref-for-tree-scoped-name-strictly-matched">strictly matched</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name" id="ref-for-css-tree-scoped-name①">tree-scoped name</a>.
+    (That is, <a class="css" data-link-type="propdesc" href="#propdef-trigger-scope" id="ref-for-propdef-trigger-scope③">trigger-scope: all</a> acts identically
+    to <span class="css" id="ref-for-propdef-trigger-scope④">trigger-scope: --foo, --bar, ...</span>,
+    listing all relevant <span id="ref-for-css-trigger-name①⓪">trigger names</span>.)</p>
+    <dt><dfn class="css dfn-paneled" data-dfn-for="trigger-scope" data-dfn-type="value" data-export id="valdef-trigger-scope-dashed-ident"><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident⑧">&lt;dashed-ident></a></dfn>
+  
+    <dd>
+     
+    Specifies that a matching <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name①①">trigger name</a> defined by this element or its descendants—​whose scope is not already limited by a descendant using <a class="css property" data-link-type="property" href="#propdef-trigger-scope" id="ref-for-propdef-trigger-scope⑤">trigger-scope</a>—​to be in scope only for this element’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree①">flat tree</a> descendants;
+    and limits descendants to only match these <span id="ref-for-css-trigger-name①②">trigger names</span>
+    to <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger①①">triggers</a> within this subtree.
+
+
+     <p>The <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident⑨">&lt;dashed-ident></a> represents a <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#tree-scoped-name-strictly-matched" id="ref-for-tree-scoped-name-strictly-matched①">strictly matched</a> <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name" id="ref-for-css-tree-scoped-name②">tree-scoped name</a>,
+    i.e. it can only match against <a data-link-type="dfn" href="#css-trigger-name" id="ref-for-css-trigger-name①③">trigger names</a> in the same shadow tree.<a data-link-type="biblio" href="#biblio-css-scoping-1" title="CSS Scoping Module Level 1">[CSS-SCOPING-1]</a></p>
+   </dl>
    <h3 class="heading settled" data-level="5.2" id="timeline-triggers"><span class="secno">5.2. </span><span class="content">
 Timeline Triggers</span><a class="self-link" href="#timeline-triggers"></a></h3>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="timeline-trigger">timeline trigger</dfn> is a <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers①⓪">trigger</a>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="timeline-trigger">timeline trigger</dfn> is a <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger①②">trigger</a>
 which is activated when some <a data-link-type="dfn" href="https://drafts.csswg.org/web-animations-1/#timeline" id="ref-for-timeline④">timeline</a>
 enters the trigger’s <dfn class="dfn-paneled" data-dfn-for="timeline trigger" data-dfn-type="dfn" data-export id="timeline-trigger-enter-range">enter range</dfn>,
 or leaves the trigger’s <dfn class="dfn-paneled" data-dfn-for="timeline trigger" data-dfn-type="dfn" data-export id="timeline-trigger-exit-range">exit range</dfn>.
@@ -2145,7 +2212,7 @@ Naming the Trigger: the <a class="css property" data-link-type="property" href="
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-name">timeline-trigger-name</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one⑨">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident⑦">&lt;dashed-ident></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma④">#</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①①">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①⓪">&lt;dashed-ident></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑤">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>none
@@ -2170,7 +2237,7 @@ Naming the Trigger: the <a class="css property" data-link-type="property" href="
    </table>
    <p>If <span class="css">none</span> is specified,
 the element does not define any <a data-link-type="dfn" href="#timeline-trigger" id="ref-for-timeline-trigger⑧">timeline triggers</a>.</p>
-   <p>If the same <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident⑧">&lt;dashed-ident></a> appears multiple times in the list,
+   <p>If the same <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①①">&lt;dashed-ident></a> appears multiple times in the list,
 only the last one defines a <a data-link-type="dfn" href="#timeline-trigger" id="ref-for-timeline-trigger⑨">timeline trigger</a>;
 the preceding ones have no effect.</p>
    <h4 class="heading settled" data-level="5.2.2" id="timeline-trigger-source"><span class="secno">5.2.2. </span><span class="content">
@@ -2182,7 +2249,7 @@ Linking a Timeline: the <a class="css property" data-link-type="property" href="
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-source">timeline-trigger-source</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod"><a class="css production" data-link-type="type" href="#typedef-single-animation-timeline" id="ref-for-typedef-single-animation-timeline③">&lt;single-animation-timeline></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑤">#</a>
+      <td class="prod"><a class="css production" data-link-type="type" href="#typedef-single-animation-timeline" id="ref-for-typedef-single-animation-timeline③">&lt;single-animation-timeline></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑥">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto
@@ -2226,7 +2293,7 @@ The Enter Range: the <a class="css property" data-link-type="property" href="#pr
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-range">timeline-trigger-range</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-range-start" id="ref-for-propdef-timeline-trigger-range-start">&lt;'timeline-trigger-range-start'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-range-end" id="ref-for-propdef-timeline-trigger-range-end">&lt;'timeline-trigger-range-end'></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑥">#</a>
+      <td class="prod">[ <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-range-start" id="ref-for-propdef-timeline-trigger-range-start">&lt;'timeline-trigger-range-start'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-range-end" id="ref-for-propdef-timeline-trigger-range-end">&lt;'timeline-trigger-range-end'></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑦">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties
@@ -2262,7 +2329,7 @@ It has the same syntax as the <a class="css property" data-link-type="property" 
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-range-start">timeline-trigger-range-start</dfn>, <dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-range-end">timeline-trigger-range-end</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ normal <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⓪">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage></a> <span id="ref-for-comb-one①①">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/scroll-animations-1/#typedef-timeline-range-name" id="ref-for-typedef-timeline-range-name①">&lt;timeline-range-name></a> <span class="production" id="ref-for-typedef-length-percentage①">&lt;length-percentage></span><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑦">#</a>
+      <td class="prod">[ normal <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage></a> <span id="ref-for-comb-one①③">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/scroll-animations-1/#typedef-timeline-range-name" id="ref-for-typedef-timeline-range-name①">&lt;timeline-range-name></a> <span class="production" id="ref-for-typedef-length-percentage①">&lt;length-percentage></span><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt①">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑧">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>normal
@@ -2297,7 +2364,7 @@ The Exit Range: the <a class="css property" data-link-type="property" href="#pro
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-exit-range">timeline-trigger-exit-range</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-exit-range-start" id="ref-for-propdef-timeline-trigger-exit-range-start">&lt;'timeline-trigger-exit-range-start'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-exit-range-end" id="ref-for-propdef-timeline-trigger-exit-range-end">&lt;'timeline-trigger-exit-range-end'></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt②">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑧">#</a>
+      <td class="prod">[ <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-exit-range-start" id="ref-for-propdef-timeline-trigger-exit-range-start">&lt;'timeline-trigger-exit-range-start'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-exit-range-end" id="ref-for-propdef-timeline-trigger-exit-range-end">&lt;'timeline-trigger-exit-range-end'></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt②">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑨">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties
@@ -2332,7 +2399,7 @@ It has the same syntax as the <a class="css property" data-link-type="property" 
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-exit-range-start">timeline-trigger-exit-range-start</dfn>, <dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger-exit-range-end">timeline-trigger-exit-range-end</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①②">|</a> normal <span id="ref-for-comb-one①③">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage②">&lt;length-percentage></a> <span id="ref-for-comb-one①④">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/scroll-animations-1/#typedef-timeline-range-name" id="ref-for-typedef-timeline-range-name②">&lt;timeline-range-name></a> <span class="production" id="ref-for-typedef-length-percentage③">&lt;length-percentage></span><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt③">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma⑨">#</a>
+      <td class="prod">[ auto <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①④">|</a> normal <span id="ref-for-comb-one①⑤">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage②">&lt;length-percentage></a> <span id="ref-for-comb-one①⑥">|</span> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/scroll-animations-1/#typedef-timeline-range-name" id="ref-for-typedef-timeline-range-name②">&lt;timeline-range-name></a> <span class="production" id="ref-for-typedef-length-percentage③">&lt;length-percentage></span><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt③">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①⓪">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>auto
@@ -2375,7 +2442,7 @@ The <a class="css property" data-link-type="property" href="#propdef-timeline-tr
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-timeline-trigger">timeline-trigger</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑤">|</a> [ <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-name" id="ref-for-propdef-timeline-trigger-name②">&lt;'timeline-trigger-name'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-source" id="ref-for-propdef-timeline-trigger-source②">&lt;'timeline-trigger-source'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-range" id="ref-for-propdef-timeline-trigger-range③">&lt;'timeline-trigger-range'></a> [ '/' <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-exit-range" id="ref-for-propdef-timeline-trigger-exit-range③">&lt;'timeline-trigger-exit-range'></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt④">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①⓪">#</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑦">|</a> [ <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-name" id="ref-for-propdef-timeline-trigger-name②">&lt;'timeline-trigger-name'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-source" id="ref-for-propdef-timeline-trigger-source②">&lt;'timeline-trigger-source'></a> <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-range" id="ref-for-propdef-timeline-trigger-range③">&lt;'timeline-trigger-range'></a> [ '/' <a class="css production" data-link-type="property" href="#propdef-timeline-trigger-exit-range" id="ref-for-propdef-timeline-trigger-exit-range③">&lt;'timeline-trigger-exit-range'></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt④">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①①">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>see individual properties
@@ -2413,7 +2480,7 @@ this shorthand’s values must be given in the specified order,
 rather than being settable in any order as is more common.</p>
    <h3 class="heading settled" data-level="5.3" id="event-triggers"><span class="secno">5.3. </span><span class="content">
 Event Triggers</span><a class="self-link" href="#event-triggers"></a></h3>
-   <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="event-trigger">event trigger</dfn> is a <a data-link-type="dfn" href="#css-triggers" id="ref-for-css-triggers①①">trigger</a>
+   <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="event-trigger">event trigger</dfn> is a <a data-link-type="dfn" href="#css-trigger" id="ref-for-css-trigger①③">trigger</a>
 which is activated when certain <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event">Event</a></code>s are fired at the element.
 It is defined on an element with the <a class="css property" data-link-type="property" href="#propdef-event-trigger" id="ref-for-propdef-event-trigger①">event-trigger</a> shorthand property,
 or its longhands.</p>
@@ -2469,7 +2536,7 @@ Naming the Trigger: the <a class="css property" data-link-type="property" href="
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-event-trigger-name">event-trigger-name</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑥">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident⑨">&lt;dashed-ident></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①①">#</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑧">|</a> <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①②">&lt;dashed-ident></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①②">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>none
@@ -2494,7 +2561,7 @@ Naming the Trigger: the <a class="css property" data-link-type="property" href="
    </table>
    <p>If <span class="css">none</span> is specified,
 the element does not define any <a data-link-type="dfn" href="#event-trigger" id="ref-for-event-trigger①⓪">event triggers</a>.</p>
-   <p>If the same <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①⓪">&lt;dashed-ident></a> appears multiple times in the list,
+   <p>If the same <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①③">&lt;dashed-ident></a> appears multiple times in the list,
 only the last one defines a <a data-link-type="dfn" href="#event-trigger" id="ref-for-event-trigger①①">event trigger</a>;
 the preceding ones have no effect.</p>
    <h4 class="heading settled" data-level="5.3.2" id="event-trigger-source"><span class="secno">5.3.2. </span><span class="content">
@@ -2506,7 +2573,7 @@ Linking an Event: the <a class="css property" data-link-type="property" href="#p
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-event-trigger-source">event-trigger-source</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">[ none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑦">|</a> <a class="css production" data-link-type="type" href="#typedef-event-trigger-event" id="ref-for-typedef-event-trigger-event">&lt;event-trigger-event></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus②">+</a> [ / <span class="production" id="ref-for-typedef-event-trigger-event①">&lt;event-trigger-event></span><span id="ref-for-mult-one-plus③">+</span> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑤">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①②">#</a>
+      <td class="prod">[ none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑨">|</a> <a class="css production" data-link-type="type" href="#typedef-event-trigger-event" id="ref-for-typedef-event-trigger-event">&lt;event-trigger-event></a><a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-one-plus" id="ref-for-mult-one-plus②">+</a> [ / <span class="production" id="ref-for-typedef-event-trigger-event①">&lt;event-trigger-event></span><span id="ref-for-mult-one-plus③">+</span> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-opt" id="ref-for-mult-opt⑤">?</a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①③">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>none
@@ -2548,7 +2615,7 @@ while those after the <span class="css">/</span> are the <a data-link-type="dfn"
 the <a data-link-type="dfn" href="#event-trigger" id="ref-for-event-trigger①⑥">event trigger</a> is stateless,
 and the provided events are its <a data-link-type="dfn" href="#event-trigger-enter-event" id="ref-for-event-trigger-enter-event⑤">enter events</a>.</p>
    </dl>
-<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-event-trigger-event"><a class="production" data-link-type="type" href="#typedef-event-trigger-event" id="ref-for-typedef-event-trigger-event④">&lt;event-trigger-event></a></dfn> = activate <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑧">|</a> click <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one①⑨">|</a> touch <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⓪">|</a> dblclick <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②①">|</a> keypress(<a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value">&lt;string></a>) <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②②">|</a> ...
+<pre class="prod"><dfn class="dfn-paneled" data-dfn-type="type" data-export id="typedef-event-trigger-event"><a class="production" data-link-type="type" href="#typedef-event-trigger-event" id="ref-for-typedef-event-trigger-event④">&lt;event-trigger-event></a></dfn> = activate <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⓪">|</a> click <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②①">|</a> touch <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②②">|</a> dblclick <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②③">|</a> keypress(<a class="production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#string-value" id="ref-for-string-value">&lt;string></a>) <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②④">|</a> ...
 </pre>
    <p class="issue" id="issue-f0aaca2a"><a class="self-link" href="#issue-f0aaca2a"></a> Figure out the full set of events we want to handle.</p>
    <h4 class="heading settled" data-level="5.3.3" id="event-trigger-shorthand"><span class="secno">5.3.3. </span><span class="content">
@@ -2560,7 +2627,7 @@ The <a class="css property" data-link-type="property" href="#propdef-event-trigg
       <td><dfn class="css dfn-paneled" data-dfn-type="property" data-export id="propdef-event-trigger">event-trigger</dfn>
      <tr class="value">
       <th><a href="https://www.w3.org/TR/css-values/#value-defs">Value:</a>
-      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②③">|</a> [ <a class="css production" data-link-type="property" href="#propdef-event-trigger-name" id="ref-for-propdef-event-trigger-name②">&lt;'event-trigger-name'></a> <a class="css production" data-link-type="property" href="#propdef-event-trigger-source" id="ref-for-propdef-event-trigger-source②">&lt;'event-trigger-source'></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①③">#</a>
+      <td class="prod">none <a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#comb-one" id="ref-for-comb-one②⑤">|</a> [ <a class="css production" data-link-type="property" href="#propdef-event-trigger-name" id="ref-for-propdef-event-trigger-name②">&lt;'event-trigger-name'></a> <a class="css production" data-link-type="property" href="#propdef-event-trigger-source" id="ref-for-propdef-event-trigger-source②">&lt;'event-trigger-source'></a> ]<a data-link-type="grammar" href="https://drafts.csswg.org/css-values-4/#mult-comma" id="ref-for-mult-comma①④">#</a>
      <tr>
       <th><a href="https://www.w3.org/TR/css-cascade/#initial-values">Initial:</a>
       <td>none
@@ -2970,6 +3037,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
+   <li><a href="#valdef-trigger-scope-all">all</a><span>, in § 5.1</span>
    <li><a href="#typedef-animation-action">&lt;animation-action></a><span>, in § 4.10</span>
    <li><a href="#propdef-animation-composition">animation-composition</a><span>, in § 4.8</span>
    <li><a href="#propdef-animation-duration">animation-duration</a><span>, in § 4.1</span>
@@ -2985,7 +3053,12 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     </ul>
    <li><a href="#computed-keyframe-order">computed keyframe order</a><span>, in § 3.2</span>
    <li><a href="#cssanimation">CSSAnimation</a><span>, in § 7.1</span>
-   <li><a href="#valdef-animation-timeline-dashed-ident">&lt;dashed-ident></a><span>, in § 4.9</span>
+   <li>
+    &lt;dashed-ident>
+    <ul>
+     <li><a href="#valdef-animation-timeline-dashed-ident">value for animation-timeline, &lt;single-animation-timeline></a><span>, in § 4.9</span>
+     <li><a href="#valdef-trigger-scope-dashed-ident">value for trigger-scope</a><span>, in § 5.1</span>
+    </ul>
    <li><a href="#valdef-animation-trigger--dashed-ident-animation-action">[ &lt;dashed-ident> &lt;animation-action>+ ]+</a><span>, in § 4.10</span>
    <li><a href="#elapsed-time">Elapsed time</a><span>, in § 6.1</span>
    <li>
@@ -3021,6 +3094,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><a href="#valdef-event-trigger-none">value for event-trigger</a><span>, in § 5.3.3</span>
      <li><a href="#valdef-event-trigger-source-none">value for event-trigger-source</a><span>, in § 5.3.2</span>
      <li><a href="#valdef-timeline-trigger-none">value for timeline-trigger</a><span>, in § 5.2.5</span>
+     <li><a href="#valdef-trigger-scope-none">value for trigger-scope</a><span>, in § 5.1</span>
     </ul>
    <li><a href="#owning-element">owning element</a><span>, in § 2.1</span>
    <li><a href="#valdef-animation-action-pause">pause</a><span>, in § 4.10</span>
@@ -3046,9 +3120,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <li><a href="#propdef-timeline-trigger-range-end">timeline-trigger-range-end</a><span>, in § 5.2.3</span>
    <li><a href="#propdef-timeline-trigger-range-start">timeline-trigger-range-start</a><span>, in § 5.2.3</span>
    <li><a href="#propdef-timeline-trigger-source">timeline-trigger-source</a><span>, in § 5.2.2</span>
+   <li><a href="#css-trigger">trigger</a><span>, in § 5</span>
    <li><a href="#triggered-animation">triggered animation</a><span>, in § 5</span>
    <li><a href="#css-trigger-instance">trigger instance</a><span>, in § 5</span>
-   <li><a href="#css-triggers">triggers</a><span>, in § 5</span>
+   <li><a href="#css-trigger-name">trigger name</a><span>, in § 5</span>
+   <li><a href="#propdef-trigger-scope">trigger-scope</a><span>, in § 5.1</span>
    <li>
     trigger state
     <ul>
@@ -3060,12 +3136,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   </ul>
   <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
-   <li>
-    <a data-link-type="biblio">[CSS-ANCHOR-POSITION-1]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="e4b08566">anchor name</span>
-     <li><span class="dfn-paneled" id="2284f85b">anchor-scope</span>
-    </ul>
    <li>
     <a data-link-type="biblio">[CSS-CASCADE-5]</a> defines the following terms:
     <ul>
@@ -3107,6 +3177,13 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS-MASKING-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="9409b0a0">add</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-SCOPING-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="22109b0e">flat tree</span>
+     <li><span class="dfn-paneled" id="d57b37ba">strictly matched</span>
+     <li><span class="dfn-paneled" id="778f8dbd">tree-scoped name</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-TRANSFORMS-2]</a> defines the following terms:
@@ -3184,6 +3261,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <ul>
      <li><span class="dfn-paneled" id="129bdae8">Event</span>
      <li><span class="dfn-paneled" id="b3b68040">event target</span>
+     <li><span class="dfn-paneled" id="ce720392">shadow root</span>
      <li><span class="dfn-paneled" id="e8478f36">target</span>
      <li><span class="dfn-paneled" id="25538777">tree order</span>
     </ul>
@@ -3269,8 +3347,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
-   <dt id="biblio-css-anchor-position-1">[CSS-ANCHOR-POSITION-1]
-   <dd>Tab Atkins Jr.; Elika Etemad; Ian Kilpatrick. <a href="https://drafts.csswg.org/css-anchor-position-1/"><cite>CSS Anchor Positioning</cite></a>. URL: <a href="https://drafts.csswg.org/css-anchor-position-1/">https://drafts.csswg.org/css-anchor-position-1/</a>
    <dt id="biblio-css-cascade-5">[CSS-CASCADE-5]
    <dd>Elika Etemad; Miriam Suzanne; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-cascade-5/"><cite>CSS Cascading and Inheritance Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-cascade-5/">https://drafts.csswg.org/css-cascade-5/</a>
    <dt id="biblio-css-cascade-6">[CSS-CASCADE-6]
@@ -3279,6 +3355,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-display-4/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-display-4/">https://drafts.csswg.org/css-display-4/</a>
    <dt id="biblio-css-easing-2">[CSS-EASING-2]
    <dd><a href="https://drafts.csswg.org/css-easing/"><cite>CSS Easing Functions Level 2</cite></a>. URL: <a href="https://drafts.csswg.org/css-easing/">https://drafts.csswg.org/css-easing/</a>
+   <dt id="biblio-css-scoping-1">[CSS-SCOPING-1]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-scoping/"><cite>CSS Scoping Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-scoping/">https://drafts.csswg.org/css-scoping/</a>
    <dt id="biblio-css-values-4">[CSS-VALUES-4]
    <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
    <dt id="biblio-css2">[CSS2]
@@ -3502,6 +3580,16 @@ a case-sensitive css identifier,
 a computed scroll() function,
 or
 a computed view() function
+     <tr>
+      <th scope="row"><a class="css" data-link-type="property" href="#propdef-trigger-scope" id="ref-for-propdef-trigger-scope⑥">trigger-scope</a>
+      <td>none | all | &lt;dashed-ident>#
+      <td>none
+      <td>all elements
+      <td>no
+      <td>n/a
+      <td>not animatable
+      <td>per grammar
+      <td>as specified
    </table>
   </div>
   <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
@@ -3839,9 +3927,9 @@ let dfnPanelData = {
 "2093b6bf": {"dfnID":"2093b6bf","dfnText":"declaration block","external":true,"refSections":[{"refs":[{"id":"ref-for-x14"}],"title":"3.2. \nProcessing Keyframes"}],"url":"https://www.w3.org/TR/CSS2/syndata.html#x14"},
 "21b83173": {"dfnID":"21b83173","dfnText":"idle","external":true,"refSections":[{"refs":[{"id":"ref-for-play-state-idle"},{"id":"ref-for-play-state-idle\u2460"},{"id":"ref-for-play-state-idle\u2461"}],"title":"2.2. Animation composite order"}],"url":"https://drafts.csswg.org/web-animations-1/#play-state-idle"},
 "21e02692": {"dfnID":"21e02692","dfnText":"associated effect end","external":true,"refSections":[{"refs":[{"id":"ref-for-associated-effect-end"}],"title":"6.1. Event dispatch"}],"url":"https://drafts.csswg.org/web-animations-1/#associated-effect-end"},
+"22109b0e": {"dfnID":"22109b0e","dfnText":"flat tree","external":true,"refSections":[{"refs":[{"id":"ref-for-flat-tree"},{"id":"ref-for-flat-tree\u2460"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"}],"url":"https://drafts.csswg.org/css-scoping-1/#flat-tree"},
 "223bd4c4": {"dfnID":"223bd4c4","dfnText":"scale","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scale"}],"title":"4.8. The animation-composition property"}],"url":"https://drafts.csswg.org/css-transforms-2/#propdef-scale"},
-"2284f85b": {"dfnID":"2284f85b","dfnText":"anchor-scope","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-anchor-scope"}],"title":"5.1. \nTrigger Scope/Resolution"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope"},
-"25538777": {"dfnID":"25538777","dfnText":"tree order","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-order"}],"title":"2.2. Animation composite order"},{"refs":[{"id":"ref-for-concept-tree-order\u2460"}],"title":"5.1. \nTrigger Scope/Resolution"}],"url":"https://dom.spec.whatwg.org/#concept-tree-order"},
+"25538777": {"dfnID":"25538777","dfnText":"tree order","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-tree-order"}],"title":"2.2. Animation composite order"},{"refs":[{"id":"ref-for-concept-tree-order\u2460"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"}],"url":"https://dom.spec.whatwg.org/#concept-tree-order"},
 "28db7e5a": {"dfnID":"28db7e5a","dfnText":"named timeline range","external":true,"refSections":[{"refs":[{"id":"ref-for-named-timeline-range"}],"title":"5.2.3. \nThe Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-named-timeline-range\u2460"}],"title":"5.2.4. \nThe Exit Range: the timeline-trigger-exit-range property"}],"url":"https://drafts.csswg.org/scroll-animations-1/#named-timeline-range"},
 "298b8d87": {"dfnID":"298b8d87","dfnText":"scroll()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-scroll"},{"id":"ref-for-funcdef-scroll\u2460"},{"id":"ref-for-funcdef-scroll\u2461"},{"id":"ref-for-funcdef-scroll\u2462"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-funcdef-scroll\u2463"}],"title":"5.2.2. \nLinking a Timeline: the timeline-trigger-source property"}],"url":"https://drafts.csswg.org/scroll-animations-1/#funcdef-scroll"},
 "2d1d585c": {"dfnID":"2d1d585c","dfnText":"animationstart","external":true,"refSections":[{"refs":[{"id":"ref-for-eventdef-globaleventhandlers-animationstart"},{"id":"ref-for-eventdef-globaleventhandlers-animationstart\u2460"},{"id":"ref-for-eventdef-globaleventhandlers-animationstart\u2461"},{"id":"ref-for-eventdef-globaleventhandlers-animationstart\u2462"}],"title":"6.1. Event dispatch"}],"url":"https://drafts.csswg.org/css-animations-1/#eventdef-globaleventhandlers-animationstart"},
@@ -3866,16 +3954,17 @@ let dfnPanelData = {
 "5e4c6440": {"dfnID":"5e4c6440","dfnText":"play an animation","external":true,"refSections":[{"refs":[{"id":"ref-for-play-an-animation"}],"title":"4.5. The animation-play-state property"}],"url":"https://drafts.csswg.org/web-animations-1/#play-an-animation"},
 "5fced98b": {"dfnID":"5fced98b","dfnText":"CSSOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-cssomstring"},{"id":"ref-for-cssomstring\u2460"}],"title":"7.1. The CSSAnimation interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssomstring"},
 "609d221d": {"dfnID":"609d221d","dfnText":"paused","external":true,"refSections":[{"refs":[{"id":"ref-for-play-state-paused"},{"id":"ref-for-play-state-paused\u2460"}],"title":"2. Animations"}],"url":"https://drafts.csswg.org/web-animations-1/#play-state-paused"},
-"68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"4.1. The animation-duration property"},{"refs":[{"id":"ref-for-mult-comma\u2460"}],"title":"4.8. The animation-composition property"},{"refs":[{"id":"ref-for-mult-comma\u2461"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-mult-comma\u2462"}],"title":"4.10. \nThe animation-trigger property"},{"refs":[{"id":"ref-for-mult-comma\u2463"}],"title":"5.2.1. \nNaming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-mult-comma\u2464"}],"title":"5.2.2. \nLinking a Timeline: the timeline-trigger-source property"},{"refs":[{"id":"ref-for-mult-comma\u2465"},{"id":"ref-for-mult-comma\u2466"}],"title":"5.2.3. \nThe Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-mult-comma\u2467"},{"id":"ref-for-mult-comma\u2468"}],"title":"5.2.4. \nThe Exit Range: the timeline-trigger-exit-range property"},{"refs":[{"id":"ref-for-mult-comma\u2460\u24ea"}],"title":"5.2.5. \nThe timeline-trigger Shorthand"},{"refs":[{"id":"ref-for-mult-comma\u2460\u2460"}],"title":"5.3.1. \nNaming the Trigger: the event-trigger-name property"},{"refs":[{"id":"ref-for-mult-comma\u2460\u2461"}],"title":"5.3.2. \nLinking an Event: the event-trigger-source property"},{"refs":[{"id":"ref-for-mult-comma\u2460\u2462"}],"title":"5.3.3. \nThe event-trigger Shorthand"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
+"68487d22": {"dfnID":"68487d22","dfnText":"#","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-comma"}],"title":"4.1. The animation-duration property"},{"refs":[{"id":"ref-for-mult-comma\u2460"}],"title":"4.8. The animation-composition property"},{"refs":[{"id":"ref-for-mult-comma\u2461"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-mult-comma\u2462"}],"title":"4.10. \nThe animation-trigger property"},{"refs":[{"id":"ref-for-mult-comma\u2463"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"},{"refs":[{"id":"ref-for-mult-comma\u2464"}],"title":"5.2.1. \nNaming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-mult-comma\u2465"}],"title":"5.2.2. \nLinking a Timeline: the timeline-trigger-source property"},{"refs":[{"id":"ref-for-mult-comma\u2466"},{"id":"ref-for-mult-comma\u2467"}],"title":"5.2.3. \nThe Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-mult-comma\u2468"},{"id":"ref-for-mult-comma\u2460\u24ea"}],"title":"5.2.4. \nThe Exit Range: the timeline-trigger-exit-range property"},{"refs":[{"id":"ref-for-mult-comma\u2460\u2460"}],"title":"5.2.5. \nThe timeline-trigger Shorthand"},{"refs":[{"id":"ref-for-mult-comma\u2460\u2461"}],"title":"5.3.1. \nNaming the Trigger: the event-trigger-name property"},{"refs":[{"id":"ref-for-mult-comma\u2460\u2462"}],"title":"5.3.2. \nLinking an Event: the event-trigger-source property"},{"refs":[{"id":"ref-for-mult-comma\u2460\u2463"}],"title":"5.3.3. \nThe event-trigger Shorthand"}],"url":"https://drafts.csswg.org/css-values-4/#mult-comma"},
 "6aa0dd52": {"dfnID":"6aa0dd52","dfnText":"pause()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-animation-pause"}],"title":"2. Animations"},{"refs":[{"id":"ref-for-dom-animation-pause\u2460"},{"id":"ref-for-dom-animation-pause\u2461"},{"id":"ref-for-dom-animation-pause\u2462"},{"id":"ref-for-dom-animation-pause\u2463"}],"title":"4.10. \nThe animation-trigger property"}],"url":"https://drafts.csswg.org/web-animations-1/#dom-animation-pause"},
 "6dbf7050": {"dfnID":"6dbf7050","dfnText":"current iteration","external":true,"refSections":[{"refs":[{"id":"ref-for-current-iteration"},{"id":"ref-for-current-iteration\u2460"},{"id":"ref-for-current-iteration\u2461"},{"id":"ref-for-current-iteration\u2462"},{"id":"ref-for-current-iteration\u2463"},{"id":"ref-for-current-iteration\u2464"}],"title":"6.1. Event dispatch"}],"url":"https://www.w3.org/TR/web-animations-1/#current-iteration"},
 "6ddface9": {"dfnID":"6ddface9","dfnText":"<keyframe-block>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-keyframe-block"},{"id":"ref-for-typedef-keyframe-block\u2460"},{"id":"ref-for-typedef-keyframe-block\u2461"},{"id":"ref-for-typedef-keyframe-block\u2462"}],"title":"3.2. \nProcessing Keyframes"}],"url":"https://drafts.csswg.org/css-animations-1/#typedef-keyframe-block"},
 "6eacac06": {"dfnID":"6eacac06","dfnText":"cascade origin","external":true,"refSections":[{"refs":[{"id":"ref-for-origin"},{"id":"ref-for-origin\u2460"}],"title":"2.1. Owning element"}],"url":"https://drafts.csswg.org/css-cascade-6/#origin"},
-"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"4.1. The animation-duration property"},{"refs":[{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"}],"title":"4.8. The animation-composition property"},{"refs":[{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-comb-one\u2466"}],"title":"4.10. \nThe animation-trigger property"},{"refs":[{"id":"ref-for-comb-one\u2467"}],"title":"4.11. The animation shorthand property"},{"refs":[{"id":"ref-for-comb-one\u2468"}],"title":"5.2.1. \nNaming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-comb-one\u2460\u24ea"},{"id":"ref-for-comb-one\u2460\u2460"}],"title":"5.2.3. \nThe Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"},{"id":"ref-for-comb-one\u2460\u2463"}],"title":"5.2.4. \nThe Exit Range: the timeline-trigger-exit-range property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2464"}],"title":"5.2.5. \nThe timeline-trigger Shorthand"},{"refs":[{"id":"ref-for-comb-one\u2460\u2465"}],"title":"5.3.1. \nNaming the Trigger: the event-trigger-name property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2466"},{"id":"ref-for-comb-one\u2460\u2467"},{"id":"ref-for-comb-one\u2460\u2468"},{"id":"ref-for-comb-one\u2461\u24ea"},{"id":"ref-for-comb-one\u2461\u2460"},{"id":"ref-for-comb-one\u2461\u2461"}],"title":"5.3.2. \nLinking an Event: the event-trigger-source property"},{"refs":[{"id":"ref-for-comb-one\u2461\u2462"}],"title":"5.3.3. \nThe event-trigger Shorthand"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
+"6ec67710": {"dfnID":"6ec67710","dfnText":"|","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-one"}],"title":"4.1. The animation-duration property"},{"refs":[{"id":"ref-for-comb-one\u2460"},{"id":"ref-for-comb-one\u2461"}],"title":"4.8. The animation-composition property"},{"refs":[{"id":"ref-for-comb-one\u2462"},{"id":"ref-for-comb-one\u2463"},{"id":"ref-for-comb-one\u2464"},{"id":"ref-for-comb-one\u2465"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-comb-one\u2466"}],"title":"4.10. \nThe animation-trigger property"},{"refs":[{"id":"ref-for-comb-one\u2467"}],"title":"4.11. The animation shorthand property"},{"refs":[{"id":"ref-for-comb-one\u2468"},{"id":"ref-for-comb-one\u2460\u24ea"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2460"}],"title":"5.2.1. \nNaming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2461"},{"id":"ref-for-comb-one\u2460\u2462"}],"title":"5.2.3. \nThe Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2463"},{"id":"ref-for-comb-one\u2460\u2464"},{"id":"ref-for-comb-one\u2460\u2465"}],"title":"5.2.4. \nThe Exit Range: the timeline-trigger-exit-range property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2466"}],"title":"5.2.5. \nThe timeline-trigger Shorthand"},{"refs":[{"id":"ref-for-comb-one\u2460\u2467"}],"title":"5.3.1. \nNaming the Trigger: the event-trigger-name property"},{"refs":[{"id":"ref-for-comb-one\u2460\u2468"},{"id":"ref-for-comb-one\u2461\u24ea"},{"id":"ref-for-comb-one\u2461\u2460"},{"id":"ref-for-comb-one\u2461\u2461"},{"id":"ref-for-comb-one\u2461\u2462"},{"id":"ref-for-comb-one\u2461\u2463"}],"title":"5.3.2. \nLinking an Event: the event-trigger-source property"},{"refs":[{"id":"ref-for-comb-one\u2461\u2464"}],"title":"5.3.3. \nThe event-trigger Shorthand"}],"url":"https://drafts.csswg.org/css-values-4/#comb-one"},
 "7014f8d1": {"dfnID":"7014f8d1","dfnText":"playState","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-animation-playstate"}],"title":"7.2. Requirements on pending style changes"}],"url":"https://drafts.csswg.org/web-animations-1/#dom-animation-playstate"},
 "71162c61": {"dfnID":"71162c61","dfnText":"animationend","external":true,"refSections":[{"refs":[{"id":"ref-for-eventdef-globaleventhandlers-animationend"},{"id":"ref-for-eventdef-globaleventhandlers-animationend\u2460"},{"id":"ref-for-eventdef-globaleventhandlers-animationend\u2461"},{"id":"ref-for-eventdef-globaleventhandlers-animationend\u2462"}],"title":"6.1. Event dispatch"}],"url":"https://drafts.csswg.org/css-animations-1/#eventdef-globaleventhandlers-animationend"},
 "740e2fa7": {"dfnID":"740e2fa7","dfnText":"animation frame","external":true,"refSections":[{"refs":[{"id":"ref-for-animation-frame"},{"id":"ref-for-animation-frame\u2460"}],"title":"6.1. Event dispatch"}],"url":"https://drafts.csswg.org/web-animations-1/#animation-frame"},
 "7447b8d1": {"dfnID":"7447b8d1","dfnText":"target element","external":true,"refSections":[{"refs":[{"id":"ref-for-effect-target-target-element"}],"title":"2.1. Owning element"}],"url":"https://drafts.csswg.org/web-animations-1/#effect-target-target-element"},
+"778f8dbd": {"dfnID":"778f8dbd","dfnText":"tree-scoped name","external":true,"refSections":[{"refs":[{"id":"ref-for-css-tree-scoped-name"},{"id":"ref-for-css-tree-scoped-name\u2460"},{"id":"ref-for-css-tree-scoped-name\u2461"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"}],"url":"https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name"},
 "78be83bb": {"dfnID":"78be83bb","dfnText":"animation-delay","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-animation-delay"}],"title":"2. Animations"},{"refs":[{"id":"ref-for-propdef-animation-delay\u2460"},{"id":"ref-for-propdef-animation-delay\u2461"},{"id":"ref-for-propdef-animation-delay\u2462"}],"title":"4.1. The animation-duration property"},{"refs":[{"id":"ref-for-propdef-animation-delay\u2463"},{"id":"ref-for-propdef-animation-delay\u2464"}],"title":"4.6. The animation-delay property"},{"refs":[{"id":"ref-for-propdef-animation-delay\u2465"}],"title":"4.11. The animation shorthand property"}],"url":"https://drafts.csswg.org/css-animations-1/#propdef-animation-delay"},
 "7c8e67c1": {"dfnID":"7c8e67c1","dfnText":"declared value","external":true,"refSections":[{"refs":[{"id":"ref-for-declared-value"}],"title":"3.2. \nProcessing Keyframes"}],"url":"https://drafts.csswg.org/css-cascade-5/#declared-value"},
 "7ccd2ce2": {"dfnID":"7ccd2ce2","dfnText":"play()","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-animation-play"}],"title":"2. Animations"},{"refs":[{"id":"ref-for-dom-animation-play\u2460"},{"id":"ref-for-dom-animation-play\u2461"},{"id":"ref-for-dom-animation-play\u2462"},{"id":"ref-for-dom-animation-play\u2463"},{"id":"ref-for-dom-animation-play\u2464"},{"id":"ref-for-dom-animation-play\u2465"},{"id":"ref-for-dom-animation-play\u2466"},{"id":"ref-for-dom-animation-play\u2467"},{"id":"ref-for-dom-animation-play\u2468"},{"id":"ref-for-dom-animation-play\u2460\u24ea"},{"id":"ref-for-dom-animation-play\u2460\u2460"},{"id":"ref-for-dom-animation-play\u2460\u2461"},{"id":"ref-for-dom-animation-play\u2460\u2462"},{"id":"ref-for-dom-animation-play\u2460\u2463"}],"title":"4.10. \nThe animation-trigger property"}],"url":"https://drafts.csswg.org/web-animations-1/#dom-animation-play"},
@@ -3885,7 +3974,7 @@ let dfnPanelData = {
 "83998ca7": {"dfnID":"83998ca7","dfnText":"playback direction","external":true,"refSections":[{"refs":[{"id":"ref-for-playback-direction"}],"title":"4.4. The animation-direction property"}],"url":"https://drafts.csswg.org/web-animations-1/#playback-direction"},
 "85b4884b": {"dfnID":"85b4884b","dfnText":"after phase","external":true,"refSections":[{"refs":[{"id":"ref-for-animation-effect-after-phase"},{"id":"ref-for-animation-effect-after-phase\u2460"},{"id":"ref-for-animation-effect-after-phase\u2461"},{"id":"ref-for-animation-effect-after-phase\u2462"},{"id":"ref-for-animation-effect-after-phase\u2463"},{"id":"ref-for-animation-effect-after-phase\u2464"}],"title":"6.1. Event dispatch"}],"url":"https://drafts.csswg.org/web-animations-1/#animation-effect-after-phase"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"7.1. The CSSAnimation interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
-"8a427103": {"dfnID":"8a427103","dfnText":"<dashed-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-dashed-ident"},{"id":"ref-for-typedef-dashed-ident\u2460"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2461"},{"id":"ref-for-typedef-dashed-ident\u2462"},{"id":"ref-for-typedef-dashed-ident\u2463"},{"id":"ref-for-typedef-dashed-ident\u2464"},{"id":"ref-for-typedef-dashed-ident\u2465"}],"title":"4.10. \nThe animation-trigger property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2466"},{"id":"ref-for-typedef-dashed-ident\u2467"}],"title":"5.2.1. \nNaming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2468"},{"id":"ref-for-typedef-dashed-ident\u2460\u24ea"}],"title":"5.3.1. \nNaming the Trigger: the event-trigger-name property"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident"},
+"8a427103": {"dfnID":"8a427103","dfnText":"<dashed-ident>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-dashed-ident"},{"id":"ref-for-typedef-dashed-ident\u2460"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2461"},{"id":"ref-for-typedef-dashed-ident\u2462"},{"id":"ref-for-typedef-dashed-ident\u2463"},{"id":"ref-for-typedef-dashed-ident\u2464"},{"id":"ref-for-typedef-dashed-ident\u2465"}],"title":"4.10. \nThe animation-trigger property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2466"},{"id":"ref-for-typedef-dashed-ident\u2467"},{"id":"ref-for-typedef-dashed-ident\u2468"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2460\u24ea"},{"id":"ref-for-typedef-dashed-ident\u2460\u2460"}],"title":"5.2.1. \nNaming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-typedef-dashed-ident\u2460\u2461"},{"id":"ref-for-typedef-dashed-ident\u2460\u2462"}],"title":"5.3.1. \nNaming the Trigger: the event-trigger-name property"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-dashed-ident"},
 "8a82fda1": {"dfnID":"8a82fda1","dfnText":"||","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-any"},{"id":"ref-for-comb-any\u2460"},{"id":"ref-for-comb-any\u2461"},{"id":"ref-for-comb-any\u2462"},{"id":"ref-for-comb-any\u2463"},{"id":"ref-for-comb-any\u2464"},{"id":"ref-for-comb-any\u2465"},{"id":"ref-for-comb-any\u2466"}],"title":"4.11. The animation shorthand property"}],"url":"https://drafts.csswg.org/css-values-4/#comb-any"},
 "8b4fa5e2": {"dfnID":"8b4fa5e2","dfnText":"cover","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-animation-timeline-range-cover"}],"title":"5.2. \nTimeline Triggers"}],"url":"https://drafts.csswg.org/scroll-animations-1/#valdef-animation-timeline-range-cover"},
 "8baec6ed": {"dfnID":"8baec6ed","dfnText":"timeline","external":true,"refSections":[{"refs":[{"id":"ref-for-timeline"},{"id":"ref-for-timeline\u2460"},{"id":"ref-for-timeline\u2461"},{"id":"ref-for-timeline\u2462"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-timeline\u2463"},{"id":"ref-for-timeline\u2464"},{"id":"ref-for-timeline\u2465"}],"title":"5.2. \nTimeline Triggers"},{"refs":[{"id":"ref-for-timeline\u2466"}],"title":"5.2.2. \nLinking a Timeline: the timeline-trigger-source property"},{"refs":[{"id":"ref-for-timeline\u2467"}],"title":"5.2.5. \nThe timeline-trigger Shorthand"}],"url":"https://drafts.csswg.org/web-animations-1/#timeline"},
@@ -3932,13 +4021,16 @@ let dfnPanelData = {
 "c443f9ba": {"dfnID":"c443f9ba","dfnText":"keyframe","external":true,"refSections":[{"refs":[{"id":"ref-for-keyframe"},{"id":"ref-for-keyframe\u2460"},{"id":"ref-for-keyframe\u2461"},{"id":"ref-for-keyframe\u2462"}],"title":"3.2. \nProcessing Keyframes"},{"refs":[{"id":"ref-for-keyframe\u2463"}],"title":"4.2. The animation-timing-function property"}],"url":"https://drafts.csswg.org/web-animations-1/#keyframe"},
 "c5c89fde": {"dfnID":"c5c89fde","dfnText":"<keyframe-selector>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-keyframe-selector"}],"title":"3.2. \nProcessing Keyframes"}],"url":"https://drafts.csswg.org/css-animations-1/#typedef-keyframe-selector"},
 "ca1357e3": {"dfnID":"ca1357e3","dfnText":"<single-animation-play-state>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-single-animation-play-state"}],"title":"4.11. The animation shorthand property"}],"url":"https://drafts.csswg.org/css-animations-1/#typedef-single-animation-play-state"},
+"ce720392": {"dfnID":"ce720392","dfnText":"shadow root","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-shadow-root"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"}],"url":"https://dom.spec.whatwg.org/#concept-element-shadow-root"},
 "computed-keyframe-order": {"dfnID":"computed-keyframe-order","dfnText":"computed order","external":false,"refSections":[{"refs":[{"id":"ref-for-computed-keyframe-order"},{"id":"ref-for-computed-keyframe-order\u2460"}],"title":"3.2. Processing Keyframes"}],"url":"#computed-keyframe-order"},
+"css-trigger": {"dfnID":"css-trigger","dfnText":"triggers","external":false,"refSections":[{"refs":[{"id":"ref-for-css-trigger"}],"title":"4.10. The animation-trigger property"},{"refs":[{"id":"ref-for-css-trigger\u2460"},{"id":"ref-for-css-trigger\u2461"},{"id":"ref-for-css-trigger\u2462"},{"id":"ref-for-css-trigger\u2463"},{"id":"ref-for-css-trigger\u2464"},{"id":"ref-for-css-trigger\u2465"},{"id":"ref-for-css-trigger\u2466"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-css-trigger\u2467"},{"id":"ref-for-css-trigger\u2468"},{"id":"ref-for-css-trigger\u2460\u24ea"},{"id":"ref-for-css-trigger\u2460\u2460"}],"title":"5.1. Trigger Name Scoping: the trigger-scope property"},{"refs":[{"id":"ref-for-css-trigger\u2460\u2461"}],"title":"5.2. Timeline Triggers"},{"refs":[{"id":"ref-for-css-trigger\u2460\u2462"}],"title":"5.3. Event Triggers"}],"url":"#css-trigger"},
 "css-trigger-instance": {"dfnID":"css-trigger-instance","dfnText":"trigger instance","external":false,"refSections":[{"refs":[{"id":"ref-for-css-trigger-instance"},{"id":"ref-for-css-trigger-instance\u2460"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-css-trigger-instance\u2461"}],"title":"5.3. Event Triggers"}],"url":"#css-trigger-instance"},
-"css-triggers": {"dfnID":"css-triggers","dfnText":"triggers","external":false,"refSections":[{"refs":[{"id":"ref-for-css-triggers"}],"title":"4.10. The animation-trigger property"},{"refs":[{"id":"ref-for-css-triggers\u2460"},{"id":"ref-for-css-triggers\u2461"},{"id":"ref-for-css-triggers\u2462"},{"id":"ref-for-css-triggers\u2463"},{"id":"ref-for-css-triggers\u2464"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-css-triggers\u2465"},{"id":"ref-for-css-triggers\u2466"},{"id":"ref-for-css-triggers\u2467"},{"id":"ref-for-css-triggers\u2468"}],"title":"5.1. Trigger Scope/Resolution"},{"refs":[{"id":"ref-for-css-triggers\u2460\u24ea"}],"title":"5.2. Timeline Triggers"},{"refs":[{"id":"ref-for-css-triggers\u2460\u2460"}],"title":"5.3. Event Triggers"}],"url":"#css-triggers"},
+"css-trigger-name": {"dfnID":"css-trigger-name","dfnText":"trigger name","external":false,"refSections":[{"refs":[{"id":"ref-for-css-trigger-name"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-css-trigger-name\u2460"},{"id":"ref-for-css-trigger-name\u2461"},{"id":"ref-for-css-trigger-name\u2462"},{"id":"ref-for-css-trigger-name\u2463"},{"id":"ref-for-css-trigger-name\u2464"},{"id":"ref-for-css-trigger-name\u2465"},{"id":"ref-for-css-trigger-name\u2466"},{"id":"ref-for-css-trigger-name\u2467"},{"id":"ref-for-css-trigger-name\u2468"},{"id":"ref-for-css-trigger-name\u2460\u24ea"},{"id":"ref-for-css-trigger-name\u2460\u2460"},{"id":"ref-for-css-trigger-name\u2460\u2461"},{"id":"ref-for-css-trigger-name\u2460\u2462"}],"title":"5.1. Trigger Name Scoping: the trigger-scope property"}],"url":"#css-trigger-name"},
 "cssanimation": {"dfnID":"cssanimation","dfnText":"CSSAnimation","external":false,"refSections":[{"refs":[{"id":"ref-for-cssanimation"},{"id":"ref-for-cssanimation\u2460"},{"id":"ref-for-cssanimation\u2461"},{"id":"ref-for-cssanimation\u2462"},{"id":"ref-for-cssanimation\u2463"},{"id":"ref-for-cssanimation\u2464"},{"id":"ref-for-cssanimation\u2465"},{"id":"ref-for-cssanimation\u2466"},{"id":"ref-for-cssanimation\u2467"},{"id":"ref-for-cssanimation\u2468"}],"title":"2. Animations"},{"refs":[{"id":"ref-for-cssanimation\u2460\u24ea"}],"title":"6.1. Event dispatch"},{"refs":[{"id":"ref-for-cssanimation\u2460\u2460"},{"id":"ref-for-cssanimation\u2460\u2461"}],"title":"7.2. Requirements on pending style changes"},{"refs":[{"id":"ref-for-cssanimation\u2460\u2462"}],"title":"10.2. Changes since CSS Animations, Level 1"}],"url":"#cssanimation"},
 "d31b4c5f": {"dfnID":"d31b4c5f","dfnText":"coordinating list base property","external":true,"refSections":[{"refs":[{"id":"ref-for-coordinating-list-base-property"}],"title":"4. \nDeclaring Animations"},{"refs":[{"id":"ref-for-coordinating-list-base-property\u2460"}],"title":"5.2. \nTimeline Triggers"},{"refs":[{"id":"ref-for-coordinating-list-base-property\u2461"}],"title":"5.3. \nEvent Triggers"}],"url":"https://drafts.csswg.org/css-values-4/#coordinating-list-base-property"},
 "d3902c40": {"dfnID":"d3902c40","dfnText":"pause an animation","external":true,"refSections":[{"refs":[{"id":"ref-for-pause-an-animation"}],"title":"4.5. The animation-play-state property"}],"url":"https://drafts.csswg.org/web-animations-1/#pause-an-animation"},
 "d3cf8730": {"dfnID":"d3cf8730","dfnText":"coordinated value list","external":true,"refSections":[{"refs":[{"id":"ref-for-coordinated-value-list"}],"title":"3.2. \nProcessing Keyframes"},{"refs":[{"id":"ref-for-coordinated-value-list\u2460"}],"title":"4. \nDeclaring Animations"},{"refs":[{"id":"ref-for-coordinated-value-list\u2461"}],"title":"5.2. \nTimeline Triggers"},{"refs":[{"id":"ref-for-coordinated-value-list\u2462"}],"title":"5.2.2. \nLinking a Timeline: the timeline-trigger-source property"},{"refs":[{"id":"ref-for-coordinated-value-list\u2463"}],"title":"5.3. \nEvent Triggers"},{"refs":[{"id":"ref-for-coordinated-value-list\u2464"}],"title":"5.3.2. \nLinking an Event: the event-trigger-source property"}],"url":"https://drafts.csswg.org/css-values-4/#coordinated-value-list"},
+"d57b37ba": {"dfnID":"d57b37ba","dfnText":"strictly matched","external":true,"refSections":[{"refs":[{"id":"ref-for-tree-scoped-name-strictly-matched"},{"id":"ref-for-tree-scoped-name-strictly-matched\u2460"}],"title":"5.1. \nTrigger Name Scoping: the trigger-scope property"}],"url":"https://drafts.csswg.org/css-scoping-1/#tree-scoped-name-strictly-matched"},
 "d95c22b0": {"dfnID":"d95c22b0","dfnText":"none (for animation-fill-mode)","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-animation-fill-mode-none"}],"title":"4.1. The animation-duration property"}],"url":"https://drafts.csswg.org/css-animations-1/#valdef-animation-fill-mode-none"},
 "d984b6fe": {"dfnID":"d984b6fe","dfnText":"animation-name","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-animation-name"}],"title":"2. Animations"},{"refs":[{"id":"ref-for-propdef-animation-name\u2460"},{"id":"ref-for-propdef-animation-name\u2461"},{"id":"ref-for-propdef-animation-name\u2462"},{"id":"ref-for-propdef-animation-name\u2463"}],"title":"2.1. Owning element"},{"refs":[{"id":"ref-for-propdef-animation-name\u2464"},{"id":"ref-for-propdef-animation-name\u2465"}],"title":"2.2. Animation composite order"},{"refs":[{"id":"ref-for-propdef-animation-name\u2466"}],"title":"3.2. \nProcessing Keyframes"},{"refs":[{"id":"ref-for-propdef-animation-name\u2467"}],"title":"4. \nDeclaring Animations"},{"refs":[{"id":"ref-for-propdef-animation-name\u2468"},{"id":"ref-for-propdef-animation-name\u2460\u24ea"},{"id":"ref-for-propdef-animation-name\u2460\u2460"}],"title":"4.9. The animation-timeline property"},{"refs":[{"id":"ref-for-propdef-animation-name\u2460\u2461"}],"title":"7.1. The CSSAnimation interface"}],"url":"https://drafts.csswg.org/css-animations-1/#propdef-animation-name"},
 "dd130a0f": {"dfnID":"dd130a0f","dfnText":"AnimationEffect","external":true,"refSections":[{"refs":[{"id":"ref-for-animationeffect"}],"title":"2. Animations"}],"url":"https://drafts.csswg.org/web-animations-1/#animationeffect"},
@@ -3947,7 +4039,6 @@ let dfnPanelData = {
 "dom-cssanimation-animationname": {"dfnID":"dom-cssanimation-animationname","dfnText":"animationName","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-cssanimation-animationname"}],"title":"7.1. The CSSAnimation interface"}],"url":"#dom-cssanimation-animationname"},
 "e372b5fe": {"dfnID":"e372b5fe","dfnText":"none (for animation-name)","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-animation-name-none"}],"title":"3.2. \nProcessing Keyframes"}],"url":"https://drafts.csswg.org/css-animations-1/#valdef-animation-name-none"},
 "e3a1080c": {"dfnID":"e3a1080c","dfnText":"reset-only sub-property","external":true,"refSections":[{"refs":[{"id":"ref-for-reset-only-sub-property"}],"title":"4.10. \nThe animation-trigger property"}],"url":"https://drafts.csswg.org/css-cascade-5/#reset-only-sub-property"},
-"e4b08566": {"dfnID":"e4b08566","dfnText":"anchor name","external":true,"refSections":[{"refs":[{"id":"ref-for-anchor-name"}],"title":"5.1. \nTrigger Scope/Resolution"}],"url":"https://drafts.csswg.org/css-anchor-position-1/#anchor-name"},
 "e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"},{"id":"ref-for-propdef-display\u2460"},{"id":"ref-for-propdef-display\u2461"},{"id":"ref-for-propdef-display\u2462"},{"id":"ref-for-propdef-display\u2463"},{"id":"ref-for-propdef-display\u2464"}],"title":"2.1. Owning element"},{"refs":[{"id":"ref-for-propdef-display\u2465"}],"title":"10.1. Recent Changes"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "e8478f36": {"dfnID":"e8478f36","dfnText":"target","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-target"}],"title":"5.3. \nEvent Triggers"}],"url":"https://dom.spec.whatwg.org/#dom-event-target"},
 "e9264d53": {"dfnID":"e9264d53","dfnText":"iteration count","external":true,"refSections":[{"refs":[{"id":"ref-for-iteration-count"}],"title":"3.2. \nProcessing Keyframes"},{"refs":[{"id":"ref-for-iteration-count\u2460"}],"title":"4.3. The animation-iteration-count property"}],"url":"https://drafts.csswg.org/web-animations-1/#iteration-count"},
@@ -3957,7 +4048,7 @@ let dfnPanelData = {
 "eeb579de": {"dfnID":"eeb579de","dfnText":"coordinating list property group","external":true,"refSections":[{"refs":[{"id":"ref-for-coordinating-list-property"}],"title":"4. \nDeclaring Animations"},{"refs":[{"id":"ref-for-coordinating-list-property\u2460"}],"title":"5.2. \nTimeline Triggers"},{"refs":[{"id":"ref-for-coordinating-list-property\u2461"}],"title":"5.3. \nEvent Triggers"}],"url":"https://drafts.csswg.org/css-values-4/#coordinating-list-property"},
 "ef3a10d3": {"dfnID":"ef3a10d3","dfnText":"<single-animation-iteration-count>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-single-animation-iteration-count"}],"title":"4.11. The animation shorthand property"}],"url":"https://drafts.csswg.org/css-animations-1/#typedef-single-animation-iteration-count"},
 "elapsed-time": {"dfnID":"elapsed-time","dfnText":"Elapsed time","external":false,"refSections":[{"refs":[{"id":"ref-for-elapsed-time"},{"id":"ref-for-elapsed-time\u2460"},{"id":"ref-for-elapsed-time\u2461"}],"title":"6.1. Event dispatch"}],"url":"#elapsed-time"},
-"event-trigger": {"dfnID":"event-trigger","dfnText":"event trigger","external":false,"refSections":[{"refs":[{"id":"ref-for-event-trigger"}],"title":"4.10. The animation-trigger property"},{"refs":[{"id":"ref-for-event-trigger\u2460"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-event-trigger\u2461"}],"title":"5.1. Trigger Scope/Resolution"},{"refs":[{"id":"ref-for-event-trigger\u2462"},{"id":"ref-for-event-trigger\u2463"},{"id":"ref-for-event-trigger\u2464"},{"id":"ref-for-event-trigger\u2465"},{"id":"ref-for-event-trigger\u2466"},{"id":"ref-for-event-trigger\u2467"},{"id":"ref-for-event-trigger\u2468"}],"title":"5.3. Event Triggers"},{"refs":[{"id":"ref-for-event-trigger\u2460\u24ea"},{"id":"ref-for-event-trigger\u2460\u2460"}],"title":"5.3.1. Naming the Trigger: the event-trigger-name property"},{"refs":[{"id":"ref-for-event-trigger\u2460\u2461"},{"id":"ref-for-event-trigger\u2460\u2462"},{"id":"ref-for-event-trigger\u2460\u2463"},{"id":"ref-for-event-trigger\u2460\u2464"},{"id":"ref-for-event-trigger\u2460\u2465"}],"title":"5.3.2. Linking an Event: the event-trigger-source property"}],"url":"#event-trigger"},
+"event-trigger": {"dfnID":"event-trigger","dfnText":"event trigger","external":false,"refSections":[{"refs":[{"id":"ref-for-event-trigger"}],"title":"4.10. The animation-trigger property"},{"refs":[{"id":"ref-for-event-trigger\u2460"},{"id":"ref-for-event-trigger\u2461"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-event-trigger\u2462"},{"id":"ref-for-event-trigger\u2463"},{"id":"ref-for-event-trigger\u2464"},{"id":"ref-for-event-trigger\u2465"},{"id":"ref-for-event-trigger\u2466"},{"id":"ref-for-event-trigger\u2467"},{"id":"ref-for-event-trigger\u2468"}],"title":"5.3. Event Triggers"},{"refs":[{"id":"ref-for-event-trigger\u2460\u24ea"},{"id":"ref-for-event-trigger\u2460\u2460"}],"title":"5.3.1. Naming the Trigger: the event-trigger-name property"},{"refs":[{"id":"ref-for-event-trigger\u2460\u2461"},{"id":"ref-for-event-trigger\u2460\u2462"},{"id":"ref-for-event-trigger\u2460\u2463"},{"id":"ref-for-event-trigger\u2460\u2464"},{"id":"ref-for-event-trigger\u2460\u2465"}],"title":"5.3.2. Linking an Event: the event-trigger-source property"}],"url":"#event-trigger"},
 "event-trigger-enter-action": {"dfnID":"event-trigger-enter-action","dfnText":"enter action","external":false,"refSections":[{"refs":[{"id":"ref-for-event-trigger-enter-action"}],"title":"5.3. Event Triggers"}],"url":"#event-trigger-enter-action"},
 "event-trigger-enter-event": {"dfnID":"event-trigger-enter-event","dfnText":"enter events","external":false,"refSections":[{"refs":[{"id":"ref-for-event-trigger-enter-event"},{"id":"ref-for-event-trigger-enter-event\u2460"},{"id":"ref-for-event-trigger-enter-event\u2461"},{"id":"ref-for-event-trigger-enter-event\u2462"}],"title":"5.3. Event Triggers"},{"refs":[{"id":"ref-for-event-trigger-enter-event\u2463"},{"id":"ref-for-event-trigger-enter-event\u2464"}],"title":"5.3.2. Linking an Event: the event-trigger-source property"}],"url":"#event-trigger-enter-event"},
 "event-trigger-exit-action": {"dfnID":"event-trigger-exit-action","dfnText":"exit action","external":false,"refSections":[{"refs":[{"id":"ref-for-event-trigger-exit-action"},{"id":"ref-for-event-trigger-exit-action\u2460"}],"title":"5.3. Event Triggers"}],"url":"#event-trigger-exit-action"},
@@ -3987,8 +4078,9 @@ let dfnPanelData = {
 "propdef-timeline-trigger-range-end": {"dfnID":"propdef-timeline-trigger-range-end","dfnText":"timeline-trigger-range-end","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-timeline-trigger-range-end"},{"id":"ref-for-propdef-timeline-trigger-range-end\u2460"},{"id":"ref-for-propdef-timeline-trigger-range-end\u2461"}],"title":"5.2.3. The Enter Range: the timeline-trigger-range property"}],"url":"#propdef-timeline-trigger-range-end"},
 "propdef-timeline-trigger-range-start": {"dfnID":"propdef-timeline-trigger-range-start","dfnText":"timeline-trigger-range-start","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-timeline-trigger-range-start"},{"id":"ref-for-propdef-timeline-trigger-range-start\u2460"},{"id":"ref-for-propdef-timeline-trigger-range-start\u2461"}],"title":"5.2.3. The Enter Range: the timeline-trigger-range property"}],"url":"#propdef-timeline-trigger-range-start"},
 "propdef-timeline-trigger-source": {"dfnID":"propdef-timeline-trigger-source","dfnText":"timeline-trigger-source","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-timeline-trigger-source"},{"id":"ref-for-propdef-timeline-trigger-source\u2460"}],"title":"5.2.2. Linking a Timeline: the timeline-trigger-source property"},{"refs":[{"id":"ref-for-propdef-timeline-trigger-source\u2461"},{"id":"ref-for-propdef-timeline-trigger-source\u2462"},{"id":"ref-for-propdef-timeline-trigger-source\u2463"}],"title":"5.2.5. The timeline-trigger Shorthand"}],"url":"#propdef-timeline-trigger-source"},
+"propdef-trigger-scope": {"dfnID":"propdef-trigger-scope","dfnText":"trigger-scope","external":false,"refSections":[{"refs":[{"id":"ref-for-propdef-trigger-scope"},{"id":"ref-for-propdef-trigger-scope\u2460"},{"id":"ref-for-propdef-trigger-scope\u2461"},{"id":"ref-for-propdef-trigger-scope\u2462"},{"id":"ref-for-propdef-trigger-scope\u2463"},{"id":"ref-for-propdef-trigger-scope\u2464"}],"title":"5.1. Trigger Name Scoping: the trigger-scope property"}],"url":"#propdef-trigger-scope"},
 "specified-keyframe-order": {"dfnID":"specified-keyframe-order","dfnText":"specified order","external":false,"refSections":[{"refs":[{"id":"ref-for-specified-keyframe-order"}],"title":"3.2. Processing Keyframes"}],"url":"#specified-keyframe-order"},
-"timeline-trigger": {"dfnID":"timeline-trigger","dfnText":"timeline trigger","external":false,"refSections":[{"refs":[{"id":"ref-for-timeline-trigger"}],"title":"4.10. The animation-trigger property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460"},{"id":"ref-for-timeline-trigger\u2461"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-timeline-trigger\u2462"}],"title":"5.1. Trigger Scope/Resolution"},{"refs":[{"id":"ref-for-timeline-trigger\u2463"},{"id":"ref-for-timeline-trigger\u2464"},{"id":"ref-for-timeline-trigger\u2465"},{"id":"ref-for-timeline-trigger\u2466"}],"title":"5.2. Timeline Triggers"},{"refs":[{"id":"ref-for-timeline-trigger\u2467"},{"id":"ref-for-timeline-trigger\u2468"}],"title":"5.2.1. Naming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460\u24ea"},{"id":"ref-for-timeline-trigger\u2460\u2460"}],"title":"5.2.2. Linking a Timeline: the timeline-trigger-source property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460\u2461"}],"title":"5.2.3. The Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460\u2462"},{"id":"ref-for-timeline-trigger\u2460\u2463"}],"title":"5.2.4. The Exit Range: the timeline-trigger-exit-range property"}],"url":"#timeline-trigger"},
+"timeline-trigger": {"dfnID":"timeline-trigger","dfnText":"timeline trigger","external":false,"refSections":[{"refs":[{"id":"ref-for-timeline-trigger"}],"title":"4.10. The animation-trigger property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460"},{"id":"ref-for-timeline-trigger\u2461"},{"id":"ref-for-timeline-trigger\u2462"}],"title":"5. Triggers"},{"refs":[{"id":"ref-for-timeline-trigger\u2463"},{"id":"ref-for-timeline-trigger\u2464"},{"id":"ref-for-timeline-trigger\u2465"},{"id":"ref-for-timeline-trigger\u2466"}],"title":"5.2. Timeline Triggers"},{"refs":[{"id":"ref-for-timeline-trigger\u2467"},{"id":"ref-for-timeline-trigger\u2468"}],"title":"5.2.1. Naming the Trigger: the timeline-trigger-name property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460\u24ea"},{"id":"ref-for-timeline-trigger\u2460\u2460"}],"title":"5.2.2. Linking a Timeline: the timeline-trigger-source property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460\u2461"}],"title":"5.2.3. The Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-timeline-trigger\u2460\u2462"},{"id":"ref-for-timeline-trigger\u2460\u2463"}],"title":"5.2.4. The Exit Range: the timeline-trigger-exit-range property"}],"url":"#timeline-trigger"},
 "timeline-trigger-enter-action": {"dfnID":"timeline-trigger-enter-action","dfnText":"enter action","external":false,"refSections":[{"refs":[{"id":"ref-for-timeline-trigger-enter-action"},{"id":"ref-for-timeline-trigger-enter-action\u2460"}],"title":"5.2. Timeline Triggers"}],"url":"#timeline-trigger-enter-action"},
 "timeline-trigger-enter-range": {"dfnID":"timeline-trigger-enter-range","dfnText":"enter range","external":false,"refSections":[{"refs":[{"id":"ref-for-timeline-trigger-enter-range"},{"id":"ref-for-timeline-trigger-enter-range\u2460"},{"id":"ref-for-timeline-trigger-enter-range\u2461"},{"id":"ref-for-timeline-trigger-enter-range\u2462"},{"id":"ref-for-timeline-trigger-enter-range\u2463"}],"title":"5.2. Timeline Triggers"},{"refs":[{"id":"ref-for-timeline-trigger-enter-range\u2464"}],"title":"5.2.3. The Enter Range: the timeline-trigger-range property"},{"refs":[{"id":"ref-for-timeline-trigger-enter-range\u2465"}],"title":"5.2.4. The Exit Range: the timeline-trigger-exit-range property"},{"refs":[{"id":"ref-for-timeline-trigger-enter-range\u2466"}],"title":"5.2.5. The timeline-trigger Shorthand"}],"url":"#timeline-trigger-enter-range"},
 "timeline-trigger-exit-action": {"dfnID":"timeline-trigger-exit-action","dfnText":"exit action","external":false,"refSections":[{"refs":[{"id":"ref-for-timeline-trigger-exit-action"},{"id":"ref-for-timeline-trigger-exit-action\u2460"}],"title":"5.2. Timeline Triggers"}],"url":"#timeline-trigger-exit-action"},
@@ -4023,6 +4115,9 @@ let dfnPanelData = {
 "valdef-event-trigger-source-none": {"dfnID":"valdef-event-trigger-source-none","dfnText":"none","external":false,"refSections":[],"url":"#valdef-event-trigger-source-none"},
 "valdef-timeline-trigger-exit-range-auto": {"dfnID":"valdef-timeline-trigger-exit-range-auto","dfnText":"auto","external":false,"refSections":[],"url":"#valdef-timeline-trigger-exit-range-auto"},
 "valdef-timeline-trigger-none": {"dfnID":"valdef-timeline-trigger-none","dfnText":"none","external":false,"refSections":[],"url":"#valdef-timeline-trigger-none"},
+"valdef-trigger-scope-all": {"dfnID":"valdef-trigger-scope-all","dfnText":"all","external":false,"refSections":[],"url":"#valdef-trigger-scope-all"},
+"valdef-trigger-scope-dashed-ident": {"dfnID":"valdef-trigger-scope-dashed-ident","dfnText":"<dashed-ident>","external":false,"refSections":[],"url":"#valdef-trigger-scope-dashed-ident"},
+"valdef-trigger-scope-none": {"dfnID":"valdef-trigger-scope-none","dfnText":"none","external":false,"refSections":[],"url":"#valdef-trigger-scope-none"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -4490,8 +4585,9 @@ window.addEventListener("resize", repositionAnnoPanels);
 {
 let refsData = {
 "#computed-keyframe-order": {"displayText":"computed keyframe order","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"computed keyframe order","type":"dfn","url":"#computed-keyframe-order"},
+"#css-trigger": {"displayText":"trigger","export":true,"for_":["CSS"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"trigger","type":"dfn","url":"#css-trigger"},
 "#css-trigger-instance": {"displayText":"trigger instance","export":true,"for_":["CSS"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"trigger instance","type":"dfn","url":"#css-trigger-instance"},
-"#css-triggers": {"displayText":"triggers","export":true,"for_":["CSS"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"triggers","type":"dfn","url":"#css-triggers"},
+"#css-trigger-name": {"displayText":"trigger name","export":true,"for_":["CSS"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"trigger name","type":"dfn","url":"#css-trigger-name"},
 "#cssanimation": {"displayText":"CSSAnimation","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"CSSAnimation","type":"interface","url":"#cssanimation"},
 "#dom-cssanimation-animationname": {"displayText":"animationName","export":true,"for_":["CSSAnimation"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"animationName","type":"attribute","url":"#dom-cssanimation-animationname"},
 "#elapsed-time": {"displayText":"elapsed time","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"elapsed time","type":"dfn","url":"#elapsed-time"},
@@ -4520,6 +4616,7 @@ let refsData = {
 "#propdef-timeline-trigger-range-end": {"displayText":"timeline-trigger-range-end","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"timeline-trigger-range-end","type":"property","url":"#propdef-timeline-trigger-range-end"},
 "#propdef-timeline-trigger-range-start": {"displayText":"timeline-trigger-range-start","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"timeline-trigger-range-start","type":"property","url":"#propdef-timeline-trigger-range-start"},
 "#propdef-timeline-trigger-source": {"displayText":"timeline-trigger-source","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"timeline-trigger-source","type":"property","url":"#propdef-timeline-trigger-source"},
+"#propdef-trigger-scope": {"displayText":"trigger-scope","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"trigger-scope","type":"property","url":"#propdef-trigger-scope"},
 "#specified-keyframe-order": {"displayText":"specified keyframe order","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"specified keyframe order","type":"dfn","url":"#specified-keyframe-order"},
 "#timeline-trigger": {"displayText":"timeline trigger","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"timeline trigger","type":"dfn","url":"#timeline-trigger"},
 "#timeline-trigger-enter-action": {"displayText":"enter action","export":true,"for_":["timeline trigger"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"enter action","type":"dfn","url":"#timeline-trigger-enter-action"},
@@ -4535,12 +4632,11 @@ let refsData = {
 "#used-keyframe-order": {"displayText":"used keyframe order","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"used keyframe order","type":"dfn","url":"#used-keyframe-order"},
 "#valdef-animation-duration-auto": {"displayText":"auto","export":true,"for_":["animation-duration"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"auto","type":"value","url":"#valdef-animation-duration-auto"},
 "#valdef-animation-timeline-auto": {"displayText":"auto","export":true,"for_":["<single-animation-timeline>","animation-timeline"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"local","text":"auto","type":"value","url":"#valdef-animation-timeline-auto"},
+"https://dom.spec.whatwg.org/#concept-element-shadow-root": {"displayText":"shadow root","export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow root","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-element-shadow-root"},
 "https://dom.spec.whatwg.org/#concept-tree-order": {"displayText":"tree order","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"tree order","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-tree-order"},
 "https://dom.spec.whatwg.org/#dom-event-target": {"displayText":"target","export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"target","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-target"},
 "https://dom.spec.whatwg.org/#event": {"displayText":"Event","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Event","type":"interface","url":"https://dom.spec.whatwg.org/#event"},
 "https://dom.spec.whatwg.org/#event-target": {"displayText":"event target","export":true,"for_":[],"level":"","normative":true,"shortname":"dom","spec":"dom","status":"anchor-block","text":"event target","type":"dfn","url":"https://dom.spec.whatwg.org/#event-target"},
-"https://drafts.csswg.org/css-anchor-position-1/#anchor-name": {"displayText":"anchor name","export":false,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor name","type":"dfn","url":"https://drafts.csswg.org/css-anchor-position-1/#anchor-name"},
-"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope": {"displayText":"anchor-scope","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor-scope","type":"property","url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-scope"},
 "https://drafts.csswg.org/css-animations-1/#animationevent": {"displayText":"AnimationEvent","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-animations","spec":"css-animations-1","status":"current","text":"AnimationEvent","type":"interface","url":"https://drafts.csswg.org/css-animations-1/#animationevent"},
 "https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes": {"displayText":"@keyframes","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-animations","spec":"css-animations-1","status":"current","text":"@keyframes","type":"at-rule","url":"https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes"},
 "https://drafts.csswg.org/css-animations-1/#dom-animationevent-elapsedtime": {"displayText":"elapsedTime","export":true,"for_":["AnimationEvent"],"level":"1","normative":true,"shortname":"css-animations","spec":"css-animations-1","status":"current","text":"elapsedTime","type":"attribute","url":"https://drafts.csswg.org/css-animations-1/#dom-animationevent-elapsedtime"},
@@ -4584,6 +4680,9 @@ let refsData = {
 "https://drafts.csswg.org/css-easing-2/#typedef-easing-function": {"displayText":"<easing-function>","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-easing","spec":"css-easing-2","status":"current","text":"<easing-function>","type":"type","url":"https://drafts.csswg.org/css-easing-2/#typedef-easing-function"},
 "https://drafts.csswg.org/css-logical-1/#logical-property-group": {"displayText":"logical property group","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-logical","spec":"css-logical-1","status":"current","text":"logical property group","type":"dfn","url":"https://drafts.csswg.org/css-logical-1/#logical-property-group"},
 "https://drafts.csswg.org/css-masking-1/#valdef-mask-composite-add": {"displayText":"add","export":true,"for_":["mask-composite"],"level":"1","normative":true,"shortname":"css-masking","spec":"css-masking-1","status":"current","text":"add","type":"value","url":"https://drafts.csswg.org/css-masking-1/#valdef-mask-composite-add"},
+"https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name": {"displayText":"tree-scoped name","export":true,"for_":["CSS"],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"current","text":"tree-scoped name","type":"dfn","url":"https://drafts.csswg.org/css-scoping-1/#css-tree-scoped-name"},
+"https://drafts.csswg.org/css-scoping-1/#flat-tree": {"displayText":"flat tree","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"current","text":"flat tree","type":"dfn","url":"https://drafts.csswg.org/css-scoping-1/#flat-tree"},
+"https://drafts.csswg.org/css-scoping-1/#tree-scoped-name-strictly-matched": {"displayText":"strictly matched","export":true,"for_":["tree-scoped name"],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"current","text":"strictly matched","type":"dfn","url":"https://drafts.csswg.org/css-scoping-1/#tree-scoped-name-strictly-matched"},
 "https://drafts.csswg.org/css-transforms-2/#propdef-scale": {"displayText":"scale","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-transforms","spec":"css-transforms-2","status":"current","text":"scale","type":"property","url":"https://drafts.csswg.org/css-transforms-2/#propdef-scale"},
 "https://drafts.csswg.org/css-values-4/#comb-any": {"displayText":"||","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"||","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-any"},
 "https://drafts.csswg.org/css-values-4/#comb-one": {"displayText":"|","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"|","type":"grammar","url":"https://drafts.csswg.org/css-values-4/#comb-one"},
