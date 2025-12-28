@@ -8,7 +8,7 @@
   <meta content="Bikeshed version be42ac8f6, updated Mon Dec 22 21:45:05 2025 +0000" name="generator">
   <link href="https://www.w3.org/TR/css-cascade-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="c070592d12b4f35f98f4fee7d6dde91f437768d8" name="revision">
+  <meta content="4838deeea6c063e9a351226bd0e8f11c189cae37" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -1247,7 +1247,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Cascading and Inheritance Module Level 5</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-11-04">4 November 2025</time></p>
+    <time class="dt-updated" datetime="2025-12-27">27 December 2025</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1485,8 +1485,10 @@ Additions Since Level 3</span></a>
 Additions Since Level 2</span></a>
      </ol>
     <li><a href="#acknowledgments"><span class="secno"></span> <span class="content">Acknowledgments</span></a>
-    <li><a href="#priv-sec"><span class="secno"></span> <span class="content">
-Privacy and Security Considerations</span></a>
+    <li><a href="#privacy"><span class="secno"></span> <span class="content">
+Privacy Considerations</span></a>
+    <li><a href="#security"><span class="secno"></span> <span class="content">
+Security Considerations</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">
 Conformance</span></a>
@@ -1528,11 +1530,7 @@ Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>CSS defines a finite set of parameters,
 	called <dfn class="dfn-paneled" data-dfn-for="CSS" data-dfn-type="dfn" data-export data-lt="property" id="css-property">properties</dfn>,
 	that direct the rendering of a document.
-	Each <u class="link-error" data-lt="property" title="LINK ERROR: Ambiguous for-less link for &apos;property&apos;, please see <https://speced.github.io/bikeshed/#ambi-for> for instructions:
-Local references:
-spec:css-cascade-5; type:dfn; for:CSS; text:property
-for-less references:
-spec:css2; type:dfn; for:/; text:property">property</u> has a name
+	Each <a data-link-type="dfn" href="#css-property" id="ref-for-css-property">property</a> has a name
 	(e.g., <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-color-4/#propdef-color" id="ref-for-propdef-color">color</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-size" id="ref-for-propdef-font-size">font-size</a>, or <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border-style" id="ref-for-propdef-border-style">border-style</a>),
 	a value space
 	(e.g., <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-color-5/#typedef-color" id="ref-for-typedef-color">&lt;color></a>, <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-length-percentage" id="ref-for-typedef-length-percentage">&lt;length-percentage></a>, <span class="css">[ solid | dashed | dotted | … ]</span>),
@@ -1693,7 +1691,7 @@ Conditional <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="
    </div>
    <p>The <a data-link-type="dfn" href="#import-conditions" id="ref-for-import-conditions⑤">import conditions</a> are given by
 	<a class="css production" data-link-type="type" href="https://drafts.csswg.org/mediaqueries-4/#typedef-media-query-list" id="ref-for-typedef-media-query-list②">&lt;media-query-list></a>, which is parsed and interpreted as a <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-4/#media-query-list" id="ref-for-media-query-list">media query list</a>,
-	and <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition" id="ref-for-typedef-supports-condition②">&lt;supports-condition></a>, is parsed and interpreted as a [[supports query]].
+	and <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition" id="ref-for-typedef-supports-condition②">&lt;supports-condition></a>, is parsed and interpreted as a <a data-link-type="dfn" href="https://drafts.csswg.org/css-conditional-3/#supports-queries" id="ref-for-supports-queries">supports query</a>.
 	If a <u class="link-error production" data-lt="<declaration>" title="LINK ERROR: No &apos;type&apos; refs found for &apos;<declaration>&apos;.">&lt;declaration></u> is given in place of a <span class="production" id="ref-for-typedef-supports-condition③">&lt;supports-condition></span>,
 	it must be interpreted as a <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-conditional-5/#typedef-supports-decl" id="ref-for-typedef-supports-decl">&lt;supports-decl></a>
 	(i.e. the extra set of parentheses is implied)
@@ -1980,7 +1978,7 @@ Value Aliasing</span><a class="self-link" href="#value-aliasing"></a></h4>
 	at parse time, the legacy syntax is converted into the new syntax,
 	resulting in a <a data-link-type="dfn" href="#declared-value" id="ref-for-declared-value③">declared value</a> different from the parsed input.
 	These aliases are typically used for handling legacy compatibility requirements,
-	such as converting <u class="link-error" data-lt="vendor-prefixed" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;vendor-prefixed&apos; with spec &apos;css-2021&apos;.">vendor-prefixed</u> values to their standard equivalents.</p>
+	such as converting <a data-link-type="dfn" href="https://drafts.csswg.org/css-2025/#vendor-prefix" id="ref-for-vendor-prefix">vendor-prefixed</a> values to their standard equivalents.</p>
    <h3 class="heading settled" data-level="4.2" id="cascaded"><span class="secno">4.2. </span><span class="content">
 Cascaded Values</span><a class="self-link" href="#cascaded"></a></h3>
    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="cascaded" id="cascaded-value">cascaded value</dfn>
@@ -2126,7 +2124,7 @@ Actual Values</span><a class="self-link" href="#actual"></a></h3>
 	<span class="ex">For example, a user agent may only be able to render borders with integer pixel widths
 	and may therefore have to approximate the <a data-link-type="dfn" href="#used-value" id="ref-for-used-value⑨">used</a> width.
 	Also, the font size of an element may need adjustment based on the availability of fonts
-	or the value of the <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-5/#propdef-font-size-adjust" id="ref-for-propdef-font-size-adjust">font-size-adjust</a> property.</span>
+	or the value of the <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-size-adjust" id="ref-for-propdef-font-size-adjust">font-size-adjust</a> property.</span>
 	The <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-local-lt="actual" id="actual-value">actual value</dfn> is
 	the used value after any such adjustments have been made.</p>
    <p class="note" role="note"><span class="marker">Note:</span> By probing the actual values of elements,
@@ -2361,7 +2359,7 @@ Per-Fragment Value Processing</span><a class="self-link" href="#fragments"></a><
 	are resolved per <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#box-fragment" id="ref-for-box-fragment">box fragment</a>.
 	Subsequent value processing proceeds as normal in each fragment.</p>
    <p>APIs that assume a singular value per <a data-link-type="dfn" href="https://drafts.csswg.org/css-display-4/#box" id="ref-for-box">box</a> (rather than per <a data-link-type="dfn" href="https://drafts.csswg.org/css-break-4/#box-fragment" id="ref-for-box-fragment①">box fragment</a>)
-	must ignore the effects of non-<u class="link-error" data-lt="tree-abiding" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;tree-abiding&apos;.">tree-abiding</u> <a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element②">pseudo-elements</a>.
+	must ignore the effects of non-<a data-link-type="dfn" href="https://drafts.csswg.org/css-pseudo-4/#tree-abiding" id="ref-for-tree-abiding">tree-abiding pseudo-elements</a>.
 	(For example, <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line" id="ref-for-selectordef-first-line①">::first-line</a> styles have no effect on the value returned by <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle①">getComputedStyle()</a></code>.)</p>
    <div class="example" id="example-d0a2e292">
     <a class="self-link" href="#example-d0a2e292"></a>
@@ -2532,7 +2530,7 @@ Cascade Sorting Order</span><a class="self-link" href="#cascade-sort"></a></h3>
 			
      <ul>
       <li>Style sheets are ordered
-					in [[final CSS style sheets]] order.
+					in <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-1/#documentorshadowroot-final-css-style-sheets" id="ref-for-documentorshadowroot-final-css-style-sheets">final CSS style sheets</a> order.
 				
       <li>Declarations from <a class="css" data-link-type="at-rule" href="#at-ruledef-import" id="ref-for-at-ruledef-import①②">imported style sheets</a>
 					are ordered as if their style sheets were substituted in place of the <span class="css" id="ref-for-at-ruledef-import①③">@import</span> rule.
@@ -2807,7 +2805,7 @@ Layer Naming and Nesting</span><a class="self-link" href="#layer-names"></a></h4
     <a class="self-link" href="#example-23b0f30e"></a>
 		In this example,
 		the nested <span class="css">framework.base</span> layer is distinct
-		from the top-level <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-forms-1/#valdef-appearance-base" id="ref-for-valdef-appearance-base">base</a> layer:
+		from the top-level <span class="css">base</span> layer:
 
 		
 <pre class="highlight lang-css"><c- n>@layer</c-> base <c- p>{</c->
@@ -2827,12 +2825,12 @@ Layer Naming and Nesting</span><a class="self-link" href="#layer-names"></a></h4
     <p>The resulting layers can be represented as a tree:</p>
     <ol>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-forms-1/#valdef-appearance-base" id="ref-for-valdef-appearance-base①">base</a></p>
+      <p><span class="css">base</span></p>
      <li data-md>
       <p><span class="css">framework</span></p>
       <ol>
        <li data-md>
-        <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-forms-1/#valdef-appearance-base" id="ref-for-valdef-appearance-base②">base</a></p>
+        <p><span class="css">base</span></p>
        <li data-md>
         <p><span class="css">theme</span></p>
       </ol>
@@ -2840,7 +2838,7 @@ Layer Naming and Nesting</span><a class="self-link" href="#layer-names"></a></h4
     <p>or as a flat list with nested identifiers:</p>
     <ol>
      <li data-md>
-      <p><a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-forms-1/#valdef-appearance-base" id="ref-for-valdef-appearance-base③">base</a></p>
+      <p><span class="css">base</span></p>
      <li data-md>
       <p><span class="css">framework.base</span></p>
      <li data-md>
@@ -3212,8 +3210,8 @@ Inheritance</span><a class="self-link" href="#inheriting"></a></h3>
 	inheritance operates on the <a data-link-type="dfn" href="https://drafts.csswg.org/css-scoping-1/#flat-tree" id="ref-for-flat-tree②">flattened element tree</a>.
 	<span class="note">This means that slotted elements inherit from the <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/scripting.html#the-slot-element" id="ref-for-the-slot-element">slot</a></code> they’re assigned to,
 	rather than directly from their <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-light-tree" id="ref-for-concept-light-tree">light tree</a> parent.</span>
-	<a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element③">Pseudo-elements</a> inherit according to the fictional tag sequence
-	described for each <a data-link-type="dfn" href="https://www.w3.org/TR/selectors-4/#pseudo-element" id="ref-for-pseudo-element④">pseudo-element</a>. <a data-link-type="biblio" href="#biblio-css-pseudo-4" title="CSS Pseudo-Elements Module Level 4">[CSS-PSEUDO-4]</a></p>
+	<a data-link-type="dfn" href="https://drafts.csswg.org/selectors-4/#pseudo-element" id="ref-for-pseudo-element②">Pseudo-elements</a> inherit according to the fictional tag sequence
+	described for each <a data-link-type="dfn" href="https://www.w3.org/TR/selectors-4/#pseudo-element" id="ref-for-pseudo-element③">pseudo-element</a>. <a data-link-type="biblio" href="#biblio-css-pseudo-4" title="CSS Pseudo-Elements Module Level 4">[CSS-PSEUDO-4]</a></p>
    <p>Some properties are <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="inherited property" id="inherited-property">inherited properties</dfn>,
 	as defined in their property definition table.
 	This means that,
@@ -3427,7 +3425,7 @@ Changes since the 13 Jan 2022 Candidate Recommendation Snapshot</span><a class="
     <li data-md>
      <p>Clarify that all “aliases” of a property are reverted by <a class="css" data-link-type="maybe" href="#valdef-all-revert" id="ref-for-valdef-all-revert⑨">revert</a>/<a class="css" data-link-type="maybe" href="#valdef-all-revert-layer" id="ref-for-valdef-all-revert-layer①⓪">revert-layer</a>.</p>
     <li data-md>
-     <p>Clarify that style sheets are ordered in [[final CSS style sheets]] order.</p>
+     <p>Clarify that style sheets are ordered in <a data-link-type="dfn" href="https://drafts.csswg.org/cssom-1/#documentorshadowroot-final-css-style-sheets" id="ref-for-documentorshadowroot-final-css-style-sheets①">final CSS style sheets</a> order.</p>
     <li data-md>
      <p>Clarify that only <a class="css" data-link-type="maybe" href="#at-ruledef-layer" id="ref-for-at-ruledef-layer②③">@layer</a> statement rules are ignored when checking validity of <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="ref-for-at-ruledef-import②⑥">@import</a>, not empty <span class="css" id="ref-for-at-ruledef-layer②④">@layer</span> block rules.</p>
    </ul>
@@ -3567,8 +3565,8 @@ Additions Since Level 2</span><a class="self-link" href="#changes-2"></a></h3>
 	Jen Simmons,
 	and Boris Zbarsky
 	contributed to this specification.</p>
-   <h2 class="heading no-num settled" id="priv-sec"><span class="content">
-Privacy and Security Considerations</span><a class="self-link" href="#priv-sec"></a></h2>
+   <h2 class="heading no-num settled" id="privacy"><span class="content">
+Privacy Considerations</span><a class="self-link" href="#privacy"></a></h2>
    <ul>
     <li data-md>
      <p>The cascade process does not distinguish between same-origin and cross-origin stylesheets,
@@ -3579,15 +3577,19 @@ from the computed styles they apply to a document.</p>
 are exposed by the cascade process,
 and can be inferred from the computed styles they apply to a document.</p>
     <li data-md>
-     <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="ref-for-at-ruledef-import③②">@import</a> rule does not apply the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#cors-protocol" id="ref-for-cors-protocol">CORS protocol</a> to loading cross-origin stylesheets,
-instead allowing them to be freely imported and applied.</p>
-    <li data-md>
-     <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="ref-for-at-ruledef-import③③">@import</a> rule assumes that resources without <a href="https://html.spec.whatwg.org/multipage/urls-and-fetching.html#content-type" id="5ca12a2a0"><code>Content-Type</code> metadata</a>
+     <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="ref-for-at-ruledef-import③②">@import</a> rule assumes that resources without <a href="https://html.spec.whatwg.org/multipage/urls-and-fetching.html#content-type" id="5ca12a2a0"><code>Content-Type</code> metadata</a>
 (or any same-origin file if the host document is in quirks mode)
 are <code>text/css</code>,
 potentially allowing arbitrary files to be imported into the page
 and interpreted as CSS,
 potentially allowing sensitive data to be inferred from the computed styles they apply to a document.</p>
+   </ul>
+   <h2 class="heading no-num settled" id="security"><span class="content">
+Security Considerations</span><a class="self-link" href="#security"></a></h2>
+   <ul>
+    <li data-md>
+     <p>The <a class="css" data-link-type="maybe" href="#at-ruledef-import" id="ref-for-at-ruledef-import③③">@import</a> rule does not apply the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#cors-protocol" id="ref-for-cors-protocol">CORS protocol</a> to loading cross-origin stylesheets,
+instead allowing them to be freely imported and applied.</p>
    </ul>
   </main>
   <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">
@@ -3805,6 +3807,11 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
+    <a data-link-type="biblio">[CSS-2025]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="1fd97478">vendor-prefixed</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[CSS-ALIGN-3]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="6e51b40a">auto</span>
@@ -3866,6 +3873,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="5f1b7f60">@media</span>
      <li><span class="dfn-paneled" id="c1ebc639">@supports</span>
      <li><span class="dfn-paneled" id="bf3ca8a7">conditional group rule</span>
+     <li><span class="dfn-paneled" id="b0326703">supports queries</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-CONDITIONAL-5]</a> defines the following terms:
@@ -3906,6 +3914,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="2c57f900">font</span>
      <li><span class="dfn-paneled" id="d65d17df">font-family</span>
      <li><span class="dfn-paneled" id="fdf6efd5">font-size</span>
+     <li><span class="dfn-paneled" id="99a3763c">font-size-adjust</span>
      <li><span class="dfn-paneled" id="d45afbab">font-style</span>
      <li><span class="dfn-paneled" id="fb7153bd">font-variant</span>
      <li><span class="dfn-paneled" id="a8fe91d7">font-weight</span>
@@ -3916,12 +3925,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
     <a data-link-type="biblio">[CSS-FONTS-5]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="0497de86">@font-face</span>
-     <li><span class="dfn-paneled" id="caf45308">font-size-adjust</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[CSS-FORMS-1]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="eacf0451">base</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-INLINE-3]</a> defines the following terms:
@@ -3950,6 +3953,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="fd0c9e35">::after</span>
      <li><span class="dfn-paneled" id="5869f885">::before</span>
      <li><span class="dfn-paneled" id="75bfa627">::first-line</span>
+     <li><span class="dfn-paneled" id="16a52cab">tree-abiding pseudo-elements</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-SCOPING-1]</a> defines the following terms:
@@ -4048,6 +4052,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="5fced98b">CSSOMString</span>
      <li><span class="dfn-paneled" id="ebaeb088">CSSRule</span>
      <li><span class="dfn-paneled" id="e4ffca7f">declarations</span>
+     <li><span class="dfn-paneled" id="a4e961d8">final CSS style sheets</span>
      <li><span class="dfn-paneled" id="b203675a">getComputedStyle(elt)</span>
     </ul>
    <li>
@@ -4101,6 +4106,8 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
   <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-css-2025">[CSS-2025]
+   <dd>Chris Lilley; et al. <a href="https://drafts.csswg.org/css-2025/"><cite>CSS Snapshot 2025</cite></a>. URL: <a href="https://drafts.csswg.org/css-2025/">https://drafts.csswg.org/css-2025/</a>
    <dt id="biblio-css-animations-1">[CSS-ANIMATIONS-1]
    <dd>David Baron; et al. <a href="https://drafts.csswg.org/css-animations/"><cite>CSS Animations Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-animations/">https://drafts.csswg.org/css-animations/</a>
    <dt id="biblio-css-backgrounds-3">[CSS-BACKGROUNDS-3]
@@ -4178,8 +4185,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Tab Atkins Jr.; Florian Rivoal; Vladimir Levin. <a href="https://drafts.csswg.org/css-contain-2/"><cite>CSS Containment Module Level 2</cite></a>. URL: <a href="https://drafts.csswg.org/css-contain-2/">https://drafts.csswg.org/css-contain-2/</a>
    <dt id="biblio-css-flexbox-1">[CSS-FLEXBOX-1]
    <dd>Elika Etemad; Tab Atkins Jr.; Rossen Atanassov. <a href="https://drafts.csswg.org/css-flexbox/"><cite>CSS Flexible Box Layout Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-flexbox/">https://drafts.csswg.org/css-flexbox/</a>
-   <dt id="biblio-css-forms-1">[CSS-FORMS-1]
-   <dd>Tim Nguyen. <a href="https://drafts.csswg.org/css-forms-1/"><cite>CSS Form Control Styling Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-forms-1/">https://drafts.csswg.org/css-forms-1/</a>
    <dt id="biblio-css-inline-3">[CSS-INLINE-3]
    <dd>Elika Etemad. <a href="https://drafts.csswg.org/css-inline-3/"><cite>CSS Inline Layout Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-inline-3/">https://drafts.csswg.org/css-inline-3/</a>
    <dt id="biblio-css-lists-3">[CSS-LISTS-3]
@@ -4587,15 +4592,17 @@ let dfnPanelData = {
 "09cd65e4": {"dfnID":"09cd65e4","dfnText":"display type","external":true,"refSections":[{"refs":[{"id":"ref-for-display-type"}],"title":"4.5.1. \nApplicable Properties"}],"url":"https://drafts.csswg.org/css-display-4/#display-type"},
 "0ba48d22": {"dfnID":"0ba48d22","dfnText":"@supports-condition","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-supports-condition"}],"title":"2. \nImporting Style Sheets: the @import rule"}],"url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-supports-condition"},
 "0e99038a": {"dfnID":"0e99038a","dfnText":"ex","external":true,"refSections":[{"refs":[{"id":"ref-for-ex"}],"title":"4.4. \nComputed Values"}],"url":"https://drafts.csswg.org/css-values-3/#ex"},
-"0fe1fd87": {"dfnID":"0fe1fd87","dfnText":"Content-Type metadata","external":true,"refSections":[{"refs":[{"id":"ref-for-content-type"},{"id":"ref-for-content-type\u2460"}],"title":"2.3. \nContent-Type of CSS Style Sheets"},{"refs":[{"id":"5ca12a2a0"}],"title":"\nPrivacy and Security Considerations"}],"url":"https://html.spec.whatwg.org/multipage/urls-and-fetching.html#content-type"},
+"0fe1fd87": {"dfnID":"0fe1fd87","dfnText":"Content-Type metadata","external":true,"refSections":[{"refs":[{"id":"ref-for-content-type"},{"id":"ref-for-content-type\u2460"}],"title":"2.3. \nContent-Type of CSS Style Sheets"},{"refs":[{"id":"5ca12a2a0"}],"title":"\nPrivacy Considerations"}],"url":"https://html.spec.whatwg.org/multipage/urls-and-fetching.html#content-type"},
 "11fb4d5b": {"dfnID":"11fb4d5b","dfnText":"background-color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-background-color"}],"title":"3. \nShorthand Properties"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background-color"},
 "12432dcb": {"dfnID":"12432dcb","dfnText":"<supports-condition>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-supports-condition"}],"title":"2. \nImporting Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-typedef-supports-condition\u2460"},{"id":"ref-for-typedef-supports-condition\u2461"},{"id":"ref-for-typedef-supports-condition\u2462"},{"id":"ref-for-typedef-supports-condition\u2463"}],"title":"2.1. \nConditional @import Rules"}],"url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
 "1548047a": {"dfnID":"1548047a","dfnText":"<color>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-color"}],"title":"1. \nIntroduction"}],"url":"https://drafts.csswg.org/css-color-5/#typedef-color"},
+"16a52cab": {"dfnID":"16a52cab","dfnText":"tree-abiding pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-tree-abiding"}],"title":"4.8. \nPer-Fragment Value Processing"}],"url":"https://drafts.csswg.org/css-pseudo-4/#tree-abiding"},
 "16d57f47": {"dfnID":"16d57f47","dfnText":"list-style-position","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-list-style-position"},{"id":"ref-for-propdef-list-style-position\u2460"}],"title":"4.7. \nExamples"}],"url":"https://drafts.csswg.org/css-lists-3/#propdef-list-style-position"},
 "174d5a21": {"dfnID":"174d5a21","dfnText":"element","external":true,"refSections":[{"refs":[{"id":"ref-for-elements"}],"title":"1.1. \nModule Interactions"}],"url":"https://drafts.csswg.org/css-display-3/#elements"},
 "18222566": {"dfnID":"18222566","dfnText":"<length-percentage>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-length-percentage"}],"title":"1. \nIntroduction"}],"url":"https://drafts.csswg.org/css-values-4/#typedef-length-percentage"},
 "198f1537": {"dfnID":"198f1537","dfnText":"custom property","external":true,"refSections":[{"refs":[{"id":"ref-for-custom-property"}],"title":"3.2. \nResetting All Properties: the all property"}],"url":"https://drafts.csswg.org/css-variables-2/#custom-property"},
 "19f9e9df": {"dfnID":"19f9e9df","dfnText":"shadow tree","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-shadow-tree"}],"title":"6.1. \nCascade Sorting Order"}],"url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
+"1fd97478": {"dfnID":"1fd97478","dfnText":"vendor-prefixed","external":true,"refSections":[{"refs":[{"id":"ref-for-vendor-prefix"}],"title":"4.1.1. \nValue Aliasing"}],"url":"https://drafts.csswg.org/css-2025/#vendor-prefix"},
 "22109b0e": {"dfnID":"22109b0e","dfnText":"flat tree","external":true,"refSections":[{"refs":[{"id":"ref-for-flat-tree"},{"id":"ref-for-flat-tree\u2460"}],"title":"4. \nValue Processing"},{"refs":[{"id":"ref-for-flat-tree\u2461"}],"title":"7.2. \nInheritance"}],"url":"https://drafts.csswg.org/css-scoping-1/#flat-tree"},
 "22413b3f": {"dfnID":"22413b3f","dfnText":"layout","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-contain-layout"}],"title":"6.4.3. \nLayer Ordering"}],"url":"https://drafts.csswg.org/css-contain-2/#valdef-contain-layout"},
 "2485e0d1": {"dfnID":"2485e0d1","dfnText":"CSSGroupingRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssgroupingrule"}],"title":"8.1. \nThe CSSLayerBlockRule interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssgroupingrule"},
@@ -4611,12 +4618,12 @@ let dfnPanelData = {
 "3c91be7d": {"dfnID":"3c91be7d","dfnText":"bolder","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-font-weight-bolder"}],"title":"4.4. \nComputed Values"}],"url":"https://drafts.csswg.org/css-fonts-4/#valdef-font-weight-bolder"},
 "3e31a6cc": {"dfnID":"3e31a6cc","dfnText":"<media-query>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-media-query"}],"title":"1.1. \nModule Interactions"}],"url":"https://drafts.csswg.org/mediaqueries-4/#typedef-media-query"},
 "42871fa3": {"dfnID":"42871fa3","dfnText":"border-style","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-style"}],"title":"1. \nIntroduction"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border-style"},
-"42b00c6e": {"dfnID":"42b00c6e","dfnText":"pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-pseudo-element\u2460"}],"title":"4.5.1. \nApplicable Properties"},{"refs":[{"id":"ref-for-pseudo-element\u2461"}],"title":"4.8. \nPer-Fragment Value Processing"},{"refs":[{"id":"ref-for-pseudo-element\u2462"}],"title":"7.2. \nInheritance"}],"url":"https://drafts.csswg.org/selectors-4/#pseudo-element"},
+"42b00c6e": {"dfnID":"42b00c6e","dfnText":"pseudo-elements","external":true,"refSections":[{"refs":[{"id":"ref-for-pseudo-element\u2460"}],"title":"4.5.1. \nApplicable Properties"},{"refs":[{"id":"ref-for-pseudo-element\u2461"}],"title":"7.2. \nInheritance"}],"url":"https://drafts.csswg.org/selectors-4/#pseudo-element"},
 "4356bfe3": {"dfnID":"4356bfe3","dfnText":"text-align","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-text-align"}],"title":"4.7. \nExamples"}],"url":"https://drafts.csswg.org/css-text-3/#propdef-text-align"},
 "46464297": {"dfnID":"46464297","dfnText":"dotted","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-line-style-dotted"}],"title":"1. \nIntroduction"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#valdef-line-style-dotted"},
 "4a16f115": {"dfnID":"4a16f115","dfnText":"border-top-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-top-width"}],"title":"4.7. \nExamples"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border-top-width"},
 "4c891868": {"dfnID":"4c891868","dfnText":"<media-query-list>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-media-query-list"}],"title":"2. \nImporting Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-typedef-media-query-list\u2460"},{"id":"ref-for-typedef-media-query-list\u2461"}],"title":"2.1. \nConditional @import Rules"}],"url":"https://drafts.csswg.org/mediaqueries-4/#typedef-media-query-list"},
-"4d06fa38": {"dfnID":"4d06fa38","dfnText":"pseudo-element","external":true,"refSections":[{"refs":[{"id":"ref-for-pseudo-element"}],"title":"4.5.1. \nApplicable Properties"},{"refs":[{"id":"ref-for-pseudo-element\u2463"}],"title":"7.2. \nInheritance"}],"url":"https://www.w3.org/TR/selectors-4/#pseudo-element"},
+"4d06fa38": {"dfnID":"4d06fa38","dfnText":"pseudo-element","external":true,"refSections":[{"refs":[{"id":"ref-for-pseudo-element"}],"title":"4.5.1. \nApplicable Properties"},{"refs":[{"id":"ref-for-pseudo-element\u2462"}],"title":"7.2. \nInheritance"}],"url":"https://www.w3.org/TR/selectors-4/#pseudo-element"},
 "51810d12": {"dfnID":"51810d12","dfnText":"s","external":true,"refSections":[{"refs":[{"id":"ref-for-the-s-element"}],"title":"6.5. \nPrecedence of Non-CSS Presentational Hints"}],"url":"https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-s-element"},
 "537cf076": {"dfnID":"537cf076","dfnText":"?","external":true,"refSections":[{"refs":[{"id":"ref-for-mult-opt"},{"id":"ref-for-mult-opt\u2460"},{"id":"ref-for-mult-opt\u2461"}],"title":"2. \nImporting Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-mult-opt\u2462"}],"title":"6.4.4.1. \nAssigning Styles Inline: the @layer block at-rule"}],"url":"https://drafts.csswg.org/css-values-4/#mult-opt"},
 "5424dbef": {"dfnID":"5424dbef","dfnText":"media query list","external":true,"refSections":[{"refs":[{"id":"ref-for-media-query-list"}],"title":"2.1. \nConditional @import Rules"}],"url":"https://drafts.csswg.org/mediaqueries-4/#media-query-list"},
@@ -4660,18 +4667,21 @@ let dfnPanelData = {
 "977d3003": {"dfnID":"977d3003","dfnText":"<string>","external":true,"refSections":[{"refs":[{"id":"ref-for-string-value"},{"id":"ref-for-string-value\u2460"},{"id":"ref-for-string-value\u2461"}],"title":"2. \nImporting Style Sheets: the @import rule"}],"url":"https://drafts.csswg.org/css-values-4/#string-value"},
 "982e17a3": {"dfnID":"982e17a3","dfnText":"unicode-bidi","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-unicode-bidi"},{"id":"ref-for-propdef-unicode-bidi\u2460"}],"title":"3.2. \nResetting All Properties: the all property"}],"url":"https://drafts.csswg.org/css-writing-modes-3/#propdef-unicode-bidi"},
 "989f9ee6": {"dfnID":"989f9ee6","dfnText":"border-right-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-right-width"}],"title":"4.7. \nExamples"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border-right-width"},
+"99a3763c": {"dfnID":"99a3763c","dfnText":"font-size-adjust","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-size-adjust"}],"title":"4.6. \nActual Values"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size-adjust"},
 "a15951ea": {"dfnID":"a15951ea","dfnText":"supports()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-supports"}],"title":"9.8. \nAdditions Since Level 3"}],"url":"https://drafts.csswg.org/css-conditional-5/#funcdef-supports"},
-"a2a30ba8": {"dfnID":"a2a30ba8","dfnText":"CORS protocol","external":true,"refSections":[{"refs":[{"id":"ref-for-cors-protocol"}],"title":"\nPrivacy and Security Considerations"}],"url":"https://fetch.spec.whatwg.org/#cors-protocol"},
+"a2a30ba8": {"dfnID":"a2a30ba8","dfnText":"CORS protocol","external":true,"refSections":[{"refs":[{"id":"ref-for-cors-protocol"}],"title":"\nSecurity Considerations"}],"url":"https://fetch.spec.whatwg.org/#cors-protocol"},
 "a4cd8a8d": {"dfnID":"a4cd8a8d","dfnText":"border-image","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-image"}],"title":"3. \nShorthand Properties"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border-image"},
+"a4e961d8": {"dfnID":"a4e961d8","dfnText":"final CSS style sheets","external":true,"refSections":[{"refs":[{"id":"ref-for-documentorshadowroot-final-css-style-sheets"}],"title":"6.1. \nCascade Sorting Order"},{"refs":[{"id":"ref-for-documentorshadowroot-final-css-style-sheets\u2460"}],"title":"9.1. \nChanges since the 13 Jan 2022 Candidate Recommendation Snapshot"}],"url":"https://drafts.csswg.org/cssom-1/#documentorshadowroot-final-css-style-sheets"},
 "a7bbaf9f": {"dfnID":"a7bbaf9f","dfnText":"div","external":true,"refSections":[{"refs":[{"id":"ref-for-the-div-element"}],"title":"4.8. \nPer-Fragment Value Processing"}],"url":"https://html.spec.whatwg.org/multipage/grouping-content.html#the-div-element"},
 "a8fe91d7": {"dfnID":"a8fe91d7","dfnText":"font-weight","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-weight"}],"title":"3. \nShorthand Properties"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-weight"},
 "a9734ee4": {"dfnID":"a9734ee4","dfnText":"border","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border"}],"title":"3. \nShorthand Properties"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border"},
 "ac54fbff": {"dfnID":"ac54fbff","dfnText":"line-height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-line-height"}],"title":"3. \nShorthand Properties"}],"url":"https://drafts.csswg.org/css2/#propdef-line-height"},
 "actual-value": {"dfnID":"actual-value","dfnText":"actual value","external":false,"refSections":[{"refs":[{"id":"ref-for-actual-value"},{"id":"ref-for-actual-value\u2460"},{"id":"ref-for-actual-value\u2461"}],"title":"4. Value Processing"}],"url":"#actual-value"},
 "apply": {"dfnID":"apply","dfnText":"apply to","external":false,"refSections":[{"refs":[{"id":"ref-for-apply"}],"title":"4.4. Computed Values"},{"refs":[{"id":"ref-for-apply\u2460"}],"title":"4.5. Used Values"}],"url":"#apply"},
-"at-ruledef-import": {"dfnID":"at-ruledef-import","dfnText":"@import","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-import"},{"id":"ref-for-at-ruledef-import\u2460"},{"id":"ref-for-at-ruledef-import\u2461"},{"id":"ref-for-at-ruledef-import\u2462"},{"id":"ref-for-at-ruledef-import\u2463"},{"id":"ref-for-at-ruledef-import\u2464"},{"id":"ref-for-at-ruledef-import\u2465"},{"id":"ref-for-at-ruledef-import\u2466"},{"id":"ref-for-at-ruledef-import\u2467"},{"id":"ref-for-at-ruledef-import\u2468"}],"title":"2. Importing Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u24ea"},{"id":"ref-for-at-ruledef-import\u2460\u2460"}],"title":"2.1. Conditional @import Rules"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2461"},{"id":"ref-for-at-ruledef-import\u2460\u2462"}],"title":"6.1. Cascade Sorting Order"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2463"}],"title":"6.4.1. Declaring Cascade Layers"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2464"},{"id":"ref-for-at-ruledef-import\u2460\u2465"}],"title":"6.4.2. Layer Naming and Nesting"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2466"}],"title":"6.4.2.1. Anonymous Layers"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2467"}],"title":"6.4.4.1. Assigning Styles Inline: the @layer block at-rule"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2468"},{"id":"ref-for-at-ruledef-import\u2461\u24ea"},{"id":"ref-for-at-ruledef-import\u2461\u2460"},{"id":"ref-for-at-ruledef-import\u2461\u2461"},{"id":"ref-for-at-ruledef-import\u2461\u2462"},{"id":"ref-for-at-ruledef-import\u2461\u2463"},{"id":"ref-for-at-ruledef-import\u2461\u2464"}],"title":"6.4.4.2. Declaring Without Styles: the @layer statement at-rule"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2465"}],"title":"9.1. Changes since the 13 Jan 2022 Candidate Recommendation Snapshot"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2466"}],"title":"9.2. Changes since the 15 Oct 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2467"}],"title":"9.4. Changes since the 8 June 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2468"}],"title":"9.6. Changes since the 19 January 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462\u24ea"}],"title":"9.7. Additions Since Level 4"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462\u2460"}],"title":"9.8. Additions Since Level 3"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462\u2461"},{"id":"ref-for-at-ruledef-import\u2462\u2462"}],"title":"Privacy and Security Considerations"}],"url":"#at-ruledef-import"},
+"at-ruledef-import": {"dfnID":"at-ruledef-import","dfnText":"@import","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-import"},{"id":"ref-for-at-ruledef-import\u2460"},{"id":"ref-for-at-ruledef-import\u2461"},{"id":"ref-for-at-ruledef-import\u2462"},{"id":"ref-for-at-ruledef-import\u2463"},{"id":"ref-for-at-ruledef-import\u2464"},{"id":"ref-for-at-ruledef-import\u2465"},{"id":"ref-for-at-ruledef-import\u2466"},{"id":"ref-for-at-ruledef-import\u2467"},{"id":"ref-for-at-ruledef-import\u2468"}],"title":"2. Importing Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u24ea"},{"id":"ref-for-at-ruledef-import\u2460\u2460"}],"title":"2.1. Conditional @import Rules"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2461"},{"id":"ref-for-at-ruledef-import\u2460\u2462"}],"title":"6.1. Cascade Sorting Order"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2463"}],"title":"6.4.1. Declaring Cascade Layers"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2464"},{"id":"ref-for-at-ruledef-import\u2460\u2465"}],"title":"6.4.2. Layer Naming and Nesting"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2466"}],"title":"6.4.2.1. Anonymous Layers"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2467"}],"title":"6.4.4.1. Assigning Styles Inline: the @layer block at-rule"},{"refs":[{"id":"ref-for-at-ruledef-import\u2460\u2468"},{"id":"ref-for-at-ruledef-import\u2461\u24ea"},{"id":"ref-for-at-ruledef-import\u2461\u2460"},{"id":"ref-for-at-ruledef-import\u2461\u2461"},{"id":"ref-for-at-ruledef-import\u2461\u2462"},{"id":"ref-for-at-ruledef-import\u2461\u2463"},{"id":"ref-for-at-ruledef-import\u2461\u2464"}],"title":"6.4.4.2. Declaring Without Styles: the @layer statement at-rule"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2465"}],"title":"9.1. Changes since the 13 Jan 2022 Candidate Recommendation Snapshot"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2466"}],"title":"9.2. Changes since the 15 Oct 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2467"}],"title":"9.4. Changes since the 8 June 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-import\u2461\u2468"}],"title":"9.6. Changes since the 19 January 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462\u24ea"}],"title":"9.7. Additions Since Level 4"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462\u2460"}],"title":"9.8. Additions Since Level 3"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462\u2461"}],"title":"Privacy Considerations"},{"refs":[{"id":"ref-for-at-ruledef-import\u2462\u2462"}],"title":"Security Considerations"}],"url":"#at-ruledef-import"},
 "at-ruledef-layer": {"dfnID":"at-ruledef-layer","dfnText":"@layer","external":false,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-layer"}],"title":"2. Importing Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2460"},{"id":"ref-for-at-ruledef-layer\u2461"},{"id":"ref-for-at-ruledef-layer\u2462"},{"id":"ref-for-at-ruledef-layer\u2463"}],"title":"6.4.2. Layer Naming and Nesting"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2464"}],"title":"6.4.2.1. Anonymous Layers"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2465"}],"title":"6.4.3. Layer Ordering"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2466"}],"title":"6.4.4. Declaring Layers Inline: the @layer rule"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2467"},{"id":"ref-for-at-ruledef-layer\u2468"},{"id":"ref-for-at-ruledef-layer\u2460\u24ea"},{"id":"ref-for-at-ruledef-layer\u2460\u2460"},{"id":"ref-for-at-ruledef-layer\u2460\u2461"}],"title":"6.4.4.1. Assigning Styles Inline: the @layer block at-rule"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2460\u2462"},{"id":"ref-for-at-ruledef-layer\u2460\u2463"},{"id":"ref-for-at-ruledef-layer\u2460\u2464"},{"id":"ref-for-at-ruledef-layer\u2460\u2465"},{"id":"ref-for-at-ruledef-layer\u2460\u2466"},{"id":"ref-for-at-ruledef-layer\u2460\u2467"},{"id":"ref-for-at-ruledef-layer\u2460\u2468"}],"title":"6.4.4.2. Declaring Without Styles: the @layer statement at-rule"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2461\u24ea"},{"id":"ref-for-at-ruledef-layer\u2461\u2460"}],"title":"8.1. The CSSLayerBlockRule interface"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2461\u2461"}],"title":"8.2. The CSSLayerStatementRule interface"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2461\u2462"},{"id":"ref-for-at-ruledef-layer\u2461\u2463"}],"title":"9.1. Changes since the 13 Jan 2022 Candidate Recommendation Snapshot"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2461\u2464"},{"id":"ref-for-at-ruledef-layer\u2461\u2465"}],"title":"9.4. Changes since the 8 June 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2461\u2466"}],"title":"9.6. Changes since the 19 January 2021 Working Draft"},{"refs":[{"id":"ref-for-at-ruledef-layer\u2461\u2467"}],"title":"9.7. Additions Since Level 4"}],"url":"#at-ruledef-layer"},
 "author-presentational-hint-origin": {"dfnID":"author-presentational-hint-origin","dfnText":"author presentational hint origin","external":false,"refSections":[{"refs":[{"id":"ref-for-author-presentational-hint-origin"},{"id":"ref-for-author-presentational-hint-origin\u2460"}],"title":"6.5. Precedence of Non-CSS Presentational Hints"},{"refs":[{"id":"ref-for-author-presentational-hint-origin\u2461"}],"title":"9.3. Changes since the 29 August 2021 Working Draft"}],"url":"#author-presentational-hint-origin"},
+"b0326703": {"dfnID":"b0326703","dfnText":"supports queries","external":true,"refSections":[{"refs":[{"id":"ref-for-supports-queries"}],"title":"2.1. \nConditional @import Rules"}],"url":"https://drafts.csswg.org/css-conditional-3/#supports-queries"},
 "b203675a": {"dfnID":"b203675a","dfnText":"getComputedStyle(elt)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-getcomputedstyle"}],"title":"4.4. \nComputed Values"},{"refs":[{"id":"ref-for-dom-window-getcomputedstyle\u2460"},{"id":"ref-for-dom-window-getcomputedstyle\u2461"}],"title":"4.8. \nPer-Fragment Value Processing"}],"url":"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle"},
 "b30820a7": {"dfnID":"b30820a7","dfnText":"text node","external":true,"refSections":[{"refs":[{"id":"ref-for-text-nodes"}],"title":"1.1. \nModule Interactions"}],"url":"https://drafts.csswg.org/css-display-4/#text-nodes"},
 "b32b852a": {"dfnID":"b32b852a","dfnText":"span","external":true,"refSections":[{"refs":[{"id":"ref-for-the-span-element"}],"title":"4.8. \nPer-Fragment Value Processing"}],"url":"https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-span-element"},
@@ -4685,7 +4695,6 @@ let dfnPanelData = {
 "c3bd6e1d": {"dfnID":"c3bd6e1d","dfnText":"box fragment","external":true,"refSections":[{"refs":[{"id":"ref-for-box-fragment"},{"id":"ref-for-box-fragment\u2460"}],"title":"4.8. \nPer-Fragment Value Processing"}],"url":"https://drafts.csswg.org/css-break-4/#box-fragment"},
 "c533ddd8": {"dfnID":"c533ddd8","dfnText":"@charset","external":true,"refSections":[{"refs":[{"id":"ref-for-at-ruledef-charset"}],"title":"2. \nImporting Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-at-ruledef-charset\u2460"}],"title":"6.4.4.2. \nDeclaring Without Styles: the @layer statement at-rule"}],"url":"https://drafts.csswg.org/css-syntax-3/#at-ruledef-charset"},
 "cad72d2f": {"dfnID":"cad72d2f","dfnText":"currentcolor","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-currentcolor"}],"title":"4.8. \nPer-Fragment Value Processing"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-currentcolor"},
-"caf45308": {"dfnID":"caf45308","dfnText":"font-size-adjust","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-size-adjust"}],"title":"4.6. \nActual Values"}],"url":"https://drafts.csswg.org/css-fonts-5/#propdef-font-size-adjust"},
 "cascade": {"dfnID":"cascade","dfnText":"cascade","external":false,"refSections":[{"refs":[{"id":"ref-for-cascade"},{"id":"ref-for-cascade"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-cascade\u2460"}],"title":"4.1. Declared Values"},{"refs":[{"id":"ref-for-cascade"}],"title":"4.2. Cascaded Values"},{"refs":[{"id":"ref-for-cascade\u2461"}],"title":"5. Filtering"},{"refs":[{"id":"ref-for-cascade\u2462"},{"id":"ref-for-cascade\u2463"},{"id":"ref-for-cascade\u2464"}],"title":"6.5. Precedence of Non-CSS Presentational Hints"},{"refs":[{"id":"ref-for-cascade\u2465"}],"title":"7. Defaulting"},{"refs":[{"id":"ref-for-cascade\u2466"}],"title":"7.1. Initial Values"},{"refs":[{"id":"ref-for-cascade\u2467"}],"title":"7.2. Inheritance"},{"refs":[{"id":"ref-for-cascade\u2468"}],"title":"7.3.3. Erasing All Declarations: the unset keyword"},{"refs":[{"id":"ref-for-cascade\u2460\u24ea"}],"title":"7.3.5. Rolling Back Cascade Layers: the revert-layer keyword"},{"refs":[{"id":"ref-for-cascade\u2460\u2460"},{"id":"ref-for-cascade\u2460\u2461"}],"title":"9.7. Additions Since Level 4"},{"refs":[{"id":"ref-for-cascade\u2460\u2462"}],"title":"9.8. Additions Since Level 3"},{"refs":[{"id":"ref-for-cascade\u2460\u2463"}],"title":"9.9. Additions Since Level 2"}],"url":"#cascade"},
 "cascade-dependent-keyword": {"dfnID":"cascade-dependent-keyword","dfnText":"cascade-dependent keywords","external":false,"refSections":[],"url":"#cascade-dependent-keyword"},
 "cascade-layers": {"dfnID":"cascade-layers","dfnText":"cascade layers","external":false,"refSections":[{"refs":[{"id":"ref-for-cascade-layers\u2460"},{"id":"ref-for-cascade-layers\u2461"}],"title":"2. Importing Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-cascade-layers\u2462"},{"id":"ref-for-cascade-layers\u2463"},{"id":"ref-for-cascade-layers\u2464"}],"title":"6.1. Cascade Sorting Order"},{"refs":[{"id":"ref-for-cascade-layers\u2465"},{"id":"ref-for-cascade-layers\u2466"}],"title":"6.4. Cascade Layers"},{"refs":[{"id":"ref-for-cascade-layers\u2467"},{"id":"ref-for-cascade-layers\u2468"}],"title":"6.4.2. Layer Naming and Nesting"},{"refs":[{"id":"ref-for-cascade-layers\u2460\u24ea"}],"title":"6.4.3. Layer Ordering"},{"refs":[{"id":"ref-for-cascade-layers\u2460\u2460"}],"title":"6.4.4. Declaring Layers Inline: the @layer rule"},{"refs":[{"id":"ref-for-cascade-layers\u2460\u2461"}],"title":"6.4.4.1. Assigning Styles Inline: the @layer block at-rule"},{"refs":[{"id":"ref-for-cascade-layers\u2460\u2462"},{"id":"ref-for-cascade-layers\u2460\u2463"},{"id":"ref-for-cascade-layers\u2460\u2464"},{"id":"ref-for-cascade-layers\u2460\u2465"}],"title":"7.3.5. Rolling Back Cascade Layers: the revert-layer keyword"},{"refs":[{"id":"ref-for-cascade-layers\u2460\u2466"}],"title":"7.3.6. Rolling Back Rules: the revert-rule keyword"},{"refs":[{"id":"ref-for-cascade-layers\u2460\u2467"}],"title":"9.6. Changes since the 19 January 2021 Working Draft"},{"refs":[{"id":"ref-for-cascade-layers\u2460\u2468"}],"title":"9.7. Additions Since Level 4"}],"url":"#cascade-layers"},
@@ -4701,7 +4710,7 @@ let dfnPanelData = {
 "computed-value": {"dfnID":"computed-value","dfnText":"computed value","external":false,"refSections":[{"refs":[{"id":"ref-for-computed-value"},{"id":"ref-for-computed-value\u2460"},{"id":"ref-for-computed-value\u2461"}],"title":"4. Value Processing"},{"refs":[{"id":"ref-for-computed-value\u2462"},{"id":"ref-for-computed-value\u2463"},{"id":"ref-for-computed-value\u2464"},{"id":"ref-for-computed-value\u2465"},{"id":"ref-for-computed-value\u2466"},{"id":"ref-for-computed-value\u2467"}],"title":"4.4. Computed Values"},{"refs":[{"id":"ref-for-computed-value\u2468"},{"id":"ref-for-computed-value\u2460\u24ea"}],"title":"4.5. Used Values"},{"refs":[{"id":"ref-for-computed-value\u2460\u2460"}],"title":"4.5.1. Applicable Properties"},{"refs":[{"id":"ref-for-computed-value\u2460\u2461"}],"title":"4.8. Per-Fragment Value Processing"},{"refs":[{"id":"ref-for-computed-value\u2460\u2462"}],"title":"7.2. Inheritance"},{"refs":[{"id":"ref-for-computed-value\u2460\u2463"},{"id":"ref-for-computed-value\u2460\u2464"}],"title":"7.3.2. Explicit Inheritance: the inherit keyword"},{"refs":[{"id":"ref-for-computed-value\u2460\u2465"}],"title":"7.3.6. Rolling Back Rules: the revert-rule keyword"}],"url":"#computed-value"},
 "css-inheritance": {"dfnID":"css-inheritance","dfnText":"Inheritance","external":false,"refSections":[{"refs":[{"id":"ref-for-css-inheritance"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-css-inheritance\u2460"},{"id":"ref-for-css-inheritance\u2461"}],"title":"4.4. Computed Values"},{"refs":[{"id":"ref-for-css-inheritance\u2462"}],"title":"7. Defaulting"},{"refs":[{"id":"ref-for-css-inheritance\u2463"}],"title":"7.2. Inheritance"}],"url":"#css-inheritance"},
 "css-legacy-value-alias": {"dfnID":"css-legacy-value-alias","dfnText":"legacy value aliases","external":false,"refSections":[],"url":"#css-legacy-value-alias"},
-"css-property": {"dfnID":"css-property","dfnText":"properties","external":false,"refSections":[],"url":"#css-property"},
+"css-property": {"dfnID":"css-property","dfnText":"properties","external":false,"refSections":[{"refs":[{"id":"ref-for-css-property"}],"title":"1. Introduction"}],"url":"#css-property"},
 "csslayerblockrule": {"dfnID":"csslayerblockrule","dfnText":"CSSLayerBlockRule","external":false,"refSections":[{"refs":[{"id":"ref-for-csslayerblockrule"}],"title":"8.1. The CSSLayerBlockRule interface"},{"refs":[{"id":"ref-for-csslayerblockrule\u2460"}],"title":"8.2. The CSSLayerStatementRule interface"}],"url":"#csslayerblockrule"},
 "csslayerstatementrule": {"dfnID":"csslayerstatementrule","dfnText":"CSSLayerStatementRule","external":false,"refSections":[{"refs":[{"id":"ref-for-csslayerstatementrule"}],"title":"8.2. The CSSLayerStatementRule interface"}],"url":"#csslayerstatementrule"},
 "d45afbab": {"dfnID":"d45afbab","dfnText":"font-style","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-style"}],"title":"3. \nShorthand Properties"},{"refs":[{"id":"ref-for-propdef-font-style\u2460"}],"title":"6.3. \nImportant Declarations: the !important annotation"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-style"},
@@ -4716,7 +4725,6 @@ let dfnPanelData = {
 "e6cd741a": {"dfnID":"e6cd741a","dfnText":"reset","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-animation-action-reset"}],"title":"6.4. \nCascade Layers"},{"refs":[{"id":"ref-for-valdef-animation-action-reset\u2460"},{"id":"ref-for-valdef-animation-action-reset\u2461"}],"title":"6.4.3. \nLayer Ordering"}],"url":"https://drafts.csswg.org/css-animations-2/#valdef-animation-action-reset"},
 "e7f0dd6c": {"dfnID":"e7f0dd6c","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"2. \nImporting Style Sheets: the @import rule"},{"refs":[{"id":"ref-for-propdef-display\u2460"}],"title":"3.2. \nResetting All Properties: the all property"},{"refs":[{"id":"ref-for-propdef-display\u2461"}],"title":"4.5.1. \nApplicable Properties"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-display"},
 "e8ff0bb4": {"dfnID":"e8ff0bb4","dfnText":"em","external":true,"refSections":[{"refs":[{"id":"ref-for-em"}],"title":"4.4. \nComputed Values"},{"refs":[{"id":"ref-for-em\u2460"}],"title":"4.8. \nPer-Fragment Value Processing"}],"url":"https://drafts.csswg.org/css-values-4/#em"},
-"eacf0451": {"dfnID":"eacf0451","dfnText":"base","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-appearance-base"},{"id":"ref-for-valdef-appearance-base\u2460"},{"id":"ref-for-valdef-appearance-base\u2461"},{"id":"ref-for-valdef-appearance-base\u2462"}],"title":"6.4.2. \nLayer Naming and Nesting"}],"url":"https://drafts.csswg.org/css-forms-1/#valdef-appearance-base"},
 "eb3aa672": {"dfnID":"eb3aa672","dfnText":"logical property group","external":true,"refSections":[{"refs":[{"id":"ref-for-logical-property-group"}],"title":"7.3.4. \nRolling Back Cascade Origins: the revert keyword"},{"refs":[{"id":"ref-for-logical-property-group\u2460"}],"title":"7.3.5. \nRolling Back Cascade Layers: the revert-layer keyword"}],"url":"https://drafts.csswg.org/css-logical-1/#logical-property-group"},
 "ebaeb088": {"dfnID":"ebaeb088","dfnText":"CSSRule","external":true,"refSections":[{"refs":[{"id":"ref-for-cssrule"}],"title":"8.2. \nThe CSSLayerStatementRule interface"}],"url":"https://drafts.csswg.org/cssom-1/#cssrule"},
 "ee7bba09": {"dfnID":"ee7bba09","dfnText":"response","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-response"}],"title":"2.3. \nContent-Type of CSS Style Sheets"}],"url":"https://fetch.spec.whatwg.org/#concept-response"},
@@ -5236,6 +5244,7 @@ let refsData = {
 "#cascaded-value": {"displayText":"cascaded value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"local","text":"cascaded value","type":"dfn","url":"#cascaded-value"},
 "#computed-value": {"displayText":"computed value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"local","text":"computed value","type":"dfn","url":"#computed-value"},
 "#css-inheritance": {"displayText":"inheritance","export":true,"for_":["CSS"],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"local","text":"inheritance","type":"dfn","url":"#css-inheritance"},
+"#css-property": {"displayText":"property","export":true,"for_":["CSS"],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"local","text":"property","type":"dfn","url":"#css-property"},
 "#csslayerblockrule": {"displayText":"CSSLayerBlockRule","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"local","text":"CSSLayerBlockRule","type":"interface","url":"#csslayerblockrule"},
 "#csslayerstatementrule": {"displayText":"CSSLayerStatementRule","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"local","text":"CSSLayerStatementRule","type":"interface","url":"#csslayerstatementrule"},
 "#declared-value": {"displayText":"declared value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"local","text":"declared value","type":"dfn","url":"#declared-value"},
@@ -5272,6 +5281,7 @@ let refsData = {
 "https://dom.spec.whatwg.org/#concept-shadow-including-tree-order": {"displayText":"shadow-including tree order","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow-including tree order","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-shadow-including-tree-order"},
 "https://dom.spec.whatwg.org/#concept-shadow-tree": {"displayText":"shadow tree","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"shadow tree","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-shadow-tree"},
 "https://dom.spec.whatwg.org/#connected": {"displayText":"connected","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"connected","type":"dfn","url":"https://dom.spec.whatwg.org/#connected"},
+"https://drafts.csswg.org/css-2025/#vendor-prefix": {"displayText":"vendor-prefixed","export":true,"for_":[],"level":"2025","normative":true,"shortname":"css","spec":"css-2025","status":"current","text":"vendor-prefixed","type":"dfn","url":"https://drafts.csswg.org/css-2025/#vendor-prefix"},
 "https://drafts.csswg.org/css-align-3/#valdef-align-self-auto": {"displayText":"auto","export":true,"for_":["align-self"],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"auto","type":"value","url":"https://drafts.csswg.org/css-align-3/#valdef-align-self-auto"},
 "https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes": {"displayText":"@keyframes","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-animations","spec":"css-animations-1","status":"current","text":"@keyframes","type":"at-rule","url":"https://drafts.csswg.org/css-animations-1/#at-ruledef-keyframes"},
 "https://drafts.csswg.org/css-animations-2/#valdef-animation-action-reset": {"displayText":"reset","export":true,"for_":["<animation-action>"],"level":"2","normative":true,"shortname":"css-animations","spec":"css-animations-2","status":"current","text":"reset","type":"value","url":"https://drafts.csswg.org/css-animations-2/#valdef-animation-action-reset"},
@@ -5298,6 +5308,7 @@ let refsData = {
 "https://drafts.csswg.org/css-conditional-3/#at-ruledef-media": {"displayText":"@media","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"@media","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-3/#at-ruledef-media"},
 "https://drafts.csswg.org/css-conditional-3/#at-ruledef-supports": {"displayText":"@supports","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"@supports","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-3/#at-ruledef-supports"},
 "https://drafts.csswg.org/css-conditional-3/#conditional-group-rule": {"displayText":"conditional group rule","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"conditional group rule","type":"dfn","url":"https://drafts.csswg.org/css-conditional-3/#conditional-group-rule"},
+"https://drafts.csswg.org/css-conditional-3/#supports-queries": {"displayText":"supports queries","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"supports queries","type":"dfn","url":"https://drafts.csswg.org/css-conditional-3/#supports-queries"},
 "https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition": {"displayText":"<supports-condition>","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-conditional","spec":"css-conditional-3","status":"current","text":"<supports-condition>","type":"type","url":"https://drafts.csswg.org/css-conditional-3/#typedef-supports-condition"},
 "https://drafts.csswg.org/css-conditional-5/#at-ruledef-supports-condition": {"displayText":"@supports-condition","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"@supports-condition","type":"at-rule","url":"https://drafts.csswg.org/css-conditional-5/#at-ruledef-supports-condition"},
 "https://drafts.csswg.org/css-conditional-5/#funcdef-supports": {"displayText":"supports()","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"supports()","type":"function","url":"https://drafts.csswg.org/css-conditional-5/#funcdef-supports"},
@@ -5314,6 +5325,7 @@ let refsData = {
 "https://drafts.csswg.org/css-fonts-4/#propdef-font": {"displayText":"font","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-family": {"displayText":"font-family","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-family","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-family"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-size": {"displayText":"font-size","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-size","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size"},
+"https://drafts.csswg.org/css-fonts-4/#propdef-font-size-adjust": {"displayText":"font-size-adjust","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-size-adjust","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-size-adjust"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-style": {"displayText":"font-style","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-style","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-style"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-variant": {"displayText":"font-variant","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-variant","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-variant"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-weight": {"displayText":"font-weight","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-weight","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-weight"},
@@ -5321,8 +5333,6 @@ let refsData = {
 "https://drafts.csswg.org/css-fonts-4/#valdef-font-style-italic": {"displayText":"italic","export":true,"for_":["font-style"],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"italic","type":"value","url":"https://drafts.csswg.org/css-fonts-4/#valdef-font-style-italic"},
 "https://drafts.csswg.org/css-fonts-4/#valdef-font-weight-bolder": {"displayText":"bolder","export":true,"for_":["font-weight"],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"bolder","type":"value","url":"https://drafts.csswg.org/css-fonts-4/#valdef-font-weight-bolder"},
 "https://drafts.csswg.org/css-fonts-5/#at-font-face-rule": {"displayText":"@font-face","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-fonts","spec":"css-fonts-5","status":"current","text":"@font-face","type":"at-rule","url":"https://drafts.csswg.org/css-fonts-5/#at-font-face-rule"},
-"https://drafts.csswg.org/css-fonts-5/#propdef-font-size-adjust": {"displayText":"font-size-adjust","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-fonts","spec":"css-fonts-5","status":"current","text":"font-size-adjust","type":"property","url":"https://drafts.csswg.org/css-fonts-5/#propdef-font-size-adjust"},
-"https://drafts.csswg.org/css-forms-1/#valdef-appearance-base": {"displayText":"base","export":true,"for_":["appearance"],"level":"1","normative":true,"shortname":"css-forms","spec":"css-forms-1","status":"current","text":"base","type":"value","url":"https://drafts.csswg.org/css-forms-1/#valdef-appearance-base"},
 "https://drafts.csswg.org/css-inline-3/#root-inline-box": {"displayText":"root inline box","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-inline","spec":"css-inline-3","status":"current","text":"root inline box","type":"dfn","url":"https://drafts.csswg.org/css-inline-3/#root-inline-box"},
 "https://drafts.csswg.org/css-lists-3/#propdef-list-style-position": {"displayText":"list-style-position","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"current","text":"list-style-position","type":"property","url":"https://drafts.csswg.org/css-lists-3/#propdef-list-style-position"},
 "https://drafts.csswg.org/css-logical-1/#logical-property-group": {"displayText":"logical property group","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-logical","spec":"css-logical-1","status":"current","text":"logical property group","type":"dfn","url":"https://drafts.csswg.org/css-logical-1/#logical-property-group"},
@@ -5331,6 +5341,7 @@ let refsData = {
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-after": {"displayText":"::after","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::after","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-after"},
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-before": {"displayText":"::before","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::before","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-before"},
 "https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line": {"displayText":"::first-line","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"::first-line","type":"selector","url":"https://drafts.csswg.org/css-pseudo-4/#selectordef-first-line"},
+"https://drafts.csswg.org/css-pseudo-4/#tree-abiding": {"displayText":"tree-abiding pseudo-elements","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-pseudo","spec":"css-pseudo-4","status":"current","text":"tree-abiding pseudo-elements","type":"dfn","url":"https://drafts.csswg.org/css-pseudo-4/#tree-abiding"},
 "https://drafts.csswg.org/css-scoping-1/#flat-tree": {"displayText":"flat tree","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"current","text":"flat tree","type":"dfn","url":"https://drafts.csswg.org/css-scoping-1/#flat-tree"},
 "https://drafts.csswg.org/css-scoping-1/#tree-context": {"displayText":"tree context","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-scoping","spec":"css-scoping-1","status":"current","text":"tree context","type":"dfn","url":"https://drafts.csswg.org/css-scoping-1/#tree-context"},
 "https://drafts.csswg.org/css-sizing-3/#propdef-height": {"displayText":"height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"height","type":"property","url":"https://drafts.csswg.org/css-sizing-3/#propdef-height"},
@@ -5376,6 +5387,7 @@ let refsData = {
 "https://drafts.csswg.org/cssom-1/#cssomstring": {"displayText":"CSSOMString","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"CSSOMString","type":"interface","url":"https://drafts.csswg.org/cssom-1/#cssomstring"},
 "https://drafts.csswg.org/cssom-1/#cssrule": {"displayText":"CSSRule","export":true,"for_":[],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"CSSRule","type":"interface","url":"https://drafts.csswg.org/cssom-1/#cssrule"},
 "https://drafts.csswg.org/cssom-1/#cssstyledeclaration-declarations": {"displayText":"declarations","export":true,"for_":["CSSStyleDeclaration"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"declarations","type":"dfn","url":"https://drafts.csswg.org/cssom-1/#cssstyledeclaration-declarations"},
+"https://drafts.csswg.org/cssom-1/#documentorshadowroot-final-css-style-sheets": {"displayText":"final CSS style sheets","export":true,"for_":["DocumentOrShadowRoot"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"final css style sheets","type":"dfn","url":"https://drafts.csswg.org/cssom-1/#documentorshadowroot-final-css-style-sheets"},
 "https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle": {"displayText":"getComputedStyle(elt)","export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"cssom","spec":"cssom-1","status":"current","text":"getComputedStyle(elt)","type":"method","url":"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle"},
 "https://drafts.csswg.org/mediaqueries-4/#media-query-list": {"displayText":"media query list","export":true,"for_":[],"level":"4","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-4","status":"current","text":"media query list","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-4/#media-query-list"},
 "https://drafts.csswg.org/mediaqueries-4/#typedef-media-query": {"displayText":"<media-query>","export":true,"for_":[],"level":"4","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-4","status":"current","text":"<media-query>","type":"type","url":"https://drafts.csswg.org/mediaqueries-4/#typedef-media-query"},
