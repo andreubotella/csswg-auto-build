@@ -38,7 +38,7 @@ The instant part of the transition can only use information knows to the old pag
 
 To achieve that, proposing two provide the following:
 
-## Allowing the author to control the commit scheduling
+## Solution 1: Allowing the author to control the commit scheduling
 
 ```js
 // Returns a boolean if the page is prerendered/BFCached and not render-blocked.
@@ -76,13 +76,14 @@ navigation.addEventListener("navigate", event => {
 });
 ```
 
-### Some more details for deferred commit/page-swap
+### Some more details for deferred commit/page-swap
+
 - By default, the new history entry applies immediately, like a `pushState` or `replaceState`.
   This makes it so that a quick press on "back" or so doesn't go too far back. The `historyChange` option can opt out of this behavior.
 - Only same-origin navigations without cross-origin redirects are deferrable.
 
 
-## Allowing animations to defer commit for a short period
+## Solution 2: Allowing animations to defer commit for a short period
 
 The above knobs can be very effective, but might also require expertise to get right.
 
@@ -94,7 +95,12 @@ The likely use case to let an animation continue till the end, so we can perhaps
 }
 ```
 
-## Security & Privacy Questionnaire
+## Pros and cons of the different solutions
+
+While deferring page swap provides full flexibility, it also needs care to avoid some footguns that can cause unwanted navigation delays.
+However, the current plan is to enable that first for power users, and take learnings from that experience into the higher level CSS-based solution.
+
+# Security & Privacy
 
 01.  What information does this feature expose,
      and for what purposes?
