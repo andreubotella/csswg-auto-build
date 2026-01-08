@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-overflow-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="107deb4725aa40bf3bc48a0ba197ef514237903d" name="revision">
+  <meta content="ee144efa07cc8670d40168d39c24c9c6f698df0c" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -979,7 +979,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Overflow Module Level 5</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-12-22">22 December 2025</time></p>
+    <time class="dt-updated" datetime="2026-01-07">7 January 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -997,11 +997,13 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dd class="editor h-card p-author vcard" data-editor-id="98451"><a class="email fn p-name u-email" href="mailto:flackr@google.com">Robert Flack</a> (<span class="org p-org">Google</span>)
       <dt>Suggest an Edit for this Spec:
       <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/css-overflow-5/Overview.bs">GitHub Editor</a>
+      <dt>Test Suite:
+      <dd class="wpt-overview"><a href="https://wpt.fyi/results/css/css-pseudo/">https://wpt.fyi/results/css/css-pseudo/</a>
      </dl>
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
 </p>
    <hr title="Separator for header">
   </div>
@@ -1216,6 +1218,12 @@ and can be styled to give the user an indication of which section they are in.</
    <p>Use cases include a table of contents with links to relevant contents,
 markers for scrolling carousel pages,
 and scrollable tab panels.</p>
+   <details class="wpt-tests-block" dir="ltr" lang="en">
+    <summary>Tests</summary>
+    <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-pseudo/relative-box-order-of-pseudo-elements.html" title="css/css-pseudo/relative-box-order-of-pseudo-elements.html">relative-box-order-of-pseudo-elements.html</a> <a class="wpt-live" href="http://wpt.live/css/css-pseudo/relative-box-order-of-pseudo-elements.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-pseudo/relative-box-order-of-pseudo-elements.html"><small>(source)</small></a>
+    </ul>
+   </details>
    <p class="issue" id="issue-41eecb3e"><a class="self-link" href="#issue-41eecb3e"></a> Add images representing these examples.</p>
    <h4 class="heading settled" data-level="3.1.1" id="scroll-marker-grouping"><span class="secno">3.1.1. </span><span class="content">
 Scroll marker grouping</span><a class="self-link" href="#scroll-marker-grouping"></a></h4>
@@ -4038,6 +4046,120 @@ function chooseHighlightColor(container, v) {
         if(colorCounts[color] == 0) return color;
     }
     return leastUsedColor(colorCounts);
+}
+}
+</script>
+<script>/* Boilerplate: script-wpt */
+"use strict";
+{
+let wptData = {
+"paths": ["/css/css-pseudo/"],
+};
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+    if(wptData.paths.length == 0) return;
+
+    const runsUrl = "https://wpt.fyi/api/runs?label=master&label=stable&max-count=1&product=chrome&product=firefox&product=safari&product=edge";
+    const runs = await (await fetch(runsUrl)).json();
+
+    let testResults = [];
+    for(const pathPrefix of wptData.paths) {
+        const pathResults = await (await fetch("https://wpt.fyi/api/search", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+            },
+            body: JSON.stringify({
+                "run_ids": runs.map(x=>x.id),
+                "query": {"path": pathPrefix},
+            })
+        })).json();
+        testResults = testResults.concat(pathResults.results);
+    }
+
+    const browsers = runs.map(x=>({name:x.browser_name, version:x.browser_version, passes:0, total: 0}));
+    const resultsFromPath = new Map(testResults.map(result=>{
+        const testPath = result.test;
+        const passes = result.legacy_status.map(x=>[x.passes, x.total]);
+        return [testPath, passes];
+    }));
+    const seenTests = new Set();
+    document.querySelectorAll(".wpt-name").forEach(nameEl=>{
+        const passData = resultsFromPath.get("/" + nameEl.getAttribute("title"));
+        if(!passData) {
+            console.log("Couldn't find test in results:", nameEl);
+            return
+        }
+        const numTests = passData[0][1];
+        if(numTests > 1) {
+            nameEl.insertAdjacentElement("beforeend",
+                mk.small({}, ` (${numTests} tests)`));
+        }
+        if(passData == undefined) return;
+        const resultsEl = mk.span({"class":"wpt-results"},
+            ...passData.map((p,i) => mk.span(
+            {
+                "title": `${browsers[i].name} ${p[0]}/${p[1]}`,
+                "class": "wpt-result",
+                "style": `background: conic-gradient(forestgreen ${p[0]/p[1]*360}deg, darkred 0deg);`,
+            })),
+        );
+        nameEl.insertAdjacentElement("afterend", resultsEl);
+
+        // Only update the summary pass/total count if we haven't seen this
+        // test before, to support authors listing the same test multiple times
+        // in a spec.
+        if (!seenTests.has(nameEl.getAttribute("title"))) {
+            seenTests.add(nameEl.getAttribute("title"));
+            passData.forEach((p,i) => {
+                browsers[i].passes += p[0];
+                browsers[i].total += p[1];
+            });
+        }
+    });
+    const overview = document.querySelector(".wpt-overview");
+    if(overview) {
+        overview.appendChild(mk.ul({}, ...browsers.map(formatWptResult)));
+        document.head.appendChild(mk.style({},
+            `.wpt-overview ul { display: flex; flex-flow: row wrap; gap: .2em; justify-content: start; list-style: none; padding: 0; margin: 0;}
+             .wpt-overview li { padding: .25em 1em; color: black; text-align: center; }
+             .wpt-overview img { height: 1.5em; height: max(1.5em, 32px); background: transparent; }
+             .wpt-overview .browser { font-weight: bold; }
+             .wpt-overview .passes-none { background: #e57373; }
+             .wpt-overview .passes-hardly { background: #ffb74d; }
+             .wpt-overview .passes-a-few { background: #ffd54f; }
+             .wpt-overview .passes-half { background: #fff176; }
+             .wpt-overview .passes-lots { background: #dce775; }
+             .wpt-overview .passes-most { background: #aed581; }
+             .wpt-overview .passes-all { background: #81c784; }`));
+    }
+});
+
+function formatWptResult({name, version, passes, total}) {
+    const passRate = passes/total;
+    let passClass = "";
+    if(passRate == 0)      passClass = "passes-none";
+    else if(passRate < .2) passClass = "passes-hardly";
+    else if(passRate < .4) passClass = "passes-a-few";
+    else if(passRate < .6) passClass = "passes-half";
+    else if(passRate < .8) passClass = "passes-lots";
+    else if(passRate < 1)  passClass = "passes-most";
+    else                   passClass = "passes-all";
+
+    name = name[0].toUpperCase() + name.slice(1);
+    const shortVersion = /^\d+/.exec(version);
+    const icon = []
+
+    if(name == "Chrome") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/chrome_64x64.png"}));
+    if(name == "Edge") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/edge_64x64.png"}));
+    if(name == "Safari") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/safari_64x64.png"}));
+    if(name == "Firefox") icon.push(mk.img({alt:"", src:"https://wpt.fyi/static/firefox_64x64.png"}));
+
+    return mk.li({"class":passClass},
+        mk.nobr({'class':'browser'}, ...icon, ` ${name} ${shortVersion}`),
+        mk.br(),
+        mk.nobr({'class':'pass-rate'}, `${passes}/${total}`)
+    );
 }
 }
 </script>
