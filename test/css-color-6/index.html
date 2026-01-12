@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-6/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="20aba62daae4056fe6158b9c05d0da908a1f9231" name="revision">
+  <meta content="b64e68200ca826e96fe6b8f288427784c6922465" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -1057,7 +1057,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Color Module Level 6</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-01-09">9 January 2026</time></p>
+    <time class="dt-updated" datetime="2026-01-11">11 January 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1104,7 +1104,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>This module extends CSS Color <a data-link-type="biblio" href="#biblio-css-color-5" title="CSS Color Module Level 5">[css-color-5]</a> to add automatic selection of contrasting colors.</p>
+   <p>This module extends CSS Color <a data-link-type="biblio" href="#biblio-css-color-5" title="CSS Color Module Level 5">[css-color-5]</a> to add automatic selection of contrasting colors, and compositing of a list of colors.</p>
    
 
 
@@ -1241,6 +1241,7 @@ Non-experimental implementations</span></a>
    <details class="wpt-tests-block" dir="ltr" lang="en" open>
     <summary>Tests</summary>
     <ul class="wpt-tests-list">
+     <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/contrast-color-001.html" title="css/css-color/contrast-color-001.html">contrast-color-001.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/contrast-color-001.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/contrast-color-001.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-computed-contrast-color-function.html" title="css/css-color/parsing/color-computed-contrast-color-function.html">color-computed-contrast-color-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-computed-contrast-color-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-computed-contrast-color-function.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-invalid-contrast-color-function.html" title="css/css-color/parsing/color-invalid-contrast-color-function.html">color-invalid-contrast-color-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-invalid-contrast-color-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-invalid-contrast-color-function.html"><small>(source)</small></a>
      <li class="wpt-test"><a class="wpt-name" href="https://wpt.fyi/results/css/css-color/parsing/color-valid-contrast-color-function.html" title="css/css-color/parsing/color-valid-contrast-color-function.html">color-valid-contrast-color-function.html</a> <a class="wpt-live" href="http://wpt.live/css/css-color/parsing/color-valid-contrast-color-function.html"><small>(live test)</small></a> <a class="wpt-source" href="https://github.com/web-platform-tests/wpt/blob/master/css/css-color/parsing/color-valid-contrast-color-function.html"><small>(source)</small></a>
@@ -1415,19 +1416,19 @@ If no target contrast is specified</span><a class="self-link" href="#contrast-co
      <p><span class="css">aaa large</span> (or <span class="css">large aaa</span>) computes to <span class="css">4.5</span></p>
    </ul>
    <p>To find the contrast of a pair of colors,
-	first their CIE Luminance (Y) is calculated relative to a <u class="link-error" data-lt="D65 whitepoint" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;d65 whitepoint&apos;.">D65 whitepoint</u>.
+	first their CIE Luminance (Y) is calculated relative to a <a data-link-type="dfn" href="https://drafts.csswg.org/css-color-4/#d65" id="ref-for-d65">D65</a> whitepoint.
 	Then the WCAG 2.1 contrast is calculated:
 	contrast = (Y<sub>l</sub> + 0.05) / (Y<sub>d</sub> + 0.05)
 	where Y<sub>d</sub> is the luminance of the darker color in the pair
 	and Y<sub>l</sub> is the luminance of the lighter color.
 	The factor 0.05 represents the luminance contribution of the viewing flare.</p>
-   <div class="example" id="example-5c96c963">
-    <a class="self-link" href="#example-5c96c963"></a>
+   <div class="example" id="example-8a3cd333">
+    <a class="self-link" href="#example-8a3cd333"></a>
 		Suppose that the <a data-link-type="dfn" href="#contrast-base-color" id="ref-for-contrast-base-color⑤">base color</a> were
 
 		
 <pre class="highlight lang-css"><c- nf>color</c-><c- p>(</c->display-p3 <c- m>0.38</c-> <c- m>0.11</c-> <c- m>0.05</c-><c- p>)</c-></pre>
-    <p>while the first <u class="link-error" data-lt="candidate color" title="LINK ERROR: No &apos;dfn&apos; refs found for &apos;candidate color&apos;.">candidate color</u> in the list were</p>
+    <p>while the first <a data-link-type="dfn" href="#contrast-color-candidates" id="ref-for-contrast-color-candidates③">color candidate</a> in the list is</p>
 <pre class="highlight lang-css">yellow</pre>
     <p>The calculation is as follows:</p>
     <ul>
@@ -1756,6 +1757,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="b3424c1d">black</span>
      <li><span class="dfn-paneled" id="7b5f3ed1">canvas</span>
      <li><span class="dfn-paneled" id="cad72d2f">currentcolor</span>
+     <li><span class="dfn-paneled" id="fa0623a2">d65</span>
      <li><span class="dfn-paneled" id="ee1ef9ea">used color</span>
      <li><span class="dfn-paneled" id="a2cddfe1">wheat</span>
      <li><span class="dfn-paneled" id="e5aac9c3">white</span>
@@ -2068,10 +2070,11 @@ let dfnPanelData = {
 "b3424c1d": {"dfnID":"b3424c1d","dfnText":"black","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-black"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-valdef-color-black\u2460"},{"id":"ref-for-valdef-color-black\u2461"}],"title":"2.1.1. \nIf there is a target contrast"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-black"},
 "cad72d2f": {"dfnID":"cad72d2f","dfnText":"currentcolor","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-currentcolor"}],"title":"4.1. Resolving contrast-color() values"},{"refs":[{"id":"ref-for-valdef-color-currentcolor\u2460"}],"title":"4.2. Resolving color-layers() values"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-currentcolor"},
 "contrast-base-color": {"dfnID":"contrast-base-color","dfnText":"base color","external":false,"refSections":[{"refs":[{"id":"ref-for-contrast-base-color"},{"id":"ref-for-contrast-base-color\u2460"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-contrast-base-color\u2461"},{"id":"ref-for-contrast-base-color\u2462"}],"title":"2.1.1. If there is a target contrast"},{"refs":[{"id":"ref-for-contrast-base-color\u2463"}],"title":"2.1.2. If no target contrast is specified"},{"refs":[{"id":"ref-for-contrast-base-color\u2464"}],"title":"2.2.1. WCAG 2.1: the wcag2 keyword and wcag2() function"}],"url":"#contrast-base-color"},
-"contrast-color-candidates": {"dfnID":"contrast-color-candidates","dfnText":"color candidates","external":false,"refSections":[{"refs":[{"id":"ref-for-contrast-color-candidates"},{"id":"ref-for-contrast-color-candidates\u2460"},{"id":"ref-for-contrast-color-candidates\u2461"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"}],"url":"#contrast-color-candidates"},
+"contrast-color-candidates": {"dfnID":"contrast-color-candidates","dfnText":"color candidates","external":false,"refSections":[{"refs":[{"id":"ref-for-contrast-color-candidates"},{"id":"ref-for-contrast-color-candidates\u2460"},{"id":"ref-for-contrast-color-candidates\u2461"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-contrast-color-candidates\u2462"}],"title":"2.2.1. WCAG 2.1: the wcag2 keyword and wcag2() function"}],"url":"#contrast-color-candidates"},
 "e5aac9c3": {"dfnID":"e5aac9c3","dfnText":"white","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-color-white"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-valdef-color-white\u2460"},{"id":"ref-for-valdef-color-white\u2461"},{"id":"ref-for-valdef-color-white\u2462"}],"title":"2.1.1. \nIf there is a target contrast"}],"url":"https://drafts.csswg.org/css-color-4/#valdef-color-white"},
 "ee1ef9ea": {"dfnID":"ee1ef9ea","dfnText":"used color","external":true,"refSections":[{"refs":[{"id":"ref-for-used-color"}],"title":"5.1. Serializing contrast-color()"}],"url":"https://drafts.csswg.org/css-color-4/#used-color"},
 "f0809abc": {"dfnID":"f0809abc","dfnText":"&&","external":true,"refSections":[{"refs":[{"id":"ref-for-comb-all"},{"id":"ref-for-comb-all\u2460"},{"id":"ref-for-comb-all\u2461"},{"id":"ref-for-comb-all\u2462"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-comb-all\u2463"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"https://drafts.csswg.org/css-values-4/#comb-all"},
+"fa0623a2": {"dfnID":"fa0623a2","dfnText":"d65","external":true,"refSections":[{"refs":[{"id":"ref-for-d65"}],"title":"2.2.1. \n\tWCAG 2.1: the wcag2 keyword and wcag2() function\n"}],"url":"https://drafts.csswg.org/css-color-4/#d65"},
 "funcdef-color-layers": {"dfnID":"funcdef-color-layers","dfnText":"color-layers()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-color-layers"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-funcdef-color-layers\u2460"},{"id":"ref-for-funcdef-color-layers\u2461"}],"title":"3. Layering Multiple Colors: the color-layers() function"},{"refs":[{"id":"ref-for-funcdef-color-layers\u2462"},{"id":"ref-for-funcdef-color-layers\u2463"}],"title":"4.2. Resolving color-layers() values"},{"refs":[{"id":"ref-for-funcdef-color-layers\u2464"}],"title":"9.1. Changes from Colors 5"}],"url":"#funcdef-color-layers"},
 "funcdef-contrast-color": {"dfnID":"funcdef-contrast-color","dfnText":"contrast-color()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-contrast-color"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2460"},{"id":"ref-for-funcdef-contrast-color\u2461"},{"id":"ref-for-funcdef-contrast-color\u2462"}],"title":"2. Computing a Contrasting Color: the contrast-color() function"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2463"},{"id":"ref-for-funcdef-contrast-color\u2464"}],"title":"4.1. Resolving contrast-color() values"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2465"}],"title":"5. Serialization"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2466"},{"id":"ref-for-funcdef-contrast-color\u2467"}],"title":"5.1. Serializing contrast-color()"},{"refs":[{"id":"ref-for-funcdef-contrast-color\u2468"}],"title":"9.1. Changes from Colors 5"}],"url":"#funcdef-contrast-color"},
 "funcdef-contrast-color-wcag2": {"dfnID":"funcdef-contrast-color-wcag2","dfnText":"wcag2()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-contrast-color-wcag2"}],"title":"2.2.1. WCAG 2.1: the wcag2 keyword and wcag2() function"}],"url":"#funcdef-contrast-color-wcag2"},
@@ -2556,6 +2559,7 @@ let refsData = {
 "https://drafts.csswg.org/compositing-2/#ltblendmodegt": {"displayText":"<blend-mode>","export":true,"for_":[],"level":"2","normative":true,"shortname":"compositing","spec":"compositing-2","status":"current","text":"<blend-mode>","type":"type","url":"https://drafts.csswg.org/compositing-2/#ltblendmodegt"},
 "https://drafts.csswg.org/css-cascade-5/#computed-value": {"displayText":"computed value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"computed value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#computed-value"},
 "https://drafts.csswg.org/css-cascade-5/#declared-value": {"displayText":"declared value","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-cascade","spec":"css-cascade-5","status":"current","text":"declared value","type":"dfn","url":"https://drafts.csswg.org/css-cascade-5/#declared-value"},
+"https://drafts.csswg.org/css-color-4/#d65": {"displayText":"d65","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"d65","type":"dfn","url":"https://drafts.csswg.org/css-color-4/#d65"},
 "https://drafts.csswg.org/css-color-4/#used-color": {"displayText":"used color","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"used color","type":"dfn","url":"https://drafts.csswg.org/css-color-4/#used-color"},
 "https://drafts.csswg.org/css-color-4/#valdef-color-black": {"displayText":"black","export":true,"for_":["<color>","<named-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"black","type":"value","url":"https://drafts.csswg.org/css-color-4/#valdef-color-black"},
 "https://drafts.csswg.org/css-color-4/#valdef-color-canvas": {"displayText":"canvas","export":true,"for_":["<color>","<system-color>"],"level":"4","normative":true,"shortname":"css-color","spec":"css-color-4","status":"current","text":"canvas","type":"value","url":"https://drafts.csswg.org/css-color-4/#valdef-color-canvas"},
