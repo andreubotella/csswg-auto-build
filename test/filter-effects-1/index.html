@@ -7,7 +7,8 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/filter-effects-1/" rel="canonical">
-  <meta content="f5642b931d905128daa075fdfeba6c9e74475b5a" name="revision">
+  <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
+  <meta content="e21fc71da40eaa0f99ce54b80ff968bbadbc748d" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -934,6 +935,143 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
 }
 </style>
+<style>/* Boilerplate: style-wpt */
+:root {
+    --wpt-border: hsl(0, 0%, 60%);
+    --wpt-bg: hsl(0, 0%, 95%);
+    --wpt-text: var(--text);
+    --wptheading-text: hsl(0, 0%, 30%);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --wpt-border: hsl(0, 0%, 30%);
+        --wpt-bg: var(--borderedblock-bg);
+        --wpt-text: var(--text);
+        --wptheading-text: hsl(0, 0%, 60%);
+    }
+}
+.wpt-tests-block {
+    list-style: none;
+    border-left: .5em solid var(--wpt-border);
+    background: var(--wpt-bg);
+    color: var(--wpt-text);
+    margin: 1em auto;
+    padding: .5em;
+}
+.wpt-tests-block summary {
+    color: var(--wptheading-text);
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.wpt-tests-block summary::marker{
+    color: var(--wpt-border);
+}
+.wpt-tests-block summary:hover::marker{
+    color: var(--wpt-text);
+}
+/*
+   The only content  of a wpt test block in its closed state is the <summary>,
+   which contains the word TESTS,
+   and that is absolutely positioned.
+   In that closed state, wpt test blocks are styled
+   to have a top margin whose height is exactly equal
+   to the height of the absolutely positioned <summary>,
+   and no other background/padding/margin/border.
+   The wpt test block elements will therefore allow the maring
+   of the previous/next block elements
+   to collapse through them;
+   if this combined margin would be larger than its own top margin,
+   it stays as is,
+   and therefore the pre-existing vertical rhythm of the document is undisturbed.
+   If that combined margin would be smaller, it is grown to that size.
+   This means that the wpt test block ensures
+   that there's always enough vertical space to insert the summary,
+   without adding more than is needed.
+*/
+.wpt-tests-block:not([open]){
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.75em;
+    line-height: 1;
+    position: relative;
+    margin: 1em 0 0;
+}
+.wpt-tests-block:not([open]) summary {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*
+   It is possible that both the last child of a block element
+   and the block element itself
+   would be annotated with a <wpt> block each.
+   If the block element has a padding or a border,
+   that's fine, but otherwise
+   the bottom margin of the block and of its last child would collapse
+   and both <wpt> elements would overlap, being both placed there.
+   To avoid that, add 1px of padding to the <wpt> element annotating the last child
+   to prevent the bottom margin of the block and of its last child from collapsing
+   (and as much negative margin,
+   as wel only want to prevent margin collapsing,
+   but are not trying to actually take more space).
+*/
+.wpt-tests-block:not([open]):last-child {
+    padding-bottom: 1px;
+    margin-bottom: -1px;
+}
+/*
+   Exception to the previous rule:
+   don't do that in non-last list items,
+   because it's not necessary,
+   and would therefore consume more space than strictly needed.
+   Lists must have list items as children, not <wpt> elements,
+   so a <wpt> element cannot be a sibling of a list item,
+   and the collision that the previous rule avoids cannot happen.
+*/
+li:not(:last-child) > .wpt-tests-block:not([open]):last-child,
+dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.wpt-tests-block:not([open]):not(:hover){
+    opacity: 0.5;
+}
+.wpt-tests-list {
+    list-style: none;
+    display: grid;
+    margin: 0;
+    padding: 0;
+    grid-template-columns: 1fr max-content auto auto;
+    grid-column-gap: .5em;
+}
+.wpt-tests-block hr:last-child {
+    display: none;
+}
+.wpt-test {
+    display: contents;
+}
+.wpt-test > a {
+    text-decoration: underline;
+    border: none;
+}
+.wpt-test > .wpt-name { grid-column: 1; }
+.wpt-test > .wpt-results { grid-column: 2; }
+.wpt-test > .wpt-live { grid-column: 3; }
+.wpt-test > .wpt-source { grid-column: 4; }
+
+.wpt-test > .wpt-results {
+    display: flex;
+    gap: .1em;
+}
+.wpt-test .wpt-result {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+}
+</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
@@ -942,7 +1080,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 </p>
    <h1 class="no-ref p-name" id="title">Filter Effects Module Level 1</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-01-22">22 January 2026</time></p>
+    <time class="dt-updated" datetime="2026-01-23">23 January 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -960,6 +1098,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <dt>Test Suite:
       <dd><a href="http://test.csswg.org/suites/filter-effects/nightly-unstable/">http://test.csswg.org/suites/filter-effects/nightly-unstable/</a>
       <dt>Feedback:
+      <dd><a href="https://github.com/w3c/csswg-drafts/labels/filter-effects-1">CSSWG Issues Repository</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editors:
       <dd class="editor h-card p-author vcard" data-editor-id="51803"><a class="email fn p-name u-email" href="mailto:dschulze@adobe.com">Dirk Schulze</a> (<span class="org p-org">Adobe Inc.</span>)
@@ -968,10 +1107,8 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
       <dt class="editor">Former Editors:
       <dd class="editor h-card p-author vcard"><span class="fn p-name">Vincent Hardy</span>
       <dd class="editor h-card p-author vcard"><a class="email fn p-name u-email" href="mailto:erik@dahlström.net">Erik Dahlström</a> (<span class="org p-org">Invited Expert</span>)
-      <dt>Issue Tracking:
-      <dd><a href="https://github.com/w3c/fxtf-drafts/labels/filter-effects-1">GitHub Issues</a>
       <dt>Suggest an Edit for this Spec:
-      <dd><a href="https://github.com/w3c/fxtf-drafts/blob/main/filter-effects-1/Overview.bs">GitHub Editor</a>
+      <dd><a href="https://github.com/w3c/csswg-drafts/blob/main/filter-effects-1/Overview.bs">GitHub Editor</a>
      </dl>
     </div>
    </details>
@@ -984,6 +1121,14 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>Filter effects are a way of processing an element’s rendering before it is displayed in the document. Typically, rendering an element via CSS or SVG can conceptually be described as if the element, including its children, are drawn into a buffer (such as a raster image) and then that buffer is composited into the elements parent. Filters apply an effect before the compositing stage. Examples of such effects are blurring, changing color intensity and warping the image.</p>
    <p>Although originally designed for use in SVG, filter effects are a set of operations to apply on an image buffer and therefore can be applied to nearly any presentational environment, including CSS. They are triggered by a style instruction (the <a class="css property" data-link-type="property" href="#propdef-filter" id="ref-for-propdef-filter">filter</a> property). This specification describes filters in a manner that allows them to be used in content styled by CSS, such as HTML and SVG. It also defines a CSS property value function that produces a CSS <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-images-3/#typedef-image" id="ref-for-typedef-image">&lt;image></a> value.</p>
+   
+
+
+<a href="https://www.w3.org/TR/CSS/">CSS</a> is a language for describing the rendering of structured documents
+(such as HTML and XML)
+on screen, on paper, etc.
+
+
   </div>
   <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
@@ -994,35 +1139,19 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 	Don’t cite this document other than as work in progress.
 
 </p>
-   <p>
-	<a href="https://github.com/w3c/fxtf-drafts/issues">GitHub Issues</a> are preferred for discussion of this specification.
-	When filing an issue, please put the text “filter-effects” in the title,
-	preferably like this:
-	“[filter-effects] <i data-lt>…summary of comment…</i>”.
-	All issues and comments are <a href="https://lists.w3.org/Archives/Public/public-fxtf-archive/">archived</a>,
-	and there is also a <a href="http://lists.w3.org/Archives/Public/public-fx/">historical archive</a>.
+   <p>Please send feedback
+	by <a href="https://github.com/w3c/csswg-drafts/issues">filing issues in GitHub</a> (preferred),
+	including the spec code “filter-effects” in the title, like this:
+	“[filter-effects] <i>…summary of comment…</i>”.
+	All issues and comments are <a href="https://lists.w3.org/Archives/Public/public-css-archive/">archived</a>.
+	Alternately, feedback can be sent to the (<a href="https://lists.w3.org/Archives/Public/www-style/">archived</a>) public mailing list
+	<a href="mailto:www-style@w3.org?Subject=%5Bfilter-effects%5D%20PUT%20SUBJECT%20HERE">www-style@w3.org</a>.
 
 </p>
-   <p>
-	This document was produced by the <a href="https://www.w3.org/groups/wg/css">CSS Working Group</a>
-	(part of the <a href="https://www.w3.org/Style/">Style Activity</a>).
+   <p>This document is governed by the
+	<a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
 
 </p>
-   <p>
-	This document was produced by a group operating under
-	the <a href="https://www.w3.org/policies/patent-policy/20200915/">W3C Patent Policy</a>.
-	W3C maintains a <a href="https://www.w3.org/groups/wg/css/ipr" rel="disclosure">public list of any patent disclosures</a>
-	made in connection with the deliverables of the group;
-	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent that the individual believes contains <a href="https://www.w3.org/policies/patent-policy/20200915/#def-essential">Essential Claim(s)</a>
-	must disclose the information in accordance with <a href="https://www.w3.org/policies/patent-policy/20200915/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
-
-</p>
-   <p>
-	This document is governed by the <a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
-
-</p>
-   <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -1421,7 +1550,7 @@ although <span class="property" id="ref-for-propdef-filter⑤">filter</span> can
    <p>Conceptually, any parts of the drawing are effected by filter operations. This includes any content, background, borders, text decoration, outline and visible scrolling mechanism of the element to which the filter is applied, and those of its descendants. The filter operations are applied in the element’s <a data-link-type="dfn" href="https://drafts.csswg.org/css-transforms-1/#local-coordinate-system" id="ref-for-local-coordinate-system">local coordinate system</a>.</p>
    <p>The compositing model follows the <a href="https://www.w3.org/TR/SVG11/render.html#Introduction">SVG compositing model</a> <a data-link-type="biblio" href="#biblio-svg11" title="Scalable Vector Graphics (SVG) 1.1 (Second Edition)">[SVG11]</a>: first any filter effect is applied, then any clipping, masking and opacity. As per SVG, the application of <a class="css property" data-link-type="property" href="#propdef-filter" id="ref-for-propdef-filter⑥">filter</a> has no effect on hit-testing.</p>
    <p>The <a class="css property" data-link-type="property" href="#propdef-filter" id="ref-for-propdef-filter⑦">filter</a> property is a <a href="https://www.w3.org/TR/2011/REC-SVG11-20110816/intro.html#TermPresentationAttribute">presentation attribute</a> for SVG elements.</p>
-   <p class="issue" id="issue-95bcf4be"><a class="self-link" href="#issue-95bcf4be"></a> How does filter behave on fixed background images? <a href="https://github.com/w3c/fxtf-drafts/issues/238">[Issue #238]</a></p>
+   <p class="issue" id="issue-95bcf4be"><a class="self-link" href="#issue-95bcf4be"></a> How does filter behave on fixed background images? <a href="https://github.com/w3c/csswg-drafts/issues/238">[Issue #238]</a></p>
    <h2 class="heading settled" data-level="6" id="filter-functions"><span class="secno">6. </span><span class="content">Filter Functions</span><a class="self-link" href="#filter-functions"></a></h2>
    <p>The following <dfn class="dfn-paneled" data-dfn-type="dfn" data-export data-lt="filter function" id="filter-function">filter functions</dfn>
 specify a variety of simple filters,
@@ -4844,7 +4973,7 @@ A' = <a data-link-type="element" href="#elementdef-fefunca" id="ref-for-elementd
     <dd data-md>
      <p>The list of <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value②①">&lt;number></a> s that make up the kernel matrix for the convolution. Values are separated by space characters and/or a comma. The number of entries in the list must equal &lt;orderX> times &lt;orderY>.</p>
      <p>If the result of <code>orderX * orderY</code> is not equal to the the number of entries in the value list, the filter primitive acts as a <a data-link-type="dfn" href="#pass-through-filter" id="ref-for-pass-through-filter①">pass through filter</a>.</p>
-     <p class="issue" id="issue-4fd9d6f6"><a class="self-link" href="#issue-4fd9d6f6"></a> How to behave on invalid number of entries in the value list? <a href="https://github.com/w3c/fxtf-drafts/issues/237">[Issue #237]</a></p>
+     <p class="issue" id="issue-4fd9d6f6"><a class="self-link" href="#issue-4fd9d6f6"></a> How to behave on invalid number of entries in the value list? <a href="https://github.com/w3c/csswg-drafts/issues/237">[Issue #237]</a></p>
      <p>Animatable: yes.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="feConvolveMatrix" data-dfn-type="element-attr" data-export id="element-attrdef-feconvolvematrix-divisor"><code>divisor</code></dfn> = "<em><a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value②②">&lt;number></a></em>"
     <dd data-md>
@@ -6927,7 +7056,7 @@ L<sub>r</sub>,L<sub>g</sub>,L<sub>b</sub> = RGB components of light, a function 
      <th>DOM Interfaces:
      <td><a class="idlinterface" href="#InterfaceSVGFEDisplacementMapElement">SVGFEDisplacementMapElement</a>
    </table>
-   <p class="issue" id="issue-1d845580"><a class="self-link" href="#issue-1d845580"></a> Implementations do not match specification. <a href="https://github.com/w3c/fxtf-drafts/issues/113">[Issue #113]</a></p>
+   <p class="issue" id="issue-1d845580"><a class="self-link" href="#issue-1d845580"></a> Implementations do not match specification. <a href="https://github.com/w3c/csswg-drafts/issues/113">[Issue #113]</a></p>
    <p>This filter primitive uses the pixels values from the image from <a data-link-type="element-attr" href="#element-attrdef-fedisplacementmap-in2" id="ref-for-element-attrdef-fedisplacementmap-in2①">in2</a> to spatially displace the image from <a data-link-type="element-attr" href="#element-attrdef-filter-primitive-in" id="ref-for-element-attrdef-filter-primitive-in①⑥">in</a>. This is the transformation to be performed:</p>
 <pre>P'(x,y) ← P( x + scale * (XC(x,y) - .5), y + scale * (YC(x,y) - .5))
 </pre>
@@ -8560,7 +8689,7 @@ L<sub>r</sub>,L<sub>g</sub>,L<sub>b</sub> = RGB components of light</p>
     <dt id="no-interpolation"><a class="self-link" href="#no-interpolation"></a>Otherwise
     <dd>Use discrete interpolation.
    </dl>
-   <p class="issue" id="issue-f7e128e9"><a class="self-link" href="#issue-f7e128e9"></a> Compute distance of filter functions. <a href="https://github.com/w3c/fxtf-drafts/issues/91">[Issue #91]</a></p>
+   <p class="issue" id="issue-f7e128e9"><a class="self-link" href="#issue-f7e128e9"></a> Compute distance of filter functions. <a href="https://github.com/w3c/csswg-drafts/issues/91">[Issue #91]</a></p>
    <h3 class="heading settled" data-level="14.2" id="addition"><span class="secno">14.2. </span><span class="content">Addition</span><a class="self-link" href="#addition"></a></h3>
    <p>It is possible to combine independent animations of <a class="css production" data-link-type="type" href="#typedef-filter-value-list" id="ref-for-typedef-filter-value-list⑦">&lt;filter-value-list></a>s <a data-link-type="biblio" href="#biblio-svg11" title="Scalable Vector Graphics (SVG) 1.1 (Second Edition)">[SVG11]</a>.</p>
    <p>Given two filter values representing an base value (<var>base filter list</var>) and a value to add (<var>added filter list</var>), returns the concatenation of the the two lists: ‘<var>base filter list</var> <var>added filter list</var>’.</p>
@@ -9864,8 +9993,8 @@ Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3
     like this:
 
     </p>
-  <div class="example" id="example-ae2b6bc0">
-   <a class="self-link" href="#example-ae2b6bc0"></a>
+  <div class="example" id="w3c-example">
+   <a class="self-link" href="#w3c-example"></a>
         
    <p>This is an example of an informative example.</p>
   </div>
@@ -9881,6 +10010,14 @@ Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3
     <strong class="advisement">
         UAs MUST provide an accessible alternative.
     </strong></p>
+  <details class="wpt-tests-block" dir="ltr" lang="en" open>
+   <summary>Tests</summary>
+   <p>Tests relating to the content of this specification
+                     may be documented in “Tests” blocks like this one.
+                     Any such block is non-normative.</p>
+   <ul class="wpt-tests-list"></ul>
+   <hr>
+  </details>
   <h3 class="heading no-ref settled" id="w3c-conformance-classes"><span class="content">
 Conformance classes</span><a class="self-link" href="#w3c-conformance-classes"></a></h3>
   <p>Conformance to this specification
@@ -11375,10 +11512,10 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
 </pre>
   <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> How does filter behave on fixed background images? <a href="https://github.com/w3c/fxtf-drafts/issues/238">[Issue #238]</a> <a class="issue-return" href="#issue-95bcf4be" title="Jump to section">↵</a></div>
-   <div class="issue"> How to behave on invalid number of entries in the value list? <a href="https://github.com/w3c/fxtf-drafts/issues/237">[Issue #237]</a> <a class="issue-return" href="#issue-4fd9d6f6" title="Jump to section">↵</a></div>
-   <div class="issue"> Implementations do not match specification. <a href="https://github.com/w3c/fxtf-drafts/issues/113">[Issue #113]</a> <a class="issue-return" href="#issue-1d845580" title="Jump to section">↵</a></div>
-   <div class="issue"> Compute distance of filter functions. <a href="https://github.com/w3c/fxtf-drafts/issues/91">[Issue #91]</a> <a class="issue-return" href="#issue-f7e128e9" title="Jump to section">↵</a></div>
+   <div class="issue"> How does filter behave on fixed background images? <a href="https://github.com/w3c/csswg-drafts/issues/238">[Issue #238]</a> <a class="issue-return" href="#issue-95bcf4be" title="Jump to section">↵</a></div>
+   <div class="issue"> How to behave on invalid number of entries in the value list? <a href="https://github.com/w3c/csswg-drafts/issues/237">[Issue #237]</a> <a class="issue-return" href="#issue-4fd9d6f6" title="Jump to section">↵</a></div>
+   <div class="issue"> Implementations do not match specification. <a href="https://github.com/w3c/csswg-drafts/issues/113">[Issue #113]</a> <a class="issue-return" href="#issue-1d845580" title="Jump to section">↵</a></div>
+   <div class="issue"> Compute distance of filter functions. <a href="https://github.com/w3c/csswg-drafts/issues/91">[Issue #91]</a> <a class="issue-return" href="#issue-f7e128e9" title="Jump to section">↵</a></div>
   </div>
   <details class="mdn-anno unpositioned" data-anno-for="InterfaceSVGComponentTransferFunctionElement">
    <summary><b class="all-engines-flag" title="This feature is in all current engines.">✔</b><span>MDN</span></summary>
