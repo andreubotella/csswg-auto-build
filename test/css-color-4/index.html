@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="b5020a75a96e12da7e434911ccaded938e2252f0" name="revision">
+  <meta content="7e27ad7484307dfdbe9d0e18ad19d02859389688" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -1136,7 +1136,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Color Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-01-24">24 January 2026</time></p>
+    <time class="dt-updated" datetime="2026-01-25">25 January 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1415,7 +1415,7 @@ Sample Pseudocode for the EdgeSeeker Gamut Mapping</span></a>
          <a href="#pseudo-raytrace"><span class="secno">13.2.6</span> <span class="content">
 Sample Pseudocode for the Ray Trace Gamut Mapping</span></a>
          <ol class="toc">
-          <li><a href="#raytrace-footnotes"><span class="secno">13.2.6.1</span> <span class="content">Footnotes for Ray Trace aggorithm</span></a>
+          <li><a href="#raytrace-footnotes"><span class="secno">13.2.6.1</span> <span class="content">Footnotes for Ray Trace algorithm</span></a>
          </ol>
        </ol>
      </ol>
@@ -9343,7 +9343,7 @@ Sample Pseudocode for the EdgeSeeker Gamut Mapping</span><a class="self-link" hr
 	for the Coloraide Python Library <a data-link-type="biblio" href="#biblio-coloraide-ray-trace" title="Ray Tracing Chroma Reduction">[Coloraide-Ray-Trace]</a>.</p>
     <p>The color to be mapped is first converted to Oklch,
 	and then the achromatic version of that color is generated,
-	which will be the neutrax axis anchor.
+	which will be the neutral axis anchor.
 	These two colors are then converted to 
 	the linear-light version of the target RGB space.</p>
     <p>Because the gamut boundary is now an axis-aligned cube,
@@ -9362,7 +9362,7 @@ Sample Pseudocode for the EdgeSeeker Gamut Mapping</span><a class="self-link" hr
 	correcting the color’s hue and lightness. 
 	The corrected color becomes the new current color 
 	and should be a much closer color on the reduced chroma line.</p>
-    <p>This process a maximum of three times,
+    <p>This process is repeated (a maximum of three more times),
 	each time finding a better, closer color on the path. 
 	Finally, simple clipping is used to account for floating point math errors.</p>
     <p>The results are comparable to binary search with local MINDE
@@ -9400,14 +9400,11 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 		
       <li>let <var>origin_OkLCh</var> be <var>origin</var> converted from <var>origin color space</var>
 			to the OkLCh color space
-      
-		!-- constrain to SDR lightness range, which gamut maps to black or white -->
-		
       <li>if the Lightness of <var>origin_OkLCh</var> is greater than or equal to 100%,
 			convert `oklab(1 0 0 / origin.alpha)` to <var>destination</var> and return it as the gamut mapped color
       <li>if the Lightness of <var>origin_OkLCh</var> is less than than or equal to 0%,
 			convert `oklab(0 0 0 / origin.alpha)` to <var>destination</var> and return it as the gamut mapped color
-      <li>let <var>l_origin</var> be the OkLCh lightness component of <var>origin_OkLCh</var> and h_origin.
+      <li>let <var>l_origin</var> be the OkLCh lightness component of <var>origin_OkLCh</var>
       <li>let <var>h_origin</var> be the OkLCh hue component of <var>origin_OkLCh</var>
       <li>let <var>anchor</var> be an achromatic OkLCh color formed with 
 			<var>l_origin</var> as lightness, 0 as chroma and <var>h_origin</var> as hue,
@@ -9476,8 +9473,8 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
         for (i = 0; i &lt; 3; i++): 
 			
         <ul>
-         <li>let <var>a</var> be <var>start</var> <i>[i]</i>
-         <li>let <var>b</var> be <var>end</var> <i>[i]</i>
+         <li>let <var>a</var> be <var>start</var><i>[i]</i>
+         <li>let <var>b</var> be <var>end</var><i>[i]</i>
          <li>let <var>d</var> be <var>b</var> - <var>a</var>
          <li>let <var>direction</var><i>[i]</i> be <var>d</var>
          <li>
@@ -9485,20 +9482,20 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 					
           <ul>
            <li>let <var>inv_d</var> be 1 / <var>d</var>
-           <li>let <var>t1</var> be (<var>bmin</var> <i>[i]</i> - <var>a</var>) * <var>inv_d</var>
-           <li>let <var>t2</var> be (<var>bmax</var> <i>[i]</i> - <var>a</var>) * <var>inv_d</var>
+           <li>let <var>t1</var> be (<var>bmin</var><i>[i]</i> - <var>a</var>) * <var>inv_d</var>
+           <li>let <var>t2</var> be (<var>bmax</var><i>[i]</i> - <var>a</var>) * <var>inv_d</var>
            <li>let <var>tnear</var> be max(min(<var>t1</var>, <var>t2</var>), <var>tnear</var>)
            <li>let <var>tfar</var> be min(max(<var>t1</var>, <var>t2</var>), <var>tfar</var>)
           </ul>
          <li>
-          else if (<var>a</var> &lt; <var>bmin</var> <i>[i]</i> or <var>a</var> > <var>bmax</var> <i>[i]</i>)
+          else if (<var>a</var> &lt; <var>bmin</var><i>[i]</i> or <var>a</var> > <var>bmax</var><i>[i]</i>)
 					
           <ul>
            <li>return INTERSECTION NOT FOUND
           </ul>
         </ul>
        <li>
-        if (<var>tnear</var> > <var>tfar</var> or <var>tfar</var> &lt; 0
+        if (<var>tnear</var> > <var>tfar</var> or <var>tfar</var> &lt; 0)
 			
         <ul>
          <li>return INTERSECTION NOT FOUND
@@ -9518,15 +9515,15 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
          <li>return INTERSECTION NOT FOUND
         </ul>
        <li>
-        for (i =0; i lt; 3; i++):
+        for (i =0; i &lt; 3; i++):
 			
         <ul>
-         <li>let <var>end</var> <i>[i]</i> be <var>start</var> <i>[i]</i> + <var>direction</var> <i>[i]</i> * <var>tnear</var>
+         <li>let <var>result</var><i>[i]</i> be <var>start</var><i>[i]</i> + <var>direction</var><i>[i]</i> * <var>tnear</var>
         </ul>
-       <li>return <var>end</var>
+       <li>return <var>result</var>
       </ol>
      </div>
-     <h5 class="heading settled" data-level="13.2.6.1" id="raytrace-footnotes"><span class="secno">13.2.6.1. </span><span class="content">Footnotes for Ray Trace aggorithm</span><a class="self-link" href="#raytrace-footnotes"></a></h5>
+     <h5 class="heading settled" data-level="13.2.6.1" id="raytrace-footnotes"><span class="secno">13.2.6.1. </span><span class="content">Footnotes for Ray Trace algorithm</span><a class="self-link" href="#raytrace-footnotes"></a></h5>
      <ol>
       <li id="raytrace-footnote-1"><a class="self-link" href="#raytrace-footnote-1"></a>
 			It is assumed the minimum value is 0
