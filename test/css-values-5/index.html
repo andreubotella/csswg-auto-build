@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-values-5/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="ba602277722062911ebad4954b69e0563f228abe" name="revision">
+  <meta content="4c5fb120ee0611746eb397f78b66e57abd9367d5" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1125,7 +1125,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Values and Units Module Level 5</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2025-12-07">7 December 2025</time></p>
+    <time class="dt-updated" datetime="2026-01-27">27 January 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1149,7 +1149,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
 </p>
    <hr title="Separator for header">
   </div>
@@ -3785,30 +3785,34 @@ set <var>N</var> to <var>N</var>+1.</p>
 	</div>
    <h3 class="heading settled" data-level="9.4" id="random-caching"><span class="secno">9.4. </span><span class="content">
 Caching Random Values: the <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①④">&lt;random-value-sharing></a> value</span><a class="self-link" href="#random-caching"></a></h3>
-   <p>In a programming language like JavaScript,
-	there’s a clear temporal ordering to code,
-	so you can tell exactly <em>when</em> something like a call to <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-math.random" id="ref-for-sec-math.random">Math.random()</a></code> is evaluated.
-	You can also store the results in a variable,
-	making it clear when you’re reusing a single random value in multiple places,
-	versus using a distinct random value in each location.</p>
-   <p>CSS, on the other hand, is a declarative language
-	(code is not "executed" in any particular order,
-	nor is there any control over how many times something is "executed");
-	it makes it very easy to apply identical styles to multiple elements
-	but difficult to specify distinct values for each of them
-	(making it unclear whether a property using <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①①">random()</a>
-	is meant to resolve to the same value on each element it’s applied to
-	or to distinct values on each);
-	and it has very limited "variable" functionality
-	(making it difficult to intentionally reuse a particular randomly-generated value in several places).</p>
-   <p>To resolve these issues,
-	the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①②">random()</a> and <a class="css" data-link-type="maybe" href="#funcdef-random-item" id="ref-for-funcdef-random-item①①">random-item()</a> functions are defined to generate random values
+   <p>CSS is a declarative language,
+	so functions don’t have a specific "time" when they’re "evaluated",
+	which makes it tricky to establish exactly when values are "shared" vs "unique".
+	The <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①②">random functions</a> default to making their values <em>as unique as possible</em>;
+	even if you write the exact same <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①①">random()</a> function in multiple places,
+	or apply the same <span class="css" id="ref-for-funcdef-random①②">random()</span> function to multiple elements,
+	each instance will resolve to different values.</p>
+   <p>If some degree of sharing <em>is</em> wanted,
+	the <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑤">&lt;random-value-sharing></a> value can be specified,
+	forcing values to be shared between properties and/or between elements.</p>
+   <figure class="example" id="example-4d90d8b9">
+    <a class="self-link" href="#example-4d90d8b9"></a>
+		<img height="726" src="images/random-sharing.png" width="1246">
+		
+    <figcaption>
+			Providing a custom ident (<span class="css">--foo</span>) allows multiple properties to share a value;<br>
+			providing <a class="css" data-link-type="maybe" href="#valdef-random-element-shared" id="ref-for-valdef-random-element-shared②">element-shared</a> allows multiple elements to share a value;<br>
+			providing both allow multiple properties across multiple elemnents to share.
+		</figcaption>
+   </figure>
+   <p>More specifically,
+	the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①③">random()</a> and <a class="css" data-link-type="maybe" href="#funcdef-random-item" id="ref-for-funcdef-random-item①①">random-item()</a> functions are defined to generate random values
 	under the following caching semantics:</p>
    <ul>
     <li data-md>
-     <p>Each instance of a <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①②">random function</a> in styles
+     <p>Each instance of a <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①③">random function</a> in styles
 has an associated <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="random-base-value">random base value</dfn>.</p>
-     <p>If the <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①③">random function’s</a> <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑤">&lt;random-value-sharing></a> is <span class="css">fixed <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value①⑦">&lt;number></a></span>,
+     <p>If the <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①④">random function’s</a> <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑥">&lt;random-value-sharing></a> is <span class="css">fixed <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#number-value" id="ref-for-number-value①⑦">&lt;number></a></span>,
 the <a data-link-type="dfn" href="#random-base-value" id="ref-for-random-base-value①⑨">random base value</a> is that number.</p>
      <p>Otherwise, the <a data-link-type="dfn" href="#random-base-value" id="ref-for-random-base-value②⓪">random base value</a> is a pseudo-random real number
 in the range `[0, 1)`
@@ -3816,8 +3820,8 @@ in the range `[0, 1)`
 generated from a uniform distribution,
 and influenced by the function’s <a data-link-type="dfn" href="#random-caching-key" id="ref-for-random-caching-key">random caching key</a>.</p>
     <li data-md>
-     <p>Each <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①④">random function</a> also specifies a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="random-caching-key">random caching key</dfn>.
-Two <span id="ref-for-css-random-function①⑤">random functions</span> with the same <a data-link-type="dfn" href="#random-caching-key" id="ref-for-random-caching-key①">random caching key</a>
+     <p>Each <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①⑤">random function</a> also specifies a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="random-caching-key">random caching key</dfn>.
+Two <span id="ref-for-css-random-function①⑥">random functions</span> with the same <a data-link-type="dfn" href="#random-caching-key" id="ref-for-random-caching-key①">random caching key</a>
 must also have the same <a data-link-type="dfn" href="#random-base-value" id="ref-for-random-base-value②①">random base value</a>;
 two functions with different <span id="ref-for-random-caching-key②">random caching keys</span>
 must have distinct <span id="ref-for-random-base-value②②">random base values</span>.
@@ -3833,15 +3837,15 @@ etc.</p>
      <ol>
       <li data-md>
        <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string①">string</a> name: the value of the <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident⑨">&lt;dashed-ident></a>,
-if specified in <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑥">&lt;random-value-sharing></a>;
+if specified in <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑦">&lt;random-value-sharing></a>;
 or else a string of the form <code class="highlight"><c- s>"PROPERTY N"</c-></code>,
-where PROPERTY is the name of the property the <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①⑥">random function</a> is used in
+where PROPERTY is the name of the property the <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①⑦">random function</a> is used in
 (<em>before</em> shorthand expansion, if relevant),
-and N is the index of the <span id="ref-for-css-random-function①⑦">random function</span>
-among other <span id="ref-for-css-random-function①⑧">random functions</span> in the same property value.</p>
+and N is the index of the <span id="ref-for-css-random-function①⑧">random function</span>
+among other <span id="ref-for-css-random-function①⑨">random functions</span> in the same property value.</p>
       <li data-md>
        <p>An element ID identifying the element the style is being applied to,
-or null if <a class="css" data-link-type="maybe" href="#valdef-random-element-shared" id="ref-for-valdef-random-element-shared②">element-shared</a> is specified in <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑦">&lt;random-value-sharing></a>.</p>
+or null if <a class="css" data-link-type="maybe" href="#valdef-random-element-shared" id="ref-for-valdef-random-element-shared③">element-shared</a> is specified in <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑧">&lt;random-value-sharing></a>.</p>
       <li data-md>
        <p>A document ID identifying the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code> the styles are from.</p>
      </ol>
@@ -3872,8 +3876,8 @@ from one that resolves immediately.</p>
 		with a size somewhere between <span class="css">100px</span> and <span class="css">500px</span>.
 		Additionally, <em>every</em> <span class="css">.random-square</span> element on the page
 		will have the same size,
-		since <a class="css" data-link-type="maybe" href="#valdef-random-element-shared" id="ref-for-valdef-random-element-shared③">element-shared</a> was specified.
-		In fact, completely unrelated styles using the same <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①③">random()</a> function
+		since <a class="css" data-link-type="maybe" href="#valdef-random-element-shared" id="ref-for-valdef-random-element-shared④">element-shared</a> was specified.
+		In fact, completely unrelated styles using the same <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①④">random()</a> function
 		will also end up sharing that value.</p>
     <p>On other hand, in this stylesheet:</p>
 <pre class="highlight">.random-rect <c- p>{</c->
@@ -3923,7 +3927,7 @@ from one that resolves immediately.</p>
    <div>
     
 		The evaluation semantics of <a data-link-type="dfn" href="https://drafts.csswg.org/css-variables-2/#custom-property" id="ref-for-custom-property④">custom properties</a>
-		can make <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function①⑨">random functions</a> act a little unpredictably
+		can make <a data-link-type="dfn" href="#css-random-function" id="ref-for-css-random-function②⓪">random functions</a> act a little unpredictably
 		if you’re not careful.
 
 
@@ -3936,16 +3940,16 @@ from one that resolves immediately.</p>
 </pre>
     <p>If <span class="css">--size</span> isn’t a <a data-link-type="dfn" href="https://drafts.css-houdini.org/css-properties-values-api-1/#registered-custom-property" id="ref-for-registered-custom-property⑤">registered custom property</a>,
 		or is registered but with the universal grammar <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/selectors-3/#x" id="ref-for-x②">*</a>,
-		the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①④">random()</a> function isn’t evaluated
-		(or even recognized *as* a <span class="css" id="ref-for-funcdef-random①⑤">random()</span> function)
+		the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①⑤">random()</a> function isn’t evaluated
+		(or even recognized *as* a <span class="css" id="ref-for-funcdef-random①⑥">random()</span> function)
 		in <span class="css">--size</span>,
 		so the default rules for an omitted <a class="css production" data-link-type="type" href="https://drafts.csswg.org/css-values-4/#typedef-dashed-ident" id="ref-for-typedef-dashed-ident①⓪">&lt;dashed-ident></a>
-		in the <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑧">&lt;random-value-sharing></a> isn’t applied.
+		in the <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑨">&lt;random-value-sharing></a> isn’t applied.
 		Instead, it’s evaluated when it’s substituted into <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width④">width</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a>,
 		so each gets a distinct <a data-link-type="dfn" href="#random-caching-key" id="ref-for-random-caching-key①①">random caching key</a>,
 		and this ends up defining a random <em>rectangle</em>,
 		rather than a square.</p>
-    <p>Similarly, a lack of <a class="css" data-link-type="maybe" href="#valdef-random-element-shared" id="ref-for-valdef-random-element-shared④">element-shared</a> in the <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing①⑨">&lt;random-value-sharing></a>
+    <p>Similarly, a lack of <a class="css" data-link-type="maybe" href="#valdef-random-element-shared" id="ref-for-valdef-random-element-shared⑤">element-shared</a> in the <a class="css production" data-link-type="type" href="#typedef-random-value-sharing" id="ref-for-typedef-random-value-sharing②⓪">&lt;random-value-sharing></a>
 		won’t cause the function to determine its "element identifier"
 		until substitution actually happens,
 		which might be <em>after</em> <span class="css">--size</span> has inherited through multiple elements,
@@ -3960,7 +3964,7 @@ from one that resolves immediately.</p>
 		by instead using a <a data-link-type="dfn" href="https://drafts.css-houdini.org/css-properties-values-api-1/#registered-custom-property" id="ref-for-registered-custom-property⑥">registered custom property</a>
 		with a non-universal grammar,
 		so its value is parsed and evaluated on the element it’s declared on,
-		and the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①⑥">random()</a> function will be resolved on the element
+		and the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①⑦">random()</a> function will be resolved on the element
 		before it inherits.</p>
    </div>
    <h2 class="heading settled" data-level="10" id="tree-counting"><span class="secno">10. </span><span class="content">
@@ -5258,7 +5262,7 @@ Additions Since Level 4</span><a class="self-link" href="#additions-L4"></a></h3
     <li data-md>
      <p>Added the <a class="css" data-link-type="maybe" href="#funcdef-toggle" id="ref-for-funcdef-toggle①⑤">toggle()</a> and <a class="css" data-link-type="maybe" href="#funcdef-attr" id="ref-for-funcdef-attr②①">attr()</a> functions.</p>
     <li data-md>
-     <p>Added the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①⑦">random()</a> and <a class="css" data-link-type="maybe" href="#funcdef-random-item" id="ref-for-funcdef-random-item①③">random-item()</a> functions.</p>
+     <p>Added the <a class="css" data-link-type="maybe" href="#funcdef-random" id="ref-for-funcdef-random①⑧">random()</a> and <a class="css" data-link-type="maybe" href="#funcdef-random-item" id="ref-for-funcdef-random-item①③">random-item()</a> functions.</p>
     <li data-md>
      <p>Added the <a class="css" data-link-type="maybe" href="#funcdef-sibling-count" id="ref-for-funcdef-sibling-count①">sibling-count()</a> and <a class="css" data-link-type="maybe" href="#funcdef-sibling-index" id="ref-for-funcdef-sibling-index⑤">sibling-index()</a> functions.</p>
     <li data-md>
@@ -5915,11 +5919,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
      <li><span class="dfn-paneled" id="e6cc3311">tree</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[ECMASCRIPT]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="cf21212f">random()</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="902380f7">credentials mode</span>
@@ -6060,8 +6059,6 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dd>Bert Bos; et al. <a href="https://drafts.csswg.org/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://drafts.csswg.org/css2/">https://drafts.csswg.org/css2/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
-   <dt id="biblio-ecmascript">[ECMASCRIPT]
-   <dd><a href="https://tc39.es/ecma262/multipage/"><cite>ECMAScript Language Specification</cite></a>. URL: <a href="https://tc39.es/ecma262/multipage/">https://tc39.es/ecma262/multipage/</a>
    <dt id="biblio-fetch">[FETCH]
    <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/"><cite>Fetch Standard</cite></a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
@@ -6558,11 +6555,10 @@ let dfnPanelData = {
 "cbfeec00": {"dfnID":"cbfeec00","dfnText":"margin-bottom","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-margin-bottom"},{"id":"ref-for-propdef-margin-bottom\u2460"}],"title":"9.4. \nCaching Random Values: the <random-value-sharing> value"}],"url":"https://drafts.csswg.org/css-box-4/#propdef-margin-bottom"},
 "ceacaa1c": {"dfnID":"ceacaa1c","dfnText":"stack","external":true,"refSections":[{"refs":[{"id":"ref-for-stack"}],"title":"\nSubstitution"}],"url":"https://infra.spec.whatwg.org/#stack"},
 "cecbe9cd": {"dfnID":"cecbe9cd","dfnText":"margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-margin"}],"title":"9.1. \nGenerating a Random Numeric Value: the random() function"}],"url":"https://drafts.csswg.org/css-box-4/#propdef-margin"},
-"cf21212f": {"dfnID":"cf21212f","dfnText":"random()","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-math.random"}],"title":"9.4. \nCaching Random Values: the <random-value-sharing> value"}],"url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-math.random"},
 "cfb5cfc9": {"dfnID":"cfb5cfc9","dfnText":"syntax definition","external":true,"refSections":[{"refs":[{"id":"ref-for-syntax-definition"},{"id":"ref-for-syntax-definition\u2460"}],"title":"3.3. \nSpecifying CSS Syntax in CSS: the <syntax> type"}],"url":"https://drafts.css-houdini.org/css-properties-values-api-1/#syntax-definition"},
 "cfdf030c": {"dfnID":"cfdf030c","dfnText":"color-mix()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-color-mix"}],"title":"6. \nWeighted Average Notations: the *-mix() family"}],"url":"https://drafts.csswg.org/css-color-5/#funcdef-color-mix"},
 "comma-containing-productions": {"dfnID":"comma-containing-productions","dfnText":"comma-containing productions","external":false,"refSections":[{"refs":[{"id":"ref-for-comma-containing-productions"},{"id":"ref-for-comma-containing-productions\u2460"},{"id":"ref-for-comma-containing-productions\u2461"},{"id":"ref-for-comma-containing-productions\u2462"},{"id":"ref-for-comma-containing-productions\u2463"}],"title":"3.1.1. Commas in Function Arguments"}],"url":"#comma-containing-productions"},
-"css-random-function": {"dfnID":"css-random-function","dfnText":"random functions","external":false,"refSections":[{"refs":[{"id":"ref-for-css-random-function"}],"title":"9. Generating Random Values"},{"refs":[{"id":"ref-for-css-random-function\u2460"},{"id":"ref-for-css-random-function\u2461"},{"id":"ref-for-css-random-function\u2462"},{"id":"ref-for-css-random-function\u2463"},{"id":"ref-for-css-random-function\u2464"},{"id":"ref-for-css-random-function\u2465"},{"id":"ref-for-css-random-function\u2466"},{"id":"ref-for-css-random-function\u2467"},{"id":"ref-for-css-random-function\u2468"},{"id":"ref-for-css-random-function\u2460\u24ea"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-css-random-function\u2460\u2460"}],"title":"9.3. Evaluating Random Values"},{"refs":[{"id":"ref-for-css-random-function\u2460\u2461"},{"id":"ref-for-css-random-function\u2460\u2462"},{"id":"ref-for-css-random-function\u2460\u2463"},{"id":"ref-for-css-random-function\u2460\u2464"},{"id":"ref-for-css-random-function\u2460\u2465"},{"id":"ref-for-css-random-function\u2460\u2466"},{"id":"ref-for-css-random-function\u2460\u2467"},{"id":"ref-for-css-random-function\u2460\u2468"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"}],"url":"#css-random-function"},
+"css-random-function": {"dfnID":"css-random-function","dfnText":"random functions","external":false,"refSections":[{"refs":[{"id":"ref-for-css-random-function"}],"title":"9. Generating Random Values"},{"refs":[{"id":"ref-for-css-random-function\u2460"},{"id":"ref-for-css-random-function\u2461"},{"id":"ref-for-css-random-function\u2462"},{"id":"ref-for-css-random-function\u2463"},{"id":"ref-for-css-random-function\u2464"},{"id":"ref-for-css-random-function\u2465"},{"id":"ref-for-css-random-function\u2466"},{"id":"ref-for-css-random-function\u2467"},{"id":"ref-for-css-random-function\u2468"},{"id":"ref-for-css-random-function\u2460\u24ea"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-css-random-function\u2460\u2460"}],"title":"9.3. Evaluating Random Values"},{"refs":[{"id":"ref-for-css-random-function\u2460\u2461"},{"id":"ref-for-css-random-function\u2460\u2462"},{"id":"ref-for-css-random-function\u2460\u2463"},{"id":"ref-for-css-random-function\u2460\u2464"},{"id":"ref-for-css-random-function\u2460\u2465"},{"id":"ref-for-css-random-function\u2460\u2466"},{"id":"ref-for-css-random-function\u2460\u2467"},{"id":"ref-for-css-random-function\u2460\u2468"},{"id":"ref-for-css-random-function\u2461\u24ea"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"}],"url":"#css-random-function"},
 "cyclic-substitution-contexts": {"dfnID":"cyclic-substitution-contexts","dfnText":"cyclic substitution contexts","external":false,"refSections":[{"refs":[{"id":"ref-for-cyclic-substitution-contexts"}],"title":"8.3. Conditional Value Selection: the if() notation"},{"refs":[{"id":"ref-for-cyclic-substitution-contexts\u2460"},{"id":"ref-for-cyclic-substitution-contexts\u2461"},{"id":"ref-for-cyclic-substitution-contexts\u2462"},{"id":"ref-for-cyclic-substitution-contexts\u2463"},{"id":"ref-for-cyclic-substitution-contexts\u2464"}],"title":"Substitution"}],"url":"#cyclic-substitution-contexts"},
 "d15331bf": {"dfnID":"d15331bf","dfnText":"alignment subject","external":true,"refSections":[{"refs":[{"id":"ref-for-alignment-subject"},{"id":"ref-for-alignment-subject\u2460"},{"id":"ref-for-alignment-subject\u2461"},{"id":"ref-for-alignment-subject\u2462"},{"id":"ref-for-alignment-subject\u2463"},{"id":"ref-for-alignment-subject\u2464"},{"id":"ref-for-alignment-subject\u2465"},{"id":"ref-for-alignment-subject\u2466"},{"id":"ref-for-alignment-subject\u2467"},{"id":"ref-for-alignment-subject\u2468"}],"title":"4.2. \n2D Positioning: the <position> type"}],"url":"https://drafts.csswg.org/css-align-3/#alignment-subject"},
 "d27a809f": {"dfnID":"d27a809f","dfnText":"background-position","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-background-position"},{"id":"ref-for-propdef-background-position\u2460"},{"id":"ref-for-propdef-background-position\u2461"},{"id":"ref-for-propdef-background-position\u2462"},{"id":"ref-for-propdef-background-position\u2463"}],"title":"4.2. \n2D Positioning: the <position> type"},{"refs":[{"id":"ref-for-propdef-background-position\u2464"},{"id":"ref-for-propdef-background-position\u2465"}],"title":"8.1. \nRepresenting An Entire Property Value: the <whole-value> type"},{"refs":[{"id":"ref-for-propdef-background-position\u2467"},{"id":"ref-for-propdef-background-position\u2468"}],"title":"8.4. \nToggling Between Values: the toggle() notation"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-background-position"},
@@ -6611,7 +6607,7 @@ let dfnPanelData = {
 "funcdef-inherit": {"dfnID":"funcdef-inherit","dfnText":"inherit()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-inherit"},{"id":"ref-for-funcdef-inherit\u2460"},{"id":"ref-for-funcdef-inherit\u2461"},{"id":"ref-for-funcdef-inherit\u2462"},{"id":"ref-for-funcdef-inherit\u2463"}],"title":"8.6. Inherited Value References: the inherit() notation"},{"refs":[{"id":"ref-for-funcdef-inherit\u2464"}],"title":"Additions Since Level 4"}],"url":"#funcdef-inherit"},
 "funcdef-interpolate": {"dfnID":"funcdef-interpolate","dfnText":"interpolate()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-interpolate"},{"id":"ref-for-funcdef-interpolate\u2460"}],"title":"7. Interpolation Mapping Notations: the *-interpolate() family"},{"refs":[{"id":"ref-for-funcdef-interpolate\u2461"},{"id":"ref-for-funcdef-interpolate\u2462"},{"id":"ref-for-funcdef-interpolate\u2463"},{"id":"ref-for-funcdef-interpolate\u2464"}],"title":"7.7. Interpolated Property Values: the interpolate() notation"}],"url":"#funcdef-interpolate"},
 "funcdef-progress": {"dfnID":"funcdef-progress","dfnText":"progress()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-progress"},{"id":"ref-for-funcdef-progress\u2460"},{"id":"ref-for-funcdef-progress\u2461"},{"id":"ref-for-funcdef-progress\u2462"},{"id":"ref-for-funcdef-progress\u2463"}],"title":"5. Interpolation Progress Calculations: the progress() notation"},{"refs":[{"id":"ref-for-funcdef-progress\u2464"}],"title":"7.1.1. Specifying the Interpolation Progress"},{"refs":[{"id":"ref-for-funcdef-progress\u2465"}],"title":"Recent Changes"}],"url":"#funcdef-progress"},
-"funcdef-random": {"dfnID":"funcdef-random","dfnText":"random()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-random"}],"title":"9. Generating Random Values"},{"refs":[{"id":"ref-for-funcdef-random\u2460"},{"id":"ref-for-funcdef-random\u2461"},{"id":"ref-for-funcdef-random\u2462"},{"id":"ref-for-funcdef-random\u2463"},{"id":"ref-for-funcdef-random\u2464"},{"id":"ref-for-funcdef-random\u2465"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-funcdef-random\u2466"},{"id":"ref-for-funcdef-random\u2467"}],"title":"9.2. Picking a Random Item From a List: the random-item() function"},{"refs":[{"id":"ref-for-funcdef-random\u2468"},{"id":"ref-for-funcdef-random\u2460\u24ea"}],"title":"9.3. Evaluating Random Values"},{"refs":[{"id":"ref-for-funcdef-random\u2460\u2460"},{"id":"ref-for-funcdef-random\u2460\u2461"},{"id":"ref-for-funcdef-random\u2460\u2462"},{"id":"ref-for-funcdef-random\u2460\u2463"},{"id":"ref-for-funcdef-random\u2460\u2464"},{"id":"ref-for-funcdef-random\u2460\u2465"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"},{"refs":[{"id":"ref-for-funcdef-random\u2460\u2466"}],"title":"Additions Since Level 4"}],"url":"#funcdef-random"},
+"funcdef-random": {"dfnID":"funcdef-random","dfnText":"random()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-random"}],"title":"9. Generating Random Values"},{"refs":[{"id":"ref-for-funcdef-random\u2460"},{"id":"ref-for-funcdef-random\u2461"},{"id":"ref-for-funcdef-random\u2462"},{"id":"ref-for-funcdef-random\u2463"},{"id":"ref-for-funcdef-random\u2464"},{"id":"ref-for-funcdef-random\u2465"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-funcdef-random\u2466"},{"id":"ref-for-funcdef-random\u2467"}],"title":"9.2. Picking a Random Item From a List: the random-item() function"},{"refs":[{"id":"ref-for-funcdef-random\u2468"},{"id":"ref-for-funcdef-random\u2460\u24ea"}],"title":"9.3. Evaluating Random Values"},{"refs":[{"id":"ref-for-funcdef-random\u2460\u2460"},{"id":"ref-for-funcdef-random\u2460\u2461"},{"id":"ref-for-funcdef-random\u2460\u2462"},{"id":"ref-for-funcdef-random\u2460\u2463"},{"id":"ref-for-funcdef-random\u2460\u2464"},{"id":"ref-for-funcdef-random\u2460\u2465"},{"id":"ref-for-funcdef-random\u2460\u2466"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"},{"refs":[{"id":"ref-for-funcdef-random\u2460\u2467"}],"title":"Additions Since Level 4"}],"url":"#funcdef-random"},
 "funcdef-random-item": {"dfnID":"funcdef-random-item","dfnText":"random-item()","external":false,"refSections":[{"refs":[{"id":"ref-for-funcdef-random-item"}],"title":"3.1.1. Commas in Function Arguments"},{"refs":[{"id":"ref-for-funcdef-random-item\u2460"}],"title":"9. Generating Random Values"},{"refs":[{"id":"ref-for-funcdef-random-item\u2461"},{"id":"ref-for-funcdef-random-item\u2462"},{"id":"ref-for-funcdef-random-item\u2463"},{"id":"ref-for-funcdef-random-item\u2464"},{"id":"ref-for-funcdef-random-item\u2465"},{"id":"ref-for-funcdef-random-item\u2466"},{"id":"ref-for-funcdef-random-item\u2467"},{"id":"ref-for-funcdef-random-item\u2468"}],"title":"9.2. Picking a Random Item From a List: the random-item() function"},{"refs":[{"id":"ref-for-funcdef-random-item\u2460\u24ea"}],"title":"9.3. Evaluating Random Values"},{"refs":[{"id":"ref-for-funcdef-random-item\u2460\u2460"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"},{"refs":[{"id":"ref-for-funcdef-random-item\u2460\u2461"}],"title":"Argument Grammars and Spread Syntax"},{"refs":[{"id":"ref-for-funcdef-random-item\u2460\u2462"}],"title":"Additions Since Level 4"}],"url":"#funcdef-random-item"},
 "funcdef-request-url-modifier-cross-origin": {"dfnID":"funcdef-request-url-modifier-cross-origin","dfnText":"cross-origin","external":false,"refSections":[],"url":"#funcdef-request-url-modifier-cross-origin"},
 "funcdef-request-url-modifier-integrity": {"dfnID":"funcdef-request-url-modifier-integrity","dfnText":"integrity","external":false,"refSections":[],"url":"#funcdef-request-url-modifier-integrity"},
@@ -6679,7 +6675,7 @@ let dfnPanelData = {
 "typedef-position-two": {"dfnID":"typedef-position-two","dfnText":"<position-two>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-position-two"},{"id":"ref-for-typedef-position-two\u2460"},{"id":"ref-for-typedef-position-two\u2461"}],"title":"4.2. 2D Positioning: the <position> type"}],"url":"#typedef-position-two"},
 "typedef-progress-source": {"dfnID":"typedef-progress-source","dfnText":"<progress-source>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-progress-source"}],"title":"7.1. Global Syntax of the *-interpolate() family"},{"refs":[{"id":"ref-for-typedef-progress-source\u2460"},{"id":"ref-for-typedef-progress-source\u2461"},{"id":"ref-for-typedef-progress-source\u2462"}],"title":"7.1.1. Specifying the Interpolation Progress"},{"refs":[{"id":"ref-for-typedef-progress-source\u2463"}],"title":"7.1.1.1. Easing Interpolation Progress: the by <easing-function> argument"},{"refs":[{"id":"ref-for-typedef-progress-source\u2464"}],"title":"7.1.2. Defining the Interpolation Map"},{"refs":[{"id":"ref-for-typedef-progress-source\u2465"},{"id":"ref-for-typedef-progress-source\u2466"},{"id":"ref-for-typedef-progress-source\u2467"}],"title":"7.2.1. Type Checking"},{"refs":[{"id":"ref-for-typedef-progress-source\u2468"},{"id":"ref-for-typedef-progress-source\u2460\u24ea"}],"title":"7.2.3. Normalizing Absolute Positions and Progress"},{"refs":[{"id":"ref-for-typedef-progress-source\u2460\u2460"},{"id":"ref-for-typedef-progress-source\u2460\u2461"}],"title":"7.4. Interpolated Numeric and Dimensional Values: the calc-interpolate() notation"},{"refs":[{"id":"ref-for-typedef-progress-source\u2460\u2462"}],"title":"7.5. Interpolated Color Values: the color-interpolate() notation"},{"refs":[{"id":"ref-for-typedef-progress-source\u2460\u2463"}],"title":"7.6. Interpolated Transform Values: the transform-interpolate() notation"},{"refs":[{"id":"ref-for-typedef-progress-source\u2460\u2464"},{"id":"ref-for-typedef-progress-source\u2460\u2465"}],"title":"7.7. Interpolated Property Values: the interpolate() notation"}],"url":"#typedef-progress-source"},
 "typedef-random-item-args": {"dfnID":"typedef-random-item-args","dfnText":"<random-item-args>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-random-item-args"}],"title":"9.2. Picking a Random Item From a List: the random-item() function"}],"url":"#typedef-random-item-args"},
-"typedef-random-value-sharing": {"dfnID":"typedef-random-value-sharing","dfnText":"<random-value-sharing>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-random-value-sharing"}],"title":"3.1.1. Commas in Function Arguments"},{"refs":[{"id":"ref-for-typedef-random-value-sharing\u2460"},{"id":"ref-for-typedef-random-value-sharing\u2461"},{"id":"ref-for-typedef-random-value-sharing\u2462"},{"id":"ref-for-typedef-random-value-sharing\u2463"},{"id":"ref-for-typedef-random-value-sharing\u2464"},{"id":"ref-for-typedef-random-value-sharing\u2465"},{"id":"ref-for-typedef-random-value-sharing\u2466"},{"id":"ref-for-typedef-random-value-sharing\u2467"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-typedef-random-value-sharing\u2468"},{"id":"ref-for-typedef-random-value-sharing\u2460\u24ea"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2460"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2461"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2462"}],"title":"9.2. Picking a Random Item From a List: the random-item() function"},{"refs":[{"id":"ref-for-typedef-random-value-sharing\u2460\u2463"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2464"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2465"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2466"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2467"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2468"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"}],"url":"#typedef-random-value-sharing"},
+"typedef-random-value-sharing": {"dfnID":"typedef-random-value-sharing","dfnText":"<random-value-sharing>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-random-value-sharing"}],"title":"3.1.1. Commas in Function Arguments"},{"refs":[{"id":"ref-for-typedef-random-value-sharing\u2460"},{"id":"ref-for-typedef-random-value-sharing\u2461"},{"id":"ref-for-typedef-random-value-sharing\u2462"},{"id":"ref-for-typedef-random-value-sharing\u2463"},{"id":"ref-for-typedef-random-value-sharing\u2464"},{"id":"ref-for-typedef-random-value-sharing\u2465"},{"id":"ref-for-typedef-random-value-sharing\u2466"},{"id":"ref-for-typedef-random-value-sharing\u2467"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-typedef-random-value-sharing\u2468"},{"id":"ref-for-typedef-random-value-sharing\u2460\u24ea"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2460"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2461"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2462"}],"title":"9.2. Picking a Random Item From a List: the random-item() function"},{"refs":[{"id":"ref-for-typedef-random-value-sharing\u2460\u2463"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2464"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2465"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2466"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2467"},{"id":"ref-for-typedef-random-value-sharing\u2460\u2468"},{"id":"ref-for-typedef-random-value-sharing\u2461\u24ea"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"}],"url":"#typedef-random-value-sharing"},
 "typedef-request-url-modifier": {"dfnID":"typedef-request-url-modifier","dfnText":"<request-url-modifier>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-request-url-modifier"},{"id":"ref-for-typedef-request-url-modifier\u2460"},{"id":"ref-for-typedef-request-url-modifier\u2461"},{"id":"ref-for-typedef-request-url-modifier\u2462"}],"title":"4.1.1. Request URL Modifiers"}],"url":"#typedef-request-url-modifier"},
 "typedef-request-url-modifier-cross-origin-modifier": {"dfnID":"typedef-request-url-modifier-cross-origin-modifier","dfnText":"<cross-origin-modifier>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-request-url-modifier-cross-origin-modifier"},{"id":"ref-for-typedef-request-url-modifier-cross-origin-modifier\u2460"},{"id":"ref-for-typedef-request-url-modifier-cross-origin-modifier\u2461"}],"title":"4.1.1. Request URL Modifiers"}],"url":"#typedef-request-url-modifier-cross-origin-modifier"},
 "typedef-request-url-modifier-integrity-modifier": {"dfnID":"typedef-request-url-modifier-integrity-modifier","dfnText":"<integrity-modifier>","external":false,"refSections":[{"refs":[{"id":"ref-for-typedef-request-url-modifier-integrity-modifier"},{"id":"ref-for-typedef-request-url-modifier-integrity-modifier\u2460"},{"id":"ref-for-typedef-request-url-modifier-integrity-modifier\u2461"}],"title":"4.1.1. Request URL Modifiers"}],"url":"#typedef-request-url-modifier-integrity-modifier"},
@@ -6719,7 +6715,7 @@ let dfnPanelData = {
 "valdef-progress-source-percentage": {"dfnID":"valdef-progress-source-percentage","dfnText":"<percentage>","external":false,"refSections":[],"url":"#valdef-progress-source-percentage"},
 "valdef-random-auto": {"dfnID":"valdef-random-auto","dfnText":"auto","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-random-auto"},{"id":"ref-for-valdef-random-auto\u2460"},{"id":"ref-for-valdef-random-auto\u2461"},{"id":"ref-for-valdef-random-auto\u2462"},{"id":"ref-for-valdef-random-auto\u2463"},{"id":"ref-for-valdef-random-auto\u2464"}],"title":"9.1. Generating a Random Numeric Value: the random() function"}],"url":"#valdef-random-auto"},
 "valdef-random-dashed-ident": {"dfnID":"valdef-random-dashed-ident","dfnText":"<dashed-ident>","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-random-dashed-ident"},{"id":"ref-for-valdef-random-dashed-ident\u2460"}],"title":"9.1. Generating a Random Numeric Value: the random() function"}],"url":"#valdef-random-dashed-ident"},
-"valdef-random-element-shared": {"dfnID":"valdef-random-element-shared","dfnText":"element-shared","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-random-element-shared"},{"id":"ref-for-valdef-random-element-shared\u2460"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-valdef-random-element-shared\u2461"},{"id":"ref-for-valdef-random-element-shared\u2462"},{"id":"ref-for-valdef-random-element-shared\u2463"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"}],"url":"#valdef-random-element-shared"},
+"valdef-random-element-shared": {"dfnID":"valdef-random-element-shared","dfnText":"element-shared","external":false,"refSections":[{"refs":[{"id":"ref-for-valdef-random-element-shared"},{"id":"ref-for-valdef-random-element-shared\u2460"}],"title":"9.1. Generating a Random Numeric Value: the random() function"},{"refs":[{"id":"ref-for-valdef-random-element-shared\u2461"},{"id":"ref-for-valdef-random-element-shared\u2462"},{"id":"ref-for-valdef-random-element-shared\u2463"},{"id":"ref-for-valdef-random-element-shared\u2464"}],"title":"9.4. Caching Random Values: the <random-value-sharing> value"}],"url":"#valdef-random-element-shared"},
 "valdef-random-fixed": {"dfnID":"valdef-random-fixed","dfnText":"fixed <number>","external":false,"refSections":[],"url":"#valdef-random-fixed"},
 "valdef-request-url-modifier-anonymous": {"dfnID":"valdef-request-url-modifier-anonymous","dfnText":"anonymous","external":false,"refSections":[],"url":"#valdef-request-url-modifier-anonymous"},
 "valdef-request-url-modifier-no-referrer": {"dfnID":"valdef-request-url-modifier-no-referrer","dfnText":"no-referrer","external":false,"refSections":[],"url":"#valdef-request-url-modifier-no-referrer"},
@@ -7500,7 +7496,6 @@ let refsData = {
 "https://infra.spec.whatwg.org/#string": {"displayText":"string","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"string","type":"dfn","url":"https://infra.spec.whatwg.org/#string"},
 "https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace": {"displayText":"strip leading and trailing ASCII whitespace","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"strip leading and trailing ascii whitespace","type":"dfn","url":"https://infra.spec.whatwg.org/#strip-leading-and-trailing-ascii-whitespace"},
 "https://infra.spec.whatwg.org/#tuple": {"displayText":"tuple","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"tuple","type":"dfn","url":"https://infra.spec.whatwg.org/#tuple"},
-"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-math.random": {"displayText":"random()","export":true,"for_":["Math"],"level":"1","normative":true,"shortname":"ecmascript","spec":"ecmascript","status":"current","text":"random()","type":"method","url":"https://tc39.es/ecma262/multipage/numbers-and-dates.html#sec-math.random"},
 "https://w3c.github.io/webappsec-referrer-policy/#enumdef-referrerpolicy": {"displayText":"ReferrerPolicy","export":true,"for_":[],"level":"1","normative":true,"shortname":"referrer-policy","spec":"referrer-policy","status":"current","text":"ReferrerPolicy","type":"enum","url":"https://w3c.github.io/webappsec-referrer-policy/#enumdef-referrerpolicy"},
 "https://webidl.spec.whatwg.org/#resolve": {"displayText":"resolve","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"resolve","type":"dfn","url":"https://webidl.spec.whatwg.org/#resolve"},
 "https://www.w3.org/TR/css-easing-2/#valdef-easing-function-linear": {"displayText":"linear","export":true,"for_":["<easing-function>"],"level":"2","normative":true,"shortname":"css-easing","spec":"css-easing-2","status":"snapshot","text":"linear","type":"value","url":"https://www.w3.org/TR/css-easing-2/#valdef-easing-function-linear"},
