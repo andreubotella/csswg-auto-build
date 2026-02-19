@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="b6329edb7c677eed709d9bccf95ff8b0c480ed7c" name="revision">
+  <meta content="609a806ac8d118e4f851a52fb58a60575457fd63" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -1136,7 +1136,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Color Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-02-03">3 February 2026</time></p>
+    <time class="dt-updated" datetime="2026-02-02">2 February 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -9402,8 +9402,7 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 
 	
      <ol>
-      <li>if <var>origin</var> is in gamut for <var>destination</var>, 
-			convert <var>origin</var> to <var>destination</var> and return it as the gamut mapped color
+      <li>if <var>destination</var> has no gamut limits (XYZ-D65, XYZ-D50, Lab, LCH, Oklab, OkLCh) convert <var>origin</var> to <var>destination</var> and return it as the gamut mapped color
 		
       <li>let <var>origin_OkLCh</var> be <var>origin</var> converted from <var>origin color space</var>
 			to the OkLCh color space
@@ -9419,45 +9418,51 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 		
       <li>let <var>origin_rgb</var> be <var>origin_OkLCh</var>
 			converted to the <em>linear-light</em> form of <var>destination</var>
-      <li>let <var>low</var> be 1E-6 <a href="#raytrace-footnote-1"><sup>1</sup></a>
-      <li>let <var>high</var> be 1.0 - <var>low</var> <a href="#raytrace-footnote-2"><sup>2</sup></a>
-      <li>let <var>last</var> be <var>origin_rgb</var>
       <li>
-       for (i=0; i&lt;4; i++)
+       if <var>origin_rgb</var> is not in gamut
 			
        <ul>
+        <li>let <var>low</var> be 0.0 + 1E-6 <a href="#raytrace-footnote-1"><sup>1</sup></a>
+        <li>let <var>high</var> be 1.0 - 1E-6 <a href="#raytrace-footnote-2"><sup>2</sup></a>
+        <li>let <var>last</var> be <var>origin_rgb</var>
         <li>
-         if (i > 0)
+         for (i=0; i&lt;4; i++)
 					
          <ul>
-          <li>let <var>current_OkLCh</var> be <var>origin_rgb</var> converted to OkLCh
-          <li>let the lightness of <var>current_OkLCh</var> be <var>l_origin</var>
-          <li>let the hue of <var>current_OkLCh</var> be <var>h_origin</var>
-							<a href="#raytrace-footnote-3"><sup>3</sup></a>
-          <li>let <var>origin_rgb</var> be <var>current_OkLCh</var>
-							converted to the <em>linear-light</em> form of <var>destination</var>
+          <li>
+           if (i > 0)
+							
+           <ul>
+            <li>let <var>current_OkLCh</var> be <var>origin_rgb</var> converted to OkLCh
+            <li>let the lightness of <var>current_OkLCh</var> be <var>l_origin</var>
+            <li>let the hue of <var>current_OkLCh</var> be <var>h_origin</var>
+									<a href="#raytrace-footnote-3"><sup>3</sup></a>
+            <li>let <var>origin_rgb</var> be <var>current_OkLCh</var>
+									converted to the <em>linear-light</em> form of <var>destination</var>
+								
+           </ul>
+          <li><b>Cast a ray</b> from <var>anchor</var> to <var>origin_rgb</var>
+							and let <var>intersection</var> be 
+							the intersection of this ray 
+							with the gamut boundary
 						
+          <li>if an intersection was not found,
+							let <var>origin_rgb</var> be <var>last</var> and exit the loop
+							<a href="#raytrace-footnote-5"><sup>5</sup></a>
+						
+          <li>if (i >0) AND (each component of <var>origin_rgb</var> is between <var>low</var> and <var>high</var>) then
+							let <var>anchor</var> be <var>origin_rgb</var>
+							<a href="#raytrace-footnote-4"><sup>4</sup></a>
+						
+          <li>let <var>origin_rgb</var> be <var>intersection</var>
+          <li>let <var>last</var> be <var>intersection</var>
          </ul>
-        <li><b>Cast a ray</b> from <var>anchor</var> to <var>origin_rgb</var>
-					and let <var>intersection</var> be 
-					the intersection of this ray 
-					with the gamut boundary
-				
-        <li>if an intersection was not found,
-					let <var>origin_rgb</var> be <var>last</var> and exit the loop
-					<a href="#raytrace-footnote-5"><sup>5</sup></a>
-				
-        <li>if (i >0) AND (each component of <var>origin_rgb</var> is between <var>low</var> and <var>high</var>) then
-					let <var>anchor</var> be <var>origin_rgb</var>
-					<a href="#raytrace-footnote-4"><sup>4</sup></a>
-				
-        <li>let <var>origin_rgb</var> be <var>intersection</var>
-        <li>let <var>last</var> be <var>intersection</var>
        </ul>
-      <li>let <var>clipped</var> be <var>origin_rgb</var> clipped to gamut (components in range 0 to 1),
-			thus trimming off any noise due to floating point inaccuracy
-		
-      <li>return <var>clipped</var>, converted to <var>destination</var> as the gamut mapped color
+      <li>let clip(<var>color</var>) be a function which converts <var>color</var> to <var>destination</var>,
+		clamps each component to the bounds of the reference range for that component
+		and returns the result
+      <li>set <var>clipped</var> to clip(<var>current</var>)
+      <li>return <var>clipped</var> as the gamut mapped color
      </ol>
      <div class="algorithm" data-algorithm="to cast a ray">
       
@@ -9485,7 +9490,7 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
          <li>let <var>d</var> be <var>b</var> - <var>a</var>
          <li>let <var>direction</var><i>[i]</i> be <var>d</var>
          <li>
-          if (d != 0):
+          if abs(<var>d</var>) &lt; 1E-12
 					
           <ul>
            <li>let <var>inv_d</var> be 1 / <var>d</var>
@@ -9516,7 +9521,7 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 				
         </ul>
        <li>
-        if (<var>tnear</var> > 10)
+        if <var>tnear</var> is infinite (or matches the initial very large value)
 			
         <ul>
          <li>return INTERSECTION NOT FOUND
