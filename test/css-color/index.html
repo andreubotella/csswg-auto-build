@@ -8,7 +8,7 @@
   <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://www.w3.org/TR/css-color-4/" rel="canonical">
   <link href="https://drafts.csswg.org/csslogo.ico" rel="icon">
-  <meta content="aaaab1d3770d68756168908e8436a7750e96db6b" name="revision">
+  <meta content="24fab6e64d89780d1bd2624b1f333f8a541e964b" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet">
@@ -1136,7 +1136,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
 </p>
    <h1 class="no-ref p-name" id="title">CSS Color Module Level 4</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-02-23">23 February 2026</time></p>
+    <time class="dt-updated" datetime="2026-02-27">27 February 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1145,8 +1145,6 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
       <dd><a class="u-url" href="https://drafts.csswg.org/css-color-4/">https://drafts.csswg.org/css-color-4/</a>
       <dt>Latest published version:
       <dd><a href="https://www.w3.org/TR/css-color-4/">https://www.w3.org/TR/css-color-4/</a>
-      <dt>Previous Versions:
-      <dd><a href="https://www.w3.org/TR/2024/CRD-css-color-4-20240213/" rel="prev">https://www.w3.org/TR/2024/CRD-css-color-4-20240213/</a>
       <dt>Implementation Report:
       <dd><a href="https://wpt.fyi/results/css/css-color">https://wpt.fyi/results/css/css-color</a>
       <dt>Feedback:
@@ -1172,7 +1170,7 @@ dd:not(:last-child) > .wpt-tests-block:not([open]):last-child {
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>This specification describes CSS <a class="css production" data-link-type="type" href="#typedef-color" id="ref-for-typedef-color">&lt;color></a> values, and properties for foreground color and group opacity.</p>
+   <p>This specification describes CSS <a class="css production" data-link-type="type" href="#typedef-color" id="ref-for-typedef-color">&lt;color></a> values, and properties for foreground color and group opacity. It also describes how colors are interpolated, and how to gamut map colors.</p>
    
 
 
@@ -9441,7 +9439,7 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 									converted to the <em>linear-light</em> form of <var>destination</var>
 								
            </ul>
-          <li><b>Cast a ray</b> from <var>anchor</var> to <var>origin_rgb</var>
+          <li><b>Cast a ray</b> from <var>start</var> = <var>anchor</var> to <var>end</var> = <var>origin_rgb</var>
 							and let <var>intersection</var> be 
 							the intersection of this ray 
 							with the gamut boundary
@@ -9485,19 +9483,19 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
         for (i = 0; i &lt; 3; i++): 
 			
         <ul>
-         <li>let <var>a</var> be <var>start</var><i>[i]</i>
-         <li>let <var>b</var> be <var>end</var><i>[i]</i>
+         <li>let <var>a</var> be <var>start</var> <i>[i]</i>
+         <li>let <var>b</var> be <var>end</var> <i>[i]</i>
          <li>let <var>d</var> be <var>b</var> - <var>a</var>
-         <li>let <var>direction</var><i>[i]</i> be <var>d</var>
+         <li>let <var>direction</var> <i>[i]</i> be <var>d</var>
          <li>
           if abs(<var>d</var>) &lt; 1E-12
 					
           <ul>
            <li>let <var>inv_d</var> be 1 / <var>d</var>
-           <li>let <var>t1</var> be (<var>bmin</var><i>[i]</i> - <var>a</var>) * <var>inv_d</var>
-           <li>let <var>t2</var> be (<var>bmax</var><i>[i]</i> - <var>a</var>) * <var>inv_d</var>
-           <li>let <var>tnear</var> be max(min(<var>t1</var>, <var>t2</var>), <var>tnear</var>)
-           <li>let <var>tfar</var> be min(max(<var>t1</var>, <var>t2</var>), <var>tfar</var>)
+           <li>let <var>t1</var> be (<var>bmin</var> <i>[i]</i> - <var>a</var> ) * <var>inv_d</var> 
+           <li>let <var>t2</var> be (<var>bmax</var> <i>[i]</i> - <var>a</var> ) * <var>inv_d</var> 
+           <li>let <var>tnear</var> be max(min(<var>t1</var>, <var>t2</var>), <var>tnear</var> )
+           <li>let <var>tfar</var> be min(max(<var>t1</var>, <var>t2</var>), <var>tfar</var> )
           </ul>
          <li>
           else if (<var>a</var> &lt; <var>bmin</var><i>[i]</i> or <var>a</var> > <var>bmax</var><i>[i]</i>)
@@ -9530,7 +9528,7 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
         for (i =0; i &lt; 3; i++):
 			
         <ul>
-         <li>let <var>result</var><i>[i]</i> be <var>start</var><i>[i]</i> + <var>direction</var><i>[i]</i> * <var>tnear</var>
+         <li>let <var>result</var> <i>[i]</i> be <var>start</var> <i>[i]</i> + <var>direction</var> <i>[i]</i> * <var>tnear</var> 
         </ul>
        <li>return <var>result</var>
       </ol>
@@ -9546,7 +9544,7 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 			1.0 represents the maximum in-gamut channel value,
 			and it is assumed all channels have the same maximum.
       <li id="raytrace-footnote-3"><a class="self-link" href="#raytrace-footnote-3"></a>
-			This places the current color back on the chroma reduction curve,
+			This places the <var>current</var> color back on the chroma reduction curve,
 			if it has deviated.
       <li id="raytrace-footnote-4"><a class="self-link" href="#raytrace-footnote-4"></a>
 			This means <var>origin_rgb</var> is below the gamut surface, 
@@ -9564,7 +9562,7 @@ Sample Pseudocode for the Ray Trace Gamut Mapping</span><a class="self-link" hre
 			this simplifies to a single constant
 			rather than a 3-element array.
       <li id="raytrace-footnote-7"><a class="self-link" href="#raytrace-footnote-7"></a>
-			favoring the first intersection in the direction <var>start</var> -> <var>end</var>.
+			favoring the first intersection in the direction <var>start</var> -> <var>end</var> .
 	
      </ol>
     </div>
@@ -10047,8 +10045,8 @@ Serializing sRGB values</span><a class="self-link" href="#serializing-sRGB-value
 		For example, fill style is set to <span class="swatch" style="--color: rgb(255, 0, 255)"></span> magenta:
 
 		
-<pre class="highlight" lang-js>context.fillStyle = <c- s>"rgb(255, 0, 255)"</c->
-console.<c- nf>log</c-><c- p>(</c->context.fillStyle<c- p>);</c-> // <c- s>"#ff00ff"</c->
+<pre class="highlight lang-js">context<c- p>.</c->fillStyle <c- o>=</c-> <c- u>"rgb(255, 0, 255)"</c->
+console<c- p>.</c->log<c- p>(</c->context<c- p>.</c->fillStyle<c- p>);</c-> <c- c1>// "#ff00ff"</c->
 </pre>
      <p>The color space is sRGB, the representation is 8 bits per component,
 		the data format does not produce <a class="css" data-link-type="maybe" href="#valdef-color-none" id="ref-for-valdef-color-none①②">none</a> values nor does it support extended range values, 
@@ -10061,8 +10059,8 @@ console.<c- nf>log</c-><c- p>(</c->context.fillStyle<c- p>);</c-> // <c- s>"#ff0
 		For example, fill style is set to <span class="swatch" style="--color: rgb(48.63% 13.85% 15.73%)"></span>  a dark brown, in CIE Lab:
 
 		
-<pre class="highlight" lang-js>context.fillStyle = <c- s>"lab(29% 39 20)"</c-><c- p>;</c->
-console.<c- nf>log</c-><c- p>(</c->context.fillStyle<c- p>);</c-> // <c- s>"lab(29 39 20)"</c->
+<pre class="highlight lang-js">context<c- p>.</c->fillStyle <c- o>=</c-> <c- u>"lab(29% 39 20)"</c-><c- p>;</c->
+console<c- p>.</c->log<c- p>(</c->context<c- p>.</c->fillStyle<c- p>);</c-> <c- c1>// "lab(29 39 20)"</c->
 </pre>
      <p>The CSS serialization is the string "lab(29 39 20)".</p>
     </div>
@@ -10071,8 +10069,8 @@ console.<c- nf>log</c-><c- p>(</c->context.fillStyle<c- p>);</c-> // <c- s>"lab(
 		For example, fill style is set to <span class="swatch" style="--color: #ff00ffed"></span> semi-transparent magenta:
 
 		
-<pre class="highlight" lang-js>context.fillStyle = <c- s>"#ff00ffed"</c-><c- p>;</c->
-console.<c- nf>log</c-><c- p>(</c->context.fillStyle<c- p>);</c-> // <c- s>"rgba(255, 0, 255, 0.93)"</c->
+<pre class="highlight lang-js">context<c- p>.</c->fillStyle <c- o>=</c-> <c- u>"#ff00ffed"</c-><c- p>;</c->
+console<c- p>.</c->log<c- p>(</c->context<c- p>.</c->fillStyle<c- p>);</c-> <c- c1>// "rgba(255, 0, 255, 0.93)"</c->
 </pre>
      <p>The alpha is not 1, so the CSS serialization is the string
 		"rgba(255, 0, 255, 0.93)".</p>
@@ -11453,8 +11451,9 @@ Changes</span><a class="self-link" href="#changes"></a></h2>
     <h3 class="heading settled" id="changes-from-20250424"><span class="content">Changes since the 
 	<a href="https://www.w3.org/TR/2025/CRD-css-color-4-20250424/">Candidate Recommendation Draft of 24 April 2025</a></span><a class="self-link" href="#changes-from-20250424"></a></h3>
     <ul>
+     <li>Updated abstract to mention color interpolation and gamut mapping.
      <li>Clarified wording regarding the aims of CSS gamut mapping
-     <li>Corrected ray trace algorithm to not overwrite <var>end</var>
+     <li>Corrected ray trace algorithm to not overwrite <i>end</i>
 		(<a href="https://github.com/w3c/csswg-drafts/issues/10579">Issue 10579</a>)
 	
      <li>Added pseudocode for the ray trace gamut mapping algorithm
@@ -12652,7 +12651,7 @@ Non-experimental implementations</span><a class="self-link" href="#w3c-testing">
    <dt id="biblio-css-animations-1">[CSS-ANIMATIONS-1]
    <dd>David Baron; et al. <a href="https://drafts.csswg.org/css-animations/"><cite>CSS Animations Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-animations/">https://drafts.csswg.org/css-animations/</a>
    <dt id="biblio-css-color-5">[CSS-COLOR-5]
-   <dd>Chris Lilley; et al. <a href="https://drafts.csswg.org/css-color-5/"><cite>CSS Color Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-color-5/">https://drafts.csswg.org/css-color-5/</a>
+   <dd>Chris Lilley; Una Kravets; Lea Verou. <a href="https://drafts.csswg.org/css-color-5/"><cite>CSS Color Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-color-5/">https://drafts.csswg.org/css-color-5/</a>
    <dt id="biblio-css-images-4">[CSS-IMAGES-4]
    <dd>Elika Etemad; Tab Atkins Jr.; Lea Verou. <a href="https://drafts.csswg.org/css-images-4/"><cite>CSS Images Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-images-4/">https://drafts.csswg.org/css-images-4/</a>
    <dt id="biblio-css-transitions-1">[CSS-TRANSITIONS-1]
